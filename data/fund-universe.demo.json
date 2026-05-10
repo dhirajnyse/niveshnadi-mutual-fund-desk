@@ -1,0 +1,40 @@
+{
+  "dataStatus": "demo",
+  "version": "20260510-01",
+  "purpose": "Representative mutual fund research data for product prototyping only.",
+  "disclaimer": "Not live AMC, AMFI, RTA, or exchange data. Do not use for investment decisions.",
+  "categories": [
+    "Large Cap Fund",
+    "Flexi Cap Fund",
+    "Mid Cap Fund",
+    "Small Cap Fund",
+    "Balanced Hybrid Fund",
+    "Corporate Bond Fund",
+    "Liquid Fund",
+    "Index Fund",
+    "Multi Asset Allocation Fund",
+    "Life Cycle Fund"
+  ],
+  "plannedFields": [
+    "schemeCode",
+    "isin",
+    "amc",
+    "directPlanExpenseRatio",
+    "regularPlanExpenseRatio",
+    "benchmark",
+    "fundManager",
+    "aum",
+    "rollingReturns",
+    "rollingVolatility",
+    "drawdown",
+    "portfolioHoldings",
+    "sectorExposure",
+    "styleBox",
+    "riskometer",
+    "exitLoad",
+    "taxTreatment",
+    "factsheetUrl",
+    "sidUrl",
+    "kisUrl"
+  ]
+}

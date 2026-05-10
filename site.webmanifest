@@ -1,0 +1,16 @@
+{
+  "name": "NiveshNadi Mutual Fund Desk",
+  "short_name": "NiveshNadi",
+  "description": "India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7fbff",
+  "theme_color": "#11253f",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

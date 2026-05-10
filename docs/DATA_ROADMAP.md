@@ -25,6 +25,7 @@ Each fund record should eventually include:
 2. AMC factsheet parser.
 3. SID/KIM citation extractor.
 4. Manual CAS-style portfolio entry.
+5. Evidence Ledger source dates for AMFI, AMC factsheet, SID, KIM, benchmark, riskometer, TER, and portfolio disclosure records.
 5. MFCentral or MFU integration review.
 
 ## Evidence policy

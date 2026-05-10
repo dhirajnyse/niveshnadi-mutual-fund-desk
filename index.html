@@ -25,10 +25,13 @@
       </div>
       <nav class="top-nav" aria-label="Workspace">
         <a href="#screener">Screener</a>
+        <a href="#compare">Compare</a>
         <a href="#goal-fit">Goal Fit</a>
         <a href="#journey">Coach</a>
         <a href="#calculator">SIP/STP</a>
+        <a href="#risk-lab">Stress</a>
         <a href="#portfolio">X-Ray</a>
+        <a href="#evidence">Evidence</a>
         <a href="#watchlist">Watchlist</a>
         <a href="#decision-pack">Pack</a>
         <a href="#pricing">Pricing</a>
@@ -41,7 +44,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-              <p class="release-pill">Phase 1 v7.2</p>
+              <p class="release-pill">Phase 1 v12</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -132,6 +135,22 @@
         </div>
         <div id="fundDetail" class="fund-detail empty-state">
           Select a fund from the screener to inspect its role, risk evidence, holdings overlap, and decision prompts.
+        </div>
+      </section>
+
+      <section id="compare" class="workspace-band compare-band" aria-labelledby="compare-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Fund shortlist</p>
+            <h2 id="compare-title">Fund Compare Matrix</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Compare actions">
+            <span id="compareSummary" class="status-chip">2 selected</span>
+            <button class="text-button" id="copyCompare" type="button">Copy compare note</button>
+          </div>
+        </div>
+        <div id="compareMatrix" class="compare-output" aria-live="polite">
+          Select two or more funds from the screener to compare role, cost, risk, evidence readiness, and decision questions.
         </div>
       </section>
 
@@ -291,6 +310,54 @@
         </div>
       </section>
 
+      <section id="risk-lab" class="workspace-band stress-band" aria-labelledby="stress-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Behavior test</p>
+            <h2 id="stress-title">Risk Stress Lab</h2>
+          </div>
+          <button class="text-button" id="copyStress" type="button">Copy stress note</button>
+        </div>
+        <div class="stress-grid">
+          <form id="stressForm" class="tool-panel stress-form">
+            <h3>Drawdown scenario</h3>
+            <label>
+              Current corpus
+              <input id="stressCorpus" type="number" min="0" step="10000" value="500000">
+            </label>
+            <label>
+              Monthly SIP during stress
+              <input id="stressSip" type="number" min="0" step="500" value="10000">
+            </label>
+            <label>
+              Shock scenario
+              <select id="stressShock">
+                <option value="fund">Selected fund demo drawdown</option>
+                <option value="10">Mild correction - 10%</option>
+                <option value="20">Sharp correction - 20%</option>
+                <option value="30">Severe correction - 30%</option>
+              </select>
+            </label>
+            <label>
+              Behavior during stress
+              <select id="stressBehavior">
+                <option value="continue">Continue SIP</option>
+                <option value="pause">Pause new SIP</option>
+                <option value="exit">Exit after fall</option>
+              </select>
+            </label>
+            <label>
+              Recovery assumption
+              <input id="stressRecovery" type="number" min="0" max="20" step="0.5" value="10">
+            </label>
+            <button class="primary-button" type="submit">Run stress test</button>
+          </form>
+          <div id="stressOutput" class="stress-output" aria-live="polite">
+            Run a drawdown scenario to see the rupee impact before making a SIP or portfolio decision.
+          </div>
+        </div>
+      </section>
+
       <section id="portfolio" class="workspace-band" aria-labelledby="portfolio-title">
         <div class="section-heading">
           <div>
@@ -306,6 +373,30 @@
           </div>
           <div id="xrayOutput" class="xray-output" aria-live="polite">
             Choose two or more funds to inspect overlap and duplication risk.
+          </div>
+        </div>
+      </section>
+
+      <section id="evidence" class="workspace-band evidence-band" aria-labelledby="evidence-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Trust layer</p>
+            <h2 id="evidence-title">Evidence Ledger</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Evidence actions">
+            <span id="evidenceSummary" class="status-chip">Demo mapped</span>
+            <button class="text-button" id="copyEvidence" type="button">Copy evidence log</button>
+          </div>
+        </div>
+        <div class="evidence-grid">
+          <div class="tool-panel evidence-panel">
+            <h3>Selected fund evidence</h3>
+            <div id="evidenceFundSummary" class="evidence-fund-summary">
+              Select a fund to inspect source readiness, citation gaps, and launch gates.
+            </div>
+          </div>
+          <div id="evidenceOutput" class="evidence-output" aria-live="polite">
+            Evidence source map will appear here.
           </div>
         </div>
       </section>
@@ -573,10 +664,13 @@
         </label>
         <div class="floating-section-links" aria-label="Quick sections">
           <a href="#screener">Screener</a>
+          <a href="#compare">Compare</a>
           <a href="#goal-fit">Goal Fit</a>
           <a href="#journey">Coach</a>
           <a href="#calculator">SIP/STP</a>
+          <a href="#risk-lab">Stress</a>
           <a href="#portfolio">X-Ray</a>
+          <a href="#evidence">Evidence</a>
           <a href="#watchlist">Watchlist</a>
           <a href="#decision-pack">Pack</a>
           <a href="#pricing">Pricing</a>

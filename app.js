@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260510-10";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v7.2 Anchor Polish";
+const DATA_VERSION = "20260510-15";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v12 Risk Stress Lab";
 
 const FUNDS = [
   {
@@ -274,6 +274,51 @@ const ALERT_TYPES = {
   }
 };
 
+const EVIDENCE_SOURCES = [
+  {
+    title: "AMFI scheme and NAV master",
+    status: "Demo mapped",
+    cadence: "Daily source, monthly summary",
+    fields: ["scheme identity", "category", "NAV history placeholder", "AUM reference"],
+    launchGate: "Connect official AMFI files and store source date."
+  },
+  {
+    title: "AMC monthly factsheet",
+    status: "Demo mapped",
+    cadence: "Monthly",
+    fields: ["returns", "expense ratio", "manager", "style", "factsheet holdings"],
+    launchGate: "Add AMC PDF extraction, validation, and visible citation links."
+  },
+  {
+    title: "SID and KIM documents",
+    status: "Schema planned",
+    cadence: "Offer document and update events",
+    fields: ["investment objective", "risk factors", "loads", "minimum SIP", "suitability language"],
+    launchGate: "Attach latest document version and change date before launch."
+  },
+  {
+    title: "Portfolio disclosure file",
+    status: "Demo mapped",
+    cadence: "Monthly",
+    fields: ["top holdings", "sector map", "issuer concentration", "debt quality"],
+    launchGate: "Capture holdings date so stale portfolios are never shown as live."
+  },
+  {
+    title: "Benchmark and index data",
+    status: "Schema planned",
+    cadence: "Daily or monthly",
+    fields: ["benchmark name", "relative return", "tracking context", "category peer map"],
+    launchGate: "Define licensed benchmark source and allowed display fields."
+  },
+  {
+    title: "Riskometer and TER history",
+    status: "Demo mapped",
+    cadence: "Monthly and event-driven",
+    fields: ["risk band", "expense drift", "drawdown watch", "review trigger"],
+    launchGate: "Keep historical changes and alert users when posture changes."
+  }
+];
+
 const state = {
   selectedId: FUNDS[0].id,
   compare: new Set(["large-core", "index-nifty"]),
@@ -513,10 +558,169 @@ function renderJournal() {
   `).join("");
 }
 
+function compareSet() {
+  return FUNDS.filter((fund) => state.compare.has(fund.id));
+}
+
+function compareDecisionQuestion(fund) {
+  if (fund.sleeve === "Debt") return "Is this fund for parking, income stability, or STP source discipline?";
+  if (fund.sleeve === "Passive") return "Does this low-cost beta replace or duplicate an active core fund?";
+  if (fund.category.includes("ELSS")) return "Is the tax role separate from the long-term equity allocation?";
+  if (fund.risk === "Very High") return "Is the volatility role sized only after the core allocation is clear?";
+  if (fund.sleeve === "Hybrid") return "Is this a smoother bridge fund or an unnecessary middle bucket?";
+  return "What distinct job does this fund perform in the shortlist?";
+}
+
+function compareShortlistPosture(funds) {
+  const categories = countBy(funds, "category");
+  const sleeves = countBy(funds, "sleeve");
+  const overlaps = holdingOverlapDetails(funds);
+  const duplicate = duplicationLabel(duplicationScore(funds, overlaps, categories));
+  const roleClarity = roleClarityLabel(funds);
+  const expenseMin = funds.reduce((best, fund) => fund.expense < best.expense ? fund : best, funds[0]);
+  const scoreMax = funds.reduce((best, fund) => nadiScore(fund) > nadiScore(best) ? fund : best, funds[0]);
+  const evidenceMax = funds.reduce((best, fund) => evidenceReadinessScore(fund) > evidenceReadinessScore(best) ? fund : best, funds[0]);
+
+  let title = "Research shortlist";
+  let copy = "The selected funds are ready for side-by-side research. Compare role, cost, risk, and evidence readiness before writing a decision reason.";
+  if (duplicate === "High") {
+    title = "Overlap needs attention";
+    copy = "This shortlist has repeated holdings or category crowding. Decide which fund earns each role before adding more funds.";
+  } else if (roleClarity === "Balanced" || roleClarity === "Core-led") {
+    title = `${roleClarity} shortlist`;
+    copy = "The shortlist has a clearer structure. The next step is to confirm whether each fund has a different job and evidence base.";
+  } else if (roleClarity === "Satellite-heavy") {
+    title = "Satellite-heavy shortlist";
+    copy = "The shortlist leans toward growth satellites. Check whether a core anchor exists before treating this as a portfolio.";
+  }
+
+  return {
+    title,
+    copy,
+    duplicate,
+    roleClarity,
+    expenseMin,
+    scoreMax,
+    evidenceMax,
+    overlapCount: overlaps.length,
+    sleeves
+  };
+}
+
+function renderCompareMatrix() {
+  if (!els.compareMatrix || !els.compareSummary) return;
+  const funds = compareSet();
+  els.compareSummary.textContent = `${funds.length} selected`;
+
+  if (funds.length < 2) {
+    els.compareMatrix.innerHTML = '<div class="empty-state">Select two or more funds from the screener to compare role, cost, risk, evidence readiness, and decision questions.</div>';
+    return;
+  }
+
+  const posture = compareShortlistPosture(funds);
+  els.compareMatrix.innerHTML = `
+    <div class="compare-hero">
+      <div>
+        <span class="metric-label">Shortlist posture</span>
+        <strong>${escapeHtml(posture.title)}</strong>
+        <p>${escapeHtml(posture.copy)}</p>
+      </div>
+      <div class="compare-count">
+        <b>${funds.length}</b>
+        <span>funds</span>
+      </div>
+    </div>
+    <div class="compare-card-grid">
+      ${funds.map((fund) => {
+        const score = nadiScore(fund);
+        const role = portfolioRole(fund);
+        const evidence = evidenceReadinessScore(fund);
+        return `
+          <article class="compare-card">
+            <div class="compare-card-head">
+              <span class="tag ${riskClass(fund.risk)}">${escapeHtml(fund.risk)}</span>
+              <strong>${escapeHtml(fund.name)}</strong>
+              <p>${escapeHtml(fund.category)}</p>
+            </div>
+            <div class="compare-mini-grid">
+              <div><span>Nadi</span><strong>${score}/100</strong></div>
+              <div><span>Expense</span><strong>${fund.expense.toFixed(2)}%</strong></div>
+              <div><span>5Y demo</span><strong>${fund.returns5y.toFixed(1)}%</strong></div>
+              <div><span>Drawdown</span><strong>${fund.maxDrawdown}%</strong></div>
+              <div><span>Consistency</span><strong>${fund.consistency}</strong></div>
+              <div><span>Evidence</span><strong>${evidence}/100</strong></div>
+            </div>
+            <div class="compare-role">
+              <span class="tag ${riskClass(role.tone)}">${escapeHtml(role.label)}</span>
+              <p>${escapeHtml(role.reason)}</p>
+            </div>
+            <div class="compare-question">
+              <span>Decision question</span>
+              <p>${escapeHtml(compareDecisionQuestion(fund))}</p>
+            </div>
+          </article>
+        `;
+      }).join("")}
+    </div>
+    <div class="compare-check-grid">
+      <div>
+        <span class="metric-label">Role clarity</span>
+        <strong>${escapeHtml(posture.roleClarity)}</strong>
+        <p>Confirm every fund has a different job before turning this shortlist into an allocation.</p>
+      </div>
+      <div>
+        <span class="metric-label">Duplication risk</span>
+        <strong>${escapeHtml(posture.duplicate)}</strong>
+        <p>${posture.overlapCount ? `${posture.overlapCount} repeated holding signal${posture.overlapCount > 1 ? "s" : ""} found in demo data.` : "No repeated top holdings in the demo set."}</p>
+      </div>
+      <div>
+        <span class="metric-label">Cost anchor</span>
+        <strong>${escapeHtml(posture.expenseMin.name)}</strong>
+        <p>Lowest expense in this shortlist at ${posture.expenseMin.expense.toFixed(2)}%.</p>
+      </div>
+      <div>
+        <span class="metric-label">Evidence anchor</span>
+        <strong>${escapeHtml(posture.evidenceMax.name)}</strong>
+        <p>Highest evidence readiness in this demo shortlist at ${evidenceReadinessScore(posture.evidenceMax)}/100.</p>
+      </div>
+    </div>
+  `;
+}
+
+function makeCompareNote() {
+  const funds = compareSet();
+  if (funds.length < 2) return "Select two or more funds before copying a compare note.";
+  const posture = compareShortlistPosture(funds);
+  return [
+    "# NiveshNadi Fund Compare Matrix",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Shortlist posture: ${posture.title}`,
+    `Role clarity: ${posture.roleClarity}`,
+    `Duplication risk: ${posture.duplicate}`,
+    "",
+    "## Funds",
+    ...funds.map((fund) => [
+      `- ${fund.name}`,
+      `  Category: ${fund.category}`,
+      `  Risk: ${fund.risk}`,
+      `  Nadi score: ${nadiScore(fund)}/100`,
+      `  Expense: ${fund.expense.toFixed(2)}%`,
+      `  Drawdown: ${fund.maxDrawdown}%`,
+      `  Evidence readiness: ${evidenceReadinessScore(fund)}/100`,
+      `  Decision question: ${compareDecisionQuestion(fund)}`
+    ].join("\n")),
+    "",
+    "Research support only. Confirm live factsheets, holdings date, expense, riskometer, and decision reason before acting."
+  ].join("\n");
+}
+
 function renderAll() {
   renderFundGrid();
   renderFundDetail();
   renderPortfolioChoices();
+  renderCompareMatrix();
+  renderStressLab();
+  renderEvidenceLedger();
   renderWatchlistRoom();
   renderDecisionPack();
 }
@@ -583,6 +787,138 @@ function sharedHoldings(funds) {
     .map(([holding]) => holding);
 }
 
+function holdingOverlapDetails(funds) {
+  const map = new Map();
+  for (const fund of funds) {
+    for (const holding of new Set(fund.holdings)) {
+      if (!map.has(holding)) map.set(holding, []);
+      map.get(holding).push(fund.name);
+    }
+  }
+  return Array.from(map.entries())
+    .filter(([, names]) => names.length > 1)
+    .sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]))
+    .map(([holding, names]) => ({ holding, count: names.length, names }));
+}
+
+function highestRisk(funds) {
+  const rank = { Low: 1, Moderate: 2, High: 3, "Very High": 4 };
+  return funds.reduce((highest, fund) => (
+    (rank[fund.risk] || 0) > (rank[highest] || 0) ? fund.risk : highest
+  ), "Low");
+}
+
+function portfolioRole(fund) {
+  if (fund.sleeve === "Debt") {
+    return fund.category.includes("Liquid")
+      ? { label: "Cash parking", tone: "Low", reason: "Useful as a liquidity or STP source bucket." }
+      : { label: "Debt stabilizer", tone: "Moderate", reason: "Can reduce equity-only volatility if credit and duration stay disciplined." };
+  }
+  if (fund.sleeve === "Passive") {
+    return { label: "Core beta", tone: "Low", reason: "Low-cost market exposure that can anchor an equity sleeve." };
+  }
+  if (fund.sleeve === "Life Cycle") {
+    return { label: "Glide path", tone: "Moderate", reason: "Goal-year style allocation that should be reviewed against horizon." };
+  }
+  if (fund.category.includes("Large Cap") || fund.category.includes("Balanced Hybrid")) {
+    return { label: "Core candidate", tone: fund.risk, reason: "Can act as a central research bucket if duplication is controlled." };
+  }
+  if (fund.category.includes("Multi Asset")) {
+    return { label: "Diversifier", tone: fund.risk, reason: "Adds cross-asset behavior, but should not hide unclear allocation logic." };
+  }
+  if (fund.category.includes("ELSS")) {
+    return { label: "Tax-linked satellite", tone: fund.risk, reason: "Tax planning role with lock-in and equity drawdown risk." };
+  }
+  return { label: "Growth satellite", tone: fund.risk, reason: "Higher-volatility allocation that should be sized after core exposure is clear." };
+}
+
+function categoryCrowding(categories) {
+  const values = Object.values(categories);
+  return values.length ? Math.max(...values) : 0;
+}
+
+function duplicationScore(funds, overlapDetails, categories) {
+  const repeatedHoldingSlots = overlapDetails.reduce((sum, item) => sum + item.count - 1, 0);
+  const holdingScore = Math.round((repeatedHoldingSlots / Math.max(1, funds.length * 2)) * 55);
+  const categoryScore = Math.max(0, categoryCrowding(categories) - 1) * 16;
+  const sleeveScore = funds.filter((fund) => fund.risk === "Very High").length * 8;
+  return Math.min(100, holdingScore + categoryScore + sleeveScore);
+}
+
+function duplicationLabel(score) {
+  if (score >= 65) return "High";
+  if (score >= 35) return "Moderate";
+  return "Low";
+}
+
+function roleClarityLabel(funds) {
+  const roles = funds.map((fund) => portfolioRole(fund).label);
+  const hasCore = roles.some((role) => role.includes("Core"));
+  const satelliteCount = roles.filter((role) => role.includes("satellite")).length;
+  const stabilizerCount = roles.filter((role) => role.includes("Debt") || role.includes("Cash") || role.includes("Diversifier")).length;
+  if (!hasCore && satelliteCount >= 2) return "Satellite-heavy";
+  if (hasCore && satelliteCount <= 2 && stabilizerCount >= 1) return "Balanced";
+  if (hasCore) return "Core-led";
+  return "Needs thesis";
+}
+
+function portfolioThesis(funds, categories, sleeves, overlapDetails, duplication) {
+  const equityLike = (sleeves.Equity || 0) + (sleeves.Passive || 0);
+  const debtLike = sleeves.Debt || 0;
+  const hybridLike = (sleeves.Hybrid || 0) + (sleeves["Life Cycle"] || 0);
+  const crowdedCategory = Object.entries(categories).sort((a, b) => b[1] - a[1])[0];
+
+  if (equityLike >= 3 && debtLike === 0 && hybridLike === 0) {
+    return {
+      title: "Growth-heavy equity stack",
+      copy: "This set is mostly equity research. Before adding another growth fund, inspect overlap, drawdown, and whether each fund has a separate role."
+    };
+  }
+  if (debtLike >= 1 && equityLike >= 1) {
+    return {
+      title: "Goal-aware mixed stack",
+      copy: "This set mixes growth and stability buckets. Research the cash-flow job of each fund before deciding SIP, STP, or parking roles."
+    };
+  }
+  if (overlapDetails.length && duplication === "High") {
+    return {
+      title: "Crowded overlap stack",
+      copy: "Several selected funds repeat holdings or category exposure. The next research step is to decide which fund earns each role."
+    };
+  }
+  if (crowdedCategory && crowdedCategory[1] > 1) {
+    return {
+      title: "Category-concentrated stack",
+      copy: `${crowdedCategory[0]} appears more than once. Check if the duplicate category exposure is intentional or just habit.`
+    };
+  }
+  return {
+    title: "Early research shortlist",
+    copy: "The selected set has enough variety for first-pass research. Use the role map and warnings before turning it into a real allocation."
+  };
+}
+
+function xrayWarnings(funds, overlapDetails, categories, avgExpense, maxRisk, duplication) {
+  const warnings = [];
+  const crowded = Object.entries(categories).filter(([, count]) => count > 1);
+  if (overlapDetails.length) {
+    warnings.push(`${overlapDetails.length} shared holding${overlapDetails.length > 1 ? "s" : ""} found. Inspect whether repeated names are intentional.`);
+  }
+  if (crowded.length) {
+    warnings.push(`Category crowding: ${formatCounts(Object.fromEntries(crowded))}. Avoid owning multiple funds for the same job without a written reason.`);
+  }
+  if (maxRisk === "Very High") {
+    warnings.push("Very High risk fund present. Match it to horizon, drawdown comfort, and core allocation first.");
+  }
+  if (avgExpense > 0.55) {
+    warnings.push(`Blended expense is ${avgExpense.toFixed(2)}%. Compare whether the extra cost is buying a distinct role.`);
+  }
+  if (duplication === "Low" && !warnings.length) {
+    warnings.push("No major demo overlap detected. Still review live factsheet holdings before investing real money.");
+  }
+  return warnings;
+}
+
 function analyzePortfolio() {
   const funds = FUNDS.filter((fund) => state.compare.has(fund.id));
   if (funds.length < 2) {
@@ -590,39 +926,182 @@ function analyzePortfolio() {
     return;
   }
 
-  const shared = sharedHoldings(funds);
+  const overlapDetails = holdingOverlapDetails(funds);
   const categories = countBy(funds, "category");
   const sleeves = countBy(funds, "sleeve");
   const avgExpense = funds.reduce((sum, fund) => sum + fund.expense, 0) / funds.length;
   const avgScore = Math.round(funds.reduce((sum, fund) => sum + nadiScore(fund), 0) / funds.length);
-  const maxRisk = funds.some((fund) => fund.risk === "Very High") ? "Very High" : funds[0].risk;
-  const duplication = shared.length >= 4 ? "High" : shared.length >= 2 ? "Moderate" : "Low";
+  const maxRisk = highestRisk(funds);
+  const duplicateScore = duplicationScore(funds, overlapDetails, categories);
+  const duplication = duplicationLabel(duplicateScore);
+  const roleClarity = roleClarityLabel(funds);
+  const thesis = portfolioThesis(funds, categories, sleeves, overlapDetails, duplication);
+  const warnings = xrayWarnings(funds, overlapDetails, categories, avgExpense, maxRisk, duplication);
+  const roles = funds.map((fund) => ({ fund, role: portfolioRole(fund) }));
+  const overlapCopy = overlapDetails.length
+    ? overlapDetails.slice(0, 5).map((item) => `${item.holding} in ${item.count} funds`).join(" | ")
+    : "No repeated top holdings in this demo set.";
 
   els.xrayOutput.innerHTML = `
     <div class="result-stack">
-      <div class="risk-grid">
+      <div class="risk-grid xray-metrics">
         <div><span class="metric-label">Blended score</span><strong>${avgScore}/100</strong></div>
         <div><span class="metric-label">Blended expense</span><strong>${avgExpense.toFixed(2)}%</strong></div>
-        <div><span class="metric-label">Duplication risk</span><strong>${duplication}</strong></div>
+        <div><span class="metric-label">Duplication score</span><strong>${duplicateScore}/100</strong></div>
+        <div><span class="metric-label">Role clarity</span><strong>${escapeHtml(roleClarity)}</strong></div>
       </div>
-      <div class="detail-panel">
-        <h3>Category concentration</h3>
-        <p>${escapeHtml(formatCounts(categories))}</p>
+      <div class="xray-thesis">
+        <span class="metric-label">Portfolio thesis</span>
+        <strong>${escapeHtml(thesis.title)}</strong>
+        <p>${escapeHtml(thesis.copy)}</p>
       </div>
-      <div class="detail-panel">
-        <h3>Asset sleeve mix</h3>
-        <p>${escapeHtml(formatCounts(sleeves))}</p>
+      <div class="xray-intelligence-grid">
+        <div class="detail-panel">
+          <h3>Role map</h3>
+          <div class="role-list">
+            ${roles.map(({ fund, role }) => `
+              <article class="role-item">
+                <span class="tag ${riskClass(role.tone)}">${escapeHtml(role.label)}</span>
+                <strong>${escapeHtml(fund.name)}</strong>
+                <p>${escapeHtml(role.reason)}</p>
+              </article>
+            `).join("")}
+          </div>
+        </div>
+        <div class="detail-panel">
+          <h3>Overlap warnings</h3>
+          <ul class="warning-list">
+            ${warnings.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </div>
       </div>
-      <div class="detail-panel">
-        <h3>Shared holdings</h3>
-        <p>${shared.length ? escapeHtml(shared.join(", ")) : "No shared holdings in this demo set."}</p>
+      <div class="xray-intelligence-grid">
+        <div class="detail-panel">
+          <h3>Category concentration</h3>
+          <p>${escapeHtml(formatCounts(categories))}</p>
+        </div>
+        <div class="detail-panel">
+          <h3>Asset sleeve mix</h3>
+          <p>${escapeHtml(formatCounts(sleeves))}</p>
+        </div>
+        <div class="detail-panel">
+          <h3>Shared holdings</h3>
+          <p>${escapeHtml(overlapCopy)}</p>
+        </div>
       </div>
       <div class="detail-panel">
         <h3>Research conclusion</h3>
-        <p>Highest risk band is ${escapeHtml(maxRisk)}. Check whether the portfolio has a clear core-satellite structure before adding another fund.</p>
+        <p>Highest risk band is ${escapeHtml(maxRisk)} and duplication risk is ${escapeHtml(duplication)}. Use this X-Ray as research support only; confirm live factsheet holdings and write the decision reason before acting.</p>
       </div>
     </div>
   `;
+}
+
+function evidenceStatusClass(status) {
+  if (status === "Demo mapped") return "calm";
+  if (status === "Schema planned") return "active";
+  return "attention";
+}
+
+function sourceFieldMatches(fund, source) {
+  const sourceText = source.fields.join(" ").toLowerCase();
+  const matches = [];
+  if (sourceText.includes("expense")) matches.push(`Expense ${fund.expense.toFixed(2)}%`);
+  if (sourceText.includes("returns")) matches.push(`5Y demo ${fund.returns5y.toFixed(1)}%`);
+  if (sourceText.includes("holdings")) matches.push(`${fund.holdings.length} demo holdings`);
+  if (sourceText.includes("sector")) matches.push(`${fund.sectors.length} sectors`);
+  if (sourceText.includes("risk")) matches.push(`${fund.risk} risk band`);
+  if (sourceText.includes("manager")) matches.push(fund.manager);
+  if (sourceText.includes("benchmark")) matches.push(fund.benchmark);
+  if (sourceText.includes("minimum sip")) matches.push(`Min SIP ${formatMoney(fund.minSip)}`);
+  if (sourceText.includes("category")) matches.push(fund.category);
+  return matches.length ? matches : ["Mapped to demo research fields"];
+}
+
+function evidenceReadinessScore(fund) {
+  const mapped = EVIDENCE_SOURCES.filter((source) => source.status === "Demo mapped").length;
+  const coverage = Math.round((mapped / EVIDENCE_SOURCES.length) * 70);
+  const researchBonus = Math.round(fund.researchCoverage * 0.18);
+  return Math.min(100, coverage + researchBonus);
+}
+
+function renderEvidenceLedger() {
+  if (!els.evidenceOutput || !els.evidenceFundSummary) return;
+  const fund = selectedFund();
+  const mapped = EVIDENCE_SOURCES.filter((source) => source.status === "Demo mapped").length;
+  const planned = EVIDENCE_SOURCES.length - mapped;
+  const readiness = evidenceReadinessScore(fund);
+  const score = nadiScore(fund);
+  els.evidenceSummary.textContent = `${mapped} mapped | ${planned} planned`;
+
+  els.evidenceFundSummary.innerHTML = `
+    <div class="evidence-readiness" style="--score:${readiness}">
+      <b>${readiness}</b>
+      <span>Readiness</span>
+    </div>
+    <div>
+      <strong>${escapeHtml(fund.name)}</strong>
+      <p>${escapeHtml(fund.category)} | ${escapeHtml(fund.risk)} risk | Nadi score ${score}/100</p>
+      <ul class="evidence-mini-list">
+        <li>Current data mode: demo research fields only.</li>
+        <li>Live launch needs source date, citation URL, and extraction checks.</li>
+        <li>No PAN, folio, CAS, or personal data is required for this evidence map.</li>
+      </ul>
+    </div>
+  `;
+
+  els.evidenceOutput.innerHTML = `
+    <div class="evidence-source-grid">
+      ${EVIDENCE_SOURCES.map((source) => `
+        <article class="source-card">
+          <div class="source-head">
+            <span class="metric-label">${escapeHtml(source.status)}</span>
+            <strong>${escapeHtml(source.title)}</strong>
+          </div>
+          <span class="alert-status ${evidenceStatusClass(source.status)}">${escapeHtml(source.cadence)}</span>
+          <p>${escapeHtml(sourceFieldMatches(fund, source).join(" | "))}</p>
+          <ul class="evidence-mini-list">
+            ${source.fields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+          <div class="launch-gate">
+            <span>Launch gate</span>
+            <p>${escapeHtml(source.launchGate)}</p>
+          </div>
+        </article>
+      `).join("")}
+    </div>
+    <div class="evidence-guardrail">
+      <strong>Evidence rule</strong>
+      <p>Every live research claim should show source, date, extraction status, and whether it is fund-level, category-level, or portfolio-level evidence.</p>
+    </div>
+  `;
+}
+
+function makeEvidenceLog() {
+  const fund = selectedFund();
+  const mapped = EVIDENCE_SOURCES.filter((source) => source.status === "Demo mapped").length;
+  return [
+    `# NiveshNadi Evidence Ledger`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${fund.name}`,
+    `Category: ${fund.category}`,
+    `Risk: ${fund.risk}`,
+    `Nadi score: ${nadiScore(fund)}/100`,
+    `Evidence readiness: ${evidenceReadinessScore(fund)}/100`,
+    `Mapped demo sources: ${mapped}/${EVIDENCE_SOURCES.length}`,
+    "",
+    "## Source Map",
+    ...EVIDENCE_SOURCES.map((source) => [
+      `- ${source.title}`,
+      `  Status: ${source.status}`,
+      `  Cadence: ${source.cadence}`,
+      `  Fields: ${source.fields.join(", ")}`,
+      `  Launch gate: ${source.launchGate}`
+    ].join("\n")),
+    "",
+    "## Guardrail",
+    "Research support only. Live launch must show source, date, extraction status, and citation path before claims are treated as current."
+  ].join("\n");
 }
 
 function renderWatchlistRoom() {
@@ -1067,6 +1546,152 @@ function runStp(event) {
     ["Months covered", `${months}`],
     ["Monthly transfer", formatMoney(transfer)]
   ], [moved, corpus]);
+}
+
+function stressScenarioConfig() {
+  const fund = selectedFund();
+  const corpus = clampNumber(Number(els.stressCorpus?.value || 0), 0, 100000000);
+  const monthlySip = clampNumber(Number(els.stressSip?.value || 0), 0, 10000000);
+  const recovery = clampNumber(Number(els.stressRecovery?.value || 0), 0, 30);
+  const shockValue = els.stressShock?.value || "fund";
+  const shock = shockValue === "fund" ? fund.maxDrawdown : clampNumber(Number(shockValue), 0, 80);
+  const behavior = els.stressBehavior?.value || "continue";
+  const behaviorLabels = {
+    continue: "Continue SIP",
+    pause: "Pause new SIP",
+    exit: "Exit after fall"
+  };
+
+  const drop = corpus * (shock / 100);
+  const afterFall = Math.max(0, corpus - drop);
+  const monthlyReturn = recovery / 100 / 12;
+  let value = afterFall;
+  let contributions = 0;
+
+  for (let month = 1; month <= 12; month += 1) {
+    if (behavior === "continue") {
+      value += monthlySip;
+      contributions += monthlySip;
+    }
+    if (behavior !== "exit") value *= (1 + monthlyReturn);
+  }
+
+  let recoveryMonths = null;
+  if (afterFall > 0 && corpus > afterFall && (monthlyReturn > 0 || (behavior === "continue" && monthlySip > 0))) {
+    let simulated = afterFall;
+    for (let month = 1; month <= 240; month += 1) {
+      if (behavior === "continue") simulated += monthlySip;
+      if (behavior !== "exit") simulated *= (1 + monthlyReturn);
+      if (simulated >= corpus) {
+        recoveryMonths = month;
+        break;
+      }
+    }
+  } else if (corpus <= afterFall) {
+    recoveryMonths = 0;
+  }
+
+  return {
+    fund,
+    corpus,
+    monthlySip,
+    recovery,
+    shock,
+    shockLabel: shockValue === "fund" ? "Selected fund demo drawdown" : `${shock}% manual shock`,
+    behavior,
+    behaviorLabel: behaviorLabels[behavior] || "Continue SIP",
+    drop,
+    afterFall,
+    projectedValue: value,
+    contributions,
+    recoveryMonths
+  };
+}
+
+function stressBehaviorNote(config) {
+  if (config.behavior === "continue") {
+    return "Continuing SIPs can support discipline, but only if emergency money, horizon, and risk comfort are already clear.";
+  }
+  if (config.behavior === "pause") {
+    return "Pausing new SIPs may feel safer, but it can delay recovery. Write the pause rule before stress arrives.";
+  }
+  return "Exiting after a fall can lock in the drawdown in this simulator. Treat this as a behavior warning, not advice.";
+}
+
+function renderStressLab(event) {
+  if (event) event.preventDefault();
+  if (!els.stressOutput) return;
+  const config = stressScenarioConfig();
+  const painLabel = config.drop > config.monthlySip * 12
+    ? "High rupee pain"
+    : "Manageable on paper";
+  const recoveryCopy = config.recoveryMonths === null
+    ? "Not recoverable under this behavior and recovery assumption."
+    : config.recoveryMonths === 0
+      ? "No recovery gap in this scenario."
+      : `${config.recoveryMonths} month${config.recoveryMonths === 1 ? "" : "s"} to regain the starting corpus in this simulator.`;
+  const oneYearGap = config.projectedValue - config.corpus;
+
+  els.stressOutput.innerHTML = `
+    <div class="stress-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(config.shockLabel)}</span>
+        <strong>${escapeHtml(config.fund.name)} stress test</strong>
+        <p>What would a ${config.shock.toFixed(0)}% fall feel like on ${escapeHtml(formatMoney(config.corpus))}?</p>
+      </div>
+      <div class="stress-drop">
+        <b>${config.shock.toFixed(0)}%</b>
+        <span>shock</span>
+      </div>
+    </div>
+    <div class="stress-metric-grid">
+      <div><span>Before fall</span><strong>${escapeHtml(formatMoney(config.corpus))}</strong></div>
+      <div><span>Rupee drawdown</span><strong>${escapeHtml(formatMoney(config.drop))}</strong></div>
+      <div><span>After fall</span><strong>${escapeHtml(formatMoney(config.afterFall))}</strong></div>
+      <div><span>12M projected</span><strong>${escapeHtml(formatMoney(config.projectedValue))}</strong></div>
+    </div>
+    <div class="stress-grid-two">
+      <div class="detail-panel">
+        <h3>Behavior posture</h3>
+        <p><strong>${escapeHtml(config.behaviorLabel)}:</strong> ${escapeHtml(stressBehaviorNote(config))}</p>
+        <p>Recovery assumption: ${config.recovery.toFixed(1)}% annual. New SIP added in first year: ${escapeHtml(formatMoney(config.contributions))}.</p>
+      </div>
+      <div class="detail-panel">
+        <h3>Research checkpoint</h3>
+        <ul class="stress-list">
+          <li>${escapeHtml(painLabel)}: drawdown equals ${escapeHtml(formatMoney(config.drop))}.</li>
+          <li>${escapeHtml(recoveryCopy)}</li>
+          <li>One-year simulator gap versus starting corpus: ${escapeHtml(formatMoney(oneYearGap))}.</li>
+          <li>Use this before increasing SIP, adding a high-risk fund, or writing a Decision Pack.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="journey-disclaimer">Stress test is a research scenario only. It is not a prediction, recommendation, or return guarantee.</p>
+  `;
+}
+
+function makeStressNote() {
+  const config = stressScenarioConfig();
+  const recoveryCopy = config.recoveryMonths === null
+    ? "Not recoverable under selected assumptions"
+    : `${config.recoveryMonths} months`;
+  return [
+    "# NiveshNadi Risk Stress Lab",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${config.fund.name}`,
+    `Scenario: ${config.shockLabel}`,
+    `Starting corpus: ${formatMoney(config.corpus)}`,
+    `Shock: ${config.shock.toFixed(0)}%`,
+    `Rupee drawdown: ${formatMoney(config.drop)}`,
+    `After fall: ${formatMoney(config.afterFall)}`,
+    `Behavior: ${config.behaviorLabel}`,
+    `Monthly SIP during stress: ${formatMoney(config.monthlySip)}`,
+    `Recovery assumption: ${config.recovery.toFixed(1)}% annual`,
+    `12M projected value: ${formatMoney(config.projectedValue)}`,
+    `Recovery marker: ${recoveryCopy}`,
+    "",
+    "Research scenario only. This is not a prediction, recommendation, or return guarantee."
+  ].join("\n");
 }
 
 function renderCalculatorOutput(title, rows, bars) {
@@ -1672,7 +2297,14 @@ function bindEvents() {
   });
   els.sipForm.addEventListener("submit", runSip);
   els.stpForm.addEventListener("submit", runStp);
+  els.stressForm?.addEventListener("submit", renderStressLab);
+  [els.stressCorpus, els.stressSip, els.stressShock, els.stressBehavior, els.stressRecovery].forEach((input) => {
+    input?.addEventListener("change", () => renderStressLab());
+  });
+  els.copyStress?.addEventListener("click", () => copyText(makeStressNote()));
   els.runXray.addEventListener("click", analyzePortfolio);
+  els.copyCompare?.addEventListener("click", () => copyText(makeCompareNote()));
+  els.copyEvidence?.addEventListener("click", () => copyText(makeEvidenceLog()));
   els.alertForm?.addEventListener("submit", handleAlertForm);
   els.alertTrigger?.addEventListener("change", () => {
     const type = ALERT_TYPES[els.alertTrigger.value] || ALERT_TYPES.review;
@@ -1710,6 +2342,10 @@ function bindEvents() {
     state.selectedId = button.dataset.selectFund;
     renderFundGrid();
     renderFundDetail();
+    renderCompareMatrix();
+    renderStressLab();
+    renderEvidenceLedger();
+    renderDecisionPack();
     scrollToElement(document.querySelector(".detail-band"));
   });
 
@@ -1742,6 +2378,9 @@ function bindEvents() {
     renderFundGrid();
     renderPortfolioChoices();
     renderFundDetail();
+    renderCompareMatrix();
+    analyzePortfolio();
+    renderDecisionPack();
   });
 
   bindFloatingSearch();
@@ -1841,6 +2480,14 @@ function cacheElements() {
     sipYears: qs("#sipYears"),
     sipReturn: qs("#sipReturn"),
     sipStepUp: qs("#sipStepUp"),
+    stressForm: qs("#stressForm"),
+    stressCorpus: qs("#stressCorpus"),
+    stressSip: qs("#stressSip"),
+    stressShock: qs("#stressShock"),
+    stressBehavior: qs("#stressBehavior"),
+    stressRecovery: qs("#stressRecovery"),
+    stressOutput: qs("#stressOutput"),
+    copyStress: qs("#copyStress"),
     goalFitForm: qs("#goalFitForm"),
     goalType: qs("#goalType"),
     goalYears: qs("#goalYears"),
@@ -1861,9 +2508,16 @@ function cacheElements() {
     stpReturn: qs("#stpReturn"),
     calculatorOutput: qs("#calculatorOutput"),
     portfolioChoices: qs("#portfolioChoices"),
+    compareSummary: qs("#compareSummary"),
+    compareMatrix: qs("#compareMatrix"),
+    copyCompare: qs("#copyCompare"),
     fundCount: qs("#fundCount"),
     runXray: qs("#runXray"),
     xrayOutput: qs("#xrayOutput"),
+    evidenceSummary: qs("#evidenceSummary"),
+    evidenceFundSummary: qs("#evidenceFundSummary"),
+    evidenceOutput: qs("#evidenceOutput"),
+    copyEvidence: qs("#copyEvidence"),
     watchSummary: qs("#watchSummary"),
     alertForm: qs("#alertForm"),
     watchFundSelect: qs("#watchFundSelect"),
@@ -1906,6 +2560,7 @@ function init() {
   renderAll();
   renderGoalFitCompass();
   renderFirstSipCoach();
+  renderStressLab();
   renderDecisionPack();
   renderJournal();
   analyzePortfolio();

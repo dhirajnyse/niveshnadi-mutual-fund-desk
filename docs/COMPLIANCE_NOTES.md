@@ -7,14 +7,18 @@ NiveshNadi Phase 1 must remain a self-research facility.
 - Educational fund category explanations.
 - Objective fund comparison.
 - SIP, STP, SWP, and goal calculators.
+- Risk stress tests that show hypothetical drawdown impact, recovery assumptions, and behavior prompts.
 - Portfolio overlap and concentration analysis.
 - User-written decision journal.
 - General research prompts and risk explanations.
 - Category-level goal mapping that avoids naming a personalized best fund.
 - Guided investor routes that connect research tools while staying category-led.
+- Side-by-side fund comparisons that describe role, cost, risk, evidence readiness, and research questions.
 - Retail subscription pricing for research workflow features such as saved history, exports, watchlists, and alerts.
 - Watchlist triggers that prompt review without saying buy, sell, switch, or hold.
 - Decision packs that summarize user-selected evidence, stated intent, risks, watchlist triggers, and next review discipline.
+- Portfolio X-Ray summaries that describe category concentration, role clarity, duplication risk, and research warnings without prescribing transactions.
+- Evidence source maps that show which research signals are demo, mapped, planned, or live-cited.
 
 ## Avoid until reviewed
 
@@ -23,8 +27,12 @@ NiveshNadi Phase 1 must remain a self-research facility.
 - Claims of suitability for a named investor.
 - "Best fund for you" language inside the Goal Fit Compass.
 - "You should buy this fund" language inside First SIP Coach.
+- Compare Matrix language that crowns one fund as the personalized right choice.
+- Stress Lab language that predicts a future fall, recovery, or investor action.
 - Alert language that implies a trigger is a personalized transaction recommendation.
 - Decision pack language that says a transaction should be made for a specific investor.
+- Portfolio intelligence language that says an investor should buy, sell, switch, hold, redeem, or allocate a specific percentage.
+- Live-data claims without source date, citation path, and freshness status.
 - Return guarantees or phrases that imply assured outcomes.
 - Execution of mutual fund transactions.
 - Distributor client management without ARN/EUIN/PAN compliance design.
@@ -32,7 +40,7 @@ NiveshNadi Phase 1 must remain a self-research facility.
 
 ## Product language
 
-Use: research, route, watchlist, review trigger, decision support, decision memo, education, evidence, portfolio x-ray.
+Use: research, route, shortlist, compare note, stress scenario, behavior prompt, watchlist, review trigger, decision support, decision memo, education, evidence, portfolio x-ray, role map, duplication risk, source date, citation status.
 
 Avoid: advisory, recommendation, guaranteed, best fund for you, assured return.
 

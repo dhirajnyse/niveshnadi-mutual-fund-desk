@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v7.2 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v12 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 ## What is included
 
@@ -10,17 +10,21 @@ This Phase 1 v7.2 prototype is a compact static web app with no build step. Open
 - Self-research command desk with search, category, risk, and sorting controls.
 - Demo mutual fund screener across equity, debt, hybrid, passive, and life-cycle categories.
 - Fund DNA view with role, style, benchmark, holdings, sector map, and decision prompts.
+- Fund Compare Matrix for side-by-side shortlist review across role, cost, risk, score, evidence readiness, and decision questions.
 - Goal Fit Compass that maps goal type, horizon, risk comfort, and SIP capacity to category-level research paths.
 - First SIP Coach that turns a starting point into a guided route across Goal Fit, SIP lab, X-Ray, and Journal.
 - SIP calculator with annual step-up support.
 - STP calculator for staged transfers from a source corpus.
-- Portfolio X-Ray for category concentration, blended expense, and shared holdings.
+- Risk Stress Lab that converts drawdowns into rupee-impact and behavior scenarios.
+- Portfolio Intelligence X-Ray for category concentration, blended expense, role clarity, duplication score, shared holdings, and research warnings.
+- Evidence Ledger that maps selected fund signals to AMFI, AMC factsheet, SID, KIM, portfolio disclosure, benchmark, riskometer, and TER source readiness.
 - Watchlist and Alerts Room for saved funds, review dates, expense triggers, drawdown triggers, score floors, and style checks.
 - Nadi Decision Pack that converts selected fund research into an explainable pre-investment memo.
 - Decision journal saved in browser local storage.
 - Pricing and monetization preview with Free, Nadi Plus, Founder Circle, and Phase 2 Distributor Desk plans.
 - Phase 2 distributor roadmap for ARN/EUIN/PAN-based client management.
-- Compact v7.2 product layout with denser first screen, signal bars, mobile checks, floating fund search, back-to-top control, tuned sticky-header anchor landing, goal-fit research mapping, First SIP Coach, Watchlist and Alerts Room, Nadi Decision Pack, and a trust-first retail membership model.
+- Security foundation with `SECURITY.md`, threat model, data classification, release checklist, and automated security audit.
+- Compact v12 product layout with denser first screen, signal bars, mobile checks, floating fund search, back-to-top control, tuned sticky-header anchor landing, Fund Compare Matrix, goal-fit research mapping, First SIP Coach, Risk Stress Lab, Portfolio Intelligence X-Ray, Evidence Ledger, Watchlist and Alerts Room, Nadi Decision Pack, and a trust-first retail membership model.
 
 ## Important compliance posture
 
@@ -39,6 +43,17 @@ Phase 1 should stay retail-friendly. The working model is:
 
 Paid features should monetize convenience, history, alerts, decision packs, exports, and workflow depth. They should not create hidden distribution bias or personalized advice.
 
+## Security posture
+
+Phase 1 is a static research prototype with demo data only. It does not collect PAN, ARN, EUIN, account credentials, payment details, CAS files, or distributor client records. Security guardrails are documented in:
+
+- `SECURITY.md`
+- `docs/SECURITY_MODEL.md`
+- `docs/DATA_CLASSIFICATION.md`
+- `docs/SECURITY_RELEASE_CHECKLIST.md`
+
+Before adding login, live APIs, payments, PAN, ARN/EUIN, portfolio import, or distributor client management, update the security model and data classification first.
+
 ## Local use
 
 Open:
@@ -51,6 +66,13 @@ Optional static validation:
 
 ```powershell
 node scripts/static-check.mjs
+node scripts/security-audit.mjs
+```
+
+Or run both checks through npm:
+
+```powershell
+npm run check
 ```
 
 ## GitHub repository handoff
@@ -85,9 +107,14 @@ git push -u origin main
 2. Add ELSS, arbitrage, overnight, gilt, low-duration, and sector/thematic categories.
 3. Add real fund detail pages with citation-backed evidence.
 4. Add portfolio import from manual CAS-style entries.
-5. Add live evidence citations inside the First SIP Coach, Watchlist alert room, and Nadi Decision Pack.
-6. Add PDF/share exports for decision packs with plain compliance disclaimers.
-7. Add investor education journeys for STP from cash, ELSS review, debt fund risk, and SIP review discipline.
-8. Add account sync for watchlists, alerts, decision packs, and journals after authentication is designed.
-9. Add payment, account, and entitlement logic after deciding GST, refund, and launch-offer policy.
-10. Add distributor Phase 2 workspace only after compliance review.
+5. Add compare-set templates for first SIP, tax saving, debt parking, and retirement research.
+6. Add stress templates for equity drawdown, debt credit event, SIP pause, and STP timing research.
+7. Replace demo Evidence Ledger statuses with source-date-backed live citations.
+8. Add live evidence citations inside the First SIP Coach, Watchlist alert room, and Nadi Decision Pack.
+9. Add PDF/share exports for decision packs, stress notes, and compare notes with plain compliance disclaimers.
+10. Add investor education journeys for STP from cash, ELSS review, debt fund risk, and SIP review discipline.
+11. Add live factsheet-backed Portfolio Intelligence with citation dates and holding-level source records.
+12. Add account sync for watchlists, alerts, stress notes, decision packs, compare notes, and journals after authentication is designed.
+13. Add payment, account, and entitlement logic after deciding GST, refund, and launch-offer policy.
+14. Add CI security gates for static checks, security audit, secret scanning, and dependency audit.
+15. Add distributor Phase 2 workspace only after compliance and security review.

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="NiveshNadi favicon">
+  <defs>
+    <linearGradient id="g" x1="8" x2="56" y1="8" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f7c6b"/>
+      <stop offset=".52" stop-color="#1f4e79"/>
+      <stop offset="1" stop-color="#d8973c"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#f7fbff"/>
+  <path d="M16 49V15h8l17 21V15h7v34h-8L23 28v21z" fill="url(#g)"/>
+  <path d="M15 48c11-9 23-10 35-1" fill="none" stroke="#0f7c6b" stroke-width="4" stroke-linecap="round"/>
+</svg>

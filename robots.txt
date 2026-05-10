@@ -1,2 +1,691 @@
-User-agent: *
-Allow: /
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'"
+    >
+    <title>NiveshNadi Mutual Fund Desk</title>
+    <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="stylesheet" href="styles.css?v=20260510-16">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to workspace</a>
+    <header class="app-header">
+      <div class="brand-lockup">
+        <img class="brand-logo" src="assets/niveshnadi-logo.svg" alt="NiveshNadi">
+        <div>
+          <p class="eyebrow">India mutual fund desk</p>
+          <h1>Know the fund before you fund it.</h1>
+        </div>
+      </div>
+      <nav class="top-nav" aria-label="Workspace">
+        <a href="#screener">Screener</a>
+        <a href="#compare">Compare</a>
+        <a href="#goal-fit">Goal Fit</a>
+        <a href="#journey">Coach</a>
+        <a href="#calculator">SIP/STP</a>
+        <a href="#risk-lab">Stress</a>
+        <a href="#portfolio">X-Ray</a>
+        <a href="#evidence">Evidence</a>
+        <a href="#watchlist">Watchlist</a>
+        <a href="#decision-pack">Pack</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#journal">Journal</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="workspace-band command-band" aria-labelledby="workspace-title">
+        <div class="workspace-grid">
+          <div class="command-panel">
+            <div class="command-copy">
+              <p class="release-pill">Phase 1 v12</p>
+              <h2 id="workspace-title">Mutual fund research cockpit</h2>
+              <p>
+                Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
+              </p>
+              <div class="control-grid" aria-label="Research filters">
+                <label>
+                  Search
+                  <input id="searchInput" type="search" placeholder="Search fund, category, risk, tag">
+                </label>
+                <label>
+                  Category
+                  <select id="categoryFilter">
+                    <option value="all">All categories</option>
+                  </select>
+                </label>
+                <label>
+                  Risk
+                  <select id="riskFilter">
+                    <option value="all">All risk bands</option>
+                    <option value="Low">Low</option>
+                    <option value="Moderate">Moderate</option>
+                    <option value="High">High</option>
+                    <option value="Very High">Very High</option>
+                  </select>
+                </label>
+                <label>
+                  Sort
+                  <select id="sortSelect">
+                    <option value="score">Nadi score</option>
+                    <option value="expense">Lowest expense</option>
+                    <option value="consistency">Consistency</option>
+                    <option value="drawdown">Drawdown control</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="desk-stats" aria-label="Desk status">
+              <div><span>Universe</span><strong>11 demo funds</strong></div>
+              <div><span>Mode</span><strong>Research only</strong></div>
+              <div><span>Next</span><strong>Live data</strong></div>
+            </div>
+          </div>
+
+          <aside class="market-snapshot" aria-label="Market context">
+            <div>
+              <span class="metric-label">India MF AUM</span>
+              <strong>Rs. 73.73 lakh cr</strong>
+              <span>FY26 close, AMFI referenced</span>
+            </div>
+            <div>
+              <span class="metric-label">March SIP flow</span>
+              <strong>Rs. 32,087 cr</strong>
+              <span>Record monthly contribution</span>
+            </div>
+            <div>
+              <span class="metric-label">Compliance posture</span>
+              <strong>Research only</strong>
+              <span>No personalized advice or return guarantee</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="screener" class="workspace-band" aria-labelledby="screener-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Fund universe</p>
+            <h2 id="screener-title">Research screener</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Screener actions">
+            <span id="fundCount" class="status-chip">11 funds</span>
+            <button class="icon-button" id="resetFilters" type="button" aria-label="Reset filters">
+              <span aria-hidden="true">R</span>
+            </button>
+            <button class="text-button" id="copyBrief" type="button">Copy research brief</button>
+          </div>
+        </div>
+        <div id="fundGrid" class="fund-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="workspace-band detail-band" aria-labelledby="detail-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Selected fund</p>
+            <h2 id="detail-title">Fund DNA</h2>
+          </div>
+          <span id="selectedStatus" class="status-chip">No fund selected</span>
+        </div>
+        <div id="fundDetail" class="fund-detail empty-state">
+          Select a fund from the screener to inspect its role, risk evidence, holdings overlap, and decision prompts.
+        </div>
+      </section>
+
+      <section id="compare" class="workspace-band compare-band" aria-labelledby="compare-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Fund shortlist</p>
+            <h2 id="compare-title">Fund Compare Matrix</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Compare actions">
+            <span id="compareSummary" class="status-chip">2 selected</span>
+            <button class="text-button" id="copyCompare" type="button">Copy compare note</button>
+          </div>
+        </div>
+        <div id="compareMatrix" class="compare-output" aria-live="polite">
+          Select two or more funds from the screener to compare role, cost, risk, evidence readiness, and decision questions.
+        </div>
+      </section>
+
+      <section id="goal-fit" class="workspace-band goal-fit-band" aria-labelledby="goal-fit-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Investor compass</p>
+            <h2 id="goal-fit-title">Goal Fit Compass</h2>
+          </div>
+          <span class="status-chip">Category research only</span>
+        </div>
+        <div class="goal-fit-grid">
+          <form id="goalFitForm" class="tool-panel goal-fit-form">
+            <h3>Build a research map</h3>
+            <label>
+              Goal type
+              <select id="goalType">
+                <option value="wealth">Long-term wealth</option>
+                <option value="retirement">Retirement corpus</option>
+                <option value="education">Child education</option>
+                <option value="tax">Tax-saving research</option>
+                <option value="emergency">Emergency / cash parking</option>
+                <option value="income">Income stability</option>
+              </select>
+            </label>
+            <label>
+              Time horizon
+              <input id="goalYears" type="number" min="1" max="40" step="1" value="7">
+            </label>
+            <label>
+              Risk comfort
+              <select id="goalRisk">
+                <option value="balanced">Balanced</option>
+                <option value="conservative">Conservative</option>
+                <option value="aggressive">Aggressive</option>
+              </select>
+            </label>
+            <label>
+              Monthly SIP capacity
+              <input id="goalSip" type="number" min="500" step="500" value="15000">
+            </label>
+            <button class="primary-button" type="submit">Map categories</button>
+          </form>
+          <div id="goalFitOutput" class="goal-fit-output" aria-live="polite">
+            Select a goal profile to see which mutual fund categories deserve research first, what to avoid, and which demo funds to inspect.
+          </div>
+        </div>
+      </section>
+
+      <section id="journey" class="workspace-band journey-band" aria-labelledby="journey-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Investor journey</p>
+            <h2 id="journey-title">First SIP Coach</h2>
+          </div>
+          <span class="status-chip">Guided research route</span>
+        </div>
+        <div class="journey-grid">
+          <form id="journeyForm" class="tool-panel journey-form">
+            <h3>Build a route</h3>
+            <label>
+              Starting point
+              <select id="journeyIntent">
+                <option value="first-sip">First SIP</option>
+                <option value="review-sip">Review existing SIP</option>
+                <option value="tax-saving">Tax-saving SIP</option>
+                <option value="cash-stp">Move cash through STP</option>
+                <option value="child-goal">Child education goal</option>
+                <option value="retirement">Retirement route</option>
+              </select>
+            </label>
+            <label>
+              Years available
+              <input id="journeyYears" type="number" min="1" max="40" step="1" value="7">
+            </label>
+            <label>
+              Risk comfort
+              <select id="journeyRisk">
+                <option value="balanced">Balanced</option>
+                <option value="cautious">Cautious</option>
+                <option value="growth">Growth</option>
+              </select>
+            </label>
+            <label>
+              Monthly SIP budget
+              <input id="journeySip" type="number" min="500" step="500" value="10000">
+            </label>
+            <label>
+              Research depth
+              <select id="journeyDepth">
+                <option value="simple">Simple shortlist</option>
+                <option value="deep">Deeper comparison</option>
+                <option value="family">Family portfolio view</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build route</button>
+          </form>
+          <div id="journeyOutput" class="journey-output" aria-live="polite">
+            Choose a starting point and NiveshNadi will turn the research tools into one step-by-step route.
+          </div>
+        </div>
+      </section>
+
+      <section id="calculator" class="workspace-band tool-band" aria-labelledby="calculator-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Goal math</p>
+            <h2 id="calculator-title">SIP and STP lab</h2>
+          </div>
+        </div>
+        <div class="tool-grid">
+          <form id="sipForm" class="tool-panel">
+            <h3>SIP scenario</h3>
+            <label>
+              Monthly SIP
+              <input id="sipAmount" type="number" min="500" step="500" value="15000">
+            </label>
+            <label>
+              Years
+              <input id="sipYears" type="number" min="1" max="40" step="1" value="12">
+            </label>
+            <label>
+              Expected annual return
+              <input id="sipReturn" type="number" min="1" max="20" step="0.5" value="11">
+            </label>
+            <label>
+              Annual step-up
+              <input id="sipStepUp" type="number" min="0" max="30" step="1" value="8">
+            </label>
+            <button class="primary-button" type="submit">Run SIP</button>
+          </form>
+
+          <form id="stpForm" class="tool-panel">
+            <h3>STP scenario</h3>
+            <label>
+              Source corpus
+              <input id="stpCorpus" type="number" min="10000" step="10000" value="600000">
+            </label>
+            <label>
+              Monthly transfer
+              <input id="stpTransfer" type="number" min="1000" step="1000" value="50000">
+            </label>
+            <label>
+              Months
+              <input id="stpMonths" type="number" min="1" max="60" step="1" value="12">
+            </label>
+            <label>
+              Source annual return
+              <input id="stpReturn" type="number" min="0" max="12" step="0.25" value="5.5">
+            </label>
+            <button class="primary-button" type="submit">Run STP</button>
+          </form>
+
+          <div id="calculatorOutput" class="tool-output" aria-live="polite">
+            Run a scenario to see estimated future value, invested amount, and cash-flow discipline.
+          </div>
+        </div>
+      </section>
+
+      <section id="risk-lab" class="workspace-band stress-band" aria-labelledby="stress-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Behavior test</p>
+            <h2 id="stress-title">Risk Stress Lab</h2>
+          </div>
+          <button class="text-button" id="copyStress" type="button">Copy stress note</button>
+        </div>
+        <div class="stress-grid">
+          <form id="stressForm" class="tool-panel stress-form">
+            <h3>Drawdown scenario</h3>
+            <label>
+              Current corpus
+              <input id="stressCorpus" type="number" min="0" step="10000" value="500000">
+            </label>
+            <label>
+              Monthly SIP during stress
+              <input id="stressSip" type="number" min="0" step="500" value="10000">
+            </label>
+            <label>
+              Shock scenario
+              <select id="stressShock">
+                <option value="fund">Selected fund demo drawdown</option>
+                <option value="10">Mild correction - 10%</option>
+                <option value="20">Sharp correction - 20%</option>
+                <option value="30">Severe correction - 30%</option>
+              </select>
+            </label>
+            <label>
+              Behavior during stress
+              <select id="stressBehavior">
+                <option value="continue">Continue SIP</option>
+                <option value="pause">Pause new SIP</option>
+                <option value="exit">Exit after fall</option>
+              </select>
+            </label>
+            <label>
+              Recovery assumption
+              <input id="stressRecovery" type="number" min="0" max="20" step="0.5" value="10">
+            </label>
+            <button class="primary-button" type="submit">Run stress test</button>
+          </form>
+          <div id="stressOutput" class="stress-output" aria-live="polite">
+            Run a drawdown scenario to see the rupee impact before making a SIP or portfolio decision.
+          </div>
+        </div>
+      </section>
+
+      <section id="portfolio" class="workspace-band" aria-labelledby="portfolio-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Portfolio discipline</p>
+            <h2 id="portfolio-title">Portfolio X-Ray</h2>
+          </div>
+          <button class="text-button" id="runXray" type="button">Analyze selected funds</button>
+        </div>
+        <div class="portfolio-grid">
+          <div class="portfolio-picker">
+            <p>Select sample holdings to test overlap, category concentration, and blended cost.</p>
+            <div id="portfolioChoices" class="choice-list"></div>
+          </div>
+          <div id="xrayOutput" class="xray-output" aria-live="polite">
+            Choose two or more funds to inspect overlap and duplication risk.
+          </div>
+        </div>
+      </section>
+
+      <section id="evidence" class="workspace-band evidence-band" aria-labelledby="evidence-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Trust layer</p>
+            <h2 id="evidence-title">Evidence Ledger</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Evidence actions">
+            <span id="evidenceSummary" class="status-chip">Demo mapped</span>
+            <button class="text-button" id="copyEvidence" type="button">Copy evidence log</button>
+          </div>
+        </div>
+        <div class="evidence-grid">
+          <div class="tool-panel evidence-panel">
+            <h3>Selected fund evidence</h3>
+            <div id="evidenceFundSummary" class="evidence-fund-summary">
+              Select a fund to inspect source readiness, citation gaps, and launch gates.
+            </div>
+          </div>
+          <div id="evidenceOutput" class="evidence-output" aria-live="polite">
+            Evidence source map will appear here.
+          </div>
+        </div>
+      </section>
+
+      <section id="watchlist" class="workspace-band watch-band" aria-labelledby="watch-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Nadi Plus habit layer</p>
+            <h2 id="watch-title">Watchlist and Alerts Room</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Watchlist actions">
+            <span id="watchSummary" class="status-chip">0 watched</span>
+            <button class="text-button" id="clearAlerts" type="button">Clear alerts</button>
+          </div>
+        </div>
+        <div class="watch-grid">
+          <form id="alertForm" class="tool-panel watch-form">
+            <h3>Track a research trigger</h3>
+            <label>
+              Fund
+              <select id="watchFundSelect"></select>
+            </label>
+            <label>
+              Trigger
+              <select id="alertTrigger">
+                <option value="review">Review date</option>
+                <option value="expense">Expense ratio above</option>
+                <option value="drawdown">Drawdown above</option>
+                <option value="score">Nadi score below</option>
+                <option value="style">Style or manager check</option>
+              </select>
+            </label>
+            <label>
+              Limit or review date
+              <input id="alertLimit" type="text" value="2026-06-30" placeholder="Example: 0.60, 25, 70, 2026-06-30">
+            </label>
+            <label>
+              Research note
+              <textarea id="alertNote" rows="4" placeholder="What should trigger a fresh review?"></textarea>
+            </label>
+            <div class="watch-form-actions">
+              <button class="primary-button" type="submit">Save trigger</button>
+              <button class="text-button" id="watchSelectedFund" type="button">Watch selected</button>
+              <button class="text-button" id="watchCompareSet" type="button">Watch X-Ray set</button>
+            </div>
+          </form>
+          <div class="watch-output">
+            <div id="watchStats" class="watch-stats" aria-label="Watchlist stats"></div>
+            <div id="watchList" class="watch-list" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="decision-pack" class="workspace-band pack-band" aria-labelledby="pack-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Pre-investment memo</p>
+            <h2 id="pack-title">Nadi Decision Pack</h2>
+          </div>
+          <span class="status-chip">Explain before action</span>
+        </div>
+        <div class="pack-grid">
+          <form id="packForm" class="tool-panel pack-form">
+            <h3>Compose decision pack</h3>
+            <label>
+              Decision type
+              <select id="packDecision">
+                <option>Watch</option>
+                <option>Start SIP</option>
+                <option>Increase SIP</option>
+                <option>Pause</option>
+                <option>Review with advisor</option>
+              </select>
+            </label>
+            <label>
+              Monthly amount
+              <input id="packAmount" type="number" min="0" step="500" value="10000">
+            </label>
+            <label>
+              Review date
+              <input id="packReviewDate" type="date" value="2026-06-30">
+            </label>
+            <label>
+              Conviction
+              <select id="packConviction">
+                <option value="low">Low - more evidence needed</option>
+                <option value="medium" selected>Medium - ready to watch or pilot</option>
+                <option value="high">High - still check risk first</option>
+              </select>
+            </label>
+            <label>
+              Decision reason
+              <textarea id="packReason" rows="4" placeholder="Write the reason in your own words before investing."></textarea>
+            </label>
+            <div class="pack-actions">
+              <button class="primary-button" type="submit">Build pack</button>
+              <button class="text-button" id="copyPack" type="button">Copy pack</button>
+              <button class="text-button" id="savePackJournal" type="button">Save to journal</button>
+            </div>
+          </form>
+          <div id="packOutput" class="pack-output" aria-live="polite">
+            Build a decision pack to capture selected fund evidence, X-Ray context, Watchlist triggers, SIP amount, and risk guardrails in one memo.
+          </div>
+        </div>
+      </section>
+
+      <section id="journal" class="workspace-band tool-band" aria-labelledby="journal-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Behavior guardrail</p>
+            <h2 id="journal-title">Decision journal</h2>
+          </div>
+          <button class="icon-button" id="clearJournal" type="button" aria-label="Clear journal">
+            <span aria-hidden="true">C</span>
+          </button>
+        </div>
+        <div class="tool-grid">
+          <form id="journalForm" class="tool-panel">
+            <h3>Record a decision</h3>
+            <label>
+              Fund or portfolio
+              <input id="journalFund" type="text" placeholder="Selected fund or portfolio name" required>
+            </label>
+            <label>
+              Decision
+              <select id="journalDecision">
+                <option>Watch</option>
+                <option>Start SIP</option>
+                <option>Increase SIP</option>
+                <option>Pause</option>
+                <option>Review with advisor</option>
+              </select>
+            </label>
+            <label>
+              Reason
+              <textarea id="journalReason" rows="4" placeholder="Write the evidence and risk trigger." required></textarea>
+            </label>
+            <button class="primary-button" type="submit">Save note</button>
+          </form>
+          <div id="journalList" class="journal-list" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="pricing" class="workspace-band pricing-band" aria-labelledby="pricing-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Membership model</p>
+            <h2 id="pricing-title">Light fee, serious research discipline</h2>
+          </div>
+          <span class="status-chip">B2C first, B2B later</span>
+        </div>
+        <div class="pricing-grid" aria-label="NiveshNadi pricing plan preview">
+          <article class="pricing-card">
+            <span class="plan-kicker">Free</span>
+            <h3>Research Starter</h3>
+            <p class="plan-price"><strong>Rs. 0</strong><span>forever</span></p>
+            <p class="price-note">For new investors who need confidence before starting their first SIP.</p>
+            <ul class="pricing-feature-list">
+              <li>Fund screener and demo Fund DNA</li>
+              <li>Basic SIP/STP lab</li>
+              <li>Goal Fit category map</li>
+              <li>Limited decision journal</li>
+            </ul>
+          </article>
+          <article class="pricing-card is-featured">
+            <span class="plan-kicker">Recommended</span>
+            <h3>Nadi Plus</h3>
+            <p class="plan-price"><strong>Rs. 99</strong><span>per month</span></p>
+            <p class="annual-price">or Rs. 999 per year</p>
+            <p class="price-note">The main retail plan: low enough for trust, useful enough for daily research.</p>
+            <ul class="pricing-feature-list">
+              <li>Unlimited journal and watchlist</li>
+              <li>Full portfolio X-Ray history</li>
+              <li>Scenario exports and research briefs</li>
+              <li>Category alerts after live data launch</li>
+            </ul>
+          </article>
+          <article class="pricing-card founder-card">
+            <span class="plan-kicker">Launch offer</span>
+            <h3>Founder Circle</h3>
+            <p class="plan-price"><strong>Rs. 499</strong><span>first year</span></p>
+            <p class="price-note">For the first serious believers while the live-data engine is being connected.</p>
+            <ul class="pricing-feature-list">
+              <li>Founder pricing lock for year one</li>
+              <li>Early access to new research rooms</li>
+              <li>Priority feedback board</li>
+              <li>Recognition inside launch community</li>
+            </ul>
+          </article>
+          <article class="pricing-card phase-two-card">
+            <span class="plan-kicker">Phase 2 preview</span>
+            <h3>Distributor Desk</h3>
+            <p class="plan-price"><strong>Rs. 12k+</strong><span>per year</span></p>
+            <p class="price-note">ARN/EUIN/PAN client management after compliance, consent, and workflow review.</p>
+            <ul class="pricing-feature-list">
+              <li>Client book and household view</li>
+              <li>Review cadence and notes</li>
+              <li>Consent and audit trail</li>
+              <li>Team seats for larger MFDs</li>
+            </ul>
+          </article>
+        </div>
+        <div class="pricing-note-grid" aria-label="Monetization principles">
+          <article class="pricing-note">
+            <span class="metric-label">Phase 1 principle</span>
+            <strong>Earn trust before revenue</strong>
+            <p>Paid features should save time, preserve notes, and improve research discipline. They should not sell a fund.</p>
+          </article>
+          <article class="pricing-note">
+            <span class="metric-label">Retail ceiling</span>
+            <strong>Keep it near Rs. 1,000/year</strong>
+            <p>The price should feel smaller than one missed SIP mistake, while still validating product-market demand.</p>
+          </article>
+          <article class="pricing-note">
+            <span class="metric-label">Phase 2 engine</span>
+            <strong>Annual MFD software plans</strong>
+            <p>Distributor pricing can scale by client count, seats, audit tools, and service workflows once the platform is ready.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace-band roadmap-band" aria-labelledby="roadmap-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Phase 2</p>
+            <h2 id="roadmap-title">Distributor command layer</h2>
+          </div>
+        </div>
+        <div class="roadmap-grid">
+          <article>
+            <h3>ARN workspace</h3>
+            <p>Distributor onboarding with ARN, EUIN, PAN, branch, team, and client assignment controls.</p>
+          </article>
+          <article>
+            <h3>Client book</h3>
+            <p>Investor PAN-based household view, SIP dates, review cadence, suitability notes, and consent records.</p>
+          </article>
+          <article>
+            <h3>Compliance log</h3>
+            <p>Conversation history, risk profile acknowledgements, product rationale, and non-advice disclosures.</p>
+          </article>
+          <article>
+            <h3>MFU/MFCentral bridge</h3>
+            <p>Future integration plan for CAN, CAS, service requests, STP/SWP workflows, and portfolio imports.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace-band disclosure-band" aria-label="Important disclosure">
+        <strong>Important:</strong>
+        NiveshNadi is currently a self-research prototype. It does not provide personalized investment advice,
+        guaranteed returns, execution, or distributor services. Mutual fund investments are subject to market risks.
+      </section>
+    </main>
+
+    <div class="floating-search" id="floatingSearch" aria-label="Floating fund search">
+      <section class="floating-search-panel" id="floatingSearchPanel" aria-label="Quick fund search" hidden>
+        <div class="floating-panel-head">
+          <strong>Quick Search</strong>
+          <button class="floating-panel-close" id="floatingSearchClose" type="button" aria-label="Close quick search">Close</button>
+        </div>
+        <label>
+          <span>Search funds, category, risk, or tags</span>
+          <input id="floatingSearchInput" type="search" placeholder="Try: debt, hybrid, low, index" autocomplete="off">
+        </label>
+        <div class="floating-section-links" aria-label="Quick sections">
+          <a href="#screener">Screener</a>
+          <a href="#compare">Compare</a>
+          <a href="#goal-fit">Goal Fit</a>
+          <a href="#journey">Coach</a>
+          <a href="#calculator">SIP/STP</a>
+          <a href="#risk-lab">Stress</a>
+          <a href="#portfolio">X-Ray</a>
+          <a href="#evidence">Evidence</a>
+          <a href="#watchlist">Watchlist</a>
+          <a href="#decision-pack">Pack</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#journal">Journal</a>
+        </div>
+      </section>
+      <button class="floating-action-button" id="floatingSearchToggle" type="button" title="Search funds" aria-label="Search funds" aria-expanded="false" aria-controls="floatingSearchPanel">
+        <span class="search-glyph" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <button class="scroll-top-button" id="scrollTopButton" type="button" title="Back to top" aria-label="Back to top">
+      <span aria-hidden="true">&#8593;</span>
+    </button>
+
+    <script src="app.js?v=20260510-16"></script>
+  </body>
+</html>

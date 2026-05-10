@@ -1,51 +1,21 @@
-# Security Policy
+MIT License
 
-NiveshNadi treats security as a product requirement, not a release afterthought. The current Phase 1 prototype is a static self-research application with demo data only. It has no backend, no login, no payment flow, no API keys, no PAN storage, and no distributor client records.
+Copyright (c) 2026 NiveshNadi
 
-## Current Security Posture
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-- Static GitHub Pages compatible application.
-- No external JavaScript or CDN dependency.
-- Strict Content Security Policy in `index.html`.
-- No inline event handlers.
-- No `eval`, `new Function`, or dynamic script loading.
-- User-entered journal, watchlist, alert, and decision-pack text is escaped before rendering.
-- Browser storage is limited to namespaced local keys for non-regulated research notes.
-- Automated static and security checks live in `scripts/`.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-## Reporting Security Issues
-
-During early private development, report security issues directly to the repository owner. Do not open a public GitHub issue for vulnerabilities that expose user data, authentication weaknesses, secrets, or client records.
-
-When the product has real user accounts, add a dedicated security contact, response SLA, disclosure policy, and vulnerability intake process.
-
-## Launch Gates
-
-Before collecting email, phone, PAN, ARN, EUIN, CAS data, portfolio holdings, payment details, or distributor client data, the product must pass the launch gates in:
-
-- `docs/SECURITY_MODEL.md`
-- `docs/DATA_CLASSIFICATION.md`
-- `docs/SECURITY_RELEASE_CHECKLIST.md`
-
-## Required Checks
-
-Run before every release package:
-
-```powershell
-node scripts/static-check.mjs
-node scripts/security-audit.mjs
-```
-
-If `package.json` is available:
-
-```powershell
-npm run check
-```
-
-## Non-Negotiables
-
-- Do not commit secrets, API keys, private keys, tokens, or production credentials.
-- Do not store PAN, ARN, EUIN, client identifiers, CAS files, or payment data in browser local storage.
-- Do not add external scripts without a documented trust review and CSP update.
-- Do not launch distributor workflows without role-based access control, consent records, and audit logs.
-- Do not add personalized advice or execution workflows until regulatory and security boundaries are approved.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

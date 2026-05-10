@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v7 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v7.1 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 ## What is included
 
@@ -20,7 +20,7 @@ This Phase 1 v7 prototype is a compact static web app with no build step. Open `
 - Decision journal saved in browser local storage.
 - Pricing and monetization preview with Free, Nadi Plus, Founder Circle, and Phase 2 Distributor Desk plans.
 - Phase 2 distributor roadmap for ARN/EUIN/PAN-based client management.
-- Compact v7 product layout with denser first screen, signal bars, mobile checks, floating fund search, back-to-top control, goal-fit research mapping, First SIP Coach, Watchlist and Alerts Room, Nadi Decision Pack, and a trust-first retail membership model.
+- Compact v7.1 product layout with denser first screen, signal bars, mobile checks, floating fund search, back-to-top control, corrected sticky-header anchor landing, goal-fit research mapping, First SIP Coach, Watchlist and Alerts Room, Nadi Decision Pack, and a trust-first retail membership model.
 
 ## Important compliance posture
 

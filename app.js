@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260510-08";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v7 Decision Pack";
+const DATA_VERSION = "20260510-09";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v7.1 Anchor Polish";
 
 const FUNDS = [
   {

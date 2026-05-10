@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260510-09";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v7.1 Anchor Polish";
+const DATA_VERSION = "20260510-10";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v7.2 Anchor Polish";
 
 const FUNDS = [
   {
@@ -520,6 +520,49 @@ function renderAll() {
   renderWatchlistRoom();
   renderDecisionPack();
 }
+
+function targetFromHash(hash) {
+  if (!hash || hash === "#") return null;
+  try {
+    return document.getElementById(decodeURIComponent(hash.slice(1)));
+  } catch {
+    return null;
+  }
+}
+
+function stickyHeaderOffset() {
+  const header = document.querySelector(".app-header");
+  if (!header) return 14;
+  const headerStyle = window.getComputedStyle(header);
+  if (headerStyle.position !== "sticky" && headerStyle.position !== "fixed") return 14;
+  return Math.ceil(header.getBoundingClientRect().height) + 14;
+}
+
+function scrollToElement(element, behavior = "smooth") {
+  if (!element) return;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const top = Math.max(0, element.getBoundingClientRect().top + window.scrollY - stickyHeaderOffset());
+  window.scrollTo({ top, behavior: reduceMotion ? "auto" : behavior });
+}
+
+function scrollToHash(hash, behavior = "smooth", updateHash = false) {
+  const target = targetFromHash(hash);
+  if (!target) return;
+  scrollToElement(target, behavior);
+  if (updateHash && window.location.hash !== hash) {
+    window.history.pushState(null, "", hash);
+  }
+}
+
+function settleHashNavigation() {
+  const hash = window.location.hash;
+  if (!targetFromHash(hash)) return;
+  requestAnimationFrame(() => scrollToHash(hash, "auto"));
+  window.setTimeout(() => scrollToHash(hash, "auto"), 120);
+  window.setTimeout(() => scrollToHash(hash, "auto"), 360);
+}
+
+window.addEventListener("load", settleHashNavigation);
 
 function syncSearchInputs(value) {
   state.filters.search = value;
@@ -1434,7 +1477,7 @@ function handleJourneyAction(action) {
     els.goalRisk.value = route.goalRisk;
     els.goalSip.value = route.config.sip;
     renderGoalFitCompass();
-    document.querySelector("#goal-fit")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToHash("#goal-fit");
     return;
   }
 
@@ -1444,7 +1487,7 @@ function handleJourneyAction(action) {
     els.sipReturn.value = route.assumption.toFixed(1);
     els.sipStepUp.value = route.config.depth === "family" ? 10 : 5;
     els.sipForm.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-    document.querySelector("#calculator")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToHash("#calculator");
     return;
   }
 
@@ -1453,7 +1496,7 @@ function handleJourneyAction(action) {
     state.selectedId = route.funds[0]?.id || state.selectedId;
     renderAll();
     analyzePortfolio();
-    document.querySelector("#portfolio")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToHash("#portfolio");
     return;
   }
 
@@ -1461,7 +1504,7 @@ function handleJourneyAction(action) {
     route.funds.slice(0, 5).forEach((fund) => addToWatchlist(fund.id, false));
     state.selectedId = route.funds[0]?.id || state.selectedId;
     renderAll();
-    document.querySelector("#watchlist")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToHash("#watchlist");
     return;
   }
 
@@ -1471,7 +1514,7 @@ function handleJourneyAction(action) {
     els.packAmount.value = route.config.sip;
     els.packReason.value = route.journalNote;
     renderAll();
-    document.querySelector("#decision-pack")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToHash("#decision-pack");
     return;
   }
 
@@ -1479,7 +1522,7 @@ function handleJourneyAction(action) {
     els.journalFund.value = `${route.title} | ${route.categories.slice(0, 3).join(", ")}`;
     els.journalDecision.value = route.journalDecision;
     els.journalReason.value = route.journalNote;
-    document.querySelector("#journal")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToHash("#journal");
   }
 }
 
@@ -1638,7 +1681,7 @@ function bindEvents() {
   });
   els.watchSelectedFund?.addEventListener("click", () => {
     addToWatchlist(state.selectedId);
-    document.querySelector("#watchlist")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToHash("#watchlist");
   });
   els.watchCompareSet?.addEventListener("click", () => {
     FUNDS.filter((fund) => state.compare.has(fund.id)).forEach((fund) => addToWatchlist(fund.id, false));
@@ -1667,7 +1710,7 @@ function bindEvents() {
     state.selectedId = button.dataset.selectFund;
     renderFundGrid();
     renderFundDetail();
-    document.querySelector(".detail-band").scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToElement(document.querySelector(".detail-band"));
   });
 
   document.addEventListener("click", (event) => {
@@ -1702,7 +1745,25 @@ function bindEvents() {
   });
 
   bindFloatingSearch();
+  bindSectionNavigation();
   bindScrollTopButton();
+}
+
+function bindSectionNavigation() {
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const hash = link.getAttribute("href");
+      if (!targetFromHash(hash)) return;
+      event.preventDefault();
+      scrollToHash(hash, "smooth", true);
+    });
+  });
+
+  window.addEventListener("hashchange", () => {
+    if (targetFromHash(window.location.hash)) {
+      scrollToHash(window.location.hash, "smooth");
+    }
+  });
 }
 
 function bindFloatingSearch() {
@@ -1721,7 +1782,7 @@ function bindFloatingSearch() {
     const shouldOpen = els.floatingSearchPanel.hidden;
     setOpen(shouldOpen);
     if (shouldOpen) {
-      document.querySelector("#screener")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      scrollToHash("#screener");
     }
   });
 
@@ -1848,6 +1909,7 @@ function init() {
   renderDecisionPack();
   renderJournal();
   analyzePortfolio();
+  settleHashNavigation();
 }
 
 init();

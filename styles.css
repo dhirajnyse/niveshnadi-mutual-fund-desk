@@ -24,7 +24,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   scroll-padding-top: var(--anchor-offset);
 }
 
@@ -155,8 +155,6 @@ main {
   padding-bottom: 42px;
 }
 
-#main,
-main section[id],
 .detail-band {
   scroll-margin-top: var(--anchor-offset);
 }

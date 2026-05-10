@@ -33,5 +33,7 @@ Then open `index.html` and test:
 - Build a First SIP Coach route and test each action button.
 - Run SIP and STP calculators.
 - Select portfolio funds and run X-Ray.
+- Add funds to Watchlist and save/remove alert triggers.
+- Build a Nadi Decision Pack, copy the pack text, and save the pack to Journal.
 - Review pricing cards and Phase 2 preview copy.
 - Save a decision journal note.

@@ -29,6 +29,8 @@
         <a href="#journey">Coach</a>
         <a href="#calculator">SIP/STP</a>
         <a href="#portfolio">X-Ray</a>
+        <a href="#watchlist">Watchlist</a>
+        <a href="#decision-pack">Pack</a>
         <a href="#pricing">Pricing</a>
         <a href="#journal">Journal</a>
       </nav>
@@ -39,7 +41,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-              <p class="release-pill">Phase 1 v5</p>
+              <p class="release-pill">Phase 1 v7</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -308,6 +310,108 @@
         </div>
       </section>
 
+      <section id="watchlist" class="workspace-band watch-band" aria-labelledby="watch-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Nadi Plus habit layer</p>
+            <h2 id="watch-title">Watchlist and Alerts Room</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Watchlist actions">
+            <span id="watchSummary" class="status-chip">0 watched</span>
+            <button class="text-button" id="clearAlerts" type="button">Clear alerts</button>
+          </div>
+        </div>
+        <div class="watch-grid">
+          <form id="alertForm" class="tool-panel watch-form">
+            <h3>Track a research trigger</h3>
+            <label>
+              Fund
+              <select id="watchFundSelect"></select>
+            </label>
+            <label>
+              Trigger
+              <select id="alertTrigger">
+                <option value="review">Review date</option>
+                <option value="expense">Expense ratio above</option>
+                <option value="drawdown">Drawdown above</option>
+                <option value="score">Nadi score below</option>
+                <option value="style">Style or manager check</option>
+              </select>
+            </label>
+            <label>
+              Limit or review date
+              <input id="alertLimit" type="text" value="2026-06-30" placeholder="Example: 0.60, 25, 70, 2026-06-30">
+            </label>
+            <label>
+              Research note
+              <textarea id="alertNote" rows="4" placeholder="What should trigger a fresh review?"></textarea>
+            </label>
+            <div class="watch-form-actions">
+              <button class="primary-button" type="submit">Save trigger</button>
+              <button class="text-button" id="watchSelectedFund" type="button">Watch selected</button>
+              <button class="text-button" id="watchCompareSet" type="button">Watch X-Ray set</button>
+            </div>
+          </form>
+          <div class="watch-output">
+            <div id="watchStats" class="watch-stats" aria-label="Watchlist stats"></div>
+            <div id="watchList" class="watch-list" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="decision-pack" class="workspace-band pack-band" aria-labelledby="pack-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Pre-investment memo</p>
+            <h2 id="pack-title">Nadi Decision Pack</h2>
+          </div>
+          <span class="status-chip">Explain before action</span>
+        </div>
+        <div class="pack-grid">
+          <form id="packForm" class="tool-panel pack-form">
+            <h3>Compose decision pack</h3>
+            <label>
+              Decision type
+              <select id="packDecision">
+                <option>Watch</option>
+                <option>Start SIP</option>
+                <option>Increase SIP</option>
+                <option>Pause</option>
+                <option>Review with advisor</option>
+              </select>
+            </label>
+            <label>
+              Monthly amount
+              <input id="packAmount" type="number" min="0" step="500" value="10000">
+            </label>
+            <label>
+              Review date
+              <input id="packReviewDate" type="date" value="2026-06-30">
+            </label>
+            <label>
+              Conviction
+              <select id="packConviction">
+                <option value="low">Low - more evidence needed</option>
+                <option value="medium" selected>Medium - ready to watch or pilot</option>
+                <option value="high">High - still check risk first</option>
+              </select>
+            </label>
+            <label>
+              Decision reason
+              <textarea id="packReason" rows="4" placeholder="Write the reason in your own words before investing."></textarea>
+            </label>
+            <div class="pack-actions">
+              <button class="primary-button" type="submit">Build pack</button>
+              <button class="text-button" id="copyPack" type="button">Copy pack</button>
+              <button class="text-button" id="savePackJournal" type="button">Save to journal</button>
+            </div>
+          </form>
+          <div id="packOutput" class="pack-output" aria-live="polite">
+            Build a decision pack to capture selected fund evidence, X-Ray context, Watchlist triggers, SIP amount, and risk guardrails in one memo.
+          </div>
+        </div>
+      </section>
+
       <section id="journal" class="workspace-band tool-band" aria-labelledby="journal-title">
         <div class="section-heading">
           <div>
@@ -473,6 +577,8 @@
           <a href="#journey">Coach</a>
           <a href="#calculator">SIP/STP</a>
           <a href="#portfolio">X-Ray</a>
+          <a href="#watchlist">Watchlist</a>
+          <a href="#decision-pack">Pack</a>
           <a href="#pricing">Pricing</a>
           <a href="#journal">Journal</a>
         </div>

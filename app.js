@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260510-06";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v5 First SIP Coach";
+const DATA_VERSION = "20260510-08";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v7 Decision Pack";
 
 const FUNDS = [
   {
@@ -246,6 +246,34 @@ const FUNDS = [
   }
 ];
 
+const ALERT_TYPES = {
+  review: {
+    label: "Review date",
+    defaultLimit: "2026-06-30",
+    hint: "Review the fund on the saved date."
+  },
+  expense: {
+    label: "Expense ratio above",
+    defaultLimit: "0.60",
+    hint: "Watch if the expense ratio rises above your comfort limit."
+  },
+  drawdown: {
+    label: "Drawdown above",
+    defaultLimit: "25",
+    hint: "Watch if drawdown becomes larger than the planned risk band."
+  },
+  score: {
+    label: "Nadi score below",
+    defaultLimit: "70",
+    hint: "Watch if the research score falls below the minimum comfort level."
+  },
+  style: {
+    label: "Style or manager check",
+    defaultLimit: "Quarterly",
+    hint: "Review style drift, manager change, or AMC communication."
+  }
+};
+
 const state = {
   selectedId: FUNDS[0].id,
   compare: new Set(["large-core", "index-nifty"]),
@@ -342,6 +370,14 @@ function renderCategoryFilter() {
   );
 }
 
+function renderWatchFundSelect() {
+  if (!els.watchFundSelect) return;
+  els.watchFundSelect.innerHTML = FUNDS.map((fund) => `
+    <option value="${escapeHtml(fund.id)}">${escapeHtml(fund.name)} | ${escapeHtml(fund.category)}</option>
+  `).join("");
+  els.watchFundSelect.value = state.selectedId;
+}
+
 function renderFundGrid() {
   const funds = filteredFunds();
   if (els.fundCount) {
@@ -407,6 +443,9 @@ function renderFundDetail() {
   const score = nadiScore(fund);
   els.selectedStatus.textContent = `${fund.category} | ${fund.risk} risk`;
   els.journalFund.value = fund.name;
+  if (els.watchFundSelect && FUNDS.some((item) => item.id === fund.id)) {
+    els.watchFundSelect.value = fund.id;
+  }
 
   const compareFunds = FUNDS.filter((item) => state.compare.has(item.id));
   const shared = compareFunds.length > 1 ? sharedHoldings(compareFunds) : [];
@@ -478,6 +517,8 @@ function renderAll() {
   renderFundGrid();
   renderFundDetail();
   renderPortfolioChoices();
+  renderWatchlistRoom();
+  renderDecisionPack();
 }
 
 function syncSearchInputs(value) {
@@ -539,6 +580,388 @@ function analyzePortfolio() {
       </div>
     </div>
   `;
+}
+
+function renderWatchlistRoom() {
+  if (!els.watchList || !els.watchStats) return;
+  const watchlist = loadWatchlist();
+  const alerts = loadAlerts();
+  const watchedFunds = watchlist
+    .map((entry) => FUNDS.find((fund) => fund.id === entry.fundId))
+    .filter(Boolean);
+  const watchedIds = new Set(watchedFunds.map((fund) => fund.id));
+  const scopedAlerts = alerts.filter((alert) => watchedIds.has(alert.fundId));
+  const evaluated = scopedAlerts.map((alert) => {
+    const fund = FUNDS.find((item) => item.id === alert.fundId);
+    return fund ? evaluateAlert(alert, fund) : null;
+  }).filter(Boolean);
+  const attentionCount = evaluated.filter((item) => item.status === "attention").length;
+  const nextReview = nextReviewLabel(scopedAlerts);
+
+  els.watchSummary.textContent = `${watchedFunds.length} watched`;
+  els.watchStats.innerHTML = `
+    <div><span>Watched funds</span><strong>${watchedFunds.length}</strong></div>
+    <div><span>Active triggers</span><strong>${scopedAlerts.length}</strong></div>
+    <div><span>Attention</span><strong>${attentionCount}</strong></div>
+    <div><span>Next review</span><strong>${escapeHtml(nextReview)}</strong></div>
+  `;
+
+  if (!watchedFunds.length) {
+    els.watchList.innerHTML = `
+      <div class="empty-state">
+        Add selected funds or your X-Ray set to start a research watchlist. Alerts are saved in this browser only.
+      </div>
+    `;
+    return;
+  }
+
+  els.watchList.innerHTML = watchedFunds.map((fund) => {
+    const fundAlerts = scopedAlerts.filter((alert) => alert.fundId === fund.id);
+    const score = nadiScore(fund);
+    const alertCopy = fundAlerts.length
+      ? fundAlerts.map((alert) => {
+        const evaluatedAlert = evaluateAlert(alert, fund);
+        return `
+          <article class="watch-alert">
+            <div class="watch-alert-head">
+              <span>${escapeHtml(evaluatedAlert.label)}</span>
+              <strong class="alert-status ${escapeHtml(evaluatedAlert.status)}">${escapeHtml(evaluatedAlert.statusLabel)}</strong>
+            </div>
+            <p>${escapeHtml(evaluatedAlert.detail)}</p>
+            ${alert.note ? `<p>${escapeHtml(alert.note)}</p>` : ""}
+            <div class="watch-alert-actions">
+              <button class="remove-button" type="button" data-remove-alert="${escapeHtml(alert.id)}">Remove trigger</button>
+            </div>
+          </article>
+        `;
+      }).join("")
+      : '<div class="empty-state">No triggers yet. Save a trigger for this fund to create a review habit.</div>';
+
+    return `
+      <article class="watch-card">
+        <div class="watch-card-head">
+          <div>
+            <div class="fund-meta">
+              <span class="tag">${escapeHtml(fund.sleeve)}</span>
+              <span class="tag ${riskClass(fund.risk)}">${escapeHtml(fund.risk)}</span>
+            </div>
+            <h3>${escapeHtml(fund.name)}</h3>
+            <p>${escapeHtml(fund.category)} | Expense ${fund.expense.toFixed(2)}% | Drawdown ${fund.maxDrawdown}%</p>
+          </div>
+          <div class="score" style="--score: ${score}"><span>${score}</span></div>
+        </div>
+        <div class="watch-alert-list">${alertCopy}</div>
+        <div class="watch-card-actions">
+          <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">Inspect</button>
+          <button class="remove-button" type="button" data-remove-watch="${escapeHtml(fund.id)}">Remove fund</button>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function addToWatchlist(fundId, shouldRender = true) {
+  if (!FUNDS.some((fund) => fund.id === fundId)) return;
+  const watchlist = loadWatchlist();
+  if (!watchlist.some((entry) => entry.fundId === fundId)) {
+    watchlist.unshift({ fundId, createdAt: new Date().toISOString() });
+    saveWatchlist(watchlist.slice(0, 30));
+  }
+  if (shouldRender) renderWatchlistRoom();
+}
+
+function removeFromWatchlist(fundId) {
+  const watchlist = loadWatchlist().filter((entry) => entry.fundId !== fundId);
+  const alerts = loadAlerts().filter((alert) => alert.fundId !== fundId);
+  saveWatchlist(watchlist);
+  saveAlerts(alerts);
+  renderWatchlistRoom();
+}
+
+function handleAlertForm(event) {
+  event.preventDefault();
+  const fundId = els.watchFundSelect.value;
+  addToWatchlist(fundId, false);
+  const trigger = els.alertTrigger.value;
+  const alert = {
+    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    fundId,
+    trigger,
+    limit: els.alertLimit.value.trim() || ALERT_TYPES[trigger].defaultLimit,
+    note: els.alertNote.value.trim(),
+    createdAt: new Date().toISOString()
+  };
+  const alerts = [alert, ...loadAlerts()].slice(0, 60);
+  saveAlerts(alerts);
+  els.alertNote.value = "";
+  renderWatchlistRoom();
+}
+
+function evaluateAlert(alert, fund) {
+  const type = ALERT_TYPES[alert.trigger] || ALERT_TYPES.review;
+  const limit = parseFloat(String(alert.limit).replace(/[^\d.]/g, ""));
+  let status = "calm";
+  let statusLabel = "Calm";
+  let detail = type.hint;
+
+  if (alert.trigger === "expense") {
+    const target = Number.isFinite(limit) ? limit : Number(ALERT_TYPES.expense.defaultLimit);
+    const breached = fund.expense >= target;
+    status = breached ? "attention" : "calm";
+    statusLabel = breached ? "Attention" : "Within limit";
+    detail = `Expense is ${fund.expense.toFixed(2)}% versus trigger ${target.toFixed(2)}%.`;
+  } else if (alert.trigger === "drawdown") {
+    const target = Number.isFinite(limit) ? limit : Number(ALERT_TYPES.drawdown.defaultLimit);
+    const breached = fund.maxDrawdown >= target;
+    status = breached ? "attention" : "calm";
+    statusLabel = breached ? "Attention" : "Within limit";
+    detail = `Max drawdown is ${fund.maxDrawdown}% versus trigger ${target}%.`;
+  } else if (alert.trigger === "score") {
+    const target = Number.isFinite(limit) ? limit : Number(ALERT_TYPES.score.defaultLimit);
+    const score = nadiScore(fund);
+    const breached = score <= target;
+    status = breached ? "attention" : "calm";
+    statusLabel = breached ? "Attention" : "Above floor";
+    detail = `Nadi score is ${score}/100 versus trigger floor ${target}.`;
+  } else if (alert.trigger === "review") {
+    const days = daysUntil(alert.limit);
+    if (days === null) {
+      status = "active";
+      statusLabel = "Scheduled";
+      detail = `Review marker: ${alert.limit || ALERT_TYPES.review.defaultLimit}.`;
+    } else if (days < 0) {
+      status = "attention";
+      statusLabel = "Due";
+      detail = `Review date passed ${Math.abs(days)} day${Math.abs(days) === 1 ? "" : "s"} ago.`;
+    } else if (days <= 30) {
+      status = "attention";
+      statusLabel = "Upcoming";
+      detail = `Review due in ${days} day${days === 1 ? "" : "s"}.`;
+    } else {
+      status = "active";
+      statusLabel = "Scheduled";
+      detail = `Review due in ${days} days.`;
+    }
+  } else if (alert.trigger === "style") {
+    status = "active";
+    statusLabel = "Watch";
+    detail = `Review style, manager, AMC notes, or portfolio drift. Cadence: ${alert.limit || ALERT_TYPES.style.defaultLimit}.`;
+  }
+
+  return {
+    detail,
+    label: type.label,
+    status,
+    statusLabel
+  };
+}
+
+function nextReviewLabel(alerts) {
+  const reviewDates = alerts
+    .filter((alert) => alert.trigger === "review")
+    .map((alert) => ({ alert, days: daysUntil(alert.limit) }))
+    .filter((item) => item.days !== null)
+    .sort((a, b) => a.days - b.days);
+  if (!reviewDates.length) return "Not set";
+  const next = reviewDates[0];
+  if (next.days < 0) return "Due now";
+  if (next.days === 0) return "Today";
+  return `${next.days}d`;
+}
+
+function daysUntil(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
+  date.setHours(0, 0, 0, 0);
+  return Math.round((date.getTime() - start.getTime()) / 86400000);
+}
+
+function renderDecisionPack(event) {
+  if (event) event.preventDefault();
+  if (!els.packOutput) return;
+  const pack = buildDecisionPack();
+  const watchItems = pack.watchTriggers.length
+    ? pack.watchTriggers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")
+    : "<li>No saved watch triggers yet. Add review or risk triggers before committing real money.</li>";
+  const compareItems = pack.compareFunds.length
+    ? pack.compareFunds.map((fund) => `<li>${escapeHtml(fund.name)} | ${escapeHtml(fund.category)} | Score ${nadiScore(fund)}/100</li>`).join("")
+    : "<li>No X-Ray set selected.</li>";
+
+  els.packOutput.innerHTML = `
+    <div class="pack-hero">
+      <div>
+        <span>${escapeHtml(pack.decision)}</span>
+        <strong>${escapeHtml(pack.title)}</strong>
+        <p>${escapeHtml(pack.summary)}</p>
+      </div>
+      <div class="pack-readiness" style="--score: ${pack.readiness}">
+        <b>${pack.readiness}</b>
+      </div>
+    </div>
+    <div class="pack-card-grid">
+      <article class="pack-card">
+        <span>Selected fund</span>
+        <strong>${escapeHtml(pack.fund.name)}</strong>
+        <p>${escapeHtml(pack.fund.category)} | ${escapeHtml(pack.fund.risk)} risk | Expense ${pack.fund.expense.toFixed(2)}%</p>
+      </article>
+      <article class="pack-card">
+        <span>SIP assumption</span>
+        <strong>${formatMoney(pack.amount)} monthly</strong>
+        <p>${pack.goalYears} year horizon at ${pack.assumption.toFixed(1)}% demo return. Projection: ${formatMoney(pack.projection.value)}.</p>
+      </article>
+      <article class="pack-card">
+        <span>Review discipline</span>
+        <strong>${escapeHtml(pack.reviewDate || "Not set")}</strong>
+        <p>${escapeHtml(pack.convictionLabel)}. The memo should be reviewed before any increase or switch.</p>
+      </article>
+    </div>
+    <div class="pack-card">
+      <span>Evidence checklist</span>
+      <ul class="pack-list">
+        <li>Fund role: ${escapeHtml(pack.fund.role)}</li>
+        <li>Benchmark: ${escapeHtml(pack.fund.benchmark)}</li>
+        <li>Holdings to inspect: ${pack.fund.holdings.map(escapeHtml).join(", ")}</li>
+        <li>Compare set: ${pack.compareFunds.length} fund${pack.compareFunds.length === 1 ? "" : "s"} selected for X-Ray.</li>
+        <li>Data status: demo research data until live AMFI, AMC factsheet, SID, KIM, and benchmark feeds are connected.</li>
+      </ul>
+    </div>
+    <div class="pack-card-grid">
+      <article class="pack-card">
+        <span>X-Ray set</span>
+        <ul class="pack-list">${compareItems}</ul>
+      </article>
+      <article class="pack-card">
+        <span>Watchlist triggers</span>
+        <ul class="pack-list">${watchItems}</ul>
+      </article>
+      <article class="pack-card">
+        <span>Decision reason</span>
+        <p>${escapeHtml(pack.reason)}</p>
+      </article>
+    </div>
+    <div class="pack-card">
+      <span>Final guardrails</span>
+      <ul class="pack-list">
+        <li>This is a research memo, not personalized investment advice or execution.</li>
+        <li>Do not proceed only because past returns look attractive.</li>
+        <li>Check duplication, time horizon, expense, drawdown, and review trigger before acting.</li>
+      </ul>
+    </div>
+  `;
+}
+
+function buildDecisionPack() {
+  const fund = selectedFund();
+  const goalConfig = readGoalFitConfig();
+  const goalMap = buildGoalResearchMap(goalConfig);
+  const amount = clampNumber(Number(els.packAmount?.value || els.sipAmount?.value || 0), 0, 10000000);
+  const projection = calculateSipFutureValue(amount || goalConfig.sip, goalConfig.years, goalMap.assumption);
+  const compareFunds = FUNDS.filter((item) => state.compare.has(item.id));
+  const watchTriggers = loadAlerts()
+    .filter((alert) => alert.fundId === fund.id || state.compare.has(alert.fundId))
+    .slice(0, 5)
+    .map((alert) => {
+      const alertFund = FUNDS.find((item) => item.id === alert.fundId);
+      const evaluation = alertFund ? evaluateAlert(alert, alertFund) : null;
+      const fundName = alertFund ? alertFund.name : "Saved fund";
+      return `${fundName}: ${evaluation ? evaluation.label : "Trigger"} - ${evaluation ? evaluation.statusLabel : "Active"} (${alert.limit})`;
+    });
+  const decision = els.packDecision?.value || "Watch";
+  const convictionLabel = packConvictionLabel(els.packConviction?.value || "medium");
+  const reason = (els.packReason?.value || "").trim() || defaultPackReason(fund, goalMap, decision);
+  let readiness = nadiScore(fund);
+  if (compareFunds.length >= 2) readiness += 4;
+  if (watchTriggers.length) readiness += 4;
+  if (reason.length > 60) readiness += 3;
+  if (decision === "Start SIP" && amount <= 0) readiness -= 12;
+  readiness = Math.max(45, Math.min(94, readiness));
+
+  return {
+    amount,
+    assumption: goalMap.assumption,
+    compareFunds,
+    convictionLabel,
+    decision,
+    fund,
+    goalYears: goalConfig.years,
+    projection,
+    readiness,
+    reason,
+    reviewDate: els.packReviewDate?.value || "",
+    summary: `${fund.category} research pack for ${decision.toLowerCase()} decision with ${formatMoney(amount)} monthly amount and ${goalConfig.years} year horizon.`,
+    title: `${fund.name} decision memo`,
+    watchTriggers
+  };
+}
+
+function packConvictionLabel(value) {
+  if (value === "high") return "High conviction, still risk-checked";
+  if (value === "low") return "Low conviction, more evidence needed";
+  return "Medium conviction, ready to watch or pilot";
+}
+
+function defaultPackReason(fund, goalMap, decision) {
+  return `${decision} because ${fund.name} is being researched for the role: ${fund.role} Category path: ${goalMap.categories.join(", ")}.`;
+}
+
+function makeDecisionPackText() {
+  const pack = buildDecisionPack();
+  const compareLines = pack.compareFunds.length
+    ? pack.compareFunds.map((fund) => `- ${fund.name} | ${fund.category} | Score ${nadiScore(fund)}/100`).join("\n")
+    : "- No X-Ray set selected";
+  const watchLines = pack.watchTriggers.length
+    ? pack.watchTriggers.map((item) => `- ${item}`).join("\n")
+    : "- No saved triggers yet";
+  return [
+    `# NiveshNadi Decision Pack - ${pack.fund.name}`,
+    "",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Decision: ${pack.decision}`,
+    `Fund: ${pack.fund.name}`,
+    `Category: ${pack.fund.category}`,
+    `Risk: ${pack.fund.risk}`,
+    `Expense ratio: ${pack.fund.expense.toFixed(2)}%`,
+    `Nadi score: ${nadiScore(pack.fund)}/100`,
+    `Monthly amount: ${formatMoney(pack.amount)}`,
+    `Review date: ${pack.reviewDate || "Not set"}`,
+    `Conviction: ${pack.convictionLabel}`,
+    "",
+    "## Reason",
+    pack.reason,
+    "",
+    "## Evidence Checklist",
+    `- Role: ${pack.fund.role}`,
+    `- Benchmark: ${pack.fund.benchmark}`,
+    `- Holdings: ${pack.fund.holdings.join(", ")}`,
+    `- SIP projection: ${formatMoney(pack.projection.value)} at ${pack.assumption.toFixed(1)}% demo return for ${pack.goalYears} years`,
+    "",
+    "## X-Ray Set",
+    compareLines,
+    "",
+    "## Watchlist Triggers",
+    watchLines,
+    "",
+    "## Guardrails",
+    "- Research memo only; not personalized investment advice.",
+    "- Check duplication, time horizon, expense, drawdown, and review trigger before acting.",
+    "- Mutual fund investments are subject to market risks."
+  ].join("\n");
+}
+
+function saveDecisionPackToJournal() {
+  const pack = buildDecisionPack();
+  const entry = {
+    fund: `Decision Pack | ${pack.fund.name}`,
+    decision: pack.decision,
+    reason: `${pack.reason} Review date: ${pack.reviewDate || "Not set"}. Readiness: ${pack.readiness}/100.`,
+    createdAt: new Date().toISOString()
+  };
+  const entries = [entry, ...loadJournal()].slice(0, 20);
+  saveJournal(entries);
+  renderJournal();
+  toast("Decision pack saved to journal.");
 }
 
 function countBy(items, key) {
@@ -857,6 +1280,8 @@ function renderFirstSipCoach(event) {
       <button class="text-button" type="button" data-journey-action="goal-fit">Apply to Goal Fit</button>
       <button class="text-button" type="button" data-journey-action="sip-lab">Run SIP lab</button>
       <button class="text-button" type="button" data-journey-action="xray">Build X-Ray set</button>
+      <button class="text-button" type="button" data-journey-action="watchlist">Watch shortlist</button>
+      <button class="text-button" type="button" data-journey-action="pack">Build pack</button>
       <button class="primary-button" type="button" data-journey-action="journal">Draft journal</button>
     </div>
     <p class="journey-disclaimer">${escapeHtml(route.guardrail)} This route is research support only, not personalized investment advice.</p>
@@ -1032,6 +1457,24 @@ function handleJourneyAction(action) {
     return;
   }
 
+  if (action === "watchlist") {
+    route.funds.slice(0, 5).forEach((fund) => addToWatchlist(fund.id, false));
+    state.selectedId = route.funds[0]?.id || state.selectedId;
+    renderAll();
+    document.querySelector("#watchlist")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  if (action === "pack") {
+    state.selectedId = route.funds[0]?.id || state.selectedId;
+    els.packDecision.value = route.journalDecision;
+    els.packAmount.value = route.config.sip;
+    els.packReason.value = route.journalNote;
+    renderAll();
+    document.querySelector("#decision-pack")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
   if (action === "journal") {
     els.journalFund.value = `${route.title} | ${route.categories.slice(0, 3).join(", ")}`;
     els.journalDecision.value = route.journalDecision;
@@ -1112,6 +1555,30 @@ function saveJournal(entries) {
   localStorage.setItem("niveshnadi-journal", JSON.stringify(entries));
 }
 
+function loadWatchlist() {
+  try {
+    return JSON.parse(localStorage.getItem("niveshnadi-watchlist") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveWatchlist(entries) {
+  localStorage.setItem("niveshnadi-watchlist", JSON.stringify(entries));
+}
+
+function loadAlerts() {
+  try {
+    return JSON.parse(localStorage.getItem("niveshnadi-alerts") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveAlerts(entries) {
+  localStorage.setItem("niveshnadi-alerts", JSON.stringify(entries));
+}
+
 function handleJournal(event) {
   event.preventDefault();
   const entry = {
@@ -1163,6 +1630,31 @@ function bindEvents() {
   els.sipForm.addEventListener("submit", runSip);
   els.stpForm.addEventListener("submit", runStp);
   els.runXray.addEventListener("click", analyzePortfolio);
+  els.alertForm?.addEventListener("submit", handleAlertForm);
+  els.alertTrigger?.addEventListener("change", () => {
+    const type = ALERT_TYPES[els.alertTrigger.value] || ALERT_TYPES.review;
+    els.alertLimit.value = type.defaultLimit;
+    els.alertNote.placeholder = type.hint;
+  });
+  els.watchSelectedFund?.addEventListener("click", () => {
+    addToWatchlist(state.selectedId);
+    document.querySelector("#watchlist")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  els.watchCompareSet?.addEventListener("click", () => {
+    FUNDS.filter((fund) => state.compare.has(fund.id)).forEach((fund) => addToWatchlist(fund.id, false));
+    renderWatchlistRoom();
+  });
+  els.clearAlerts?.addEventListener("click", () => {
+    saveAlerts([]);
+    renderWatchlistRoom();
+  });
+  els.packForm?.addEventListener("submit", renderDecisionPack);
+  [els.packDecision, els.packAmount, els.packReviewDate, els.packConviction, els.packReason].forEach((input) => {
+    input?.addEventListener("change", () => renderDecisionPack());
+  });
+  els.packReason?.addEventListener("input", () => renderDecisionPack());
+  els.copyPack?.addEventListener("click", () => copyText(makeDecisionPackText()));
+  els.savePackJournal?.addEventListener("click", saveDecisionPackToJournal);
   els.journalForm.addEventListener("submit", handleJournal);
   els.clearJournal.addEventListener("click", () => {
     saveJournal([]);
@@ -1182,6 +1674,19 @@ function bindEvents() {
     const button = event.target.closest("[data-journey-action]");
     if (!button) return;
     handleJourneyAction(button.dataset.journeyAction);
+  });
+
+  document.addEventListener("click", (event) => {
+    const removeWatch = event.target.closest("[data-remove-watch]");
+    const removeAlert = event.target.closest("[data-remove-alert]");
+    if (removeWatch) {
+      removeFromWatchlist(removeWatch.dataset.removeWatch);
+      return;
+    }
+    if (removeAlert) {
+      saveAlerts(loadAlerts().filter((alert) => alert.id !== removeAlert.dataset.removeAlert));
+      renderWatchlistRoom();
+    }
   });
 
   document.addEventListener("change", (event) => {
@@ -1298,6 +1803,26 @@ function cacheElements() {
     fundCount: qs("#fundCount"),
     runXray: qs("#runXray"),
     xrayOutput: qs("#xrayOutput"),
+    watchSummary: qs("#watchSummary"),
+    alertForm: qs("#alertForm"),
+    watchFundSelect: qs("#watchFundSelect"),
+    alertTrigger: qs("#alertTrigger"),
+    alertLimit: qs("#alertLimit"),
+    alertNote: qs("#alertNote"),
+    watchSelectedFund: qs("#watchSelectedFund"),
+    watchCompareSet: qs("#watchCompareSet"),
+    clearAlerts: qs("#clearAlerts"),
+    watchStats: qs("#watchStats"),
+    watchList: qs("#watchList"),
+    packForm: qs("#packForm"),
+    packDecision: qs("#packDecision"),
+    packAmount: qs("#packAmount"),
+    packReviewDate: qs("#packReviewDate"),
+    packConviction: qs("#packConviction"),
+    packReason: qs("#packReason"),
+    copyPack: qs("#copyPack"),
+    savePackJournal: qs("#savePackJournal"),
+    packOutput: qs("#packOutput"),
     journalForm: qs("#journalForm"),
     journalFund: qs("#journalFund"),
     journalDecision: qs("#journalDecision"),
@@ -1315,10 +1840,12 @@ function cacheElements() {
 function init() {
   cacheElements();
   renderCategoryFilter();
+  renderWatchFundSelect();
   bindEvents();
   renderAll();
   renderGoalFitCompass();
   renderFirstSipCoach();
+  renderDecisionPack();
   renderJournal();
   analyzePortfolio();
 }

@@ -5,7 +5,7 @@ NiveshNadi should make money without losing the trust that makes the product val
 ## Phase 1 B2C
 
 - Free Research Starter: basic screener, Goal Fit Compass, SIP/STP lab, limited Portfolio X-Ray, and a small decision journal.
-- Nadi Plus: Rs. 99/month or Rs. 999/year for unlimited journal history, watchlists, full X-Ray history, scenario exports, research brief exports, and alerting after live data launch.
+- Nadi Plus: Rs. 99/month or Rs. 999/year for unlimited journal history, watchlists, alert triggers, decision pack history, full X-Ray history, scenario exports, research brief exports, decision memo exports, and alerting after live data launch.
 - Founder Circle: Rs. 499 for the first year for early believers while AMFI, AMC factsheet, SID, KIM, and portfolio feeds are being connected.
 
 This price point keeps NiveshNadi accessible to retail investors. It also gives the business an early signal on retention, feature usage, and willingness to pay before heavier infrastructure is built.
@@ -22,4 +22,8 @@ Suggested annual bands:
 
 ## Guardrails
 
-Retail subscription revenue should come from research workflow value, not fund pushing. Avoid commission-led bias in Phase 1. Keep all copy clear that NiveshNadi is research software, not personalized investment advice, not execution, and not a distributor service until Phase 2 is properly reviewed.
+Retail subscription revenue should come from research workflow value, not fund pushing. Watchlists, review triggers, saved notes, decision packs, exports, and future reminders are appropriate paid software value. Avoid commission-led bias in Phase 1. Keep all copy clear that NiveshNadi is research software, not personalized investment advice, not execution, and not a distributor service until Phase 2 is properly reviewed.
+
+## Decision Pack Upsell
+
+Decision Pack should be a signature Phase 1 feature because it helps a retail investor slow down and explain the research before acting. The free tier can allow a small number of packs saved locally. Nadi Plus can unlock unlimited saved packs, copy/export formats, history across devices after login, alert-linked review dates, and future PDF packs with citations. This keeps the paid value practical and low-cost without crossing into personalized advice.

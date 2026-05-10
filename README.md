@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v5 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v7 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 ## What is included
 
@@ -15,10 +15,12 @@ This Phase 1 v5 prototype is a compact static web app with no build step. Open `
 - SIP calculator with annual step-up support.
 - STP calculator for staged transfers from a source corpus.
 - Portfolio X-Ray for category concentration, blended expense, and shared holdings.
+- Watchlist and Alerts Room for saved funds, review dates, expense triggers, drawdown triggers, score floors, and style checks.
+- Nadi Decision Pack that converts selected fund research into an explainable pre-investment memo.
 - Decision journal saved in browser local storage.
 - Pricing and monetization preview with Free, Nadi Plus, Founder Circle, and Phase 2 Distributor Desk plans.
 - Phase 2 distributor roadmap for ARN/EUIN/PAN-based client management.
-- Compact v5 product layout with denser first screen, signal bars, mobile checks, floating fund search, back-to-top control, goal-fit research mapping, First SIP Coach, and a trust-first retail membership model.
+- Compact v7 product layout with denser first screen, signal bars, mobile checks, floating fund search, back-to-top control, goal-fit research mapping, First SIP Coach, Watchlist and Alerts Room, Nadi Decision Pack, and a trust-first retail membership model.
 
 ## Important compliance posture
 
@@ -35,7 +37,7 @@ Phase 1 should stay retail-friendly. The working model is:
 - Founder Circle at Rs. 499 for year-one launch believers while live data is being connected.
 - Phase 2 Distributor Desk as annual B2B software after ARN/EUIN/PAN, consent, and compliance design.
 
-Paid features should monetize convenience, history, alerts, exports, and workflow depth. They should not create hidden distribution bias or personalized advice.
+Paid features should monetize convenience, history, alerts, decision packs, exports, and workflow depth. They should not create hidden distribution bias or personalized advice.
 
 ## Local use
 
@@ -83,7 +85,9 @@ git push -u origin main
 2. Add ELSS, arbitrage, overnight, gilt, low-duration, and sector/thematic categories.
 3. Add real fund detail pages with citation-backed evidence.
 4. Add portfolio import from manual CAS-style entries.
-5. Add live evidence citations inside the First SIP Coach route.
-6. Add investor education journeys for STP from cash, ELSS review, debt fund risk, and SIP review discipline.
-7. Add payment, account, and entitlement logic after deciding GST, refund, and launch-offer policy.
-8. Add distributor Phase 2 workspace only after compliance review.
+5. Add live evidence citations inside the First SIP Coach, Watchlist alert room, and Nadi Decision Pack.
+6. Add PDF/share exports for decision packs with plain compliance disclaimers.
+7. Add investor education journeys for STP from cash, ELSS review, debt fund risk, and SIP review discipline.
+8. Add account sync for watchlists, alerts, decision packs, and journals after authentication is designed.
+9. Add payment, account, and entitlement logic after deciding GST, refund, and launch-offer policy.
+10. Add distributor Phase 2 workspace only after compliance review.

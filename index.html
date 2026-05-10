@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260510-16">
+    <link rel="stylesheet" href="styles.css?v=20260510-21">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -25,13 +25,18 @@
       </div>
       <nav class="top-nav" aria-label="Workspace">
         <a href="#screener">Screener</a>
+        <a href="#category-playbook">Playbook</a>
+        <a href="#peer-bench">Bench</a>
         <a href="#compare">Compare</a>
         <a href="#goal-fit">Goal Fit</a>
         <a href="#journey">Coach</a>
         <a href="#calculator">SIP/STP</a>
         <a href="#risk-lab">Stress</a>
+        <a href="#cost-lab">Cost</a>
+        <a href="#readiness-gate">Gate</a>
         <a href="#portfolio">X-Ray</a>
         <a href="#evidence">Evidence</a>
+        <a href="#data-readiness">Data</a>
         <a href="#watchlist">Watchlist</a>
         <a href="#decision-pack">Pack</a>
         <a href="#pricing">Pricing</a>
@@ -44,7 +49,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-              <p class="release-pill">Phase 1 v12</p>
+              <p class="release-pill">Phase 1 v17</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -125,6 +130,52 @@
         <div id="fundGrid" class="fund-grid" aria-live="polite"></div>
       </section>
 
+      <section id="category-playbook" class="workspace-band playbook-band" aria-labelledby="playbook-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Category route</p>
+            <h2 id="playbook-title">Category Playbook</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Playbook actions">
+            <button class="text-button" id="applyPlaybookPrimary" type="button">Apply route</button>
+            <button class="text-button" id="copyPlaybookNote" type="button">Copy playbook note</button>
+          </div>
+        </div>
+        <div class="playbook-grid">
+          <form id="playbookForm" class="tool-panel playbook-form">
+            <h3>Find the category lane</h3>
+            <label>
+              Investor question
+              <select id="playbookNeed">
+                <option value="first-sip">First SIP or core SIP</option>
+                <option value="emergency">Emergency or parking money</option>
+                <option value="tax">Tax-saving research</option>
+                <option value="retirement">Retirement or long goal</option>
+                <option value="income">Income stability</option>
+                <option value="growth">Aggressive growth satellite</option>
+                <option value="review">Review or switch decision</option>
+              </select>
+            </label>
+            <label>
+              Time horizon in years
+              <input id="playbookYears" type="number" min="1" max="40" step="1" value="7">
+            </label>
+            <label>
+              Risk comfort
+              <select id="playbookRisk">
+                <option value="balanced">Balanced</option>
+                <option value="conservative">Conservative</option>
+                <option value="aggressive">Aggressive</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build category route</button>
+          </form>
+          <div id="playbookOutput" class="playbook-output" aria-live="polite">
+            Build a category-first research route before shortlisting individual schemes.
+          </div>
+        </div>
+      </section>
+
       <section class="workspace-band detail-band" aria-labelledby="detail-title">
         <div class="section-heading">
           <div>
@@ -135,6 +186,23 @@
         </div>
         <div id="fundDetail" class="fund-detail empty-state">
           Select a fund from the screener to inspect its role, risk evidence, holdings overlap, and decision prompts.
+        </div>
+      </section>
+
+      <section id="peer-bench" class="workspace-band peer-band" aria-labelledby="peer-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Peer lens</p>
+            <h2 id="peer-title">Peer Benchmark Board</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Peer benchmark actions">
+            <span id="peerBenchSummary" class="status-chip">Selected fund</span>
+            <button class="text-button" id="addPeerLeaders" type="button">Add peers to compare</button>
+            <button class="text-button" id="copyPeerBench" type="button">Copy peer note</button>
+          </div>
+        </div>
+        <div id="peerBenchOutput" class="peer-output" aria-live="polite">
+          Select a fund to benchmark its score, cost, drawdown, consistency, and evidence readiness against category and sleeve peers.
         </div>
       </section>
 
@@ -358,6 +426,103 @@
         </div>
       </section>
 
+      <section id="cost-lab" class="workspace-band cost-band" aria-labelledby="cost-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Rupee friction</p>
+            <h2 id="cost-title">Cost Reality Lab</h2>
+          </div>
+          <button class="text-button" id="copyCostNote" type="button">Copy cost note</button>
+        </div>
+        <div class="cost-grid">
+          <form id="costForm" class="tool-panel cost-form">
+            <h3>Decision cost check</h3>
+            <label>
+              Amount being reviewed
+              <input id="costAmount" type="number" min="0" step="10000" value="500000">
+            </label>
+            <label>
+              Monthly SIP linked to decision
+              <input id="costSip" type="number" min="0" step="500" value="10000">
+            </label>
+            <label>
+              Holding horizon
+              <input id="costYears" type="number" min="1" max="40" step="1" value="5">
+            </label>
+            <label>
+              Lower-cost alternative TER
+              <input id="costAltExpense" type="number" min="0" max="3" step="0.01" value="0.20">
+            </label>
+            <label>
+              Exit load assumption
+              <input id="costExitLoad" type="number" min="0" max="5" step="0.1" value="1">
+            </label>
+            <label>
+              Tax friction assumption
+              <input id="costTax" type="number" min="0" max="40" step="0.5" value="0">
+            </label>
+            <label>
+              Decision mode
+              <select id="costMode">
+                <option value="start">Start or increase SIP</option>
+                <option value="switch">Switch from another fund</option>
+                <option value="review">Review existing holding</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Run cost check</button>
+          </form>
+          <div id="costOutput" class="cost-output" aria-live="polite">
+            Run a cost check to see expense drag, exit-load assumption, tax friction, and recovery discipline in rupees.
+          </div>
+        </div>
+      </section>
+
+      <section id="readiness-gate" class="workspace-band readiness-band" aria-labelledby="readiness-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Pre-action gate</p>
+            <h2 id="readiness-title">Investor Readiness Gate</h2>
+          </div>
+          <button class="text-button" id="copyReadinessNote" type="button">Copy readiness note</button>
+        </div>
+        <div class="readiness-grid">
+          <form id="readinessForm" class="tool-panel readiness-form">
+            <h3>Confirm research discipline</h3>
+            <label>
+              Action being considered
+              <select id="readinessIntent">
+                <option value="watch">Watch only</option>
+                <option value="start">Start SIP</option>
+                <option value="increase">Increase SIP</option>
+                <option value="switch">Switch from another fund</option>
+                <option value="advisor">Discuss with advisor</option>
+              </select>
+            </label>
+            <label>
+              Monthly or reviewed amount
+              <input id="readinessAmount" type="number" min="0" step="500" value="10000">
+            </label>
+            <label>
+              Next review date
+              <input id="readinessReviewDate" type="date" value="2026-06-30">
+            </label>
+            <div class="readiness-checks" aria-label="Research readiness checklist">
+              <label><input id="readyGoal" type="checkbox" checked> Goal and time horizon are written</label>
+              <label><input id="readyRisk" type="checkbox" checked> Stress scenario has been reviewed</label>
+              <label><input id="readyCost" type="checkbox" checked> Cost, exit load, and tax friction checked</label>
+              <label><input id="readyEvidence" type="checkbox"> Evidence/source freshness checked</label>
+              <label><input id="readyOverlap" type="checkbox" checked> X-Ray overlap checked</label>
+              <label><input id="readyEmergency" type="checkbox"> Emergency money is separate</label>
+              <label><input id="readyReason" type="checkbox"> Reason written in own words</label>
+            </div>
+            <button class="primary-button" type="submit">Run readiness gate</button>
+          </form>
+          <div id="readinessOutput" class="readiness-output" aria-live="polite">
+            Run the gate before moving from research to any SIP, STP, switch, or watchlist decision.
+          </div>
+        </div>
+      </section>
+
       <section id="portfolio" class="workspace-band" aria-labelledby="portfolio-title">
         <div class="section-heading">
           <div>
@@ -397,6 +562,59 @@
           </div>
           <div id="evidenceOutput" class="evidence-output" aria-live="polite">
             Evidence source map will appear here.
+          </div>
+        </div>
+      </section>
+
+      <section id="data-readiness" class="workspace-band data-band" aria-labelledby="data-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Live data gate</p>
+            <h2 id="data-title">Data Readiness Room</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Data readiness actions">
+            <span id="dataSummary" class="status-chip">Source gate</span>
+            <button class="text-button" id="copyDataSpec" type="button">Copy data spec</button>
+          </div>
+        </div>
+        <div class="data-grid">
+          <form id="dataForm" class="tool-panel data-form">
+            <h3>Test a source gate</h3>
+            <label>
+              Data source
+              <select id="dataSource">
+                <option value="amfi-nav">AMFI scheme and NAV master</option>
+                <option value="amc-factsheet">AMC monthly factsheet</option>
+                <option value="sid-kim">SID and KIM documents</option>
+                <option value="portfolio-disclosure">Portfolio disclosure file</option>
+                <option value="benchmark-feed">Benchmark and index data</option>
+                <option value="risk-ter">Riskometer and TER history</option>
+              </select>
+            </label>
+            <label>
+              Launch mode
+              <select id="dataMode">
+                <option value="prototype">Prototype mapping</option>
+                <option value="dry-run">Live dry run</option>
+                <option value="launch">Launch candidate</option>
+              </select>
+            </label>
+            <label>
+              Days since source date
+              <input id="dataAge" type="number" min="0" max="365" step="1" value="7">
+            </label>
+            <label>
+              Citation posture
+              <select id="dataCitation">
+                <option value="visible">Visible source date and citation</option>
+                <option value="internal">Internal source only</option>
+                <option value="missing">Citation missing</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Run data gate</button>
+          </form>
+          <div id="dataOutput" class="data-output" aria-live="polite">
+            Select a source to see live-data launch gates, validation checks, and blockers before connecting feeds.
           </div>
         </div>
       </section>
@@ -664,13 +882,18 @@
         </label>
         <div class="floating-section-links" aria-label="Quick sections">
           <a href="#screener">Screener</a>
+          <a href="#category-playbook">Playbook</a>
+          <a href="#peer-bench">Bench</a>
           <a href="#compare">Compare</a>
           <a href="#goal-fit">Goal Fit</a>
           <a href="#journey">Coach</a>
           <a href="#calculator">SIP/STP</a>
           <a href="#risk-lab">Stress</a>
+          <a href="#cost-lab">Cost</a>
+          <a href="#readiness-gate">Gate</a>
           <a href="#portfolio">X-Ray</a>
           <a href="#evidence">Evidence</a>
+          <a href="#data-readiness">Data</a>
           <a href="#watchlist">Watchlist</a>
           <a href="#decision-pack">Pack</a>
           <a href="#pricing">Pricing</a>
@@ -686,6 +909,6 @@
       <span aria-hidden="true">&#8593;</span>
     </button>
 
-    <script src="app.js?v=20260510-16"></script>
+    <script src="app.js?v=20260510-21"></script>
   </body>
 </html>

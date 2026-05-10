@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260510-16";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v12 Risk Stress Lab";
+const DATA_VERSION = "20260510-21";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v17 Peer Benchmark Board";
 
 const FUNDS = [
   {
@@ -319,6 +319,81 @@ const EVIDENCE_SOURCES = [
   }
 ];
 
+const DATA_PIPELINES = [
+  {
+    id: "amfi-nav",
+    title: "AMFI scheme and NAV master",
+    owner: "Data operations",
+    cadence: "Daily",
+    freshnessDays: 1,
+    readiness: 78,
+    purpose: "Scheme identity, NAV history, category mapping, and active/inactive scheme status.",
+    fields: ["scheme code", "scheme name", "AMC", "category", "NAV", "NAV date", "AUM reference"],
+    checks: ["file date captured", "scheme code dedupe", "NAV date not future", "stale scheme flag"],
+    blockers: ["official source path", "historical NAV retention", "scheme merger handling"]
+  },
+  {
+    id: "amc-factsheet",
+    title: "AMC monthly factsheet",
+    owner: "Research operations",
+    cadence: "Monthly",
+    freshnessDays: 45,
+    readiness: 66,
+    purpose: "Expense, returns, manager, portfolio style, holdings, sector, and issuer exposure evidence.",
+    fields: ["return periods", "expense ratio", "manager", "AUM", "top holdings", "sector map", "riskometer"],
+    checks: ["PDF source date", "field extraction confidence", "holdings total check", "citation link visible"],
+    blockers: ["AMC format variation", "PDF table extraction QA", "factsheet date normalization"]
+  },
+  {
+    id: "sid-kim",
+    title: "SID and KIM documents",
+    owner: "Compliance research",
+    cadence: "Event-driven",
+    freshnessDays: 180,
+    readiness: 54,
+    purpose: "Investment objective, loads, risk factors, suitability text, and offer document change history.",
+    fields: ["objective", "asset allocation", "loads", "minimum SIP", "risk factors", "benchmark"],
+    checks: ["latest version attached", "change date captured", "risk text unchanged", "KIM/SID link visible"],
+    blockers: ["version tracking", "document update alerts", "suitability language review"]
+  },
+  {
+    id: "portfolio-disclosure",
+    title: "Portfolio disclosure file",
+    owner: "Portfolio evidence",
+    cadence: "Monthly",
+    freshnessDays: 45,
+    readiness: 70,
+    purpose: "Holdings overlap, sector sleeve, issuer concentration, debt quality, and stale portfolio warnings.",
+    fields: ["holding name", "weight", "sector", "issuer", "rating", "maturity", "disclosure date"],
+    checks: ["weights add up", "holding names normalized", "disclosure date visible", "stale portfolio blocked"],
+    blockers: ["issuer normalization", "debt instrument classification", "cash and derivatives treatment"]
+  },
+  {
+    id: "benchmark-feed",
+    title: "Benchmark and index data",
+    owner: "Market data",
+    cadence: "Daily or monthly",
+    freshnessDays: 7,
+    readiness: 58,
+    purpose: "Benchmark comparison, category context, tracking difference, and relative performance claims.",
+    fields: ["benchmark name", "index value", "return periods", "TRI flag", "category peer map"],
+    checks: ["licensed source noted", "TRI/non-TRI flag", "date alignment", "display rights reviewed"],
+    blockers: ["source license", "index family mapping", "return period methodology"]
+  },
+  {
+    id: "risk-ter",
+    title: "Riskometer and TER history",
+    owner: "Risk controls",
+    cadence: "Monthly and event-driven",
+    freshnessDays: 35,
+    readiness: 74,
+    purpose: "Risk band changes, expense drift, TER history, and review triggers for investor watchlists.",
+    fields: ["riskometer band", "TER", "direct/regular plan", "change date", "review trigger"],
+    checks: ["plan type clear", "history retained", "material change alert", "source month visible"],
+    blockers: ["plan class mapping", "expense history source", "alert language review"]
+  }
+];
+
 const state = {
   selectedId: FUNDS[0].id,
   compare: new Set(["large-core", "index-nifty"]),
@@ -483,6 +558,278 @@ function renderFundGrid() {
   }).join("");
 }
 
+function readCategoryPlaybookConfig() {
+  return {
+    need: els.playbookNeed?.value || "first-sip",
+    years: clampNumber(Number(els.playbookYears?.value || 7), 1, 40),
+    risk: els.playbookRisk?.value || "balanced"
+  };
+}
+
+function categoryPlaybook(config) {
+  const map = {
+    title: "Core SIP research route",
+    posture: "Start with simple core categories",
+    clarity: 82,
+    summary: "Research low-cost core categories first, then compare active funds only if they bring a clear role.",
+    categories: [
+      { category: "Index Fund", role: "Low-cost beta core", reason: "A simple benchmark-linked base keeps cost and behavior discipline visible." },
+      { category: "Large Cap Fund", role: "Active core challenger", reason: "Compare only if evidence, consistency, and cost justify active selection." },
+      { category: "Balanced Hybrid Fund", role: "Smoother starter bridge", reason: "Useful when a first-time investor needs lower volatility before pure equity." }
+    ],
+    guardrails: [
+      "Write the goal and time horizon before selecting a fund.",
+      "Compare expense, drawdown, evidence readiness, and overlap before starting SIP.",
+      "Keep the first shortlist compact."
+    ],
+    avoid: [
+      "Do not start with sector, small cap, or recent one-year winners.",
+      "Do not add multiple funds that perform the same core role."
+    ]
+  };
+
+  if (config.need === "emergency" || config.years <= 1) {
+    Object.assign(map, {
+      title: "Cash parking research route",
+      posture: "Liquidity and capital stability first",
+      clarity: 91,
+      summary: "Near-term money should be researched for liquidity, credit quality, and low drawdown before return chasing.",
+      categories: [
+        { category: "Liquid Fund", role: "Parking bucket", reason: "Research for emergency money, STP source, or near-term cash discipline." },
+        { category: "Corporate Bond Fund", role: "Quality debt follow-up", reason: "Use only after checking credit quality, duration, and goal timing." },
+        { category: "Balanced Hybrid Fund", role: "Not for emergency money", reason: "Keep it as a comparison boundary because equity exposure can create drawdown." }
+      ],
+      guardrails: [
+        "Check credit quality, modified duration, exit load, and liquidity.",
+        "Keep emergency money separate from return-seeking investments.",
+        "Do not treat low drawdown as zero risk."
+      ],
+      avoid: [
+        "Avoid equity and high-volatility categories for near-term money.",
+        "Avoid locking emergency money into tax or goal products."
+      ]
+    });
+  } else if (config.need === "tax") {
+    Object.assign(map, {
+      title: "Tax-saving research route",
+      posture: "Tax benefit plus equity risk",
+      clarity: 76,
+      summary: "Research ELSS as a tax-saving equity category, then compare it against your broader equity plan so tax benefit is not the only reason.",
+      categories: [
+        { category: "ELSS Fund", role: "Section 80C equity sleeve", reason: "Check lock-in, equity risk, consistency, and overlap with existing core funds." },
+        { category: "Large Cap Fund", role: "Core equity comparison", reason: "Use as a benchmark for active equity quality and drawdown behavior." },
+        { category: "Index Fund", role: "Low-cost comparison", reason: "Compare whether tax-saving fund behavior is worth the active cost and lock-in." }
+      ],
+      guardrails: [
+        "Write the tax role separately from the investment role.",
+        "Check three-year lock-in and equity drawdown comfort.",
+        "Do not use tax saving as a shortcut around evidence review."
+      ],
+      avoid: [
+        "Avoid buying only because the tax deadline is near.",
+        "Avoid duplicate ELSS and large-cap exposure without a written reason."
+      ]
+    });
+  } else if (config.need === "retirement" || config.years >= 12) {
+    Object.assign(map, {
+      title: "Long-goal glide path route",
+      posture: "Core growth with future de-risking",
+      clarity: 86,
+      summary: "Long goals need growth early and review discipline later. Research a core, a diversifier, and a glide-path option.",
+      categories: [
+        { category: "Life Cycle Fund", role: "Goal-year glide path", reason: "Research when a known future year needs automatic risk reduction logic." },
+        { category: "Index Fund", role: "Low-cost growth core", reason: "Useful as a transparent equity base for long SIP horizons." },
+        { category: "Multi Asset Allocation Fund", role: "Diversified smoother sleeve", reason: "Adds debt and gold context when pure equity feels too volatile." }
+      ],
+      guardrails: [
+        "Review glide path and asset allocation at least yearly.",
+        "De-risk before the goal date, not after a market fall.",
+        "Compare cost and category overlap before adding satellites."
+      ],
+      avoid: [
+        "Avoid treating retirement as a short-term ranking problem.",
+        "Avoid too many satellite funds before the core is stable."
+      ]
+    });
+  } else if (config.need === "income" || (config.risk === "conservative" && config.years <= 5)) {
+    Object.assign(map, {
+      title: "Income stability research route",
+      posture: "Debt quality before yield",
+      clarity: 84,
+      summary: "Medium-term income research should begin with debt quality, duration, and smoother allocation categories.",
+      categories: [
+        { category: "Corporate Bond Fund", role: "Quality income bucket", reason: "Research credit quality, issuer concentration, and duration before yield." },
+        { category: "Liquid Fund", role: "Liquidity sleeve", reason: "Useful for near-term cash or staged STP source discipline." },
+        { category: "Balanced Hybrid Fund", role: "Conservative growth bridge", reason: "Consider only when some equity volatility is acceptable." }
+      ],
+      guardrails: [
+        "Check credit events, modified duration, and portfolio concentration.",
+        "Separate income need from growth appetite.",
+        "Write the review trigger before investing."
+      ],
+      avoid: [
+        "Avoid chasing yield without checking credit risk.",
+        "Avoid assuming debt funds cannot fall."
+      ]
+    });
+  } else if (config.need === "growth" || config.risk === "aggressive") {
+    Object.assign(map, {
+      title: "Growth satellite research route",
+      posture: "Core first, satellite second",
+      clarity: config.years >= 7 ? 80 : 67,
+      summary: "Aggressive categories can be researched only after core allocation, drawdown comfort, and holding horizon are clear.",
+      categories: [
+        { category: "Flexi Cap Fund", role: "Flexible growth satellite", reason: "Research for broad active growth after comparing style and overlap." },
+        { category: "Mid Cap Fund", role: "Aggressive satellite", reason: "Use only with long horizon and explicit drawdown tolerance." },
+        { category: "Small Cap Fund", role: "Highest volatility sleeve", reason: "Research capacity, liquidity, drawdown, and position size before adding." }
+      ],
+      guardrails: [
+        "Keep satellites deliberately sized.",
+        "Run the Stress Lab before adding high-volatility categories.",
+        "Check overlap with existing core funds."
+      ],
+      avoid: [
+        "Avoid aggressive categories for goals below five years.",
+        "Avoid adding mid and small cap together without a written role."
+      ]
+    });
+  } else if (config.need === "review") {
+    Object.assign(map, {
+      title: "Review or switch research route",
+      posture: "Evidence before action",
+      clarity: 79,
+      summary: "A switch review should begin with role duplication, cost friction, tax assumptions, and evidence freshness.",
+      categories: [
+        { category: "Index Fund", role: "Cost benchmark", reason: "Use as a low-cost comparison point before retaining or switching active exposure." },
+        { category: "Large Cap Fund", role: "Active core review", reason: "Check consistency, drawdown, evidence readiness, and manager/style drift." },
+        { category: "Multi Asset Allocation Fund", role: "Diversification alternative", reason: "Use when the current portfolio feels too concentrated or volatile." }
+      ],
+      guardrails: [
+        "Run Cost Reality Lab before any switch decision.",
+        "Use Evidence Ledger to confirm source freshness.",
+        "Write the reason in the Decision Pack before acting."
+      ],
+      avoid: [
+        "Avoid switching only because another fund looks cheaper.",
+        "Avoid switching after recent underperformance without role review."
+      ]
+    });
+  }
+
+  if (config.risk === "conservative" && map.categories[0]?.category !== "Liquid Fund") {
+    map.guardrails.push("For conservative risk comfort, compare a hybrid or debt category before pure equity.");
+  }
+  if (config.years < 5 && ["growth", "retirement"].includes(config.need)) {
+    map.guardrails.push("Shorter horizons reduce the room for equity drawdown recovery.");
+    map.clarity = Math.max(58, map.clarity - 9);
+  }
+
+  return map;
+}
+
+function categoryFunds(category) {
+  return FUNDS
+    .filter((fund) => fund.category === category)
+    .sort((a, b) => nadiScore(b) - nadiScore(a));
+}
+
+function applyPlaybookCategory(category) {
+  if (!category) return;
+  state.filters.search = "";
+  state.filters.category = category;
+  state.filters.risk = "all";
+  state.filters.sort = "score";
+  els.searchInput.value = "";
+  if (els.floatingSearchInput) els.floatingSearchInput.value = "";
+  els.categoryFilter.value = category;
+  els.riskFilter.value = "all";
+  els.sortSelect.value = "score";
+  renderFundGrid();
+  scrollToHash("#screener", "smooth", true);
+}
+
+function renderCategoryPlaybook(event) {
+  if (event) event.preventDefault();
+  if (!els.playbookOutput) return;
+  const config = readCategoryPlaybookConfig();
+  const playbook = categoryPlaybook(config);
+  const primaryCategory = playbook.categories[0]?.category || "Index Fund";
+  if (els.applyPlaybookPrimary) {
+    els.applyPlaybookPrimary.dataset.playbookCategory = primaryCategory;
+  }
+
+  els.playbookOutput.innerHTML = `
+    <div class="playbook-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(playbook.posture)}</span>
+        <h3>${escapeHtml(playbook.title)}</h3>
+        <p>${escapeHtml(playbook.summary)}</p>
+      </div>
+      <div class="playbook-score" style="--score: ${playbook.clarity}">
+        <b>${playbook.clarity}</b>
+      </div>
+    </div>
+    <div class="playbook-category-grid">
+      ${playbook.categories.map((item, index) => {
+        const matches = categoryFunds(item.category);
+        const matchCopy = matches.length
+          ? matches.slice(0, 2).map((fund) => fund.name).join(" | ")
+          : "Demo fund planned";
+        return `
+          <article class="playbook-card">
+            <span>Lane ${index + 1}</span>
+            <strong>${escapeHtml(item.category)}</strong>
+            <p>${escapeHtml(item.role)}</p>
+            <p>${escapeHtml(item.reason)}</p>
+            <div class="playbook-match">${escapeHtml(matchCopy)}</div>
+            <button class="text-button" type="button" data-playbook-category="${escapeHtml(item.category)}">Filter screener</button>
+          </article>
+        `;
+      }).join("")}
+    </div>
+    <div class="playbook-guard-grid">
+      <article>
+        <span>Research guardrails</span>
+        <ul class="playbook-list">
+          ${playbook.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>Avoid</span>
+        <ul class="playbook-list">
+          ${playbook.avoid.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+  `;
+}
+
+function makeCategoryPlaybookNote() {
+  const config = readCategoryPlaybookConfig();
+  const playbook = categoryPlaybook(config);
+  return [
+    "# NiveshNadi Category Playbook",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Investor question: ${config.need}`,
+    `Time horizon: ${config.years} years`,
+    `Risk comfort: ${config.risk}`,
+    `Research route: ${playbook.title}`,
+    `Posture: ${playbook.posture}`,
+    `Clarity score: ${playbook.clarity}/100`,
+    "",
+    "Category lanes:",
+    ...playbook.categories.map((item, index) => `${index + 1}. ${item.category} - ${item.role}. ${item.reason}`),
+    "",
+    "Research guardrails:",
+    ...playbook.guardrails.map((item) => `- ${item}`),
+    "",
+    "Avoid:",
+    ...playbook.avoid.map((item) => `- ${item}`),
+    "",
+    "Research route only. This is not a personalized recommendation, execution instruction, or return guarantee."
+  ].join("\n");
+}
+
 function renderFundDetail() {
   const fund = selectedFund();
   const score = nadiScore(fund);
@@ -528,6 +875,181 @@ function renderFundDetail() {
       </div>
     </div>
   `;
+}
+
+function averageMetric(funds, reader) {
+  if (!funds.length) return 0;
+  return funds.reduce((sum, fund) => sum + reader(fund), 0) / funds.length;
+}
+
+function peerMetricAverages(funds) {
+  return {
+    drawdown: averageMetric(funds, (fund) => fund.maxDrawdown),
+    evidence: averageMetric(funds, evidenceReadinessScore),
+    expense: averageMetric(funds, (fund) => fund.expense),
+    returns5y: averageMetric(funds, (fund) => fund.returns5y),
+    score: averageMetric(funds, nadiScore),
+    consistency: averageMetric(funds, (fund) => fund.consistency)
+  };
+}
+
+function peerDeltaCopy(value, average, suffix = "", lowerIsBetter = false) {
+  const delta = value - average;
+  if (Math.abs(delta) < 0.05) return "In line";
+  const direction = lowerIsBetter
+    ? delta < 0 ? "better" : "higher"
+    : delta > 0 ? "higher" : "lower";
+  const sign = delta > 0 ? "+" : "";
+  return `${direction} (${sign}${delta.toFixed(suffix === "%" ? 2 : 1)}${suffix})`;
+}
+
+function peerBenchmarkConfig() {
+  const fund = selectedFund();
+  const categoryPeers = FUNDS.filter((item) => item.category === fund.category);
+  const sleevePeers = FUNDS.filter((item) => item.sleeve === fund.sleeve);
+  const categoryAvg = peerMetricAverages(categoryPeers);
+  const sleeveAvg = peerMetricAverages(sleevePeers);
+  const sleeveRanked = [...sleevePeers].sort((a, b) => nadiScore(b) - nadiScore(a));
+  const rank = sleeveRanked.findIndex((item) => item.id === fund.id) + 1;
+  const nearby = sleeveRanked.filter((item) => item.id !== fund.id).slice(0, 3);
+  const score = nadiScore(fund);
+  const scoreDelta = score - sleeveAvg.score;
+  const costDelta = fund.expense - sleeveAvg.expense;
+  const drawdownDelta = fund.maxDrawdown - sleeveAvg.drawdown;
+  const consistencyDelta = fund.consistency - sleeveAvg.consistency;
+  let posture = "In-line peer";
+  let postureTone = "medium";
+  let nextQuestion = "What distinct role does this fund perform compared with nearby peers?";
+
+  if (rank <= 2 && scoreDelta >= 0 && costDelta <= 0.1) {
+    posture = "Peer leader";
+    postureTone = "high";
+    nextQuestion = "Does the fund's role remain distinct after checking cost, overlap, and evidence freshness?";
+  } else if (costDelta > 0.12 || drawdownDelta > 5 || consistencyDelta < -5) {
+    posture = "Needs peer review";
+    postureTone = "low";
+    nextQuestion = "Which peer offers the same role with better cost, drawdown, consistency, or evidence?";
+  } else if (nearby.length < 2) {
+    posture = "Thin demo peer set";
+    postureTone = "medium";
+    nextQuestion = "Add live category peers before treating the category benchmark as complete.";
+  }
+
+  return {
+    categoryAvg,
+    categoryPeers,
+    costDelta,
+    drawdownDelta,
+    fund,
+    nearby,
+    nextQuestion,
+    posture,
+    postureTone,
+    rank,
+    score,
+    scoreDelta,
+    sleeveAvg,
+    sleevePeers
+  };
+}
+
+function renderPeerBenchmarkBoard() {
+  if (!els.peerBenchOutput) return;
+  const config = peerBenchmarkConfig();
+  if (els.peerBenchSummary) {
+    els.peerBenchSummary.textContent = `${config.rank} of ${config.sleevePeers.length} in sleeve`;
+  }
+  const metricRows = [
+    ["Nadi score", `${config.score}/100`, `${config.categoryAvg.score.toFixed(0)}/100`, `${config.sleeveAvg.score.toFixed(0)}/100`, peerDeltaCopy(config.score, config.sleeveAvg.score)],
+    ["Expense", `${config.fund.expense.toFixed(2)}%`, `${config.categoryAvg.expense.toFixed(2)}%`, `${config.sleeveAvg.expense.toFixed(2)}%`, peerDeltaCopy(config.fund.expense, config.sleeveAvg.expense, "%", true)],
+    ["5Y demo", `${config.fund.returns5y.toFixed(1)}%`, `${config.categoryAvg.returns5y.toFixed(1)}%`, `${config.sleeveAvg.returns5y.toFixed(1)}%`, peerDeltaCopy(config.fund.returns5y, config.sleeveAvg.returns5y, "%")],
+    ["Drawdown", `${config.fund.maxDrawdown}%`, `${config.categoryAvg.drawdown.toFixed(1)}%`, `${config.sleeveAvg.drawdown.toFixed(1)}%`, peerDeltaCopy(config.fund.maxDrawdown, config.sleeveAvg.drawdown, "%", true)],
+    ["Consistency", `${config.fund.consistency}`, `${config.categoryAvg.consistency.toFixed(0)}`, `${config.sleeveAvg.consistency.toFixed(0)}`, peerDeltaCopy(config.fund.consistency, config.sleeveAvg.consistency)],
+    ["Evidence", `${evidenceReadinessScore(config.fund)}/100`, `${config.categoryAvg.evidence.toFixed(0)}/100`, `${config.sleeveAvg.evidence.toFixed(0)}/100`, peerDeltaCopy(evidenceReadinessScore(config.fund), config.sleeveAvg.evidence)]
+  ];
+  const peerCards = config.nearby.length
+    ? config.nearby.map((peer) => `
+      <article class="peer-card">
+        <span>${escapeHtml(peer.category)}</span>
+        <strong>${escapeHtml(peer.name)}</strong>
+        <p>${escapeHtml(peer.role)}</p>
+        <div class="peer-mini-grid">
+          <div><span>Nadi</span><strong>${nadiScore(peer)}/100</strong></div>
+          <div><span>Expense</span><strong>${peer.expense.toFixed(2)}%</strong></div>
+          <div><span>Drawdown</span><strong>${peer.maxDrawdown}%</strong></div>
+        </div>
+      </article>
+    `).join("")
+    : `<article class="peer-card"><span>Peer set</span><strong>More data needed</strong><p>Add live category and sleeve peers before drawing a stronger comparison.</p></article>`;
+
+  els.peerBenchOutput.innerHTML = `
+    <div class="peer-hero ${escapeHtml(config.postureTone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(config.posture)}</span>
+        <h3>${escapeHtml(config.fund.name)} peer lens</h3>
+        <p>${escapeHtml(config.fund.category)} inside ${escapeHtml(config.fund.sleeve)} sleeve. Category peers: ${config.categoryPeers.length}. Sleeve peers: ${config.sleevePeers.length}.</p>
+      </div>
+      <div class="peer-rank">
+        <b>${config.rank}</b>
+        <span>of ${config.sleevePeers.length}</span>
+      </div>
+    </div>
+    <div class="peer-table" role="table" aria-label="Peer benchmark metrics">
+      <div class="peer-row peer-head" role="row">
+        <span>Metric</span><span>Selected</span><span>Category avg</span><span>Sleeve avg</span><span>Signal</span>
+      </div>
+      ${metricRows.map((row) => `
+        <div class="peer-row" role="row">
+          ${row.map((cell) => `<span>${escapeHtml(cell)}</span>`).join("")}
+        </div>
+      `).join("")}
+    </div>
+    <div class="peer-card-grid">
+      ${peerCards}
+    </div>
+    <div class="peer-guardrail">
+      <strong>Next peer question</strong>
+      <p>${escapeHtml(config.nextQuestion)}</p>
+      <p>Peer ranking is research support only. Confirm live category data, factsheet dates, expense, riskometer, and role duplication before any decision.</p>
+    </div>
+  `;
+}
+
+function addPeerLeadersToCompare() {
+  const config = peerBenchmarkConfig();
+  state.compare = new Set([config.fund, ...config.nearby].slice(0, 4).map((fund) => fund.id));
+  renderFundGrid();
+  renderPortfolioChoices();
+  renderFundDetail();
+  renderCompareMatrix();
+  analyzePortfolio();
+  renderInvestorReadinessGate();
+  renderDecisionPack();
+  scrollToHash("#compare", "smooth", true);
+}
+
+function makePeerBenchmarkNote() {
+  const config = peerBenchmarkConfig();
+  return [
+    "# NiveshNadi Peer Benchmark Board",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${config.fund.name}`,
+    `Category: ${config.fund.category}`,
+    `Sleeve: ${config.fund.sleeve}`,
+    `Peer posture: ${config.posture}`,
+    `Sleeve rank: ${config.rank} of ${config.sleevePeers.length}`,
+    `Nadi score: ${config.score}/100 versus sleeve average ${config.sleeveAvg.score.toFixed(0)}/100`,
+    `Expense: ${config.fund.expense.toFixed(2)}% versus sleeve average ${config.sleeveAvg.expense.toFixed(2)}%`,
+    `Drawdown: ${config.fund.maxDrawdown}% versus sleeve average ${config.sleeveAvg.drawdown.toFixed(1)}%`,
+    `Consistency: ${config.fund.consistency} versus sleeve average ${config.sleeveAvg.consistency.toFixed(0)}`,
+    "",
+    "Nearby peer questions:",
+    ...(config.nearby.length ? config.nearby.map((peer) => `- Compare with ${peer.name}: ${compareDecisionQuestion(peer)}`) : ["- Add live peers before relying on this demo peer set."]),
+    "",
+    `Next question: ${config.nextQuestion}`,
+    "",
+    "Research benchmark only. This is not a personalized recommendation, ranking promise, or return guarantee."
+  ].join("\n");
 }
 
 function renderPortfolioChoices() {
@@ -716,11 +1238,16 @@ function makeCompareNote() {
 
 function renderAll() {
   renderFundGrid();
+  renderCategoryPlaybook();
   renderFundDetail();
+  renderPeerBenchmarkBoard();
   renderPortfolioChoices();
   renderCompareMatrix();
   renderStressLab();
+  renderCostRealityLab();
+  renderInvestorReadinessGate();
   renderEvidenceLedger();
+  renderDataReadinessRoom();
   renderWatchlistRoom();
   renderDecisionPack();
 }
@@ -1101,6 +1628,134 @@ function makeEvidenceLog() {
     "",
     "## Guardrail",
     "Research support only. Live launch must show source, date, extraction status, and citation path before claims are treated as current."
+  ].join("\n");
+}
+
+function selectedDataPipeline() {
+  const id = els.dataSource?.value || DATA_PIPELINES[0].id;
+  return DATA_PIPELINES.find((pipeline) => pipeline.id === id) || DATA_PIPELINES[0];
+}
+
+function dataModeLabel(mode) {
+  if (mode === "launch") return "Launch candidate";
+  if (mode === "dry-run") return "Live dry run";
+  return "Prototype mapping";
+}
+
+function dataCitationLabel(citation) {
+  if (citation === "visible") return "Visible source date and citation";
+  if (citation === "internal") return "Internal source only";
+  return "Citation missing";
+}
+
+function dataGateConfig() {
+  const pipeline = selectedDataPipeline();
+  const mode = els.dataMode?.value || "prototype";
+  const age = clampNumber(Number(els.dataAge?.value || 0), 0, 365);
+  const citation = els.dataCitation?.value || "visible";
+  let score = pipeline.readiness;
+  if (age > pipeline.freshnessDays) score -= Math.min(28, Math.ceil((age - pipeline.freshnessDays) / 3));
+  if (mode === "dry-run") score += 5;
+  if (mode === "launch") score += 9;
+  if (citation === "internal") score -= 12;
+  if (citation === "missing") score -= 26;
+  score = Math.max(25, Math.min(96, score));
+  const posture = score >= 82 ? "Launch ready" : score >= 68 ? "Dry-run ready" : score >= 52 ? "Schema ready" : "Blocked";
+  const freshness = age <= pipeline.freshnessDays ? "Fresh" : `Stale by ${age - pipeline.freshnessDays} days`;
+  const blockers = [
+    ...pipeline.blockers,
+    ...(citation === "visible" ? [] : ["public citation path"]),
+    ...(age <= pipeline.freshnessDays ? [] : ["fresh source date"])
+  ];
+  return { age, blockers, citation, freshness, mode, pipeline, posture, score };
+}
+
+function renderDataReadinessRoom(event) {
+  if (event) event.preventDefault();
+  if (!els.dataOutput || !els.dataSummary) return;
+  const config = dataGateConfig();
+  els.dataSummary.textContent = `${config.score}/100 | ${config.posture}`;
+  els.dataOutput.innerHTML = `
+    <div class="data-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(config.posture)}</span>
+        <h3>${escapeHtml(config.pipeline.title)}</h3>
+        <p>${escapeHtml(config.pipeline.purpose)}</p>
+      </div>
+      <div class="data-score" style="--score: ${config.score}">
+        <b>${config.score}</b>
+        <span>Gate</span>
+      </div>
+    </div>
+    <div class="data-card-grid">
+      <article class="data-card">
+        <span>Freshness</span>
+        <strong>${escapeHtml(config.freshness)}</strong>
+        <p>${escapeHtml(config.pipeline.cadence)} cadence. Max age before stale flag: ${config.pipeline.freshnessDays} days.</p>
+      </article>
+      <article class="data-card">
+        <span>Launch mode</span>
+        <strong>${escapeHtml(dataModeLabel(config.mode))}</strong>
+        <p>${escapeHtml(dataCitationLabel(config.citation))}. Claims stay blocked until date and citation are visible.</p>
+      </article>
+      <article class="data-card">
+        <span>Owner</span>
+        <strong>${escapeHtml(config.pipeline.owner)}</strong>
+        <p>Responsible for extraction QA, source date, and field-level evidence visibility.</p>
+      </article>
+    </div>
+    <div class="data-detail-grid">
+      <article class="data-detail-card">
+        <h3>Field map</h3>
+        <div class="field-chip-list">
+          ${config.pipeline.fields.map((field) => `<span>${escapeHtml(field)}</span>`).join("")}
+        </div>
+      </article>
+      <article class="data-detail-card">
+        <h3>Validation checks</h3>
+        <ul class="data-check-list">
+          ${config.pipeline.checks.map((check) => `<li>${escapeHtml(check)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="data-detail-card">
+        <h3>Launch blockers</h3>
+        <ul class="data-check-list">
+          ${config.blockers.slice(0, 5).map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+    <div class="data-guardrail">
+      <strong>Data rule</strong>
+      <p>No live fund claim should appear without source date, extraction status, field validation, and citation path. PAN, folio, CAS, ARN, and client records stay out of Phase 1.</p>
+    </div>
+  `;
+}
+
+function makeDataSpec() {
+  const config = dataGateConfig();
+  return [
+    "# NiveshNadi Data Readiness Spec",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Source: ${config.pipeline.title}`,
+    `Owner: ${config.pipeline.owner}`,
+    `Cadence: ${config.pipeline.cadence}`,
+    `Launch mode: ${dataModeLabel(config.mode)}`,
+    `Citation posture: ${dataCitationLabel(config.citation)}`,
+    `Freshness: ${config.freshness}`,
+    `Gate score: ${config.score}/100`,
+    `Posture: ${config.posture}`,
+    "",
+    "## Fields",
+    ...config.pipeline.fields.map((field) => `- ${field}`),
+    "",
+    "## Validation Checks",
+    ...config.pipeline.checks.map((check) => `- ${check}`),
+    "",
+    "## Launch Blockers",
+    ...config.blockers.slice(0, 6).map((blocker) => `- ${blocker}`),
+    "",
+    "## Guardrail",
+    "No live fund claim should appear without source date, extraction status, field validation, and citation path."
   ].join("\n");
 }
 
@@ -1691,6 +2346,347 @@ function makeStressNote() {
     `Recovery marker: ${recoveryCopy}`,
     "",
     "Research scenario only. This is not a prediction, recommendation, or return guarantee."
+  ].join("\n");
+}
+
+function costRealityConfig() {
+  const fund = selectedFund();
+  const amount = clampNumber(Number(els.costAmount?.value || 0), 0, 100000000);
+  const monthlySip = clampNumber(Number(els.costSip?.value || 0), 0, 10000000);
+  const years = clampNumber(Number(els.costYears?.value || 1), 1, 40);
+  const altExpense = clampNumber(Number(els.costAltExpense?.value || 0), 0, 5);
+  const exitLoad = clampNumber(Number(els.costExitLoad?.value || 0), 0, 5);
+  const tax = clampNumber(Number(els.costTax?.value || 0), 0, 50);
+  const mode = els.costMode?.value || "start";
+  const modeLabels = {
+    start: "Start or increase SIP",
+    switch: "Switch from another fund",
+    review: "Review existing holding"
+  };
+  const currentExpense = fund.expense;
+  const expenseDrag = amount * (currentExpense / 100) * years;
+  const lowerCostDrag = amount * (altExpense / 100) * years;
+  const expenseSavings = Math.max(0, expenseDrag - lowerCostDrag);
+  const exitLoadCost = mode === "start" ? 0 : amount * (exitLoad / 100);
+  const taxFriction = mode === "start" ? 0 : amount * (tax / 100);
+  const oneTimeFriction = exitLoadCost + taxFriction;
+  const netSwitchMath = expenseSavings - oneTimeFriction;
+  const monthlySaving = Math.max(0, amount * Math.max(0, currentExpense - altExpense) / 100 / 12);
+  const recoveryMonths = monthlySaving > 0 && oneTimeFriction > 0
+    ? Math.ceil(oneTimeFriction / monthlySaving)
+    : oneTimeFriction === 0 ? 0 : null;
+  const sipAnnualDrag = monthlySip * 12 * (currentExpense / 100);
+  const posture = mode === "start"
+    ? (sipAnnualDrag > monthlySip ? "Cost visible" : "Cost light")
+    : netSwitchMath > 0 ? "Switch math positive" : "Friction first";
+  return {
+    altExpense,
+    amount,
+    currentExpense,
+    exitLoad,
+    exitLoadCost,
+    expenseDrag,
+    expenseSavings,
+    fund,
+    lowerCostDrag,
+    mode,
+    modeLabel: modeLabels[mode] || "Start or increase SIP",
+    monthlySaving,
+    monthlySip,
+    netSwitchMath,
+    oneTimeFriction,
+    posture,
+    recoveryMonths,
+    sipAnnualDrag,
+    tax,
+    taxFriction,
+    years
+  };
+}
+
+function costDecisionNote(config) {
+  if (config.mode === "start") {
+    return "For a new SIP, the main cost discipline is keeping TER, overlap, and fund role visible before adding more funds.";
+  }
+  if (config.netSwitchMath > 0) {
+    return "Switch math is positive on these assumptions, but evidence, tax treatment, exit-load window, and role clarity still need a written reason.";
+  }
+  return "One-time friction is larger than estimated TER saving on these assumptions. Do not switch only because another fund looks cheaper.";
+}
+
+function recoveryCopy(config) {
+  if (config.recoveryMonths === null) return "Not recoverable through TER saving alone.";
+  if (config.recoveryMonths === 0) return "No one-time friction entered.";
+  return `${config.recoveryMonths} month${config.recoveryMonths === 1 ? "" : "s"} to recover one-time friction through TER saving.`;
+}
+
+function renderCostRealityLab(event) {
+  if (event) event.preventDefault();
+  if (!els.costOutput) return;
+  const config = costRealityConfig();
+  const netClass = config.netSwitchMath >= 0 ? "positive" : "negative";
+  els.costOutput.innerHTML = `
+    <div class="cost-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(config.posture)}</span>
+        <h3>${escapeHtml(config.fund.name)} cost lens</h3>
+        <p>${escapeHtml(config.modeLabel)} for ${escapeHtml(formatMoney(config.amount))} over ${config.years} year${config.years === 1 ? "" : "s"}.</p>
+      </div>
+      <div class="cost-badge">
+        <b>${config.currentExpense.toFixed(2)}%</b>
+        <span>TER</span>
+      </div>
+    </div>
+    <div class="cost-metric-grid">
+      <div><span>TER drag</span><strong>${escapeHtml(formatMoney(config.expenseDrag))}</strong></div>
+      <div><span>Lower-cost saving</span><strong>${escapeHtml(formatMoney(config.expenseSavings))}</strong></div>
+      <div><span>Exit load</span><strong>${escapeHtml(formatMoney(config.exitLoadCost))}</strong></div>
+      <div><span>Tax friction</span><strong>${escapeHtml(formatMoney(config.taxFriction))}</strong></div>
+    </div>
+    <div class="cost-split-grid">
+      <article class="cost-card">
+        <span>Net switch math</span>
+        <strong class="${netClass}">${escapeHtml(formatMoney(config.netSwitchMath))}</strong>
+        <p>${escapeHtml(costDecisionNote(config))}</p>
+      </article>
+      <article class="cost-card">
+        <span>Recovery discipline</span>
+        <strong>${escapeHtml(recoveryCopy(config))}</strong>
+        <p>Monthly TER saving estimate: ${escapeHtml(formatMoney(config.monthlySaving))}. New SIP annual TER drag: ${escapeHtml(formatMoney(config.sipAnnualDrag))}.</p>
+      </article>
+      <article class="cost-card">
+        <span>Tax bucket caution</span>
+        <strong>${config.tax.toFixed(1)}% assumption</strong>
+        <p>Tax is user-entered friction only. This lab does not calculate tax liability or recommend switching.</p>
+      </article>
+    </div>
+    <div class="cost-guardrail">
+      <strong>Cost rule</strong>
+      <p>Write the reason before switching. Check exit-load window, tax bucket, role duplication, evidence freshness, and whether the cost saving is meaningful in rupees.</p>
+    </div>
+  `;
+}
+
+function makeCostNote() {
+  const config = costRealityConfig();
+  return [
+    "# NiveshNadi Cost Reality Lab",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${config.fund.name}`,
+    `Decision mode: ${config.modeLabel}`,
+    `Amount reviewed: ${formatMoney(config.amount)}`,
+    `Holding horizon: ${config.years} years`,
+    `Current TER: ${config.currentExpense.toFixed(2)}%`,
+    `Alternative TER assumption: ${config.altExpense.toFixed(2)}%`,
+    `Estimated TER drag: ${formatMoney(config.expenseDrag)}`,
+    `Estimated lower-cost saving: ${formatMoney(config.expenseSavings)}`,
+    `Exit load assumption: ${config.exitLoad.toFixed(1)}% (${formatMoney(config.exitLoadCost)})`,
+    `Tax friction assumption: ${config.tax.toFixed(1)}% (${formatMoney(config.taxFriction)})`,
+    `Net switch math: ${formatMoney(config.netSwitchMath)}`,
+    `Recovery marker: ${recoveryCopy(config)}`,
+    "",
+    "Research scenario only. This is not tax advice, investment advice, or a recommendation to switch."
+  ].join("\n");
+}
+
+function readinessIntentLabel(intent) {
+  const labels = {
+    advisor: "Discuss with advisor",
+    increase: "Increase SIP",
+    start: "Start SIP",
+    switch: "Switch from another fund",
+    watch: "Watch only"
+  };
+  return labels[intent] || "Watch only";
+}
+
+function readinessChecklist(intent) {
+  return [
+    {
+      id: "readyGoal",
+      label: "Goal and time horizon are written",
+      weight: 10,
+      critical: true,
+      checked: Boolean(els.readyGoal?.checked)
+    },
+    {
+      id: "readyRisk",
+      label: "Stress scenario has been reviewed",
+      weight: 9,
+      critical: ["start", "increase", "switch"].includes(intent),
+      checked: Boolean(els.readyRisk?.checked)
+    },
+    {
+      id: "readyCost",
+      label: "Cost, exit load, and tax friction checked",
+      weight: 8,
+      critical: intent === "switch",
+      checked: Boolean(els.readyCost?.checked)
+    },
+    {
+      id: "readyEvidence",
+      label: "Evidence/source freshness checked",
+      weight: 10,
+      critical: ["start", "increase", "switch"].includes(intent),
+      checked: Boolean(els.readyEvidence?.checked)
+    },
+    {
+      id: "readyOverlap",
+      label: "X-Ray overlap checked",
+      weight: 7,
+      critical: ["increase", "switch"].includes(intent),
+      checked: Boolean(els.readyOverlap?.checked)
+    },
+    {
+      id: "readyEmergency",
+      label: "Emergency money is separate",
+      weight: 6,
+      critical: ["start", "increase"].includes(intent),
+      checked: Boolean(els.readyEmergency?.checked)
+    },
+    {
+      id: "readyReason",
+      label: "Reason written in own words",
+      weight: 10,
+      critical: ["start", "increase", "switch", "advisor"].includes(intent),
+      checked: Boolean(els.readyReason?.checked)
+    }
+  ];
+}
+
+function readinessConfig() {
+  const fund = selectedFund();
+  const intent = els.readinessIntent?.value || "watch";
+  const amount = clampNumber(Number(els.readinessAmount?.value || 0), 0, 10000000);
+  const reviewDate = els.readinessReviewDate?.value || "Not set";
+  const items = readinessChecklist(intent);
+  const checkedItems = items.filter((item) => item.checked);
+  const blockers = items.filter((item) => !item.checked);
+  const criticalMisses = blockers.filter((item) => item.critical);
+  const checklistScore = checkedItems.reduce((sum, item) => sum + item.weight, 0);
+  const compareBonus = state.compare.size >= 2 ? 4 : 0;
+  const amountSignal = amount > 0 ? 3 : -4;
+  const evidenceScore = evidenceReadinessScore(fund);
+  const score = Math.round(clampNumber(
+    nadiScore(fund) * 0.22 + evidenceScore * 0.18 + checklistScore + compareBonus + amountSignal,
+    30,
+    96
+  ));
+  let posture = "Needs review";
+  let postureClass = "medium";
+  let nextStep = "Complete the missing checks, then build or update the decision pack.";
+  if (criticalMisses.length) {
+    posture = "Wait for evidence";
+    postureClass = "low";
+    nextStep = `Resolve critical gaps first: ${criticalMisses.map((item) => item.label).join("; ")}.`;
+  } else if (score >= 82 && blockers.length <= 1) {
+    posture = "Memo ready";
+    postureClass = "high";
+    nextStep = "Write the decision reason, save the memo, and set the next review date before acting.";
+  } else if (score < 62) {
+    posture = "Pause";
+    postureClass = "low";
+    nextStep = "Keep this as research-only until the goal, risk, evidence, cost, and written reason are complete.";
+  }
+  return {
+    amount,
+    blockers,
+    checkedItems,
+    criticalMisses,
+    evidenceScore,
+    fund,
+    intent,
+    intentLabel: readinessIntentLabel(intent),
+    items,
+    nextStep,
+    posture,
+    postureClass,
+    reviewDate,
+    score
+  };
+}
+
+function renderInvestorReadinessGate(event) {
+  if (event) event.preventDefault();
+  if (!els.readinessOutput) return;
+  const config = readinessConfig();
+  const blockerCopy = config.blockers.length
+    ? config.blockers.map((item) => `<li>${escapeHtml(item.label)}</li>`).join("")
+    : "<li>No major research gaps selected in this gate.</li>";
+  const completedCopy = config.checkedItems.length
+    ? config.checkedItems.map((item) => `<li>${escapeHtml(item.label)}</li>`).join("")
+    : "<li>No readiness checks completed yet.</li>";
+  const criticalCopy = config.criticalMisses.length
+    ? config.criticalMisses.map((item) => `<li>${escapeHtml(item.label)}</li>`).join("")
+    : "<li>No critical blocker for the selected action.</li>";
+  els.readinessOutput.innerHTML = `
+    <div class="readiness-hero ${escapeHtml(config.postureClass)}">
+      <div>
+        <span class="metric-label">${escapeHtml(config.posture)}</span>
+        <h3>${escapeHtml(config.fund.name)} readiness memo</h3>
+        <p>${escapeHtml(config.intentLabel)} gate for ${escapeHtml(formatMoney(config.amount))}. Review date: ${escapeHtml(config.reviewDate)}.</p>
+      </div>
+      <div class="readiness-score" style="--score: ${config.score}">
+        <b>${config.score}</b>
+      </div>
+    </div>
+    <div class="readiness-metric-grid">
+      <div><span>Nadi score</span><strong>${nadiScore(config.fund)}/100</strong></div>
+      <div><span>Evidence readiness</span><strong>${config.evidenceScore}/100</strong></div>
+      <div><span>Checklist</span><strong>${config.checkedItems.length} of ${config.items.length}</strong></div>
+      <div><span>Blockers</span><strong>${config.criticalMisses.length} critical</strong></div>
+    </div>
+    <div class="readiness-card-grid">
+      <article class="readiness-card">
+        <span>Completed</span>
+        <ul class="readiness-list">${completedCopy}</ul>
+      </article>
+      <article class="readiness-card">
+        <span>Open checks</span>
+        <ul class="readiness-list">${blockerCopy}</ul>
+      </article>
+      <article class="readiness-card">
+        <span>Critical blockers</span>
+        <ul class="readiness-list">${criticalCopy}</ul>
+      </article>
+    </div>
+    <div class="readiness-guardrail">
+      <strong>Next step</strong>
+      <p>${escapeHtml(config.nextStep)}</p>
+      <p>This is a research gate only. It does not approve, recommend, execute, or guarantee any investment action.</p>
+    </div>
+  `;
+}
+
+function makeReadinessNote() {
+  const config = readinessConfig();
+  const blockers = config.blockers.length
+    ? config.blockers.map((item) => `- ${item.label}`).join("\n")
+    : "- No major research gaps selected in this gate.";
+  const critical = config.criticalMisses.length
+    ? config.criticalMisses.map((item) => `- ${item.label}`).join("\n")
+    : "- No critical blocker for the selected action.";
+  return [
+    "# NiveshNadi Investor Readiness Gate",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${config.fund.name}`,
+    `Action considered: ${config.intentLabel}`,
+    `Amount reviewed: ${formatMoney(config.amount)}`,
+    `Review date: ${config.reviewDate}`,
+    `Readiness posture: ${config.posture}`,
+    `Readiness score: ${config.score}/100`,
+    `Nadi score: ${nadiScore(config.fund)}/100`,
+    `Evidence readiness: ${config.evidenceScore}/100`,
+    "",
+    "Open checks:",
+    blockers,
+    "",
+    "Critical blockers:",
+    critical,
+    "",
+    `Next step: ${config.nextStep}`,
+    "",
+    "Research gate only. This is not investment advice, a recommendation, execution approval, or a return guarantee."
   ].join("\n");
 }
 
@@ -2287,6 +3283,13 @@ function bindEvents() {
     renderFundGrid();
   });
   els.copyBrief.addEventListener("click", () => copyText(makeBrief()));
+  els.copyPeerBench?.addEventListener("click", () => copyText(makePeerBenchmarkNote()));
+  els.addPeerLeaders?.addEventListener("click", addPeerLeadersToCompare);
+  els.playbookForm?.addEventListener("submit", renderCategoryPlaybook);
+  [els.playbookNeed, els.playbookYears, els.playbookRisk].forEach((input) => {
+    input?.addEventListener("change", () => renderCategoryPlaybook());
+  });
+  els.copyPlaybookNote?.addEventListener("click", () => copyText(makeCategoryPlaybookNote()));
   els.goalFitForm?.addEventListener("submit", renderGoalFitCompass);
   [els.goalType, els.goalYears, els.goalRisk, els.goalSip].forEach((input) => {
     input?.addEventListener("change", () => renderGoalFitCompass());
@@ -2302,9 +3305,35 @@ function bindEvents() {
     input?.addEventListener("change", () => renderStressLab());
   });
   els.copyStress?.addEventListener("click", () => copyText(makeStressNote()));
+  els.costForm?.addEventListener("submit", renderCostRealityLab);
+  [els.costAmount, els.costSip, els.costYears, els.costAltExpense, els.costExitLoad, els.costTax, els.costMode].forEach((input) => {
+    input?.addEventListener("change", () => renderCostRealityLab());
+  });
+  els.copyCostNote?.addEventListener("click", () => copyText(makeCostNote()));
+  els.readinessForm?.addEventListener("submit", renderInvestorReadinessGate);
+  [
+    els.readinessIntent,
+    els.readinessAmount,
+    els.readinessReviewDate,
+    els.readyGoal,
+    els.readyRisk,
+    els.readyCost,
+    els.readyEvidence,
+    els.readyOverlap,
+    els.readyEmergency,
+    els.readyReason
+  ].forEach((input) => {
+    input?.addEventListener("change", () => renderInvestorReadinessGate());
+  });
+  els.copyReadinessNote?.addEventListener("click", () => copyText(makeReadinessNote()));
   els.runXray.addEventListener("click", analyzePortfolio);
   els.copyCompare?.addEventListener("click", () => copyText(makeCompareNote()));
   els.copyEvidence?.addEventListener("click", () => copyText(makeEvidenceLog()));
+  els.dataForm?.addEventListener("submit", renderDataReadinessRoom);
+  [els.dataSource, els.dataMode, els.dataAge, els.dataCitation].forEach((input) => {
+    input?.addEventListener("change", () => renderDataReadinessRoom());
+  });
+  els.copyDataSpec?.addEventListener("click", () => copyText(makeDataSpec()));
   els.alertForm?.addEventListener("submit", handleAlertForm);
   els.alertTrigger?.addEventListener("change", () => {
     const type = ALERT_TYPES[els.alertTrigger.value] || ALERT_TYPES.review;
@@ -2337,13 +3366,22 @@ function bindEvents() {
   });
 
   document.addEventListener("click", (event) => {
+    const playbookButton = event.target.closest("[data-playbook-category]");
+    if (!playbookButton) return;
+    applyPlaybookCategory(playbookButton.dataset.playbookCategory);
+  });
+
+  document.addEventListener("click", (event) => {
     const button = event.target.closest("[data-select-fund]");
     if (!button) return;
     state.selectedId = button.dataset.selectFund;
     renderFundGrid();
     renderFundDetail();
+    renderPeerBenchmarkBoard();
     renderCompareMatrix();
     renderStressLab();
+    renderCostRealityLab();
+    renderInvestorReadinessGate();
     renderEvidenceLedger();
     renderDecisionPack();
     scrollToElement(document.querySelector(".detail-band"));
@@ -2378,8 +3416,10 @@ function bindEvents() {
     renderFundGrid();
     renderPortfolioChoices();
     renderFundDetail();
+    renderPeerBenchmarkBoard();
     renderCompareMatrix();
     analyzePortfolio();
+    renderInvestorReadinessGate();
     renderDecisionPack();
   });
 
@@ -2475,6 +3515,17 @@ function cacheElements() {
     fundGrid: qs("#fundGrid"),
     selectedStatus: qs("#selectedStatus"),
     fundDetail: qs("#fundDetail"),
+    playbookForm: qs("#playbookForm"),
+    playbookNeed: qs("#playbookNeed"),
+    playbookYears: qs("#playbookYears"),
+    playbookRisk: qs("#playbookRisk"),
+    playbookOutput: qs("#playbookOutput"),
+    copyPlaybookNote: qs("#copyPlaybookNote"),
+    applyPlaybookPrimary: qs("#applyPlaybookPrimary"),
+    peerBenchSummary: qs("#peerBenchSummary"),
+    peerBenchOutput: qs("#peerBenchOutput"),
+    addPeerLeaders: qs("#addPeerLeaders"),
+    copyPeerBench: qs("#copyPeerBench"),
     sipForm: qs("#sipForm"),
     sipAmount: qs("#sipAmount"),
     sipYears: qs("#sipYears"),
@@ -2488,6 +3539,29 @@ function cacheElements() {
     stressRecovery: qs("#stressRecovery"),
     stressOutput: qs("#stressOutput"),
     copyStress: qs("#copyStress"),
+    costForm: qs("#costForm"),
+    costAmount: qs("#costAmount"),
+    costSip: qs("#costSip"),
+    costYears: qs("#costYears"),
+    costAltExpense: qs("#costAltExpense"),
+    costExitLoad: qs("#costExitLoad"),
+    costTax: qs("#costTax"),
+    costMode: qs("#costMode"),
+    costOutput: qs("#costOutput"),
+    copyCostNote: qs("#copyCostNote"),
+    readinessForm: qs("#readinessForm"),
+    readinessIntent: qs("#readinessIntent"),
+    readinessAmount: qs("#readinessAmount"),
+    readinessReviewDate: qs("#readinessReviewDate"),
+    readyGoal: qs("#readyGoal"),
+    readyRisk: qs("#readyRisk"),
+    readyCost: qs("#readyCost"),
+    readyEvidence: qs("#readyEvidence"),
+    readyOverlap: qs("#readyOverlap"),
+    readyEmergency: qs("#readyEmergency"),
+    readyReason: qs("#readyReason"),
+    readinessOutput: qs("#readinessOutput"),
+    copyReadinessNote: qs("#copyReadinessNote"),
     goalFitForm: qs("#goalFitForm"),
     goalType: qs("#goalType"),
     goalYears: qs("#goalYears"),
@@ -2518,6 +3592,14 @@ function cacheElements() {
     evidenceFundSummary: qs("#evidenceFundSummary"),
     evidenceOutput: qs("#evidenceOutput"),
     copyEvidence: qs("#copyEvidence"),
+    dataForm: qs("#dataForm"),
+    dataSource: qs("#dataSource"),
+    dataMode: qs("#dataMode"),
+    dataAge: qs("#dataAge"),
+    dataCitation: qs("#dataCitation"),
+    dataSummary: qs("#dataSummary"),
+    dataOutput: qs("#dataOutput"),
+    copyDataSpec: qs("#copyDataSpec"),
     watchSummary: qs("#watchSummary"),
     alertForm: qs("#alertForm"),
     watchFundSelect: qs("#watchFundSelect"),
@@ -2561,6 +3643,9 @@ function init() {
   renderGoalFitCompass();
   renderFirstSipCoach();
   renderStressLab();
+  renderCostRealityLab();
+  renderInvestorReadinessGate();
+  renderDataReadinessRoom();
   renderDecisionPack();
   renderJournal();
   analyzePortfolio();

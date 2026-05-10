@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260510-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 Prototype";
+const DATA_VERSION = "20260510-02";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v2 Compact Product";
 
 const FUNDS = [
   {
@@ -322,6 +322,9 @@ function renderCategoryFilter() {
 
 function renderFundGrid() {
   const funds = filteredFunds();
+  if (els.fundCount) {
+    els.fundCount.textContent = `${funds.length} of ${FUNDS.length} funds`;
+  }
   if (!funds.length) {
     els.fundGrid.innerHTML = '<div class="no-results">No funds match this research filter. Reset filters or widen the category.</div>';
     return;
@@ -331,19 +334,34 @@ function renderFundGrid() {
     const score = nadiScore(fund);
     const selected = fund.id === state.selectedId ? " is-selected" : "";
     const checked = state.compare.has(fund.id) ? "checked" : "";
-    const tags = [fund.sleeve, fund.category, fund.risk]
+    const tags = [fund.sleeve, fund.risk]
       .map((tag) => `<span class="tag ${tag === fund.risk ? riskClass(fund.risk) : ""}">${escapeHtml(tag)}</span>`)
       .join("");
+    const consistency = Math.min(100, Math.max(0, fund.consistency));
+    const drawdown = Math.min(100, Math.max(0, 100 - fund.maxDrawdown * 2));
 
     return `
       <article class="fund-card${selected}" data-fund-card="${escapeHtml(fund.id)}">
-        <div>
-          <div class="fund-meta">${tags}</div>
-          <h3>${escapeHtml(fund.name)}</h3>
-        </div>
-        <div class="score-row">
+        <div class="fund-card-top">
+          <div>
+            <div class="fund-meta">${tags}</div>
+            <h3>${escapeHtml(fund.name)}</h3>
+            <p class="fund-category">${escapeHtml(fund.category)}</p>
+          </div>
           <div class="score" style="--score: ${score}"><span>${score}</span></div>
-          <p class="score-copy">${escapeHtml(fund.role)}</p>
+        </div>
+        <p class="score-copy">${escapeHtml(fund.role)}</p>
+        <div class="signal-strip" aria-label="${escapeHtml(fund.name)} signal strength">
+          <div class="signal-row">
+            <span>Consistency</span>
+            <div class="signal-bar"><span style="width: ${consistency}%"></span></div>
+            <strong>${consistency}</strong>
+          </div>
+          <div class="signal-row">
+            <span>Risk control</span>
+            <div class="signal-bar"><span style="width: ${drawdown}%"></span></div>
+            <strong>${drawdown}</strong>
+          </div>
         </div>
         <div class="metric-grid">
           <div><span>Expense</span><strong>${fund.expense.toFixed(2)}%</strong></div>
@@ -737,6 +755,7 @@ function cacheElements() {
     stpReturn: qs("#stpReturn"),
     calculatorOutput: qs("#calculatorOutput"),
     portfolioChoices: qs("#portfolioChoices"),
+    fundCount: qs("#fundCount"),
     runXray: qs("#runXray"),
     xrayOutput: qs("#xrayOutput"),
     journalForm: qs("#journalForm"),

@@ -35,16 +35,22 @@
       <section class="workspace-band command-band" aria-labelledby="workspace-title">
         <div class="workspace-grid">
           <div class="command-panel">
-            <p class="release-pill">Phase 1 prototype</p>
-            <h2 id="workspace-title">Self research command desk</h2>
-            <p>
-              Screen categories, compare risk, test SIP/STP assumptions, and write down the decision before investing.
-              This build uses demo research data until live AMFI, AMC, and portfolio feeds are connected.
-            </p>
+            <div class="command-copy">
+              <p class="release-pill">Phase 1 v2</p>
+              <h2 id="workspace-title">Mutual fund research cockpit</h2>
+              <p>
+                Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
+              </p>
+            </div>
+            <div class="desk-stats" aria-label="Desk status">
+              <div><span>Universe</span><strong>10 demo funds</strong></div>
+              <div><span>Mode</span><strong>Research only</strong></div>
+              <div><span>Next</span><strong>Live data</strong></div>
+            </div>
             <div class="control-grid" aria-label="Research filters">
               <label>
                 Search
-                <input id="searchInput" type="search" placeholder="Fund name, category, tag">
+                <input id="searchInput" type="search" placeholder="Search fund, category, risk, tag">
               </label>
               <label>
                 Category
@@ -101,6 +107,7 @@
             <h2 id="screener-title">Research screener</h2>
           </div>
           <div class="toolbar" role="group" aria-label="Screener actions">
+            <span id="fundCount" class="status-chip">10 funds</span>
             <button class="icon-button" id="resetFilters" type="button" aria-label="Reset filters">
               <span aria-hidden="true">R</span>
             </button>

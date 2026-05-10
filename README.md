@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This first prototype is a static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v2 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 ## What is included
 
@@ -15,6 +15,7 @@ This first prototype is a static web app with no build step. Open `index.html` d
 - Portfolio X-Ray for category concentration, blended expense, and shared holdings.
 - Decision journal saved in browser local storage.
 - Phase 2 distributor roadmap for ARN/EUIN/PAN-based client management.
+- Compact v2 product layout with denser first screen, signal bars, and mobile checks.
 
 ## Important compliance posture
 

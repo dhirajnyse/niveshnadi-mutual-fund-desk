@@ -32,4 +32,5 @@ Then open `index.html` and test:
 - Inspect a fund.
 - Run SIP and STP calculators.
 - Select portfolio funds and run X-Ray.
+- Review pricing cards and Phase 2 preview copy.
 - Save a decision journal note.

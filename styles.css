@@ -166,7 +166,7 @@ main {
   display: grid;
   grid-template-columns: minmax(0, 1.8fr) minmax(300px, 0.7fr);
   gap: 14px;
-  align-items: stretch;
+  align-items: start;
 }
 
 .command-panel,
@@ -184,8 +184,9 @@ main {
 .command-panel {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 20px;
-  padding: 24px;
+  gap: 16px 20px;
+  align-items: start;
+  padding: 22px 24px;
 }
 
 .command-copy {
@@ -194,12 +195,12 @@ main {
 
 .command-panel h2 {
   max-width: 720px;
-  font-size: 36px;
+  font-size: 34px;
 }
 
 .command-panel p:not(.release-pill) {
   max-width: 680px;
-  margin: 12px 0 0;
+  margin: 10px 0 0;
   color: var(--muted);
   line-height: 1.55;
 }
@@ -245,11 +246,11 @@ main {
 }
 
 .control-grid {
-  grid-column: 1 / -1;
+  grid-column: 1;
   display: grid;
-  grid-template-columns: minmax(260px, 1.45fr) repeat(3, minmax(168px, 1fr));
+  grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(148px, 1fr));
   gap: 10px;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 label {
@@ -299,8 +300,8 @@ a:focus-visible {
 .market-snapshot div {
   display: grid;
   gap: 4px;
-  padding: 15px;
-  min-height: 100px;
+  padding: 14px 15px;
+  min-height: 88px;
 }
 
 .market-snapshot strong {
@@ -374,7 +375,9 @@ a:focus-visible {
 
 .fund-card,
 .roadmap-grid article,
-.journal-item {
+.journal-item,
+.pricing-card,
+.pricing-note {
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -606,10 +609,15 @@ a:focus-visible {
 }
 
 .tool-grid,
-.portfolio-grid {
+.portfolio-grid,
+.goal-fit-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+}
+
+.goal-fit-grid {
+  grid-template-columns: minmax(290px, 0.56fr) minmax(0, 1.44fr);
 }
 
 .tool-panel {
@@ -623,6 +631,124 @@ a:focus-visible {
   min-height: 100%;
   padding: 14px;
   color: var(--muted);
+}
+
+.goal-fit-form {
+  align-content: start;
+}
+
+.goal-fit-output {
+  min-height: 100%;
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+  color: var(--muted);
+}
+
+.fit-hero,
+.fit-card,
+.fit-fund-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.fit-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 118px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+}
+
+.fit-hero span,
+.fit-card span,
+.fit-fund-card span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.fit-hero strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.fit-hero p,
+.fit-card p,
+.fit-fund-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.fit-score {
+  width: 94px;
+  height: 94px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  position: relative;
+  font-weight: 950;
+}
+
+.fit-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.fit-score b {
+  position: relative;
+  font-size: 22px;
+}
+
+.fit-card-grid,
+.fit-fund-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.fit-card,
+.fit-fund-card {
+  padding: 12px;
+}
+
+.fit-card strong,
+.fit-fund-card strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.fit-list {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.48;
+}
+
+.fit-fund-card {
+  display: grid;
+  gap: 10px;
+}
+
+.fit-fund-card button {
+  justify-self: start;
 }
 
 .result-stack {
@@ -745,6 +871,130 @@ a:focus-visible {
   padding: 14px;
 }
 
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pricing-card {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-height: 316px;
+  padding: 15px;
+  overflow: hidden;
+}
+
+.pricing-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--mint), var(--gold));
+  opacity: 0.72;
+}
+
+.pricing-card.is-featured {
+  border-color: rgba(15, 124, 107, 0.66);
+  box-shadow: 0 0 0 3px rgba(15, 124, 107, 0.1), var(--shadow);
+}
+
+.pricing-card h3 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.plan-kicker {
+  justify-self: start;
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  border-radius: var(--radius);
+  background: var(--mint-soft);
+  color: var(--mint);
+  padding: 4px 7px;
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.founder-card .plan-kicker {
+  background: var(--gold-soft);
+  color: #76480e;
+}
+
+.phase-two-card .plan-kicker {
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+
+.plan-price {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+
+.plan-price strong {
+  font-size: 34px;
+  line-height: 1;
+}
+
+.plan-price span,
+.annual-price,
+.price-note {
+  color: var(--muted);
+}
+
+.annual-price,
+.price-note {
+  margin: 0;
+  line-height: 1.42;
+}
+
+.annual-price {
+  color: #76480e;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.pricing-feature-list {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.pricing-feature-list li::marker {
+  color: var(--mint);
+}
+
+.pricing-note-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.pricing-note {
+  padding: 14px;
+}
+
+.pricing-note strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 17px;
+}
+
+.pricing-note p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
 .disclosure-band {
   padding: 14px;
   color: var(--muted);
@@ -765,13 +1015,183 @@ a:focus-visible {
   padding: 20px;
 }
 
+.floating-search {
+  position: fixed;
+  right: 18px;
+  bottom: 78px;
+  z-index: 91;
+}
+
+.floating-action-button,
+.scroll-top-button {
+  border: 1px solid rgba(15, 124, 107, 0.28);
+  border-radius: 999px;
+  box-shadow: 0 14px 32px rgba(15, 34, 56, 0.16);
+}
+
+.floating-action-button {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  color: var(--mint);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.floating-action-button:hover,
+.floating-action-button.is-open {
+  border-color: rgba(15, 124, 107, 0.48);
+  background: var(--mint-soft);
+}
+
+.search-glyph {
+  position: relative;
+  width: 21px;
+  height: 21px;
+  display: block;
+}
+
+.search-glyph::before,
+.search-glyph::after {
+  content: "";
+  position: absolute;
+  display: block;
+}
+
+.search-glyph::before {
+  inset: 1px 5px 5px 1px;
+  border: 3px solid currentColor;
+  border-radius: 50%;
+}
+
+.search-glyph::after {
+  width: 10px;
+  height: 3px;
+  right: 0;
+  bottom: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transform: rotate(45deg);
+  transform-origin: center;
+}
+
+.floating-search-panel {
+  position: absolute;
+  right: 0;
+  bottom: 62px;
+  width: min(410px, calc(100vw - 24px));
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(15, 124, 107, 0.28);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 22px 54px rgba(15, 34, 56, 0.2);
+}
+
+.floating-search-panel[hidden] {
+  display: none;
+}
+
+.floating-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.floating-panel-head strong {
+  font-size: 14px;
+}
+
+.floating-panel-close {
+  min-height: 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+  color: var(--muted);
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.floating-search-panel label span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.floating-section-links {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.floating-section-links a {
+  display: grid;
+  min-height: 34px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--blue-soft);
+  color: var(--blue);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.floating-section-links a:hover,
+.floating-section-links a:focus-visible {
+  background: var(--mint-soft);
+  color: var(--mint);
+}
+
+.scroll-top-button {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 90;
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-color: rgba(15, 34, 56, 0.22);
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 900;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px) scale(0.92);
+  transition: opacity 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.scroll-top-button.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.scroll-top-button:hover {
+  background: var(--blue);
+}
+
 @media (max-width: 1220px) {
   .fund-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .pricing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .command-panel {
     grid-template-columns: 1fr;
+  }
+
+  .control-grid {
+    grid-column: 1 / -1;
   }
 
   .desk-stats {
@@ -784,7 +1204,8 @@ a:focus-visible {
   .workspace-grid,
   .detail-grid,
   .tool-grid,
-  .portfolio-grid {
+  .portfolio-grid,
+  .goal-fit-grid {
     grid-template-columns: 1fr;
   }
 
@@ -795,7 +1216,8 @@ a:focus-visible {
 
   .control-grid,
   .fund-grid,
-  .roadmap-grid {
+  .roadmap-grid,
+  .pricing-note-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -829,10 +1251,18 @@ a:focus-visible {
   .control-grid,
   .fund-grid,
   .roadmap-grid,
+  .pricing-grid,
+  .pricing-note-grid,
   .risk-grid,
   .metric-grid,
   .desk-stats,
-  .choice-list {
+  .choice-list,
+  .fit-card-grid,
+  .fit-fund-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fit-hero {
     grid-template-columns: 1fr;
   }
 
@@ -847,6 +1277,34 @@ a:focus-visible {
 
   .workspace-band {
     width: min(100% - 20px, 1380px);
+  }
+
+  .floating-search {
+    right: 12px;
+    bottom: 66px;
+  }
+
+  .floating-action-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .floating-search-panel {
+    bottom: 54px;
+    max-height: calc(100vh - 112px);
+    overflow: auto;
+  }
+
+  .floating-section-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .scroll-top-button {
+    right: 12px;
+    bottom: 12px;
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
   }
 }
 
@@ -865,5 +1323,9 @@ a:focus-visible {
   .text-button:hover,
   .primary-button:hover {
     transform: none;
+  }
+
+  .scroll-top-button {
+    transition: none;
   }
 }

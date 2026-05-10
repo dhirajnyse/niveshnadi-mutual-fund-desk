@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260510-02";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v2 Compact Product";
+const DATA_VERSION = "20260510-05";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v4 Investor Membership";
 
 const FUNDS = [
   {
@@ -45,6 +45,28 @@ const FUNDS = [
     holdings: ["ICICI Bank", "Trent", "Larsen and Toubro", "Persistent Systems", "Zomato"],
     sectors: ["Financials", "Consumer", "Industrials", "Technology"],
     tags: ["flexible", "growth", "satellite"]
+  },
+  {
+    id: "elss-tax",
+    name: "Nadi ELSS Tax Saver Fund",
+    category: "ELSS Fund",
+    sleeve: "Equity",
+    risk: "High",
+    expense: 0.47,
+    aum: 11600,
+    returns3y: 18.9,
+    returns5y: 15.8,
+    maxDrawdown: 22,
+    consistency: 78,
+    researchCoverage: 74,
+    minSip: 500,
+    style: "Tax-saving equity allocation with a three-year lock-in",
+    role: "Tax-planning equity sleeve for investors who can accept lock-in and drawdown.",
+    manager: "Demo data team",
+    benchmark: "Nifty 500 TRI",
+    holdings: ["HDFC Bank", "ICICI Bank", "Infosys", "Larsen and Toubro", "Trent"],
+    sectors: ["Financials", "Technology", "Industrials", "Consumer"],
+    tags: ["tax", "elss", "lock-in", "section 80c"]
   },
   {
     id: "mid-growth",
@@ -458,6 +480,13 @@ function renderAll() {
   renderPortfolioChoices();
 }
 
+function syncSearchInputs(value) {
+  state.filters.search = value;
+  els.searchInput.value = value;
+  if (els.floatingSearchInput) els.floatingSearchInput.value = value;
+  renderFundGrid();
+}
+
 function sharedHoldings(funds) {
   const counts = new Map();
   for (const fund of funds) {
@@ -595,6 +624,198 @@ function renderCalculatorOutput(title, rows, bars) {
   `;
 }
 
+function renderGoalFitCompass(event) {
+  if (event) event.preventDefault();
+  if (!els.goalFitOutput) return;
+  const config = readGoalFitConfig();
+  const map = buildGoalResearchMap(config);
+  const projection = calculateSipFutureValue(config.sip, config.years, map.assumption);
+  const matchingFunds = FUNDS.filter((fund) => map.demoCategories.includes(fund.category))
+    .sort((a, b) => nadiScore(b) - nadiScore(a))
+    .slice(0, 5);
+
+  els.goalFitOutput.innerHTML = `
+    <div class="fit-hero">
+      <div>
+        <span>Research posture</span>
+        <strong>${escapeHtml(map.posture)}</strong>
+        <p>${escapeHtml(map.summary)}</p>
+      </div>
+      <div class="fit-score" style="--score: ${map.clarityScore}">
+        <b>${map.clarityScore}</b>
+      </div>
+    </div>
+    <div class="fit-card-grid">
+      <article class="fit-card">
+        <span>Research first</span>
+        <strong>${escapeHtml(map.categories.join(" | "))}</strong>
+        <p>${escapeHtml(map.categoryReason)}</p>
+      </article>
+      <article class="fit-card">
+        <span>SIP discipline</span>
+        <strong>${formatMoney(projection.value)}</strong>
+        <p>${formatMoney(config.sip)} monthly for ${config.years} years at ${map.assumption.toFixed(1)}% demo return.</p>
+      </article>
+      <article class="fit-card">
+        <span>Decision guardrail</span>
+        <strong>${escapeHtml(map.guardrail)}</strong>
+        <p>This is category research guidance, not a personalized fund recommendation.</p>
+      </article>
+    </div>
+    <div class="fit-card">
+      <span>Watch-outs</span>
+      <ul class="fit-list">
+        ${map.watchouts.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+    <div class="fit-fund-grid">
+      ${matchingFunds.length ? matchingFunds.map((fund) => `
+        <article class="fit-fund-card">
+          <span>${escapeHtml(fund.category)}</span>
+          <strong>${escapeHtml(fund.name)}</strong>
+          <p>${escapeHtml(fund.role)}</p>
+          <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">Inspect fund</button>
+        </article>
+      `).join("") : `
+        <article class="fit-fund-card">
+          <span>Planned data</span>
+          <strong>No demo fund in this category yet</strong>
+          <p>Add live AMFI and AMC category coverage before using this path in production.</p>
+        </article>
+      `}
+    </div>
+  `;
+}
+
+function readGoalFitConfig() {
+  return {
+    type: els.goalType?.value || "wealth",
+    years: clampNumber(Number(els.goalYears?.value || 7), 1, 40),
+    risk: els.goalRisk?.value || "balanced",
+    sip: clampNumber(Number(els.goalSip?.value || 15000), 500, 10000000)
+  };
+}
+
+function buildGoalResearchMap(config) {
+  let categories = [];
+  let posture = "Balanced core research";
+  let categoryReason = "Start with diversified categories before selecting individual schemes.";
+  let guardrail = "Avoid chasing one-year rankers";
+  let assumption = 9;
+  let clarityScore = 78;
+  const watchouts = [
+    "Check expense ratio, rolling return consistency, drawdown, and benchmark fit.",
+    "Avoid adding another fund if it duplicates your existing core holdings."
+  ];
+
+  if (config.type === "emergency" || config.years <= 1) {
+    categories = ["Liquid Fund", "Corporate Bond Fund"];
+    posture = "Capital parking research";
+    categoryReason = "Near-term money should be researched for liquidity, credit quality, and low drawdown.";
+    guardrail = "Do not use high-volatility equity categories for near-term cash.";
+    assumption = 5.5;
+    clarityScore = 90;
+    watchouts.push("Check exit load, credit quality, modified duration, and portfolio concentration.");
+  } else if (config.type === "income" || config.years <= 3) {
+    categories = ["Corporate Bond Fund", "Liquid Fund", "Balanced Hybrid Fund"];
+    posture = "Stability-first research";
+    categoryReason = "Short to medium horizon research should start with debt quality and conservative hybrid exposure.";
+    guardrail = "Separate income stability from long-term wealth creation.";
+    assumption = 6.8;
+    clarityScore = 84;
+    watchouts.push("Debt funds still carry interest-rate and credit risk; inspect portfolio quality.");
+  } else if (config.type === "tax") {
+    categories = ["ELSS Fund", "Large Cap Fund", "Flexi Cap Fund"];
+    posture = "Tax-saving research path";
+    categoryReason = "Start with ELSS, then compare the equity style against large/flexi alternatives before treating tax benefit as the only reason.";
+    guardrail = "Do not buy only for tax benefit; inspect lock-in and equity risk.";
+    assumption = config.risk === "aggressive" ? 11 : 9.5;
+    clarityScore = 76;
+    watchouts.push("ELSS has a lock-in period and equity drawdown risk; compare with the full tax plan.");
+  } else if (config.type === "retirement") {
+    categories = config.years >= 12
+      ? ["Life Cycle Fund", "Index Fund", "Large Cap Fund", "Multi Asset Allocation Fund"]
+      : ["Multi Asset Allocation Fund", "Balanced Hybrid Fund", "Corporate Bond Fund"];
+    posture = "Glide-path research";
+    categoryReason = "Retirement planning needs a core-satellite path that gradually reduces risk as the date nears.";
+    guardrail = "Review asset allocation yearly, not daily NAV movement.";
+    assumption = config.years >= 12 ? 10.2 : 8;
+    clarityScore = config.years >= 12 ? 86 : 80;
+    watchouts.push("Rebalance path matters more than finding the most exciting fund today.");
+  } else if (config.type === "education") {
+    categories = config.years >= 7
+      ? ["Index Fund", "Large Cap Fund", "Balanced Hybrid Fund", "Multi Asset Allocation Fund"]
+      : ["Balanced Hybrid Fund", "Corporate Bond Fund", "Liquid Fund"];
+    posture = "Goal-date protection path";
+    categoryReason = "Education goals need growth early and capital protection as the date approaches.";
+    guardrail = "Reduce equity risk as the goal date comes closer.";
+    assumption = config.years >= 7 ? 9.8 : 7.2;
+    clarityScore = config.years >= 7 ? 84 : 79;
+    watchouts.push("Map the actual year of expense and de-risk before the money is needed.");
+  } else if (config.risk === "aggressive" && config.years >= 7) {
+    categories = ["Index Fund", "Large Cap Fund", "Flexi Cap Fund", "Mid Cap Fund", "Small Cap Fund"];
+    posture = "Core plus satellite research";
+    categoryReason = "Long horizon and high risk comfort can support equity research, with mid/small caps kept as satellites.";
+    guardrail = "Keep satellites sized deliberately.";
+    assumption = 11.5;
+    clarityScore = 82;
+    watchouts.push("Mid and small cap funds can fall sharply; inspect drawdown and fund capacity.");
+  } else if (config.risk === "conservative") {
+    categories = ["Balanced Hybrid Fund", "Multi Asset Allocation Fund", "Corporate Bond Fund"];
+    posture = "Smoother journey research";
+    categoryReason = "A conservative investor should research smoother allocation categories before pure equity exposure.";
+    guardrail = "Do not stretch risk just because past returns look high.";
+    assumption = 7.5;
+    clarityScore = 81;
+    watchouts.push("Check whether the fund's equity allocation is acceptable before starting SIP.");
+  } else {
+    categories = ["Index Fund", "Large Cap Fund", "Flexi Cap Fund", "Multi Asset Allocation Fund"];
+    posture = "Balanced equity research";
+    categoryReason = "A balanced long-term path can start with low-cost core exposure and one flexible growth sleeve.";
+    guardrail = "Build the core before adding niche themes.";
+    assumption = 9.8;
+    clarityScore = 83;
+    watchouts.push("Compare active funds against index alternatives after cost and consistency.");
+  }
+
+  if (config.risk === "aggressive" && config.years < 5) {
+    watchouts.push("Aggressive risk comfort does not remove time-horizon risk.");
+    clarityScore -= 6;
+  }
+  if (config.sip < 2000) {
+    watchouts.push("Keep the fund count low when the monthly SIP is small.");
+  }
+
+  const demoCategories = categories;
+  return {
+    assumption,
+    categories,
+    categoryReason,
+    clarityScore: Math.max(52, Math.min(94, clarityScore)),
+    demoCategories,
+    guardrail,
+    posture,
+    summary: `${config.years} year horizon, ${config.risk} risk comfort, ${formatMoney(config.sip)} monthly SIP capacity.`,
+    watchouts
+  };
+}
+
+function calculateSipFutureValue(monthly, years, annualReturn) {
+  const monthlyReturn = annualReturn / 100 / 12;
+  let invested = 0;
+  let value = 0;
+  for (let month = 1; month <= years * 12; month += 1) {
+    value = (value + monthly) * (1 + monthlyReturn);
+    invested += monthly;
+  }
+  return { invested, value, gain: value - invested };
+}
+
+function clampNumber(value, min, max) {
+  if (!Number.isFinite(value)) return min;
+  return Math.min(max, Math.max(min, value));
+}
+
 function makeBrief() {
   const fund = selectedFund();
   const score = nadiScore(fund);
@@ -608,6 +829,7 @@ function makeBrief() {
     `Nadi score: ${score}/100`,
     `Expense ratio: ${fund.expense.toFixed(2)}%`,
     `Role: ${fund.role}`,
+    "Membership: Free research starter with planned Nadi Plus at Rs. 99/month or Rs. 999/year.",
     "",
     "## Evidence Snapshot",
     `- Style: ${fund.style}`,
@@ -677,8 +899,7 @@ function handleJournal(event) {
 
 function bindEvents() {
   els.searchInput.addEventListener("input", (event) => {
-    state.filters.search = event.target.value;
-    renderFundGrid();
+    syncSearchInputs(event.target.value);
   });
   els.categoryFilter.addEventListener("change", (event) => {
     state.filters.category = event.target.value;
@@ -694,6 +915,7 @@ function bindEvents() {
   });
   els.resetFilters.addEventListener("click", () => {
     state.filters = { search: "", category: "all", risk: "all", sort: "score" };
+    if (els.floatingSearchInput) els.floatingSearchInput.value = "";
     els.searchInput.value = "";
     els.categoryFilter.value = "all";
     els.riskFilter.value = "all";
@@ -701,6 +923,10 @@ function bindEvents() {
     renderFundGrid();
   });
   els.copyBrief.addEventListener("click", () => copyText(makeBrief()));
+  els.goalFitForm?.addEventListener("submit", renderGoalFitCompass);
+  [els.goalType, els.goalYears, els.goalRisk, els.goalSip].forEach((input) => {
+    input?.addEventListener("change", () => renderGoalFitCompass());
+  });
   els.sipForm.addEventListener("submit", runSip);
   els.stpForm.addEventListener("submit", runStp);
   els.runXray.addEventListener("click", analyzePortfolio);
@@ -730,6 +956,68 @@ function bindEvents() {
     renderPortfolioChoices();
     renderFundDetail();
   });
+
+  bindFloatingSearch();
+  bindScrollTopButton();
+}
+
+function bindFloatingSearch() {
+  if (!els.floatingSearchToggle || !els.floatingSearchPanel || !els.floatingSearchInput) return;
+  const setOpen = (isOpen) => {
+    els.floatingSearchPanel.hidden = !isOpen;
+    els.floatingSearchToggle.classList.toggle("is-open", isOpen);
+    els.floatingSearchToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    if (isOpen && window.innerWidth > 680) {
+      els.floatingSearchInput.focus();
+      els.floatingSearchInput.select();
+    }
+  };
+
+  els.floatingSearchToggle.addEventListener("click", () => {
+    const shouldOpen = els.floatingSearchPanel.hidden;
+    setOpen(shouldOpen);
+    if (shouldOpen) {
+      document.querySelector("#screener")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+
+  els.floatingSearchClose?.addEventListener("click", () => setOpen(false));
+  els.floatingSearchInput.addEventListener("input", (event) => {
+    syncSearchInputs(event.target.value);
+  });
+  els.floatingSearchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setOpen(false);
+  });
+  els.floatingSearchPanel.addEventListener("click", (event) => {
+    if (event.target.closest("a")) setOpen(false);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !els.floatingSearchPanel.hidden) setOpen(false);
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      setOpen(true);
+    }
+  });
+}
+
+function bindScrollTopButton() {
+  if (!els.scrollTopButton) return;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const updateVisibility = () => {
+    const isVisible = window.scrollY > 460;
+    els.scrollTopButton.classList.toggle("is-visible", isVisible);
+    els.scrollTopButton.setAttribute("aria-hidden", isVisible ? "false" : "true");
+    els.scrollTopButton.tabIndex = isVisible ? 0 : -1;
+  };
+  els.scrollTopButton.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: reduceMotion.matches ? "auto" : "smooth"
+    });
+  });
+  window.addEventListener("scroll", updateVisibility, { passive: true });
+  window.addEventListener("resize", updateVisibility);
+  updateVisibility();
 }
 
 function cacheElements() {
@@ -748,6 +1036,12 @@ function cacheElements() {
     sipYears: qs("#sipYears"),
     sipReturn: qs("#sipReturn"),
     sipStepUp: qs("#sipStepUp"),
+    goalFitForm: qs("#goalFitForm"),
+    goalType: qs("#goalType"),
+    goalYears: qs("#goalYears"),
+    goalRisk: qs("#goalRisk"),
+    goalSip: qs("#goalSip"),
+    goalFitOutput: qs("#goalFitOutput"),
     stpForm: qs("#stpForm"),
     stpCorpus: qs("#stpCorpus"),
     stpTransfer: qs("#stpTransfer"),
@@ -763,7 +1057,12 @@ function cacheElements() {
     journalDecision: qs("#journalDecision"),
     journalReason: qs("#journalReason"),
     journalList: qs("#journalList"),
-    clearJournal: qs("#clearJournal")
+    clearJournal: qs("#clearJournal"),
+    floatingSearchToggle: qs("#floatingSearchToggle"),
+    floatingSearchPanel: qs("#floatingSearchPanel"),
+    floatingSearchClose: qs("#floatingSearchClose"),
+    floatingSearchInput: qs("#floatingSearchInput"),
+    scrollTopButton: qs("#scrollTopButton")
   });
 }
 
@@ -772,6 +1071,7 @@ function init() {
   renderCategoryFilter();
   bindEvents();
   renderAll();
+  renderGoalFitCompass();
   renderJournal();
   analyzePortfolio();
 }

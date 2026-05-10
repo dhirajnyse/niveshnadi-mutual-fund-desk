@@ -1,6 +1,6 @@
 {
   "dataStatus": "demo",
-  "version": "20260510-02",
+  "version": "20260510-04",
   "purpose": "Representative mutual fund research data for product prototyping only.",
   "disclaimer": "Not live AMC, AMFI, RTA, or exchange data. Do not use for investment decisions.",
   "categories": [
@@ -13,7 +13,8 @@
     "Liquid Fund",
     "Index Fund",
     "Multi Asset Allocation Fund",
-    "Life Cycle Fund"
+    "Life Cycle Fund",
+    "ELSS Fund"
   ],
   "plannedFields": [
     "schemeCode",

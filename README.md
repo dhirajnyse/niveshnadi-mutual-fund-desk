@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v4 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v5 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 ## What is included
 
@@ -11,13 +11,14 @@ This Phase 1 v4 prototype is a compact static web app with no build step. Open `
 - Demo mutual fund screener across equity, debt, hybrid, passive, and life-cycle categories.
 - Fund DNA view with role, style, benchmark, holdings, sector map, and decision prompts.
 - Goal Fit Compass that maps goal type, horizon, risk comfort, and SIP capacity to category-level research paths.
+- First SIP Coach that turns a starting point into a guided route across Goal Fit, SIP lab, X-Ray, and Journal.
 - SIP calculator with annual step-up support.
 - STP calculator for staged transfers from a source corpus.
 - Portfolio X-Ray for category concentration, blended expense, and shared holdings.
 - Decision journal saved in browser local storage.
 - Pricing and monetization preview with Free, Nadi Plus, Founder Circle, and Phase 2 Distributor Desk plans.
 - Phase 2 distributor roadmap for ARN/EUIN/PAN-based client management.
-- Compact v4 product layout with denser first screen, signal bars, mobile checks, floating fund search, back-to-top control, goal-fit research mapping, and a trust-first retail membership model.
+- Compact v5 product layout with denser first screen, signal bars, mobile checks, floating fund search, back-to-top control, goal-fit research mapping, First SIP Coach, and a trust-first retail membership model.
 
 ## Important compliance posture
 
@@ -82,6 +83,7 @@ git push -u origin main
 2. Add ELSS, arbitrage, overnight, gilt, low-duration, and sector/thematic categories.
 3. Add real fund detail pages with citation-backed evidence.
 4. Add portfolio import from manual CAS-style entries.
-5. Add investor education journeys for first SIP, STP from cash, ELSS review, and debt fund risk.
-6. Add payment, account, and entitlement logic after deciding GST, refund, and launch-offer policy.
-7. Add distributor Phase 2 workspace only after compliance review.
+5. Add live evidence citations inside the First SIP Coach route.
+6. Add investor education journeys for STP from cash, ELSS review, debt fund risk, and SIP review discipline.
+7. Add payment, account, and entitlement logic after deciding GST, refund, and launch-offer policy.
+8. Add distributor Phase 2 workspace only after compliance review.

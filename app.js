@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260510-05";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v4 Investor Membership";
+const DATA_VERSION = "20260510-06";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v5 First SIP Coach";
 
 const FUNDS = [
   {
@@ -811,6 +811,235 @@ function calculateSipFutureValue(monthly, years, annualReturn) {
   return { invested, value, gain: value - invested };
 }
 
+function renderFirstSipCoach(event) {
+  if (event) event.preventDefault();
+  if (!els.journeyOutput) return;
+  const config = readJourneyConfig();
+  const route = buildFirstSipJourney(config);
+
+  els.journeyOutput.innerHTML = `
+    <div class="journey-hero">
+      <div>
+        <span>Research route</span>
+        <strong>${escapeHtml(route.title)}</strong>
+        <p>${escapeHtml(route.summary)}</p>
+      </div>
+      <div class="journey-score" style="--score: ${route.readiness}">
+        <b>${route.readiness}</b>
+      </div>
+    </div>
+    <div class="journey-stat-grid">
+      <div><span>Monthly SIP</span><strong>${formatMoney(config.sip)}</strong></div>
+      <div><span>Demo runway</span><strong>${formatMoney(route.projection.value)}</strong></div>
+      <div><span>Research set</span><strong>${escapeHtml(route.categories.slice(0, 2).join(" | "))}</strong></div>
+    </div>
+    <div class="journey-steps" aria-label="First SIP research steps">
+      ${route.steps.map((step, index) => `
+        <article class="journey-step">
+          <b>${index + 1}</b>
+          <span>${escapeHtml(step.kicker)}</span>
+          <strong>${escapeHtml(step.title)}</strong>
+          <p>${escapeHtml(step.copy)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="journey-fund-grid">
+      ${route.funds.map((fund) => `
+        <article class="journey-fund-card">
+          <span>${escapeHtml(fund.category)}</span>
+          <strong>${escapeHtml(fund.name)}</strong>
+          <p>${escapeHtml(fund.role)}</p>
+          <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">Inspect</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="journey-actions" aria-label="Journey actions">
+      <button class="text-button" type="button" data-journey-action="goal-fit">Apply to Goal Fit</button>
+      <button class="text-button" type="button" data-journey-action="sip-lab">Run SIP lab</button>
+      <button class="text-button" type="button" data-journey-action="xray">Build X-Ray set</button>
+      <button class="primary-button" type="button" data-journey-action="journal">Draft journal</button>
+    </div>
+    <p class="journey-disclaimer">${escapeHtml(route.guardrail)} This route is research support only, not personalized investment advice.</p>
+  `;
+}
+
+function readJourneyConfig() {
+  return {
+    intent: els.journeyIntent?.value || "first-sip",
+    years: clampNumber(Number(els.journeyYears?.value || 7), 1, 40),
+    risk: els.journeyRisk?.value || "balanced",
+    sip: clampNumber(Number(els.journeySip?.value || 10000), 500, 10000000),
+    depth: els.journeyDepth?.value || "simple"
+  };
+}
+
+function buildFirstSipJourney(config) {
+  const goalType = journeyGoalType(config.intent, config.years);
+  const goalRisk = journeyGoalRisk(config.risk);
+  const map = buildGoalResearchMap({
+    type: goalType,
+    years: config.years,
+    risk: goalRisk,
+    sip: config.sip
+  });
+  const projection = calculateSipFutureValue(config.sip, config.years, map.assumption);
+  const limit = config.depth === "simple" ? 3 : config.depth === "deep" ? 4 : 5;
+  let funds = FUNDS.filter((fund) => map.demoCategories.includes(fund.category))
+    .sort((a, b) => nadiScore(b) - nadiScore(a))
+    .slice(0, limit);
+  if (!funds.length) {
+    funds = [...FUNDS].sort((a, b) => nadiScore(b) - nadiScore(a)).slice(0, limit);
+  }
+
+  const routeCopy = journeyCopy(config.intent);
+  let readiness = map.clarityScore;
+  if (config.depth === "deep") readiness += 3;
+  if (config.depth === "family") readiness += 5;
+  if (config.sip < 2000) readiness -= 4;
+  if (config.intent === "review-sip") readiness += 2;
+  readiness = Math.max(55, Math.min(94, readiness));
+
+  const steps = [
+    {
+      kicker: "Goal",
+      title: routeCopy.stepOne,
+      copy: `${config.years} year horizon with ${formatMoney(config.sip)} monthly SIP capacity.`
+    },
+    {
+      kicker: "Category",
+      title: map.categories.slice(0, 2).join(" | "),
+      copy: map.categoryReason
+    },
+    {
+      kicker: "Shortlist",
+      title: config.depth === "simple" ? "Keep it tight" : "Compare evidence",
+      copy: `${funds.length} demo funds are staged below for inspection before any action.`
+    },
+    {
+      kicker: "Risk",
+      title: "Check overlap first",
+      copy: "Use X-Ray to avoid adding a fund that repeats the same holdings or category exposure."
+    },
+    {
+      kicker: "Decision",
+      title: "Write before investing",
+      copy: "Capture reason, review trigger, and what would make you pause or change the SIP."
+    }
+  ];
+
+  return {
+    assumption: map.assumption,
+    categories: map.categories,
+    config,
+    funds,
+    goalRisk,
+    goalType,
+    guardrail: map.guardrail,
+    journalDecision: routeCopy.journalDecision,
+    journalNote: `${routeCopy.title}: Research ${map.categories.join(", ")}. Inspect cost, drawdown, benchmark fit, and overlap before action. Guardrail: ${map.guardrail}.`,
+    projection,
+    readiness,
+    steps,
+    summary: `${routeCopy.summary} ${map.summary}`,
+    title: routeCopy.title
+  };
+}
+
+function journeyGoalType(intent, years) {
+  if (intent === "tax-saving") return "tax";
+  if (intent === "cash-stp") return years <= 2 ? "emergency" : "income";
+  if (intent === "child-goal") return "education";
+  if (intent === "retirement") return "retirement";
+  return "wealth";
+}
+
+function journeyGoalRisk(risk) {
+  if (risk === "cautious") return "conservative";
+  if (risk === "growth") return "aggressive";
+  return "balanced";
+}
+
+function journeyCopy(intent) {
+  const copy = {
+    "first-sip": {
+      title: "First SIP confidence route",
+      summary: "Start with a small, inspectable research path before expanding the fund count.",
+      stepOne: "Name the first goal",
+      journalDecision: "Start SIP"
+    },
+    "review-sip": {
+      title: "Existing SIP review route",
+      summary: "Separate performance anxiety from real evidence before pausing, increasing, or switching.",
+      stepOne: "State current concern",
+      journalDecision: "Review with advisor"
+    },
+    "tax-saving": {
+      title: "ELSS tax research route",
+      summary: "Treat tax benefit as one input, then inspect lock-in, equity risk, and portfolio fit.",
+      stepOne: "Check lock-in comfort",
+      journalDecision: "Watch"
+    },
+    "cash-stp": {
+      title: "Cash to market STP route",
+      summary: "Keep source money stable while researching transfer discipline into the target category.",
+      stepOne: "Protect source bucket",
+      journalDecision: "Watch"
+    },
+    "child-goal": {
+      title: "Education goal route",
+      summary: "Balance growth and de-risking because the expense date is real and cannot be delayed.",
+      stepOne: "Map expense year",
+      journalDecision: "Watch"
+    },
+    retirement: {
+      title: "Retirement glide route",
+      summary: "Research a long-term allocation path that can reduce risk as retirement nears.",
+      stepOne: "Define target year",
+      journalDecision: "Watch"
+    }
+  };
+  return copy[intent] || copy["first-sip"];
+}
+
+function handleJourneyAction(action) {
+  const route = buildFirstSipJourney(readJourneyConfig());
+  if (action === "goal-fit") {
+    els.goalType.value = route.goalType;
+    els.goalYears.value = route.config.years;
+    els.goalRisk.value = route.goalRisk;
+    els.goalSip.value = route.config.sip;
+    renderGoalFitCompass();
+    document.querySelector("#goal-fit")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  if (action === "sip-lab") {
+    els.sipAmount.value = route.config.sip;
+    els.sipYears.value = route.config.years;
+    els.sipReturn.value = route.assumption.toFixed(1);
+    els.sipStepUp.value = route.config.depth === "family" ? 10 : 5;
+    els.sipForm.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    document.querySelector("#calculator")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  if (action === "xray") {
+    state.compare = new Set(route.funds.slice(0, 4).map((fund) => fund.id));
+    state.selectedId = route.funds[0]?.id || state.selectedId;
+    renderAll();
+    analyzePortfolio();
+    document.querySelector("#portfolio")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  if (action === "journal") {
+    els.journalFund.value = `${route.title} | ${route.categories.slice(0, 3).join(", ")}`;
+    els.journalDecision.value = route.journalDecision;
+    els.journalReason.value = route.journalNote;
+    document.querySelector("#journal")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 function clampNumber(value, min, max) {
   if (!Number.isFinite(value)) return min;
   return Math.min(max, Math.max(min, value));
@@ -927,6 +1156,10 @@ function bindEvents() {
   [els.goalType, els.goalYears, els.goalRisk, els.goalSip].forEach((input) => {
     input?.addEventListener("change", () => renderGoalFitCompass());
   });
+  els.journeyForm?.addEventListener("submit", renderFirstSipCoach);
+  [els.journeyIntent, els.journeyYears, els.journeyRisk, els.journeySip, els.journeyDepth].forEach((input) => {
+    input?.addEventListener("change", () => renderFirstSipCoach());
+  });
   els.sipForm.addEventListener("submit", runSip);
   els.stpForm.addEventListener("submit", runStp);
   els.runXray.addEventListener("click", analyzePortfolio);
@@ -943,6 +1176,12 @@ function bindEvents() {
     renderFundGrid();
     renderFundDetail();
     document.querySelector(".detail-band").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-journey-action]");
+    if (!button) return;
+    handleJourneyAction(button.dataset.journeyAction);
   });
 
   document.addEventListener("change", (event) => {
@@ -1042,6 +1281,13 @@ function cacheElements() {
     goalRisk: qs("#goalRisk"),
     goalSip: qs("#goalSip"),
     goalFitOutput: qs("#goalFitOutput"),
+    journeyForm: qs("#journeyForm"),
+    journeyIntent: qs("#journeyIntent"),
+    journeyYears: qs("#journeyYears"),
+    journeyRisk: qs("#journeyRisk"),
+    journeySip: qs("#journeySip"),
+    journeyDepth: qs("#journeyDepth"),
+    journeyOutput: qs("#journeyOutput"),
     stpForm: qs("#stpForm"),
     stpCorpus: qs("#stpCorpus"),
     stpTransfer: qs("#stpTransfer"),
@@ -1072,6 +1318,7 @@ function init() {
   bindEvents();
   renderAll();
   renderGoalFitCompass();
+  renderFirstSipCoach();
   renderJournal();
   analyzePortfolio();
 }

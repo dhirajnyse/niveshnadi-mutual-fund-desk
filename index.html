@@ -26,6 +26,7 @@
       <nav class="top-nav" aria-label="Workspace">
         <a href="#screener">Screener</a>
         <a href="#goal-fit">Goal Fit</a>
+        <a href="#journey">Coach</a>
         <a href="#calculator">SIP/STP</a>
         <a href="#portfolio">X-Ray</a>
         <a href="#pricing">Pricing</a>
@@ -38,7 +39,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-              <p class="release-pill">Phase 1 v4</p>
+              <p class="release-pill">Phase 1 v5</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -174,6 +175,60 @@
           </form>
           <div id="goalFitOutput" class="goal-fit-output" aria-live="polite">
             Select a goal profile to see which mutual fund categories deserve research first, what to avoid, and which demo funds to inspect.
+          </div>
+        </div>
+      </section>
+
+      <section id="journey" class="workspace-band journey-band" aria-labelledby="journey-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Investor journey</p>
+            <h2 id="journey-title">First SIP Coach</h2>
+          </div>
+          <span class="status-chip">Guided research route</span>
+        </div>
+        <div class="journey-grid">
+          <form id="journeyForm" class="tool-panel journey-form">
+            <h3>Build a route</h3>
+            <label>
+              Starting point
+              <select id="journeyIntent">
+                <option value="first-sip">First SIP</option>
+                <option value="review-sip">Review existing SIP</option>
+                <option value="tax-saving">Tax-saving SIP</option>
+                <option value="cash-stp">Move cash through STP</option>
+                <option value="child-goal">Child education goal</option>
+                <option value="retirement">Retirement route</option>
+              </select>
+            </label>
+            <label>
+              Years available
+              <input id="journeyYears" type="number" min="1" max="40" step="1" value="7">
+            </label>
+            <label>
+              Risk comfort
+              <select id="journeyRisk">
+                <option value="balanced">Balanced</option>
+                <option value="cautious">Cautious</option>
+                <option value="growth">Growth</option>
+              </select>
+            </label>
+            <label>
+              Monthly SIP budget
+              <input id="journeySip" type="number" min="500" step="500" value="10000">
+            </label>
+            <label>
+              Research depth
+              <select id="journeyDepth">
+                <option value="simple">Simple shortlist</option>
+                <option value="deep">Deeper comparison</option>
+                <option value="family">Family portfolio view</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build route</button>
+          </form>
+          <div id="journeyOutput" class="journey-output" aria-live="polite">
+            Choose a starting point and NiveshNadi will turn the research tools into one step-by-step route.
           </div>
         </div>
       </section>
@@ -415,6 +470,7 @@
         <div class="floating-section-links" aria-label="Quick sections">
           <a href="#screener">Screener</a>
           <a href="#goal-fit">Goal Fit</a>
+          <a href="#journey">Coach</a>
           <a href="#calculator">SIP/STP</a>
           <a href="#portfolio">X-Ray</a>
           <a href="#pricing">Pricing</a>

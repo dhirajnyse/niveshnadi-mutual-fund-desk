@@ -30,6 +30,7 @@ Then open `index.html` and test:
 - Search funds.
 - Filter by category and risk.
 - Inspect a fund.
+- Build a First SIP Coach route and test each action button.
 - Run SIP and STP calculators.
 - Select portfolio funds and run X-Ray.
 - Review pricing cards and Phase 2 preview copy.

@@ -610,7 +610,8 @@ a:focus-visible {
 
 .tool-grid,
 .portfolio-grid,
-.goal-fit-grid {
+.goal-fit-grid,
+.journey-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
@@ -618,6 +619,10 @@ a:focus-visible {
 
 .goal-fit-grid {
   grid-template-columns: minmax(290px, 0.56fr) minmax(0, 1.44fr);
+}
+
+.journey-grid {
+  grid-template-columns: minmax(290px, 0.48fr) minmax(0, 1.52fr);
 }
 
 .tool-panel {
@@ -637,7 +642,23 @@ a:focus-visible {
   align-content: start;
 }
 
+.journey-form {
+  align-content: start;
+}
+
 .goal-fit-output {
+  min-height: 100%;
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+  color: var(--muted);
+}
+
+.journey-output {
   min-height: 100%;
   display: grid;
   gap: 12px;
@@ -749,6 +770,148 @@ a:focus-visible {
 
 .fit-fund-card button {
   justify-self: start;
+}
+
+.journey-hero,
+.journey-step,
+.journey-fund-card,
+.journey-stat-grid div {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.journey-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 112px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+}
+
+.journey-hero span,
+.journey-step span,
+.journey-fund-card span,
+.journey-stat-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.journey-hero strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.journey-hero p,
+.journey-step p,
+.journey-fund-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.journey-score {
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  position: relative;
+  font-weight: 950;
+}
+
+.journey-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.journey-score b {
+  position: relative;
+  font-size: 21px;
+}
+
+.journey-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.journey-stat-grid div {
+  padding: 11px;
+}
+
+.journey-stat-grid strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.journey-steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.journey-step {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+}
+
+.journey-step b {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.journey-step strong,
+.journey-fund-card strong {
+  color: var(--ink);
+}
+
+.journey-fund-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.journey-fund-card {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.journey-fund-card button {
+  justify-self: start;
+}
+
+.journey-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.journey-disclaimer {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
 }
 
 .result-stack {
@@ -1124,7 +1287,7 @@ a:focus-visible {
 
 .floating-section-links {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
   gap: 8px;
 }
 
@@ -1186,6 +1349,14 @@ a:focus-visible {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .journey-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .journey-fund-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .command-panel {
     grid-template-columns: 1fr;
   }
@@ -1205,7 +1376,8 @@ a:focus-visible {
   .detail-grid,
   .tool-grid,
   .portfolio-grid,
-  .goal-fit-grid {
+  .goal-fit-grid,
+  .journey-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1217,6 +1389,7 @@ a:focus-visible {
   .control-grid,
   .fund-grid,
   .roadmap-grid,
+  .journey-stat-grid,
   .pricing-note-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1253,6 +1426,9 @@ a:focus-visible {
   .roadmap-grid,
   .pricing-grid,
   .pricing-note-grid,
+  .journey-steps,
+  .journey-fund-grid,
+  .journey-stat-grid,
   .risk-grid,
   .metric-grid,
   .desk-stats,
@@ -1263,6 +1439,10 @@ a:focus-visible {
   }
 
   .fit-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .journey-hero {
     grid-template-columns: 1fr;
   }
 

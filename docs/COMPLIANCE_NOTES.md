@@ -11,6 +11,7 @@ NiveshNadi Phase 1 must remain a self-research facility.
 - User-written decision journal.
 - General research prompts and risk explanations.
 - Category-level goal mapping that avoids naming a personalized best fund.
+- Guided investor routes that connect research tools while staying category-led.
 - Retail subscription pricing for research workflow features such as saved history, exports, watchlists, and alerts.
 
 ## Avoid until reviewed
@@ -19,6 +20,7 @@ NiveshNadi Phase 1 must remain a self-research facility.
 - Model portfolios mapped to a specific investor profile.
 - Claims of suitability for a named investor.
 - "Best fund for you" language inside the Goal Fit Compass.
+- "You should buy this fund" language inside First SIP Coach.
 - Return guarantees or phrases that imply assured outcomes.
 - Execution of mutual fund transactions.
 - Distributor client management without ARN/EUIN/PAN compliance design.
@@ -26,7 +28,7 @@ NiveshNadi Phase 1 must remain a self-research facility.
 
 ## Product language
 
-Use: research, decision support, education, evidence, portfolio x-ray.
+Use: research, route, decision support, education, evidence, portfolio x-ray.
 
 Avoid: advisory, recommendation, guaranteed, best fund for you, assured return.
 

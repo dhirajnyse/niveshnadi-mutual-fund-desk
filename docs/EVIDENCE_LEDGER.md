@@ -1,6 +1,6 @@
 # Evidence Ledger
 
-Evidence Ledger is the Phase 1 v10 trust layer for NiveshNadi. It maps the selected fund's visible research signals to the sources that must eventually support those signals before the product uses live data.
+Evidence Ledger is the trust layer for NiveshNadi. It maps the selected fund's visible research signals to the sources that must eventually support those signals before the product uses live data.
 
 ## Purpose
 
@@ -19,6 +19,8 @@ The current version uses demo research fields only. For a selected fund, the led
 
 This is not a live-data claim. It is a readiness map that prepares the product for source-backed research.
 
+Phase 1 v13 adds the Data Readiness Room next to the Evidence Ledger. Evidence Ledger answers "what source supports this claim?" while Data Readiness Room answers "is that source pipeline fresh, validated, cited, and ready to launch?" Together they keep the product from showing live-looking research without source discipline.
+
 ## Launch Rule
 
 Before any research signal is treated as live, the product should show:
@@ -30,6 +32,8 @@ Before any research signal is treated as live, the product should show:
 - Whether the signal is fund-level, category-level, benchmark-level, or portfolio-level.
 
 If the source date or citation path is missing, the UI should label the signal as demo, planned, stale, or needs review.
+
+The Data Readiness Room should become the launch gate for this rule. Each feed should carry a freshness threshold, validation checklist, owner, mapped fields, citation posture, and launch blockers before evidence becomes current.
 
 ## Future Live Feeds
 

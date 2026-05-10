@@ -36,13 +36,18 @@ Then open `index.html` and test:
 
 - Search funds.
 - Filter by category and risk.
+- Use Category Playbook, apply a category route to the screener, and copy the playbook note.
 - Inspect a fund.
+- Review Peer Benchmark Board, add nearby peers to compare, and copy the peer note.
 - Select compare funds, review Fund Compare Matrix, and copy the compare note.
 - Build a First SIP Coach route and test each action button.
 - Run SIP and STP calculators.
 - Run Risk Stress Lab, change behavior and shock assumptions, and copy the stress note.
+- Run Cost Reality Lab, change exit-load and tax-friction assumptions, and copy the cost note.
+- Run Investor Readiness Gate, toggle evidence and reason checks, change the action being considered, and copy the readiness note.
 - Select portfolio funds and run Portfolio Intelligence X-Ray. Review role map, duplication score, overlap warnings, and research conclusion.
 - Open Evidence Ledger, inspect selected fund source readiness, and copy the evidence log.
+- Open Data Readiness Room, change source, launch mode, age, and citation posture, then copy the data spec.
 - Add funds to Watchlist and save/remove alert triggers.
 - Build a Nadi Decision Pack, copy the pack text, and save the pack to Journal.
 - Review pricing cards and Phase 2 preview copy.

@@ -1,120 +1,2286 @@
-# NiveshNadi Mutual Fund Desk
+:root {
+  color-scheme: light;
+  --ink: #0f2238;
+  --muted: #51677d;
+  --line: #d7e3eb;
+  --paper: #ffffff;
+  --wash: #f5f9fc;
+  --mint: #0f7c6b;
+  --mint-soft: #e5f7f1;
+  --blue: #1f4e79;
+  --blue-soft: #eaf2fb;
+  --gold: #d8973c;
+  --gold-soft: #fff3dc;
+  --rose: #ad4d57;
+  --rose-soft: #ffecef;
+  --shadow: 0 14px 36px rgba(15, 34, 56, 0.1);
+  --radius: 8px;
+  --anchor-offset: 116px;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
 
-NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
+* {
+  box-sizing: border-box;
+}
 
-This Phase 1 v12 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+html {
+  scroll-behavior: auto;
+  scroll-padding-top: var(--anchor-offset);
+}
 
-## What is included
+body {
+  margin: 0;
+  background:
+    linear-gradient(180deg, rgba(245, 249, 252, 0.95), rgba(255, 255, 255, 0.98)),
+    linear-gradient(90deg, rgba(15, 124, 107, 0.04), rgba(216, 151, 60, 0.05));
+  color: var(--ink);
+  font-size: 15px;
+}
 
-- 3D-style corporate SVG logo and brand system.
-- Self-research command desk with search, category, risk, and sorting controls.
-- Demo mutual fund screener across equity, debt, hybrid, passive, and life-cycle categories.
-- Fund DNA view with role, style, benchmark, holdings, sector map, and decision prompts.
-- Fund Compare Matrix for side-by-side shortlist review across role, cost, risk, score, evidence readiness, and decision questions.
-- Goal Fit Compass that maps goal type, horizon, risk comfort, and SIP capacity to category-level research paths.
-- First SIP Coach that turns a starting point into a guided route across Goal Fit, SIP lab, X-Ray, and Journal.
-- SIP calculator with annual step-up support.
-- STP calculator for staged transfers from a source corpus.
-- Risk Stress Lab that converts drawdowns into rupee-impact and behavior scenarios.
-- Portfolio Intelligence X-Ray for category concentration, blended expense, role clarity, duplication score, shared holdings, and research warnings.
-- Evidence Ledger that maps selected fund signals to AMFI, AMC factsheet, SID, KIM, portfolio disclosure, benchmark, riskometer, and TER source readiness.
-- Watchlist and Alerts Room for saved funds, review dates, expense triggers, drawdown triggers, score floors, and style checks.
-- Nadi Decision Pack that converts selected fund research into an explainable pre-investment memo.
-- Decision journal saved in browser local storage.
-- Pricing and monetization preview with Free, Nadi Plus, Founder Circle, and Phase 2 Distributor Desk plans.
-- Phase 2 distributor roadmap for ARN/EUIN/PAN-based client management.
-- Security foundation with `SECURITY.md`, threat model, data classification, release checklist, and automated security audit.
-- Compact v12 product layout with denser first screen, signal bars, mobile checks, floating fund search, back-to-top control, tuned sticky-header anchor landing, Fund Compare Matrix, goal-fit research mapping, First SIP Coach, Risk Stress Lab, Portfolio Intelligence X-Ray, Evidence Ledger, Watchlist and Alerts Room, Nadi Decision Pack, and a trust-first retail membership model.
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
 
-## Important compliance posture
+button {
+  cursor: pointer;
+}
 
-NiveshNadi is currently a self-research and investor education product. It does not provide personalized investment advice, execution, guaranteed returns, or distributor services.
+img {
+  display: block;
+  max-width: 100%;
+}
 
-Before adding personalized recommendations, model portfolios, suitability scoring, client-specific advice, or execution workflows, the business must resolve the SEBI Investment Adviser and Mutual Fund Distributor regulatory boundary.
+a {
+  color: inherit;
+}
 
-## Monetization posture
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -80px;
+  z-index: 20;
+  background: var(--ink);
+  color: #ffffff;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+}
 
-Phase 1 should stay retail-friendly. The working model is:
+.skip-link:focus {
+  top: 16px;
+}
 
-- Free starter tier for basic self-research.
-- Nadi Plus at Rs. 99/month or Rs. 999/year for serious individual investors.
-- Founder Circle at Rs. 499 for year-one launch believers while live data is being connected.
-- Phase 2 Distributor Desk as annual B2B software after ARN/EUIN/PAN, consent, and compliance design.
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 78px;
+  padding: 10px clamp(18px, 3vw, 42px);
+  background: rgba(245, 249, 252, 0.92);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(16px);
+}
 
-Paid features should monetize convenience, history, alerts, decision packs, exports, and workflow depth. They should not create hidden distribution bias or personalized advice.
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
 
-## Security posture
+.brand-logo {
+  width: 176px;
+  min-width: 148px;
+}
 
-Phase 1 is a static research prototype with demo data only. It does not collect PAN, ARN, EUIN, account credentials, payment details, CAS files, or distributor client records. Security guardrails are documented in:
+.brand-lockup h1,
+.section-heading h2,
+.command-panel h2 {
+  margin: 0;
+  line-height: 1.04;
+}
 
-- `SECURITY.md`
-- `docs/SECURITY_MODEL.md`
-- `docs/DATA_CLASSIFICATION.md`
-- `docs/SECURITY_RELEASE_CHECKLIST.md`
+.brand-lockup h1 {
+  font-size: 21px;
+}
 
-Before adding login, live APIs, payments, PAN, ARN/EUIN, portfolio import, or distributor client management, update the security model and data classification first.
+.eyebrow,
+.release-pill,
+.metric-label {
+  margin: 0 0 4px;
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
 
-## Local use
+.top-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
 
-Open:
+.top-nav a,
+.text-button,
+.primary-button,
+.icon-button,
+.status-chip,
+.tag,
+.release-pill {
+  border-radius: var(--radius);
+}
 
-```powershell
-C:\Users\dhiraj\Documents\New project\niveshnadi-mutual-fund-desk\index.html
-```
+.top-nav a {
+  padding: 8px 10px;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
 
-Optional static validation:
+.top-nav a:hover,
+.top-nav a:focus {
+  color: var(--ink);
+  background: var(--blue-soft);
+}
 
-```powershell
-node scripts/static-check.mjs
-node scripts/security-audit.mjs
-```
+main {
+  padding-bottom: 42px;
+}
 
-Or run both checks through npm:
+.detail-band {
+  scroll-margin-top: var(--anchor-offset);
+}
 
-```powershell
-npm run check
-```
+.workspace-band {
+  width: min(1380px, calc(100% - 42px));
+  margin: 16px auto 0;
+}
 
-## GitHub repository handoff
+.command-band {
+  margin-top: 18px;
+}
 
-Suggested repository name:
+.workspace-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(300px, 0.7fr);
+  gap: 14px;
+  align-items: start;
+}
 
-```text
-niveshnadi-mutual-fund-desk
-```
+.command-panel,
+.tool-panel,
+.tool-output,
+.compare-output,
+.stress-output,
+.xray-output,
+.evidence-output,
+.watch-output,
+.pack-output,
+.portfolio-picker,
+.fund-detail,
+.disclosure-band {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
 
-Suggested description:
+.command-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 16px 20px;
+  align-items: start;
+  padding: 22px 24px;
+}
 
-```text
-India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.
-```
+.command-copy {
+  min-width: 0;
+}
 
-After creating the empty GitHub repository:
+.command-panel h2 {
+  max-width: 720px;
+  font-size: 34px;
+}
 
-```powershell
-cd "C:\Users\dhiraj\Documents\New project\niveshnadi-mutual-fund-desk"
-git init
-git add .
-git commit -m "Initial NiveshNadi mutual fund research desk"
-git branch -M main
-git remote add origin https://github.com/dhirajnyse/niveshnadi-mutual-fund-desk.git
-git push -u origin main
-```
+.command-panel p:not(.release-pill) {
+  max-width: 680px;
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
 
-## Next build milestones
+.release-pill {
+  display: inline-flex;
+  padding: 7px 10px;
+  background: var(--mint-soft);
+}
 
-1. Replace demo fund data with normalized AMFI, AMC factsheet, SID, and KIM source records.
-2. Add ELSS, arbitrage, overnight, gilt, low-duration, and sector/thematic categories.
-3. Add real fund detail pages with citation-backed evidence.
-4. Add portfolio import from manual CAS-style entries.
-5. Add compare-set templates for first SIP, tax saving, debt parking, and retirement research.
-6. Add stress templates for equity drawdown, debt credit event, SIP pause, and STP timing research.
-7. Replace demo Evidence Ledger statuses with source-date-backed live citations.
-8. Add live evidence citations inside the First SIP Coach, Watchlist alert room, and Nadi Decision Pack.
-9. Add PDF/share exports for decision packs, stress notes, and compare notes with plain compliance disclaimers.
-10. Add investor education journeys for STP from cash, ELSS review, debt fund risk, and SIP review discipline.
-11. Add live factsheet-backed Portfolio Intelligence with citation dates and holding-level source records.
-12. Add account sync for watchlists, alerts, stress notes, decision packs, compare notes, and journals after authentication is designed.
-13. Add payment, account, and entitlement logic after deciding GST, refund, and launch-offer policy.
-14. Add CI security gates for static checks, security audit, secret scanning, and dependency audit.
-15. Add distributor Phase 2 workspace only after compliance and security review.
+.desk-stats {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.desk-stats div,
+.market-snapshot div,
+.metric-grid div,
+.risk-grid div,
+.result-row {
+  background: var(--wash);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.desk-stats div {
+  padding: 11px 12px;
+}
+
+.desk-stats span,
+.metric-grid span,
+.choice span,
+.journal-item time {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.desk-stats strong {
+  display: block;
+  margin-top: 3px;
+}
+
+.control-grid {
+  grid-column: 1;
+  display: grid;
+  grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(148px, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ffffff;
+  color: var(--ink);
+  padding: 9px 11px;
+  font-weight: 750;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #7a8da0;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(216, 151, 60, 0.34);
+  outline-offset: 2px;
+}
+
+.market-snapshot {
+  display: grid;
+  gap: 10px;
+}
+
+.market-snapshot div {
+  display: grid;
+  gap: 4px;
+  padding: 14px 15px;
+  min-height: 88px;
+}
+
+.market-snapshot strong {
+  font-size: 24px;
+}
+
+.market-snapshot span:last-child {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.section-heading h2 {
+  font-size: 27px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.text-button,
+.primary-button,
+.icon-button {
+  border: 1px solid transparent;
+  font-weight: 900;
+}
+
+.text-button {
+  min-height: 38px;
+  padding: 9px 13px;
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+
+.text-button:hover,
+.primary-button:hover {
+  transform: translateY(-1px);
+}
+
+.primary-button {
+  min-height: 40px;
+  padding: 9px 13px;
+  background: var(--ink);
+  color: #ffffff;
+}
+
+.icon-button {
+  width: 38px;
+  height: 38px;
+  display: inline-grid;
+  place-items: center;
+  background: var(--mint-soft);
+  color: var(--mint);
+}
+
+.fund-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.fund-card,
+.roadmap-grid article,
+.journal-item,
+.pricing-card,
+.pricing-note,
+.watch-card,
+.watch-alert,
+.pack-card,
+.pack-hero {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.fund-card {
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  gap: 10px;
+  min-height: 232px;
+  padding: 13px;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.fund-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(15, 124, 107, 0.45);
+  box-shadow: 0 12px 28px rgba(15, 34, 56, 0.1);
+}
+
+.fund-card.is-selected {
+  border-color: var(--mint);
+  box-shadow: 0 0 0 3px rgba(15, 124, 107, 0.12);
+}
+
+.fund-card-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 58px;
+  gap: 10px;
+  align-items: start;
+}
+
+.fund-card h3,
+.tool-panel h3,
+.roadmap-grid h3,
+.journal-item h3,
+.detail-panel h3,
+.result-stack h3 {
+  margin: 0;
+}
+
+.fund-card h3 {
+  margin-top: 7px;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.fund-category {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.fund-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 7px;
+  background: var(--blue-soft);
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.tag.risk-high,
+.tag.risk-very-high {
+  background: var(--rose-soft);
+  color: var(--rose);
+}
+
+.tag.risk-low,
+.tag.risk-moderate {
+  background: var(--mint-soft);
+  color: var(--mint);
+}
+
+.score {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  position: relative;
+  font-weight: 950;
+}
+
+.score::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.score span {
+  position: relative;
+  font-size: 14px;
+}
+
+.score-copy {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.42;
+  font-size: 13px;
+}
+
+.signal-strip {
+  display: grid;
+  gap: 7px;
+}
+
+.signal-row {
+  display: grid;
+  grid-template-columns: 78px 1fr 38px;
+  gap: 8px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.signal-bar {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #dce7ed;
+}
+
+.signal-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--mint), var(--gold));
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+
+.metric-grid div {
+  padding: 8px;
+}
+
+.metric-grid strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+}
+
+.fund-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.compare-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.compare-toggle input {
+  width: 17px;
+  min-height: 17px;
+}
+
+.fund-detail {
+  padding: 14px;
+}
+
+.empty-state {
+  color: var(--muted);
+  min-height: 74px;
+  display: grid;
+  align-items: center;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(310px, 0.95fr);
+  gap: 12px;
+}
+
+.detail-panel {
+  background: var(--wash);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 13px;
+}
+
+.detail-panel h3 + .score-copy {
+  margin-top: 8px;
+}
+
+.detail-list {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.48;
+}
+
+.status-chip {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  padding: 7px 10px;
+  background: var(--gold-soft);
+  color: #76480e;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.tool-grid,
+.portfolio-grid,
+.goal-fit-grid,
+.journey-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.goal-fit-grid {
+  grid-template-columns: minmax(290px, 0.56fr) minmax(0, 1.44fr);
+}
+
+.journey-grid {
+  grid-template-columns: minmax(290px, 0.48fr) minmax(0, 1.52fr);
+}
+
+.tool-panel {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+}
+
+.tool-output {
+  grid-column: span 1;
+  min-height: 100%;
+  padding: 14px;
+  color: var(--muted);
+}
+
+.goal-fit-form {
+  align-content: start;
+}
+
+.journey-form {
+  align-content: start;
+}
+
+.goal-fit-output {
+  min-height: 100%;
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+  color: var(--muted);
+}
+
+.journey-output {
+  min-height: 100%;
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+  color: var(--muted);
+}
+
+.fit-hero,
+.fit-card,
+.fit-fund-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.fit-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 118px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+}
+
+.fit-hero span,
+.fit-card span,
+.fit-fund-card span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.fit-hero strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.fit-hero p,
+.fit-card p,
+.fit-fund-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.fit-score {
+  width: 94px;
+  height: 94px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  position: relative;
+  font-weight: 950;
+}
+
+.fit-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.fit-score b {
+  position: relative;
+  font-size: 22px;
+}
+
+.fit-card-grid,
+.fit-fund-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.fit-card,
+.fit-fund-card {
+  padding: 12px;
+}
+
+.fit-card strong,
+.fit-fund-card strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.fit-list {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.48;
+}
+
+.fit-fund-card {
+  display: grid;
+  gap: 10px;
+}
+
+.fit-fund-card button {
+  justify-self: start;
+}
+
+.journey-hero,
+.journey-step,
+.journey-fund-card,
+.journey-stat-grid div {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.journey-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 112px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+}
+
+.journey-hero span,
+.journey-step span,
+.journey-fund-card span,
+.journey-stat-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.journey-hero strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.journey-hero p,
+.journey-step p,
+.journey-fund-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.journey-score {
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  position: relative;
+  font-weight: 950;
+}
+
+.journey-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.journey-score b {
+  position: relative;
+  font-size: 21px;
+}
+
+.journey-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.journey-stat-grid div {
+  padding: 11px;
+}
+
+.journey-stat-grid strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.journey-steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.journey-step {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+}
+
+.journey-step b {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.journey-step strong,
+.journey-fund-card strong {
+  color: var(--ink);
+}
+
+.journey-fund-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.journey-fund-card {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.journey-fund-card button {
+  justify-self: start;
+}
+
+.journey-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.journey-disclaimer {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.result-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.result-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  padding: 10px;
+  color: var(--ink);
+}
+
+.bar-chart {
+  display: grid;
+  gap: 8px;
+}
+
+.bar {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--mint), var(--gold));
+}
+
+.stress-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.46fr) minmax(0, 1.54fr);
+  gap: 12px;
+}
+
+.stress-form {
+  align-content: start;
+}
+
+.stress-output {
+  display: grid;
+  gap: 12px;
+}
+
+.stress-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 243, 220, 0.94), rgba(234, 242, 251, 0.9));
+}
+
+.stress-hero strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 21px;
+  line-height: 1.16;
+}
+
+.stress-hero p {
+  margin: 7px 0 0;
+}
+
+.stress-drop {
+  width: 82px;
+  height: 82px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: #ffffff;
+  background: var(--ink);
+  border: 7px solid var(--gold);
+  text-align: center;
+}
+
+.stress-drop b {
+  align-self: end;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.stress-drop span {
+  align-self: start;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.stress-metric-grid,
+.stress-grid-two {
+  display: grid;
+  gap: 10px;
+}
+
+.stress-metric-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.stress-metric-grid div {
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.stress-metric-grid span {
+  display: block;
+  color: var(--mint);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.stress-metric-grid strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
+}
+
+.stress-grid-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stress-list {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.portfolio-grid {
+  grid-template-columns: minmax(300px, 0.65fr) minmax(0, 1.35fr);
+}
+
+.portfolio-picker,
+.compare-output,
+.stress-output,
+.xray-output,
+.evidence-output,
+.watch-output,
+.pack-output {
+  padding: 14px;
+}
+
+.portfolio-picker p,
+.compare-output p,
+.stress-output p,
+.xray-output p,
+.evidence-output p,
+.roadmap-grid p,
+.journal-item p,
+.watch-card p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.choice-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.choice {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: start;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.choice input {
+  width: 17px;
+  min-height: 17px;
+  margin-top: 2px;
+}
+
+.choice span {
+  display: block;
+}
+
+.compare-output {
+  display: grid;
+  gap: 12px;
+}
+
+.compare-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.92), rgba(234, 242, 251, 0.92));
+}
+
+.compare-hero strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 20px;
+}
+
+.compare-hero p {
+  margin: 7px 0 0;
+}
+
+.compare-count {
+  width: 82px;
+  height: 82px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: #ffffff;
+  background: var(--ink);
+  border: 7px solid var(--mint);
+  text-align: center;
+}
+
+.compare-count b {
+  align-self: end;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.compare-count span {
+  align-self: start;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.compare-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 10px;
+}
+
+.compare-card {
+  display: grid;
+  gap: 11px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.compare-card-head strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 17px;
+  line-height: 1.18;
+}
+
+.compare-card-head p {
+  margin: 4px 0 0;
+}
+
+.compare-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.compare-mini-grid div,
+.compare-question,
+.compare-role {
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.compare-mini-grid span,
+.compare-question span {
+  display: block;
+  color: var(--mint);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.compare-mini-grid strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 15px;
+}
+
+.compare-role p,
+.compare-question p {
+  margin: 6px 0 0;
+}
+
+.compare-check-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.compare-check-grid div {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ffffff;
+}
+
+.compare-check-grid strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
+}
+
+.compare-check-grid p {
+  margin: 7px 0 0;
+}
+
+.risk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.risk-grid div {
+  padding: 10px;
+}
+
+.risk-grid .metric-label,
+.choice strong {
+  display: block;
+}
+
+.risk-grid strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 16px;
+}
+
+.xray-metrics {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.xray-thesis {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.9), rgba(234, 242, 251, 0.9));
+}
+
+.xray-thesis strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 18px;
+}
+
+.xray-thesis p {
+  margin: 7px 0 0;
+}
+
+.xray-intelligence-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.xray-intelligence-grid:first-of-type {
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+}
+
+.role-list {
+  display: grid;
+  gap: 8px;
+}
+
+.role-item {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.3fr) minmax(0, 0.7fr);
+  gap: 8px 12px;
+  align-items: start;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.role-item strong,
+.role-item p {
+  min-width: 0;
+}
+
+.role-item p {
+  grid-column: 2;
+  margin: -2px 0 0;
+}
+
+.warning-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.evidence-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.48fr) minmax(0, 1.52fr);
+  gap: 12px;
+}
+
+.evidence-panel {
+  align-content: start;
+}
+
+.evidence-fund-summary {
+  display: grid;
+  gap: 12px;
+}
+
+.evidence-fund-summary strong {
+  display: block;
+  font-size: 18px;
+}
+
+.evidence-readiness {
+  width: 118px;
+  height: 118px;
+  display: grid;
+  grid-template-rows: 1fr auto auto 1fr;
+  place-items: center;
+  justify-self: start;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  position: relative;
+  font-weight: 950;
+}
+
+.evidence-readiness::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.evidence-readiness b,
+.evidence-readiness span {
+  position: relative;
+}
+
+.evidence-readiness b {
+  grid-row: 2;
+  font-size: 27px;
+  line-height: 1;
+}
+
+.evidence-readiness span {
+  grid-row: 3;
+  margin-top: 4px;
+  color: #dce7ed;
+  font-size: 9px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.evidence-source-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.source-card {
+  display: grid;
+  gap: 9px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.source-head strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.source-card .alert-status {
+  justify-self: start;
+}
+
+.evidence-mini-list {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.launch-gate {
+  padding: 9px;
+  border-radius: var(--radius);
+  background: #ffffff;
+  border: 1px solid var(--line);
+}
+
+.launch-gate span {
+  display: block;
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.launch-gate p {
+  margin: 4px 0 0;
+}
+
+.evidence-guardrail {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(15, 124, 107, 0.24);
+  border-radius: var(--radius);
+  background: var(--mint-soft);
+}
+
+.evidence-guardrail p {
+  margin: 5px 0 0;
+}
+
+.watch-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.54fr) minmax(0, 1.46fr);
+  gap: 12px;
+}
+
+.watch-form {
+  align-content: start;
+}
+
+.watch-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.watch-output {
+  display: grid;
+  gap: 12px;
+  min-height: 100%;
+}
+
+.watch-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.watch-stats div {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.watch-stats span,
+.watch-alert span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.watch-stats strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 17px;
+}
+
+.watch-list {
+  display: grid;
+  gap: 10px;
+}
+
+.watch-card {
+  display: grid;
+  gap: 10px;
+  padding: 13px;
+}
+
+.watch-card-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 58px;
+  gap: 10px;
+  align-items: start;
+}
+
+.watch-card h3 {
+  margin: 6px 0 0;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.watch-card-actions,
+.watch-alert-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.watch-alert-list {
+  display: grid;
+  gap: 8px;
+}
+
+.watch-alert {
+  display: grid;
+  gap: 7px;
+  padding: 10px;
+  background: var(--wash);
+}
+
+.watch-alert-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.alert-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: var(--radius);
+  padding: 4px 7px;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.alert-status.attention {
+  background: var(--rose-soft);
+  color: var(--rose);
+}
+
+.alert-status.active {
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+
+.alert-status.calm {
+  background: var(--mint-soft);
+  color: var(--mint);
+}
+
+.remove-button {
+  min-height: 32px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ffffff;
+  color: var(--muted);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.remove-button:hover,
+.remove-button:focus-visible {
+  color: var(--rose);
+  border-color: rgba(173, 77, 87, 0.42);
+  background: var(--rose-soft);
+}
+
+.pack-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.52fr) minmax(0, 1.48fr);
+  gap: 12px;
+}
+
+.pack-form {
+  align-content: start;
+}
+
+.pack-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pack-output {
+  display: grid;
+  gap: 12px;
+  min-height: 100%;
+}
+
+.pack-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 108px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  background: var(--wash);
+}
+
+.pack-hero span,
+.pack-card span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.pack-hero strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.pack-hero p,
+.pack-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.pack-readiness {
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  position: relative;
+  font-weight: 950;
+}
+
+.pack-readiness::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.pack-readiness b {
+  position: relative;
+  font-size: 21px;
+}
+
+.pack-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pack-card {
+  padding: 12px;
+  background: var(--wash);
+}
+
+.pack-card strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.pack-list {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.48;
+}
+
+.journal-list {
+  display: grid;
+  gap: 10px;
+}
+
+.journal-item {
+  padding: 13px;
+}
+
+.journal-item time {
+  display: block;
+  margin-top: 6px;
+}
+
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.roadmap-grid article {
+  padding: 14px;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pricing-card {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-height: 316px;
+  padding: 15px;
+  overflow: hidden;
+}
+
+.pricing-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--mint), var(--gold));
+  opacity: 0.72;
+}
+
+.pricing-card.is-featured {
+  border-color: rgba(15, 124, 107, 0.66);
+  box-shadow: 0 0 0 3px rgba(15, 124, 107, 0.1), var(--shadow);
+}
+
+.pricing-card h3 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.plan-kicker {
+  justify-self: start;
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  border-radius: var(--radius);
+  background: var(--mint-soft);
+  color: var(--mint);
+  padding: 4px 7px;
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.founder-card .plan-kicker {
+  background: var(--gold-soft);
+  color: #76480e;
+}
+
+.phase-two-card .plan-kicker {
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+
+.plan-price {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+
+.plan-price strong {
+  font-size: 34px;
+  line-height: 1;
+}
+
+.plan-price span,
+.annual-price,
+.price-note {
+  color: var(--muted);
+}
+
+.annual-price,
+.price-note {
+  margin: 0;
+  line-height: 1.42;
+}
+
+.annual-price {
+  color: #76480e;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.pricing-feature-list {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.pricing-feature-list li::marker {
+  color: var(--mint);
+}
+
+.pricing-note-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.pricing-note {
+  padding: 14px;
+}
+
+.pricing-note strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 17px;
+}
+
+.pricing-note p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.disclosure-band {
+  padding: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+  border-left: 5px solid var(--gold);
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  min-height: 118px;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+  border: 1px dashed var(--line);
+  color: var(--muted);
+  border-radius: var(--radius);
+  text-align: center;
+  padding: 20px;
+}
+
+.floating-search {
+  position: fixed;
+  right: 18px;
+  bottom: 78px;
+  z-index: 91;
+}
+
+.floating-action-button,
+.scroll-top-button {
+  border: 1px solid rgba(15, 124, 107, 0.28);
+  border-radius: 999px;
+  box-shadow: 0 14px 32px rgba(15, 34, 56, 0.16);
+}
+
+.floating-action-button {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  color: var(--mint);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.floating-action-button:hover,
+.floating-action-button.is-open {
+  border-color: rgba(15, 124, 107, 0.48);
+  background: var(--mint-soft);
+}
+
+.search-glyph {
+  position: relative;
+  width: 21px;
+  height: 21px;
+  display: block;
+}
+
+.search-glyph::before,
+.search-glyph::after {
+  content: "";
+  position: absolute;
+  display: block;
+}
+
+.search-glyph::before {
+  inset: 1px 5px 5px 1px;
+  border: 3px solid currentColor;
+  border-radius: 50%;
+}
+
+.search-glyph::after {
+  width: 10px;
+  height: 3px;
+  right: 0;
+  bottom: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transform: rotate(45deg);
+  transform-origin: center;
+}
+
+.floating-search-panel {
+  position: absolute;
+  right: 0;
+  bottom: 62px;
+  width: min(410px, calc(100vw - 24px));
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(15, 124, 107, 0.28);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 22px 54px rgba(15, 34, 56, 0.2);
+}
+
+.floating-search-panel[hidden] {
+  display: none;
+}
+
+.floating-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.floating-panel-head strong {
+  font-size: 14px;
+}
+
+.floating-panel-close {
+  min-height: 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+  color: var(--muted);
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.floating-search-panel label span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.floating-section-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+  gap: 8px;
+}
+
+.floating-section-links a {
+  display: grid;
+  min-height: 34px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--blue-soft);
+  color: var(--blue);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.floating-section-links a:hover,
+.floating-section-links a:focus-visible {
+  background: var(--mint-soft);
+  color: var(--mint);
+}
+
+.scroll-top-button {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 90;
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-color: rgba(15, 34, 56, 0.22);
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 900;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px) scale(0.92);
+  transition: opacity 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.scroll-top-button.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.scroll-top-button:hover {
+  background: var(--blue);
+}
+
+@media (max-width: 1220px) {
+  :root {
+    --anchor-offset: 138px;
+  }
+
+  .fund-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pricing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .journey-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .journey-fund-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .watch-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pack-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .command-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .control-grid {
+    grid-column: 1 / -1;
+  }
+
+  .desk-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  :root {
+    --anchor-offset: 20px;
+  }
+
+  .app-header,
+  .workspace-grid,
+  .detail-grid,
+  .tool-grid,
+  .stress-grid,
+  .portfolio-grid,
+  .evidence-grid,
+  .watch-grid,
+  .pack-grid,
+  .goal-fit-grid,
+  .journey-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-header {
+    position: static;
+    display: grid;
+  }
+
+  .control-grid,
+  .fund-grid,
+  .roadmap-grid,
+  .journey-stat-grid,
+  .watch-stats,
+  .pack-card-grid,
+  .stress-metric-grid,
+  .stress-grid-two,
+  .xray-metrics,
+  .xray-intelligence-grid,
+  .evidence-source-grid,
+  .compare-check-grid,
+  .pricing-note-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .xray-intelligence-grid:first-of-type {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  body {
+    font-size: 14px;
+  }
+
+  .brand-lockup {
+    align-items: flex-start;
+  }
+
+  .brand-logo {
+    width: 138px;
+    min-width: 120px;
+  }
+
+  .brand-lockup h1 {
+    font-size: 18px;
+  }
+
+  .command-panel {
+    padding: 20px;
+  }
+
+  .command-panel h2 {
+    font-size: 31px;
+  }
+
+  .control-grid,
+  .fund-grid,
+  .roadmap-grid,
+  .pricing-grid,
+  .pricing-note-grid,
+  .journey-steps,
+  .journey-fund-grid,
+  .journey-stat-grid,
+  .watch-stats,
+  .pack-card-grid,
+  .stress-metric-grid,
+  .stress-grid-two,
+  .xray-metrics,
+  .xray-intelligence-grid,
+  .evidence-source-grid,
+  .compare-card-grid,
+  .compare-check-grid,
+  .risk-grid,
+  .metric-grid,
+  .desk-stats,
+  .choice-list,
+  .fit-card-grid,
+  .fit-fund-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fit-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .journey-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .pack-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .compare-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .compare-count {
+    justify-self: start;
+  }
+
+  .stress-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .stress-drop {
+    justify-self: start;
+  }
+
+  .role-item {
+    grid-template-columns: 1fr;
+  }
+
+  .role-item p {
+    grid-column: auto;
+  }
+
+  .fund-card-top {
+    grid-template-columns: minmax(0, 1fr) 56px;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .workspace-band {
+    width: min(100% - 20px, 1380px);
+  }
+
+  .floating-search {
+    right: 12px;
+    bottom: 66px;
+  }
+
+  .floating-action-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .floating-search-panel {
+    bottom: 54px;
+    max-height: calc(100vh - 112px);
+    overflow: auto;
+  }
+
+  .floating-section-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .scroll-top-button {
+    right: 12px;
+    bottom: 12px;
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .fund-card,
+  .text-button,
+  .primary-button {
+    transition: none;
+  }
+
+  .fund-card:hover,
+  .text-button:hover,
+  .primary-button:hover {
+    transform: none;
+  }
+
+  .scroll-top-button {
+    transition: none;
+  }
+}

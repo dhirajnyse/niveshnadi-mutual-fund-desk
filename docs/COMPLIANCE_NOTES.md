@@ -14,6 +14,9 @@ NiveshNadi Phase 1 must remain a self-research facility.
 - User-written decision journal.
 - General research prompts and risk explanations.
 - Category Playbook routes that explain category-level research lanes before fund shortlisting.
+- Suitability Passport prompts that compare a local-only research profile with fund signals without claiming personal suitability.
+- Goal-fund fit heatmaps that map general goal lenses to fund roles without claiming personal suitability.
+- Red flag prompts that highlight research risks, missing evidence, overlap, concentration, and review needs without rejecting or approving a fund.
 - Peer benchmark boards that compare objective category and sleeve signals without making a personalized best-fund claim.
 - Category-level goal mapping that avoids naming a personalized best fund.
 - Guided investor routes that connect research tools while staying category-led.
@@ -29,8 +32,11 @@ NiveshNadi Phase 1 must remain a self-research facility.
 - Personalized buy, sell, switch, hold, or redeem recommendations.
 - Model portfolios mapped to a specific investor profile.
 - Claims of suitability for a named investor.
+- Suitability Passport language that says the app has certified, approved, or recommended a fund for a specific user.
 - "Best fund for you" language inside the Goal Fit Compass.
 - Category Playbook language that crowns a category or fund as personally suitable for a named investor.
+- Goal-Fund Fit Heatmap language that says a fund is suitable for a named investor or that a user should allocate to it.
+- Red Flag Radar language that says a user must sell, avoid, switch, or buy because a flag is present or absent.
 - Peer Benchmark Board language that says the top-ranked peer is the right fund for a user.
 - "You should buy this fund" language inside First SIP Coach.
 - Compare Matrix language that crowns one fund as the personalized right choice.
@@ -48,7 +54,7 @@ NiveshNadi Phase 1 must remain a self-research facility.
 
 ## Product language
 
-Use: research, route, category lane, peer benchmark, peer lens, shortlist, compare note, stress scenario, cost scenario, readiness gate, behavior prompt, watchlist, review trigger, decision support, decision memo, education, evidence, portfolio x-ray, role map, duplication risk, source date, citation status.
+Use: research, route, category lane, local profile, profile discipline, research-compatible, conditional research, caution profile, goal lens, fit map, red flag, risk prompt, peer benchmark, peer lens, shortlist, compare note, stress scenario, cost scenario, readiness gate, behavior prompt, watchlist, review trigger, decision support, decision memo, education, evidence, portfolio x-ray, role map, duplication risk, source date, citation status.
 
 Avoid: advisory, recommendation, guaranteed, best fund for you, assured return.
 

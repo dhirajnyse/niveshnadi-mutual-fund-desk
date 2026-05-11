@@ -5,7 +5,7 @@ NiveshNadi should make money without losing the trust that makes the product val
 ## Phase 1 B2C
 
 - Free Research Starter: basic screener, Goal Fit Compass, SIP/STP lab, limited Portfolio X-Ray, and a small decision journal.
-- Nadi Plus: Rs. 99/month or Rs. 999/year for unlimited journal history, saved category routes, saved peer benchmark notes, watchlists, alert triggers, stress note history, cost note history, readiness note history, compare note history, decision pack history, full Portfolio Intelligence X-Ray history, scenario exports, research brief exports, decision memo exports, and alerting after live data launch.
+- Nadi Plus: Rs. 99/month or Rs. 999/year for unlimited journal history, saved category routes, saved Suitability Passport histories, saved fit maps, saved red flag notes, saved peer benchmark notes, watchlists, alert triggers, stress note history, cost note history, readiness note history, compare note history, decision pack history, full Portfolio Intelligence X-Ray history, scenario exports, research brief exports, decision memo exports, and alerting after live data launch.
 - Founder Circle: Rs. 499 for the first year for early believers while AMFI, AMC factsheet, SID, KIM, and portfolio feeds are being connected.
 
 This price point keeps NiveshNadi accessible to retail investors. It also gives the business an early signal on retention, feature usage, and willingness to pay before heavier infrastructure is built.
@@ -22,7 +22,7 @@ Suggested annual bands:
 
 ## Guardrails
 
-Retail subscription revenue should come from research workflow value, not fund pushing. Category route history, peer benchmark history, watchlists, review triggers, saved notes, stress notes, cost notes, readiness notes, compare notes, decision packs, Portfolio Intelligence history, exports, and future reminders are appropriate paid software value. Avoid commission-led bias in Phase 1. Keep all copy clear that NiveshNadi is research software, not personalized investment advice, not tax advice, not execution, and not a distributor service until Phase 2 is properly reviewed.
+Retail subscription revenue should come from research workflow value, not fund pushing. Category route history, Suitability Passport history, fit map history, red flag history, peer benchmark history, watchlists, review triggers, saved notes, stress notes, cost notes, readiness notes, compare notes, decision packs, Portfolio Intelligence history, exports, and future reminders are appropriate paid software value. Avoid commission-led bias in Phase 1. Keep all copy clear that NiveshNadi is research software, not personalized investment advice, not tax advice, not execution, and not a distributor service until Phase 2 is properly reviewed.
 
 ## Decision Pack Upsell
 

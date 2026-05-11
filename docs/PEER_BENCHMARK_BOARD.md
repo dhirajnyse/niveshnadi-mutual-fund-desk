@@ -1,6 +1,6 @@
 # Peer Benchmark Board
 
-Peer Benchmark Board is the Phase 1 v17 "look sideways" layer for NiveshNadi. It helps a retail investor avoid judging a mutual fund in isolation by showing the selected fund beside category and sleeve peers. The board compares Nadi score, expense, five-year demo return, drawdown, consistency, evidence readiness, and nearby alternatives.
+Peer Benchmark Board is the "look sideways" layer for NiveshNadi. It helps a retail investor avoid judging a mutual fund in isolation by showing the selected fund beside category and sleeve peers. The board compares Nadi score, expense, five-year demo return, drawdown, consistency, evidence readiness, and nearby alternatives.
 
 The feature should stay research-only. It may show a peer rank, deltas versus category or sleeve averages, and questions that the investor should answer before adding the fund to a shortlist. It must not state that the highest-ranked peer is the right fund, best fund, suitable fund, or recommended transaction for a user. Ranking is a prompt for investigation, not a recommendation.
 

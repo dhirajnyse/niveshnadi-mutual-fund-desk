@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260510-21">
+    <link rel="stylesheet" href="styles.css?v=20260511-02">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -26,6 +26,9 @@
       <nav class="top-nav" aria-label="Workspace">
         <a href="#screener">Screener</a>
         <a href="#category-playbook">Playbook</a>
+        <a href="#suitability-passport">Passport</a>
+        <a href="#fit-heatmap">Fit Map</a>
+        <a href="#red-flag-radar">Flags</a>
         <a href="#peer-bench">Bench</a>
         <a href="#compare">Compare</a>
         <a href="#goal-fit">Goal Fit</a>
@@ -49,7 +52,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-              <p class="release-pill">Phase 1 v17</p>
+              <p class="release-pill">Phase 1 v20</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -186,6 +189,101 @@
         </div>
         <div id="fundDetail" class="fund-detail empty-state">
           Select a fund from the screener to inspect its role, risk evidence, holdings overlap, and decision prompts.
+        </div>
+      </section>
+
+      <section id="suitability-passport" class="workspace-band passport-band" aria-labelledby="passport-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Profile discipline</p>
+            <h2 id="passport-title">Suitability Passport</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Suitability passport actions">
+            <span id="passportSummary" class="status-chip">Local profile</span>
+            <button class="text-button" id="inspectPassportMatch" type="button">Inspect top match</button>
+            <button class="text-button" id="copyPassportNote" type="button">Copy passport note</button>
+          </div>
+        </div>
+        <div class="passport-grid">
+          <form id="passportForm" class="tool-panel passport-form">
+            <h3>Build local profile</h3>
+            <label>
+              Time horizon
+              <input id="passportHorizon" type="number" min="1" max="40" step="1" value="7">
+            </label>
+            <label>
+              Risk comfort
+              <select id="passportRisk">
+                <option value="balanced">Balanced</option>
+                <option value="conservative">Conservative</option>
+                <option value="aggressive">Aggressive</option>
+              </select>
+            </label>
+            <label>
+              Liquidity need
+              <select id="passportLiquidity">
+                <option value="medium">Medium liquidity</option>
+                <option value="high">High liquidity</option>
+                <option value="low">Low liquidity</option>
+              </select>
+            </label>
+            <label>
+              Monthly SIP budget
+              <input id="passportSip" type="number" min="100" step="100" value="10000">
+            </label>
+            <label>
+              Investor experience
+              <select id="passportExperience">
+                <option value="continuing">Continuing investor</option>
+                <option value="new">New investor</option>
+                <option value="advanced">Experienced</option>
+              </select>
+            </label>
+            <label>
+              Emergency buffer
+              <select id="passportEmergency">
+                <option value="yes">Available</option>
+                <option value="no">Not ready</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build passport</button>
+          </form>
+          <div id="passportOutput" class="passport-output" aria-live="polite">
+            Build a local profile to compare horizon, risk comfort, liquidity, SIP access, experience, and emergency buffer against the selected fund.
+          </div>
+        </div>
+      </section>
+
+      <section id="fit-heatmap" class="workspace-band fit-map-band" aria-labelledby="fit-map-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Goal lens</p>
+            <h2 id="fit-map-title">Goal-Fund Fit Heatmap</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Fit heatmap actions">
+            <span id="fitHeatmapSummary" class="status-chip">Selected fund</span>
+            <button class="text-button" id="copyFitHeatmap" type="button">Copy fit note</button>
+          </div>
+        </div>
+        <div id="fitHeatmapOutput" class="fit-map-output" aria-live="polite">
+          Select a fund to map where it may belong in a research journey and where caution is needed.
+        </div>
+      </section>
+
+      <section id="red-flag-radar" class="workspace-band red-flag-band" aria-labelledby="red-flag-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Risk review</p>
+            <h2 id="red-flag-title">Red Flag Radar</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Red flag actions">
+            <span id="redFlagSummary" class="status-chip">Selected fund</span>
+            <button class="text-button" id="watchFlaggedFund" type="button">Watch fund</button>
+            <button class="text-button" id="copyRedFlagNote" type="button">Copy flag note</button>
+          </div>
+        </div>
+        <div id="redFlagOutput" class="red-flag-output" aria-live="polite">
+          Select a fund to inspect risk, evidence, cost, concentration, overlap, and goal-fit warning signals.
         </div>
       </section>
 
@@ -883,6 +981,9 @@
         <div class="floating-section-links" aria-label="Quick sections">
           <a href="#screener">Screener</a>
           <a href="#category-playbook">Playbook</a>
+          <a href="#suitability-passport">Passport</a>
+          <a href="#fit-heatmap">Fit Map</a>
+          <a href="#red-flag-radar">Flags</a>
           <a href="#peer-bench">Bench</a>
           <a href="#compare">Compare</a>
           <a href="#goal-fit">Goal Fit</a>
@@ -909,6 +1010,6 @@
       <span aria-hidden="true">&#8593;</span>
     </button>
 
-    <script src="app.js?v=20260510-21"></script>
+    <script src="app.js?v=20260511-02"></script>
   </body>
 </html>

@@ -8,6 +8,7 @@ NiveshNadi should collect the least data needed for the job. This is especially 
 | --- | --- | --- | --- |
 | Public product data | Demo fund names, categories, educational copy, pricing copy | Used today | May live in static files |
 | Local research notes | Journal entries, decision-pack reason, watchlist choices, alert triggers | Used today | Browser local storage only, no PAN or client data |
+| Local profile inputs | Suitability Passport horizon, risk comfort, liquidity need, SIP budget, experience, emergency buffer | Used today | In-memory only unless the user later opts into saved history |
 | Account data | Name, email, phone, password credentials, login sessions | Future | Server-side only, encrypted where appropriate, secure sessions |
 | Investor identifiers | PAN, KYC references, folio references, CAS metadata | Future restricted | Never in local storage; encrypted, masked, access-controlled |
 | Distributor identifiers | ARN, EUIN, distributor PAN, team membership | Future restricted | Server-side with role-based access and audit trail |
@@ -24,6 +25,8 @@ The current prototype may use only these browser-local keys:
 - `niveshnadi-alerts`
 
 These keys must not contain PAN, ARN, EUIN, folio numbers, phone numbers, emails, CAS text, payment identifiers, or production access tokens.
+
+The Suitability Passport currently keeps profile fields in page memory only. If saved passport history is added later, it must use local storage only for non-identity research inputs until account storage is designed.
 
 ## Data Minimization Rules
 

@@ -180,6 +180,9 @@ main {
 .tool-output,
 .compare-output,
 .playbook-output,
+.passport-output,
+.fit-map-output,
+.red-flag-output,
 .peer-output,
 .stress-output,
 .cost-output,
@@ -741,6 +744,476 @@ a:focus-visible {
   padding-left: 18px;
   color: var(--muted);
   line-height: 1.48;
+}
+
+.fit-map-output {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.fit-map-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.fit-map-hero.strong {
+  border-color: rgba(15, 124, 107, 0.35);
+}
+
+.fit-map-hero.caution {
+  border-color: rgba(193, 75, 105, 0.32);
+}
+
+.fit-map-hero h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.fit-map-hero p,
+.fit-map-card p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.fit-map-score {
+  width: 86px;
+  height: 86px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background:
+    conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0),
+    var(--wash);
+  box-shadow: inset 0 0 0 8px var(--wash);
+}
+
+.fit-map-score b {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.fit-map-grid,
+.fit-map-guard-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.fit-map-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.fit-map-guard-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.fit-map-card,
+.fit-map-guard-grid article {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.fit-map-card.strong {
+  border-color: rgba(15, 124, 107, 0.32);
+}
+
+.fit-map-card.caution {
+  border-color: rgba(193, 75, 105, 0.28);
+}
+
+.fit-map-card span,
+.fit-map-guard-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.fit-map-card strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.fit-map-meter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 30px;
+  gap: 8px;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.fit-map-meter span {
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--mint), var(--gold));
+}
+
+.fit-map-meter b {
+  color: var(--blue);
+  font-size: 12px;
+}
+
+.fit-map-card small {
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.fit-map-list {
+  display: grid;
+  gap: 7px;
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.passport-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.45fr) minmax(0, 1.55fr);
+  gap: 12px;
+}
+
+.passport-output {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.passport-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.passport-hero.strong {
+  border-color: rgba(15, 124, 107, 0.35);
+}
+
+.passport-hero.watch {
+  border-color: rgba(216, 151, 60, 0.42);
+}
+
+.passport-hero.caution {
+  border-color: rgba(193, 75, 105, 0.35);
+}
+
+.passport-hero h3,
+.passport-shortlist h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.passport-hero p,
+.passport-signal p,
+.passport-shortlist p,
+.passport-candidate p,
+.passport-guardrail p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.passport-score {
+  width: 86px;
+  height: 86px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #ffffff;
+  border: 7px solid var(--mint);
+}
+
+.passport-hero.watch .passport-score {
+  border-color: var(--gold);
+}
+
+.passport-hero.caution .passport-score {
+  border-color: var(--rose);
+}
+
+.passport-score b {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.passport-score span {
+  color: #dce7ed;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.passport-stat-grid,
+.passport-signal-grid,
+.passport-candidate-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.passport-stat-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.passport-signal-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.passport-candidate-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.passport-stat-grid div,
+.passport-signal,
+.passport-shortlist,
+.passport-candidate,
+.passport-guardrail {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.passport-signal.strong,
+.passport-candidate.strong {
+  border-color: rgba(15, 124, 107, 0.35);
+}
+
+.passport-signal.watch,
+.passport-candidate.watch {
+  border-color: rgba(216, 151, 60, 0.42);
+}
+
+.passport-signal.caution,
+.passport-candidate.caution {
+  border-color: rgba(193, 75, 105, 0.35);
+}
+
+.passport-stat-grid span,
+.passport-signal span,
+.passport-candidate span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.passport-stat-grid strong,
+.passport-signal strong,
+.passport-candidate strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.passport-signal b {
+  display: inline-flex;
+  margin-top: 10px;
+  padding: 5px 8px;
+  border-radius: var(--radius);
+  background: #ffffff;
+  color: var(--blue);
+  font-size: 12px;
+}
+
+.passport-shortlist {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 12px;
+}
+
+.passport-candidate {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.passport-guardrail {
+  border-color: rgba(15, 124, 107, 0.24);
+  background: var(--mint-soft);
+}
+
+.passport-guardrail p {
+  margin: 5px 0 0;
+}
+
+.red-flag-output {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.red-flag-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.red-flag-hero.high {
+  border-color: rgba(193, 75, 105, 0.35);
+}
+
+.red-flag-hero.medium {
+  border-color: rgba(216, 151, 60, 0.42);
+}
+
+.red-flag-hero.calm {
+  border-color: rgba(15, 124, 107, 0.35);
+}
+
+.red-flag-hero h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.red-flag-hero p,
+.red-flag-card p,
+.red-flag-guardrail p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.red-flag-score {
+  width: 86px;
+  height: 86px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #ffffff;
+  border: 7px solid var(--gold);
+}
+
+.red-flag-hero.high .red-flag-score {
+  border-color: var(--rose);
+}
+
+.red-flag-hero.calm .red-flag-score {
+  border-color: var(--mint);
+}
+
+.red-flag-score b {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.red-flag-score span {
+  color: #dce7ed;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.red-flag-stat-grid,
+.red-flag-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.red-flag-stat-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.red-flag-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.red-flag-stat-grid div,
+.red-flag-card,
+.red-flag-guardrail {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.red-flag-card.high {
+  border-color: rgba(193, 75, 105, 0.35);
+}
+
+.red-flag-card.medium {
+  border-color: rgba(216, 151, 60, 0.42);
+}
+
+.red-flag-stat-grid span,
+.red-flag-card span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.red-flag-stat-grid strong,
+.red-flag-card strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.red-flag-card b {
+  display: inline-flex;
+  margin-top: 10px;
+  padding: 5px 8px;
+  border-radius: var(--radius);
+  background: #ffffff;
+  color: var(--blue);
+  font-size: 12px;
+}
+
+.red-flag-card small {
+  display: block;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.red-flag-guardrail {
+  border-color: rgba(15, 124, 107, 0.24);
+  background: var(--mint-soft);
+}
+
+.red-flag-guardrail p {
+  margin: 5px 0 0;
 }
 
 .peer-output {
@@ -1620,6 +2093,9 @@ a:focus-visible {
 
 .portfolio-picker,
 .compare-output,
+.passport-output,
+.fit-map-output,
+.red-flag-output,
 .peer-output,
 .stress-output,
 .cost-output,
@@ -1634,6 +2110,9 @@ a:focus-visible {
 
 .portfolio-picker p,
 .compare-output p,
+.passport-output p,
+.fit-map-output p,
+.red-flag-output p,
 .peer-output p,
 .stress-output p,
 .cost-output p,
@@ -2807,6 +3286,7 @@ a:focus-visible {
   .workspace-grid,
   .detail-grid,
   .playbook-grid,
+  .passport-grid,
   .tool-grid,
   .stress-grid,
   .cost-grid,
@@ -2830,6 +3310,13 @@ a:focus-visible {
   .fund-grid,
   .playbook-category-grid,
   .playbook-guard-grid,
+  .passport-stat-grid,
+  .passport-signal-grid,
+  .passport-candidate-grid,
+  .fit-map-grid,
+  .fit-map-guard-grid,
+  .red-flag-stat-grid,
+  .red-flag-grid,
   .peer-card-grid,
   .roadmap-grid,
   .journey-stat-grid,
@@ -2886,6 +3373,13 @@ a:focus-visible {
   .fund-grid,
   .playbook-category-grid,
   .playbook-guard-grid,
+  .passport-stat-grid,
+  .passport-signal-grid,
+  .passport-candidate-grid,
+  .fit-map-grid,
+  .fit-map-guard-grid,
+  .red-flag-stat-grid,
+  .red-flag-grid,
   .peer-card-grid,
   .roadmap-grid,
   .pricing-grid,
@@ -2926,6 +3420,31 @@ a:focus-visible {
   }
 
   .playbook-score {
+    justify-self: start;
+  }
+
+  .passport-hero,
+  .passport-shortlist {
+    grid-template-columns: 1fr;
+  }
+
+  .passport-score {
+    justify-self: start;
+  }
+
+  .fit-map-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .fit-map-score {
+    justify-self: start;
+  }
+
+  .red-flag-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .red-flag-score {
     justify-self: start;
   }
 

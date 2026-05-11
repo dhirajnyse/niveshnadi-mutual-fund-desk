@@ -30,6 +30,9 @@ assert(index.includes("Content-Security-Policy"), "index.html is missing a CSP m
 assert(index.includes("NiveshNadi Mutual Fund Desk"), "index.html is missing the product title.");
 assert(index.includes("id=\"screener\""), "index.html is missing the screener section.");
 assert(index.includes("id=\"category-playbook\""), "index.html is missing the Category Playbook.");
+assert(index.includes("id=\"suitability-passport\""), "index.html is missing the Suitability Passport.");
+assert(index.includes("id=\"fit-heatmap\""), "index.html is missing the Goal-Fund Fit Heatmap.");
+assert(index.includes("id=\"red-flag-radar\""), "index.html is missing the Red Flag Radar.");
 assert(index.includes("id=\"peer-bench\""), "index.html is missing the Peer Benchmark Board.");
 assert(index.includes("id=\"compare\""), "index.html is missing the Fund Compare Matrix.");
 assert(index.includes("id=\"goal-fit\""), "index.html is missing the Goal Fit Compass.");
@@ -54,6 +57,9 @@ assert(app.includes("Nadi Large Cap Core Fund"), "app.js is missing demo fund da
 assert(app.includes("function runSip"), "app.js is missing SIP calculation.");
 assert(app.includes("function runStp"), "app.js is missing STP calculation.");
 assert(app.includes("function renderCategoryPlaybook") && app.includes("function makeCategoryPlaybookNote"), "app.js is missing Category Playbook behavior.");
+assert(app.includes("function renderSuitabilityPassport") && app.includes("function makeSuitabilityPassportNote"), "app.js is missing Suitability Passport behavior.");
+assert(app.includes("function renderGoalFundFitHeatmap") && app.includes("function makeGoalFundFitNote"), "app.js is missing Goal-Fund Fit Heatmap behavior.");
+assert(app.includes("function renderRedFlagRadar") && app.includes("function makeRedFlagNote"), "app.js is missing Red Flag Radar behavior.");
 assert(app.includes("function renderPeerBenchmarkBoard") && app.includes("function makePeerBenchmarkNote"), "app.js is missing Peer Benchmark Board behavior.");
 assert(app.includes("function renderStressLab") && app.includes("function makeStressNote"), "app.js is missing Risk Stress Lab behavior.");
 assert(app.includes("function renderCostRealityLab") && app.includes("function makeCostNote"), "app.js is missing Cost Reality Lab behavior.");
@@ -78,6 +84,9 @@ assert(styles.includes("--mint") && styles.includes("--gold") && styles.includes
 assert(styles.includes("scroll-padding-top") && styles.includes("scroll-margin-top"), "styles.css is missing sticky-header anchor offset rules.");
 assert(styles.includes(".floating-search") && styles.includes(".scroll-top-button"), "styles.css is missing floating control styles.");
 assert(styles.includes(".playbook-grid") && styles.includes(".playbook-hero"), "styles.css is missing Category Playbook styles.");
+assert(styles.includes(".passport-grid") && styles.includes(".passport-hero"), "styles.css is missing Suitability Passport styles.");
+assert(styles.includes(".fit-map-output") && styles.includes(".fit-map-hero"), "styles.css is missing Goal-Fund Fit Heatmap styles.");
+assert(styles.includes(".red-flag-output") && styles.includes(".red-flag-hero"), "styles.css is missing Red Flag Radar styles.");
 assert(styles.includes(".peer-output") && styles.includes(".peer-hero"), "styles.css is missing Peer Benchmark Board styles.");
 assert(styles.includes(".compare-output") && styles.includes(".compare-card"), "styles.css is missing Fund Compare Matrix styles.");
 assert(styles.includes(".stress-grid") && styles.includes(".stress-hero"), "styles.css is missing Risk Stress Lab styles.");
@@ -112,6 +121,9 @@ for (const file of [
   "docs/DATA_CLASSIFICATION.md",
   "docs/EVIDENCE_LEDGER.md",
   "docs/FUND_COMPARE_MATRIX.md",
+  "docs/GOAL_FUND_FIT_HEATMAP.md",
+  "docs/SUITABILITY_PASSPORT.md",
+  "docs/RED_FLAG_RADAR.md",
   "docs/INVESTOR_READINESS_GATE.md",
   "docs/CATEGORY_PLAYBOOK.md",
   "docs/PEER_BENCHMARK_BOARD.md",

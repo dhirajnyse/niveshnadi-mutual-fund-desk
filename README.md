@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v17 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v20 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 ## What is included
 
@@ -11,6 +11,9 @@ This Phase 1 v17 prototype is a compact static web app with no build step. Open 
 - Demo mutual fund screener across equity, debt, hybrid, passive, and life-cycle categories.
 - Category Playbook that turns investor intent, time horizon, and risk comfort into category-first research lanes before fund shortlisting.
 - Fund DNA view with role, style, benchmark, holdings, sector map, and decision prompts.
+- Suitability Passport that checks a local-only research profile across horizon, risk comfort, liquidity, SIP budget, experience, emergency buffer, and evidence readiness.
+- Goal-Fund Fit Heatmap that maps the selected fund across emergency cash, short goal, tax saving, first SIP, long-term wealth, retirement, income stability, and growth satellite lenses.
+- Red Flag Radar that surfaces selected-fund warning prompts across risk band, drawdown, cost, evidence readiness, overlap, concentration, and goal-fit caution.
 - Peer Benchmark Board that compares the selected fund against category and sleeve peers for score, cost, return, drawdown, consistency, evidence readiness, and nearby alternatives.
 - Fund Compare Matrix for side-by-side shortlist review across role, cost, risk, score, evidence readiness, and decision questions.
 - Goal Fit Compass that maps goal type, horizon, risk comfort, and SIP capacity to category-level research paths.
@@ -29,7 +32,7 @@ This Phase 1 v17 prototype is a compact static web app with no build step. Open 
 - Pricing and monetization preview with Free, Nadi Plus, Founder Circle, and Phase 2 Distributor Desk plans.
 - Phase 2 distributor roadmap for ARN/EUIN/PAN-based client management.
 - Security foundation with `SECURITY.md`, threat model, data classification, release checklist, and automated security audit.
-- Compact v17 product layout with denser first screen, signal bars, mobile checks, floating fund search, back-to-top control, tuned sticky-header anchor landing, Category Playbook, Peer Benchmark Board, Fund Compare Matrix, goal-fit research mapping, First SIP Coach, Risk Stress Lab, Cost Reality Lab, Investor Readiness Gate, Portfolio Intelligence X-Ray, Evidence Ledger, Data Readiness Room, Watchlist and Alerts Room, Nadi Decision Pack, and a trust-first retail membership model.
+- Compact v20 product layout with denser first screen, signal bars, mobile checks, floating fund search, back-to-top control, tuned sticky-header anchor landing, Category Playbook, Suitability Passport, Goal-Fund Fit Heatmap, Red Flag Radar, Peer Benchmark Board, Fund Compare Matrix, goal-fit research mapping, First SIP Coach, Risk Stress Lab, Cost Reality Lab, Investor Readiness Gate, Portfolio Intelligence X-Ray, Evidence Ledger, Data Readiness Room, Watchlist and Alerts Room, Nadi Decision Pack, and a trust-first retail membership model.
 
 ## Important compliance posture
 

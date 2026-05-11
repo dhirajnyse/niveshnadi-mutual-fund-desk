@@ -38,6 +38,9 @@ Then open `index.html` and test:
 - Filter by category and risk.
 - Use Category Playbook, apply a category route to the screener, and copy the playbook note.
 - Inspect a fund.
+- Build a Suitability Passport, inspect the top match, and copy the passport note.
+- Review Goal-Fund Fit Heatmap and copy the fit note for the selected fund.
+- Review Red Flag Radar, add the fund to Watchlist, and copy the flag note.
 - Review Peer Benchmark Board, add nearby peers to compare, and copy the peer note.
 - Select compare funds, review Fund Compare Matrix, and copy the compare note.
 - Build a First SIP Coach route and test each action button.

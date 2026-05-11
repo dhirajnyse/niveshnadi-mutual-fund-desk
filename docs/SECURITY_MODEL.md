@@ -39,6 +39,7 @@ This keeps the current attack surface small, but it does not remove the need for
 - No inline event handlers.
 - No dynamic code execution.
 - Namespaced local storage keys.
+- Suitability Passport profile fields are in-memory only in Phase 1.
 - Output escaping for user-provided text before injecting into HTML.
 - Static checks for required product sections and unsafe HTML patterns.
 - Security audit script for CSP, secrets, script policy, local storage keys, and prohibited network/runtime APIs.
@@ -67,6 +68,7 @@ Allowed:
 
 - Demo data.
 - Browser-only notes and watchlists.
+- In-memory profile discipline inputs without identity data.
 - Copy/export research text without real account sync.
 
 Not allowed:

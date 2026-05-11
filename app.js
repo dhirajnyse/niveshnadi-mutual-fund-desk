@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260510-21";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v17 Peer Benchmark Board";
+const DATA_VERSION = "20260511-02";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v20 Suitability Passport";
 
 const FUNDS = [
   {
@@ -877,6 +877,840 @@ function renderFundDetail() {
   `;
 }
 
+function riskRankValue(risk) {
+  const ranks = { Low: 1, Moderate: 2, High: 3, "Very High": 4 };
+  return ranks[risk] || 2;
+}
+
+function passportConfig() {
+  return {
+    horizon: Math.round(clampNumber(Number(els.passportHorizon?.value) || 7, 1, 40)),
+    risk: els.passportRisk?.value || "balanced",
+    liquidity: els.passportLiquidity?.value || "medium",
+    sip: Math.round(clampNumber(Number(els.passportSip?.value) || 10000, 100, 1000000)),
+    experience: els.passportExperience?.value || "continuing",
+    emergency: els.passportEmergency?.value || "yes"
+  };
+}
+
+function passportRiskLabel(value) {
+  if (value === "conservative") return "Conservative";
+  if (value === "aggressive") return "Aggressive";
+  return "Balanced";
+}
+
+function passportLiquidityLabel(value) {
+  if (value === "high") return "High liquidity";
+  if (value === "low") return "Low liquidity";
+  return "Medium liquidity";
+}
+
+function passportExperienceLabel(value) {
+  if (value === "new") return "New investor";
+  if (value === "advanced") return "Experienced";
+  return "Continuing investor";
+}
+
+function signalTone(points) {
+  if (points >= 10) return "strong";
+  if (points >= 0) return "watch";
+  return "caution";
+}
+
+function passportPosture(score) {
+  if (score >= 78) return "Research-compatible";
+  if (score >= 62) return "Conditional research";
+  return "Caution profile";
+}
+
+function passportTone(score) {
+  if (score >= 78) return "strong";
+  if (score >= 62) return "watch";
+  return "caution";
+}
+
+function horizonSignal(fund, config) {
+  const years = config.horizon;
+  const category = fund.category;
+  const sleeve = fund.sleeve;
+  let points = 0;
+  let detail = "Write the intended holding period before treating this fund as a match.";
+
+  if (years <= 1) {
+    if (category === "Liquid Fund") {
+      points = 24;
+      detail = "Very short horizons primarily need liquidity and low drawdown research.";
+    } else if (category === "Corporate Bond Fund") {
+      points = 8;
+      detail = "Short horizons need credit, duration, and exit-load review.";
+    } else {
+      points = -24;
+      detail = "Equity or hybrid volatility can be too high for money needed within a year.";
+    }
+  } else if (years <= 3) {
+    if (["Liquid Fund", "Corporate Bond Fund"].includes(category)) {
+      points = 18;
+      detail = "Short goals can start with debt and liquidity research.";
+    } else if (["Balanced Hybrid Fund", "Multi Asset Allocation Fund"].includes(category)) {
+      points = -2;
+      detail = "Hybrid categories may still swing more than a fixed-date short goal can absorb.";
+    } else {
+      points = -18;
+      detail = "Equity drawdowns need more time than this profile gives.";
+    }
+  } else if (years <= 5) {
+    if (["Balanced Hybrid Fund", "Multi Asset Allocation Fund", "Corporate Bond Fund"].includes(category)) {
+      points = 14;
+      detail = "Medium horizons can research smoother categories before full equity risk.";
+    } else if (["Large Cap Fund", "Index Fund", "ELSS Fund"].includes(category)) {
+      points = 4;
+      detail = "Equity research needs stress testing because the horizon is still moderate.";
+    } else {
+      points = -10;
+      detail = "High-volatility satellites need stronger horizon discipline.";
+    }
+  } else if (years <= 7) {
+    if (["Large Cap Fund", "Index Fund", "Flexi Cap Fund", "Balanced Hybrid Fund", "Multi Asset Allocation Fund"].includes(category)) {
+      points = 16;
+      detail = "The horizon can support core equity or diversified research with stress discipline.";
+    } else if (["Mid Cap Fund", "Small Cap Fund"].includes(category)) {
+      points = 2;
+      detail = "Satellite categories need position-size and drawdown review.";
+    } else {
+      points = 4;
+      detail = "Debt may fit stability needs, but growth expectations should be realistic.";
+    }
+  } else if (sleeve === "Equity" || sleeve === "Passive" || sleeve === "Life Cycle") {
+    points = 18;
+    detail = "Long horizons can research equity risk if drawdowns and role are documented.";
+  } else if (sleeve === "Hybrid") {
+    points = 14;
+    detail = "Long horizons can use diversified categories when the allocation role is clear.";
+  } else {
+    points = 2;
+    detail = "Debt may be useful for stability, not as the main long-horizon growth engine.";
+  }
+
+  return { title: "Time horizon", value: `${years} year${years === 1 ? "" : "s"}`, points, detail };
+}
+
+function riskComfortSignal(fund, config) {
+  const rank = riskRankValue(fund.risk);
+  let points = 0;
+  let detail = "Match the fund's risk band with the investor's drawdown comfort.";
+
+  if (config.risk === "conservative") {
+    if (rank <= 2) {
+      points = 18;
+      detail = "Low or moderate risk bands are easier to research for a conservative profile.";
+    } else if (rank === 3) {
+      points = -12;
+      detail = "High risk needs a written stress plan for a conservative profile.";
+    } else {
+      points = -26;
+      detail = "Very high risk is a caution zone for a conservative profile.";
+    }
+  } else if (config.risk === "aggressive") {
+    if (rank >= 3) {
+      points = 16;
+      detail = "Higher risk may fit aggressive research only when horizon and behavior discipline support it.";
+    } else {
+      points = -2;
+      detail = "Lower-risk categories may still fit liquidity or stability needs.";
+    }
+  } else if (rank === 2 || rank === 3) {
+    points = 14;
+    detail = "Moderate to high risk bands can fit balanced research when the role is clear.";
+  } else if (rank === 4) {
+    points = -10;
+    detail = "Very high risk needs extra caution for a balanced profile.";
+  } else {
+    points = 4;
+    detail = "Low risk can fit stability, but may not meet growth expectations.";
+  }
+
+  return { title: "Risk comfort", value: `${passportRiskLabel(config.risk)} vs ${fund.risk}`, points, detail };
+}
+
+function liquiditySignal(fund, config) {
+  let points = 0;
+  let detail = "Liquidity need decides whether volatility is acceptable.";
+
+  if (config.liquidity === "high") {
+    if (fund.category === "Liquid Fund") {
+      points = 22;
+      detail = "High liquidity need naturally starts with cash parking research.";
+    } else if (fund.sleeve === "Debt") {
+      points = 8;
+      detail = "Debt research still needs duration and credit checks.";
+    } else {
+      points = -18;
+      detail = "High liquidity need is a caution zone for volatile categories.";
+    }
+  } else if (config.liquidity === "medium") {
+    if (["Debt", "Hybrid", "Passive"].includes(fund.sleeve)) {
+      points = 10;
+      detail = "Medium liquidity can research smoother or core categories first.";
+    } else if (fund.risk === "Very High") {
+      points = -6;
+      detail = "Very high risk needs a longer non-urgent holding path.";
+    } else {
+      points = 6;
+      detail = "Liquidity appears workable if the review date is written.";
+    }
+  } else if (fund.sleeve === "Equity" || fund.sleeve === "Passive" || fund.sleeve === "Life Cycle") {
+    points = 12;
+    detail = "Low liquidity need gives more room to research long-horizon volatility.";
+  } else {
+    points = 4;
+    detail = "The fund may still fit stability or parking roles.";
+  }
+
+  return { title: "Liquidity need", value: passportLiquidityLabel(config.liquidity), points, detail };
+}
+
+function sipBudgetSignal(fund, config) {
+  const affordable = config.sip >= fund.minSip;
+  const points = affordable ? 8 : -16;
+  const detail = affordable
+    ? "Monthly SIP budget clears the demo minimum SIP field."
+    : "Monthly SIP budget is below the demo minimum SIP field; check real scheme minimums before shortlisting.";
+  return { title: "SIP access", value: `${formatMoney(config.sip)} vs Rs. ${fund.minSip}`, points, detail };
+}
+
+function experienceSignal(fund, config) {
+  let points = 0;
+  let detail = "Experience changes how much complexity and volatility the user should research at once.";
+
+  if (config.experience === "new") {
+    if (["Liquid Fund", "Index Fund", "Large Cap Fund", "Balanced Hybrid Fund"].includes(fund.category)) {
+      points = 14;
+      detail = "Simpler core or stability categories are easier for a first research journey.";
+    } else if (["Mid Cap Fund", "Small Cap Fund"].includes(fund.category)) {
+      points = -18;
+      detail = "High-volatility satellites should usually wait until core behavior is understood.";
+    } else {
+      points = -4;
+      detail = "This category needs extra education before a new investor shortlists it.";
+    }
+  } else if (config.experience === "advanced") {
+    points = fund.risk === "Very High" ? 8 : 6;
+    detail = "Experienced users can research more complex roles, but still need written evidence.";
+  } else {
+    points = ["Small Cap Fund", "Mid Cap Fund"].includes(fund.category) ? -2 : 8;
+    detail = "Continuing investors can compare roles, costs, and stress outcomes before selecting.";
+  }
+
+  return { title: "Investor experience", value: passportExperienceLabel(config.experience), points, detail };
+}
+
+function emergencySignal(fund, config) {
+  if (config.emergency === "yes") {
+    return {
+      title: "Emergency buffer",
+      value: "Available",
+      points: fund.sleeve === "Debt" ? 4 : 8,
+      detail: "Emergency money is marked available, so long-horizon research can be separated from liquidity needs."
+    };
+  }
+
+  if (fund.category === "Liquid Fund") {
+    return {
+      title: "Emergency buffer",
+      value: "Not ready",
+      points: 16,
+      detail: "Cash parking research may be the first route before volatile funds."
+    };
+  }
+
+  return {
+    title: "Emergency buffer",
+    value: "Not ready",
+    points: -16,
+    detail: "Build or verify emergency money before using volatile categories for fresh SIP research."
+  };
+}
+
+function evidenceSignal(fund) {
+  const evidence = evidenceReadinessScore(fund);
+  const points = evidence >= 82 ? 8 : evidence >= 72 ? 3 : -8;
+  const detail = evidence >= 82
+    ? "Evidence readiness is stronger in demo data."
+    : evidence >= 72
+      ? "Evidence is usable for demo research, but live source dates are still needed."
+      : "Evidence gaps should be closed before this fund enters a serious memo.";
+  return { title: "Evidence gate", value: `${evidence}/100`, points, detail };
+}
+
+function passportAssessmentForFund(fund, config = passportConfig()) {
+  const signals = [
+    horizonSignal(fund, config),
+    riskComfortSignal(fund, config),
+    liquiditySignal(fund, config),
+    sipBudgetSignal(fund, config),
+    experienceSignal(fund, config),
+    emergencySignal(fund, config),
+    evidenceSignal(fund)
+  ];
+  let score = 48 + signals.reduce((sum, item) => sum + item.points, 0);
+  score += Math.round((nadiScore(fund) - 72) * 0.16);
+  score -= Math.max(0, fund.expense - 0.45) * 14;
+  score -= Math.max(0, fund.maxDrawdown - 20) * 0.45;
+  score = Math.round(clampNumber(score, 12, 96));
+  const cautions = signals.filter((item) => item.points < 0);
+  const strengths = signals.filter((item) => item.points >= 10);
+  return {
+    fund,
+    config,
+    signals,
+    cautions,
+    strengths,
+    score,
+    posture: passportPosture(score),
+    tone: passportTone(score)
+  };
+}
+
+function passportRankedFunds(config = passportConfig()) {
+  return FUNDS
+    .map((fund) => passportAssessmentForFund(fund, config))
+    .sort((a, b) => b.score - a.score || nadiScore(b.fund) - nadiScore(a.fund));
+}
+
+function renderSuitabilityPassport() {
+  if (!els.passportOutput) return;
+  const config = passportConfig();
+  const selected = passportAssessmentForFund(selectedFund(), config);
+  const ranked = passportRankedFunds(config).slice(0, 4);
+  if (els.passportSummary) {
+    els.passportSummary.textContent = `${selected.posture} | ${selected.score}/100`;
+  }
+  els.passportOutput.innerHTML = `
+    <div class="passport-hero ${escapeHtml(selected.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(selected.posture)}</span>
+        <h3>${escapeHtml(selected.fund.name)} passport match</h3>
+        <p>This is a local-only research compatibility lens for profile discipline. It is not a suitability certificate, advice, or allocation instruction.</p>
+      </div>
+      <div class="passport-score">
+        <b>${selected.score}</b>
+        <span>profile</span>
+      </div>
+    </div>
+    <div class="passport-stat-grid">
+      <div><span>Horizon</span><strong>${config.horizon} year${config.horizon === 1 ? "" : "s"}</strong></div>
+      <div><span>Risk comfort</span><strong>${escapeHtml(passportRiskLabel(config.risk))}</strong></div>
+      <div><span>Liquidity</span><strong>${escapeHtml(passportLiquidityLabel(config.liquidity))}</strong></div>
+      <div><span>Monthly SIP</span><strong>${escapeHtml(formatMoney(config.sip))}</strong></div>
+    </div>
+    <div class="passport-signal-grid">
+      ${selected.signals.map((item) => `
+        <article class="passport-signal ${escapeHtml(signalTone(item.points))}">
+          <div>
+            <span>${escapeHtml(item.title)}</span>
+            <strong>${escapeHtml(item.value)}</strong>
+          </div>
+          <b>${item.points >= 0 ? "+" : ""}${Math.round(item.points)}</b>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="passport-shortlist">
+      <div>
+        <span class="metric-label">Profile shortlist</span>
+        <h3>Top research matches</h3>
+        <p>Use this as a starting shortlist, then still run Fit Map, Flags, Bench, Stress, Cost, Evidence, and Pack before any real decision.</p>
+      </div>
+      <div class="passport-candidate-grid">
+        ${ranked.map((item) => `
+          <article class="passport-candidate ${escapeHtml(item.tone)}">
+            <span>${escapeHtml(item.posture)}</span>
+            <strong>${escapeHtml(item.fund.name)}</strong>
+            <p>${escapeHtml(item.fund.category)} | ${escapeHtml(item.fund.risk)} risk | ${item.score}/100</p>
+            <button class="text-button" type="button" data-select-fund="${escapeHtml(item.fund.id)}">Inspect</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="passport-guardrail">
+      <strong>Suitability boundary</strong>
+      <p>The passport helps the investor slow down and ask better questions. It must not be described as a personal recommendation, guaranteed fit, or transaction instruction.</p>
+    </div>
+  `;
+}
+
+function inspectPassportTopMatch() {
+  const [top] = passportRankedFunds(passportConfig());
+  if (!top) return;
+  state.selectedId = top.fund.id;
+  renderAll();
+  renderGoalFitCompass();
+  renderFirstSipCoach();
+  scrollToHash("#suitability-passport", "smooth", true);
+}
+
+function makeSuitabilityPassportNote() {
+  const config = passportConfig();
+  const selected = passportAssessmentForFund(selectedFund(), config);
+  const ranked = passportRankedFunds(config).slice(0, 4);
+  return [
+    "# NiveshNadi Suitability Passport",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    "",
+    "Local profile:",
+    `- Horizon: ${config.horizon} year${config.horizon === 1 ? "" : "s"}`,
+    `- Risk comfort: ${passportRiskLabel(config.risk)}`,
+    `- Liquidity need: ${passportLiquidityLabel(config.liquidity)}`,
+    `- Monthly SIP budget: ${formatMoney(config.sip)}`,
+    `- Experience: ${passportExperienceLabel(config.experience)}`,
+    `- Emergency buffer: ${config.emergency === "yes" ? "Available" : "Not ready"}`,
+    "",
+    "Selected fund:",
+    `- ${selected.fund.name} | ${selected.fund.category} | ${selected.fund.risk} risk`,
+    `- Passport posture: ${selected.posture}`,
+    `- Profile score: ${selected.score}/100`,
+    "",
+    "Signals:",
+    ...selected.signals.map((item) => `- ${item.title}: ${item.value} | ${item.points >= 0 ? "+" : ""}${Math.round(item.points)} | ${item.detail}`),
+    "",
+    "Top profile shortlist:",
+    ...ranked.map((item) => `- ${item.fund.name}: ${item.score}/100 | ${item.posture} | ${item.fund.category}`),
+    "",
+    "Research compatibility only. This is not personalized investment advice, a suitability certificate, a recommendation, or an execution instruction."
+  ].join("\n");
+}
+
+function goalFitScoreForFund(fund, lens) {
+  const category = fund.category;
+  const sleeve = fund.sleeve;
+  const score = nadiScore(fund);
+  const evidence = evidenceReadinessScore(fund);
+  let fit = 35;
+  let reason = "This fund needs a clearly written role before it belongs in this goal lens.";
+  let checks = ["Confirm goal horizon, risk comfort, cost, evidence freshness, and role duplication."];
+
+  if (lens.id === "emergency") {
+    if (category === "Liquid Fund") {
+      fit = 92;
+      reason = "Liquid fund research can fit cash parking, emergency money, or STP source discipline.";
+      checks = ["Check credit quality, maturity profile, exit load, and liquidity before using it as a cash bucket."];
+    } else if (category === "Corporate Bond Fund") {
+      fit = 68;
+      reason = "Quality debt may support short-term research, but emergency money needs stronger liquidity discipline.";
+      checks = ["Inspect duration, issuer quality, and drawdown history before treating this as near-term money."];
+    } else {
+      fit = sleeve === "Debt" ? 52 : 22;
+      reason = "Volatile categories are not a primary lane for emergency money research.";
+      checks = ["Keep emergency funds separate from equity, hybrid, or long-horizon growth research."];
+    }
+  } else if (lens.id === "short") {
+    if (category === "Liquid Fund" || category === "Corporate Bond Fund") fit = category === "Corporate Bond Fund" ? 84 : 78;
+    else if (category === "Balanced Hybrid Fund" || category === "Multi Asset Allocation Fund") fit = 58;
+    else fit = sleeve === "Equity" ? 32 : 45;
+    reason = fit >= 75
+      ? "This category can be researched for shorter horizons when credit, duration, and liquidity are visible."
+      : "This fund may carry more volatility than a short horizon can comfortably absorb.";
+    checks = ["Check drawdown, exit load, credit quality, and whether the money is needed on a fixed date."];
+  } else if (lens.id === "tax") {
+    if (category === "ELSS Fund") {
+      fit = 89;
+      reason = "ELSS is the dedicated tax-saving equity research lane, with lock-in and drawdown risk.";
+    } else if (sleeve === "Equity" || sleeve === "Passive") {
+      fit = 52;
+      reason = "This can be a comparison point, but it is not the tax-saving category lane.";
+    } else {
+      fit = 25;
+      reason = "This category is not a tax-saving equity research lane.";
+    }
+    checks = ["Separate tax benefit from investment role, lock-in, drawdown, and overlap with existing equity funds."];
+  } else if (lens.id === "core") {
+    if (["Index Fund", "Large Cap Fund"].includes(category)) fit = 86;
+    else if (["Balanced Hybrid Fund", "Multi Asset Allocation Fund"].includes(category)) fit = 76;
+    else if (category === "Flexi Cap Fund") fit = 68;
+    else fit = sleeve === "Equity" ? 48 : 42;
+    reason = fit >= 80
+      ? "This fund can be researched as a core or core-challenger lane before adding satellites."
+      : "This fund is more likely to be a support or satellite lane than the first core holding.";
+    checks = ["Compare against low-cost passive, check expense, drawdown, consistency, and portfolio overlap."];
+  } else if (lens.id === "wealth") {
+    if (["Index Fund", "Large Cap Fund", "Flexi Cap Fund"].includes(category)) fit = 82;
+    else if (["Mid Cap Fund", "Small Cap Fund"].includes(category)) fit = 72;
+    else if (category === "Balanced Hybrid Fund" || category === "Multi Asset Allocation Fund") fit = 70;
+    else fit = 42;
+    reason = fit >= 80
+      ? "This category can support long-horizon wealth research when the investor accepts equity drawdowns."
+      : "This category may support long-term planning only with a specific role and size discipline.";
+    checks = ["Run Stress Lab, compare peer behavior, and document the holding period before acting."];
+  } else if (lens.id === "retirement") {
+    if (category === "Life Cycle Fund") fit = 90;
+    else if (category === "Multi Asset Allocation Fund") fit = 80;
+    else if (["Index Fund", "Large Cap Fund", "Balanced Hybrid Fund"].includes(category)) fit = 70;
+    else fit = sleeve === "Equity" ? 60 : 50;
+    reason = fit >= 80
+      ? "This category can be researched for a goal-date or diversified retirement path."
+      : "This fund needs a glide-path or de-risking role before it belongs in retirement research.";
+    checks = ["Check review cadence, glide path, equity reduction plan, and cost over long horizons."];
+  } else if (lens.id === "income") {
+    if (category === "Corporate Bond Fund") fit = 88;
+    else if (category === "Liquid Fund") fit = 74;
+    else if (["Balanced Hybrid Fund", "Multi Asset Allocation Fund"].includes(category)) fit = 62;
+    else fit = sleeve === "Debt" ? 58 : 30;
+    reason = fit >= 80
+      ? "This category can be researched for income stability when debt quality and duration are visible."
+      : "This fund is not a primary income stability lane without additional risk review.";
+    checks = ["Inspect credit risk, duration, yield chasing, concentration, and drawdown behavior."];
+  } else if (lens.id === "satellite") {
+    if (["Flexi Cap Fund", "Mid Cap Fund", "Small Cap Fund"].includes(category)) fit = category === "Flexi Cap Fund" ? 78 : 84;
+    else if (["Large Cap Fund", "Index Fund"].includes(category)) fit = 56;
+    else fit = 28;
+    reason = fit >= 78
+      ? "This fund can be researched as a growth satellite after the core allocation is stable."
+      : "This fund is not a natural growth satellite lane.";
+    checks = ["Size deliberately, check drawdown, avoid overlap, and confirm the core portfolio already exists."];
+  }
+
+  fit += Math.round((score - 72) * 0.15 + (evidence - 70) * 0.1);
+  if (fund.risk === "Very High" && ["emergency", "short", "income"].includes(lens.id)) fit -= 10;
+  if (fund.risk === "Low" && ["satellite", "wealth"].includes(lens.id)) fit -= 6;
+  return {
+    ...lens,
+    checks,
+    fit: Math.round(clampNumber(fit, 12, 96)),
+    reason
+  };
+}
+
+function fitTone(score) {
+  if (score >= 80) return "strong";
+  if (score >= 62) return "watch";
+  return "caution";
+}
+
+function fitPosture(score) {
+  if (score >= 80) return "Primary research lane";
+  if (score >= 62) return "Support research lane";
+  return "Caution lane";
+}
+
+function fundFitHeatmapConfig() {
+  const fund = selectedFund();
+  const lenses = [
+    { id: "emergency", label: "Emergency cash", horizon: "0-12 months" },
+    { id: "short", label: "Short goal", horizon: "1-3 years" },
+    { id: "tax", label: "Tax saving", horizon: "3+ years" },
+    { id: "core", label: "First SIP core", horizon: "5+ years" },
+    { id: "wealth", label: "Long-term wealth", horizon: "7+ years" },
+    { id: "retirement", label: "Retirement path", horizon: "10+ years" },
+    { id: "income", label: "Income stability", horizon: "2-5 years" },
+    { id: "satellite", label: "Growth satellite", horizon: "7+ years" }
+  ];
+  const scored = lenses.map((lens) => goalFitScoreForFund(fund, lens)).sort((a, b) => b.fit - a.fit);
+  const best = scored[0];
+  const caution = [...scored].reverse().slice(0, 2);
+  return { best, caution, fund, scored };
+}
+
+function renderGoalFundFitHeatmap() {
+  if (!els.fitHeatmapOutput) return;
+  const config = fundFitHeatmapConfig();
+  if (els.fitHeatmapSummary) {
+    els.fitHeatmapSummary.textContent = `${config.best.label} | ${config.best.fit}/100`;
+  }
+  els.fitHeatmapOutput.innerHTML = `
+    <div class="fit-map-hero ${escapeHtml(fitTone(config.best.fit))}">
+      <div>
+        <span class="metric-label">${escapeHtml(fitPosture(config.best.fit))}</span>
+        <h3>${escapeHtml(config.fund.name)} goal map</h3>
+        <p>Strongest research lens: ${escapeHtml(config.best.label)} for ${escapeHtml(config.best.horizon)}. This is category and fund-role mapping, not personalized advice.</p>
+      </div>
+      <div class="fit-map-score" style="--score: ${config.best.fit}">
+        <b>${config.best.fit}</b>
+      </div>
+    </div>
+    <div class="fit-map-grid">
+      ${config.scored.map((item) => `
+        <article class="fit-map-card ${escapeHtml(fitTone(item.fit))}">
+          <div>
+            <span>${escapeHtml(item.horizon)}</span>
+            <strong>${escapeHtml(item.label)}</strong>
+          </div>
+          <div class="fit-map-meter" aria-label="${escapeHtml(item.label)} fit score">
+            <span style="width: ${item.fit}%"></span>
+            <b>${item.fit}</b>
+          </div>
+          <p>${escapeHtml(item.reason)}</p>
+          <small>${escapeHtml(fitPosture(item.fit))}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="fit-map-guard-grid">
+      <article>
+        <span>Top research checks</span>
+        <ul class="fit-map-list">
+          ${config.best.checks.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>Caution zones</span>
+        <ul class="fit-map-list">
+          ${config.caution.map((item) => `<li>${escapeHtml(item.label)}: ${escapeHtml(item.reason)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+  `;
+}
+
+function makeGoalFundFitNote() {
+  const config = fundFitHeatmapConfig();
+  return [
+    "# NiveshNadi Goal-Fund Fit Heatmap",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${config.fund.name}`,
+    `Category: ${config.fund.category}`,
+    `Risk: ${config.fund.risk}`,
+    `Strongest research lens: ${config.best.label} (${config.best.fit}/100)`,
+    "",
+    "Goal lenses:",
+    ...config.scored.map((item) => `- ${item.label}: ${item.fit}/100 | ${fitPosture(item.fit)} | ${item.reason}`),
+    "",
+    "Top checks:",
+    ...config.best.checks.map((item) => `- ${item}`),
+    "",
+    "Research map only. This is not a personalized recommendation, suitability claim, execution instruction, or return guarantee."
+  ].join("\n");
+}
+
+function flagSeverityScore(severity) {
+  if (severity === "high") return 3;
+  if (severity === "medium") return 2;
+  return 1;
+}
+
+function flagSeverityLabel(severity) {
+  if (severity === "high") return "High attention";
+  if (severity === "medium") return "Review";
+  return "Monitor";
+}
+
+function redFlagItems(fund) {
+  const flags = [];
+  const fit = fundFitHeatmapConfig();
+  const peer = peerBenchmarkConfig();
+  const compareFunds = compareSet().filter((item) => item.id !== fund.id);
+  const shared = compareFunds.length ? sharedHoldings([fund, ...compareFunds]) : [];
+  const evidence = evidenceReadinessScore(fund);
+  const score = nadiScore(fund);
+  const uniqueSectors = new Set(fund.sectors).size;
+
+  if (fund.risk === "Very High") {
+    flags.push({
+      title: "Very high risk band",
+      severity: "high",
+      signal: fund.risk,
+      detail: "Use only after core allocation, drawdown comfort, and holding horizon are written.",
+      action: "Run Stress Lab and keep the role as satellite research unless the goal lens clearly supports it."
+    });
+  } else if (fund.risk === "High") {
+    flags.push({
+      title: "High risk band",
+      severity: "medium",
+      signal: fund.risk,
+      detail: "The fund can fit long-horizon research, but near-term or income goals need caution.",
+      action: "Check Fit Map and Stress Lab before using this in a shortlist."
+    });
+  }
+
+  if (fund.maxDrawdown >= 28) {
+    flags.push({
+      title: "Large drawdown history",
+      severity: "high",
+      signal: `${fund.maxDrawdown}% demo drawdown`,
+      detail: "A sharp drawdown can disturb SIP behavior and goal timing.",
+      action: "Write the behavior plan before starting, increasing, or switching."
+    });
+  } else if (fund.maxDrawdown >= 18) {
+    flags.push({
+      title: "Drawdown needs review",
+      severity: "medium",
+      signal: `${fund.maxDrawdown}% demo drawdown`,
+      detail: "The fall may be acceptable for long horizons, but it should not be ignored.",
+      action: "Compare with peer drawdown and run the Risk Stress Lab."
+    });
+  }
+
+  if (fund.expense > peer.sleeveAvg.expense + 0.12) {
+    flags.push({
+      title: "Expense above sleeve average",
+      severity: "medium",
+      signal: `${fund.expense.toFixed(2)}% TER`,
+      detail: `Sleeve average is ${peer.sleeveAvg.expense.toFixed(2)}% in demo data.`,
+      action: "Use Cost Reality Lab and compare with a lower-cost alternative."
+    });
+  }
+
+  if (evidence < 68) {
+    flags.push({
+      title: "Evidence readiness gap",
+      severity: "high",
+      signal: `${evidence}/100 evidence`,
+      detail: "Live launch should not rely on demo fields without source date and citation path.",
+      action: "Open Evidence Ledger and confirm factsheet, portfolio, SID/KIM, and TER sources."
+    });
+  } else if (evidence < 78) {
+    flags.push({
+      title: "Evidence should be strengthened",
+      severity: "medium",
+      signal: `${evidence}/100 evidence`,
+      detail: "The fund has usable demo evidence, but live citations are still needed.",
+      action: "Check source freshness before copying a decision pack."
+    });
+  }
+
+  if (shared.length) {
+    flags.push({
+      title: "Overlap with compare set",
+      severity: shared.length >= 3 ? "high" : "medium",
+      signal: `${shared.length} shared holding${shared.length === 1 ? "" : "s"}`,
+      detail: `Shared demo holdings include ${shared.slice(0, 4).join(", ")}.`,
+      action: "Use X-Ray before adding another fund with the same core exposure."
+    });
+  }
+
+  if (uniqueSectors <= 3 && fund.sleeve !== "Debt") {
+    flags.push({
+      title: "Concentration check",
+      severity: "medium",
+      signal: `${uniqueSectors} sector sleeves`,
+      detail: "A narrower sector map can increase portfolio sensitivity.",
+      action: "Inspect portfolio disclosure date and sector concentration before shortlisting."
+    });
+  }
+
+  const weakFit = fit.scored.filter((item) => item.fit < 50).length;
+  if (weakFit >= 3) {
+    flags.push({
+      title: "Goal-fit caution zones",
+      severity: "medium",
+      signal: `${weakFit} caution lenses`,
+      detail: "The fund may be useful only for specific goals, not every investor question.",
+      action: "Use the Fit Map to decide which goal lens this fund should not serve."
+    });
+  }
+
+  if (score < 70) {
+    flags.push({
+      title: "Nadi score below comfort line",
+      severity: "medium",
+      signal: `${score}/100 Nadi score`,
+      detail: "The score does not reject the fund, but it does require stronger written evidence.",
+      action: "Compare peer score, evidence readiness, and decision reason before adding it."
+    });
+  }
+
+  if (!flags.length) {
+    flags.push({
+      title: "No major demo red flag",
+      severity: "low",
+      signal: "Calm",
+      detail: "No major demo warning triggered from risk, cost, evidence, drawdown, overlap, or fit checks.",
+      action: "Still complete Evidence Ledger, Fit Map, Bench, Cost, Stress, and Decision Pack before acting."
+    });
+  }
+
+  return flags.sort((a, b) => flagSeverityScore(b.severity) - flagSeverityScore(a.severity));
+}
+
+function redFlagRadarConfig() {
+  const fund = selectedFund();
+  const flags = redFlagItems(fund);
+  const high = flags.filter((flag) => flag.severity === "high").length;
+  const medium = flags.filter((flag) => flag.severity === "medium").length;
+  const watchScore = Math.round(clampNumber(100 - high * 22 - medium * 11 - Math.max(0, flags.length - 5) * 4, 20, 96));
+  let posture = "Monitor";
+  let tone = "low";
+  if (high) {
+    posture = "Review before action";
+    tone = "high";
+  } else if (medium >= 2) {
+    posture = "Research caution";
+    tone = "medium";
+  } else if (watchScore >= 82) {
+    posture = "No major demo red flag";
+    tone = "calm";
+  }
+  return { flags, fund, high, medium, posture, tone, watchScore };
+}
+
+function renderRedFlagRadar() {
+  if (!els.redFlagOutput) return;
+  const config = redFlagRadarConfig();
+  if (els.redFlagSummary) {
+    els.redFlagSummary.textContent = `${config.high} high | ${config.medium} review`;
+  }
+  els.redFlagOutput.innerHTML = `
+    <div class="red-flag-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(config.posture)}</span>
+        <h3>${escapeHtml(config.fund.name)} risk radar</h3>
+        <p>Flags are demo research prompts across risk, cost, evidence, drawdown, overlap, concentration, and goal fit. They are not buy, sell, or switch instructions.</p>
+      </div>
+      <div class="red-flag-score">
+        <b>${config.watchScore}</b>
+        <span>watch</span>
+      </div>
+    </div>
+    <div class="red-flag-stat-grid">
+      <div><span>High attention</span><strong>${config.high}</strong></div>
+      <div><span>Review flags</span><strong>${config.medium}</strong></div>
+      <div><span>Total checks</span><strong>${config.flags.length}</strong></div>
+      <div><span>Evidence</span><strong>${evidenceReadinessScore(config.fund)}/100</strong></div>
+    </div>
+    <div class="red-flag-grid">
+      ${config.flags.map((flag) => `
+        <article class="red-flag-card ${escapeHtml(flag.severity)}">
+          <div>
+            <span>${escapeHtml(flagSeverityLabel(flag.severity))}</span>
+            <strong>${escapeHtml(flag.title)}</strong>
+          </div>
+          <b>${escapeHtml(flag.signal)}</b>
+          <p>${escapeHtml(flag.detail)}</p>
+          <small>${escapeHtml(flag.action)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="red-flag-guardrail">
+      <strong>Research guardrail</strong>
+      <p>Do not use flags as automatic rejection or approval. Use them to decide what evidence, stress scenario, cost check, or peer comparison must be completed before a decision memo.</p>
+    </div>
+  `;
+}
+
+function addFlaggedFundToWatchlist() {
+  addToWatchlist(state.selectedId);
+  renderRedFlagRadar();
+  scrollToHash("#watchlist", "smooth", true);
+}
+
+function makeRedFlagNote() {
+  const config = redFlagRadarConfig();
+  return [
+    "# NiveshNadi Red Flag Radar",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${config.fund.name}`,
+    `Category: ${config.fund.category}`,
+    `Risk: ${config.fund.risk}`,
+    `Radar posture: ${config.posture}`,
+    `Watch score: ${config.watchScore}/100`,
+    `High attention flags: ${config.high}`,
+    `Review flags: ${config.medium}`,
+    "",
+    "Flags:",
+    ...config.flags.map((flag) => `- ${flagSeverityLabel(flag.severity)} | ${flag.title}: ${flag.signal}. ${flag.detail} Action: ${flag.action}`),
+    "",
+    "Research prompts only. This is not personalized investment advice, a recommendation, a rejection, or an execution instruction."
+  ].join("\n");
+}
+
 function averageMetric(funds, reader) {
   if (!funds.length) return 0;
   return funds.reduce((sum, fund) => sum + reader(fund), 0) / funds.length;
@@ -1021,6 +1855,9 @@ function addPeerLeadersToCompare() {
   renderFundGrid();
   renderPortfolioChoices();
   renderFundDetail();
+  renderGoalFundFitHeatmap();
+  renderRedFlagRadar();
+  renderPeerBenchmarkBoard();
   renderCompareMatrix();
   analyzePortfolio();
   renderInvestorReadinessGate();
@@ -1240,6 +2077,9 @@ function renderAll() {
   renderFundGrid();
   renderCategoryPlaybook();
   renderFundDetail();
+  renderSuitabilityPassport();
+  renderGoalFundFitHeatmap();
+  renderRedFlagRadar();
   renderPeerBenchmarkBoard();
   renderPortfolioChoices();
   renderCompareMatrix();
@@ -3283,6 +4123,25 @@ function bindEvents() {
     renderFundGrid();
   });
   els.copyBrief.addEventListener("click", () => copyText(makeBrief()));
+  els.passportForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    renderSuitabilityPassport();
+  });
+  [
+    els.passportHorizon,
+    els.passportRisk,
+    els.passportLiquidity,
+    els.passportSip,
+    els.passportExperience,
+    els.passportEmergency
+  ].forEach((input) => {
+    input?.addEventListener("change", () => renderSuitabilityPassport());
+  });
+  els.copyPassportNote?.addEventListener("click", () => copyText(makeSuitabilityPassportNote()));
+  els.inspectPassportMatch?.addEventListener("click", inspectPassportTopMatch);
+  els.copyFitHeatmap?.addEventListener("click", () => copyText(makeGoalFundFitNote()));
+  els.copyRedFlagNote?.addEventListener("click", () => copyText(makeRedFlagNote()));
+  els.watchFlaggedFund?.addEventListener("click", addFlaggedFundToWatchlist);
   els.copyPeerBench?.addEventListener("click", () => copyText(makePeerBenchmarkNote()));
   els.addPeerLeaders?.addEventListener("click", addPeerLeadersToCompare);
   els.playbookForm?.addEventListener("submit", renderCategoryPlaybook);
@@ -3377,6 +4236,9 @@ function bindEvents() {
     state.selectedId = button.dataset.selectFund;
     renderFundGrid();
     renderFundDetail();
+    renderSuitabilityPassport();
+    renderGoalFundFitHeatmap();
+    renderRedFlagRadar();
     renderPeerBenchmarkBoard();
     renderCompareMatrix();
     renderStressLab();
@@ -3416,6 +4278,9 @@ function bindEvents() {
     renderFundGrid();
     renderPortfolioChoices();
     renderFundDetail();
+    renderSuitabilityPassport();
+    renderGoalFundFitHeatmap();
+    renderRedFlagRadar();
     renderPeerBenchmarkBoard();
     renderCompareMatrix();
     analyzePortfolio();
@@ -3522,6 +4387,24 @@ function cacheElements() {
     playbookOutput: qs("#playbookOutput"),
     copyPlaybookNote: qs("#copyPlaybookNote"),
     applyPlaybookPrimary: qs("#applyPlaybookPrimary"),
+    passportForm: qs("#passportForm"),
+    passportHorizon: qs("#passportHorizon"),
+    passportRisk: qs("#passportRisk"),
+    passportLiquidity: qs("#passportLiquidity"),
+    passportSip: qs("#passportSip"),
+    passportExperience: qs("#passportExperience"),
+    passportEmergency: qs("#passportEmergency"),
+    passportSummary: qs("#passportSummary"),
+    passportOutput: qs("#passportOutput"),
+    copyPassportNote: qs("#copyPassportNote"),
+    inspectPassportMatch: qs("#inspectPassportMatch"),
+    fitHeatmapSummary: qs("#fitHeatmapSummary"),
+    fitHeatmapOutput: qs("#fitHeatmapOutput"),
+    copyFitHeatmap: qs("#copyFitHeatmap"),
+    redFlagSummary: qs("#redFlagSummary"),
+    redFlagOutput: qs("#redFlagOutput"),
+    watchFlaggedFund: qs("#watchFlaggedFund"),
+    copyRedFlagNote: qs("#copyRedFlagNote"),
     peerBenchSummary: qs("#peerBenchSummary"),
     peerBenchOutput: qs("#peerBenchOutput"),
     addPeerLeaders: qs("#addPeerLeaders"),

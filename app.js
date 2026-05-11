@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260511-12";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v30 Research Dossier Builder";
+const DATA_VERSION = "20260511-13";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v31 Workspace Navigator";
 
 const FUNDS = [
   {
@@ -7353,8 +7353,25 @@ function bindScrollTopButton() {
   updateVisibility();
 }
 
+function bindWorkspaceJump() {
+  if (!els.workspaceJump) return;
+  els.workspaceJump.addEventListener("change", () => {
+    const hash = els.workspaceJump.value;
+    if (!hash) return;
+    scrollToHash(hash, "smooth", true);
+  });
+  window.addEventListener("hashchange", () => {
+    if (!els.workspaceJump) return;
+    const selected = Array.from(els.workspaceJump.options).some((option) => option.value === window.location.hash);
+    els.workspaceJump.value = selected ? window.location.hash : "";
+  });
+  const selected = Array.from(els.workspaceJump.options).some((option) => option.value === window.location.hash);
+  els.workspaceJump.value = selected ? window.location.hash : "";
+}
+
 function cacheElements() {
   Object.assign(els, {
+    workspaceJump: qs("#workspaceJump"),
     searchInput: qs("#searchInput"),
     categoryFilter: qs("#categoryFilter"),
     riskFilter: qs("#riskFilter"),
@@ -7590,6 +7607,7 @@ function init() {
   cacheElements();
   renderCategoryFilter();
   renderWatchFundSelect();
+  bindWorkspaceJump();
   bindEvents();
   renderAll();
   renderGoalFitCompass();

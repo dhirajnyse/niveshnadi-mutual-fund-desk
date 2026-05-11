@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260511-12">
+    <link rel="stylesheet" href="styles.css?v=20260511-13">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -26,34 +26,55 @@
       <nav class="top-nav" aria-label="Workspace">
         <a href="#screener">Screener</a>
         <a href="#category-playbook">Playbook</a>
-        <a href="#suitability-passport">Passport</a>
-        <a href="#fit-heatmap">Fit Map</a>
-        <a href="#red-flag-radar">Flags</a>
-        <a href="#switch-lab">Switch Lab</a>
-        <a href="#peer-bench">Bench</a>
         <a href="#compare">Compare</a>
-        <a href="#goal-fit">Goal Fit</a>
-        <a href="#journey">Coach</a>
-        <a href="#calculator">SIP/STP</a>
-        <a href="#risk-lab">Stress</a>
-        <a href="#cost-lab">Cost</a>
-        <a href="#readiness-gate">Gate</a>
         <a href="#portfolio">X-Ray</a>
-        <a href="#blueprint">Blueprint</a>
-        <a href="#rebalance-guard">Rebalance</a>
         <a href="#portfolio-review">Review</a>
-        <a href="#review-vault">Vault</a>
-        <a href="#investor-record">Record</a>
         <a href="#research-dossier">Dossier</a>
-        <a href="#evidence">Evidence</a>
-        <a href="#fund-house-lens">House Lens</a>
-        <a href="#data-readiness">Data</a>
-        <a href="#doc-decoder">Docs</a>
-        <a href="#review-rhythm">Rhythm</a>
-        <a href="#watchlist">Watchlist</a>
-        <a href="#decision-pack">Pack</a>
         <a href="#pricing">Pricing</a>
-        <a href="#journal">Journal</a>
+        <label class="workspace-jump">
+          <span>Workspace</span>
+          <select id="workspaceJump" aria-label="Jump to workspace section">
+            <option value="">Jump to tool</option>
+            <optgroup label="Discover">
+              <option value="#screener">Screener</option>
+              <option value="#category-playbook">Category Playbook</option>
+              <option value="#suitability-passport">Suitability Passport</option>
+              <option value="#fit-heatmap">Fit Map</option>
+              <option value="#red-flag-radar">Flags</option>
+              <option value="#switch-lab">Switch Lab</option>
+              <option value="#peer-bench">Peer Bench</option>
+            </optgroup>
+            <optgroup label="Compare and Fit">
+              <option value="#compare">Compare</option>
+              <option value="#goal-fit">Goal Fit</option>
+              <option value="#journey">First SIP Coach</option>
+              <option value="#calculator">SIP/STP</option>
+              <option value="#risk-lab">Stress Lab</option>
+              <option value="#cost-lab">Cost Lab</option>
+              <option value="#readiness-gate">Readiness Gate</option>
+            </optgroup>
+            <optgroup label="Portfolio">
+              <option value="#portfolio">X-Ray</option>
+              <option value="#blueprint">Blueprint</option>
+              <option value="#rebalance-guard">Rebalance</option>
+              <option value="#portfolio-review">Review Room</option>
+              <option value="#review-vault">Review Vault</option>
+              <option value="#investor-record">Investor Record</option>
+              <option value="#research-dossier">Research Dossier</option>
+            </optgroup>
+            <optgroup label="Trust and Follow-up">
+              <option value="#evidence">Evidence</option>
+              <option value="#fund-house-lens">House Lens</option>
+              <option value="#data-readiness">Data Readiness</option>
+              <option value="#doc-decoder">Doc Decoder</option>
+              <option value="#review-rhythm">Rhythm</option>
+              <option value="#watchlist">Watchlist</option>
+              <option value="#decision-pack">Decision Pack</option>
+              <option value="#pricing">Pricing</option>
+              <option value="#journal">Journal</option>
+            </optgroup>
+          </select>
+        </label>
       </nav>
     </header>
 
@@ -62,7 +83,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-              <p class="release-pill">Phase 1 v30</p>
+              <p class="release-pill">Phase 1 v31</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -1478,6 +1499,6 @@
       <span aria-hidden="true">&#8593;</span>
     </button>
 
-    <script src="app.js?v=20260511-12"></script>
+    <script src="app.js?v=20260511-13"></script>
   </body>
 </html>

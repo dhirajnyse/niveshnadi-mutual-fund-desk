@@ -15,7 +15,7 @@
   --rose-soft: #ffecef;
   --shadow: 0 14px 36px rgba(15, 34, 56, 0.1);
   --radius: 8px;
-  --anchor-offset: 116px;
+  --anchor-offset: 94px;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 
@@ -79,9 +79,9 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  min-height: 78px;
-  padding: 10px clamp(18px, 3vw, 42px);
+  gap: 18px;
+  min-height: 72px;
+  padding: 8px clamp(18px, 3vw, 42px);
   background: rgba(245, 249, 252, 0.92);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(16px);
@@ -95,8 +95,8 @@ a {
 }
 
 .brand-logo {
-  width: 176px;
-  min-width: 148px;
+  width: 156px;
+  min-width: 132px;
 }
 
 .brand-lockup h1,
@@ -107,7 +107,7 @@ a {
 }
 
 .brand-lockup h1 {
-  font-size: 21px;
+  font-size: 20px;
 }
 
 .eyebrow,
@@ -124,7 +124,9 @@ a {
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  min-width: 0;
 }
 
 .top-nav a,
@@ -143,12 +145,38 @@ a {
   color: var(--muted);
   font-size: 13px;
   font-weight: 800;
+  white-space: nowrap;
 }
 
 .top-nav a:hover,
 .top-nav a:focus {
   color: var(--ink);
   background: var(--blue-soft);
+}
+
+.workspace-jump {
+  display: inline-grid;
+  grid-template-columns: auto minmax(170px, 230px);
+  gap: 7px;
+  align-items: center;
+  margin-left: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.workspace-jump select {
+  width: 100%;
+  min-height: 36px;
+  padding: 7px 34px 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ffffff;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: none;
 }
 
 main {
@@ -5138,7 +5166,7 @@ a:focus-visible {
 
 @media (max-width: 1220px) {
   :root {
-    --anchor-offset: 138px;
+    --anchor-offset: 96px;
   }
 
   .fund-grid {
@@ -5213,6 +5241,15 @@ a:focus-visible {
   .app-header {
     position: static;
     display: grid;
+  }
+
+  .top-nav {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .workspace-jump {
+    grid-template-columns: auto minmax(210px, 1fr);
   }
 
   .control-grid,
@@ -5298,6 +5335,12 @@ a:focus-visible {
 
   .brand-lockup h1 {
     font-size: 18px;
+  }
+
+  .workspace-jump {
+    width: 100%;
+    grid-template-columns: 1fr;
+    align-items: stretch;
   }
 
   .command-panel {

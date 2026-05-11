@@ -193,6 +193,7 @@ main {
 .review-room-output,
 .review-vault-output,
 .investor-record-output,
+.dossier-output,
 .evidence-output,
 .house-output,
 .data-output,
@@ -2312,6 +2313,7 @@ a:focus-visible {
 .review-room-output,
 .review-vault-output,
 .investor-record-output,
+.dossier-output,
 .evidence-output,
 .house-output,
 .data-output,
@@ -2338,6 +2340,7 @@ a:focus-visible {
 .review-room-output p,
 .review-vault-output p,
 .investor-record-output p,
+.dossier-output p,
 .evidence-output p,
 .house-output p,
 .data-output p,
@@ -3577,6 +3580,171 @@ a:focus-visible {
 }
 
 .investor-record-card p {
+  margin: 0;
+}
+
+.dossier-grid {
+  display: grid;
+  grid-template-columns: 370px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.dossier-output {
+  display: grid;
+  gap: 12px;
+}
+
+.dossier-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 104px;
+  gap: 15px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 246, 226, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.dossier-hero h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 25px;
+  line-height: 1.12;
+}
+
+.dossier-score {
+  width: 92px;
+  height: 92px;
+  display: grid;
+  grid-template-rows: 1fr auto auto 1fr;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--gold) calc(var(--score) * 1%), #dce7ed 0);
+  position: relative;
+  text-align: center;
+}
+
+.dossier-score::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.dossier-score b,
+.dossier-score span {
+  position: relative;
+}
+
+.dossier-score b {
+  grid-row: 2;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.dossier-score span {
+  grid-row: 3;
+  margin-top: 4px;
+  color: #dce7ed;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.dossier-metric-grid,
+.dossier-section-grid,
+.dossier-card-grid,
+.dossier-ledger {
+  display: grid;
+  gap: 10px;
+}
+
+.dossier-metric-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.dossier-section-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dossier-card-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dossier-ledger {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.dossier-metric-grid div,
+.dossier-section-card,
+.dossier-panel,
+.dossier-card {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.dossier-metric-grid span,
+.dossier-section-card span,
+.dossier-card span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.dossier-metric-grid strong,
+.dossier-section-card strong,
+.dossier-card strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.22;
+}
+
+.dossier-section-card,
+.dossier-card {
+  display: grid;
+  gap: 7px;
+}
+
+.dossier-panel h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+
+.dossier-list {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.dossier-funds {
+  display: grid;
+  gap: 7px;
+}
+
+.dossier-funds span {
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ffffff;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.dossier-card p,
+.dossier-section-card p {
   margin: 0;
 }
 
@@ -5030,6 +5198,7 @@ a:focus-visible {
   .rebalance-grid,
   .review-room-grid,
   .investor-record-grid,
+  .dossier-grid,
   .evidence-grid,
   .data-grid,
   .doc-grid,
@@ -5088,6 +5257,10 @@ a:focus-visible {
   .investor-record-metric-grid,
   .investor-record-card-grid,
   .investor-record-ledger,
+  .dossier-metric-grid,
+  .dossier-section-grid,
+  .dossier-card-grid,
+  .dossier-ledger,
   .data-card-grid,
   .data-detail-grid,
   .doc-clause-grid,
@@ -5182,6 +5355,10 @@ a:focus-visible {
   .investor-record-metric-grid,
   .investor-record-card-grid,
   .investor-record-ledger,
+  .dossier-metric-grid,
+  .dossier-section-grid,
+  .dossier-card-grid,
+  .dossier-ledger,
   .data-card-grid,
   .data-detail-grid,
   .doc-clause-grid,
@@ -5257,7 +5434,8 @@ a:focus-visible {
   .review-room-hero,
   .review-vault-empty,
   .review-vault-hero,
-  .investor-record-hero {
+  .investor-record-hero,
+  .dossier-hero {
     grid-template-columns: 1fr;
   }
 
@@ -5265,7 +5443,8 @@ a:focus-visible {
   .rebalance-score,
   .review-room-score,
   .review-vault-score,
-  .investor-record-score {
+  .investor-record-score,
+  .dossier-score {
     justify-self: start;
   }
 

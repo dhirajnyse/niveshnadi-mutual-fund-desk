@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260511-11">
+    <link rel="stylesheet" href="styles.css?v=20260511-12">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -44,6 +44,7 @@
         <a href="#portfolio-review">Review</a>
         <a href="#review-vault">Vault</a>
         <a href="#investor-record">Record</a>
+        <a href="#research-dossier">Dossier</a>
         <a href="#evidence">Evidence</a>
         <a href="#fund-house-lens">House Lens</a>
         <a href="#data-readiness">Data</a>
@@ -61,7 +62,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-              <p class="release-pill">Phase 1 v29</p>
+              <p class="release-pill">Phase 1 v30</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -925,6 +926,60 @@
         </div>
       </section>
 
+      <section id="research-dossier" class="workspace-band dossier-band" aria-labelledby="research-dossier-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Research packet</p>
+            <h2 id="research-dossier-title">Nadi Research Dossier Builder</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Research dossier actions">
+            <span id="dossierSummary" class="status-chip">Dossier preview</span>
+            <button class="text-button" id="saveDossier" type="button">Save dossier</button>
+            <button class="text-button" id="copyDossier" type="button">Copy dossier</button>
+            <button class="text-button" id="clearDossiers" type="button">Clear dossiers</button>
+          </div>
+        </div>
+        <div class="dossier-grid">
+          <form id="dossierForm" class="tool-panel">
+            <h3>Assemble dossier</h3>
+            <label>
+              Dossier label
+              <input id="dossierLabel" type="text" maxlength="80" placeholder="Research packet label">
+            </label>
+            <label>
+              Dossier mode
+              <select id="dossierMode">
+                <option value="self">Self research file</option>
+                <option value="family">Family discussion packet</option>
+                <option value="advisor">Advisor conversation packet</option>
+                <option value="audit">Evidence audit packet</option>
+              </select>
+            </label>
+            <label>
+              Depth
+              <select id="dossierDepth">
+                <option value="standard">Standard dossier</option>
+                <option value="compact">Compact summary</option>
+                <option value="full">Full research packet</option>
+              </select>
+            </label>
+            <label>
+              Boundary
+              <select id="dossierBoundary">
+                <option value="source-check">Verify live sources first</option>
+                <option value="review-date">Use next review date</option>
+                <option value="no-action">Research only, no action</option>
+                <option value="resolve-queue">Resolve review queue</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build dossier</button>
+          </form>
+          <div id="dossierOutput" class="dossier-output" aria-live="polite">
+            Build a single research packet from the selected fund, compare set, evidence posture, review queue, and investor record guardrails.
+          </div>
+        </div>
+      </section>
+
       <section id="evidence" class="workspace-band evidence-band" aria-labelledby="evidence-title">
         <div class="section-heading">
           <div>
@@ -1402,6 +1457,7 @@
           <a href="#portfolio-review">Review</a>
           <a href="#review-vault">Vault</a>
           <a href="#investor-record">Record</a>
+          <a href="#research-dossier">Dossier</a>
           <a href="#evidence">Evidence</a>
           <a href="#fund-house-lens">House Lens</a>
           <a href="#data-readiness">Data</a>
@@ -1422,6 +1478,6 @@
       <span aria-hidden="true">&#8593;</span>
     </button>
 
-    <script src="app.js?v=20260511-11"></script>
+    <script src="app.js?v=20260511-12"></script>
   </body>
 </html>

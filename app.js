@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260511-11";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v29 Investor Record Desk";
+const DATA_VERSION = "20260511-12";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v30 Research Dossier Builder";
 
 const FUNDS = [
   {
@@ -2501,6 +2501,7 @@ function renderAll() {
   renderPortfolioReviewRoom();
   renderReviewVault();
   renderInvestorRecordDesk();
+  renderResearchDossier();
   renderEvidenceLedger();
   renderFundHouseLens();
   renderDataReadinessRoom();
@@ -3380,6 +3381,7 @@ function addRebalanceReviewTrigger() {
   renderPortfolioReviewRoom();
   renderReviewVault();
   renderInvestorRecordDesk();
+  renderResearchDossier();
   renderWatchlistRoom();
   renderReviewRhythmBoard();
   toast("Rebalance review trigger saved.");
@@ -3655,6 +3657,7 @@ function savePortfolioReviewTrigger() {
   renderPortfolioReviewRoom();
   renderReviewVault();
   renderInvestorRecordDesk();
+  renderResearchDossier();
   renderWatchlistRoom();
   renderReviewRhythmBoard();
   toast("Portfolio review trigger saved.");
@@ -3708,6 +3711,7 @@ function saveCurrentReviewSnapshot() {
   saveReviewVault(entries);
   renderReviewVault();
   renderInvestorRecordDesk();
+  renderResearchDossier();
   toast("Review snapshot saved locally.");
 }
 
@@ -3715,6 +3719,7 @@ function clearReviewVault() {
   saveReviewVault([]);
   renderReviewVault();
   renderInvestorRecordDesk();
+  renderResearchDossier();
   toast("Review vault cleared.");
 }
 
@@ -3964,12 +3969,14 @@ function saveCurrentInvestorRecord() {
   const entries = [record, ...loadInvestorRecords()].slice(0, 20);
   saveInvestorRecords(entries);
   renderInvestorRecordDesk();
+  renderResearchDossier();
   toast("Investor review record saved locally.");
 }
 
 function clearInvestorRecords() {
   saveInvestorRecords([]);
   renderInvestorRecordDesk();
+  renderResearchDossier();
   toast("Investor records cleared.");
 }
 
@@ -4079,6 +4086,301 @@ function makeInvestorRecordBrief() {
     "",
     "## Privacy Guardrail",
     "This record stores research workflow metadata only. Do not add PAN, folio, CAS text, account credentials, bank details, distributor client data, or transaction instructions."
+  ].join("\n");
+}
+
+function dossierModeLabel(value) {
+  if (value === "family") return "Family discussion packet";
+  if (value === "advisor") return "Advisor conversation packet";
+  if (value === "audit") return "Evidence audit packet";
+  return "Self research file";
+}
+
+function dossierDepthLabel(value) {
+  if (value === "compact") return "Compact summary";
+  if (value === "full") return "Full research packet";
+  return "Standard dossier";
+}
+
+function dossierBoundaryText(value) {
+  if (value === "review-date") return "Use the next review date as the checkpoint; do not treat the dossier as a transaction date.";
+  if (value === "no-action") return "Research only. This dossier is not advice, suitability approval, or an instruction to transact.";
+  if (value === "resolve-queue") return "Resolve the review queue, alerts, and evidence gaps before using this dossier for any real-world decision discussion.";
+  return "Verify live source dates, citation paths, factsheets, SID/KIM, portfolio disclosure, riskometer, and TER before relying on the dossier.";
+}
+
+function sanitizeDossierLabel(value) {
+  return String(value || "").replace(/\s+/g, " ").trim().slice(0, 80);
+}
+
+function dossierSelectedFunds() {
+  const funds = compareSet();
+  if (funds.length) return funds;
+  return [selectedFund()];
+}
+
+function dossierReadinessScore(config) {
+  const compareBonus = Math.min(config.funds.length, 4) * 3;
+  const recordBonus = config.latestRecord ? 5 : 0;
+  const queueDrag = Math.min(config.review.queue.length, 6) * 2;
+  const attentionDrag = Math.min(config.review.metrics.attention || 0, 5) * 3;
+  return Math.round(clampNumber(
+    config.review.score * 0.34 +
+      config.primaryScore * 0.22 +
+      config.evidence * 0.2 +
+      (100 - Math.min(config.review.metrics.drift || 0, 35) * 2) * 0.14 +
+      compareBonus +
+      recordBonus -
+      queueDrag -
+      attentionDrag,
+    35,
+    96
+  ));
+}
+
+function dossierSections(config) {
+  const sections = [
+    {
+      title: "Fund anchor",
+      value: config.primary.name,
+      detail: `${config.primary.category} | ${config.primary.risk} risk | Nadi score ${config.primaryScore}/100`
+    },
+    {
+      title: "Compare set",
+      value: `${config.funds.length} fund${config.funds.length === 1 ? "" : "s"}`,
+      detail: config.funds.map((fund) => fund.category).filter((item, index, arr) => arr.indexOf(item) === index).join(", ")
+    },
+    {
+      title: "Evidence posture",
+      value: `${config.evidence}/100`,
+      detail: config.evidence >= 78 ? "Demo evidence is organized, but source dates still need live citations." : "Evidence should be refreshed before the dossier is treated as current."
+    },
+    {
+      title: "Review discipline",
+      value: `${config.review.score}/100`,
+      detail: `${config.review.focusLabel} | ${config.review.metrics.queue} queue item${config.review.metrics.queue === 1 ? "" : "s"}`
+    },
+    {
+      title: "Decision boundary",
+      value: dossierBoundaryText(config.boundary).split(".")[0],
+      detail: "The dossier organizes research; it does not approve or execute a transaction."
+    }
+  ];
+  if (config.latestRecord) {
+    sections.push({
+      title: "Investor record",
+      value: config.latestRecord.recordCode,
+      detail: `${config.latestRecord.stanceLabel} | ${config.latestRecord.audienceLabel}`
+    });
+  }
+  return sections;
+}
+
+function dossierConfig() {
+  const primary = selectedFund();
+  const funds = dossierSelectedFunds();
+  const review = reviewSnapshotFromConfig(portfolioReviewConfig());
+  const latestRecord = loadInvestorRecords()[0] || null;
+  const vault = loadReviewVault();
+  const mode = els.dossierMode?.value || "self";
+  const depth = els.dossierDepth?.value || "standard";
+  const boundary = els.dossierBoundary?.value || "source-check";
+  const label = sanitizeDossierLabel(els.dossierLabel?.value) || `${primary.name} research dossier`;
+  const primaryScore = nadiScore(primary);
+  const evidence = evidenceReadinessScore(primary);
+  const config = {
+    label,
+    mode,
+    modeLabel: dossierModeLabel(mode),
+    depth,
+    depthLabel: dossierDepthLabel(depth),
+    boundary,
+    boundaryText: dossierBoundaryText(boundary),
+    primary,
+    primaryScore,
+    funds,
+    review,
+    latestRecord,
+    vaultCount: vault.length,
+    savedCount: loadResearchDossiers().length,
+    evidence
+  };
+  config.readiness = dossierReadinessScore(config);
+  config.sections = dossierSections(config);
+  return config;
+}
+
+function dossierSnapshotFromConfig(config) {
+  return {
+    id: `research-dossier-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    createdAt: new Date().toISOString(),
+    release: RELEASE_LABEL,
+    dataVersion: DATA_VERSION,
+    label: config.label,
+    mode: config.mode,
+    modeLabel: config.modeLabel,
+    depth: config.depth,
+    depthLabel: config.depthLabel,
+    boundary: config.boundary,
+    boundaryText: config.boundaryText,
+    readiness: config.readiness,
+    primary: {
+      id: config.primary.id,
+      name: config.primary.name,
+      category: config.primary.category,
+      risk: config.primary.risk,
+      expense: config.primary.expense,
+      score: config.primaryScore,
+      evidence: config.evidence
+    },
+    metrics: {
+      reviewScore: config.review.score,
+      evidence: config.evidence,
+      compareCount: config.funds.length,
+      vaultCount: config.vaultCount,
+      drift: config.review.metrics.drift,
+      attention: config.review.metrics.attention,
+      queue: config.review.metrics.queue
+    },
+    funds: config.funds.map((fund) => ({
+      id: fund.id,
+      name: fund.name,
+      category: fund.category,
+      risk: fund.risk,
+      expense: fund.expense,
+      score: nadiScore(fund)
+    })),
+    sections: config.sections,
+    reviewQueue: config.review.queue.slice(0, 6),
+    recordCode: config.latestRecord?.recordCode || "No saved investor record",
+    privacy: "No PAN, folio, CAS, account, contact, client, or transaction data."
+  };
+}
+
+function saveCurrentDossier() {
+  const snapshot = dossierSnapshotFromConfig(dossierConfig());
+  const entries = [snapshot, ...loadResearchDossiers()].slice(0, 16);
+  saveResearchDossiers(entries);
+  renderResearchDossier();
+  toast("Research dossier saved locally.");
+}
+
+function clearResearchDossiers() {
+  saveResearchDossiers([]);
+  renderResearchDossier();
+  toast("Research dossiers cleared.");
+}
+
+function renderResearchDossier(event) {
+  if (event) event.preventDefault();
+  if (!els.dossierOutput || !els.dossierSummary) return;
+  const config = dossierConfig();
+  const saved = loadResearchDossiers();
+  els.dossierSummary.textContent = `${saved.length} dossier${saved.length === 1 ? "" : "s"}`;
+
+  els.dossierOutput.innerHTML = `
+    <div class="dossier-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(config.depthLabel)}</span>
+        <h3>${escapeHtml(config.label)}</h3>
+        <p>${escapeHtml(config.modeLabel)} | ${escapeHtml(config.primary.name)} | ${config.funds.length} fund${config.funds.length === 1 ? "" : "s"} | ${escapeHtml(config.boundaryText)}</p>
+      </div>
+      <div class="dossier-score" style="--score:${config.readiness}">
+        <b>${config.readiness}</b>
+        <span>Dossier</span>
+      </div>
+    </div>
+    <div class="dossier-metric-grid">
+      <div><span>Primary score</span><strong>${config.primaryScore}/100</strong></div>
+      <div><span>Evidence</span><strong>${config.evidence}/100</strong></div>
+      <div><span>Review</span><strong>${config.review.score}/100</strong></div>
+      <div><span>Drift</span><strong>${Number(config.review.metrics.drift || 0).toFixed(1)}%</strong></div>
+      <div><span>Queue</span><strong>${config.review.metrics.queue}</strong></div>
+      <div><span>Vault</span><strong>${config.vaultCount}</strong></div>
+    </div>
+    <div class="dossier-section-grid">
+      ${config.sections.map((section) => `
+        <article class="dossier-section-card">
+          <span>${escapeHtml(section.title)}</span>
+          <strong>${escapeHtml(section.value)}</strong>
+          <p>${escapeHtml(section.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="dossier-card-grid">
+      <article class="dossier-panel">
+        <h3>Fund packet</h3>
+        <div class="dossier-funds">
+          ${config.funds.map((fund) => `<span>${escapeHtml(fund.name)} | ${escapeHtml(fund.category)} | ${escapeHtml(fund.risk)} risk | TER ${fund.expense.toFixed(2)}%</span>`).join("")}
+        </div>
+      </article>
+      <article class="dossier-panel">
+        <h3>Review queue</h3>
+        <ul class="dossier-list">
+          ${(config.review.queue.length ? config.review.queue : ["No active queue item. Still verify evidence, cost, overlap, and behavior before acting."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="dossier-panel">
+        <h3>Export guardrail</h3>
+        <p>Dossier output is research workflow text. It intentionally excludes PAN, folio, CAS, account credentials, contact data, client identifiers, and free-form private notes.</p>
+      </article>
+    </div>
+    <div class="dossier-ledger">
+      ${saved.length ? saved.slice(0, 4).map((item) => `
+        <article class="dossier-card">
+          <span>${escapeHtml(new Date(item.createdAt).toLocaleString("en-IN"))}</span>
+          <strong>${escapeHtml(item.label)} | ${item.readiness}/100</strong>
+          <p>${escapeHtml(item.primary.name)} | ${escapeHtml(item.depthLabel)} | ${item.metrics.compareCount} fund${item.metrics.compareCount === 1 ? "" : "s"} | Evidence ${item.metrics.evidence}/100</p>
+        </article>
+      `).join("") : `
+        <article class="dossier-card">
+          <span>Preview mode</span>
+          <strong>No saved research dossiers yet</strong>
+          <p>Save a dossier to create a local export history for this browser.</p>
+        </article>
+      `}
+    </div>
+  `;
+}
+
+function makeResearchDossierBrief() {
+  const snapshot = dossierSnapshotFromConfig(dossierConfig());
+  return [
+    "# NiveshNadi Research Dossier",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Created: ${new Date(snapshot.createdAt).toLocaleString("en-IN")}`,
+    `Label: ${snapshot.label}`,
+    `Mode: ${snapshot.modeLabel}`,
+    `Depth: ${snapshot.depthLabel}`,
+    `Boundary: ${snapshot.boundaryText}`,
+    `Dossier readiness: ${snapshot.readiness}/100`,
+    `Primary fund: ${snapshot.primary.name}`,
+    `Primary category: ${snapshot.primary.category}`,
+    `Primary risk: ${snapshot.primary.risk}`,
+    "",
+    "## Key Metrics",
+    `- Primary Nadi score: ${snapshot.primary.score}/100`,
+    `- Evidence readiness: ${snapshot.metrics.evidence}/100`,
+    `- Portfolio review score: ${snapshot.metrics.reviewScore}/100`,
+    `- Review drift: ${Number(snapshot.metrics.drift || 0).toFixed(1)}%`,
+    `- Attention triggers: ${snapshot.metrics.attention}`,
+    `- Review queue items: ${snapshot.metrics.queue}`,
+    `- Saved vault snapshots: ${snapshot.metrics.vaultCount}`,
+    `- Latest investor record: ${snapshot.recordCode}`,
+    "",
+    "## Fund Packet",
+    ...snapshot.funds.map((fund) => `- ${fund.name}: ${fund.category}, ${fund.risk} risk, TER ${fund.expense.toFixed(2)}%, score ${fund.score}/100`),
+    "",
+    "## Dossier Sections",
+    ...snapshot.sections.map((section) => `- ${section.title}: ${section.value} - ${section.detail}`),
+    "",
+    "## Review Queue",
+    ...(snapshot.reviewQueue.length ? snapshot.reviewQueue.map((item) => `- ${item}`) : ["- No active queue item."]),
+    "",
+    "## Privacy And Compliance Guardrail",
+    "- Research support only. This is not personalized investment advice, suitability approval, tax advice, execution, or distributor service.",
+    `- ${snapshot.privacy}`,
+    "- Verify live source dates, factsheets, SID/KIM, portfolio disclosure, riskometer, TER, and benchmark citations before using this outside the demo."
   ].join("\n");
 }
 
@@ -4872,6 +5174,7 @@ function addToWatchlist(fundId, shouldRender = true) {
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
+    renderResearchDossier();
     renderWatchlistRoom();
     renderReviewRhythmBoard();
   }
@@ -4885,6 +5188,7 @@ function removeFromWatchlist(fundId) {
   renderPortfolioReviewRoom();
   renderReviewVault();
   renderInvestorRecordDesk();
+  renderResearchDossier();
   renderWatchlistRoom();
   renderReviewRhythmBoard();
 }
@@ -4908,6 +5212,7 @@ function handleAlertForm(event) {
   renderPortfolioReviewRoom();
   renderReviewVault();
   renderInvestorRecordDesk();
+  renderResearchDossier();
   renderWatchlistRoom();
   renderReviewRhythmBoard();
 }
@@ -6587,6 +6892,18 @@ function saveInvestorRecords(entries) {
   localStorage.setItem("niveshnadi-investor-records", JSON.stringify(entries));
 }
 
+function loadResearchDossiers() {
+  try {
+    return JSON.parse(localStorage.getItem("niveshnadi-research-dossiers") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveResearchDossiers(entries) {
+  localStorage.setItem("niveshnadi-research-dossiers", JSON.stringify(entries));
+}
+
 function handleJournal(event) {
   event.preventDefault();
   const entry = {
@@ -6706,6 +7023,7 @@ function bindEvents() {
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
+    renderResearchDossier();
   });
   [els.blueprintSip, els.blueprintYears, els.blueprintStyle, els.blueprintCadence].forEach((input) => {
     input?.addEventListener("change", () => {
@@ -6714,6 +7032,7 @@ function bindEvents() {
       renderPortfolioReviewRoom();
       renderReviewVault();
       renderInvestorRecordDesk();
+      renderResearchDossier();
     });
   });
   els.blueprintWeights?.addEventListener("change", (event) => {
@@ -6725,6 +7044,7 @@ function bindEvents() {
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
+    renderResearchDossier();
   });
   els.normalizeBlueprint?.addEventListener("click", normalizeBlueprintWeights);
   els.copyBlueprint?.addEventListener("click", () => copyText(makeBlueprintNote()));
@@ -6733,6 +7053,7 @@ function bindEvents() {
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
+    renderResearchDossier();
   });
   [els.rebalanceCorpus, els.rebalanceSip, els.rebalanceTolerance, els.rebalanceMode].forEach((input) => {
     input?.addEventListener("change", () => {
@@ -6740,6 +7061,7 @@ function bindEvents() {
       renderPortfolioReviewRoom();
       renderReviewVault();
       renderInvestorRecordDesk();
+      renderResearchDossier();
     });
   });
   els.rebalanceCurrentWeights?.addEventListener("change", (event) => {
@@ -6750,6 +7072,7 @@ function bindEvents() {
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
+    renderResearchDossier();
   });
   els.copyRebalance?.addEventListener("click", () => copyText(makeRebalanceNote()));
   els.addRebalanceReview?.addEventListener("click", addRebalanceReviewTrigger);
@@ -6757,31 +7080,47 @@ function bindEvents() {
     renderPortfolioReviewRoom(event);
     renderReviewVault();
     renderInvestorRecordDesk();
+    renderResearchDossier();
   });
   [els.portfolioReviewFocus, els.portfolioReviewDate, els.portfolioReviewConviction].forEach((input) => {
     input?.addEventListener("change", () => {
       renderPortfolioReviewRoom();
       renderReviewVault();
       renderInvestorRecordDesk();
+      renderResearchDossier();
     });
   });
   els.portfolioReviewNote?.addEventListener("input", () => {
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
+    renderResearchDossier();
   });
   els.copyPortfolioReview?.addEventListener("click", () => copyText(makePortfolioReviewNote()));
   els.savePortfolioReview?.addEventListener("click", savePortfolioReviewTrigger);
   els.saveReviewSnapshot?.addEventListener("click", saveCurrentReviewSnapshot);
   els.copyReviewVault?.addEventListener("click", () => copyText(makeReviewVaultBrief()));
   els.clearReviewVault?.addEventListener("click", clearReviewVault);
-  els.investorRecordForm?.addEventListener("submit", renderInvestorRecordDesk);
+  els.investorRecordForm?.addEventListener("submit", (event) => {
+    renderInvestorRecordDesk(event);
+    renderResearchDossier();
+  });
   [els.investorRecordLabel, els.investorRecordStance, els.investorRecordAudience, els.investorRecordBoundary].forEach((input) => {
-    input?.addEventListener(input.tagName === "INPUT" ? "input" : "change", () => renderInvestorRecordDesk());
+    input?.addEventListener(input.tagName === "INPUT" ? "input" : "change", () => {
+      renderInvestorRecordDesk();
+      renderResearchDossier();
+    });
   });
   els.saveInvestorRecord?.addEventListener("click", saveCurrentInvestorRecord);
   els.copyInvestorRecord?.addEventListener("click", () => copyText(makeInvestorRecordBrief()));
   els.clearInvestorRecords?.addEventListener("click", clearInvestorRecords);
+  els.dossierForm?.addEventListener("submit", renderResearchDossier);
+  [els.dossierLabel, els.dossierMode, els.dossierDepth, els.dossierBoundary].forEach((input) => {
+    input?.addEventListener(input.tagName === "INPUT" ? "input" : "change", () => renderResearchDossier());
+  });
+  els.saveDossier?.addEventListener("click", saveCurrentDossier);
+  els.copyDossier?.addEventListener("click", () => copyText(makeResearchDossierBrief()));
+  els.clearDossiers?.addEventListener("click", clearResearchDossiers);
   els.copyCompare?.addEventListener("click", () => copyText(makeCompareNote()));
   els.copyEvidence?.addEventListener("click", () => copyText(makeEvidenceLog()));
   els.copyHouseLens?.addEventListener("click", () => copyText(makeFundHouseLensNote()));
@@ -6815,11 +7154,19 @@ function bindEvents() {
   });
   els.watchCompareSet?.addEventListener("click", () => {
     FUNDS.filter((fund) => state.compare.has(fund.id)).forEach((fund) => addToWatchlist(fund.id, false));
+    renderPortfolioReviewRoom();
+    renderReviewVault();
+    renderInvestorRecordDesk();
+    renderResearchDossier();
     renderWatchlistRoom();
     renderReviewRhythmBoard();
   });
   els.clearAlerts?.addEventListener("click", () => {
     saveAlerts([]);
+    renderPortfolioReviewRoom();
+    renderReviewVault();
+    renderInvestorRecordDesk();
+    renderResearchDossier();
     renderWatchlistRoom();
     renderReviewRhythmBoard();
   });
@@ -6862,6 +7209,7 @@ function bindEvents() {
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
+    renderResearchDossier();
     renderEvidenceLedger();
     renderFundHouseLens();
     renderDocDecoder();
@@ -6888,6 +7236,7 @@ function bindEvents() {
       renderPortfolioReviewRoom();
       renderReviewVault();
       renderInvestorRecordDesk();
+      renderResearchDossier();
       renderWatchlistRoom();
       renderReviewRhythmBoard();
     }
@@ -6915,6 +7264,7 @@ function bindEvents() {
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
+    renderResearchDossier();
     renderInvestorReadinessGate();
     renderFundHouseLens();
     renderDocDecoder();
@@ -7160,6 +7510,16 @@ function cacheElements() {
     saveInvestorRecord: qs("#saveInvestorRecord"),
     copyInvestorRecord: qs("#copyInvestorRecord"),
     clearInvestorRecords: qs("#clearInvestorRecords"),
+    dossierForm: qs("#dossierForm"),
+    dossierLabel: qs("#dossierLabel"),
+    dossierMode: qs("#dossierMode"),
+    dossierDepth: qs("#dossierDepth"),
+    dossierBoundary: qs("#dossierBoundary"),
+    dossierSummary: qs("#dossierSummary"),
+    dossierOutput: qs("#dossierOutput"),
+    saveDossier: qs("#saveDossier"),
+    copyDossier: qs("#copyDossier"),
+    clearDossiers: qs("#clearDossiers"),
     evidenceSummary: qs("#evidenceSummary"),
     evidenceFundSummary: qs("#evidenceFundSummary"),
     evidenceOutput: qs("#evidenceOutput"),

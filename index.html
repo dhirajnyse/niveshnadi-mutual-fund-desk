@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260511-16">
+    <link rel="stylesheet" href="styles.css?v=20260511-26">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -26,6 +26,9 @@
       <nav class="top-nav" aria-label="Workspace">
         <div class="nav-cluster" aria-label="Primary research shortcuts">
           <a href="#screener">Screener</a>
+          <a href="#starter-guide">Start</a>
+          <a href="#investor-passport">Passport</a>
+          <a href="#coach-desk">Coach</a>
           <a href="#category-playbook">Playbook</a>
           <a href="#compare">Compare</a>
           <a href="#portfolio">X-Ray</a>
@@ -41,6 +44,11 @@
               <option value="">Jump to tool</option>
               <optgroup label="Discover">
                 <option value="#screener">Screener</option>
+                <option value="#why-lens">Why This Fund Lens</option>
+                <option value="#score-anatomy">Score Anatomy</option>
+                <option value="#starter-guide">First 5-Minute Start</option>
+                <option value="#investor-passport">Investor Passport</option>
+                <option value="#coach-desk">Nadi Coach</option>
                 <option value="#research-lanes">Research Lanes</option>
                 <option value="#research-pulse">Research Pulse</option>
                 <option value="#category-playbook">Category Playbook</option>
@@ -73,6 +81,10 @@
                 <option value="#fund-house-lens">House Lens</option>
                 <option value="#data-readiness">Data Readiness</option>
                 <option value="#doc-decoder">Doc Decoder</option>
+                <option value="#glossary">Retail Glossary</option>
+                <option value="#behavior-guard">Behavior Guard</option>
+                <option value="#claim-checker">Claim Checker</option>
+                <option value="#research-receipt">Research Receipt</option>
                 <option value="#review-rhythm">Rhythm</option>
                 <option value="#watchlist">Watchlist</option>
                 <option value="#decision-pack">Decision Pack</option>
@@ -90,7 +102,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-              <p class="release-pill">Phase 1 v34</p>
+              <p class="release-pill">Phase 1 v44</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -132,6 +144,7 @@
               <div><span>Mode</span><strong>Research only</strong></div>
               <div><span>Next</span><strong>Live data</strong></div>
             </div>
+            <div id="nadiSignalStrip" class="nadi-signal-strip" aria-label="Selected fund signal strip"></div>
           </div>
 
           <aside class="market-snapshot" aria-label="Market context">
@@ -151,6 +164,165 @@
               <span>No personalized advice or return guarantee</span>
             </div>
           </aside>
+        </div>
+      </section>
+
+      <section id="starter-guide" class="workspace-band starter-band" aria-labelledby="starter-guide-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">First session</p>
+            <h2 id="starter-guide-title">First 5-Minute Start</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="First start actions">
+            <span id="starterGuideSummary" class="status-chip">0 of 5 complete</span>
+            <button class="text-button" id="openStarterNext" type="button">Open next step</button>
+            <button class="text-button" id="copyStarterGuide" type="button">Copy start plan</button>
+            <button class="text-button" id="resetStarterGuide" type="button">Reset</button>
+          </div>
+        </div>
+        <div class="starter-grid">
+          <form id="starterGuideForm" class="tool-panel starter-form">
+            <h3>Choose opening route</h3>
+            <label>
+              Session intent
+              <select id="starterIntent">
+                <option value="profile">Build profile first</option>
+                <option value="first-sip">Start first SIP</option>
+                <option value="compare">Compare shortlist</option>
+                <option value="review">Review portfolio</option>
+                <option value="switch">Study switch question</option>
+                <option value="memo">Prepare memo</option>
+              </select>
+            </label>
+            <label>
+              Time available
+              <select id="starterTime">
+                <option value="quick">5 minute scan</option>
+                <option value="focused">15 minute research</option>
+                <option value="deep">30 minute deep work</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Refresh start route</button>
+          </form>
+          <div id="starterGuideOutput" class="starter-guide-output" aria-live="polite">
+            Follow the first five research moves before treating any fund as ready for a SIP, switch, review, or memo.
+          </div>
+        </div>
+      </section>
+
+      <section id="investor-passport" class="workspace-band investor-passport-band" aria-labelledby="investor-passport-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Investor start</p>
+            <h2 id="investor-passport-title">Retail Investor Passport</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Investor Passport actions">
+            <span id="investorPassportSummary" class="status-chip">Profile ready</span>
+            <button class="text-button" id="applyInvestorPassport" type="button">Open profile route</button>
+            <button class="text-button" id="copyInvestorPassport" type="button">Copy passport</button>
+          </div>
+        </div>
+        <div class="investor-passport-grid">
+          <form id="investorPassportForm" class="tool-panel investor-passport-form">
+            <h3>Build investor context</h3>
+            <label>
+              Primary need
+              <select id="investorGoal">
+                <option value="first-sip">Start or improve first SIP</option>
+                <option value="parking">Park money safely</option>
+                <option value="tax">Study ELSS tax-saving route</option>
+                <option value="retirement">Long-term wealth or retirement</option>
+                <option value="review">Review existing portfolio</option>
+                <option value="switch">Study a switch question</option>
+              </select>
+            </label>
+            <label>
+              Investor stage
+              <select id="investorStage">
+                <option value="new">New investor</option>
+                <option value="building">Building monthly habit</option>
+                <option value="reviewing">Already invested and reviewing</option>
+              </select>
+            </label>
+            <label>
+              Horizon in years
+              <input id="investorHorizon" type="number" min="1" max="40" step="1" value="7">
+            </label>
+            <label>
+              Monthly SIP capacity
+              <input id="investorMonthlySip" type="number" min="0" step="500" value="10000">
+            </label>
+            <label>
+              Risk comfort
+              <select id="investorRisk">
+                <option value="balanced">Balanced</option>
+                <option value="conservative">Conservative</option>
+                <option value="growth">Growth-oriented</option>
+                <option value="aggressive">Aggressive</option>
+              </select>
+            </label>
+            <label>
+              Emergency buffer
+              <select id="investorEmergency">
+                <option value="partial">Partly ready</option>
+                <option value="yes">Available</option>
+                <option value="no">Not ready</option>
+              </select>
+            </label>
+            <label>
+              Decision stage
+              <select id="investorConfidence">
+                <option value="exploring">Exploring</option>
+                <option value="shortlist">Shortlisting</option>
+                <option value="ready">Ready to write memo</option>
+              </select>
+            </label>
+          </form>
+          <div id="investorPassportOutput" class="investor-passport-output" aria-live="polite">
+            Build an investor context to choose the first research lane, category route, and guardrails before looking at fund names.
+          </div>
+        </div>
+      </section>
+
+      <section id="coach-desk" class="workspace-band coach-band" aria-labelledby="coach-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Self research coach</p>
+            <h2 id="coach-title">Nadi Coach Q&amp;A</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Nadi Coach actions">
+            <span id="coachSummary" class="status-chip">Coach ready</span>
+            <button class="text-button" id="openCoachAction" type="button">Open suggested check</button>
+            <button class="text-button" id="copyCoach" type="button">Copy coach answer</button>
+          </div>
+        </div>
+        <div class="coach-grid">
+          <form id="coachForm" class="tool-panel coach-form">
+            <h3>Ask the desk</h3>
+            <label>
+              Question
+              <select id="coachQuestion">
+                <option value="next">What should I check next?</option>
+                <option value="red-flags">What are the red flags?</option>
+                <option value="shortlist">Is my shortlist duplicated?</option>
+                <option value="sip">Is this ready for first SIP research?</option>
+                <option value="switch">Should I study a switch?</option>
+                <option value="memo">What should I write in the memo?</option>
+              </select>
+            </label>
+            <label>
+              Answer style
+              <select id="coachDepth">
+                <option value="plain">Plain English</option>
+                <option value="checklist">Checklist</option>
+                <option value="deep">Deep research</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Ask coach</button>
+          </form>
+          <div id="coachOutput" class="coach-output" aria-live="polite">
+            Ask a research question and the coach will route you to the next check using the selected fund, compare set, evidence ledger, watchlist, and decision memo status.
+          </div>
         </div>
       </section>
 
@@ -274,13 +446,18 @@
         </div>
       </section>
 
-      <section class="workspace-band detail-band" aria-labelledby="detail-title">
+      <section id="why-lens" class="workspace-band detail-band" aria-labelledby="detail-title">
         <div class="section-heading">
           <div>
             <p class="eyebrow">Selected fund</p>
             <h2 id="detail-title">Fund DNA</h2>
           </div>
-          <span id="selectedStatus" class="status-chip">No fund selected</span>
+          <div class="toolbar" role="group" aria-label="Fund DNA actions">
+            <span id="selectedStatus" class="status-chip">No fund selected</span>
+            <button class="text-button" id="openWhyCoach" type="button">Ask coach</button>
+            <button class="text-button" id="copyWhyLens" type="button">Copy why lens</button>
+            <button class="text-button" id="copyScoreAnatomy" type="button">Copy score anatomy</button>
+          </div>
         </div>
         <div id="fundDetail" class="fund-detail empty-state">
           Select a fund from the screener to inspect its role, risk evidence, holdings overlap, and decision prompts.
@@ -1209,6 +1386,231 @@
         </div>
       </section>
 
+      <section id="glossary" class="workspace-band glossary-band" aria-labelledby="glossary-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Retail plain English</p>
+            <h2 id="glossary-title">Nadi Retail Glossary</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Retail glossary actions">
+            <span id="glossarySummary" class="status-chip">12 terms</span>
+            <button class="text-button" id="copyGlossaryNote" type="button">Copy glossary note</button>
+          </div>
+        </div>
+        <div class="glossary-grid">
+          <form id="glossaryForm" class="tool-panel glossary-form">
+            <h3>Decode investing language</h3>
+            <label>
+              Search term
+              <input id="glossarySearch" type="search" maxlength="50" placeholder="Try SIP, TER, risk, NAV">
+            </label>
+            <label>
+              Focus
+              <select id="glossaryFocus">
+                <option value="all">All terms</option>
+                <option value="cashflow">SIP/STP and cash flow</option>
+                <option value="risk">Risk words</option>
+                <option value="cost">Cost words</option>
+                <option value="fund-data">Fund data words</option>
+                <option value="passive">Passive fund words</option>
+              </select>
+            </label>
+            <label>
+              Reading mode
+              <select id="glossaryLevel">
+                <option value="beginner">Beginner</option>
+                <option value="confident">Confident investor</option>
+                <option value="memo-ready">Memo ready</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Refresh glossary</button>
+          </form>
+          <div id="glossaryOutput" class="glossary-output" aria-live="polite">
+            Search or filter terms to translate mutual fund language into plain research checks.
+          </div>
+        </div>
+      </section>
+
+      <section id="behavior-guard" class="workspace-band behavior-band" aria-labelledby="behavior-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Behavior brake</p>
+            <h2 id="behavior-title">Nadi Behavior Guard</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Behavior guard actions">
+            <span id="behaviorSummary" class="status-chip">Impulse check</span>
+            <button class="text-button" id="copyBehaviorGuard" type="button">Copy guard note</button>
+          </div>
+        </div>
+        <div class="behavior-layout">
+          <form id="behaviorForm" class="tool-panel behavior-form">
+            <h3>Check the impulse</h3>
+            <label>
+              What triggered this thought?
+              <select id="behaviorTrigger">
+                <option value="market-fall">Market fall</option>
+                <option value="recent-winner">Recent winner</option>
+                <option value="peer-noise">Friend or social media tip</option>
+                <option value="sip-fatigue">SIP fatigue</option>
+                <option value="switch-urge">Switch urge</option>
+                <option value="lump-sum">Bonus or lump sum</option>
+                <option value="tax-rush">Tax deadline rush</option>
+                <option value="low-conviction">Low conviction</option>
+              </select>
+            </label>
+            <label>
+              Intended action
+              <select id="behaviorAction">
+                <option value="watch">Watch only</option>
+                <option value="start-sip">Start SIP</option>
+                <option value="increase-sip">Increase SIP</option>
+                <option value="pause-sip">Pause SIP</option>
+                <option value="switch">Switch fund</option>
+                <option value="redeem">Redeem</option>
+                <option value="add-lumpsum">Add lump sum</option>
+              </select>
+            </label>
+            <label>
+              Amount context
+              <input id="behaviorAmount" type="number" min="0" max="100000000" step="500" value="10000">
+            </label>
+            <label>
+              Mood
+              <select id="behaviorMood">
+                <option value="calm">Calm</option>
+                <option value="excited">Excited</option>
+                <option value="anxious">Anxious</option>
+                <option value="frustrated">Frustrated</option>
+              </select>
+            </label>
+            <label>
+              Cooling rule
+              <select id="behaviorWait">
+                <option value="24h">24-hour pause</option>
+                <option value="7d">7-day cooling period</option>
+                <option value="review">Next review date</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Run behavior guard</button>
+          </form>
+          <div id="behaviorOutput" class="behavior-output" aria-live="polite">
+            Run the guard before a SIP increase, switch, redemption, or panic pause. It converts impulse into research checks.
+          </div>
+        </div>
+      </section>
+
+      <section id="claim-checker" class="workspace-band claim-band" aria-labelledby="claim-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Trust challenge</p>
+            <h2 id="claim-title">Nadi Claim Checker</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Claim checker actions">
+            <span id="claimSummary" class="status-chip">Claim triage</span>
+            <button class="text-button" id="copyClaimNote" type="button">Copy claim note</button>
+          </div>
+        </div>
+        <div class="claim-layout">
+          <form id="claimForm" class="tool-panel claim-form">
+            <h3>Challenge a claim</h3>
+            <label>
+              Claim type
+              <select id="claimPreset">
+                <option value="guarantee">Guaranteed high return</option>
+                <option value="best">Best fund now</option>
+                <option value="winner">Recent winner</option>
+                <option value="cheap">Low NAV is cheap</option>
+                <option value="nfo">NFO at Rs. 10 NAV</option>
+                <option value="dividend">IDCW income</option>
+                <option value="tax">Tax deadline rush</option>
+                <option value="expense">Lowest expense wins</option>
+                <option value="influencer">Influencer claim</option>
+              </select>
+            </label>
+            <label>
+              Claim text
+              <textarea id="claimText" rows="4" maxlength="260" placeholder="Paste or write the fund claim you want to challenge."></textarea>
+            </label>
+            <label>
+              Source
+              <select id="claimSource">
+                <option value="social">Social media</option>
+                <option value="friend">Friend or family</option>
+                <option value="ad">Advertisement</option>
+                <option value="distributor">Distributor conversation</option>
+                <option value="article">Article or blog</option>
+                <option value="self">Own thought</option>
+              </select>
+            </label>
+            <label>
+              Intended use
+              <select id="claimIntent">
+                <option value="shortlist">Shortlist fund</option>
+                <option value="sip">Start SIP</option>
+                <option value="switch">Switch</option>
+                <option value="lumpsum">Add lump sum</option>
+                <option value="redeem">Redeem or pause</option>
+                <option value="compare">Compare only</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Check claim</button>
+          </form>
+          <div id="claimOutput" class="claim-output" aria-live="polite">
+            Paste a claim such as guaranteed return, best fund, low NAV, tax rush, or recent winner. The checker will turn it into evidence and behavior checks.
+          </div>
+        </div>
+      </section>
+
+      <section id="research-receipt" class="workspace-band receipt-band" aria-labelledby="receipt-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Proof of research</p>
+            <h2 id="receipt-title">Nadi Research Receipt</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Research receipt actions">
+            <span id="receiptSummary" class="status-chip">Receipt preview</span>
+            <button class="text-button" id="copyReceiptNote" type="button">Copy receipt</button>
+          </div>
+        </div>
+        <div class="receipt-layout">
+          <form id="receiptForm" class="tool-panel receipt-form">
+            <h3>Build receipt</h3>
+            <label>
+              Receipt mode
+              <select id="receiptMode">
+                <option value="self">Self research receipt</option>
+                <option value="family">Family discussion receipt</option>
+                <option value="advisor">Advisor conversation receipt</option>
+                <option value="audit">Evidence audit receipt</option>
+              </select>
+            </label>
+            <label>
+              Decision stance
+              <select id="receiptDecision">
+                <option value="watch">Watch</option>
+                <option value="shortlist">Shortlist</option>
+                <option value="sip">SIP research</option>
+                <option value="switch">Switch research</option>
+                <option value="review">Portfolio review</option>
+                <option value="avoid">Avoid for now</option>
+              </select>
+            </label>
+            <label>
+              Review date
+              <input id="receiptReviewDate" type="date" value="2026-06-30">
+            </label>
+            <label>
+              Receipt note
+              <textarea id="receiptNote" rows="4" maxlength="220" placeholder="Optional reason, still no PAN, folio, CAS, or account details."></textarea>
+            </label>
+            <button class="primary-button" type="submit">Build receipt</button>
+          </form>
+          <div id="receiptOutput" class="receipt-output" aria-live="polite">
+            Build a research receipt from score, evidence, claims, behavior, compare set, watchlist, and decision boundaries.
+          </div>
+        </div>
+      </section>
+
       <section id="review-rhythm" class="workspace-band rhythm-band" aria-labelledby="rhythm-title">
         <div class="section-heading">
           <div>
@@ -1524,6 +1926,11 @@
           </label>
           <div class="floating-section-links" aria-label="Quick sections">
             <a href="#screener">Screener</a>
+            <a href="#why-lens">Why Lens</a>
+            <a href="#score-anatomy">Score</a>
+            <a href="#starter-guide">First Start</a>
+            <a href="#investor-passport">Start</a>
+            <a href="#coach-desk">Coach Q&amp;A</a>
             <a href="#research-lanes">Lanes</a>
             <a href="#research-pulse">Pulse</a>
             <a href="#category-playbook">Playbook</a>
@@ -1550,6 +1957,10 @@
             <a href="#fund-house-lens">House Lens</a>
             <a href="#data-readiness">Data</a>
             <a href="#doc-decoder">Docs</a>
+            <a href="#glossary">Glossary</a>
+            <a href="#behavior-guard">Guard</a>
+            <a href="#claim-checker">Claims</a>
+            <a href="#research-receipt">Receipt</a>
             <a href="#review-rhythm">Rhythm</a>
             <a href="#watchlist">Watchlist</a>
             <a href="#decision-pack">Pack</a>
@@ -1567,6 +1978,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260511-16"></script>
+    <script src="app.js?v=20260511-26"></script>
   </body>
 </html>

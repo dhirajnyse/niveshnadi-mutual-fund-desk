@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260511-16";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v34 Research Lanes";
+const DATA_VERSION = "20260511-26";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v44 Research Receipt";
 
 const FUNDS = [
   {
@@ -442,6 +442,255 @@ const DOC_DECODER_GUIDES = {
   }
 };
 
+const GLOSSARY_TERMS = [
+  {
+    id: "sip",
+    term: "SIP",
+    bucket: "cashflow",
+    plain: "A fixed amount invested regularly instead of investing the whole amount on one day.",
+    why: "Useful for discipline and averaging, but it does not remove market risk.",
+    check: "Check monthly affordability, emergency buffer, horizon, and whether the selected fund role fits the goal.",
+    example: "Rs. 10,000 monthly for 7 years should still have a review date and stop/pause rules."
+  },
+  {
+    id: "stp",
+    term: "STP",
+    bucket: "cashflow",
+    plain: "A planned transfer from one fund to another in installments, usually from a debt or liquid source into equity.",
+    why: "Useful when the investor has a lump sum and wants staged equity entry.",
+    check: "Check source fund risk, exit load, tax impact, transfer period, and whether the target fund duplicates existing exposure.",
+    example: "A liquid fund can be a parking bucket before a monthly transfer into an equity fund."
+  },
+  {
+    id: "nav",
+    term: "NAV",
+    bucket: "fund-data",
+    plain: "The per-unit value of a mutual fund on a given date.",
+    why: "NAV is an accounting value, not a signal that a fund is cheap or expensive.",
+    check: "Compare return, risk, cost, and portfolio evidence instead of judging by high or low NAV.",
+    example: "A fund with NAV 200 is not automatically costlier than a fund with NAV 20."
+  },
+  {
+    id: "ter",
+    term: "TER",
+    bucket: "cost",
+    plain: "Total Expense Ratio is the annual cost deducted inside the fund before returns reach the investor.",
+    why: "Small-looking percentages can create meaningful rupee drag over long SIP periods.",
+    check: "Check direct versus regular plan, TER date, category peer cost, and Cost Reality Lab output.",
+    example: "A 0.30% cost gap matters more as portfolio size and holding period increase."
+  },
+  {
+    id: "drawdown",
+    term: "Drawdown",
+    bucket: "risk",
+    plain: "The fall from a previous high to a later low.",
+    why: "It converts risk from abstract words into the kind of loss an investor may have to emotionally survive.",
+    check: "Run Stress Lab before increasing high-risk or very-high-risk funds.",
+    example: "A 25% drawdown on Rs. 10 lakh means a temporary fall of about Rs. 2.5 lakh."
+  },
+  {
+    id: "riskometer",
+    term: "Riskometer",
+    bucket: "risk",
+    plain: "A regulatory risk label shown for a scheme, such as low, moderate, high, or very high.",
+    why: "It is a starting warning label, not a full personal suitability answer.",
+    check: "Pair it with horizon, drawdown, portfolio role, concentration, and behavior review.",
+    example: "Very High risk may still be researchable, but only with a long horizon and clear sizing."
+  },
+  {
+    id: "benchmark",
+    term: "Benchmark",
+    bucket: "fund-data",
+    plain: "The reference index used to judge whether the fund's return and risk are reasonable.",
+    why: "Without the right benchmark, outperformance or underperformance claims can mislead.",
+    check: "Confirm TRI/non-TRI method, benchmark name, and category fit before comparing returns.",
+    example: "A large-cap fund should not be judged only against a small-cap rally."
+  },
+  {
+    id: "exit-load",
+    term: "Exit load",
+    bucket: "cost",
+    plain: "A charge that may apply if units are redeemed before a stated holding period.",
+    why: "It can make quick switching or short holding periods more expensive.",
+    check: "Read the live KIM/SID load clause before assuming a switch or redemption is frictionless.",
+    example: "A 1% exit load for early exit can matter when the investment period is short."
+  },
+  {
+    id: "direct-regular",
+    term: "Direct vs Regular",
+    bucket: "cost",
+    plain: "Direct plans usually have lower TER; regular plans include distributor commission inside expenses.",
+    why: "The right channel depends on advice/service need, but the cost difference must be visible.",
+    check: "Do not mix plan classes when comparing TER or returns.",
+    example: "Regular plan support may be valuable for some investors, but cost should be known upfront."
+  },
+  {
+    id: "aum",
+    term: "AUM",
+    bucket: "fund-data",
+    plain: "Assets Under Management is the total money managed in the fund.",
+    why: "Too small can raise viability concerns; too large can create capacity questions in some categories.",
+    check: "Interpret AUM by category, liquidity, strategy, and portfolio style rather than alone.",
+    example: "Small-cap capacity needs a different lens than liquid fund scale."
+  },
+  {
+    id: "idcw",
+    term: "IDCW",
+    bucket: "cashflow",
+    plain: "Income Distribution cum Capital Withdrawal is a payout option, not guaranteed income.",
+    why: "Payouts can come from gains or capital and may reduce NAV.",
+    check: "Check tax treatment, payout history, and whether growth option is better for compounding.",
+    example: "IDCW should not be treated like bank interest."
+  },
+  {
+    id: "tracking-error",
+    term: "Tracking error",
+    bucket: "passive",
+    plain: "How closely an index fund or ETF follows its benchmark.",
+    why: "Passive funds should be judged on cost, tracking difference, liquidity, and execution quality.",
+    check: "Compare TER, tracking difference, AUM, portfolio replication, and benchmark source.",
+    example: "A low-cost index fund still needs tracking discipline."
+  }
+];
+
+const BEHAVIOR_TRIGGERS = {
+  "market-fall": {
+    label: "Market fall",
+    bias: "panic reaction",
+    firstCheck: "Run Stress Lab before changing SIP, STP, or redemption intent.",
+    route: "#risk-lab",
+    wait: "Sleep on it and revisit after the next market close."
+  },
+  "recent-winner": {
+    label: "Recent winner",
+    bias: "return chasing",
+    firstCheck: "Compare role, cost, drawdown, and evidence before adding more money.",
+    route: "#compare",
+    wait: "Wait until the fund has passed score anatomy and peer context."
+  },
+  "peer-noise": {
+    label: "Friend or social media tip",
+    bias: "borrowed conviction",
+    firstCheck: "Use Retail Glossary and Evidence Ledger to convert the tip into source-backed questions.",
+    route: "#evidence",
+    wait: "Do not act until the reason is written in your own words."
+  },
+  "sip-fatigue": {
+    label: "SIP fatigue",
+    bias: "discipline drop",
+    firstCheck: "Check goal, emergency buffer, and whether the fund still has a role.",
+    route: "#investor-passport",
+    wait: "Review affordability before stopping a long-term SIP."
+  },
+  "switch-urge": {
+    label: "Switch urge",
+    bias: "action bias",
+    firstCheck: "Run Switch Lab and Cost Reality Lab before treating movement as improvement.",
+    route: "#switch-lab",
+    wait: "Require a review date, exit-load check, and written change thesis."
+  },
+  "lump-sum": {
+    label: "Bonus or lump sum",
+    bias: "cash deployment pressure",
+    firstCheck: "Test STP, emergency money, goal fit, and portfolio duplication first.",
+    route: "#calculator",
+    wait: "Stage the research before staging the money."
+  },
+  "tax-rush": {
+    label: "Tax deadline rush",
+    bias: "deadline pressure",
+    firstCheck: "Check ELSS lock-in, role, cost, and whether tax saving is crowding the portfolio.",
+    route: "#goal-fit",
+    wait: "Do not let the deadline replace suitability and evidence review."
+  },
+  "low-conviction": {
+    label: "Low conviction",
+    bias: "unclear thesis",
+    firstCheck: "Build a Decision Pack or keep the fund on watch until the reason is clear.",
+    route: "#decision-pack",
+    wait: "No written reason, no fresh action."
+  }
+};
+
+const CLAIM_PRESETS = {
+  guarantee: "This mutual fund can give guaranteed high returns with no risk.",
+  best: "This is the best mutual fund to invest in right now.",
+  winner: "This fund gave the highest return last year, so it should be selected for SIP.",
+  cheap: "The NAV is low, so the fund is cheap and has more upside.",
+  nfo: "This new fund offer is available at Rs. 10 NAV, so it is better to enter now.",
+  dividend: "Choose IDCW because it gives regular income like interest.",
+  tax: "Invest immediately for tax saving before checking the fund role.",
+  expense: "Lowest expense ratio means this fund is automatically the best choice.",
+  influencer: "A social media post says this fund will beat all peers."
+};
+
+const CLAIM_PATTERNS = [
+  {
+    id: "guarantee",
+    label: "Guarantee language",
+    keywords: ["guarantee", "guaranteed", "assured", "fixed return", "sure return", "no risk"],
+    severity: 30,
+    route: "#evidence",
+    check: "Mutual fund returns must not be treated as guaranteed. Confirm riskometer, category risk, and official source language."
+  },
+  {
+    id: "best",
+    label: "Best-fund shortcut",
+    keywords: ["best", "number one", "no. 1", "top fund", "beat all"],
+    severity: 18,
+    route: "#compare",
+    check: "Best depends on goal, horizon, risk comfort, role, cost, evidence, and overlap. Run Compare before trusting the claim."
+  },
+  {
+    id: "winner",
+    label: "Recent performance chase",
+    keywords: ["last year", "highest return", "top performer", "recent return", "one year return"],
+    severity: 22,
+    route: "#score-anatomy",
+    check: "Past return needs consistency, drawdown, cost, and benchmark context. Do not let one period dominate the score."
+  },
+  {
+    id: "cheap-nav",
+    label: "Low NAV misunderstanding",
+    keywords: ["low nav", "cheap nav", "rs. 10 nav", "10 nav", "more units", "cheap fund"],
+    severity: 20,
+    route: "#glossary",
+    check: "Low NAV does not make a mutual fund cheap. Use TER, holdings, risk, benchmark, and role instead."
+  },
+  {
+    id: "income",
+    label: "Income confusion",
+    keywords: ["dividend", "idcw", "regular income", "monthly income", "interest like"],
+    severity: 18,
+    route: "#doc-decoder",
+    check: "IDCW is not bank interest. Read scheme documents, payout history, tax treatment, and compounding tradeoff."
+  },
+  {
+    id: "tax-rush",
+    label: "Tax deadline pressure",
+    keywords: ["tax saving", "80c", "deadline", "march", "elss"],
+    severity: 16,
+    route: "#goal-fit",
+    check: "Tax saving should not replace fund role, lock-in, cost, risk, and portfolio fit review."
+  },
+  {
+    id: "expense-only",
+    label: "Expense-only conclusion",
+    keywords: ["lowest expense", "low expense", "lowest ter", "cheap ter"],
+    severity: 14,
+    route: "#cost-lab",
+    check: "Low TER helps, but role, tracking, drawdown, evidence, and category fit still matter."
+  },
+  {
+    id: "social-proof",
+    label: "Borrowed conviction",
+    keywords: ["social media", "youtube", "telegram", "whatsapp", "friend", "influencer"],
+    severity: 24,
+    route: "#behavior-guard",
+    check: "A borrowed claim must be converted into source-backed evidence and a reason written in the investor's own words."
+  }
+];
+
 const state = {
   selectedId: FUNDS[0].id,
   compare: new Set(["large-core", "index-nifty"]),
@@ -495,6 +744,253 @@ function nadiScore(fund) {
     fund.researchCoverage * 0.16 +
     Math.min(fund.returns5y * 3.4, 100) * 0.1
   );
+}
+
+function nadiScoreParts(fund) {
+  const drawdownControl = Math.max(0, 100 - fund.maxDrawdown * 2.1);
+  const expenseScore = Math.max(0, 100 - fund.expense * 75);
+  const returnSupport = Math.min(fund.returns5y * 3.4, 100);
+  const parts = [
+    {
+      id: "consistency",
+      label: "Consistency",
+      raw: fund.consistency,
+      weight: 34,
+      contribution: fund.consistency * 0.34,
+      detail: "Rewards smoother category-relative behavior and repeatability in demo data.",
+      improve: "Improve only with steadier rolling performance and fewer style surprises."
+    },
+    {
+      id: "drawdown",
+      label: "Drawdown control",
+      raw: drawdownControl,
+      weight: 22,
+      contribution: drawdownControl * 0.22,
+      detail: `${fund.maxDrawdown}% demo drawdown is translated into a control score.`,
+      improve: "Improves when downside capture, volatility, and peak-to-trough falls are lower."
+    },
+    {
+      id: "expense",
+      label: "Expense discipline",
+      raw: expenseScore,
+      weight: 18,
+      contribution: expenseScore * 0.18,
+      detail: `${fund.expense.toFixed(2)}% TER is converted into a cost discipline score.`,
+      improve: "Improves when TER is lower or stays below category and sleeve peers."
+    },
+    {
+      id: "coverage",
+      label: "Research coverage",
+      raw: fund.researchCoverage,
+      weight: 16,
+      contribution: fund.researchCoverage * 0.16,
+      detail: "Rewards available demo research coverage for style, role, holdings, and manager context.",
+      improve: "Improves when source-backed factsheet, SID/KIM, portfolio, TER, and riskometer fields are richer."
+    },
+    {
+      id: "return",
+      label: "Return support",
+      raw: returnSupport,
+      weight: 10,
+      contribution: returnSupport * 0.1,
+      detail: `${fund.returns5y.toFixed(1)}% five-year demo return is capped so returns never dominate the score.`,
+      improve: "Improves with persistent category-relative returns, but remains capped to avoid performance chasing."
+    }
+  ];
+  const score = Math.round(parts.reduce((sum, part) => sum + part.contribution, 0));
+  return { drawdownControl, expenseScore, parts, returnSupport, score };
+}
+
+function scoreAnatomyBand(score) {
+  if (score >= 82) return "Strong demo score";
+  if (score >= 72) return "Research-worthy score";
+  if (score >= 62) return "Needs stronger proof";
+  return "Watch before shortlisting";
+}
+
+function scoreAnatomyConfig() {
+  const fund = selectedFund();
+  const anatomy = nadiScoreParts(fund);
+  const peer = peerBenchmarkConfig();
+  const evidence = evidenceReadinessScore(fund);
+  const weakest = [...anatomy.parts].sort((a, b) => a.raw - b.raw)[0];
+  const strongest = [...anatomy.parts].sort((a, b) => b.raw - a.raw)[0];
+  const peerDelta = anatomy.score - peer.sleeveAvg.score;
+  const notes = [
+    `The Nadi score is a weighted research score, not a rating, recommendation, or guarantee.`,
+    `Largest driver: ${strongest.label} contributes ${strongest.contribution.toFixed(1)} points.`,
+    `Weakest driver: ${weakest.label} has a raw score of ${Math.round(weakest.raw)}/100.`,
+    evidence < 70
+      ? `Evidence readiness is ${evidence}/100, so source proof is the first trust gate even if the score looks usable.`
+      : `Evidence readiness is ${evidence}/100, but live source dates and citations are still required before launch use.`
+  ];
+  const pressure = [];
+  if (fund.maxDrawdown >= 18) pressure.push("Drawdown control is under pressure; run Stress Lab before any memo.");
+  if (fund.expense > peer.sleeveAvg.expense + 0.12) pressure.push("Expense discipline is under pressure versus sleeve peers.");
+  if (fund.researchCoverage < 78 || evidence < 78) pressure.push("Coverage and citation depth should be strengthened before relying on the score.");
+  if (fund.returns5y * 3.4 >= 100) pressure.push("Return support is capped, so recent performance cannot overpower risk and cost.");
+  if (!pressure.length) pressure.push("No single score driver dominates; still verify peer context and live evidence.");
+
+  return {
+    anatomy,
+    evidence,
+    fund,
+    notes,
+    peer,
+    peerDelta,
+    pressure,
+    score: anatomy.score,
+    status: scoreAnatomyBand(anatomy.score),
+    strongest,
+    weakest
+  };
+}
+
+function signalStripConfig() {
+  const fund = selectedFund();
+  const score = nadiScore(fund);
+  const evidence = evidenceReadinessScore(fund);
+  const peer = peerBenchmarkConfig();
+  const compareFunds = compareSet();
+  const riskControl = Math.round(Math.max(0, 100 - fund.maxDrawdown * 2));
+  const sleeveDelta = score - peer.sleeveAvg.score;
+  const stressRequired = fund.maxDrawdown >= 22 || fund.risk === "Very High";
+  const costNeedsCheck = fund.expense > peer.sleeveAvg.expense + 0.1;
+
+  let posture = "Research candidate";
+  let tone = "steady";
+  let postureCopy = "Score, cost, and evidence are usable for deeper self-research.";
+  if (evidence < 70) {
+    posture = "Evidence first";
+    tone = "caution";
+    postureCopy = "Score is secondary until source dates, citations, and demo/live status are checked.";
+  } else if (stressRequired) {
+    posture = "Stress test first";
+    tone = "watch";
+    postureCopy = "Drawdown behavior should be understood before any SIP or switch memo.";
+  } else if (score >= 80 && sleeveDelta >= 0) {
+    posture = "Strong shortlist";
+    tone = "ready";
+    postureCopy = "This fund is ahead of its sleeve peer signal, but still needs evidence and role checks.";
+  } else if (costNeedsCheck) {
+    posture = "Cost check";
+    tone = "watch";
+    postureCopy = "TER is above the sleeve comfort line, so rupee cost impact should be reviewed.";
+  }
+
+  let next = {
+    label: "Compare role",
+    route: "#compare",
+    reason: "Add at least one peer before deciding whether this fund has a distinct job."
+  };
+  if (evidence < 78) {
+    next = {
+      label: "Open Evidence",
+      route: "#evidence",
+      reason: "Confirm AMFI, AMC factsheet, SID/KIM, TER, portfolio, and riskometer readiness."
+    };
+  } else if (stressRequired) {
+    next = {
+      label: "Run Stress",
+      route: "#risk-lab",
+      reason: "Convert drawdown into rupee impact before writing a decision reason."
+    };
+  } else if (costNeedsCheck) {
+    next = {
+      label: "Check Cost",
+      route: "#cost-lab",
+      reason: "Compare TER drag, tax friction, and lower-cost alternatives."
+    };
+  } else if (compareFunds.length >= 2) {
+    next = {
+      label: "Build Pack",
+      route: "#decision-pack",
+      reason: "The shortlist is ready for a written memo with amount, review date, and guardrails."
+    };
+  }
+
+  const quickRoutes = [
+    { label: "Score", route: "#score-anatomy" },
+    { label: "Evidence", route: "#evidence" },
+    { label: "Stress", route: "#risk-lab" },
+    { label: "Pack", route: "#decision-pack" }
+  ];
+
+  return {
+    compareCount: compareFunds.length,
+    costNeedsCheck,
+    evidence,
+    fund,
+    next,
+    peer,
+    posture,
+    postureCopy,
+    quickRoutes,
+    riskControl,
+    score,
+    sleeveDelta,
+    stressRequired,
+    tone
+  };
+}
+
+function renderSignalStrip() {
+  if (!els.nadiSignalStrip) return;
+  const signal = signalStripConfig();
+  els.nadiSignalStrip.innerHTML = `
+    <article class="signal-hero ${escapeHtml(signal.tone)}">
+      <div>
+        <span>Selected signal</span>
+        <strong>${escapeHtml(signal.posture)}</strong>
+        <p>${escapeHtml(signal.postureCopy)}</p>
+      </div>
+      <div class="signal-score" style="--score:${signal.score}">
+        <b>${signal.score}</b>
+        <span>Nadi</span>
+      </div>
+    </article>
+    <article>
+      <span>Current fund</span>
+      <strong>${escapeHtml(signal.fund.name)}</strong>
+      <p>${escapeHtml(signal.fund.category)} | ${escapeHtml(signal.fund.risk)} risk | ${signal.compareCount} in compare set</p>
+    </article>
+    <article>
+      <span>Trust and risk</span>
+      <strong>${signal.evidence}/100 evidence</strong>
+      <p>Risk control ${signal.riskControl}/100 | sleeve delta ${signal.sleeveDelta >= 0 ? "+" : ""}${signal.sleeveDelta.toFixed(1)}</p>
+    </article>
+    <article>
+      <span>Next check</span>
+      <strong>${escapeHtml(signal.next.label)}</strong>
+      <p>${escapeHtml(signal.next.reason)}</p>
+    </article>
+    <article class="signal-actions">
+      <span>Quick jump</span>
+      <div>
+        ${signal.quickRoutes.map((item) => `
+          <button class="signal-chip" type="button" data-signal-route="${escapeHtml(item.route)}">${escapeHtml(item.label)}</button>
+        `).join("")}
+      </div>
+      <button class="text-button" id="copySignalStrip" type="button">Copy signal</button>
+    </article>
+  `;
+}
+
+function makeSignalStripNote() {
+  const signal = signalStripConfig();
+  return [
+    `# NiveshNadi Signal Strip - ${signal.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Posture: ${signal.posture}`,
+    `Nadi score: ${signal.score}/100`,
+    `Evidence readiness: ${signal.evidence}/100`,
+    `Risk control: ${signal.riskControl}/100`,
+    `Sleeve peer delta: ${signal.sleeveDelta >= 0 ? "+" : ""}${signal.sleeveDelta.toFixed(1)}`,
+    `Next check: ${signal.next.label}`,
+    `Reason: ${signal.next.reason}`,
+    "",
+    "Research support only. This signal is not a recommendation, personalized advice, execution instruction, or return guarantee."
+  ].join("\n");
 }
 
 function riskClass(risk) {
@@ -606,6 +1102,616 @@ function renderFundGrid() {
       </article>
     `;
   }).join("");
+}
+
+function loadStarterGuideProgress() {
+  try {
+    const value = JSON.parse(localStorage.getItem("niveshnadi-starter-guide") || "{}");
+    return value && typeof value === "object" ? value : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function saveStarterGuideProgress(progress) {
+  localStorage.setItem("niveshnadi-starter-guide", JSON.stringify(progress));
+}
+
+function readStarterGuideConfig() {
+  return {
+    intent: els.starterIntent?.value || "profile",
+    time: els.starterTime?.value || "quick"
+  };
+}
+
+function starterIntentLabel(intent) {
+  return {
+    profile: "Build profile first",
+    "first-sip": "Start first SIP",
+    compare: "Compare shortlist",
+    review: "Review portfolio",
+    switch: "Study switch question",
+    memo: "Prepare memo"
+  }[intent] || "Build profile first";
+}
+
+function starterTimeLabel(time) {
+  return {
+    quick: "5 minute scan",
+    focused: "15 minute research",
+    deep: "30 minute deep work"
+  }[time] || "5 minute scan";
+}
+
+function applyStarterIntentToProfile(intent = readStarterGuideConfig().intent) {
+  const goalMap = {
+    "first-sip": "first-sip",
+    compare: "first-sip",
+    review: "review",
+    switch: "switch",
+    memo: "first-sip"
+  };
+  const stageMap = {
+    "first-sip": "new",
+    compare: "building",
+    review: "reviewing",
+    switch: "reviewing",
+    memo: "building"
+  };
+  const confidenceMap = {
+    "first-sip": "exploring",
+    compare: "shortlist",
+    review: "shortlist",
+    switch: "shortlist",
+    memo: "ready"
+  };
+
+  if (intent !== "profile" && els.investorGoal) els.investorGoal.value = goalMap[intent] || "first-sip";
+  if (intent !== "profile" && els.investorStage) els.investorStage.value = stageMap[intent] || "new";
+  if (intent !== "profile" && els.investorConfidence) els.investorConfidence.value = confidenceMap[intent] || "exploring";
+}
+
+function starterIntentRoute(intent, profile) {
+  if (intent === "compare") return "#compare";
+  if (intent === "review") return "#portfolio-review";
+  if (intent === "switch") return "#switch-lab";
+  if (intent === "memo") return "#decision-pack";
+  return profile.route;
+}
+
+function starterGuideSteps(config, profile) {
+  const route = starterIntentRoute(config.intent, profile);
+  const routeLabel = workspaceOption(route)?.textContent?.trim() || "Suggested route";
+  const timeLabel = starterTimeLabel(config.time);
+  return [
+    {
+      id: "profile",
+      label: "Profile",
+      tool: "Investor Passport",
+      route: "#investor-passport",
+      detail: `Capture the need, stage, horizon, SIP capacity, risk comfort, and emergency buffer for a ${timeLabel}.`
+    },
+    {
+      id: "lane",
+      label: "Lane",
+      tool: "Research Lanes",
+      route: "#research-lanes",
+      detail: `Convert the passport into a ${routeLabel} workflow without treating the route as advice.`
+    },
+    {
+      id: "shortlist",
+      label: "Shortlist",
+      tool: config.intent === "review" ? "Portfolio Review" : "Compare",
+      route: config.intent === "review" ? "#portfolio-review" : route === "#switch-lab" ? "#switch-lab" : "#compare",
+      detail: "Inspect role, cost, risk, overlap, and whether every fund has a separate job."
+    },
+    {
+      id: "evidence",
+      label: "Evidence",
+      tool: "Evidence Ledger",
+      route: "#evidence",
+      detail: "Check AMFI, AMC factsheet, SID, KIM, portfolio disclosure, riskometer, and TER readiness."
+    },
+    {
+      id: "memo",
+      label: "Memo",
+      tool: "Decision Pack",
+      route: "#decision-pack",
+      detail: "Write the reason, amount, review date, evidence status, and compliance boundary before acting."
+    }
+  ];
+}
+
+function starterGuideSnapshot() {
+  const config = readStarterGuideConfig();
+  const profile = investorPassportProfile();
+  const progress = loadStarterGuideProgress();
+  const steps = starterGuideSteps(config, profile);
+  const doneCount = steps.filter((step) => progress[step.id]).length;
+  const next = steps.find((step) => !progress[step.id]) || steps[steps.length - 1];
+  const score = Math.round((doneCount / steps.length) * 100);
+  let posture = "Start here";
+  if (doneCount >= 5) posture = "Research start complete";
+  else if (doneCount >= 3) posture = "Memo discipline next";
+  else if (doneCount >= 1) posture = "Route in motion";
+  return { config, doneCount, next, posture, profile, progress, score, steps };
+}
+
+function setStarterStepProgress(stepId, value, rerender = true) {
+  const progress = loadStarterGuideProgress();
+  progress[stepId] = value;
+  saveStarterGuideProgress(progress);
+  if (rerender) {
+    renderStarterGuide();
+    renderNadiCoach();
+  }
+}
+
+function renderStarterGuide() {
+  if (!els.starterGuideOutput) return;
+  const guide = starterGuideSnapshot();
+  if (els.starterGuideSummary) {
+    els.starterGuideSummary.textContent = `${guide.doneCount} of ${guide.steps.length} complete`;
+  }
+  els.starterGuideOutput.innerHTML = `
+    <div class="starter-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(guide.posture)}</span>
+        <h3>${escapeHtml(starterIntentLabel(guide.config.intent))}</h3>
+        <p>${escapeHtml(guide.next.tool)} is next for ${escapeHtml(guide.profile.topFund.name)}. Progress is saved only in this browser.</p>
+      </div>
+      <div class="starter-score" style="--score:${guide.score}">
+        <b>${guide.score}</b>
+        <span>Start</span>
+      </div>
+    </div>
+    <div class="starter-progress" aria-label="First start progress">
+      <span style="width:${guide.score}%"></span>
+    </div>
+    <div class="starter-next">
+      <span>Next move</span>
+      <strong>${escapeHtml(guide.next.label)}: ${escapeHtml(guide.next.tool)}</strong>
+      <p>${escapeHtml(guide.next.detail)}</p>
+      <button class="text-button" type="button" data-starter-action="${escapeHtml(guide.next.id)}">Open this step</button>
+    </div>
+    <div class="starter-step-grid">
+      ${guide.steps.map((step, index) => {
+        const done = Boolean(guide.progress[step.id]);
+        return `
+          <article class="starter-step-card${done ? " is-done" : ""}">
+            <label class="starter-check">
+              <input type="checkbox" data-starter-step="${escapeHtml(step.id)}" ${done ? "checked" : ""}>
+              <span>Move ${index + 1}</span>
+            </label>
+            <strong>${escapeHtml(step.label)}</strong>
+            <p>${escapeHtml(step.detail)}</p>
+            <button class="text-button" type="button" data-starter-action="${escapeHtml(step.id)}">Open ${escapeHtml(step.tool)}</button>
+          </article>
+        `;
+      }).join("")}
+    </div>
+    <div class="starter-boundary">
+      <span>Boundary</span>
+      <p>No PAN, folio, CAS file, bank data, or account credential is needed. This is a research workflow tracker, not advice, execution, or a return guarantee.</p>
+    </div>
+  `;
+}
+
+function makeStarterGuideNote() {
+  const guide = starterGuideSnapshot();
+  return [
+    "# NiveshNadi First 5-Minute Start",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Intent: ${starterIntentLabel(guide.config.intent)}`,
+    `Time mode: ${starterTimeLabel(guide.config.time)}`,
+    `Progress: ${guide.doneCount} of ${guide.steps.length} complete`,
+    `Next move: ${guide.next.label} - ${guide.next.tool}`,
+    `Profile posture: ${guide.profile.posture}`,
+    `Top research candidate: ${guide.profile.topFund.name}`,
+    "",
+    "## Steps",
+    ...guide.steps.map((step) => `- ${guide.progress[step.id] ? "[done]" : "[open]"} ${step.label}: ${step.detail}`),
+    "",
+    "Research workflow only. No PAN, folio, CAS file, bank data, account credential, transaction instruction, or personalized advice is included."
+  ].join("\n");
+}
+
+function handleStarterGuideAction(action) {
+  const guide = starterGuideSnapshot();
+  applyStarterIntentToProfile(guide.config.intent);
+
+  if (action === "profile") {
+    renderAll();
+    setStarterStepProgress("profile", true);
+    scrollToHash("#investor-passport", "smooth", true);
+    return;
+  }
+
+  if (action === "lane") {
+    applyInvestorPassport();
+    setStarterStepProgress("profile", true, false);
+    setStarterStepProgress("lane", true);
+    scrollToHash("#research-lanes", "smooth", true);
+    return;
+  }
+
+  if (action === "shortlist") {
+    const topIds = guide.profile.candidates.slice(0, 3).map(({ fund }) => fund.id);
+    state.selectedId = topIds[0] || state.selectedId;
+    state.compare = new Set(topIds);
+    renderAll();
+    analyzePortfolio();
+    setStarterStepProgress("shortlist", true);
+    scrollToHash(guide.config.intent === "review" ? "#portfolio-review" : guide.config.intent === "switch" ? "#switch-lab" : "#compare", "smooth", true);
+    return;
+  }
+
+  if (action === "evidence") {
+    renderEvidenceLedger();
+    setStarterStepProgress("evidence", true);
+    scrollToHash("#evidence", "smooth", true);
+    return;
+  }
+
+  if (action === "memo") {
+    const fund = selectedFund();
+    if (els.packAmount) els.packAmount.value = guide.profile.config.sip;
+    if (els.packReason && !els.packReason.value.trim()) {
+      els.packReason.value = `Research memo for ${fund.name}: ${guide.profile.categoryRoute}`;
+    }
+    renderDecisionPack();
+    setStarterStepProgress("memo", true);
+    scrollToHash("#decision-pack", "smooth", true);
+  }
+}
+
+function openNextStarterStep() {
+  handleStarterGuideAction(starterGuideSnapshot().next.id);
+}
+
+function readInvestorPassportConfig() {
+  return {
+    confidence: els.investorConfidence?.value || "exploring",
+    emergency: els.investorEmergency?.value || "partial",
+    goal: els.investorGoal?.value || "first-sip",
+    horizon: clampNumber(Number(els.investorHorizon?.value || 7), 1, 40),
+    risk: els.investorRisk?.value || "balanced",
+    sip: clampNumber(Number(els.investorMonthlySip?.value || 10000), 0, 10000000),
+    stage: els.investorStage?.value || "new"
+  };
+}
+
+function investorGoalLabel(goal) {
+  return {
+    "first-sip": "First SIP",
+    parking: "Parking money",
+    tax: "ELSS tax route",
+    retirement: "Long-term wealth",
+    review: "Portfolio review",
+    switch: "Switch question"
+  }[goal] || "First SIP";
+}
+
+function investorStageLabel(stage) {
+  return {
+    new: "New investor",
+    building: "Building habit",
+    reviewing: "Already invested"
+  }[stage] || "New investor";
+}
+
+function investorRiskLabel(risk) {
+  return {
+    conservative: "Conservative",
+    balanced: "Balanced",
+    growth: "Growth-oriented",
+    aggressive: "Aggressive"
+  }[risk] || "Balanced";
+}
+
+function investorEmergencyLabel(emergency) {
+  return {
+    yes: "Available",
+    partial: "Partly ready",
+    no: "Not ready"
+  }[emergency] || "Partly ready";
+}
+
+function investorConfidenceLabel(confidence) {
+  return {
+    exploring: "Exploring",
+    shortlist: "Shortlisting",
+    ready: "Memo-ready"
+  }[confidence] || "Exploring";
+}
+
+function investorHorizonBand(years) {
+  if (years < 3) return "short";
+  if (years < 7) return "medium";
+  return "long";
+}
+
+function investorPlaybookNeed(goal, risk) {
+  if (goal === "parking") return "emergency";
+  if (goal === "tax") return "tax";
+  if (goal === "retirement") return "retirement";
+  if (goal === "review" || goal === "switch") return "review";
+  if (risk === "aggressive") return "growth";
+  return "first-sip";
+}
+
+function investorLaneMode(config) {
+  if (config.goal === "switch") return "switch";
+  if (config.goal === "review") return "review";
+  if (config.confidence === "ready") return "memo";
+  if (config.confidence === "shortlist") return "compare";
+  return "first-sip";
+}
+
+function investorRoute(config) {
+  if (config.goal === "switch") return "#switch-lab";
+  if (config.goal === "review") return "#portfolio-review";
+  if (config.confidence === "ready") return "#decision-pack";
+  if (config.confidence === "shortlist") return "#compare";
+  return "#research-lanes";
+}
+
+function investorFundFitScore(fund, config) {
+  let score = Math.round(
+    nadiScore(fund) * 0.34 +
+    evidenceReadinessScore(fund) * 0.18 +
+    fund.consistency * 0.16 +
+    Math.max(0, 100 - fund.maxDrawdown * 2) * 0.14
+  );
+
+  if (config.emergency === "no") {
+    score += fund.sleeve === "Debt" || fund.category.includes("Liquid") ? 24 : -28;
+  }
+  if (config.goal === "parking" || config.horizon < 3) {
+    score += fund.sleeve === "Debt" ? 26 : fund.sleeve === "Hybrid" ? 8 : -20;
+  }
+  if (config.goal === "tax") {
+    score += fund.category.includes("ELSS") ? 34 : -10;
+  }
+  if (config.goal === "retirement") {
+    score += ["Equity", "Passive", "Hybrid", "Life Cycle"].includes(fund.sleeve) ? 16 : -6;
+  }
+  if (config.risk === "conservative") {
+    score += ["Low", "Moderate"].includes(fund.risk) ? 18 : -18;
+  }
+  if (config.risk === "balanced") {
+    score += ["Moderate", "High"].includes(fund.risk) ? 9 : 0;
+  }
+  if (config.risk === "growth") {
+    score += ["Equity", "Passive", "Hybrid"].includes(fund.sleeve) ? 9 : -4;
+  }
+  if (config.risk === "aggressive") {
+    score += fund.risk === "Very High" || fund.category.includes("Mid Cap") ? 14 : -2;
+  }
+  if (config.stage === "new") {
+    score += fund.category.includes("Balanced") || fund.category.includes("Large Cap") || fund.sleeve === "Passive" ? 10 : -5;
+  }
+  if (config.horizon >= 7 && ["Equity", "Passive", "Hybrid", "Life Cycle"].includes(fund.sleeve)) {
+    score += 8;
+  }
+  if (config.horizon < 5 && fund.risk === "Very High") {
+    score -= 16;
+  }
+
+  return Math.round(clampNumber(score, 18, 96));
+}
+
+function investorPassportProfile() {
+  const config = readInvestorPassportConfig();
+  const selected = selectedFund();
+  const horizonBand = investorHorizonBand(config.horizon);
+  const laneMode = investorLaneMode(config);
+  const playbookNeed = investorPlaybookNeed(config.goal, config.risk);
+  const route = investorRoute(config);
+  const candidates = FUNDS
+    .map((fund) => ({ fund, score: investorFundFitScore(fund, config) }))
+    .sort((a, b) => b.score - a.score || nadiScore(b.fund) - nadiScore(a.fund));
+  const topFund = candidates[0]?.fund || selected;
+  const selectedFit = investorFundFitScore(selected, config);
+  let passportScore = 58;
+
+  passportScore += config.emergency === "yes" ? 12 : config.emergency === "partial" ? 3 : -18;
+  passportScore += config.horizon >= 7 ? 10 : config.horizon >= 3 ? 4 : -8;
+  passportScore += config.confidence === "ready" ? 8 : config.confidence === "shortlist" ? 4 : 0;
+  passportScore += config.stage === "new" && config.sip > 0 ? 5 : 0;
+  passportScore += config.risk === "aggressive" && config.horizon < 7 ? -10 : 0;
+  passportScore += selectedFit >= 76 ? 5 : selectedFit < 50 ? -7 : 0;
+  passportScore = Math.round(clampNumber(passportScore, 28, 95));
+
+  let posture = "Research route ready";
+  if (config.emergency === "no") posture = "Safety buffer first";
+  else if (config.horizon < 3) posture = "Liquidity discipline";
+  else if (config.goal === "switch") posture = "Switch question framed";
+  else if (config.goal === "review") posture = "Review route ready";
+  else if (config.confidence === "ready") posture = "Memo route ready";
+  else if (config.stage === "new") posture = "Starter route";
+
+  const tone = passportScore >= 74 ? "strong" : passportScore >= 56 ? "watch" : "caution";
+  const categoryRoute = (() => {
+    if (config.emergency === "no" || config.goal === "parking" || config.horizon < 3) return "Liquid, low-duration, corporate bond, or conservative hybrid research first.";
+    if (config.goal === "tax") return "ELSS route, lock-in awareness, tax fit, and equity drawdown review.";
+    if (config.goal === "retirement") return "Core equity, passive, hybrid, or life-cycle research with long-horizon review rhythm.";
+    if (config.goal === "switch") return "Switch Lab, Cost Lab, Stress Lab, and Compare before any change.";
+    if (config.goal === "review") return "X-Ray, Portfolio Review Room, Review Vault, and watch triggers.";
+    if (config.risk === "aggressive") return "Core first, then growth satellite only after overlap and stress review.";
+    return "Balanced starter route across large cap, passive, hybrid, and SIP math.";
+  })();
+
+  const steps = [
+    config.emergency === "no"
+      ? "Build or protect emergency money before equity-heavy research."
+      : "Map the goal, horizon, SIP capacity, and risk comfort before fund selection.",
+    `Use ${investorGoalLabel(config.goal)} route with ${investorRiskLabel(config.risk).toLowerCase()} risk comfort and ${config.horizon} year horizon.`,
+    "Open the suggested lane, then write a memo with evidence status and review date before acting."
+  ];
+
+  const guardrails = [
+    "No PAN, folio, CAS file, bank data, or account credential is needed for this profile.",
+    "This is workflow routing and education, not a suitability approval or investment recommendation.",
+    "Verify live AMFI, AMC factsheet, SID, KIM, portfolio disclosure, riskometer, and TER dates before launch use."
+  ];
+  if (config.risk === "aggressive") guardrails.push("Aggressive profile still needs core allocation, sizing discipline, and drawdown rehearsal.");
+  if (config.horizon < 3) guardrails.push("Short horizon should not be treated like long-term equity wealth creation.");
+
+  return {
+    amountLabel: formatMoney(config.sip),
+    candidates,
+    categoryRoute,
+    config,
+    guardrails,
+    horizonBand,
+    laneMode,
+    passportScore,
+    playbookNeed,
+    posture,
+    route,
+    routeLabel: workspaceOption(route)?.textContent?.trim() || "Research route",
+    selected,
+    selectedFit,
+    steps,
+    tone,
+    topFund
+  };
+}
+
+function renderInvestorPassport() {
+  if (!els.investorPassportOutput) return;
+  const profile = investorPassportProfile();
+  const config = profile.config;
+  if (els.investorPassportSummary) {
+    els.investorPassportSummary.textContent = `${profile.posture} | ${profile.passportScore}/100`;
+  }
+  els.investorPassportOutput.innerHTML = `
+    <div class="investor-passport-hero ${escapeHtml(profile.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(profile.posture)}</span>
+        <h3>${escapeHtml(investorGoalLabel(config.goal))} research passport</h3>
+        <p>${escapeHtml(profile.categoryRoute)}</p>
+      </div>
+      <div class="investor-passport-score" style="--score:${profile.passportScore}">
+        <b>${profile.passportScore}</b>
+        <span>Passport</span>
+      </div>
+    </div>
+    <div class="investor-passport-signal-grid">
+      <div><span>Stage</span><strong>${escapeHtml(investorStageLabel(config.stage))}</strong></div>
+      <div><span>Horizon</span><strong>${config.horizon} years</strong></div>
+      <div><span>Risk comfort</span><strong>${escapeHtml(investorRiskLabel(config.risk))}</strong></div>
+      <div><span>Emergency</span><strong>${escapeHtml(investorEmergencyLabel(config.emergency))}</strong></div>
+      <div><span>SIP capacity</span><strong>${escapeHtml(profile.amountLabel)}</strong></div>
+      <div><span>Decision stage</span><strong>${escapeHtml(investorConfidenceLabel(config.confidence))}</strong></div>
+    </div>
+    <div class="investor-passport-route-grid">
+      <article>
+        <span>Suggested lane</span>
+        <strong>${escapeHtml(profile.routeLabel)}</strong>
+        <p>Lane mode: ${escapeHtml(profile.laneMode)}. Apply profile to sync Research Lanes, Playbook, and Suitability Passport inputs.</p>
+      </article>
+      <article>
+        <span>Selected fund fit</span>
+        <strong>${profile.selectedFit}/100</strong>
+        <p>${escapeHtml(profile.selected.name)} is checked against this local profile before deeper fund research.</p>
+      </article>
+      <article>
+        <span>Top research candidate</span>
+        <strong>${escapeHtml(profile.topFund.name)}</strong>
+        <p>${escapeHtml(profile.topFund.category)} | ${escapeHtml(profile.topFund.risk)} risk | Nadi score ${nadiScore(profile.topFund)}/100</p>
+      </article>
+    </div>
+    <div class="investor-passport-step-grid">
+      ${profile.steps.map((step, index) => `
+        <article>
+          <span>Move ${index + 1}</span>
+          <p>${escapeHtml(step)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="investor-passport-shortlist-grid">
+      ${profile.candidates.slice(0, 4).map(({ fund, score }) => `
+        <article class="investor-passport-candidate">
+          <span>${score}/100 profile fit</span>
+          <strong>${escapeHtml(fund.name)}</strong>
+          <p>${escapeHtml(fund.category)} | ${escapeHtml(fund.risk)} risk | TER ${fund.expense.toFixed(2)}%</p>
+          <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">Inspect</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="investor-passport-guardrail">
+      <span>Boundary</span>
+      <ul>
+        ${profile.guardrails.map((guardrail) => `<li>${escapeHtml(guardrail)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+}
+
+function makeInvestorPassportNote() {
+  const profile = investorPassportProfile();
+  const config = profile.config;
+  return [
+    "# NiveshNadi Retail Investor Passport",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Need: ${investorGoalLabel(config.goal)}`,
+    `Stage: ${investorStageLabel(config.stage)}`,
+    `Horizon: ${config.horizon} years`,
+    `Risk comfort: ${investorRiskLabel(config.risk)}`,
+    `Emergency buffer: ${investorEmergencyLabel(config.emergency)}`,
+    `SIP capacity: ${profile.amountLabel}`,
+    `Decision stage: ${investorConfidenceLabel(config.confidence)}`,
+    `Passport posture: ${profile.posture}`,
+    `Passport score: ${profile.passportScore}/100`,
+    `Suggested lane: ${profile.routeLabel}`,
+    `Category route: ${profile.categoryRoute}`,
+    "",
+    "## Top Research Candidates",
+    ...profile.candidates.slice(0, 4).map(({ fund, score }) => `- ${fund.name}: ${score}/100 profile fit | ${fund.category} | ${fund.risk} risk`),
+    "",
+    "## Next Moves",
+    ...profile.steps.map((step) => `- ${step}`),
+    "",
+    "## Guardrails",
+    ...profile.guardrails.map((guardrail) => `- ${guardrail}`)
+  ].join("\n");
+}
+
+function applyInvestorPassport() {
+  const profile = investorPassportProfile();
+  const config = profile.config;
+  const topIds = profile.candidates.slice(0, 3).map(({ fund }) => fund.id);
+
+  if (profile.topFund) state.selectedId = profile.topFund.id;
+  if (["compare", "review"].includes(profile.laneMode)) {
+    state.compare = new Set(topIds);
+  }
+
+  if (els.laneMode) els.laneMode.value = profile.laneMode;
+  if (els.laneHorizon) els.laneHorizon.value = profile.horizonBand;
+  if (els.laneAmount) els.laneAmount.value = config.sip;
+  if (els.playbookNeed) els.playbookNeed.value = profile.playbookNeed;
+  if (els.playbookYears) els.playbookYears.value = config.horizon;
+  if (els.playbookRisk) els.playbookRisk.value = config.risk === "conservative" ? "conservative" : config.risk === "aggressive" || config.risk === "growth" ? "aggressive" : "balanced";
+  if (els.passportHorizon) els.passportHorizon.value = config.horizon;
+  if (els.passportRisk) els.passportRisk.value = config.risk === "conservative" ? "conservative" : config.risk === "aggressive" || config.risk === "growth" ? "aggressive" : "balanced";
+  if (els.passportLiquidity) els.passportLiquidity.value = config.emergency === "no" || config.goal === "parking" || config.horizon < 3 ? "high" : config.horizon >= 7 ? "low" : "medium";
+  if (els.passportSip) els.passportSip.value = config.sip;
+  if (els.passportExperience) els.passportExperience.value = config.stage === "new" ? "new" : config.stage === "reviewing" ? "advanced" : "continuing";
+  if (els.passportEmergency) els.passportEmergency.value = config.emergency === "no" ? "no" : "yes";
+  if (els.journeySip) els.journeySip.value = config.sip;
+  if (els.journeyYears) els.journeyYears.value = config.horizon;
+  if (els.goalYears) els.goalYears.value = config.horizon;
+  if (els.goalSip) els.goalSip.value = config.sip;
+  if (els.packAmount && config.confidence === "ready") els.packAmount.value = config.sip;
+
+  renderAll();
+  renderGoalFitCompass();
+  renderFirstSipCoach();
+  analyzePortfolio();
+  scrollToHash(profile.route, "smooth", true);
 }
 
 function readResearchLaneConfig() {
@@ -1043,6 +2149,332 @@ function handlePulseAction(action) {
   scrollToHash("#decision-pack", "smooth", true);
 }
 
+function readCoachConfig() {
+  return {
+    depth: els.coachDepth?.value || "plain",
+    question: els.coachQuestion?.value || "next"
+  };
+}
+
+function coachQuestionLabel(question) {
+  return {
+    next: "What should I check next?",
+    "red-flags": "What are the red flags?",
+    shortlist: "Is my shortlist duplicated?",
+    sip: "Is this ready for first SIP research?",
+    switch: "Should I study a switch?",
+    memo: "What should I write in the memo?"
+  }[question] || "What should I check next?";
+}
+
+function coachDepthLabel(depth) {
+  return {
+    plain: "Plain English",
+    checklist: "Checklist",
+    deep: "Deep research"
+  }[depth] || "Plain English";
+}
+
+function coachRouteForPulseAction(action) {
+  return {
+    compare: "#compare",
+    evidence: "#evidence",
+    stress: "#risk-lab",
+    watchlist: "#watchlist",
+    review: "#portfolio-review",
+    pack: "#decision-pack"
+  }[action] || "#research-pulse";
+}
+
+function coachRouteLabel(route) {
+  return workspaceOption(route)?.textContent?.trim() || route.replace("#", "");
+}
+
+function coachShortlistSnapshot(funds) {
+  if (funds.length < 2) {
+    return {
+      copy: "Add one benchmark or peer fund before trusting the shortlist.",
+      duplicate: "Not ready",
+      overlapCount: 0,
+      roleClarity: "Add peer",
+      title: "Shortlist incomplete"
+    };
+  }
+  const posture = compareShortlistPosture(funds);
+  return {
+    copy: posture.copy,
+    duplicate: posture.duplicate,
+    overlapCount: posture.overlapCount,
+    roleClarity: posture.roleClarity,
+    title: posture.title
+  };
+}
+
+function nadiCoachAnswer() {
+  const config = readCoachConfig();
+  const fund = selectedFund();
+  const score = nadiScore(fund);
+  const evidence = evidenceReadinessScore(fund);
+  const compareFunds = compareSet();
+  const starter = starterGuideSnapshot();
+  const profile = investorPassportProfile();
+  const pulse = researchPulseConfig();
+  const lane = researchLaneConfig();
+  const shortlist = coachShortlistSnapshot(compareFunds);
+  const portfolioRoleText = portfolioRole(fund).label;
+  const memoText = els.packReason?.value.trim() || "";
+  const watchReady = pulse.watchedSelected || pulse.activeAlerts.length > 0;
+  const flags = [];
+
+  if (evidence < 70) flags.push("Evidence readiness is below the launch-comfort zone, so source dates and citations should be checked first.");
+  if (fund.maxDrawdown >= 20 || fund.risk === "Very High") flags.push(`${fund.risk} risk and ${fund.maxDrawdown}% demo drawdown need Stress Lab review before a memo.`);
+  if (compareFunds.length < 2) flags.push("The compare set has fewer than two funds, so role and cost are not yet benchmarked.");
+  if (shortlist.duplicate === "High") flags.push("The selected shortlist has high duplication risk from category crowding or repeated holdings.");
+  if (!memoText) flags.push("The decision reason is still blank; the investor should write the reason before treating research as ready.");
+  if (profile.config.emergency === "no") flags.push("Emergency buffer is not ready in the local passport, so equity-heavy research should stay cautious.");
+  if (profile.config.horizon < 3 && ["Equity", "Passive"].includes(fund.sleeve)) flags.push("The passport horizon is short while the selected fund is equity-like.");
+  if (!watchReady) flags.push("No watchlist or alert trigger is saved for the selected fund yet.");
+
+  const coachScore = Math.round(clampNumber(
+    starter.score * 0.16 +
+    profile.passportScore * 0.14 +
+    pulse.pulseScore * 0.24 +
+    evidence * 0.24 +
+    (compareFunds.length >= 2 ? 8 : -4) +
+    (memoText ? 6 : -5) +
+    (watchReady ? 5 : 0) -
+    Math.min(flags.length * 3, 14) +
+    18,
+    32,
+    96
+  ));
+
+  const memoSeed = `Research memo for ${fund.name}: study ${portfolioRoleText.toLowerCase()} role, ${fund.category} fit, ${fund.risk.toLowerCase()} risk, ${fund.expense.toFixed(2)}% TER, ${evidence}/100 evidence readiness, and ${shortlist.title.toLowerCase()} before acting.`;
+  const signals = [
+    { label: "Fund", value: fund.name, detail: `${fund.category} | ${fund.risk} risk` },
+    { label: "Nadi score", value: `${score}/100`, detail: portfolioRoleText },
+    { label: "Evidence", value: `${evidence}/100`, detail: evidence >= 78 ? "Demo mapped; live citations still needed." : "Open Evidence Ledger before relying on claims." },
+    { label: "Compare", value: `${compareFunds.length} funds`, detail: shortlist.title },
+    { label: "Pulse", value: `${pulse.pulseScore}/100`, detail: pulse.posture },
+    { label: "Start", value: `${starter.doneCount}/${starter.steps.length}`, detail: starter.next.tool }
+  ];
+
+  let headline = `${pulse.next.label} should be checked next`;
+  let posture = pulse.posture;
+  let route = coachRouteForPulseAction(pulse.next.action);
+  let answer = `${pulse.next.detail} The coach is using the selected fund, compare set, evidence score, and memo status to keep this research disciplined.`;
+  let bullets = [
+    `${fund.name} currently has Nadi score ${score}/100 and evidence readiness ${evidence}/100.`,
+    `Research Pulse posture is ${pulse.posture} with ${pulse.openChecks.length} open check${pulse.openChecks.length === 1 ? "" : "s"}.`,
+    `Suggested lane is ${lane.label}; primary tool is ${lane.primaryTool}.`,
+    memoText ? "The decision reason is drafted; refresh the pack before copying it." : "Decision reason is pending; write it in plain words before acting."
+  ];
+  let actionLabel = `Open ${coachRouteLabel(route)}`;
+
+  if (config.question === "red-flags") {
+    posture = flags.length ? "Flags to clear" : "Light flag state";
+    headline = flags.length ? "Clear these research flags before action" : "No major demo flag, but keep the guardrails";
+    route = "#red-flag-radar";
+    answer = flags.length
+      ? `The main concern is not one single number. It is the stack of ${flags.length} research gaps around evidence, stress, comparison, memo, or review discipline.`
+      : "The current demo state looks organized, but this still needs live source dates and a written reason before any real-world decision.";
+    bullets = flags.length ? flags : [
+      "Confirm live AMFI, AMC factsheet, SID, KIM, portfolio disclosure, riskometer, and TER dates.",
+      "Keep a compare set and review trigger even when the fund looks clean.",
+      "Use the memo as a behavior guardrail, not as a buy or sell signal."
+    ];
+    actionLabel = "Open Red Flag Radar";
+  } else if (config.question === "shortlist") {
+    posture = shortlist.title;
+    headline = compareFunds.length < 2 ? "Build the shortlist before judging it" : `${shortlist.duplicate} duplication risk in the shortlist`;
+    route = compareFunds.length < 2 ? "#compare" : "#portfolio";
+    answer = compareFunds.length < 2
+      ? "The shortlist is too small to judge. Add a benchmark or peer fund so role, cost, evidence, and overlap can be tested side by side."
+      : `${shortlist.copy} Role clarity is ${shortlist.roleClarity.toLowerCase()} and overlap signals found: ${shortlist.overlapCount}.`;
+    bullets = [
+      `Compare set: ${compareFunds.map((item) => item.name).join(", ") || "none selected"}.`,
+      `Role clarity: ${shortlist.roleClarity}.`,
+      `Duplication risk: ${shortlist.duplicate}.`,
+      `Overlap signals: ${shortlist.overlapCount}.`
+    ];
+    actionLabel = compareFunds.length < 2 ? "Build Compare Set" : "Open X-Ray";
+  } else if (config.question === "sip") {
+    const emergencyBlock = profile.config.emergency === "no";
+    posture = emergencyBlock ? "Safety buffer first" : profile.posture;
+    headline = emergencyBlock ? "First SIP research needs buffer discipline first" : "First SIP research can move through the guided route";
+    route = emergencyBlock || fund.maxDrawdown >= 20 ? "#risk-lab" : "#journey";
+    answer = emergencyBlock
+      ? "The passport says emergency money is not ready, so the first SIP research should stay in education and stress rehearsal mode before any commitment."
+      : `Use the First SIP Coach for ${formatMoney(profile.config.sip)} monthly research, then check SIP math, evidence, and memo discipline.`;
+    bullets = [
+      `Investor passport: ${profile.posture} at ${profile.passportScore}/100.`,
+      `Horizon: ${profile.config.horizon} years; risk comfort: ${investorRiskLabel(profile.config.risk)}.`,
+      `Category route: ${profile.categoryRoute}`,
+      `Stress cue: ${fund.maxDrawdown}% demo drawdown for ${fund.name}.`
+    ];
+    actionLabel = route === "#journey" ? "Open First SIP Coach" : "Open Stress Lab";
+  } else if (config.question === "switch") {
+    posture = "Switch study only";
+    headline = "Study friction before studying a switch";
+    route = "#switch-lab";
+    answer = "A switch question should start by separating discomfort, TER drag, tax and exit-load friction, evidence freshness, and overlap. It should not start with a transaction conclusion.";
+    bullets = [
+      `${fund.name}: ${fund.risk} risk, ${fund.maxDrawdown}% demo drawdown, ${fund.expense.toFixed(2)}% TER.`,
+      `Evidence readiness is ${evidence}/100; source freshness must be verified before relying on current metrics.`,
+      `Compare set posture: ${shortlist.title}.`,
+      "Use Cost Lab and Stress Lab before writing any switch memo."
+    ];
+    actionLabel = "Open Switch Lab";
+  } else if (config.question === "memo") {
+    posture = memoText ? "Memo draft ready" : "Reason pending";
+    headline = memoText ? "Refresh the memo with latest signals" : "Write a plain-language decision reason";
+    route = "#decision-pack";
+    answer = memoText
+      ? "The memo reason exists. Refresh the Decision Pack so it includes the latest selected fund, compare set, evidence status, review date, and guardrails."
+      : "A good memo should say the fund role, investor need, amount or review intent, evidence status, what could prove the decision wrong, and when it will be reviewed.";
+    bullets = [
+      memoText ? `Current reason: ${memoText.slice(0, 160)}${memoText.length > 160 ? "..." : ""}` : `Draft seed: ${memoSeed}`,
+      `Selected fund: ${fund.name} | ${fund.category} | ${fund.risk} risk.`,
+      `Evidence readiness: ${evidence}/100.`,
+      `Compare set: ${compareFunds.length >= 2 ? compareFunds.map((item) => item.name).join(", ") : "add at least one peer or benchmark"}.`
+    ];
+    actionLabel = "Open Decision Pack";
+  }
+
+  if (config.depth === "plain") {
+    bullets = bullets.slice(0, 4);
+  } else if (config.depth === "deep") {
+    bullets = [
+      ...bullets,
+      `Starter next move: ${starter.next.label} via ${starter.next.tool}.`,
+      `Watch discipline: ${watchReady ? "saved or active" : "not saved yet"}.`,
+      "Live launch still needs source dates, citation URLs, extraction checks, and stale-data blocking."
+    ];
+  }
+
+  return {
+    actionLabel,
+    answer,
+    bullets,
+    coachScore,
+    config,
+    cautions: flags.slice(0, config.depth === "deep" ? 6 : 4),
+    fund,
+    headline,
+    memoSeed,
+    posture,
+    route,
+    signals
+  };
+}
+
+function renderNadiCoach() {
+  if (!els.coachOutput) return;
+  const coach = nadiCoachAnswer();
+  const cautions = coach.cautions.length
+    ? coach.cautions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")
+    : "<li>No major demo blocker is visible. Still verify live source dates and write the decision reason before acting.</li>";
+  if (els.coachSummary) {
+    els.coachSummary.textContent = `${coach.posture} | ${coach.coachScore}/100`;
+  }
+  els.coachOutput.innerHTML = `
+    <article class="coach-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(coach.posture)}</span>
+        <h3>${escapeHtml(coach.headline)}</h3>
+        <p>${escapeHtml(coach.answer)}</p>
+      </div>
+      <div class="coach-score" style="--score:${coach.coachScore}">
+        <b>${coach.coachScore}</b>
+        <span>Coach</span>
+      </div>
+    </article>
+    <div class="coach-signal-grid">
+      ${coach.signals.map((signal) => `
+        <article>
+          <span>${escapeHtml(signal.label)}</span>
+          <strong>${escapeHtml(signal.value)}</strong>
+          <p>${escapeHtml(signal.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="coach-answer-card">
+      <span>${escapeHtml(coachQuestionLabel(coach.config.question))} | ${escapeHtml(coachDepthLabel(coach.config.depth))}</span>
+      <ul>
+        ${coach.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+      <button class="text-button" type="button" data-coach-route="${escapeHtml(coach.route)}">${escapeHtml(coach.actionLabel)}</button>
+    </div>
+    <div class="coach-guardrail">
+      <span>Coach guardrail</span>
+      <ul>${cautions}</ul>
+      <p>Research support only. Nadi Coach does not recommend, approve, execute, or guarantee any investment action.</p>
+    </div>
+  `;
+}
+
+function makeCoachNote() {
+  const coach = nadiCoachAnswer();
+  return [
+    "# NiveshNadi Coach Q&A",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Question: ${coachQuestionLabel(coach.config.question)}`,
+    `Answer style: ${coachDepthLabel(coach.config.depth)}`,
+    `Selected fund: ${coach.fund.name}`,
+    `Coach posture: ${coach.posture}`,
+    `Coach score: ${coach.coachScore}/100`,
+    `Suggested check: ${coachRouteLabel(coach.route)}`,
+    "",
+    "## Coach Answer",
+    coach.answer,
+    "",
+    "## Checks",
+    ...coach.bullets.map((item) => `- ${item}`),
+    "",
+    "## Guardrails",
+    ...(coach.cautions.length ? coach.cautions : ["Verify live source dates, citations, and written reason before acting."]).map((item) => `- ${item}`),
+    "",
+    "Research support only. This is not personalized investment advice, suitability approval, execution instruction, or a return guarantee."
+  ].join("\n");
+}
+
+function handleCoachAction(route) {
+  const coach = nadiCoachAnswer();
+  const target = route || coach.route;
+
+  if (target === "#compare" && state.compare.size < 2) {
+    state.compare = new Set([state.selectedId, "index-nifty"]);
+    renderAll();
+  } else if (target === "#risk-lab") {
+    if (els.stressShock) els.stressShock.value = Math.max(10, Math.min(45, coach.fund.maxDrawdown || 18));
+    renderStressLab();
+  } else if (target === "#watchlist") {
+    addToWatchlist(coach.fund.id);
+    renderNadiCoach();
+  } else if (target === "#journey") {
+    const profile = investorPassportProfile();
+    if (els.journeySip) els.journeySip.value = profile.config.sip;
+    if (els.journeyYears) els.journeyYears.value = profile.config.horizon;
+    renderFirstSipCoach();
+  } else if (target === "#decision-pack") {
+    if (els.packReason && !els.packReason.value.trim()) {
+      els.packReason.value = coach.memoSeed;
+    }
+    renderDecisionPack();
+    renderNadiCoach();
+  } else if (target === "#portfolio") {
+    analyzePortfolio();
+  } else if (target === "#evidence") {
+    renderEvidenceLedger();
+  } else if (target === "#red-flag-radar") {
+    renderRedFlagRadar();
+  } else if (target === "#switch-lab") {
+    renderSwitchDecisionLab();
+  }
+
+  scrollToHash(target, "smooth", true);
+}
+
 function readCategoryPlaybookConfig() {
   return {
     need: els.playbookNeed?.value || "first-sip",
@@ -1315,9 +2747,101 @@ function makeCategoryPlaybookNote() {
   ].join("\n");
 }
 
-function renderFundDetail() {
+function whyLensPosture(score, highFlags, evidence) {
+  if (highFlags || evidence < 68) return "Prove it first";
+  if (score >= 82) return "Clear research role";
+  if (score >= 68) return "Useful with checks";
+  return "Watch before shortlist";
+}
+
+function whyFundLens() {
   const fund = selectedFund();
   const score = nadiScore(fund);
+  const evidence = evidenceReadinessScore(fund);
+  const fit = fundFitHeatmapConfig();
+  const flags = redFlagItems(fund);
+  const peer = peerBenchmarkConfig();
+  const role = portfolioRole(fund);
+  const compareFunds = compareSet();
+  const shared = compareFunds.length > 1 ? sharedHoldings(compareFunds) : [];
+  const highFlags = flags.filter((flag) => flag.severity === "high").length;
+  const mediumFlags = flags.filter((flag) => flag.severity === "medium").length;
+  const memoReady = Boolean(els.packReason?.value.trim());
+  const positives = [];
+  const challenges = [];
+  const pause = [];
+  const changeMind = [];
+
+  positives.push(`${role.label}: ${role.reason}`);
+  positives.push(`${fit.best.label} is the strongest goal lens at ${fit.best.fit}/100.`);
+  if (score >= 74) positives.push(`Nadi score is ${score}/100, supported by consistency, cost, drawdown, and research coverage.`);
+  if (fund.expense <= peer.sleeveAvg.expense) positives.push(`TER is at or below sleeve average: ${fund.expense.toFixed(2)}% versus ${peer.sleeveAvg.expense.toFixed(2)}%.`);
+  if (fund.consistency >= 80) positives.push(`Consistency is strong in demo data at ${fund.consistency}/100.`);
+  if (evidence >= 74) positives.push(`Evidence readiness is usable for demo research at ${evidence}/100.`);
+
+  flags.slice(0, 4).forEach((flag) => {
+    challenges.push(`${flag.title}: ${flag.detail}`);
+  });
+  if (shared.length) {
+    challenges.push(`Compare overlap: ${shared.slice(0, 4).join(", ")} appears in the selected set.`);
+  }
+  if (fund.expense > peer.sleeveAvg.expense + 0.12) {
+    challenges.push(`Cost challenge: TER is above sleeve average by ${(fund.expense - peer.sleeveAvg.expense).toFixed(2)}%.`);
+  }
+  if (!challenges.length) {
+    challenges.push("No major demo challenge is visible, but live source dates and citations are still required.");
+  }
+
+  if (fund.risk === "Very High") pause.push("Pause if the role is not clearly satellite-sized or the investor cannot tolerate sharp drawdowns.");
+  if (fund.risk === "High" && fit.best.fit < 70) pause.push("Pause if the goal lens is not long enough for equity drawdown recovery.");
+  if (evidence < 70) pause.push("Pause until AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, and riskometer sources are cited.");
+  if (compareFunds.length < 2) pause.push("Pause until at least one benchmark or peer is compared.");
+  if (!memoReady) pause.push("Pause until the investor writes the decision reason in their own words.");
+  if (!pause.length) pause.push("Pause only if the live factsheet, riskometer, TER, or portfolio date contradicts the demo view.");
+
+  changeMind.push("Riskometer, TER, manager, benchmark, or portfolio disclosure changes materially.");
+  changeMind.push("The fund no longer performs the role described in the memo.");
+  changeMind.push("A lower-cost peer offers the same role with better evidence, drawdown, and overlap profile.");
+  if (shared.length) changeMind.push("X-Ray shows repeated exposure that makes this fund redundant.");
+  if (fit.caution.length) changeMind.push(`${fit.caution[0].label} remains a caution lens and should not be forced into that goal.`);
+
+  const lensScore = Math.round(clampNumber(
+    score * 0.34 +
+    evidence * 0.24 +
+    fit.best.fit * 0.18 +
+    Math.max(0, 100 - highFlags * 24 - mediumFlags * 11) * 0.14 +
+    (compareFunds.length >= 2 ? 5 : -4) +
+    (memoReady ? 5 : -3),
+    28,
+    96
+  ));
+
+  return {
+    changeMind,
+    challenges: challenges.slice(0, 5),
+    compareFunds,
+    evidence,
+    fit,
+    flags,
+    fund,
+    highFlags,
+    lensScore,
+    mediumFlags,
+    pause: pause.slice(0, 5),
+    peer,
+    positives: positives.slice(0, 5),
+    posture: whyLensPosture(lensScore, highFlags, evidence),
+    role,
+    score,
+    shared
+  };
+}
+
+function renderFundDetail() {
+  const fund = selectedFund();
+  const lens = whyFundLens();
+  const scoreAnatomy = scoreAnatomyConfig();
+  const score = lens.score;
   els.selectedStatus.textContent = `${fund.category} | ${fund.risk} risk`;
   els.journalFund.value = fund.name;
   if (els.watchFundSelect && FUNDS.some((item) => item.id === fund.id)) {
@@ -1332,6 +2856,103 @@ function renderFundDetail() {
 
   els.fundDetail.classList.remove("empty-state");
   els.fundDetail.innerHTML = `
+    <div class="why-lens-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(lens.posture)}</span>
+        <h3>Why ${escapeHtml(fund.name)}?</h3>
+        <p>${escapeHtml(lens.role.reason)} Strongest research lens is ${escapeHtml(lens.fit.best.label)} at ${lens.fit.best.fit}/100. This is a fund explanation, not advice.</p>
+      </div>
+      <div class="why-lens-score" style="--score:${lens.lensScore}">
+        <b>${lens.lensScore}</b>
+        <span>Lens</span>
+      </div>
+    </div>
+    <div class="why-card-grid">
+      <article>
+        <span>Plain role</span>
+        <strong>${escapeHtml(lens.role.label)}</strong>
+        <p>${escapeHtml(fund.role)}</p>
+      </article>
+      <article>
+        <span>Best research fit</span>
+        <strong>${escapeHtml(lens.fit.best.label)}</strong>
+        <p>${escapeHtml(lens.fit.best.reason)}</p>
+      </article>
+      <article>
+        <span>Main challenge</span>
+        <strong>${escapeHtml(lens.flags[0]?.title || "No major demo flag")}</strong>
+        <p>${escapeHtml(lens.flags[0]?.detail || "Still verify live source dates, citations, and portfolio disclosure.")}</p>
+      </article>
+      <article>
+        <span>Change-my-mind trigger</span>
+        <strong>Review trigger</strong>
+        <p>${escapeHtml(lens.changeMind[0])}</p>
+      </article>
+    </div>
+    <div class="why-split-grid">
+      <article class="why-list-card">
+        <span>What to like</span>
+        <ul>${lens.positives.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article class="why-list-card">
+        <span>What to challenge</span>
+        <ul>${lens.challenges.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article class="why-list-card">
+        <span>Pause conditions</span>
+        <ul>${lens.pause.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article class="why-list-card">
+        <span>What changes the thesis</span>
+        <ul>${lens.changeMind.slice(0, 4).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+    </div>
+    <div id="score-anatomy" class="score-anatomy">
+      <div class="score-anatomy-hero">
+        <div>
+          <span class="metric-label">${escapeHtml(scoreAnatomy.status)}</span>
+          <h3>Nadi Score Anatomy</h3>
+          <p>${escapeHtml(fund.name)} scores ${scoreAnatomy.score}/100. The score is a weighted research signal built from behavior, risk control, cost, coverage, and return support.</p>
+        </div>
+        <div class="score-anatomy-badge" style="--score:${scoreAnatomy.score}">
+          <b>${scoreAnatomy.score}</b>
+          <span>Nadi</span>
+        </div>
+      </div>
+      <div class="score-part-grid">
+        ${scoreAnatomy.anatomy.parts.map((part) => `
+          <article>
+            <div>
+              <span>${escapeHtml(part.label)}</span>
+              <strong>${part.contribution.toFixed(1)} pts</strong>
+            </div>
+            <div class="score-meter" aria-label="${escapeHtml(part.label)} raw score">
+              <span style="width:${Math.round(part.raw)}%"></span>
+              <b>${Math.round(part.raw)}</b>
+            </div>
+            <p>${escapeHtml(part.detail)}</p>
+            <small>Weight ${part.weight}% | ${escapeHtml(part.improve)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="score-explain-grid">
+        <article>
+          <span>Peer context</span>
+          <strong>${scoreAnatomy.peerDelta >= 0 ? "+" : ""}${scoreAnatomy.peerDelta.toFixed(1)} versus sleeve avg</strong>
+          <p>Sleeve average score is ${scoreAnatomy.peer.sleeveAvg.score.toFixed(0)}/100 across ${scoreAnatomy.peer.sleevePeers.length} demo ${escapeHtml(fund.sleeve)} fund${scoreAnatomy.peer.sleevePeers.length === 1 ? "" : "s"}.</p>
+        </article>
+        <article>
+          <span>Trust gate</span>
+          <strong>${scoreAnatomy.evidence}/100 evidence</strong>
+          <p>The Nadi score is not the same as source proof. Evidence Ledger still controls AMFI, AMC factsheet, SID/KIM, portfolio, TER, and riskometer confidence.</p>
+        </article>
+        <article>
+          <span>Score pressure</span>
+          <strong>${escapeHtml(scoreAnatomy.weakest.label)}</strong>
+          <p>${escapeHtml(scoreAnatomy.pressure[0])}</p>
+        </article>
+      </div>
+    </div>
     <div class="detail-grid">
       <div class="detail-panel">
         <h3>${escapeHtml(fund.name)}</h3>
@@ -1360,6 +2981,72 @@ function renderFundDetail() {
       </div>
     </div>
   `;
+}
+
+function makeWhyFundNote() {
+  const lens = whyFundLens();
+  return [
+    "# NiveshNadi Why This Fund Lens",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${lens.fund.name}`,
+    `Category: ${lens.fund.category}`,
+    `Risk: ${lens.fund.risk}`,
+    `Lens posture: ${lens.posture}`,
+    `Lens score: ${lens.lensScore}/100`,
+    `Plain role: ${lens.role.label}`,
+    `Best research lens: ${lens.fit.best.label} (${lens.fit.best.fit}/100)`,
+    `Evidence readiness: ${lens.evidence}/100`,
+    `Nadi score: ${lens.score}/100`,
+    `Compare set: ${lens.compareFunds.length} funds`,
+    "",
+    "## What To Like",
+    ...lens.positives.map((item) => `- ${item}`),
+    "",
+    "## What To Challenge",
+    ...lens.challenges.map((item) => `- ${item}`),
+    "",
+    "## Pause Conditions",
+    ...lens.pause.map((item) => `- ${item}`),
+    "",
+    "## What Would Change My Mind",
+    ...lens.changeMind.map((item) => `- ${item}`),
+    "",
+    "Research explanation only. This is not personalized investment advice, suitability approval, execution instruction, or a return guarantee."
+  ].join("\n");
+}
+
+function makeScoreAnatomyNote() {
+  const config = scoreAnatomyConfig();
+  return [
+    "# NiveshNadi Score Anatomy",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${config.fund.name}`,
+    `Category: ${config.fund.category}`,
+    `Risk: ${config.fund.risk}`,
+    `Nadi score: ${config.score}/100`,
+    `Score status: ${config.status}`,
+    `Evidence readiness: ${config.evidence}/100`,
+    `Sleeve peer average: ${config.peer.sleeveAvg.score.toFixed(0)}/100`,
+    `Peer delta: ${config.peerDelta >= 0 ? "+" : ""}${config.peerDelta.toFixed(1)}`,
+    "",
+    "## Weighted Drivers",
+    ...config.anatomy.parts.map((part) => `- ${part.label}: raw ${Math.round(part.raw)}/100 | weight ${part.weight}% | contribution ${part.contribution.toFixed(1)} points | ${part.detail}`),
+    "",
+    "## Reading Notes",
+    ...config.notes.map((item) => `- ${item}`),
+    "",
+    "## Score Pressure",
+    ...config.pressure.map((item) => `- ${item}`),
+    "",
+    "Research score transparency only. This is not a personalized recommendation, suitability approval, execution instruction, credit rating, or return guarantee."
+  ].join("\n");
+}
+
+function openWhyFundCoach() {
+  if (els.coachQuestion) els.coachQuestion.value = "next";
+  if (els.coachDepth) els.coachDepth.value = "plain";
+  renderNadiCoach();
+  scrollToHash("#coach-desk", "smooth", true);
 }
 
 function riskRankValue(risk) {
@@ -2919,9 +4606,13 @@ function makeCompareNote() {
 }
 
 function renderAll() {
+  renderSignalStrip();
   renderFundGrid();
+  renderStarterGuide();
+  renderInvestorPassport();
   renderResearchLanes();
   renderResearchPulse();
+  renderNadiCoach();
   renderCategoryPlaybook();
   renderFundDetail();
   renderSuitabilityPassport();
@@ -2943,6 +4634,10 @@ function renderAll() {
   renderFundHouseLens();
   renderDataReadinessRoom();
   renderDocDecoder();
+  renderGlossary();
+  renderBehaviorGuard();
+  renderClaimChecker();
+  renderResearchReceipt();
   renderReviewRhythmBoard();
   renderWatchlistRoom();
   renderDecisionPack();
@@ -4138,6 +5833,7 @@ function savePortfolioReviewTrigger() {
   renderInvestorRecordDesk();
   renderResearchDossier();
   renderWatchlistRoom();
+  renderResearchReceipt();
   renderReviewRhythmBoard();
   toast("Portfolio review trigger saved.");
 }
@@ -5190,6 +6886,7 @@ function addFundHouseReviewTrigger() {
     ].slice(0, 60));
   }
   renderWatchlistRoom();
+  renderResearchReceipt();
   renderReviewRhythmBoard();
   renderFundHouseLens();
   toast("Fund house review added to Watchlist.");
@@ -5564,6 +7261,718 @@ function makeDocDecoderNote() {
   ].join("\n");
 }
 
+function glossaryFocusLabel(focus) {
+  return {
+    all: "All terms",
+    cashflow: "SIP/STP and cash flow",
+    risk: "Risk words",
+    cost: "Cost words",
+    "fund-data": "Fund data words",
+    passive: "Passive fund words"
+  }[focus] || "All terms";
+}
+
+function glossaryLevelLabel(level) {
+  return {
+    beginner: "Beginner",
+    confident: "Confident investor",
+    "memo-ready": "Memo ready"
+  }[level] || "Beginner";
+}
+
+function glossaryTermContext(term, fund) {
+  const score = nadiScore(fund);
+  const evidence = evidenceReadinessScore(fund);
+  const map = {
+    sip: `${fund.name} has minimum SIP ${formatMoney(fund.minSip)} and ${fund.risk} risk, so SIP amount should match horizon and behavior comfort.`,
+    stp: fund.sleeve === "Debt"
+      ? `${fund.name} can be studied as a potential parking or source bucket, but credit and duration risk still matter.`
+      : `${fund.name} is a ${fund.sleeve} target candidate; STP research should also inspect the source debt or liquid fund.`,
+    nav: `For ${fund.name}, the useful checks are score ${score}/100, TER ${fund.expense.toFixed(2)}%, drawdown ${fund.maxDrawdown}%, and evidence ${evidence}/100, not NAV level alone.`,
+    ter: `${fund.name} shows demo TER ${fund.expense.toFixed(2)}%. Use Cost Reality Lab before assuming the cost is acceptable.`,
+    drawdown: `${fund.name} has demo max drawdown ${fund.maxDrawdown}%. Convert that into rupee pain in Stress Lab before increasing allocation.`,
+    riskometer: `${fund.name} is tagged ${fund.risk} risk. Treat this as a warning label and then check drawdown, horizon, and role.`,
+    benchmark: `${fund.name} uses ${fund.benchmark}. Benchmark method and source must be verified before live return claims.`,
+    "exit-load": `Exit load for ${fund.name} must come from the latest KIM/SID, not from demo fields.`,
+    "direct-regular": `Compare ${fund.name} only against the same plan class. Direct and regular plan TER and returns should not be mixed.`,
+    aum: `${fund.name} has demo AUM ${formatCr(fund.aum)}. Interpret scale by category and strategy.`,
+    idcw: `If considering IDCW for ${fund.name}, first decide whether payout or compounding is the real goal.`,
+    "tracking-error": fund.sleeve === "Passive"
+      ? `${fund.name} is passive, so tracking quality, TER, AUM, and benchmark source are core checks.`
+      : `${fund.name} is not passive, but benchmark discipline still matters for return comparison.`
+  };
+  return map[term.id] || `Use this term to convert ${fund.name} research into a clear check before writing a memo.`;
+}
+
+function glossaryConfig() {
+  const fund = selectedFund();
+  const focus = els.glossaryFocus?.value || "all";
+  const level = els.glossaryLevel?.value || "beginner";
+  const query = (els.glossarySearch?.value || "").trim().toLowerCase();
+  const terms = GLOSSARY_TERMS.filter((term) => {
+    const text = [term.term, term.bucket, term.plain, term.why, term.check, term.example].join(" ").toLowerCase();
+    return (focus === "all" || term.bucket === focus) && (!query || text.includes(query));
+  });
+  const spotlight = terms[0] || GLOSSARY_TERMS.find((term) => term.id === "sip");
+  const score = Math.round(clampNumber(
+    fund.researchCoverage * 0.26 +
+      evidenceReadinessScore(fund) * 0.24 +
+      nadiScore(fund) * 0.18 +
+      (100 - Math.min(fund.maxDrawdown * 2, 100)) * 0.16 +
+      (100 - Math.min(fund.expense * 75, 100)) * 0.16,
+    40,
+    94
+  ));
+  const modeCopy = {
+    beginner: "Plain English first. Learn the word, then ask one practical research question.",
+    confident: "Connect each term to score, cost, risk, evidence, and compare-set discipline.",
+    "memo-ready": "Turn every term into a written memo check before acting."
+  }[level];
+
+  return {
+    focus,
+    fund,
+    level,
+    modeCopy,
+    query,
+    score,
+    spotlight,
+    terms
+  };
+}
+
+function renderGlossary(event) {
+  if (event) event.preventDefault();
+  if (!els.glossaryOutput) return;
+  const config = glossaryConfig();
+  if (els.glossarySummary) {
+    els.glossarySummary.textContent = `${config.terms.length} of ${GLOSSARY_TERMS.length} terms`;
+  }
+  const terms = config.terms.length ? config.terms : [];
+
+  els.glossaryOutput.innerHTML = `
+    <div class="glossary-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(glossaryLevelLabel(config.level))}</span>
+        <h3>Retail glossary for ${escapeHtml(config.fund.name)}</h3>
+        <p>${escapeHtml(config.modeCopy)} ${escapeHtml(glossaryFocusLabel(config.focus))} are shown below.</p>
+      </div>
+      <div class="glossary-score" style="--score:${config.score}">
+        <b>${config.score}</b>
+        <span>Clear</span>
+      </div>
+    </div>
+    <div class="glossary-spotlight">
+      <span>Selected-fund translation</span>
+      <strong>${escapeHtml(config.spotlight.term)}</strong>
+      <p>${escapeHtml(glossaryTermContext(config.spotlight, config.fund))}</p>
+    </div>
+    ${terms.length ? `
+      <div class="glossary-term-grid">
+        ${terms.map((term) => `
+          <article class="glossary-term-card">
+            <div>
+              <span>${escapeHtml(glossaryFocusLabel(term.bucket))}</span>
+              <strong>${escapeHtml(term.term)}</strong>
+            </div>
+            <p>${escapeHtml(term.plain)}</p>
+            <small>${escapeHtml(term.why)}</small>
+            <div class="glossary-check">
+              <b>Research check</b>
+              <p>${escapeHtml(term.check)}</p>
+            </div>
+            <div class="glossary-example">${escapeHtml(term.example)}</div>
+          </article>
+        `).join("")}
+      </div>
+    ` : `
+      <div class="empty-state">No glossary terms match this search. Try SIP, TER, risk, cost, benchmark, or drawdown.</div>
+    `}
+    <div class="glossary-guardrail">
+      <strong>Plain-English rule</strong>
+      <p>Definitions help the investor ask better questions. They do not convert research into personalized advice, execution, tax advice, or a return promise.</p>
+    </div>
+  `;
+}
+
+function makeGlossaryNote() {
+  const config = glossaryConfig();
+  const terms = config.terms.length ? config.terms : GLOSSARY_TERMS.slice(0, 5);
+  return [
+    `# NiveshNadi Retail Glossary - ${config.fund.name}`,
+    "",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Mode: ${glossaryLevelLabel(config.level)}`,
+    `Focus: ${glossaryFocusLabel(config.focus)}`,
+    `Terms shown: ${config.terms.length} of ${GLOSSARY_TERMS.length}`,
+    `Selected-fund translation: ${glossaryTermContext(config.spotlight, config.fund)}`,
+    "",
+    "## Terms",
+    ...terms.map((term) => [
+      `- ${term.term}: ${term.plain}`,
+      `  Why it matters: ${term.why}`,
+      `  Research check: ${term.check}`,
+      `  Example: ${term.example}`
+    ].join("\n")),
+    "",
+    "Research support only. Definitions are educational and do not provide personalized investment advice, transaction instructions, tax advice, or return guarantees."
+  ].join("\n");
+}
+
+function behaviorActionLabel(action) {
+  return {
+    "start-sip": "Start SIP",
+    "increase-sip": "Increase SIP",
+    "pause-sip": "Pause SIP",
+    switch: "Switch fund",
+    redeem: "Redeem",
+    "add-lumpsum": "Add lump sum",
+    watch: "Watch only"
+  }[action] || "Watch only";
+}
+
+function behaviorMoodLabel(mood) {
+  return {
+    calm: "Calm",
+    excited: "Excited",
+    anxious: "Anxious",
+    frustrated: "Frustrated"
+  }[mood] || "Calm";
+}
+
+function behaviorWaitLabel(wait) {
+  return {
+    "24h": "24-hour pause",
+    "7d": "7-day cooling period",
+    review: "Next review date"
+  }[wait] || "24-hour pause";
+}
+
+function behaviorGuardConfig() {
+  const fund = selectedFund();
+  const triggerKey = els.behaviorTrigger?.value || "market-fall";
+  const action = els.behaviorAction?.value || "watch";
+  const mood = els.behaviorMood?.value || "calm";
+  const wait = els.behaviorWait?.value || "24h";
+  const amount = clampNumber(Number(els.behaviorAmount?.value || 10000), 0, 100000000);
+  const trigger = BEHAVIOR_TRIGGERS[triggerKey] || BEHAVIOR_TRIGGERS["market-fall"];
+  const evidence = evidenceReadinessScore(fund);
+  const score = nadiScore(fund);
+  const compareCount = compareSet().length;
+  const alerts = loadAlerts().filter((alert) => alert.fundId === fund.id).length;
+  const riskPressure = fund.maxDrawdown >= 22 || fund.risk === "Very High";
+  const actionPressure = ["switch", "redeem", "increase-sip", "add-lumpsum"].includes(action);
+  const emotionPressure = ["excited", "anxious", "frustrated"].includes(mood);
+  const evidencePressure = evidence < 75;
+  const comparePressure = compareCount < 2 && action !== "watch";
+  const pressureCount = [riskPressure, actionPressure, emotionPressure, evidencePressure, comparePressure].filter(Boolean).length;
+  const guardScore = Math.round(clampNumber(100 - pressureCount * 13 - (amount >= 100000 ? 7 : 0) + (alerts ? 4 : 0), 22, 92));
+
+  let posture = "Proceed only with memo";
+  let tone = "watch";
+  if (guardScore < 55) {
+    posture = "Pause before action";
+    tone = "caution";
+  } else if (guardScore >= 76 && action === "watch") {
+    posture = "Watch discipline";
+    tone = "calm";
+  } else if (guardScore >= 76) {
+    posture = "Research can continue";
+    tone = "steady";
+  }
+
+  const checks = [
+    {
+      title: "Bias check",
+      value: trigger.bias,
+      detail: `${trigger.label} can create ${trigger.bias}. ${trigger.wait}`
+    },
+    {
+      title: "Fund pressure",
+      value: `${fund.risk} risk`,
+      detail: `${fund.name} has ${fund.maxDrawdown}% demo drawdown, ${score}/100 Nadi score, and ${evidence}/100 evidence readiness.`
+    },
+    {
+      title: "Action friction",
+      value: behaviorActionLabel(action),
+      detail: `Amount context ${formatMoney(amount)}. Check cost, tax, exit load, overlap, and written reason before any real-world action.`
+    },
+    {
+      title: "Decision rule",
+      value: behaviorWaitLabel(wait),
+      detail: action === "watch"
+        ? "Watching is an acceptable research outcome when the thesis is not complete."
+        : "Do not act from emotion alone; convert the impulse into evidence, stress, cost, and memo checks."
+    }
+  ];
+
+  const routes = [
+    { label: "Stress", route: "#risk-lab" },
+    { label: "Cost", route: "#cost-lab" },
+    { label: "Switch", route: "#switch-lab" },
+    { label: "Memo", route: "#decision-pack" }
+  ];
+
+  return {
+    action,
+    alerts,
+    amount,
+    checks,
+    compareCount,
+    evidence,
+    fund,
+    guardScore,
+    mood,
+    posture,
+    routes,
+    tone,
+    trigger,
+    triggerKey,
+    wait
+  };
+}
+
+function renderBehaviorGuard(event) {
+  if (event) event.preventDefault();
+  if (!els.behaviorOutput) return;
+  const config = behaviorGuardConfig();
+  if (els.behaviorSummary) {
+    els.behaviorSummary.textContent = `${config.guardScore}/100 discipline`;
+  }
+  els.behaviorOutput.innerHTML = `
+    <div class="behavior-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(config.trigger.label)}</span>
+        <h3>${escapeHtml(config.posture)}</h3>
+        <p>${escapeHtml(config.trigger.firstCheck)} This is a research brake, not an instruction to transact.</p>
+      </div>
+      <div class="behavior-score" style="--score:${config.guardScore}">
+        <b>${config.guardScore}</b>
+        <span>Guard</span>
+      </div>
+    </div>
+    <div class="behavior-grid">
+      ${config.checks.map((check) => `
+        <article class="behavior-card">
+          <span>${escapeHtml(check.title)}</span>
+          <strong>${escapeHtml(check.value)}</strong>
+          <p>${escapeHtml(check.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="behavior-route-card">
+      <div>
+        <span>Route before action</span>
+        <strong>${escapeHtml(config.trigger.firstCheck)}</strong>
+        <p>Compare set ${config.compareCount} | saved alerts ${config.alerts} | mood ${escapeHtml(behaviorMoodLabel(config.mood))}</p>
+      </div>
+      <div class="behavior-route-actions">
+        ${config.routes.map((item) => `
+          <button class="signal-chip" type="button" data-behavior-route="${escapeHtml(item.route)}">${escapeHtml(item.label)}</button>
+        `).join("")}
+      </div>
+    </div>
+    <div class="behavior-guardrail">
+      <strong>Impulse rule</strong>
+      <p>If the reason cannot be written calmly, the app should route the investor to watch, review, or memo discipline. It should not push a transaction.</p>
+    </div>
+  `;
+}
+
+function makeBehaviorGuardNote() {
+  const config = behaviorGuardConfig();
+  return [
+    `# NiveshNadi Behavior Guard - ${config.fund.name}`,
+    "",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Trigger: ${config.trigger.label}`,
+    `Bias check: ${config.trigger.bias}`,
+    `Mood: ${behaviorMoodLabel(config.mood)}`,
+    `Intended action: ${behaviorActionLabel(config.action)}`,
+    `Amount context: ${formatMoney(config.amount)}`,
+    `Guard score: ${config.guardScore}/100`,
+    `Posture: ${config.posture}`,
+    `Wait rule: ${behaviorWaitLabel(config.wait)}`,
+    "",
+    "## Required Checks",
+    ...config.checks.map((check) => `- ${check.title}: ${check.value} - ${check.detail}`),
+    "",
+    "## Research Boundary",
+    "This note is a behavior brake and research checklist. It is not investment advice, redemption advice, switch advice, tax advice, execution, or a return guarantee."
+  ].join("\n");
+}
+
+function claimSourceLabel(source) {
+  return {
+    social: "Social media",
+    friend: "Friend or family",
+    ad: "Advertisement",
+    distributor: "Distributor conversation",
+    article: "Article or blog",
+    self: "Own thought"
+  }[source] || "Own thought";
+}
+
+function claimIntentLabel(intent) {
+  return {
+    shortlist: "Shortlist fund",
+    sip: "Start SIP",
+    switch: "Switch",
+    lumpsum: "Add lump sum",
+    redeem: "Redeem or pause",
+    compare: "Compare only"
+  }[intent] || "Shortlist fund";
+}
+
+function claimCheckerConfig() {
+  const fund = selectedFund();
+  const preset = els.claimPreset?.value || "guarantee";
+  const claimText = (els.claimText?.value || CLAIM_PRESETS[preset] || CLAIM_PRESETS.guarantee).trim();
+  const source = els.claimSource?.value || "social";
+  const intent = els.claimIntent?.value || "shortlist";
+  const normalized = claimText.toLowerCase();
+  let flags = CLAIM_PATTERNS.filter((pattern) => pattern.keywords.some((word) => normalized.includes(word)));
+  if (!flags.length) {
+    flags = [{
+      id: "unverified",
+      label: "Unverified claim",
+      severity: 12,
+      route: "#evidence",
+      check: "The claim is not proven by app data. Confirm source date, citation path, evidence, cost, risk, and benchmark context."
+    }];
+  }
+  const evidence = evidenceReadinessScore(fund);
+  const sourcePenalty = ["social", "friend", "ad"].includes(source) ? 10 : source === "self" ? 4 : 6;
+  const actionPenalty = ["switch", "lumpsum", "redeem", "sip"].includes(intent) ? 8 : 3;
+  const severity = flags.reduce((sum, flag) => sum + flag.severity, 0);
+  const claimScore = Math.round(clampNumber(100 - severity - sourcePenalty - actionPenalty + Math.round(evidence * 0.08), 18, 92));
+
+  let posture = "Verify before relying";
+  let tone = "watch";
+  if (claimScore < 45) {
+    posture = "Do not rely on this claim";
+    tone = "caution";
+  } else if (claimScore >= 72) {
+    posture = "Claim can be researched";
+    tone = "steady";
+  }
+
+  const primary = flags[0];
+  const evidenceTasks = [
+    `Open ${fund.name} in Evidence Ledger and confirm source status before trusting the claim.`,
+    `Compare score ${nadiScore(fund)}/100, evidence ${evidence}/100, TER ${fund.expense.toFixed(2)}%, drawdown ${fund.maxDrawdown}%, and benchmark ${fund.benchmark}.`,
+    `Write the decision reason in Decision Pack before any real-world action.`,
+    `Use Behavior Guard if the claim came from excitement, fear, social media, or deadline pressure.`
+  ];
+  const routes = [
+    { label: "Evidence", route: "#evidence" },
+    { label: "Compare", route: "#compare" },
+    { label: "Glossary", route: "#glossary" },
+    { label: "Guard", route: "#behavior-guard" }
+  ];
+
+  return {
+    actionPenalty,
+    claimScore,
+    claimText,
+    evidence,
+    evidenceTasks,
+    flags,
+    fund,
+    intent,
+    posture,
+    primary,
+    routes,
+    source,
+    sourcePenalty,
+    tone
+  };
+}
+
+function renderClaimChecker(event) {
+  if (event) event.preventDefault();
+  if (!els.claimOutput) return;
+  const config = claimCheckerConfig();
+  if (els.claimSummary) {
+    els.claimSummary.textContent = `${config.flags.length} flag${config.flags.length === 1 ? "" : "s"} found`;
+  }
+  els.claimOutput.innerHTML = `
+    <div class="claim-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(claimSourceLabel(config.source))}</span>
+        <h3>${escapeHtml(config.posture)}</h3>
+        <p>${escapeHtml(config.primary.check)} This is claim triage, not fund approval.</p>
+      </div>
+      <div class="claim-score" style="--score:${config.claimScore}">
+        <b>${config.claimScore}</b>
+        <span>Claim</span>
+      </div>
+    </div>
+    <div class="claim-card-grid">
+      <article class="claim-card">
+        <span>Claim text</span>
+        <strong>${escapeHtml(claimIntentLabel(config.intent))}</strong>
+        <p>${escapeHtml(config.claimText)}</p>
+      </article>
+      <article class="claim-card">
+        <span>Selected fund context</span>
+        <strong>${escapeHtml(config.fund.name)}</strong>
+        <p>${escapeHtml(config.fund.category)} | ${escapeHtml(config.fund.risk)} risk | TER ${config.fund.expense.toFixed(2)}% | Evidence ${config.evidence}/100</p>
+      </article>
+      <article class="claim-card">
+        <span>Primary concern</span>
+        <strong>${escapeHtml(config.primary.label)}</strong>
+        <p>${escapeHtml(config.primary.check)}</p>
+      </article>
+    </div>
+    <div class="claim-flag-grid">
+      ${config.flags.map((flag) => `
+        <article class="claim-flag-card">
+          <span>${escapeHtml(flag.label)}</span>
+          <strong>${flag.severity} risk pts</strong>
+          <p>${escapeHtml(flag.check)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="claim-route-card">
+      <div>
+        <span>Evidence route</span>
+        <strong>Convert claim into checks</strong>
+        <ul class="doc-list">
+          ${config.evidenceTasks.map((task) => `<li>${escapeHtml(task)}</li>`).join("")}
+        </ul>
+      </div>
+      <div class="claim-route-actions">
+        ${config.routes.map((item) => `
+          <button class="signal-chip" type="button" data-claim-route="${escapeHtml(item.route)}">${escapeHtml(item.label)}</button>
+        `).join("")}
+      </div>
+    </div>
+    <div class="claim-guardrail">
+      <strong>Claim rule</strong>
+      <p>No external claim is trusted until source date, citation, risk, cost, benchmark, evidence, and written reason are checked. The app does not validate advertisements, tips, or guarantees.</p>
+    </div>
+  `;
+}
+
+function makeClaimCheckerNote() {
+  const config = claimCheckerConfig();
+  return [
+    `# NiveshNadi Claim Checker - ${config.fund.name}`,
+    "",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Source: ${claimSourceLabel(config.source)}`,
+    `Intent: ${claimIntentLabel(config.intent)}`,
+    `Claim score: ${config.claimScore}/100`,
+    `Posture: ${config.posture}`,
+    `Claim: ${config.claimText}`,
+    "",
+    "## Flags",
+    ...config.flags.map((flag) => `- ${flag.label}: ${flag.check}`),
+    "",
+    "## Required Checks",
+    ...config.evidenceTasks.map((task) => `- ${task}`),
+    "",
+    "Research boundary: This note challenges a claim. It is not a recommendation, approval, rejection, transaction instruction, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function receiptModeLabel(mode) {
+  return {
+    self: "Self research receipt",
+    family: "Family discussion receipt",
+    advisor: "Advisor conversation receipt",
+    audit: "Evidence audit receipt"
+  }[mode] || "Self research receipt";
+}
+
+function receiptDecisionLabel(decision) {
+  return {
+    watch: "Watch",
+    shortlist: "Shortlist",
+    sip: "SIP research",
+    switch: "Switch research",
+    review: "Portfolio review",
+    avoid: "Avoid for now"
+  }[decision] || "Watch";
+}
+
+function receiptConfig() {
+  const fund = selectedFund();
+  const mode = els.receiptMode?.value || "self";
+  const decision = els.receiptDecision?.value || "watch";
+  const reviewDate = els.receiptReviewDate?.value || "2026-06-30";
+  const note = (els.receiptNote?.value || "").trim();
+  const evidence = evidenceReadinessScore(fund);
+  const score = nadiScore(fund);
+  const behavior = behaviorGuardConfig();
+  const claim = claimCheckerConfig();
+  const compareFunds = compareSet();
+  const watchCount = loadWatchlist().filter((entry) => entry.fundId === fund.id).length;
+  const alertCount = loadAlerts().filter((alert) => alert.fundId === fund.id).length;
+  const receiptScore = Math.round(clampNumber(
+    evidence * 0.28 +
+      score * 0.24 +
+      behavior.guardScore * 0.18 +
+      claim.claimScore * 0.16 +
+      Math.min(compareFunds.length * 18, 72) * 0.08 +
+      (reviewDate ? 80 : 40) * 0.06,
+    28,
+    94
+  ));
+  let posture = "Research receipt pending";
+  let tone = "watch";
+  if (receiptScore >= 78) {
+    posture = "Research file looks organized";
+    tone = "ready";
+  } else if (receiptScore < 58) {
+    posture = "Receipt needs stronger proof";
+    tone = "caution";
+  }
+
+  const ledger = [
+    {
+      label: "Selected fund",
+      status: "Captured",
+      detail: `${fund.name} | ${fund.category} | ${fund.risk} risk | TER ${fund.expense.toFixed(2)}%`
+    },
+    {
+      label: "Score anatomy",
+      status: `${score}/100`,
+      detail: "Nadi score reviewed as a research signal, not a rating or guarantee."
+    },
+    {
+      label: "Evidence ledger",
+      status: `${evidence}/100`,
+      detail: evidence < 75 ? "Live source dates and citations remain the main blocker." : "Evidence is usable for demo review, but live citations are still required."
+    },
+    {
+      label: "Claim checker",
+      status: `${claim.flags.length} flag${claim.flags.length === 1 ? "" : "s"}`,
+      detail: claim.primary.check
+    },
+    {
+      label: "Behavior guard",
+      status: `${behavior.guardScore}/100`,
+      detail: `${behavior.trigger.label}: ${behavior.trigger.firstCheck}`
+    },
+    {
+      label: "Compare set",
+      status: `${compareFunds.length} funds`,
+      detail: compareFunds.length >= 2 ? "Shortlist has peer context." : "Add at least one peer before relying on the receipt."
+    },
+    {
+      label: "Follow-up",
+      status: reviewDate,
+      detail: `${watchCount} watch entry and ${alertCount} saved alert trigger${alertCount === 1 ? "" : "s"} for this fund.`
+    }
+  ];
+  const nextChecks = [
+    evidence < 75 ? "Open Evidence Ledger and attach live source dates before treating the receipt as current." : "Refresh live AMFI, AMC, SID/KIM, portfolio, TER, and riskometer evidence before launch use.",
+    compareFunds.length < 2 ? "Add one category or sleeve peer to Compare before moving from watch to decision." : "Use Compare and X-Ray to confirm the fund has a distinct portfolio role.",
+    claim.flags.length ? "Resolve the Claim Checker flag before trusting external language." : "Keep claim language modest and source-backed.",
+    behavior.guardScore < 70 ? "Wait through the Behavior Guard cooling rule before writing the final memo." : "Keep the written reason calm and review-date bound."
+  ];
+
+  return {
+    alertCount,
+    behavior,
+    claim,
+    compareFunds,
+    decision,
+    evidence,
+    fund,
+    ledger,
+    mode,
+    nextChecks,
+    note,
+    posture,
+    receiptScore,
+    reviewDate,
+    score,
+    tone,
+    watchCount
+  };
+}
+
+function renderResearchReceipt(event) {
+  if (event) event.preventDefault();
+  if (!els.receiptOutput) return;
+  const config = receiptConfig();
+  if (els.receiptSummary) {
+    els.receiptSummary.textContent = `${config.receiptScore}/100 receipt`;
+  }
+  els.receiptOutput.innerHTML = `
+    <div class="receipt-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(receiptModeLabel(config.mode))}</span>
+        <h3>${escapeHtml(config.posture)}</h3>
+        <p>${escapeHtml(config.fund.name)} receipt for ${escapeHtml(receiptDecisionLabel(config.decision))}. Review date ${escapeHtml(config.reviewDate)}.</p>
+      </div>
+      <div class="receipt-score" style="--score:${config.receiptScore}">
+        <b>${config.receiptScore}</b>
+        <span>Receipt</span>
+      </div>
+    </div>
+    <div class="receipt-metric-grid">
+      <article><span>Nadi score</span><strong>${config.score}/100</strong><p>Research signal only.</p></article>
+      <article><span>Evidence</span><strong>${config.evidence}/100</strong><p>Live source proof still controls trust.</p></article>
+      <article><span>Claims</span><strong>${config.claim.flags.length} flag${config.claim.flags.length === 1 ? "" : "s"}</strong><p>${escapeHtml(config.claim.posture)}</p></article>
+      <article><span>Behavior</span><strong>${config.behavior.guardScore}/100</strong><p>${escapeHtml(config.behavior.posture)}</p></article>
+    </div>
+    <div class="receipt-ledger-grid">
+      ${config.ledger.map((item) => `
+        <article class="receipt-ledger-card">
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.status)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="receipt-route-card">
+      <div>
+        <span>Next proof checks</span>
+        <strong>Before this receipt is relied on</strong>
+        <ul class="doc-list">${config.nextChecks.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        ${config.note ? `<p>${escapeHtml(config.note)}</p>` : ""}
+      </div>
+      <div class="receipt-route-actions">
+        <button class="signal-chip" type="button" data-receipt-route="#evidence">Evidence</button>
+        <button class="signal-chip" type="button" data-receipt-route="#claim-checker">Claims</button>
+        <button class="signal-chip" type="button" data-receipt-route="#behavior-guard">Guard</button>
+        <button class="signal-chip" type="button" data-receipt-route="#decision-pack">Pack</button>
+      </div>
+    </div>
+    <div class="receipt-guardrail">
+      <strong>Receipt boundary</strong>
+      <p>This receipt documents research checks only. It excludes PAN, folio, CAS, bank data, credentials, execution instructions, personalized advice, tax advice, and return guarantees.</p>
+    </div>
+  `;
+}
+
+function makeResearchReceiptNote() {
+  const config = receiptConfig();
+  return [
+    `# NiveshNadi Research Receipt - ${config.fund.name}`,
+    "",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt mode: ${receiptModeLabel(config.mode)}`,
+    `Decision stance: ${receiptDecisionLabel(config.decision)}`,
+    `Review date: ${config.reviewDate}`,
+    `Receipt score: ${config.receiptScore}/100`,
+    `Posture: ${config.posture}`,
+    "",
+    "## Receipt Ledger",
+    ...config.ledger.map((item) => `- ${item.label}: ${item.status} - ${item.detail}`),
+    "",
+    "## Next Proof Checks",
+    ...config.nextChecks.map((item) => `- ${item}`),
+    config.note ? `\n## Note\n${config.note}` : "",
+    "",
+    "Research boundary: This receipt documents checks only. It is not advice, execution, tax guidance, approval, or a return guarantee."
+  ].filter(Boolean).join("\n");
+}
+
 function renderWatchlistRoom() {
   if (!els.watchList || !els.watchStats) return;
   const watchlist = loadWatchlist();
@@ -5652,11 +8061,13 @@ function addToWatchlist(fundId, shouldRender = true) {
   if (shouldRender) {
     renderResearchLanes();
     renderResearchPulse();
+    renderNadiCoach();
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
     renderResearchDossier();
     renderWatchlistRoom();
+    renderResearchReceipt();
     renderReviewRhythmBoard();
   }
 }
@@ -5668,11 +8079,13 @@ function removeFromWatchlist(fundId) {
   saveAlerts(alerts);
   renderResearchLanes();
   renderResearchPulse();
+  renderNadiCoach();
   renderPortfolioReviewRoom();
   renderReviewVault();
   renderInvestorRecordDesk();
   renderResearchDossier();
   renderWatchlistRoom();
+  renderResearchReceipt();
   renderReviewRhythmBoard();
 }
 
@@ -5694,11 +8107,13 @@ function handleAlertForm(event) {
   els.alertNote.value = "";
   renderResearchLanes();
   renderResearchPulse();
+  renderNadiCoach();
   renderPortfolioReviewRoom();
   renderReviewVault();
   renderInvestorRecordDesk();
   renderResearchDossier();
   renderWatchlistRoom();
+  renderResearchReceipt();
   renderReviewRhythmBoard();
 }
 
@@ -7429,16 +9844,75 @@ function bindEvents() {
     renderFundGrid();
   });
   els.copyBrief.addEventListener("click", () => copyText(makeBrief()));
+  els.openWhyCoach?.addEventListener("click", openWhyFundCoach);
+  els.copyWhyLens?.addEventListener("click", () => copyText(makeWhyFundNote()));
+  els.copyScoreAnatomy?.addEventListener("click", () => copyText(makeScoreAnatomyNote()));
+  els.starterGuideForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    applyStarterIntentToProfile();
+    renderAll();
+    scrollToHash("#starter-guide", "smooth", true);
+  });
+  els.starterIntent?.addEventListener("change", () => {
+    applyStarterIntentToProfile();
+    renderAll();
+  });
+  els.starterTime?.addEventListener("change", () => {
+    renderStarterGuide();
+    renderNadiCoach();
+  });
+  els.openStarterNext?.addEventListener("click", openNextStarterStep);
+  els.copyStarterGuide?.addEventListener("click", () => copyText(makeStarterGuideNote()));
+  els.resetStarterGuide?.addEventListener("click", () => {
+    saveStarterGuideProgress({});
+    renderStarterGuide();
+    renderNadiCoach();
+  });
+  els.investorPassportForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    renderStarterGuide();
+    renderInvestorPassport();
+    renderNadiCoach();
+  });
+  [
+    els.investorGoal,
+    els.investorStage,
+    els.investorHorizon,
+    els.investorMonthlySip,
+    els.investorRisk,
+    els.investorEmergency,
+    els.investorConfidence
+  ].forEach((input) => {
+    input?.addEventListener(input.tagName === "INPUT" ? "input" : "change", () => {
+      renderStarterGuide();
+      renderInvestorPassport();
+      renderNadiCoach();
+    });
+  });
+  els.applyInvestorPassport?.addEventListener("click", applyInvestorPassport);
+  els.copyInvestorPassport?.addEventListener("click", () => copyText(makeInvestorPassportNote()));
   els.laneForm?.addEventListener("submit", (event) => {
     event.preventDefault();
     applyResearchLane();
   });
   [els.laneMode, els.laneHorizon, els.laneAmount].forEach((input) => {
-    input?.addEventListener(input.tagName === "INPUT" ? "input" : "change", () => renderResearchLanes());
+    input?.addEventListener(input.tagName === "INPUT" ? "input" : "change", () => {
+      renderResearchLanes();
+      renderNadiCoach();
+    });
   });
   els.applyLane?.addEventListener("click", applyResearchLane);
   els.copyLane?.addEventListener("click", () => copyText(makeResearchLaneNote()));
   els.copyPulse?.addEventListener("click", () => copyText(makeResearchPulseNote()));
+  els.coachForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    renderNadiCoach();
+  });
+  [els.coachQuestion, els.coachDepth].forEach((input) => {
+    input?.addEventListener("change", () => renderNadiCoach());
+  });
+  els.openCoachAction?.addEventListener("click", () => handleCoachAction());
+  els.copyCoach?.addEventListener("click", () => copyText(makeCoachNote()));
   els.passportForm?.addEventListener("submit", (event) => {
     event.preventDefault();
     renderSuitabilityPassport();
@@ -7630,6 +10104,45 @@ function bindEvents() {
     input?.addEventListener("change", () => renderDocDecoder());
   });
   els.copyDocNote?.addEventListener("click", () => copyText(makeDocDecoderNote()));
+  els.glossaryForm?.addEventListener("submit", renderGlossary);
+  els.glossarySearch?.addEventListener("input", () => renderGlossary());
+  [els.glossaryFocus, els.glossaryLevel].forEach((input) => {
+    input?.addEventListener("change", () => renderGlossary());
+  });
+  els.copyGlossaryNote?.addEventListener("click", () => copyText(makeGlossaryNote()));
+  els.behaviorForm?.addEventListener("submit", (event) => {
+    renderBehaviorGuard(event);
+    renderResearchReceipt();
+  });
+  [els.behaviorTrigger, els.behaviorAction, els.behaviorAmount, els.behaviorMood, els.behaviorWait].forEach((input) => {
+    input?.addEventListener(input === els.behaviorAmount ? "input" : "change", () => {
+      renderBehaviorGuard();
+      renderResearchReceipt();
+    });
+  });
+  els.copyBehaviorGuard?.addEventListener("click", () => copyText(makeBehaviorGuardNote()));
+  els.claimForm?.addEventListener("submit", (event) => {
+    renderClaimChecker(event);
+    renderResearchReceipt();
+  });
+  els.claimPreset?.addEventListener("change", () => {
+    if (els.claimText) els.claimText.value = CLAIM_PRESETS[els.claimPreset.value] || "";
+    renderClaimChecker();
+    renderResearchReceipt();
+  });
+  [els.claimText, els.claimSource, els.claimIntent].forEach((input) => {
+    input?.addEventListener(input === els.claimText ? "input" : "change", () => {
+      renderClaimChecker();
+      renderResearchReceipt();
+    });
+  });
+  els.copyClaimNote?.addEventListener("click", () => copyText(makeClaimCheckerNote()));
+  els.receiptForm?.addEventListener("submit", renderResearchReceipt);
+  [els.receiptMode, els.receiptDecision, els.receiptReviewDate].forEach((input) => {
+    input?.addEventListener("change", () => renderResearchReceipt());
+  });
+  els.receiptNote?.addEventListener("input", () => renderResearchReceipt());
+  els.copyReceiptNote?.addEventListener("click", () => copyText(makeResearchReceiptNote()));
   els.rhythmForm?.addEventListener("submit", renderReviewRhythmBoard);
   [els.rhythmFocus, els.rhythmDate, els.rhythmCadence, els.rhythmNote].forEach((input) => {
     input?.addEventListener("change", () => renderReviewRhythmBoard());
@@ -7651,22 +10164,26 @@ function bindEvents() {
     FUNDS.filter((fund) => state.compare.has(fund.id)).forEach((fund) => addToWatchlist(fund.id, false));
     renderResearchLanes();
     renderResearchPulse();
+    renderNadiCoach();
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
     renderResearchDossier();
     renderWatchlistRoom();
+    renderResearchReceipt();
     renderReviewRhythmBoard();
   });
   els.clearAlerts?.addEventListener("click", () => {
     saveAlerts([]);
     renderResearchLanes();
     renderResearchPulse();
+    renderNadiCoach();
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
     renderResearchDossier();
     renderWatchlistRoom();
+    renderResearchReceipt();
     renderReviewRhythmBoard();
   });
   els.packForm?.addEventListener("submit", renderDecisionPack);
@@ -7675,12 +10192,14 @@ function bindEvents() {
       renderDecisionPack();
       renderResearchLanes();
       renderResearchPulse();
+      renderNadiCoach();
     });
   });
   els.packReason?.addEventListener("input", () => {
     renderDecisionPack();
     renderResearchLanes();
     renderResearchPulse();
+    renderNadiCoach();
   });
   els.copyPack?.addEventListener("click", () => copyText(makeDecisionPackText()));
   els.savePackJournal?.addEventListener("click", saveDecisionPackToJournal);
@@ -7691,18 +10210,58 @@ function bindEvents() {
   });
 
   document.addEventListener("click", (event) => {
+    const signalRoute = event.target.closest("[data-signal-route]");
+    if (!signalRoute) return;
+    scrollToHash(signalRoute.dataset.signalRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const copySignal = event.target.closest("#copySignalStrip");
+    if (!copySignal) return;
+    copyText(makeSignalStripNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const routeButton = event.target.closest("[data-claim-route]");
+    if (!routeButton) return;
+    scrollToHash(routeButton.dataset.claimRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const routeButton = event.target.closest("[data-receipt-route]");
+    if (!routeButton) return;
+    scrollToHash(routeButton.dataset.receiptRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const routeButton = event.target.closest("[data-behavior-route]");
+    if (!routeButton) return;
+    scrollToHash(routeButton.dataset.behaviorRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
     const playbookButton = event.target.closest("[data-playbook-category]");
     if (!playbookButton) return;
     applyPlaybookCategory(playbookButton.dataset.playbookCategory);
   });
 
   document.addEventListener("click", (event) => {
+    const starterAction = event.target.closest("[data-starter-action]");
+    if (!starterAction) return;
+    handleStarterGuideAction(starterAction.dataset.starterAction);
+  });
+
+  document.addEventListener("click", (event) => {
     const button = event.target.closest("[data-select-fund]");
     if (!button) return;
     state.selectedId = button.dataset.selectFund;
+    renderSignalStrip();
     renderFundGrid();
+    renderStarterGuide();
+    renderInvestorPassport();
     renderResearchLanes();
     renderResearchPulse();
+    renderNadiCoach();
     renderFundDetail();
     renderSuitabilityPassport();
     renderGoalFundFitHeatmap();
@@ -7722,6 +10281,10 @@ function bindEvents() {
     renderEvidenceLedger();
     renderFundHouseLens();
     renderDocDecoder();
+    renderGlossary();
+    renderBehaviorGuard();
+    renderClaimChecker();
+    renderResearchReceipt();
     renderReviewRhythmBoard();
     renderDecisionPack();
     scrollToElement(document.querySelector(".detail-band"));
@@ -7740,6 +10303,12 @@ function bindEvents() {
   });
 
   document.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-coach-route]");
+    if (!button) return;
+    handleCoachAction(button.dataset.coachRoute);
+  });
+
+  document.addEventListener("click", (event) => {
     const removeWatch = event.target.closest("[data-remove-watch]");
     const removeAlert = event.target.closest("[data-remove-alert]");
     if (removeWatch) {
@@ -7750,6 +10319,7 @@ function bindEvents() {
       saveAlerts(loadAlerts().filter((alert) => alert.id !== removeAlert.dataset.removeAlert));
       renderResearchLanes();
       renderResearchPulse();
+      renderNadiCoach();
       renderPortfolioReviewRoom();
       renderReviewVault();
       renderInvestorRecordDesk();
@@ -7760,15 +10330,25 @@ function bindEvents() {
   });
 
   document.addEventListener("change", (event) => {
+    const starterStep = event.target.closest("[data-starter-step]");
+    if (starterStep) {
+      setStarterStepProgress(starterStep.dataset.starterStep, starterStep.checked);
+      return;
+    }
+
     const compare = event.target.closest("[data-compare-fund]");
     const portfolio = event.target.closest("[data-portfolio-fund]");
     const id = compare?.dataset.compareFund || portfolio?.dataset.portfolioFund;
     if (!id) return;
     if (event.target.checked) state.compare.add(id);
     else state.compare.delete(id);
+    renderSignalStrip();
     renderFundGrid();
+    renderStarterGuide();
+    renderInvestorPassport();
     renderResearchLanes();
     renderResearchPulse();
+    renderNadiCoach();
     renderPortfolioChoices();
     renderFundDetail();
     renderSuitabilityPassport();
@@ -7787,6 +10367,10 @@ function bindEvents() {
     renderInvestorReadinessGate();
     renderFundHouseLens();
     renderDocDecoder();
+    renderGlossary();
+    renderBehaviorGuard();
+    renderClaimChecker();
+    renderResearchReceipt();
     renderReviewRhythmBoard();
     renderDecisionPack();
   });
@@ -7908,6 +10492,27 @@ function cacheElements() {
     sortSelect: qs("#sortSelect"),
     resetFilters: qs("#resetFilters"),
     copyBrief: qs("#copyBrief"),
+    nadiSignalStrip: qs("#nadiSignalStrip"),
+    starterGuideForm: qs("#starterGuideForm"),
+    starterIntent: qs("#starterIntent"),
+    starterTime: qs("#starterTime"),
+    starterGuideSummary: qs("#starterGuideSummary"),
+    starterGuideOutput: qs("#starterGuideOutput"),
+    openStarterNext: qs("#openStarterNext"),
+    copyStarterGuide: qs("#copyStarterGuide"),
+    resetStarterGuide: qs("#resetStarterGuide"),
+    investorPassportForm: qs("#investorPassportForm"),
+    investorGoal: qs("#investorGoal"),
+    investorStage: qs("#investorStage"),
+    investorHorizon: qs("#investorHorizon"),
+    investorMonthlySip: qs("#investorMonthlySip"),
+    investorRisk: qs("#investorRisk"),
+    investorEmergency: qs("#investorEmergency"),
+    investorConfidence: qs("#investorConfidence"),
+    investorPassportSummary: qs("#investorPassportSummary"),
+    investorPassportOutput: qs("#investorPassportOutput"),
+    applyInvestorPassport: qs("#applyInvestorPassport"),
+    copyInvestorPassport: qs("#copyInvestorPassport"),
     laneForm: qs("#laneForm"),
     laneMode: qs("#laneMode"),
     laneHorizon: qs("#laneHorizon"),
@@ -7919,9 +10524,19 @@ function cacheElements() {
     copyPulse: qs("#copyPulse"),
     pulseSummary: qs("#pulseSummary"),
     researchPulse: qs("#researchPulse"),
+    coachForm: qs("#coachForm"),
+    coachQuestion: qs("#coachQuestion"),
+    coachDepth: qs("#coachDepth"),
+    coachSummary: qs("#coachSummary"),
+    coachOutput: qs("#coachOutput"),
+    openCoachAction: qs("#openCoachAction"),
+    copyCoach: qs("#copyCoach"),
     fundGrid: qs("#fundGrid"),
     selectedStatus: qs("#selectedStatus"),
     fundDetail: qs("#fundDetail"),
+    openWhyCoach: qs("#openWhyCoach"),
+    copyWhyLens: qs("#copyWhyLens"),
+    copyScoreAnatomy: qs("#copyScoreAnatomy"),
     playbookForm: qs("#playbookForm"),
     playbookNeed: qs("#playbookNeed"),
     playbookYears: qs("#playbookYears"),
@@ -8101,6 +10716,38 @@ function cacheElements() {
     docSummary: qs("#docSummary"),
     docOutput: qs("#docOutput"),
     copyDocNote: qs("#copyDocNote"),
+    glossaryForm: qs("#glossaryForm"),
+    glossarySearch: qs("#glossarySearch"),
+    glossaryFocus: qs("#glossaryFocus"),
+    glossaryLevel: qs("#glossaryLevel"),
+    glossarySummary: qs("#glossarySummary"),
+    glossaryOutput: qs("#glossaryOutput"),
+    copyGlossaryNote: qs("#copyGlossaryNote"),
+    behaviorForm: qs("#behaviorForm"),
+    behaviorTrigger: qs("#behaviorTrigger"),
+    behaviorAction: qs("#behaviorAction"),
+    behaviorAmount: qs("#behaviorAmount"),
+    behaviorMood: qs("#behaviorMood"),
+    behaviorWait: qs("#behaviorWait"),
+    behaviorSummary: qs("#behaviorSummary"),
+    behaviorOutput: qs("#behaviorOutput"),
+    copyBehaviorGuard: qs("#copyBehaviorGuard"),
+    claimForm: qs("#claimForm"),
+    claimPreset: qs("#claimPreset"),
+    claimText: qs("#claimText"),
+    claimSource: qs("#claimSource"),
+    claimIntent: qs("#claimIntent"),
+    claimSummary: qs("#claimSummary"),
+    claimOutput: qs("#claimOutput"),
+    copyClaimNote: qs("#copyClaimNote"),
+    receiptForm: qs("#receiptForm"),
+    receiptMode: qs("#receiptMode"),
+    receiptDecision: qs("#receiptDecision"),
+    receiptReviewDate: qs("#receiptReviewDate"),
+    receiptNote: qs("#receiptNote"),
+    receiptSummary: qs("#receiptSummary"),
+    receiptOutput: qs("#receiptOutput"),
+    copyReceiptNote: qs("#copyReceiptNote"),
     rhythmForm: qs("#rhythmForm"),
     rhythmFocus: qs("#rhythmFocus"),
     rhythmDate: qs("#rhythmDate"),
@@ -8158,6 +10805,10 @@ function init() {
   renderInvestorReadinessGate();
   renderDataReadinessRoom();
   renderDocDecoder();
+  renderGlossary();
+  renderBehaviorGuard();
+  renderClaimChecker();
+  renderResearchReceipt();
   renderDecisionPack();
   renderJournal();
   analyzePortfolio();

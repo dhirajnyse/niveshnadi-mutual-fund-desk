@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260511-02";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v20 Suitability Passport";
+const DATA_VERSION = "20260511-11";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v29 Investor Record Desk";
 
 const FUNDS = [
   {
@@ -394,9 +394,59 @@ const DATA_PIPELINES = [
   }
 ];
 
+const DOC_DECODER_GUIDES = {
+  kim: {
+    title: "KIM snapshot",
+    source: "Key Information Memorandum",
+    pipelineId: "sid-kim",
+    readiness: 60,
+    purpose: "Quick read for objective, category, riskometer, minimum SIP, expense, loads, and benchmark.",
+    mustRead: ["investment objective", "asset allocation", "riskometer", "expense and loads", "minimum application"],
+    launchGate: "Attach latest KIM version, document date, and public source link before live use."
+  },
+  sid: {
+    title: "SID deep read",
+    source: "Scheme Information Document",
+    pipelineId: "sid-kim",
+    readiness: 52,
+    purpose: "Deeper read for strategy, risk factors, asset allocation ranges, restrictions, and change history.",
+    mustRead: ["investment strategy", "risk factors", "asset allocation ranges", "loads", "benchmark methodology"],
+    launchGate: "Track SID version, change date, addendum history, and clause-level citations."
+  },
+  factsheet: {
+    title: "AMC factsheet",
+    source: "Monthly factsheet",
+    pipelineId: "amc-factsheet",
+    readiness: 68,
+    purpose: "Monthly read for returns, AUM, expense, manager, style, holdings, sectors, and riskometer.",
+    mustRead: ["fund manager", "AUM", "portfolio style", "top holdings", "sector exposure"],
+    launchGate: "Parse AMC PDF fields, store factsheet month, and show extraction confidence."
+  },
+  portfolio: {
+    title: "Portfolio disclosure",
+    source: "Monthly portfolio file",
+    pipelineId: "portfolio-disclosure",
+    readiness: 70,
+    purpose: "Holdings read for overlap, issuer concentration, debt quality, sector mix, and stale portfolio risk.",
+    mustRead: ["holdings date", "top holdings", "sector mix", "issuer concentration", "debt quality"],
+    launchGate: "Block stale disclosure dates and normalize holdings before showing overlap as current."
+  },
+  "risk-ter": {
+    title: "Riskometer and TER history",
+    source: "Risk and expense history",
+    pipelineId: "risk-ter",
+    readiness: 74,
+    purpose: "Change-history read for riskometer movement, TER drift, plan class, and review triggers.",
+    mustRead: ["riskometer band", "TER history", "plan class", "change date", "material change note"],
+    launchGate: "Retain monthly history and make change alerts visible without transaction language."
+  }
+};
+
 const state = {
   selectedId: FUNDS[0].id,
   compare: new Set(["large-core", "index-nifty"]),
+  blueprintWeights: {},
+  rebalanceWeights: {},
   filters: {
     search: "",
     category: "all",
@@ -1711,6 +1761,365 @@ function makeRedFlagNote() {
   ].join("\n");
 }
 
+function switchDecisionConfig() {
+  return {
+    concern: els.switchConcern?.value || "underperformance",
+    months: Math.round(clampNumber(Number(els.switchMonths?.value) || 18, 1, 240)),
+    sip: Math.round(clampNumber(Number(els.switchSip?.value) || 10000, 0, 1000000)),
+    conviction: els.switchConviction?.value || "medium",
+    friction: els.switchFriction?.value || "medium"
+  };
+}
+
+function switchConcernLabel(value) {
+  const labels = {
+    underperformance: "Underperformance",
+    cost: "Cost concern",
+    risk: "Risk discomfort",
+    overlap: "Portfolio overlap",
+    "goal-change": "Goal changed",
+    "evidence-gap": "Evidence gap",
+    "market-fall": "Market fall anxiety"
+  };
+  return labels[value] || "Research concern";
+}
+
+function switchConvictionLabel(value) {
+  if (value === "low") return "Low conviction";
+  if (value === "high") return "High conviction";
+  return "Medium conviction";
+}
+
+function switchFrictionLabel(value) {
+  if (value === "low") return "Low friction";
+  if (value === "high") return "High friction";
+  return "Medium friction";
+}
+
+function switchLaneTone(score) {
+  if (score >= 76) return "high";
+  if (score >= 58) return "medium";
+  return "low";
+}
+
+function switchPressurePosture(score) {
+  if (score >= 76) return "High research pressure";
+  if (score >= 58) return "Review before change";
+  return "Continue review posture";
+}
+
+function switchConcernSignal(fund, config, peer, redFlags, passport, shared) {
+  const evidence = evidenceReadinessScore(fund);
+  const sleeveReturnGap = peer.sleeveAvg.returns5y - fund.returns5y;
+  const expenseGap = fund.expense - peer.sleeveAvg.expense;
+  const bestFit = fundFitHeatmapConfig().best.fit;
+
+  if (config.concern === "underperformance") {
+    const points = sleeveReturnGap > 2 ? 22 : sleeveReturnGap > 0 ? 10 : -4;
+    return {
+      title: "Underperformance check",
+      value: `${fund.returns5y.toFixed(1)}% 5Y demo`,
+      points,
+      detail: sleeveReturnGap > 2
+        ? `Demo 5Y return trails sleeve average by ${sleeveReturnGap.toFixed(1)} percentage points.`
+        : "Demo return gap is not large enough to drive a switch thesis by itself."
+    };
+  }
+
+  if (config.concern === "cost") {
+    const points = expenseGap > 0.12 ? 24 : expenseGap > 0.04 ? 12 : -4;
+    return {
+      title: "Cost check",
+      value: `${fund.expense.toFixed(2)}% TER`,
+      points,
+      detail: expenseGap > 0.12
+        ? `Expense is meaningfully above sleeve average of ${peer.sleeveAvg.expense.toFixed(2)}%.`
+        : "Cost concern should be tested in Cost Reality Lab before it becomes a switch thesis."
+    };
+  }
+
+  if (config.concern === "risk") {
+    const points = redFlags.high ? 24 : redFlags.medium >= 2 ? 14 : fund.risk === "Very High" ? 16 : 2;
+    return {
+      title: "Risk discomfort",
+      value: `${fund.risk} risk`,
+      points,
+      detail: redFlags.high
+        ? "High-attention flags mean the change question needs stress and evidence review."
+        : "Risk discomfort should be separated from short-term market noise."
+    };
+  }
+
+  if (config.concern === "overlap") {
+    const points = shared.length >= 3 ? 24 : shared.length ? 12 : -6;
+    return {
+      title: "Overlap check",
+      value: `${shared.length} shared holding${shared.length === 1 ? "" : "s"}`,
+      points,
+      detail: shared.length
+        ? `Shared demo holdings include ${shared.slice(0, 4).join(", ")}.`
+        : "No meaningful compare-set overlap is visible yet."
+    };
+  }
+
+  if (config.concern === "goal-change") {
+    const points = bestFit < 62 ? 22 : bestFit < 78 ? 8 : -4;
+    return {
+      title: "Goal change",
+      value: `${bestFit}/100 best lens`,
+      points,
+      detail: bestFit < 62
+        ? "Current selected fund does not map strongly to the best goal lens."
+        : "Goal change needs a written new role before any switch research."
+    };
+  }
+
+  if (config.concern === "evidence-gap") {
+    const points = evidence < 68 ? 24 : evidence < 78 ? 12 : -4;
+    return {
+      title: "Evidence gap",
+      value: `${evidence}/100 evidence`,
+      points,
+      detail: evidence < 78
+        ? "Evidence should be strengthened before making the change question serious."
+        : "Evidence readiness is not the main pressure point in demo data."
+    };
+  }
+
+  const points = config.months < 12 ? -8 : fund.maxDrawdown >= 24 ? 8 : -6;
+  return {
+    title: "Market fall anxiety",
+    value: `${fund.maxDrawdown}% drawdown`,
+    points,
+    detail: "Market fall anxiety should trigger behavior review, not an automatic exit or switch."
+  };
+}
+
+function switchCandidateSet(config = passportConfig()) {
+  const fund = selectedFund();
+  const selectedCategory = fund.category;
+  const fromPassport = passportRankedFunds(config).map((item) => item.fund);
+  const fromSleeve = FUNDS
+    .filter((item) => item.id !== fund.id && item.sleeve === fund.sleeve)
+    .sort((a, b) => nadiScore(b) - nadiScore(a) || a.expense - b.expense);
+  const fromCore = FUNDS
+    .filter((item) => item.id !== fund.id && ["Large Cap Fund", "Index Fund", "Balanced Hybrid Fund", "Corporate Bond Fund", "Liquid Fund"].includes(item.category))
+    .sort((a, b) => nadiScore(b) - nadiScore(a));
+  const seen = new Set();
+  return [...fromPassport, ...fromSleeve, ...fromCore]
+    .filter((item) => {
+      if (item.id === fund.id || seen.has(item.id)) return false;
+      seen.add(item.id);
+      return true;
+    })
+    .sort((a, b) => (
+      (a.category === selectedCategory ? -4 : 0) -
+      (b.category === selectedCategory ? -4 : 0) ||
+      nadiScore(b) - nadiScore(a) ||
+      a.expense - b.expense
+    ))
+    .slice(0, 4);
+}
+
+function switchDecisionLabConfig() {
+  const fund = selectedFund();
+  const config = switchDecisionConfig();
+  const peer = peerBenchmarkConfig();
+  const redFlags = redFlagRadarConfig();
+  const passport = passportAssessmentForFund(fund, passportConfig());
+  const compareFunds = compareSet().filter((item) => item.id !== fund.id);
+  const shared = compareFunds.length ? sharedHoldings([fund, ...compareFunds]) : [];
+  const concernSignal = switchConcernSignal(fund, config, peer, redFlags, passport, shared);
+  const holdingSignal = {
+    title: "Holding period",
+    value: `${config.months} month${config.months === 1 ? "" : "s"}`,
+    points: config.months < 6 ? -16 : config.months < 12 ? -8 : config.months > 36 ? 8 : 2,
+    detail: config.months < 12
+      ? "A short holding period needs extra caution because the evidence may still be incomplete."
+      : "A longer holding period gives more evidence for a review thesis."
+  };
+  const convictionSignal = {
+    title: "Conviction",
+    value: switchConvictionLabel(config.conviction),
+    points: config.conviction === "low" ? 14 : config.conviction === "high" ? -10 : 2,
+    detail: config.conviction === "low"
+      ? "Low conviction raises the need to document why the fund remains in the shortlist."
+      : "Conviction should still be backed by evidence, not habit."
+  };
+  const frictionSignal = {
+    title: "Exit friction",
+    value: switchFrictionLabel(config.friction),
+    points: config.friction === "high" ? -12 : config.friction === "low" ? 8 : 0,
+    detail: config.friction === "high"
+      ? "High tax or exit-load friction means the research note must separate evidence from execution timing."
+      : "Lower friction does not make switching right; it only removes one barrier from research."
+  };
+  const profileSignal = {
+    title: "Profile pressure",
+    value: `${passport.score}/100 passport`,
+    points: passport.score < 58 ? 16 : passport.score < 72 ? 8 : -6,
+    detail: passport.score < 72
+      ? "Suitability Passport raises profile-fit questions that should be answered before any change."
+      : "Profile fit is not the main pressure point in the current local profile."
+  };
+  const redFlagSignal = {
+    title: "Flag pressure",
+    value: `${redFlags.high} high | ${redFlags.medium} review`,
+    points: redFlags.high * 16 + redFlags.medium * 5,
+    detail: "Flags should define the next evidence checklist, not trigger automatic action."
+  };
+  const signals = [concernSignal, holdingSignal, convictionSignal, frictionSignal, profileSignal, redFlagSignal];
+  const rawPressure = 38 + signals.reduce((sum, item) => sum + item.points, 0) * 0.72;
+  const pressure = Math.round(clampNumber(rawPressure, 14, 96));
+  const lanes = [
+    {
+      title: "Continue review route",
+      label: "Stay disciplined",
+      score: Math.round(clampNumber(112 - pressure + (config.conviction === "high" ? 10 : 0) + (config.friction === "high" ? 6 : 0), 15, 96)),
+      detail: "Keep the fund in research view, document why it still has a role, and set the next review trigger."
+    },
+    {
+      title: "Watch trigger route",
+      label: "Set evidence triggers",
+      score: Math.round(clampNumber(78 - Math.abs(pressure - 56) + redFlags.medium * 5, 15, 96)),
+      detail: "Use Watchlist for drawdown, expense, score, review-date, style, or evidence triggers."
+    },
+    {
+      title: "Fresh-money checkpoint",
+      label: "Slow the next decision",
+      score: Math.round(clampNumber(pressure + (config.friction === "high" ? 8 : 0) + (config.months < 12 ? 8 : 0) - 8, 15, 96)),
+      detail: "Before adding more money, complete Stress, Cost, Evidence, X-Ray, and a written decision reason."
+    },
+    {
+      title: "Switch candidate research",
+      label: "Build alternatives",
+      score: Math.round(clampNumber(pressure + (config.friction === "low" ? 8 : 0) + (config.months >= 12 ? 5 : -10), 15, 96)),
+      detail: "Create an alternative set for comparison. This is candidate research, not an execution instruction."
+    }
+  ].sort((a, b) => b.score - a.score);
+  return {
+    config,
+    fund,
+    signals,
+    lanes,
+    candidates: switchCandidateSet(passportConfig()),
+    pressure,
+    posture: switchPressurePosture(pressure)
+  };
+}
+
+function renderSwitchDecisionLab() {
+  if (!els.switchOutput) return;
+  const lab = switchDecisionLabConfig();
+  if (els.switchSummary) {
+    els.switchSummary.textContent = `${lab.posture} | ${lab.pressure}/100`;
+  }
+  els.switchOutput.innerHTML = `
+    <div class="switch-hero ${escapeHtml(switchLaneTone(lab.pressure))}">
+      <div>
+        <span class="metric-label">${escapeHtml(lab.posture)}</span>
+        <h3>${escapeHtml(lab.fund.name)} change review</h3>
+        <p>Switch Lab converts a concern into evidence paths. It does not tell the investor to buy, sell, switch, hold, pause, or redeem.</p>
+      </div>
+      <div class="switch-pressure">
+        <b>${lab.pressure}</b>
+        <span>pressure</span>
+      </div>
+    </div>
+    <div class="switch-signal-grid">
+      ${lab.signals.map((item) => `
+        <article class="switch-signal ${escapeHtml(signalTone(item.points))}">
+          <div>
+            <span>${escapeHtml(item.title)}</span>
+            <strong>${escapeHtml(item.value)}</strong>
+          </div>
+          <b>${item.points >= 0 ? "+" : ""}${Math.round(item.points)}</b>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="switch-lane-grid">
+      ${lab.lanes.map((lane, index) => `
+        <article class="switch-lane ${escapeHtml(switchLaneTone(lane.score))}">
+          <span>${index === 0 ? "Top research lane" : escapeHtml(lane.label)}</span>
+          <strong>${escapeHtml(lane.title)}</strong>
+          <div class="switch-meter" aria-label="${escapeHtml(lane.title)} score">
+            <span style="width: ${lane.score}%"></span>
+            <b>${lane.score}</b>
+          </div>
+          <p>${escapeHtml(lane.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="switch-candidate-board">
+      <div>
+        <span class="metric-label">Alternative research set</span>
+        <h3>Candidate funds to compare</h3>
+        <p>Use candidates only to build a comparison set. Do not treat this list as a recommendation or replacement order.</p>
+      </div>
+      <div class="switch-candidate-grid">
+        ${lab.candidates.map((fund) => `
+          <article class="switch-candidate">
+            <span>${escapeHtml(fund.category)}</span>
+            <strong>${escapeHtml(fund.name)}</strong>
+            <p>${escapeHtml(fund.risk)} risk | ${nadiScore(fund)}/100 score | ${fund.expense.toFixed(2)}% TER</p>
+            <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">Inspect</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="switch-guardrail">
+      <strong>Decision boundary</strong>
+      <p>Before any real change, write the reason, compare costs and overlap, review tax or exit-load friction independently, and verify live factsheet evidence.</p>
+    </div>
+  `;
+}
+
+function addSwitchCandidatesToCompare() {
+  switchDecisionLabConfig().candidates.slice(0, 3).forEach((fund) => state.compare.add(fund.id));
+  state.compare.add(state.selectedId);
+  renderFundGrid();
+  renderPortfolioChoices();
+  renderCompareMatrix();
+  renderSwitchDecisionLab();
+  renderRedFlagRadar();
+  renderPeerBenchmarkBoard();
+  scrollToHash("#compare", "smooth", true);
+}
+
+function watchSwitchFund() {
+  addToWatchlist(state.selectedId);
+  renderSwitchDecisionLab();
+  scrollToHash("#watchlist", "smooth", true);
+}
+
+function makeSwitchDecisionNote() {
+  const lab = switchDecisionLabConfig();
+  return [
+    "# NiveshNadi Switch Decision Lab",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${lab.fund.name}`,
+    `Category: ${lab.fund.category}`,
+    `Concern: ${switchConcernLabel(lab.config.concern)}`,
+    `Holding period: ${lab.config.months} month${lab.config.months === 1 ? "" : "s"}`,
+    `Monthly SIP under review: ${formatMoney(lab.config.sip)}`,
+    `Conviction: ${switchConvictionLabel(lab.config.conviction)}`,
+    `Exit friction: ${switchFrictionLabel(lab.config.friction)}`,
+    `Research pressure: ${lab.pressure}/100 | ${lab.posture}`,
+    "",
+    "Signals:",
+    ...lab.signals.map((item) => `- ${item.title}: ${item.value} | ${item.points >= 0 ? "+" : ""}${Math.round(item.points)} | ${item.detail}`),
+    "",
+    "Research lanes:",
+    ...lab.lanes.map((lane) => `- ${lane.title}: ${lane.score}/100 | ${lane.detail}`),
+    "",
+    "Candidate research set:",
+    ...lab.candidates.map((fund) => `- ${fund.name}: ${fund.category} | ${fund.risk} risk | ${nadiScore(fund)}/100 | TER ${fund.expense.toFixed(2)}%`),
+    "",
+    "Research support only. This is not personalized investment advice, a switch recommendation, a hold instruction, a redemption instruction, or an execution instruction."
+  ].join("\n");
+}
+
 function averageMetric(funds, reader) {
   if (!funds.length) return 0;
   return funds.reduce((sum, fund) => sum + reader(fund), 0) / funds.length;
@@ -1857,6 +2266,7 @@ function addPeerLeadersToCompare() {
   renderFundDetail();
   renderGoalFundFitHeatmap();
   renderRedFlagRadar();
+  renderSwitchDecisionLab();
   renderPeerBenchmarkBoard();
   renderCompareMatrix();
   analyzePortfolio();
@@ -2082,12 +2492,20 @@ function renderAll() {
   renderRedFlagRadar();
   renderPeerBenchmarkBoard();
   renderPortfolioChoices();
+  renderBlueprintLab();
   renderCompareMatrix();
   renderStressLab();
   renderCostRealityLab();
   renderInvestorReadinessGate();
+  renderRebalanceGuard();
+  renderPortfolioReviewRoom();
+  renderReviewVault();
+  renderInvestorRecordDesk();
   renderEvidenceLedger();
+  renderFundHouseLens();
   renderDataReadinessRoom();
+  renderDocDecoder();
+  renderReviewRhythmBoard();
   renderWatchlistRoom();
   renderDecisionPack();
 }
@@ -2364,6 +2782,1306 @@ function analyzePortfolio() {
   `;
 }
 
+function blueprintStyleLabel(value) {
+  if (value === "growth") return "Growth-heavy draft";
+  if (value === "stability") return "Stability-first draft";
+  if (value === "tax") return "Tax-aware draft";
+  return "Core-satellite draft";
+}
+
+function blueprintCadenceLabel(value) {
+  if (value === "halfyear") return "Half-yearly";
+  if (value === "annual") return "Annual";
+  return "Quarterly";
+}
+
+function blueprintTone(score) {
+  if (score >= 78) return "strong";
+  if (score >= 62) return "watch";
+  return "caution";
+}
+
+function blueprintPosture(score) {
+  if (score >= 78) return "Balanced research draft";
+  if (score >= 62) return "Needs guardrails";
+  return "High-attention draft";
+}
+
+function blueprintFunds() {
+  return FUNDS.filter((fund) => state.compare.has(fund.id));
+}
+
+function ensureBlueprintWeights(funds) {
+  if (!funds.length) return;
+  const missing = funds.filter((fund) => state.blueprintWeights[fund.id] === undefined);
+  if (!missing.length) return;
+  const existingTotal = funds.reduce((sum, fund) => sum + (Number(state.blueprintWeights[fund.id]) || 0), 0);
+  const remaining = Math.max(0, 100 - existingTotal);
+  const defaultWeight = Math.max(1, Math.round(remaining / missing.length) || Math.round(100 / funds.length));
+  missing.forEach((fund) => {
+    state.blueprintWeights[fund.id] = defaultWeight;
+  });
+}
+
+function renderBlueprintWeights(funds) {
+  if (!els.blueprintWeights) return;
+  if (funds.length < 2) {
+    els.blueprintWeights.innerHTML = '<div class="empty-state">Select two or more funds in X-Ray or Compare to set weights.</div>';
+    return;
+  }
+  ensureBlueprintWeights(funds);
+  els.blueprintWeights.innerHTML = funds.map((fund) => {
+    const role = portfolioRole(fund);
+    const value = Number(state.blueprintWeights[fund.id]) || 0;
+    return `
+      <label class="blueprint-weight-row">
+        <span>
+          <strong>${escapeHtml(fund.name)}</strong>
+          <small>${escapeHtml(role.label)} | ${escapeHtml(fund.risk)} risk | TER ${fund.expense.toFixed(2)}%</small>
+        </span>
+        <input type="number" min="0" max="100" step="1" value="${value}" data-blueprint-weight="${escapeHtml(fund.id)}">
+      </label>
+    `;
+  }).join("");
+}
+
+function normalizeBlueprintWeights() {
+  const funds = blueprintFunds();
+  ensureBlueprintWeights(funds);
+  const total = funds.reduce((sum, fund) => sum + (Number(state.blueprintWeights[fund.id]) || 0), 0);
+  if (!funds.length || total <= 0) return;
+  let running = 0;
+  funds.forEach((fund, index) => {
+    const next = index === funds.length - 1
+      ? Math.max(0, 100 - running)
+      : Math.round(((Number(state.blueprintWeights[fund.id]) || 0) / total) * 100);
+    state.blueprintWeights[fund.id] = next;
+    running += next;
+  });
+  renderBlueprintLab();
+  renderRebalanceGuard();
+  renderPortfolioReviewRoom();
+}
+
+function weightedAverage(items, key) {
+  return items.reduce((sum, item) => sum + item.weight * key(item.fund), 0) / 100;
+}
+
+function sleeveWeightMap(items) {
+  return items.reduce((map, item) => {
+    map[item.fund.sleeve] = (map[item.fund.sleeve] || 0) + item.weight;
+    return map;
+  }, {});
+}
+
+function sipFutureValue(monthly, years, annualReturn) {
+  const months = Math.round(years * 12);
+  const rate = annualReturn / 1200;
+  if (months <= 0) return 0;
+  if (rate <= 0) return monthly * months;
+  return monthly * (((1 + rate) ** months - 1) / rate) * (1 + rate);
+}
+
+function blueprintConfig() {
+  const funds = blueprintFunds();
+  ensureBlueprintWeights(funds);
+  const monthly = Math.round(clampNumber(Number(els.blueprintSip?.value) || 0, 0, 10000000));
+  const years = Math.round(clampNumber(Number(els.blueprintYears?.value) || 10, 1, 40));
+  const style = els.blueprintStyle?.value || "core";
+  const cadence = els.blueprintCadence?.value || "quarterly";
+  const enteredTotal = funds.reduce((sum, fund) => sum + (Number(state.blueprintWeights[fund.id]) || 0), 0);
+  const total = enteredTotal > 0 ? enteredTotal : 1;
+  const items = funds.map((fund) => ({
+    fund,
+    enteredWeight: Number(state.blueprintWeights[fund.id]) || 0,
+    weight: ((Number(state.blueprintWeights[fund.id]) || 0) / total) * 100
+  }));
+
+  const overlapDetails = holdingOverlapDetails(funds);
+  const categories = countBy(funds, "category");
+  const duplicateScore = duplicationScore(funds, overlapDetails, categories);
+  const duplication = duplicationLabel(duplicateScore);
+  const sleeveMap = sleeveWeightMap(items);
+  const highRiskWeight = items
+    .filter((item) => item.fund.risk === "High" || item.fund.risk === "Very High")
+    .reduce((sum, item) => sum + item.weight, 0);
+  const stabilizerWeight = (sleeveMap.Debt || 0) + (sleeveMap.Hybrid || 0) + (sleeveMap["Life Cycle"] || 0);
+  const equityWeight = (sleeveMap.Equity || 0) + (sleeveMap.Passive || 0);
+  const blendedExpense = items.length ? weightedAverage(items, (fund) => fund.expense) : 0;
+  const blendedScore = items.length ? Math.round(weightedAverage(items, nadiScore)) : 0;
+  const blendedDrawdown = items.length ? weightedAverage(items, (fund) => fund.maxDrawdown) : 0;
+  const blendedEvidence = items.length ? Math.round(weightedAverage(items, evidenceReadinessScore)) : 0;
+  const expectedReturn = items.length ? weightedAverage(items, (fund) => fund.returns5y) : 0;
+  const projectedValue = sipFutureValue(monthly, years, expectedReturn);
+  const invested = monthly * years * 12;
+  const guardrails = [];
+
+  if (funds.length < 2) guardrails.push("Select at least two funds before treating this as a portfolio draft.");
+  if (Math.round(enteredTotal) !== 100) guardrails.push(`Entered weights total ${Math.round(enteredTotal)}%. Normalize or explain the gap before saving a memo.`);
+  if (style === "stability" && highRiskWeight > 45) guardrails.push("Stability-first draft has too much high-risk allocation for its stated research style.");
+  if (style === "core" && stabilizerWeight < 15) guardrails.push("Core-satellite draft should explain why there is little stabilizer allocation.");
+  if (style === "growth" && stabilizerWeight < 5) guardrails.push("Growth draft still needs behavior and drawdown guardrails before real money is considered.");
+  if (style === "tax" && !funds.some((fund) => fund.category.includes("ELSS"))) guardrails.push("Tax-aware draft does not include an ELSS research candidate in the selected set.");
+  if (duplication === "High") guardrails.push("High duplication risk: repeated holdings or categories need a written reason.");
+  if (blendedExpense > 0.55) guardrails.push(`Blended TER is ${blendedExpense.toFixed(2)}%, so cost needs a Cost Lab review.`);
+  if (blendedEvidence < 72) guardrails.push(`Blended evidence readiness is ${blendedEvidence}/100, so live citations are still a gating item.`);
+  if (years < 5 && highRiskWeight > 50) guardrails.push("Shorter horizon and high equity risk need extra stress testing.");
+  if (!guardrails.length) guardrails.push("No major demo blueprint guardrail triggered. Still verify live evidence, cost, overlap, and behavior before acting.");
+
+  const blueprintScore = Math.round(clampNumber(
+    blendedScore * 0.28 +
+      blendedEvidence * 0.2 +
+      (100 - duplicateScore) * 0.18 +
+      (100 - Math.min(100, highRiskWeight * 0.75)) * 0.12 +
+      (100 - Math.min(100, blendedExpense * 120)) * 0.12 +
+      Math.min(100, stabilizerWeight + 35) * 0.1 -
+      Math.max(0, guardrails.length - 2) * 5,
+    25,
+    94
+  ));
+
+  return {
+    blendedDrawdown,
+    blendedEvidence,
+    blendedExpense,
+    blendedScore,
+    blueprintScore,
+    cadence,
+    duplicateScore,
+    duplication,
+    enteredTotal,
+    equityWeight,
+    expectedReturn,
+    funds,
+    guardrails,
+    highRiskWeight,
+    invested,
+    items,
+    monthly,
+    posture: blueprintPosture(blueprintScore),
+    projectedValue,
+    sleeveMap,
+    stabilizerWeight,
+    style,
+    tone: blueprintTone(blueprintScore),
+    years
+  };
+}
+
+function renderBlueprintLab(event) {
+  if (event) event.preventDefault();
+  if (!els.blueprintOutput) return;
+  const config = blueprintConfig();
+  renderBlueprintWeights(config.funds);
+
+  if (config.funds.length < 2) {
+    els.blueprintSummary.textContent = "Select funds";
+    els.blueprintOutput.innerHTML = '<div class="empty-state">Select two or more funds in X-Ray or Compare to draft research-only weights.</div>';
+    return;
+  }
+
+  els.blueprintSummary.textContent = `${config.blueprintScore}/100 blueprint`;
+  const sleeveEntries = Object.entries(config.sleeveMap).sort((a, b) => b[1] - a[1]);
+
+  els.blueprintOutput.innerHTML = `
+    <div class="blueprint-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(config.posture)}</span>
+        <h3>${escapeHtml(blueprintStyleLabel(config.style))}</h3>
+        <p>${config.funds.length} selected funds with ${Math.round(config.enteredTotal)}% entered weight, ${formatMoney(config.monthly)} monthly SIP draft, and ${config.years} year horizon.</p>
+      </div>
+      <div class="blueprint-score" style="--score:${config.blueprintScore}">
+        <b>${config.blueprintScore}</b>
+        <span>Blueprint</span>
+      </div>
+    </div>
+    <div class="blueprint-metric-grid">
+      <div><span>Blended TER</span><strong>${config.blendedExpense.toFixed(2)}%</strong></div>
+      <div><span>Blended evidence</span><strong>${config.blendedEvidence}/100</strong></div>
+      <div><span>High-risk weight</span><strong>${config.highRiskWeight.toFixed(0)}%</strong></div>
+      <div><span>Duplication</span><strong>${escapeHtml(config.duplication)}</strong></div>
+      <div><span>Demo return</span><strong>${config.expectedReturn.toFixed(1)}%</strong></div>
+      <div><span>Projected value</span><strong>${formatMoney(config.projectedValue)}</strong></div>
+    </div>
+    <div class="blueprint-sleeve-grid">
+      ${sleeveEntries.map(([sleeve, weight]) => `
+        <article class="blueprint-sleeve">
+          <span>${escapeHtml(sleeve)}</span>
+          <strong>${weight.toFixed(0)}%</strong>
+          <div class="signal-meter" aria-hidden="true"><span style="width:${Math.min(100, weight)}%"></span></div>
+        </article>
+      `).join("")}
+    </div>
+    <div class="blueprint-fund-grid">
+      ${config.items.map((item) => {
+        const role = portfolioRole(item.fund);
+        const amount = config.monthly * item.weight / 100;
+        return `
+          <article class="blueprint-fund-card">
+            <div>
+              <span class="tag ${riskClass(item.fund.risk)}">${escapeHtml(item.fund.risk)}</span>
+              <span class="tag">${escapeHtml(role.label)}</span>
+            </div>
+            <strong>${escapeHtml(item.fund.name)}</strong>
+            <p>${item.weight.toFixed(1)}% normalized weight | ${formatMoney(amount)} monthly draft</p>
+            <small>${escapeHtml(role.reason)}</small>
+          </article>
+        `;
+      }).join("")}
+    </div>
+    <div class="blueprint-card-grid">
+      <article class="blueprint-card">
+        <h3>Scenario math</h3>
+        <p>${formatMoney(config.invested)} invested over ${config.years} years in this demo SIP draft. Projected value uses blended 5Y demo return only.</p>
+      </article>
+      <article class="blueprint-card">
+        <h3>Review cadence</h3>
+        <p>${escapeHtml(blueprintCadenceLabel(config.cadence))} review for weights, TER, evidence freshness, overlap, riskometer, and behavior.</p>
+      </article>
+      <article class="blueprint-card">
+        <h3>Guardrails</h3>
+        <ul class="blueprint-list">
+          ${config.guardrails.slice(0, 5).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+    <div class="blueprint-guardrail">
+      <strong>Blueprint rule</strong>
+      <p>This is a research-only portfolio sketch. It is not an allocation recommendation, model portfolio, suitability certificate, or transaction instruction.</p>
+    </div>
+  `;
+}
+
+function makeBlueprintNote() {
+  const config = blueprintConfig();
+  if (config.funds.length < 2) return "Select two or more funds before copying a portfolio blueprint.";
+  return [
+    "# NiveshNadi Portfolio Blueprint Lab",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Blueprint style: ${blueprintStyleLabel(config.style)}`,
+    `Posture: ${config.posture}`,
+    `Blueprint score: ${config.blueprintScore}/100`,
+    `Monthly SIP draft: ${formatMoney(config.monthly)}`,
+    `Horizon: ${config.years} years`,
+    `Entered weight total: ${Math.round(config.enteredTotal)}%`,
+    `Review cadence: ${blueprintCadenceLabel(config.cadence)}`,
+    "",
+    "## Blended Signals",
+    `- Blended TER: ${config.blendedExpense.toFixed(2)}%`,
+    `- Blended score: ${config.blendedScore}/100`,
+    `- Blended evidence: ${config.blendedEvidence}/100`,
+    `- Blended drawdown: ${config.blendedDrawdown.toFixed(1)}%`,
+    `- High-risk weight: ${config.highRiskWeight.toFixed(0)}%`,
+    `- Duplication risk: ${config.duplication} (${config.duplicateScore}/100)`,
+    `- Demo SIP projection: ${formatMoney(config.projectedValue)} on ${formatMoney(config.invested)} invested`,
+    "",
+    "## Fund Weights",
+    ...config.items.map((item) => [
+      `- ${item.fund.name}: ${item.weight.toFixed(1)}% normalized`,
+      `  Category: ${item.fund.category}`,
+      `  Role: ${portfolioRole(item.fund).label}`,
+      `  Monthly draft: ${formatMoney(config.monthly * item.weight / 100)}`,
+      `  TER: ${item.fund.expense.toFixed(2)}% | Risk: ${item.fund.risk}`
+    ].join("\n")),
+    "",
+    "## Guardrails",
+    ...config.guardrails.map((item) => `- ${item}`),
+    "",
+    "## Guardrail",
+    "Research support only. This is not personalized investment advice, a model portfolio, allocation advice, or a transaction instruction."
+  ].join("\n");
+}
+
+function rebalanceModeLabel(value) {
+  if (value === "sip-route") return "Contribution-first route";
+  if (value === "fresh-money") return "Fresh money correction";
+  if (value === "advisor") return "Advisor discussion map";
+  return "Review only";
+}
+
+function rebalanceTone(score) {
+  if (score >= 78) return "strong";
+  if (score >= 62) return "watch";
+  return "caution";
+}
+
+function rebalancePosture(score) {
+  if (score >= 78) return "Within research band";
+  if (score >= 62) return "Needs contribution discipline";
+  return "High-attention drift";
+}
+
+function rebalanceDriftSeed(fund, index) {
+  const seed = Math.round((fund.returns3y + fund.consistency / 9 - fund.maxDrawdown / 3 + index * 2) % 11) - 5;
+  if (fund.risk === "Very High") return seed + 2;
+  if (fund.sleeve === "Debt") return seed - 2;
+  return seed;
+}
+
+function ensureRebalanceWeights(items) {
+  if (!items.length) return;
+  items.forEach((item, index) => {
+    if (state.rebalanceWeights[item.fund.id] !== undefined) return;
+    state.rebalanceWeights[item.fund.id] = Math.round(clampNumber(item.weight + rebalanceDriftSeed(item.fund, index), 0, 100));
+  });
+}
+
+function renderRebalanceCurrentWeights(items) {
+  if (!els.rebalanceCurrentWeights) return;
+  if (items.length < 2) {
+    els.rebalanceCurrentWeights.innerHTML = '<div class="empty-state">Select two or more funds in X-Ray or Compare to enter current weights.</div>';
+    return;
+  }
+
+  ensureRebalanceWeights(items);
+  els.rebalanceCurrentWeights.innerHTML = items.map((item) => {
+    const value = Number(state.rebalanceWeights[item.fund.id]) || 0;
+    return `
+      <label class="rebalance-weight-row">
+        <span>
+          <strong>${escapeHtml(item.fund.name)}</strong>
+          <small>Target ${item.weight.toFixed(1)}% | ${escapeHtml(item.fund.category)} | ${escapeHtml(item.fund.risk)} risk</small>
+        </span>
+        <input type="number" min="0" max="100" step="1" value="${value}" data-rebalance-weight="${escapeHtml(item.fund.id)}">
+      </label>
+    `;
+  }).join("");
+}
+
+function rebalanceConfig() {
+  const blueprint = blueprintConfig();
+  const items = blueprint.items;
+  ensureRebalanceWeights(items);
+
+  const corpus = Math.round(clampNumber(Number(els.rebalanceCorpus?.value) || 0, 0, 100000000));
+  const monthly = Math.round(clampNumber(Number(els.rebalanceSip?.value) || blueprint.monthly || 0, 0, 10000000));
+  const tolerance = Math.round(clampNumber(Number(els.rebalanceTolerance?.value) || 5, 1, 25));
+  const mode = els.rebalanceMode?.value || "review";
+  const enteredTotal = items.reduce((sum, item) => sum + (Number(state.rebalanceWeights[item.fund.id]) || 0), 0);
+  const currentTotal = enteredTotal > 0 ? enteredTotal : 1;
+  const currentItems = items.map((item) => ({
+    fund: item.fund,
+    weight: ((Number(state.rebalanceWeights[item.fund.id]) || 0) / currentTotal) * 100
+  }));
+
+  const rows = items.map((item) => {
+    const enteredWeight = Number(state.rebalanceWeights[item.fund.id]) || 0;
+    const currentWeight = (enteredWeight / currentTotal) * 100;
+    const drift = currentWeight - item.weight;
+    return {
+      fund: item.fund,
+      targetWeight: item.weight,
+      enteredWeight,
+      currentWeight,
+      drift,
+      driftValue: corpus * drift / 100,
+      status: Math.abs(drift) >= tolerance ? "Attention" : "Within band"
+    };
+  });
+
+  const totalAbsDrift = rows.reduce((sum, row) => sum + Math.abs(row.drift), 0) / 2;
+  const largestDrift = rows.reduce((winner, row) => Math.abs(row.drift) > Math.abs(winner.drift) ? row : winner, rows[0] || null);
+  const breached = rows.filter((row) => Math.abs(row.drift) >= tolerance);
+  const underweight = rows.filter((row) => row.drift <= -tolerance).sort((a, b) => a.drift - b.drift);
+  const overweight = rows.filter((row) => row.drift >= tolerance).sort((a, b) => b.drift - a.drift);
+  const correctionBase = underweight.reduce((sum, row) => sum + Math.abs(row.drift), 0);
+  const route = underweight.map((row) => ({
+    fund: row.fund,
+    gap: Math.abs(row.drift),
+    amount: correctionBase > 0 ? monthly * Math.abs(row.drift) / correctionBase : 0
+  }));
+
+  const currentExpense = currentItems.length ? weightedAverage(currentItems, (fund) => fund.expense) : 0;
+  const currentEvidence = currentItems.length ? Math.round(weightedAverage(currentItems, evidenceReadinessScore)) : 0;
+  const currentHighRisk = currentItems
+    .filter((item) => item.fund.risk === "High" || item.fund.risk === "Very High")
+    .reduce((sum, item) => sum + item.weight, 0);
+  const guardrails = [];
+
+  if (items.length < 2) guardrails.push("Select at least two funds before treating this as a portfolio drift review.");
+  if (Math.round(blueprint.enteredTotal) !== 100) guardrails.push(`Blueprint target totals ${Math.round(blueprint.enteredTotal)}%. Normalize the blueprint before reading drift too seriously.`);
+  if (Math.round(enteredTotal) !== 100) guardrails.push(`Current weights total ${Math.round(enteredTotal)}%. Normalize or explain the difference before saving a review note.`);
+  if (breached.length) guardrails.push(`${breached.length} fund${breached.length === 1 ? "" : "s"} outside the ${tolerance}% drift band need evidence and behavior review.`);
+  if (currentHighRisk > blueprint.highRiskWeight + tolerance) guardrails.push(`Current high-risk weight is ${currentHighRisk.toFixed(0)}% versus target ${blueprint.highRiskWeight.toFixed(0)}%.`);
+  if (currentExpense > blueprint.blendedExpense + 0.05) guardrails.push(`Current TER is ${currentExpense.toFixed(2)}%, higher than target TER ${blueprint.blendedExpense.toFixed(2)}%.`);
+  if (currentEvidence < 72) guardrails.push(`Current evidence readiness is ${currentEvidence}/100, so source citations remain a launch gate.`);
+  if ((mode === "sip-route" || mode === "fresh-money") && monthly <= 0) guardrails.push("Contribution route selected but future SIP amount is zero.");
+  if (mode === "advisor") guardrails.push("Keep this as an advisor discussion map, not a pre-filled transaction instruction.");
+  if (!guardrails.length) guardrails.push("No major demo drift guardrail triggered. Still review source dates, TER, overlap, tax, exit load, and behavior before any change.");
+
+  const rebalanceScore = Math.round(clampNumber(
+    blueprint.blueprintScore -
+      Math.min(34, totalAbsDrift * 1.45) -
+      Math.min(14, Math.abs(enteredTotal - 100) * 0.5) -
+      breached.length * 3 +
+      (route.length && monthly > 0 ? 4 : 0),
+    24,
+    94
+  ));
+
+  return {
+    blueprint,
+    breached,
+    corpus,
+    currentEvidence,
+    currentExpense,
+    currentHighRisk,
+    currentItems,
+    enteredTotal,
+    funds: blueprint.funds,
+    guardrails,
+    largestDrift,
+    mode,
+    monthly,
+    overweight,
+    posture: rebalancePosture(rebalanceScore),
+    rebalanceScore,
+    rows,
+    route,
+    tolerance,
+    tone: rebalanceTone(rebalanceScore),
+    totalAbsDrift,
+    underweight
+  };
+}
+
+function renderRebalanceGuard(event) {
+  if (event) event.preventDefault();
+  if (!els.rebalanceOutput) return;
+  const config = rebalanceConfig();
+  renderRebalanceCurrentWeights(config.blueprint.items);
+
+  if (config.funds.length < 2) {
+    els.rebalanceSummary.textContent = "Select funds";
+    els.rebalanceOutput.innerHTML = '<div class="empty-state">Select two or more funds in X-Ray or Compare to review drift against a blueprint.</div>';
+    return;
+  }
+
+  els.rebalanceSummary.textContent = `${config.breached.length} outside band`;
+  const routeCopy = config.route.length
+    ? config.route.map((item) => `
+      <article class="rebalance-route-card">
+        <span>Research route</span>
+        <strong>${escapeHtml(item.fund.name)}</strong>
+        <p>${formatMoney(item.amount)} of the demo future SIP route because this sleeve is ${item.gap.toFixed(1)}% below target.</p>
+      </article>
+    `).join("")
+    : '<article class="rebalance-route-card"><span>Research route</span><strong>No contribution correction flagged</strong><p>The demo current weights are not below target beyond tolerance. Keep the review focused on evidence, cost, overlap, and behavior.</p></article>';
+
+  els.rebalanceOutput.innerHTML = `
+    <div class="rebalance-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(config.posture)}</span>
+        <h3>${escapeHtml(rebalanceModeLabel(config.mode))}</h3>
+        <p>${config.funds.length} selected funds, ${config.tolerance}% drift tolerance, ${formatMoney(config.corpus)} current value, and ${formatMoney(config.monthly)} future monthly route.</p>
+      </div>
+      <div class="rebalance-score" style="--score:${config.rebalanceScore}">
+        <b>${config.rebalanceScore}</b>
+        <span>Guard</span>
+      </div>
+    </div>
+    <div class="rebalance-metric-grid">
+      <div><span>Total drift</span><strong>${config.totalAbsDrift.toFixed(1)}%</strong></div>
+      <div><span>Outside band</span><strong>${config.breached.length}</strong></div>
+      <div><span>Current TER</span><strong>${config.currentExpense.toFixed(2)}%</strong></div>
+      <div><span>Target TER</span><strong>${config.blueprint.blendedExpense.toFixed(2)}%</strong></div>
+      <div><span>Current high risk</span><strong>${config.currentHighRisk.toFixed(0)}%</strong></div>
+      <div><span>Evidence</span><strong>${config.currentEvidence}/100</strong></div>
+    </div>
+    <div class="rebalance-drift-grid">
+      ${config.rows.map((row) => `
+        <article class="rebalance-drift-card ${Math.abs(row.drift) >= config.tolerance ? "attention" : "calm"}">
+          <span>${escapeHtml(row.status)}</span>
+          <strong>${escapeHtml(row.fund.name)}</strong>
+          <p>Target ${row.targetWeight.toFixed(1)}% | Current ${row.currentWeight.toFixed(1)}% | Drift ${row.drift > 0 ? "+" : ""}${row.drift.toFixed(1)}%</p>
+          <div class="rebalance-bar" aria-hidden="true"><span style="width:${Math.min(100, Math.abs(row.drift) * 8)}%"></span></div>
+        </article>
+      `).join("")}
+    </div>
+    <div class="rebalance-card-grid">
+      <article class="rebalance-card">
+        <h3>Future contribution route</h3>
+        <div class="rebalance-route-grid">${routeCopy}</div>
+      </article>
+      <article class="rebalance-card">
+        <h3>Overweight watch</h3>
+        <ul class="rebalance-list">
+          ${config.overweight.length
+            ? config.overweight.slice(0, 4).map((row) => `<li>${escapeHtml(row.fund.name)} is ${row.drift.toFixed(1)}% above target. Review before adding more.</li>`).join("")
+            : "<li>No selected fund is above target beyond the tolerance band.</li>"}
+        </ul>
+      </article>
+      <article class="rebalance-card">
+        <h3>Guardrails</h3>
+        <ul class="rebalance-list">
+          ${config.guardrails.slice(0, 6).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+    <div class="rebalance-guardrail">
+      <strong>Rebalance rule</strong>
+      <p>This guard reviews drift and contribution discipline only. It is not buy, sell, switch, redemption, tax, suitability, or personalized allocation advice.</p>
+    </div>
+  `;
+}
+
+function makeRebalanceNote() {
+  const config = rebalanceConfig();
+  if (config.funds.length < 2) return "Select two or more funds before copying a rebalance guard note.";
+  return [
+    "# NiveshNadi Rebalance Guard",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Mode: ${rebalanceModeLabel(config.mode)}`,
+    `Posture: ${config.posture}`,
+    `Guard score: ${config.rebalanceScore}/100`,
+    `Current portfolio value: ${formatMoney(config.corpus)}`,
+    `Future monthly route: ${formatMoney(config.monthly)}`,
+    `Drift tolerance: ${config.tolerance}%`,
+    `Current weight total entered: ${Math.round(config.enteredTotal)}%`,
+    "",
+    "## Drift Map",
+    ...config.rows.map((row) => `- ${row.fund.name}: target ${row.targetWeight.toFixed(1)}%, current ${row.currentWeight.toFixed(1)}%, drift ${row.drift > 0 ? "+" : ""}${row.drift.toFixed(1)}%, status ${row.status}`),
+    "",
+    "## Future Contribution Research Route",
+    ...(config.route.length
+      ? config.route.map((item) => `- ${item.fund.name}: ${formatMoney(item.amount)} demo route because gap is ${item.gap.toFixed(1)}% below target.`)
+      : ["- No underweight fund breached the drift tolerance in this demo review."]),
+    "",
+    "## Guardrails",
+    ...config.guardrails.map((item) => `- ${item}`),
+    "",
+    "## Guardrail",
+    "Research support only. This is not personalized investment advice, a model portfolio, rebalancing instruction, tax advice, suitability certificate, or transaction instruction."
+  ].join("\n");
+}
+
+function addRebalanceReviewTrigger() {
+  const config = rebalanceConfig();
+  if (config.funds.length < 2) {
+    toast("Select two or more funds before saving a drift review.");
+    return;
+  }
+
+  config.funds.forEach((fund) => addToWatchlist(fund.id, false));
+  const reviewDate = dateInputFromDate(addDays(new Date(), config.breached.length ? 30 : 90));
+  const note = `Rebalance Guard: total drift ${config.totalAbsDrift.toFixed(1)}%, tolerance ${config.tolerance}%, mode ${rebalanceModeLabel(config.mode)}.`;
+  const alerts = [
+    ...config.funds.map((fund) => ({
+      id: `rebalance-${Date.now()}-${fund.id}-${Math.random().toString(16).slice(2)}`,
+      fundId: fund.id,
+      trigger: "review",
+      limit: reviewDate,
+      note,
+      createdAt: new Date().toISOString()
+    })),
+    ...loadAlerts()
+  ].slice(0, 60);
+  saveAlerts(alerts);
+  renderPortfolioReviewRoom();
+  renderReviewVault();
+  renderInvestorRecordDesk();
+  renderWatchlistRoom();
+  renderReviewRhythmBoard();
+  toast("Rebalance review trigger saved.");
+}
+
+function portfolioReviewFocusLabel(value) {
+  if (value === "drift") return "Drift and contribution review";
+  if (value === "evidence") return "Evidence and source refresh";
+  if (value === "cost") return "Cost and overlap audit";
+  if (value === "behavior") return "Behavior and stress review";
+  return "Quarterly portfolio review";
+}
+
+function portfolioReviewConvictionLabel(value) {
+  if (value === "low") return "Low - collect more evidence";
+  if (value === "high") return "High - document and monitor";
+  return "Medium - keep researching";
+}
+
+function portfolioReviewTone(score) {
+  if (score >= 78) return "strong";
+  if (score >= 62) return "watch";
+  return "caution";
+}
+
+function portfolioReviewPosture(score) {
+  if (score >= 78) return "Review file is orderly";
+  if (score >= 62) return "Review queue needs work";
+  return "High-attention review";
+}
+
+function reviewLaneTone(score) {
+  if (score >= 78) return "strong";
+  if (score >= 62) return "watch";
+  return "caution";
+}
+
+function portfolioReviewConfig() {
+  const rebalance = rebalanceConfig();
+  const blueprint = rebalance.blueprint;
+  const funds = blueprint.funds.length ? blueprint.funds : [selectedFund()];
+  const focus = els.portfolioReviewFocus?.value || "quarterly";
+  const reviewDate = els.portfolioReviewDate?.value || dateInputFromDate(addDays(new Date(), 60));
+  const conviction = els.portfolioReviewConviction?.value || "medium";
+  const note = els.portfolioReviewNote?.value.trim() || "";
+  const fundIds = new Set(funds.map((fund) => fund.id));
+  const watchlist = loadWatchlist();
+  const watchedCount = watchlist.filter((entry) => fundIds.has(entry.fundId)).length;
+  const alerts = loadAlerts().filter((alert) => fundIds.has(alert.fundId));
+  const evaluatedAlerts = alerts.map((alert) => {
+    const fund = FUNDS.find((item) => item.id === alert.fundId);
+    return fund ? { alert, fund, evaluation: evaluateAlert(alert, fund) } : null;
+  }).filter(Boolean);
+  const attentionAlerts = evaluatedAlerts.filter((item) => item.evaluation.status === "attention");
+  const avgEvidence = funds.length
+    ? Math.round(funds.reduce((sum, fund) => sum + evidenceReadinessScore(fund), 0) / funds.length)
+    : 0;
+  const avgScore = funds.length
+    ? Math.round(funds.reduce((sum, fund) => sum + nadiScore(fund), 0) / funds.length)
+    : 0;
+  const avgExpense = funds.length
+    ? funds.reduce((sum, fund) => sum + fund.expense, 0) / funds.length
+    : 0;
+  const maxDrawdown = funds.length ? Math.max(...funds.map((fund) => fund.maxDrawdown)) : 0;
+  const highRiskCount = funds.filter((fund) => fund.risk === "High" || fund.risk === "Very High").length;
+  const categories = countBy(funds, "category");
+  const duplicateScore = funds.length > 1 ? duplicationScore(funds, holdingOverlapDetails(funds), categories) : 0;
+  const daysToReview = daysUntil(reviewDate);
+
+  const driftScore = Math.round(clampNumber(100 - rebalance.totalAbsDrift * 2.2 - rebalance.breached.length * 8, 25, 96));
+  const evidenceScore = Math.round(clampNumber(avgEvidence - (avgEvidence < 72 ? 8 : 0), 25, 96));
+  const costScore = Math.round(clampNumber(96 - avgExpense * 95 - (duplicateScore > 55 ? 8 : 0), 25, 96));
+  const behaviorScore = Math.round(clampNumber(94 - maxDrawdown * 1.4 - highRiskCount * 4 + (conviction === "low" ? 4 : 0), 25, 96));
+  const rhythmScore = Math.round(clampNumber(55 + Math.min(25, watchedCount * 8) + Math.min(20, alerts.length * 4) - attentionAlerts.length * 8, 25, 96));
+
+  const lanes = [
+    {
+      title: "Drift",
+      score: driftScore,
+      detail: `${rebalance.totalAbsDrift.toFixed(1)}% total drift and ${rebalance.breached.length} fund${rebalance.breached.length === 1 ? "" : "s"} outside tolerance.`,
+      next: rebalance.breached.length ? "Review Rebalance Guard before increasing future contribution routes." : "Keep drift in the next review file."
+    },
+    {
+      title: "Evidence",
+      score: evidenceScore,
+      detail: `${avgEvidence}/100 average evidence readiness across the review set.`,
+      next: avgEvidence < 72 ? "Refresh source dates, factsheet, SID/KIM, portfolio disclosure, TER, and benchmark citations." : "Attach citations when live data is connected."
+    },
+    {
+      title: "Cost and overlap",
+      score: costScore,
+      detail: `${avgExpense.toFixed(2)}% average TER with ${duplicationLabel(duplicateScore)} duplication risk.`,
+      next: avgExpense > 0.55 || duplicateScore > 55 ? "Run Cost Lab and X-Ray before writing the decision pack." : "Document why each selected fund has a distinct job."
+    },
+    {
+      title: "Behavior",
+      score: behaviorScore,
+      detail: `${maxDrawdown}% highest demo drawdown and ${highRiskCount} high-risk fund${highRiskCount === 1 ? "" : "s"}.`,
+      next: maxDrawdown > 24 ? "Run Stress Lab and write the behavior note before any real-world change." : "Keep a stress checkpoint in the review note."
+    },
+    {
+      title: "Rhythm",
+      score: rhythmScore,
+      detail: `${watchedCount} watched fund${watchedCount === 1 ? "" : "s"} and ${alerts.length} saved trigger${alerts.length === 1 ? "" : "s"} in this review set.`,
+      next: attentionAlerts.length ? "Resolve attention triggers before moving the memo forward." : "Save a review trigger so the file has a follow-up date."
+    }
+  ];
+
+  const queue = [];
+  if (focus === "drift" || rebalance.breached.length) queue.push("Open Rebalance Guard and explain any fund outside the tolerance band.");
+  if (focus === "evidence" || avgEvidence < 72) queue.push("Open Evidence Ledger and check source date, citation path, and demo/live status.");
+  if (focus === "cost" || avgExpense > 0.55 || duplicateScore > 55) queue.push("Run Cost Lab and Portfolio X-Ray to review TER drag and repeated exposure.");
+  if (focus === "behavior" || maxDrawdown > 24 || highRiskCount > 2) queue.push("Run Stress Lab and write what the investor should review during a drawdown.");
+  if (attentionAlerts.length) queue.push(`${attentionAlerts.length} watchlist trigger${attentionAlerts.length === 1 ? "" : "s"} need attention before the pack is refreshed.`);
+  if (!note) queue.push("Write a plain-English review note before saving this file.");
+  if (daysToReview !== null && daysToReview < 0) queue.push("The chosen review date is already past. Set a future review date before saving.");
+  if (!queue.length) queue.push("No major demo review blocker triggered. Still keep evidence, cost, drift, and behavior checks attached to the memo.");
+
+  const score = Math.round(clampNumber(
+    lanes.reduce((sum, lane) => sum + lane.score, 0) / lanes.length -
+      Math.max(0, queue.length - 2) * 3 +
+      (note ? 4 : 0),
+    25,
+    94
+  ));
+
+  return {
+    alerts,
+    attentionAlerts,
+    avgEvidence,
+    avgExpense,
+    avgScore,
+    blueprint,
+    conviction,
+    daysToReview,
+    duplicateScore,
+    focus,
+    funds,
+    highRiskCount,
+    lanes,
+    maxDrawdown,
+    note,
+    posture: portfolioReviewPosture(score),
+    queue,
+    rebalance,
+    reviewDate,
+    score,
+    tone: portfolioReviewTone(score),
+    watchedCount
+  };
+}
+
+function renderPortfolioReviewRoom(event) {
+  if (event) event.preventDefault();
+  if (!els.portfolioReviewOutput) return;
+  const config = portfolioReviewConfig();
+  els.portfolioReviewSummary.textContent = `${config.queue.length} checkpoint${config.queue.length === 1 ? "" : "s"}`;
+
+  els.portfolioReviewOutput.innerHTML = `
+    <div class="review-room-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(config.posture)}</span>
+        <h3>${escapeHtml(portfolioReviewFocusLabel(config.focus))}</h3>
+        <p>${config.funds.length} fund${config.funds.length === 1 ? "" : "s"} in review, ${escapeHtml(portfolioReviewConvictionLabel(config.conviction))}, next review ${escapeHtml(config.reviewDate)}.</p>
+      </div>
+      <div class="review-room-score" style="--score:${config.score}">
+        <b>${config.score}</b>
+        <span>Review</span>
+      </div>
+    </div>
+    <div class="review-room-metric-grid">
+      <div><span>Avg Nadi score</span><strong>${config.avgScore}/100</strong></div>
+      <div><span>Evidence</span><strong>${config.avgEvidence}/100</strong></div>
+      <div><span>Avg TER</span><strong>${config.avgExpense.toFixed(2)}%</strong></div>
+      <div><span>Drift</span><strong>${config.rebalance.totalAbsDrift.toFixed(1)}%</strong></div>
+      <div><span>Watch triggers</span><strong>${config.alerts.length}</strong></div>
+      <div><span>Attention</span><strong>${config.attentionAlerts.length}</strong></div>
+    </div>
+    <div class="review-room-lane-grid">
+      ${config.lanes.map((lane) => `
+        <article class="review-room-lane ${escapeHtml(reviewLaneTone(lane.score))}">
+          <span>${escapeHtml(lane.title)}</span>
+          <strong>${lane.score}/100</strong>
+          <p>${escapeHtml(lane.detail)}</p>
+          <small>${escapeHtml(lane.next)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="review-room-card-grid">
+      <article class="review-room-card">
+        <h3>Review queue</h3>
+        <ul class="review-room-list">
+          ${config.queue.slice(0, 6).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="review-room-card">
+        <h3>Fund file</h3>
+        <div class="review-room-fund-list">
+          ${config.funds.map((fund) => `
+            <div>
+              <strong>${escapeHtml(fund.name)}</strong>
+              <span>${escapeHtml(fund.category)} | ${escapeHtml(fund.risk)} risk | TER ${fund.expense.toFixed(2)}%</span>
+            </div>
+          `).join("")}
+        </div>
+      </article>
+      <article class="review-room-card">
+        <h3>Review note</h3>
+        <p>${escapeHtml(config.note || "No written note yet. Write the reason, evidence gap, or review question before saving the review file.")}</p>
+      </article>
+    </div>
+    <div class="review-room-guardrail">
+      <strong>Review rule</strong>
+      <p>This room organizes research checkpoints only. It is not a portfolio recommendation, transaction instruction, tax opinion, suitability certificate, or execution workflow.</p>
+    </div>
+  `;
+}
+
+function makePortfolioReviewNote() {
+  const config = portfolioReviewConfig();
+  return [
+    "# NiveshNadi Portfolio Review Room",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Focus: ${portfolioReviewFocusLabel(config.focus)}`,
+    `Review score: ${config.score}/100`,
+    `Posture: ${config.posture}`,
+    `Conviction: ${portfolioReviewConvictionLabel(config.conviction)}`,
+    `Next review date: ${config.reviewDate}`,
+    "",
+    "## Review Metrics",
+    `- Average Nadi score: ${config.avgScore}/100`,
+    `- Average evidence readiness: ${config.avgEvidence}/100`,
+    `- Average TER: ${config.avgExpense.toFixed(2)}%`,
+    `- Total drift: ${config.rebalance.totalAbsDrift.toFixed(1)}%`,
+    `- Outside drift band: ${config.rebalance.breached.length}`,
+    `- Watchlist triggers: ${config.alerts.length}`,
+    `- Attention triggers: ${config.attentionAlerts.length}`,
+    "",
+    "## Lanes",
+    ...config.lanes.map((lane) => `- ${lane.title}: ${lane.score}/100. ${lane.detail} Next: ${lane.next}`),
+    "",
+    "## Review Queue",
+    ...config.queue.map((item) => `- ${item}`),
+    "",
+    "## Funds",
+    ...config.funds.map((fund) => `- ${fund.name}: ${fund.category}, ${fund.risk} risk, TER ${fund.expense.toFixed(2)}%, evidence ${evidenceReadinessScore(fund)}/100`),
+    "",
+    "## User Note",
+    config.note || "No user note entered.",
+    "",
+    "## Guardrail",
+    "Research support only. This is not personalized investment advice, a model portfolio, rebalancing instruction, tax advice, suitability certificate, or transaction instruction."
+  ].join("\n");
+}
+
+function savePortfolioReviewTrigger() {
+  const config = portfolioReviewConfig();
+  const reviewDate = config.reviewDate || dateInputFromDate(addDays(new Date(), 60));
+  const note = `Portfolio Review Room: ${portfolioReviewFocusLabel(config.focus)} | score ${config.score}/100 | ${config.queue.length} checkpoint${config.queue.length === 1 ? "" : "s"}.`;
+  config.funds.forEach((fund) => addToWatchlist(fund.id, false));
+  const alerts = [
+    ...config.funds.map((fund) => ({
+      id: `portfolio-review-${Date.now()}-${fund.id}-${Math.random().toString(16).slice(2)}`,
+      fundId: fund.id,
+      trigger: "review",
+      limit: reviewDate,
+      note,
+      createdAt: new Date().toISOString()
+    })),
+    ...loadAlerts()
+  ].slice(0, 60);
+  saveAlerts(alerts);
+  renderPortfolioReviewRoom();
+  renderReviewVault();
+  renderInvestorRecordDesk();
+  renderWatchlistRoom();
+  renderReviewRhythmBoard();
+  toast("Portfolio review trigger saved.");
+}
+
+function reviewVaultDelta(value, priorValue, suffix = "") {
+  if (priorValue === null || priorValue === undefined) return "New";
+  const delta = value - priorValue;
+  if (Math.abs(delta) < 0.05) return `0${suffix}`;
+  return `${delta > 0 ? "+" : ""}${Number.isInteger(delta) ? delta : delta.toFixed(1)}${suffix}`;
+}
+
+function reviewSnapshotFromConfig(config) {
+  return {
+    id: `review-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    createdAt: new Date().toISOString(),
+    release: RELEASE_LABEL,
+    dataVersion: DATA_VERSION,
+    focus: config.focus,
+    focusLabel: portfolioReviewFocusLabel(config.focus),
+    reviewDate: config.reviewDate,
+    conviction: config.conviction,
+    convictionLabel: portfolioReviewConvictionLabel(config.conviction),
+    score: config.score,
+    posture: config.posture,
+    metrics: {
+      avgScore: config.avgScore,
+      evidence: config.avgEvidence,
+      expense: Number(config.avgExpense.toFixed(2)),
+      drift: Number(config.rebalance.totalAbsDrift.toFixed(1)),
+      outsideBand: config.rebalance.breached.length,
+      attention: config.attentionAlerts.length,
+      triggers: config.alerts.length,
+      queue: config.queue.length
+    },
+    funds: config.funds.map((fund) => ({
+      id: fund.id,
+      name: fund.name,
+      category: fund.category,
+      risk: fund.risk
+    })),
+    queue: config.queue.slice(0, 6),
+    noteStatus: config.note ? "Written note present" : "No written note"
+  };
+}
+
+function saveCurrentReviewSnapshot() {
+  const config = portfolioReviewConfig();
+  const snapshot = reviewSnapshotFromConfig(config);
+  const entries = [snapshot, ...loadReviewVault()].slice(0, 16);
+  saveReviewVault(entries);
+  renderReviewVault();
+  renderInvestorRecordDesk();
+  toast("Review snapshot saved locally.");
+}
+
+function clearReviewVault() {
+  saveReviewVault([]);
+  renderReviewVault();
+  renderInvestorRecordDesk();
+  toast("Review vault cleared.");
+}
+
+function renderReviewVault() {
+  if (!els.reviewVaultOutput || !els.reviewVaultSummary) return;
+  const entries = loadReviewVault();
+  const current = reviewSnapshotFromConfig(portfolioReviewConfig());
+  const latest = entries[0] || null;
+  const prior = entries[1] || null;
+  const scoreDelta = latest ? reviewVaultDelta(latest.score, prior?.score) : "New";
+  const driftDelta = latest ? reviewVaultDelta(latest.metrics.drift, prior?.metrics.drift, "%") : "New";
+  const evidenceDelta = latest ? reviewVaultDelta(latest.metrics.evidence, prior?.metrics.evidence) : "New";
+
+  els.reviewVaultSummary.textContent = `${entries.length} snapshot${entries.length === 1 ? "" : "s"}`;
+
+  if (!entries.length) {
+    els.reviewVaultOutput.innerHTML = `
+      <div class="review-vault-empty">
+        <div>
+          <span class="metric-label">Current review preview</span>
+          <h3>${current.score}/100 ${escapeHtml(current.focusLabel)}</h3>
+          <p>Save a snapshot to begin a browser-local review history. The vault stores scores, metrics, fund names, and queue items only; it does not store PAN, folio, CAS, or account data.</p>
+        </div>
+        <div class="review-vault-score" style="--score:${current.score}">
+          <b>${current.score}</b>
+          <span>Now</span>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  els.reviewVaultOutput.innerHTML = `
+    <div class="review-vault-hero">
+      <div>
+        <span class="metric-label">Latest local snapshot</span>
+        <h3>${latest.score}/100 ${escapeHtml(latest.focusLabel)}</h3>
+        <p>${escapeHtml(latest.posture)} | Saved ${new Date(latest.createdAt).toLocaleString("en-IN")} | ${latest.funds.length} fund${latest.funds.length === 1 ? "" : "s"} tracked.</p>
+      </div>
+      <div class="review-vault-score" style="--score:${latest.score}">
+        <b>${latest.score}</b>
+        <span>Vault</span>
+      </div>
+    </div>
+    <div class="review-vault-metric-grid">
+      <div><span>Score delta</span><strong>${escapeHtml(scoreDelta)}</strong></div>
+      <div><span>Evidence delta</span><strong>${escapeHtml(evidenceDelta)}</strong></div>
+      <div><span>Drift delta</span><strong>${escapeHtml(driftDelta)}</strong></div>
+      <div><span>Latest drift</span><strong>${latest.metrics.drift.toFixed(1)}%</strong></div>
+      <div><span>Attention</span><strong>${latest.metrics.attention}</strong></div>
+      <div><span>Queue</span><strong>${latest.metrics.queue}</strong></div>
+    </div>
+    <div class="review-vault-grid">
+      ${entries.slice(0, 6).map((entry, index) => {
+        const previous = entries[index + 1] || null;
+        return `
+          <article class="review-vault-card">
+            <div class="review-vault-card-head">
+              <span>${escapeHtml(entry.focusLabel)}</span>
+              <strong>${entry.score}/100</strong>
+            </div>
+            <p>${escapeHtml(entry.posture)} | Review date ${escapeHtml(entry.reviewDate)}</p>
+            <div class="review-vault-mini-grid">
+              <div><span>Evidence</span><b>${entry.metrics.evidence}/100</b></div>
+              <div><span>Drift</span><b>${entry.metrics.drift.toFixed(1)}%</b></div>
+              <div><span>TER</span><b>${entry.metrics.expense.toFixed(2)}%</b></div>
+            </div>
+            <small>Score ${escapeHtml(reviewVaultDelta(entry.score, previous?.score))} from prior snapshot | ${escapeHtml(entry.noteStatus)}</small>
+          </article>
+        `;
+      }).join("")}
+    </div>
+    <div class="review-vault-card-grid">
+      <article class="review-vault-panel">
+        <h3>Latest queue</h3>
+        <ul class="review-vault-list">
+          ${latest.queue.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="review-vault-panel">
+        <h3>Tracked funds</h3>
+        <div class="review-vault-funds">
+          ${latest.funds.map((fund) => `<span>${escapeHtml(fund.name)} | ${escapeHtml(fund.risk)} risk</span>`).join("")}
+        </div>
+      </article>
+      <article class="review-vault-panel">
+        <h3>Privacy rule</h3>
+        <p>Snapshots stay in this browser under the NiveshNadi namespace. Do not store PAN, folio, CAS text, client data, or credentials in review notes.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeReviewVaultBrief() {
+  const entries = loadReviewVault();
+  const current = reviewSnapshotFromConfig(portfolioReviewConfig());
+  const latest = entries[0] || current;
+  const prior = entries[1] || null;
+  return [
+    "# NiveshNadi Review Vault",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Saved snapshots: ${entries.length}`,
+    `Latest score: ${latest.score}/100`,
+    `Latest focus: ${latest.focusLabel}`,
+    `Latest posture: ${latest.posture}`,
+    `Score delta: ${reviewVaultDelta(latest.score, prior?.score)}`,
+    `Evidence delta: ${reviewVaultDelta(latest.metrics.evidence, prior?.metrics.evidence)}`,
+    `Drift delta: ${reviewVaultDelta(latest.metrics.drift, prior?.metrics.drift, "%")}`,
+    "",
+    "## Latest Metrics",
+    `- Average Nadi score: ${latest.metrics.avgScore}/100`,
+    `- Evidence readiness: ${latest.metrics.evidence}/100`,
+    `- Average TER: ${latest.metrics.expense.toFixed(2)}%`,
+    `- Drift: ${latest.metrics.drift.toFixed(1)}%`,
+    `- Outside band: ${latest.metrics.outsideBand}`,
+    `- Attention triggers: ${latest.metrics.attention}`,
+    "",
+    "## Latest Queue",
+    ...latest.queue.map((item) => `- ${item}`),
+    "",
+    "## Recent Snapshots",
+    ...(entries.length ? entries.slice(0, 6).map((entry) => `- ${new Date(entry.createdAt).toLocaleString("en-IN")}: ${entry.score}/100, ${entry.focusLabel}, drift ${entry.metrics.drift.toFixed(1)}%, evidence ${entry.metrics.evidence}/100`) : ["- No saved snapshots yet. This brief uses the current review preview."]),
+    "",
+    "## Guardrail",
+    "Research support only. Review Vault stores browser-local workflow snapshots, not personalized advice, suitability approval, execution instruction, PAN, folio, CAS, or account data."
+  ].join("\n");
+}
+
+function investorRecordStanceLabel(value) {
+  if (value === "watch") return "Watch and review";
+  if (value === "memo-ready") return "Memo ready";
+  if (value === "source-refresh") return "Source refresh needed";
+  return "Research only";
+}
+
+function investorRecordAudienceLabel(value) {
+  if (value === "family-discussion") return "Family discussion note";
+  if (value === "advisor-conversation") return "Advisor conversation note";
+  if (value === "future-mfd") return "Future distributor handoff draft";
+  return "Self review";
+}
+
+function investorRecordBoundaryText(value) {
+  if (value === "verify-sources") return "Verify live AMFI, AMC factsheet, SID/KIM, portfolio, and benchmark sources before relying on the record.";
+  if (value === "wait-review-date") return "Do not revisit the research posture before the planned review date unless a watchlist trigger fires.";
+  if (value === "resolve-flags") return "Resolve active alerts, red flags, overlap, and evidence gaps before converting this into an action memo.";
+  return "This record is a research file only and does not approve, recommend, or execute any investment action.";
+}
+
+function sanitizeInvestorRecordLabel(value) {
+  return String(value || "").replace(/\s+/g, " ").trim().slice(0, 80);
+}
+
+function latestReviewSnapshotForRecord() {
+  const vaultEntries = loadReviewVault();
+  if (vaultEntries.length) {
+    return { snapshot: vaultEntries[0], source: "Latest vault snapshot" };
+  }
+  return { snapshot: reviewSnapshotFromConfig(portfolioReviewConfig()), source: "Current review preview" };
+}
+
+function investorRecordCode(snapshot) {
+  const date = new Date().toISOString().slice(0, 10).replaceAll("-", "");
+  const fundCode = (snapshot.funds || [])
+    .map((fund) => String(fund.id || fund.name || "fund").slice(0, 3))
+    .join("")
+    .slice(0, 9)
+    .toUpperCase() || "NOW";
+  return `NN-${date}-${snapshot.score}-${fundCode}`;
+}
+
+function investorRecordGates(snapshot, boundary) {
+  const metrics = snapshot.metrics || {};
+  const gates = [investorRecordBoundaryText(boundary)];
+  if ((metrics.evidence || 0) < 72) {
+    gates.push(`Evidence readiness is ${metrics.evidence || 0}/100, so live citation checks remain mandatory.`);
+  } else {
+    gates.push(`Evidence readiness is ${metrics.evidence}/100, but source dates still need live verification.`);
+  }
+  if ((metrics.drift || 0) > 10) {
+    gates.push(`Portfolio drift is ${Number(metrics.drift).toFixed(1)}%, so any real-world change needs separate cost, tax, and behavior review.`);
+  } else {
+    gates.push(`Portfolio drift is ${Number(metrics.drift || 0).toFixed(1)}%, so the record can stay focused on evidence, cost, and review rhythm.`);
+  }
+  if ((metrics.attention || 0) > 0) {
+    gates.push(`${metrics.attention} attention trigger${metrics.attention === 1 ? "" : "s"} should be reviewed before the next decision memo.`);
+  }
+  return gates;
+}
+
+function investorRecordConfig() {
+  const { snapshot, source } = latestReviewSnapshotForRecord();
+  const stance = els.investorRecordStance?.value || "research-only";
+  const audience = els.investorRecordAudience?.value || "self-review";
+  const boundary = els.investorRecordBoundary?.value || "no-action";
+  const label = sanitizeInvestorRecordLabel(els.investorRecordLabel?.value) || `${snapshot.focusLabel} record`;
+  return {
+    label,
+    stance,
+    stanceLabel: investorRecordStanceLabel(stance),
+    audience,
+    audienceLabel: investorRecordAudienceLabel(audience),
+    boundary,
+    boundaryText: investorRecordBoundaryText(boundary),
+    source,
+    recordCode: investorRecordCode(snapshot),
+    snapshot,
+    gates: investorRecordGates(snapshot, boundary)
+  };
+}
+
+function investorRecordFromConfig(config) {
+  return {
+    id: `investor-record-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    recordCode: config.recordCode,
+    createdAt: new Date().toISOString(),
+    release: RELEASE_LABEL,
+    dataVersion: DATA_VERSION,
+    label: config.label,
+    stance: config.stance,
+    stanceLabel: config.stanceLabel,
+    audience: config.audience,
+    audienceLabel: config.audienceLabel,
+    boundary: config.boundary,
+    boundaryText: config.boundaryText,
+    source: config.source,
+    focusLabel: config.snapshot.focusLabel,
+    reviewDate: config.snapshot.reviewDate,
+    score: config.snapshot.score,
+    posture: config.snapshot.posture,
+    metrics: config.snapshot.metrics,
+    funds: (config.snapshot.funds || []).map((fund) => ({
+      id: fund.id,
+      name: fund.name,
+      category: fund.category,
+      risk: fund.risk
+    })),
+    queue: (config.snapshot.queue || []).slice(0, 6),
+    gates: config.gates.slice(0, 5),
+    noteStatus: config.snapshot.noteStatus || "No written note"
+  };
+}
+
+function saveCurrentInvestorRecord() {
+  const config = investorRecordConfig();
+  const record = investorRecordFromConfig(config);
+  const entries = [record, ...loadInvestorRecords()].slice(0, 20);
+  saveInvestorRecords(entries);
+  renderInvestorRecordDesk();
+  toast("Investor review record saved locally.");
+}
+
+function clearInvestorRecords() {
+  saveInvestorRecords([]);
+  renderInvestorRecordDesk();
+  toast("Investor records cleared.");
+}
+
+function renderInvestorRecordDesk(event) {
+  if (event) event.preventDefault();
+  if (!els.investorRecordOutput || !els.investorRecordSummary) return;
+  const config = investorRecordConfig();
+  const preview = investorRecordFromConfig(config);
+  const records = loadInvestorRecords();
+  const latestSaved = records[0] || null;
+  const priorSaved = records[1] || null;
+  const savedDelta = latestSaved ? reviewVaultDelta(latestSaved.score, priorSaved?.score) : "Preview";
+  const metrics = preview.metrics || {};
+
+  els.investorRecordSummary.textContent = `${records.length} record${records.length === 1 ? "" : "s"}`;
+
+  els.investorRecordOutput.innerHTML = `
+    <div class="investor-record-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(config.source)}</span>
+        <h3>${escapeHtml(preview.recordCode)}</h3>
+        <p>${escapeHtml(preview.label)} | ${escapeHtml(preview.stanceLabel)} | ${escapeHtml(preview.audienceLabel)} | Review date ${escapeHtml(preview.reviewDate)}.</p>
+      </div>
+      <div class="investor-record-score" style="--score:${preview.score}">
+        <b>${preview.score}</b>
+        <span>Record</span>
+      </div>
+    </div>
+    <div class="investor-record-metric-grid">
+      <div><span>Score</span><strong>${preview.score}/100</strong></div>
+      <div><span>Evidence</span><strong>${metrics.evidence}/100</strong></div>
+      <div><span>Drift</span><strong>${Number(metrics.drift || 0).toFixed(1)}%</strong></div>
+      <div><span>TER</span><strong>${Number(metrics.expense || 0).toFixed(2)}%</strong></div>
+      <div><span>Attention</span><strong>${metrics.attention || 0}</strong></div>
+      <div><span>Saved delta</span><strong>${escapeHtml(savedDelta)}</strong></div>
+    </div>
+    <div class="investor-record-card-grid">
+      <article class="investor-record-panel">
+        <h3>Decision boundary</h3>
+        <ul class="investor-record-list">
+          ${preview.gates.map((gate) => `<li>${escapeHtml(gate)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="investor-record-panel">
+        <h3>Review queue</h3>
+        <ul class="investor-record-list">
+          ${(preview.queue.length ? preview.queue : ["No active queue item. Keep evidence, cost, drift, and behavior checks attached."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="investor-record-panel">
+        <h3>Fund set</h3>
+        <div class="investor-record-funds">
+          ${preview.funds.map((fund) => `<span>${escapeHtml(fund.name)} | ${escapeHtml(fund.category)} | ${escapeHtml(fund.risk)} risk</span>`).join("")}
+        </div>
+      </article>
+    </div>
+    <div class="investor-record-ledger">
+      ${records.length ? records.slice(0, 5).map((record) => `
+        <article class="investor-record-card">
+          <span>${escapeHtml(new Date(record.createdAt).toLocaleString("en-IN"))}</span>
+          <strong>${escapeHtml(record.recordCode)} | ${record.score}/100</strong>
+          <p>${escapeHtml(record.label)} | ${escapeHtml(record.stanceLabel)} | Evidence ${record.metrics.evidence}/100 | Drift ${Number(record.metrics.drift || 0).toFixed(1)}%</p>
+        </article>
+      `).join("") : `
+        <article class="investor-record-card">
+          <span>Preview mode</span>
+          <strong>No saved investor records yet</strong>
+          <p>Save a record to create a browser-local history that can later become the account-sync handoff model.</p>
+        </article>
+      `}
+    </div>
+  `;
+}
+
+function makeInvestorRecordBrief() {
+  const config = investorRecordConfig();
+  const record = investorRecordFromConfig(config);
+  return [
+    "# NiveshNadi Investor Review Record",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Record code: ${record.recordCode}`,
+    `Created: ${new Date(record.createdAt).toLocaleString("en-IN")}`,
+    `Label: ${record.label}`,
+    `Stance: ${record.stanceLabel}`,
+    `Audience: ${record.audienceLabel}`,
+    `Source: ${record.source}`,
+    `Review focus: ${record.focusLabel}`,
+    `Review date: ${record.reviewDate}`,
+    `Review score: ${record.score}/100`,
+    `Posture: ${record.posture}`,
+    "",
+    "## Metrics",
+    `- Average Nadi score: ${record.metrics.avgScore}/100`,
+    `- Evidence readiness: ${record.metrics.evidence}/100`,
+    `- Average TER: ${record.metrics.expense.toFixed(2)}%`,
+    `- Drift: ${record.metrics.drift.toFixed(1)}%`,
+    `- Attention triggers: ${record.metrics.attention}`,
+    "",
+    "## Funds",
+    ...record.funds.map((fund) => `- ${fund.name}: ${fund.category}, ${fund.risk} risk`),
+    "",
+    "## Review Queue",
+    ...(record.queue.length ? record.queue.map((item) => `- ${item}`) : ["- No active queue item."]),
+    "",
+    "## Decision Boundary",
+    ...record.gates.map((gate) => `- ${gate}`),
+    "",
+    "## Privacy Guardrail",
+    "This record stores research workflow metadata only. Do not add PAN, folio, CAS text, account credentials, bank details, distributor client data, or transaction instructions."
+  ].join("\n");
+}
+
 function evidenceStatusClass(status) {
   if (status === "Demo mapped") return "calm";
   if (status === "Schema planned") return "active";
@@ -2469,6 +4187,231 @@ function makeEvidenceLog() {
     "## Guardrail",
     "Research support only. Live launch must show source, date, extraction status, and citation path before claims are treated as current."
   ].join("\n");
+}
+
+function fundHouseTone(score) {
+  if (score >= 82) return "strong";
+  if (score >= 68) return "watch";
+  return "caution";
+}
+
+function fundHousePosture(score) {
+  if (score >= 82) return "Strong stewardship evidence";
+  if (score >= 68) return "Researchable stewardship";
+  if (score >= 54) return "Needs house review";
+  return "Weak evidence posture";
+}
+
+function fundHouseCapacityScore(fund) {
+  const scaleScore = Math.min(92, 48 + Math.log10(Math.max(fund.aum, 1000)) * 11);
+  const capacityPenalty = (fund.category.includes("Small Cap") || fund.category.includes("Mid Cap")) && fund.aum > 12000 ? 8 : 0;
+  const debtBonus = fund.sleeve === "Debt" ? 4 : 0;
+  return Math.round(clampNumber(scaleScore + debtBonus - capacityPenalty, 35, 94));
+}
+
+function fundHouseLensConfig() {
+  const fund = selectedFund();
+  const peer = peerBenchmarkConfig();
+  const evidence = evidenceReadinessScore(fund);
+  const costScore = Math.round(clampNumber(
+    84 - Math.max(0, fund.expense - peer.sleeveAvg.expense) * 85 + (fund.expense <= peer.sleeveAvg.expense ? 7 : 0),
+    38,
+    96
+  ));
+  const processScore = Math.round(clampNumber(
+    fund.researchCoverage * 0.44 + fund.consistency * 0.34 + (fund.benchmark ? 8 : 0) + (fund.role ? 7 : 0),
+    36,
+    96
+  ));
+  const capacityScore = fundHouseCapacityScore(fund);
+  const managerScore = /demo/i.test(fund.manager) ? 62 : 88;
+  const stabilityScore = Math.round(clampNumber(
+    fund.consistency * 0.72 + (100 - fund.maxDrawdown) * 0.2 + (5 - riskRankValue(fund.risk)) * 3,
+    35,
+    96
+  ));
+  const styleRepeatScore = Math.round(clampNumber(
+    fund.style.length > 28 ? 78 + Math.min(12, fund.tags.length * 3) : 58,
+    45,
+    92
+  ));
+  const stewardshipScore = Math.round(clampNumber(
+    processScore * 0.24 +
+      evidence * 0.22 +
+      costScore * 0.18 +
+      capacityScore * 0.14 +
+      managerScore * 0.1 +
+      stabilityScore * 0.12,
+    30,
+    96
+  ));
+
+  const signals = [
+    {
+      title: "Process clarity",
+      value: `${processScore}/100`,
+      score: processScore,
+      detail: `${fund.style}. Benchmark: ${fund.benchmark}.`,
+      action: "Verify stated style, benchmark, and portfolio discipline in latest AMC material."
+    },
+    {
+      title: "Evidence depth",
+      value: `${evidence}/100`,
+      score: evidence,
+      detail: `${fund.researchCoverage}/100 demo research coverage with ${fund.holdings.length} holdings mapped.`,
+      action: "Attach source date, citation URL, extraction status, and field-level confidence before live launch."
+    },
+    {
+      title: "Cost discipline",
+      value: `${fund.expense.toFixed(2)}% TER`,
+      score: costScore,
+      detail: `Sleeve average demo TER is ${peer.sleeveAvg.expense.toFixed(2)}%.`,
+      action: "Check whether active cost is buying a distinct role, better drawdown behavior, or evidence quality."
+    },
+    {
+      title: "AUM and capacity",
+      value: formatCr(fund.aum),
+      score: capacityScore,
+      detail: `${fund.category} capacity comfort is demo-scored against size and sleeve constraints.`,
+      action: "For mid/small/flexi roles, inspect liquidity, churn, and whether asset size can dilute the strategy."
+    },
+    {
+      title: "Manager visibility",
+      value: fund.manager,
+      score: managerScore,
+      detail: /demo/i.test(fund.manager) ? "Manager field is still demo-level and needs live AMC attribution." : "Named manager data is available for review.",
+      action: "Add manager name, tenure, co-manager changes, and AMC communication history before launch claims."
+    },
+    {
+      title: "Style stability",
+      value: `${stabilityScore}/100`,
+      score: stabilityScore,
+      detail: `Consistency ${fund.consistency}/100, max drawdown ${fund.maxDrawdown}%, and style signal ${styleRepeatScore}/100.`,
+      action: "Review portfolio drift, category drift, turnover, and repeated holdings before refreshing the decision memo."
+    }
+  ];
+
+  const launchGates = [
+    "Latest AMC factsheet source date and citation visible beside every fund-house claim.",
+    "Manager tenure, fund-management change, and AMC communication history captured as structured fields.",
+    "TER, riskometer, portfolio disclosure, and benchmark dates checked for stale or missing values.",
+    "Capacity review documented for mid, small, flexi, sector, thematic, and concentrated strategies.",
+    "Clear separation between house-level stewardship research and personalized investment advice."
+  ];
+
+  return {
+    capacityScore,
+    costScore,
+    evidence,
+    fund,
+    launchGates,
+    managerScore,
+    peer,
+    posture: fundHousePosture(stewardshipScore),
+    processScore,
+    signals,
+    stabilityScore,
+    stewardshipScore,
+    tone: fundHouseTone(stewardshipScore)
+  };
+}
+
+function renderFundHouseLens() {
+  if (!els.houseOutput) return;
+  const config = fundHouseLensConfig();
+  els.houseSummary.textContent = `${config.stewardshipScore}/100 stewardship`;
+
+  els.houseOutput.innerHTML = `
+    <div class="house-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(config.posture)}</span>
+        <h3>${escapeHtml(config.fund.name)} house review</h3>
+        <p>${escapeHtml(config.fund.category)} | ${escapeHtml(config.fund.sleeve)} | Research-only stewardship lens before the fund enters a shortlist, watchlist, or decision pack.</p>
+      </div>
+      <div class="house-score" style="--score:${config.stewardshipScore}">
+        <b>${config.stewardshipScore}</b>
+        <span>House Lens</span>
+      </div>
+    </div>
+    <div class="house-signal-grid">
+      ${config.signals.map((signal) => `
+        <article class="house-signal ${fundHouseTone(signal.score)}">
+          <div>
+            <span class="metric-label">${escapeHtml(signal.title)}</span>
+            <strong>${escapeHtml(signal.value)}</strong>
+          </div>
+          <p>${escapeHtml(signal.detail)}</p>
+          <div class="signal-meter" aria-hidden="true"><span style="width:${signal.score}%"></span></div>
+          <small>${escapeHtml(signal.action)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="house-gate-grid">
+      ${config.launchGates.map((gate, index) => `
+        <article class="house-gate">
+          <span>${String(index + 1).padStart(2, "0")}</span>
+          <p>${escapeHtml(gate)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="house-guardrail">
+      <strong>Stewardship rule</strong>
+      <p>Fund House Lens is a research discipline layer. It should help the investor ask better questions about process, people, cost, capacity, and evidence, not create a personalized buy, sell, switch, hold, or redeem instruction.</p>
+    </div>
+  `;
+}
+
+function makeFundHouseLensNote() {
+  const config = fundHouseLensConfig();
+  return [
+    `# NiveshNadi Fund House Lens - ${config.fund.name}`,
+    "",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Posture: ${config.posture}`,
+    `Stewardship score: ${config.stewardshipScore}/100`,
+    `Fund: ${config.fund.name}`,
+    `Category: ${config.fund.category}`,
+    `Risk: ${config.fund.risk}`,
+    `AUM reference: ${formatCr(config.fund.aum)}`,
+    "",
+    "## Stewardship Signals",
+    ...config.signals.map((signal) => [
+      `- ${signal.title}: ${signal.value}`,
+      `  Detail: ${signal.detail}`,
+      `  Review action: ${signal.action}`
+    ].join("\n")),
+    "",
+    "## Launch Gates",
+    ...config.launchGates.map((gate) => `- ${gate}`),
+    "",
+    "## Guardrail",
+    "Research support only. This house-level lens does not provide personalized investment advice, transaction advice, or a return guarantee."
+  ].join("\n");
+}
+
+function addFundHouseReviewTrigger() {
+  const fund = selectedFund();
+  const note = "Review AMC process, manager visibility, style drift, AUM/capacity, expense, and evidence freshness before changing allocation.";
+  addToWatchlist(fund.id, false);
+  const alerts = loadAlerts();
+  const exists = alerts.some((alert) => alert.fundId === fund.id && alert.trigger === "style" && alert.note === note);
+  if (!exists) {
+    saveAlerts([
+      {
+        id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        fundId: fund.id,
+        trigger: "style",
+        limit: ALERT_TYPES.style.defaultLimit,
+        note,
+        createdAt: new Date().toISOString()
+      },
+      ...alerts
+    ].slice(0, 60));
+  }
+  renderWatchlistRoom();
+  renderReviewRhythmBoard();
+  renderFundHouseLens();
+  toast("Fund house review added to Watchlist.");
 }
 
 function selectedDataPipeline() {
@@ -2599,6 +4542,247 @@ function makeDataSpec() {
   ].join("\n");
 }
 
+function docQuestionLabel(value) {
+  const labels = {
+    role: "What does this fund do?",
+    risk: "What can go wrong?",
+    cost: "What will it cost?",
+    evidence: "Is the evidence fresh?",
+    review: "When should I re-check?"
+  };
+  return labels[value] || labels.role;
+}
+
+function docDepthLabel(value) {
+  if (value === "quick") return "Quick scan";
+  if (value === "deep") return "Deep review";
+  return "Standard";
+}
+
+function docDecoderTone(score) {
+  if (score >= 78) return "strong";
+  if (score >= 62) return "watch";
+  return "caution";
+}
+
+function docDecoderPosture(score) {
+  if (score >= 78) return "Readable with evidence";
+  if (score >= 62) return "Needs citation check";
+  return "Document gaps remain";
+}
+
+function docQuestionAnswer(question, fund, guide, pipeline) {
+  if (question === "risk") {
+    return `${fund.name} carries ${fund.risk} risk with ${fund.maxDrawdown}% demo drawdown. Read the riskometer, asset allocation range, debt quality or equity concentration, and risk-factor clauses before using it in any decision memo.`;
+  }
+  if (question === "cost") {
+    return `${fund.name} shows ${fund.expense.toFixed(2)}% demo TER and ${formatMoney(fund.minSip)} minimum SIP. The live KIM/SID must confirm plan class, TER date, exit-load language, and expense-change history.`;
+  }
+  if (question === "evidence") {
+    return `${guide.title} depends on ${pipeline.title}. Current demo readiness is ${pipeline.readiness}/100, so live launch still needs source date, citation path, and extraction confidence.`;
+  }
+  if (question === "review") {
+    return `Use this document lens as a review checkpoint when ${fund.name} changes riskometer, TER, manager, holdings style, benchmark, AUM/capacity, or stated investment objective.`;
+  }
+  return `${fund.name} is being decoded as a ${fund.category} research candidate. Start with objective, role, benchmark, asset allocation, risk factors, cost, and evidence freshness before comparing peers.`;
+}
+
+function docDepthTasks(depth, guide) {
+  if (depth === "quick") {
+    return [
+      `Read ${guide.mustRead.slice(0, 3).join(", ")}.`,
+      "Confirm document date and source link.",
+      "Write one plain-English reason before adding the fund to a shortlist."
+    ];
+  }
+  if (depth === "deep") {
+    return [
+      `Read all ${guide.source} clauses in the must-read list.`,
+      "Compare the stated objective with holdings, benchmark, cost, riskometer, and portfolio disclosure.",
+      "Check addendum or change history before treating old document language as current.",
+      "Write what would change the research view in Watchlist or Review Rhythm."
+    ];
+  }
+  return [
+    `Review ${guide.mustRead.slice(0, 4).join(", ")}.`,
+    "Check whether the factsheet, portfolio file, and evidence ledger agree.",
+    "Capture one risk clause, one cost clause, and one review trigger."
+  ];
+}
+
+function docDecoderConfig() {
+  const fund = selectedFund();
+  const focus = els.docFocus?.value || "kim";
+  const question = els.docQuestion?.value || "role";
+  const depth = els.docDepth?.value || "standard";
+  const guide = DOC_DECODER_GUIDES[focus] || DOC_DECODER_GUIDES.kim;
+  const pipeline = DATA_PIPELINES.find((item) => item.id === guide.pipelineId) || DATA_PIPELINES[2];
+  const evidence = evidenceReadinessScore(fund);
+  const score = Math.round(clampNumber(
+    guide.readiness * 0.34 +
+      pipeline.readiness * 0.26 +
+      evidence * 0.18 +
+      fund.researchCoverage * 0.12 +
+      nadiScore(fund) * 0.1,
+    35,
+    94
+  ));
+  const clauses = [
+    {
+      title: "Objective and role",
+      value: fund.category,
+      detail: fund.role,
+      read: "Check that the objective, asset allocation, and benchmark match the role you expect."
+    },
+    {
+      title: "Riskometer and risk factors",
+      value: fund.risk,
+      detail: `Demo max drawdown ${fund.maxDrawdown}% and consistency ${fund.consistency}/100.`,
+      read: "Riskometer is a starting point. Read the fund-specific risk text and portfolio concentration."
+    },
+    {
+      title: "Cost and access",
+      value: `${fund.expense.toFixed(2)}% TER`,
+      detail: `Minimum SIP ${formatMoney(fund.minSip)}. Exit-load text must come from the live document.`,
+      read: "Do not treat demo cost as final until plan class, TER date, and load clause are cited."
+    },
+    {
+      title: "Portfolio evidence",
+      value: `${fund.holdings.length} holdings`,
+      detail: fund.holdings.slice(0, 4).join(", "),
+      read: "Match holdings date with portfolio disclosure before using overlap or concentration claims."
+    },
+    {
+      title: "Benchmark check",
+      value: fund.benchmark,
+      detail: `${fund.returns5y.toFixed(1)}% 5Y demo return versus category research context.`,
+      read: "Confirm TRI/non-TRI method and benchmark source before making relative-return claims."
+    },
+    {
+      title: "Review trigger",
+      value: docDepthLabel(depth),
+      detail: docQuestionAnswer(question, fund, guide, pipeline),
+      read: "Turn the document question into a Watchlist or Review Rhythm reminder before acting."
+    }
+  ];
+  const doNotInfer = [
+    "A document clause is not a personalized recommendation.",
+    "Past return tables do not create a future return expectation.",
+    "Riskometer does not replace drawdown, horizon, or behavior review.",
+    "Category label does not prove the fund fits a specific investor.",
+    "Tax, exit-load, and suitability text need separate professional or regulatory review before execution."
+  ];
+
+  return {
+    clauses,
+    depth,
+    doNotInfer,
+    evidence,
+    focus,
+    fund,
+    guide,
+    pipeline,
+    posture: docDecoderPosture(score),
+    question,
+    score,
+    tasks: docDepthTasks(depth, guide),
+    tone: docDecoderTone(score)
+  };
+}
+
+function renderDocDecoder(event) {
+  if (event) event.preventDefault();
+  if (!els.docOutput) return;
+  const config = docDecoderConfig();
+  els.docSummary.textContent = `${config.score}/100 doc clarity`;
+
+  els.docOutput.innerHTML = `
+    <div class="doc-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(config.posture)}</span>
+        <h3>${escapeHtml(config.guide.title)} for ${escapeHtml(config.fund.name)}</h3>
+        <p>${escapeHtml(config.guide.purpose)}</p>
+      </div>
+      <div class="doc-score" style="--score:${config.score}">
+        <b>${config.score}</b>
+        <span>Doc</span>
+      </div>
+    </div>
+    <div class="doc-question">
+      <span class="metric-label">${escapeHtml(docQuestionLabel(config.question))}</span>
+      <p>${escapeHtml(docQuestionAnswer(config.question, config.fund, config.guide, config.pipeline))}</p>
+    </div>
+    <div class="doc-clause-grid">
+      ${config.clauses.map((clause) => `
+        <article class="doc-clause">
+          <span>${escapeHtml(clause.title)}</span>
+          <strong>${escapeHtml(clause.value)}</strong>
+          <p>${escapeHtml(clause.detail)}</p>
+          <small>${escapeHtml(clause.read)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="doc-card-grid">
+      <article class="doc-card">
+        <h3>Reading checklist</h3>
+        <ul class="doc-list">
+          ${config.tasks.map((task) => `<li>${escapeHtml(task)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="doc-card">
+        <h3>Must-read clauses</h3>
+        <div class="field-chip-list">
+          ${config.guide.mustRead.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
+        </div>
+      </article>
+      <article class="doc-card">
+        <h3>Do not infer</h3>
+        <ul class="doc-list">
+          ${config.doNotInfer.slice(0, config.depth === "quick" ? 3 : 5).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+    <div class="doc-guardrail">
+      <strong>Document rule</strong>
+      <p>${escapeHtml(config.guide.launchGate)} Nadi Doc Decoder is research support only and should not convert document language into personalized transaction advice.</p>
+    </div>
+  `;
+}
+
+function makeDocDecoderNote() {
+  const config = docDecoderConfig();
+  return [
+    `# NiveshNadi Doc Decoder - ${config.fund.name}`,
+    "",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Document lens: ${config.guide.title}`,
+    `Source type: ${config.guide.source}`,
+    `Question: ${docQuestionLabel(config.question)}`,
+    `Depth: ${docDepthLabel(config.depth)}`,
+    `Doc clarity: ${config.score}/100`,
+    `Posture: ${config.posture}`,
+    "",
+    "## Plain-English Answer",
+    docQuestionAnswer(config.question, config.fund, config.guide, config.pipeline),
+    "",
+    "## Clauses to Check",
+    ...config.clauses.map((clause) => [
+      `- ${clause.title}: ${clause.value}`,
+      `  Meaning: ${clause.detail}`,
+      `  Read: ${clause.read}`
+    ].join("\n")),
+    "",
+    "## Reading Checklist",
+    ...config.tasks.map((task) => `- ${task}`),
+    "",
+    "## Do Not Infer",
+    ...config.doNotInfer.map((item) => `- ${item}`),
+    "",
+    "## Guardrail",
+    "Research support only. Confirm latest SID, KIM, factsheet, portfolio disclosure, riskometer, TER, source date, and citation path before treating any claim as current."
+  ].join("\n");
+}
+
 function renderWatchlistRoom() {
   if (!els.watchList || !els.watchStats) return;
   const watchlist = loadWatchlist();
@@ -2684,7 +4868,13 @@ function addToWatchlist(fundId, shouldRender = true) {
     watchlist.unshift({ fundId, createdAt: new Date().toISOString() });
     saveWatchlist(watchlist.slice(0, 30));
   }
-  if (shouldRender) renderWatchlistRoom();
+  if (shouldRender) {
+    renderPortfolioReviewRoom();
+    renderReviewVault();
+    renderInvestorRecordDesk();
+    renderWatchlistRoom();
+    renderReviewRhythmBoard();
+  }
 }
 
 function removeFromWatchlist(fundId) {
@@ -2692,7 +4882,11 @@ function removeFromWatchlist(fundId) {
   const alerts = loadAlerts().filter((alert) => alert.fundId !== fundId);
   saveWatchlist(watchlist);
   saveAlerts(alerts);
+  renderPortfolioReviewRoom();
+  renderReviewVault();
+  renderInvestorRecordDesk();
   renderWatchlistRoom();
+  renderReviewRhythmBoard();
 }
 
 function handleAlertForm(event) {
@@ -2711,7 +4905,11 @@ function handleAlertForm(event) {
   const alerts = [alert, ...loadAlerts()].slice(0, 60);
   saveAlerts(alerts);
   els.alertNote.value = "";
+  renderPortfolioReviewRoom();
+  renderReviewVault();
+  renderInvestorRecordDesk();
   renderWatchlistRoom();
+  renderReviewRhythmBoard();
 }
 
 function evaluateAlert(alert, fund) {
@@ -2793,6 +4991,288 @@ function daysUntil(value) {
   start.setHours(0, 0, 0, 0);
   date.setHours(0, 0, 0, 0);
   return Math.round((date.getTime() - start.getTime()) / 86400000);
+}
+
+function rhythmConfig() {
+  return {
+    focus: els.rhythmFocus?.value || "evidence",
+    date: els.rhythmDate?.value || els.packReviewDate?.value || "2026-06-30",
+    cadence: els.rhythmCadence?.value || "quarterly",
+    note: (els.rhythmNote?.value || "").trim()
+  };
+}
+
+function rhythmFocusLabel(value) {
+  const labels = {
+    sip: "SIP review",
+    switch: "Switch review",
+    evidence: "Evidence refresh",
+    cost: "Cost audit",
+    portfolio: "Portfolio X-Ray",
+    behavior: "Behavior check"
+  };
+  return labels[value] || "Research review";
+}
+
+function rhythmCadenceLabel(value) {
+  const labels = {
+    monthly: "Monthly",
+    quarterly: "Quarterly",
+    halfyear: "Half-yearly",
+    annual: "Annual"
+  };
+  return labels[value] || "Quarterly";
+}
+
+function rhythmCadenceDays(value) {
+  if (value === "monthly") return 30;
+  if (value === "halfyear") return 180;
+  if (value === "annual") return 365;
+  return 90;
+}
+
+function addDays(date, days) {
+  const copy = new Date(date.getTime());
+  copy.setDate(copy.getDate() + days);
+  return copy;
+}
+
+function dateInputFromDate(date) {
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
+  return date.toISOString().slice(0, 10);
+}
+
+function humanReviewDate(value) {
+  const days = daysUntil(value);
+  if (days === null) return "Date not set";
+  if (days < 0) return `Due ${Math.abs(days)} day${Math.abs(days) === 1 ? "" : "s"} ago`;
+  if (days === 0) return "Due today";
+  return `Due in ${days} day${days === 1 ? "" : "s"}`;
+}
+
+function rhythmTaskForFocus(focus, fund) {
+  if (focus === "sip") return `Review SIP behavior, role clarity, stress outcome, and whether ${fund.name} still belongs in the shortlist.`;
+  if (focus === "switch") return "Run Switch Decision Lab again, compare candidate set, and separate evidence from market noise.";
+  if (focus === "cost") return "Run Cost Reality Lab, check TER drift, exit-load friction, and cheaper peer alternatives.";
+  if (focus === "portfolio") return "Run Portfolio X-Ray, inspect overlap, category concentration, and role duplication.";
+  if (focus === "behavior") return "Re-read the decision reason, stress note, and emergency buffer before changing behavior.";
+  return "Refresh evidence source dates, factsheet fields, portfolio disclosure, riskometer, and benchmark context.";
+}
+
+function reviewRhythmItems(config = rhythmConfig()) {
+  const selected = selectedFund();
+  const cadenceDays = rhythmCadenceDays(config.cadence);
+  const alerts = loadAlerts();
+  const watchlist = loadWatchlist();
+  const items = [];
+  const seen = new Set();
+
+  const addItem = ({ fund, date, source, focus, note, priority = "scheduled" }) => {
+    if (!fund) return;
+    const key = `${source}:${fund.id}:${date || "unscheduled"}:${focus}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    items.push({
+      fund,
+      date,
+      days: daysUntil(date),
+      source,
+      focus,
+      note,
+      priority,
+      task: rhythmTaskForFocus(focus, fund)
+    });
+  };
+
+  addItem({
+    fund: selected,
+    date: config.date,
+    source: "Selected fund",
+    focus: config.focus,
+    note: config.note || "Primary rhythm checkpoint from current workspace controls.",
+    priority: "primary"
+  });
+
+  for (const alert of alerts) {
+    const fund = FUNDS.find((item) => item.id === alert.fundId);
+    const evaluation = fund ? evaluateAlert(alert, fund) : null;
+    addItem({
+      fund,
+      date: alert.trigger === "review" ? alert.limit : dateInputFromDate(addDays(new Date(), 30)),
+      source: evaluation ? `${evaluation.label} alert` : "Saved alert",
+      focus: alert.trigger === "expense" ? "cost" : alert.trigger === "style" ? "evidence" : alert.trigger === "drawdown" ? "behavior" : config.focus,
+      note: alert.note || (evaluation ? evaluation.detail : "Saved watchlist trigger."),
+      priority: evaluation?.status === "attention" ? "attention" : "scheduled"
+    });
+  }
+
+  for (const entry of watchlist) {
+    const fund = FUNDS.find((item) => item.id === entry.fundId);
+    const created = new Date(entry.createdAt);
+    const date = Number.isNaN(created.getTime())
+      ? dateInputFromDate(addDays(new Date(), cadenceDays))
+      : dateInputFromDate(addDays(created, cadenceDays));
+    addItem({
+      fund,
+      date,
+      source: "Watchlist cadence",
+      focus: config.focus,
+      note: `${rhythmCadenceLabel(config.cadence)} review rhythm for watched fund.`,
+      priority: "scheduled"
+    });
+  }
+
+  for (const fund of FUNDS.filter((item) => state.compare.has(item.id))) {
+    addItem({
+      fund,
+      date: dateInputFromDate(addDays(new Date(), 60)),
+      source: "Compare set",
+      focus: "portfolio",
+      note: "Compare-set rhythm from current X-Ray shortlist.",
+      priority: "scheduled"
+    });
+  }
+
+  return items.sort((a, b) => {
+    const aDays = a.days === null ? 9999 : a.days;
+    const bDays = b.days === null ? 9999 : b.days;
+    return aDays - bDays || a.fund.name.localeCompare(b.fund.name);
+  });
+}
+
+function rhythmBuckets(items) {
+  return [
+    {
+      label: "Next 30 days",
+      items: items.filter((item) => item.days !== null && item.days <= 30)
+    },
+    {
+      label: "31-60 days",
+      items: items.filter((item) => item.days !== null && item.days > 30 && item.days <= 60)
+    },
+    {
+      label: "61-90 days",
+      items: items.filter((item) => item.days !== null && item.days > 60 && item.days <= 90)
+    },
+    {
+      label: "Later or unscheduled",
+      items: items.filter((item) => item.days === null || item.days > 90)
+    }
+  ];
+}
+
+function rhythmPriorityLabel(priority) {
+  if (priority === "attention") return "Attention";
+  if (priority === "primary") return "Primary";
+  return "Scheduled";
+}
+
+function renderReviewRhythmBoard(event) {
+  if (event) event.preventDefault();
+  if (!els.rhythmOutput) return;
+  const config = rhythmConfig();
+  const items = reviewRhythmItems(config);
+  const buckets = rhythmBuckets(items);
+  const attention = items.filter((item) => item.priority === "attention" || (item.days !== null && item.days <= 7)).length;
+  const selected = selectedFund();
+  const next = items[0];
+  if (els.rhythmSummary) {
+    els.rhythmSummary.textContent = next ? `${humanReviewDate(next.date)} | ${items.length} tasks` : "No rhythm";
+  }
+  els.rhythmOutput.innerHTML = `
+    <div class="rhythm-hero ${attention ? "attention" : "calm"}">
+      <div>
+        <span class="metric-label">${escapeHtml(rhythmFocusLabel(config.focus))}</span>
+        <h3>${escapeHtml(selected.name)} review rhythm</h3>
+        <p>${next ? escapeHtml(`${next.source}: ${humanReviewDate(next.date)}.`) : "No review tasks yet."} This board organizes research reminders, not transaction instructions.</p>
+      </div>
+      <div class="rhythm-clock">
+        <b>${next?.days === null || next?.days === undefined ? "--" : Math.max(0, next.days)}</b>
+        <span>days</span>
+      </div>
+    </div>
+    <div class="rhythm-stat-grid">
+      <div><span>Total tasks</span><strong>${items.length}</strong></div>
+      <div><span>Attention</span><strong>${attention}</strong></div>
+      <div><span>Watched funds</span><strong>${loadWatchlist().length}</strong></div>
+      <div><span>Cadence</span><strong>${escapeHtml(rhythmCadenceLabel(config.cadence))}</strong></div>
+    </div>
+    <div class="rhythm-bucket-grid">
+      ${buckets.map((bucket) => `
+        <article class="rhythm-bucket">
+          <span>${escapeHtml(bucket.label)}</span>
+          <strong>${bucket.items.length} task${bucket.items.length === 1 ? "" : "s"}</strong>
+          <ul class="rhythm-list">
+            ${bucket.items.length ? bucket.items.slice(0, 4).map((item) => `
+              <li>
+                <b>${escapeHtml(item.fund.name)}</b>
+                <small>${escapeHtml(humanReviewDate(item.date))} | ${escapeHtml(rhythmPriorityLabel(item.priority))}</small>
+              </li>
+            `).join("") : "<li><b>No scheduled item</b><small>Keep this window clean unless evidence changes.</small></li>"}
+          </ul>
+        </article>
+      `).join("")}
+    </div>
+    <div class="rhythm-task-board">
+      ${items.slice(0, 6).map((item) => `
+        <article class="rhythm-task ${escapeHtml(item.priority)}">
+          <div>
+            <span>${escapeHtml(item.source)}</span>
+            <strong>${escapeHtml(item.fund.name)}</strong>
+            <p>${escapeHtml(item.task)}</p>
+          </div>
+          <div>
+            <b>${escapeHtml(humanReviewDate(item.date))}</b>
+            <small>${escapeHtml(item.note)}</small>
+          </div>
+        </article>
+      `).join("")}
+    </div>
+    <div class="rhythm-guardrail">
+      <strong>Review discipline</strong>
+      <p>A review date is a checkpoint to verify evidence, cost, risk, overlap, and behavior. It is not a buy, sell, switch, pause, redeem, or hold instruction.</p>
+    </div>
+  `;
+}
+
+function addRhythmReviewTrigger() {
+  const config = rhythmConfig();
+  const fund = selectedFund();
+  addToWatchlist(fund.id, false);
+  const alert = {
+    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    fundId: fund.id,
+    trigger: "review",
+    limit: config.date,
+    note: config.note || `${rhythmFocusLabel(config.focus)} rhythm checkpoint.`,
+    createdAt: new Date().toISOString()
+  };
+  saveAlerts([alert, ...loadAlerts()].slice(0, 60));
+  renderWatchlistRoom();
+  renderReviewRhythmBoard();
+  toast("Review rhythm added to Watchlist.");
+}
+
+function makeReviewRhythmNote() {
+  const config = rhythmConfig();
+  const items = reviewRhythmItems(config);
+  const buckets = rhythmBuckets(items);
+  return [
+    "# NiveshNadi Review Rhythm Board",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Selected fund: ${selectedFund().name}`,
+    `Focus: ${rhythmFocusLabel(config.focus)}`,
+    `Cadence: ${rhythmCadenceLabel(config.cadence)}`,
+    `Primary review date: ${config.date || "Not set"}`,
+    "",
+    "30/60/90 rhythm:",
+    ...buckets.map((bucket) => `- ${bucket.label}: ${bucket.items.length} task${bucket.items.length === 1 ? "" : "s"}`),
+    "",
+    "Next tasks:",
+    ...(items.length ? items.slice(0, 8).map((item) => `- ${item.fund.name}: ${humanReviewDate(item.date)} | ${item.source} | ${item.task}`) : ["- No review tasks scheduled yet."]),
+    "",
+    "Review reminders only. This is not personalized investment advice, a recommendation, a hold instruction, a switch instruction, or an execution instruction."
+  ].join("\n");
 }
 
 function renderDecisionPack(event) {
@@ -4083,6 +6563,30 @@ function saveAlerts(entries) {
   localStorage.setItem("niveshnadi-alerts", JSON.stringify(entries));
 }
 
+function loadReviewVault() {
+  try {
+    return JSON.parse(localStorage.getItem("niveshnadi-review-vault") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveReviewVault(entries) {
+  localStorage.setItem("niveshnadi-review-vault", JSON.stringify(entries));
+}
+
+function loadInvestorRecords() {
+  try {
+    return JSON.parse(localStorage.getItem("niveshnadi-investor-records") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveInvestorRecords(entries) {
+  localStorage.setItem("niveshnadi-investor-records", JSON.stringify(entries));
+}
+
 function handleJournal(event) {
   event.preventDefault();
   const entry = {
@@ -4142,6 +6646,16 @@ function bindEvents() {
   els.copyFitHeatmap?.addEventListener("click", () => copyText(makeGoalFundFitNote()));
   els.copyRedFlagNote?.addEventListener("click", () => copyText(makeRedFlagNote()));
   els.watchFlaggedFund?.addEventListener("click", addFlaggedFundToWatchlist);
+  els.switchForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    renderSwitchDecisionLab();
+  });
+  [els.switchConcern, els.switchMonths, els.switchSip, els.switchConviction, els.switchFriction].forEach((input) => {
+    input?.addEventListener("change", () => renderSwitchDecisionLab());
+  });
+  els.copySwitchNote?.addEventListener("click", () => copyText(makeSwitchDecisionNote()));
+  els.watchSwitchFund?.addEventListener("click", watchSwitchFund);
+  els.addSwitchCandidates?.addEventListener("click", addSwitchCandidatesToCompare);
   els.copyPeerBench?.addEventListener("click", () => copyText(makePeerBenchmarkNote()));
   els.addPeerLeaders?.addEventListener("click", addPeerLeadersToCompare);
   els.playbookForm?.addEventListener("submit", renderCategoryPlaybook);
@@ -4186,13 +6700,109 @@ function bindEvents() {
   });
   els.copyReadinessNote?.addEventListener("click", () => copyText(makeReadinessNote()));
   els.runXray.addEventListener("click", analyzePortfolio);
+  els.blueprintForm?.addEventListener("submit", (event) => {
+    renderBlueprintLab(event);
+    renderRebalanceGuard();
+    renderPortfolioReviewRoom();
+    renderReviewVault();
+    renderInvestorRecordDesk();
+  });
+  [els.blueprintSip, els.blueprintYears, els.blueprintStyle, els.blueprintCadence].forEach((input) => {
+    input?.addEventListener("change", () => {
+      renderBlueprintLab();
+      renderRebalanceGuard();
+      renderPortfolioReviewRoom();
+      renderReviewVault();
+      renderInvestorRecordDesk();
+    });
+  });
+  els.blueprintWeights?.addEventListener("change", (event) => {
+    const input = event.target.closest("[data-blueprint-weight]");
+    if (!input) return;
+    state.blueprintWeights[input.dataset.blueprintWeight] = clampNumber(Number(input.value) || 0, 0, 100);
+    renderBlueprintLab();
+    renderRebalanceGuard();
+    renderPortfolioReviewRoom();
+    renderReviewVault();
+    renderInvestorRecordDesk();
+  });
+  els.normalizeBlueprint?.addEventListener("click", normalizeBlueprintWeights);
+  els.copyBlueprint?.addEventListener("click", () => copyText(makeBlueprintNote()));
+  els.rebalanceForm?.addEventListener("submit", (event) => {
+    renderRebalanceGuard(event);
+    renderPortfolioReviewRoom();
+    renderReviewVault();
+    renderInvestorRecordDesk();
+  });
+  [els.rebalanceCorpus, els.rebalanceSip, els.rebalanceTolerance, els.rebalanceMode].forEach((input) => {
+    input?.addEventListener("change", () => {
+      renderRebalanceGuard();
+      renderPortfolioReviewRoom();
+      renderReviewVault();
+      renderInvestorRecordDesk();
+    });
+  });
+  els.rebalanceCurrentWeights?.addEventListener("change", (event) => {
+    const input = event.target.closest("[data-rebalance-weight]");
+    if (!input) return;
+    state.rebalanceWeights[input.dataset.rebalanceWeight] = clampNumber(Number(input.value) || 0, 0, 100);
+    renderRebalanceGuard();
+    renderPortfolioReviewRoom();
+    renderReviewVault();
+    renderInvestorRecordDesk();
+  });
+  els.copyRebalance?.addEventListener("click", () => copyText(makeRebalanceNote()));
+  els.addRebalanceReview?.addEventListener("click", addRebalanceReviewTrigger);
+  els.portfolioReviewForm?.addEventListener("submit", (event) => {
+    renderPortfolioReviewRoom(event);
+    renderReviewVault();
+    renderInvestorRecordDesk();
+  });
+  [els.portfolioReviewFocus, els.portfolioReviewDate, els.portfolioReviewConviction].forEach((input) => {
+    input?.addEventListener("change", () => {
+      renderPortfolioReviewRoom();
+      renderReviewVault();
+      renderInvestorRecordDesk();
+    });
+  });
+  els.portfolioReviewNote?.addEventListener("input", () => {
+    renderPortfolioReviewRoom();
+    renderReviewVault();
+    renderInvestorRecordDesk();
+  });
+  els.copyPortfolioReview?.addEventListener("click", () => copyText(makePortfolioReviewNote()));
+  els.savePortfolioReview?.addEventListener("click", savePortfolioReviewTrigger);
+  els.saveReviewSnapshot?.addEventListener("click", saveCurrentReviewSnapshot);
+  els.copyReviewVault?.addEventListener("click", () => copyText(makeReviewVaultBrief()));
+  els.clearReviewVault?.addEventListener("click", clearReviewVault);
+  els.investorRecordForm?.addEventListener("submit", renderInvestorRecordDesk);
+  [els.investorRecordLabel, els.investorRecordStance, els.investorRecordAudience, els.investorRecordBoundary].forEach((input) => {
+    input?.addEventListener(input.tagName === "INPUT" ? "input" : "change", () => renderInvestorRecordDesk());
+  });
+  els.saveInvestorRecord?.addEventListener("click", saveCurrentInvestorRecord);
+  els.copyInvestorRecord?.addEventListener("click", () => copyText(makeInvestorRecordBrief()));
+  els.clearInvestorRecords?.addEventListener("click", clearInvestorRecords);
   els.copyCompare?.addEventListener("click", () => copyText(makeCompareNote()));
   els.copyEvidence?.addEventListener("click", () => copyText(makeEvidenceLog()));
+  els.copyHouseLens?.addEventListener("click", () => copyText(makeFundHouseLensNote()));
+  els.watchHouseReview?.addEventListener("click", addFundHouseReviewTrigger);
   els.dataForm?.addEventListener("submit", renderDataReadinessRoom);
   [els.dataSource, els.dataMode, els.dataAge, els.dataCitation].forEach((input) => {
     input?.addEventListener("change", () => renderDataReadinessRoom());
   });
   els.copyDataSpec?.addEventListener("click", () => copyText(makeDataSpec()));
+  els.docForm?.addEventListener("submit", renderDocDecoder);
+  [els.docFocus, els.docQuestion, els.docDepth].forEach((input) => {
+    input?.addEventListener("change", () => renderDocDecoder());
+  });
+  els.copyDocNote?.addEventListener("click", () => copyText(makeDocDecoderNote()));
+  els.rhythmForm?.addEventListener("submit", renderReviewRhythmBoard);
+  [els.rhythmFocus, els.rhythmDate, els.rhythmCadence, els.rhythmNote].forEach((input) => {
+    input?.addEventListener("change", () => renderReviewRhythmBoard());
+  });
+  els.rhythmNote?.addEventListener("input", () => renderReviewRhythmBoard());
+  els.copyRhythmNote?.addEventListener("click", () => copyText(makeReviewRhythmNote()));
+  els.addRhythmTrigger?.addEventListener("click", addRhythmReviewTrigger);
   els.alertForm?.addEventListener("submit", handleAlertForm);
   els.alertTrigger?.addEventListener("change", () => {
     const type = ALERT_TYPES[els.alertTrigger.value] || ALERT_TYPES.review;
@@ -4206,10 +6816,12 @@ function bindEvents() {
   els.watchCompareSet?.addEventListener("click", () => {
     FUNDS.filter((fund) => state.compare.has(fund.id)).forEach((fund) => addToWatchlist(fund.id, false));
     renderWatchlistRoom();
+    renderReviewRhythmBoard();
   });
   els.clearAlerts?.addEventListener("click", () => {
     saveAlerts([]);
     renderWatchlistRoom();
+    renderReviewRhythmBoard();
   });
   els.packForm?.addEventListener("submit", renderDecisionPack);
   [els.packDecision, els.packAmount, els.packReviewDate, els.packConviction, els.packReason].forEach((input) => {
@@ -4239,12 +6851,21 @@ function bindEvents() {
     renderSuitabilityPassport();
     renderGoalFundFitHeatmap();
     renderRedFlagRadar();
+    renderSwitchDecisionLab();
     renderPeerBenchmarkBoard();
     renderCompareMatrix();
     renderStressLab();
     renderCostRealityLab();
     renderInvestorReadinessGate();
+    renderBlueprintLab();
+    renderRebalanceGuard();
+    renderPortfolioReviewRoom();
+    renderReviewVault();
+    renderInvestorRecordDesk();
     renderEvidenceLedger();
+    renderFundHouseLens();
+    renderDocDecoder();
+    renderReviewRhythmBoard();
     renderDecisionPack();
     scrollToElement(document.querySelector(".detail-band"));
   });
@@ -4264,7 +6885,11 @@ function bindEvents() {
     }
     if (removeAlert) {
       saveAlerts(loadAlerts().filter((alert) => alert.id !== removeAlert.dataset.removeAlert));
+      renderPortfolioReviewRoom();
+      renderReviewVault();
+      renderInvestorRecordDesk();
       renderWatchlistRoom();
+      renderReviewRhythmBoard();
     }
   });
 
@@ -4281,10 +6906,19 @@ function bindEvents() {
     renderSuitabilityPassport();
     renderGoalFundFitHeatmap();
     renderRedFlagRadar();
+    renderSwitchDecisionLab();
     renderPeerBenchmarkBoard();
     renderCompareMatrix();
     analyzePortfolio();
+    renderBlueprintLab();
+    renderRebalanceGuard();
+    renderPortfolioReviewRoom();
+    renderReviewVault();
+    renderInvestorRecordDesk();
     renderInvestorReadinessGate();
+    renderFundHouseLens();
+    renderDocDecoder();
+    renderReviewRhythmBoard();
     renderDecisionPack();
   });
 
@@ -4405,6 +7039,17 @@ function cacheElements() {
     redFlagOutput: qs("#redFlagOutput"),
     watchFlaggedFund: qs("#watchFlaggedFund"),
     copyRedFlagNote: qs("#copyRedFlagNote"),
+    switchForm: qs("#switchForm"),
+    switchConcern: qs("#switchConcern"),
+    switchMonths: qs("#switchMonths"),
+    switchSip: qs("#switchSip"),
+    switchConviction: qs("#switchConviction"),
+    switchFriction: qs("#switchFriction"),
+    switchSummary: qs("#switchSummary"),
+    switchOutput: qs("#switchOutput"),
+    copySwitchNote: qs("#copySwitchNote"),
+    watchSwitchFund: qs("#watchSwitchFund"),
+    addSwitchCandidates: qs("#addSwitchCandidates"),
     peerBenchSummary: qs("#peerBenchSummary"),
     peerBenchOutput: qs("#peerBenchOutput"),
     addPeerLeaders: qs("#addPeerLeaders"),
@@ -4471,10 +7116,58 @@ function cacheElements() {
     fundCount: qs("#fundCount"),
     runXray: qs("#runXray"),
     xrayOutput: qs("#xrayOutput"),
+    blueprintForm: qs("#blueprintForm"),
+    blueprintSip: qs("#blueprintSip"),
+    blueprintYears: qs("#blueprintYears"),
+    blueprintStyle: qs("#blueprintStyle"),
+    blueprintCadence: qs("#blueprintCadence"),
+    blueprintWeights: qs("#blueprintWeights"),
+    blueprintSummary: qs("#blueprintSummary"),
+    blueprintOutput: qs("#blueprintOutput"),
+    normalizeBlueprint: qs("#normalizeBlueprint"),
+    copyBlueprint: qs("#copyBlueprint"),
+    rebalanceForm: qs("#rebalanceForm"),
+    rebalanceCorpus: qs("#rebalanceCorpus"),
+    rebalanceSip: qs("#rebalanceSip"),
+    rebalanceTolerance: qs("#rebalanceTolerance"),
+    rebalanceMode: qs("#rebalanceMode"),
+    rebalanceCurrentWeights: qs("#rebalanceCurrentWeights"),
+    rebalanceSummary: qs("#rebalanceSummary"),
+    rebalanceOutput: qs("#rebalanceOutput"),
+    copyRebalance: qs("#copyRebalance"),
+    addRebalanceReview: qs("#addRebalanceReview"),
+    portfolioReviewForm: qs("#portfolioReviewForm"),
+    portfolioReviewFocus: qs("#portfolioReviewFocus"),
+    portfolioReviewDate: qs("#portfolioReviewDate"),
+    portfolioReviewConviction: qs("#portfolioReviewConviction"),
+    portfolioReviewNote: qs("#portfolioReviewNote"),
+    portfolioReviewSummary: qs("#portfolioReviewSummary"),
+    portfolioReviewOutput: qs("#portfolioReviewOutput"),
+    copyPortfolioReview: qs("#copyPortfolioReview"),
+    savePortfolioReview: qs("#savePortfolioReview"),
+    reviewVaultSummary: qs("#reviewVaultSummary"),
+    reviewVaultOutput: qs("#reviewVaultOutput"),
+    saveReviewSnapshot: qs("#saveReviewSnapshot"),
+    copyReviewVault: qs("#copyReviewVault"),
+    clearReviewVault: qs("#clearReviewVault"),
+    investorRecordForm: qs("#investorRecordForm"),
+    investorRecordLabel: qs("#investorRecordLabel"),
+    investorRecordStance: qs("#investorRecordStance"),
+    investorRecordAudience: qs("#investorRecordAudience"),
+    investorRecordBoundary: qs("#investorRecordBoundary"),
+    investorRecordSummary: qs("#investorRecordSummary"),
+    investorRecordOutput: qs("#investorRecordOutput"),
+    saveInvestorRecord: qs("#saveInvestorRecord"),
+    copyInvestorRecord: qs("#copyInvestorRecord"),
+    clearInvestorRecords: qs("#clearInvestorRecords"),
     evidenceSummary: qs("#evidenceSummary"),
     evidenceFundSummary: qs("#evidenceFundSummary"),
     evidenceOutput: qs("#evidenceOutput"),
     copyEvidence: qs("#copyEvidence"),
+    houseSummary: qs("#houseSummary"),
+    houseOutput: qs("#houseOutput"),
+    copyHouseLens: qs("#copyHouseLens"),
+    watchHouseReview: qs("#watchHouseReview"),
     dataForm: qs("#dataForm"),
     dataSource: qs("#dataSource"),
     dataMode: qs("#dataMode"),
@@ -4483,6 +7176,22 @@ function cacheElements() {
     dataSummary: qs("#dataSummary"),
     dataOutput: qs("#dataOutput"),
     copyDataSpec: qs("#copyDataSpec"),
+    docForm: qs("#docForm"),
+    docFocus: qs("#docFocus"),
+    docQuestion: qs("#docQuestion"),
+    docDepth: qs("#docDepth"),
+    docSummary: qs("#docSummary"),
+    docOutput: qs("#docOutput"),
+    copyDocNote: qs("#copyDocNote"),
+    rhythmForm: qs("#rhythmForm"),
+    rhythmFocus: qs("#rhythmFocus"),
+    rhythmDate: qs("#rhythmDate"),
+    rhythmCadence: qs("#rhythmCadence"),
+    rhythmNote: qs("#rhythmNote"),
+    rhythmSummary: qs("#rhythmSummary"),
+    rhythmOutput: qs("#rhythmOutput"),
+    copyRhythmNote: qs("#copyRhythmNote"),
+    addRhythmTrigger: qs("#addRhythmTrigger"),
     watchSummary: qs("#watchSummary"),
     alertForm: qs("#alertForm"),
     watchFundSelect: qs("#watchFundSelect"),
@@ -4529,6 +7238,7 @@ function init() {
   renderCostRealityLab();
   renderInvestorReadinessGate();
   renderDataReadinessRoom();
+  renderDocDecoder();
   renderDecisionPack();
   renderJournal();
   analyzePortfolio();

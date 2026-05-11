@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260511-02">
+    <link rel="stylesheet" href="styles.css?v=20260511-11">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -29,6 +29,7 @@
         <a href="#suitability-passport">Passport</a>
         <a href="#fit-heatmap">Fit Map</a>
         <a href="#red-flag-radar">Flags</a>
+        <a href="#switch-lab">Switch Lab</a>
         <a href="#peer-bench">Bench</a>
         <a href="#compare">Compare</a>
         <a href="#goal-fit">Goal Fit</a>
@@ -38,8 +39,16 @@
         <a href="#cost-lab">Cost</a>
         <a href="#readiness-gate">Gate</a>
         <a href="#portfolio">X-Ray</a>
+        <a href="#blueprint">Blueprint</a>
+        <a href="#rebalance-guard">Rebalance</a>
+        <a href="#portfolio-review">Review</a>
+        <a href="#review-vault">Vault</a>
+        <a href="#investor-record">Record</a>
         <a href="#evidence">Evidence</a>
+        <a href="#fund-house-lens">House Lens</a>
         <a href="#data-readiness">Data</a>
+        <a href="#doc-decoder">Docs</a>
+        <a href="#review-rhythm">Rhythm</a>
         <a href="#watchlist">Watchlist</a>
         <a href="#decision-pack">Pack</a>
         <a href="#pricing">Pricing</a>
@@ -52,7 +61,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-              <p class="release-pill">Phase 1 v20</p>
+              <p class="release-pill">Phase 1 v29</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -284,6 +293,66 @@
         </div>
         <div id="redFlagOutput" class="red-flag-output" aria-live="polite">
           Select a fund to inspect risk, evidence, cost, concentration, overlap, and goal-fit warning signals.
+        </div>
+      </section>
+
+      <section id="switch-lab" class="workspace-band switch-band" aria-labelledby="switch-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Change discipline</p>
+            <h2 id="switch-title">Switch Decision Lab</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Switch decision actions">
+            <span id="switchSummary" class="status-chip">Research pressure</span>
+            <button class="text-button" id="watchSwitchFund" type="button">Watch fund</button>
+            <button class="text-button" id="addSwitchCandidates" type="button">Add candidates</button>
+            <button class="text-button" id="copySwitchNote" type="button">Copy switch note</button>
+          </div>
+        </div>
+        <div class="switch-grid">
+          <form id="switchForm" class="tool-panel switch-form">
+            <h3>Frame the change question</h3>
+            <label>
+              Primary concern
+              <select id="switchConcern">
+                <option value="underperformance">Underperformance</option>
+                <option value="cost">Cost concern</option>
+                <option value="risk">Risk discomfort</option>
+                <option value="overlap">Portfolio overlap</option>
+                <option value="goal-change">Goal changed</option>
+                <option value="evidence-gap">Evidence gap</option>
+                <option value="market-fall">Market fall anxiety</option>
+              </select>
+            </label>
+            <label>
+              Holding period in months
+              <input id="switchMonths" type="number" min="1" max="240" step="1" value="18">
+            </label>
+            <label>
+              Monthly SIP under review
+              <input id="switchSip" type="number" min="0" step="500" value="10000">
+            </label>
+            <label>
+              Conviction today
+              <select id="switchConviction">
+                <option value="medium">Medium conviction</option>
+                <option value="low">Low conviction</option>
+                <option value="high">High conviction</option>
+              </select>
+            </label>
+            <label>
+              Tax or exit-load friction
+              <select id="switchFriction">
+                <option value="medium">Medium friction</option>
+                <option value="low">Low friction</option>
+                <option value="high">High friction</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build decision lanes</button>
+          </form>
+          <div id="switchOutput" class="switch-output" aria-live="polite">
+            Select a fund and frame the change question to compare continue-review, watch-trigger, fresh-money checkpoint, and switch-candidate research lanes.
+          </div>
         </div>
       </section>
 
@@ -640,6 +709,222 @@
         </div>
       </section>
 
+      <section id="blueprint" class="workspace-band blueprint-band" aria-labelledby="blueprint-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Portfolio draft</p>
+            <h2 id="blueprint-title">Nadi Portfolio Blueprint Lab</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Portfolio blueprint actions">
+            <span id="blueprintSummary" class="status-chip">Research draft</span>
+            <button class="text-button" id="normalizeBlueprint" type="button">Normalize weights</button>
+            <button class="text-button" id="copyBlueprint" type="button">Copy blueprint</button>
+          </div>
+        </div>
+        <div class="blueprint-grid">
+          <form id="blueprintForm" class="tool-panel blueprint-form">
+            <h3>Sketch research weights</h3>
+            <label>
+              Monthly SIP draft
+              <input id="blueprintSip" type="number" min="0" step="500" value="25000">
+            </label>
+            <label>
+              Horizon in years
+              <input id="blueprintYears" type="number" min="1" max="40" step="1" value="10">
+            </label>
+            <label>
+              Blueprint style
+              <select id="blueprintStyle">
+                <option value="core">Core-satellite draft</option>
+                <option value="growth">Growth-heavy draft</option>
+                <option value="stability">Stability-first draft</option>
+                <option value="tax">Tax-aware draft</option>
+              </select>
+            </label>
+            <label>
+              Review cadence
+              <select id="blueprintCadence">
+                <option value="quarterly">Quarterly</option>
+                <option value="halfyear">Half-yearly</option>
+                <option value="annual">Annual</option>
+              </select>
+            </label>
+            <div id="blueprintWeights" class="blueprint-weight-list" aria-label="Blueprint fund weights"></div>
+            <button class="primary-button" type="submit">Run blueprint</button>
+          </form>
+          <div id="blueprintOutput" class="blueprint-output" aria-live="polite">
+            Select two or more funds in X-Ray or Compare to draft research-only portfolio weights.
+          </div>
+        </div>
+      </section>
+
+      <section id="rebalance-guard" class="workspace-band rebalance-band" aria-labelledby="rebalance-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Drift discipline</p>
+            <h2 id="rebalance-title">Nadi Rebalance Guard</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Rebalance guard actions">
+            <span id="rebalanceSummary" class="status-chip">Drift review</span>
+            <button class="text-button" id="addRebalanceReview" type="button">Watch drift</button>
+            <button class="text-button" id="copyRebalance" type="button">Copy guard note</button>
+          </div>
+        </div>
+        <div class="rebalance-grid">
+          <form id="rebalanceForm" class="tool-panel rebalance-form">
+            <h3>Review current weights</h3>
+            <label>
+              Current portfolio value
+              <input id="rebalanceCorpus" type="number" min="0" step="5000" value="500000">
+            </label>
+            <label>
+              Future monthly SIP route
+              <input id="rebalanceSip" type="number" min="0" step="500" value="25000">
+            </label>
+            <label>
+              Drift tolerance %
+              <input id="rebalanceTolerance" type="number" min="1" max="25" step="1" value="5">
+            </label>
+            <label>
+              Review mode
+              <select id="rebalanceMode">
+                <option value="review">Review only</option>
+                <option value="sip-route">Contribution-first route</option>
+                <option value="fresh-money">Fresh money correction</option>
+                <option value="advisor">Discuss with advisor</option>
+              </select>
+            </label>
+            <div id="rebalanceCurrentWeights" class="rebalance-weight-list" aria-label="Current fund weights"></div>
+            <button class="primary-button" type="submit">Run guard</button>
+          </form>
+          <div id="rebalanceOutput" class="rebalance-output" aria-live="polite">
+            Run the guard after drafting a portfolio blueprint to inspect drift, route future contributions, and write review guardrails.
+          </div>
+        </div>
+      </section>
+
+      <section id="portfolio-review" class="workspace-band review-room-band" aria-labelledby="portfolio-review-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Review command</p>
+            <h2 id="portfolio-review-title">Nadi Portfolio Review Room</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Portfolio review actions">
+            <span id="portfolioReviewSummary" class="status-chip">Review queue</span>
+            <button class="text-button" id="savePortfolioReview" type="button">Save review</button>
+            <button class="text-button" id="copyPortfolioReview" type="button">Copy review note</button>
+          </div>
+        </div>
+        <div class="review-room-grid">
+          <form id="portfolioReviewForm" class="tool-panel review-room-form">
+            <h3>Prepare the next review</h3>
+            <label>
+              Review focus
+              <select id="portfolioReviewFocus">
+                <option value="quarterly">Quarterly portfolio review</option>
+                <option value="drift">Drift and contribution review</option>
+                <option value="evidence">Evidence and source refresh</option>
+                <option value="cost">Cost and overlap audit</option>
+                <option value="behavior">Behavior and stress review</option>
+              </select>
+            </label>
+            <label>
+              Next review date
+              <input id="portfolioReviewDate" type="date" value="2026-07-31">
+            </label>
+            <label>
+              Review conviction
+              <select id="portfolioReviewConviction">
+                <option value="medium">Medium - keep researching</option>
+                <option value="low">Low - collect more evidence</option>
+                <option value="high">High - document and monitor</option>
+              </select>
+            </label>
+            <label>
+              Review note
+              <textarea id="portfolioReviewNote" rows="4" placeholder="What should be checked before the next real-world decision?"></textarea>
+            </label>
+            <button class="primary-button" type="submit">Run review room</button>
+          </form>
+          <div id="portfolioReviewOutput" class="review-room-output" aria-live="polite">
+            Build a consolidated review across drift, evidence, cost, watchlist alerts, behavior, and next review discipline.
+          </div>
+        </div>
+      </section>
+
+      <section id="review-vault" class="workspace-band review-vault-band" aria-labelledby="review-vault-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Review memory</p>
+            <h2 id="review-vault-title">Nadi Review Vault</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Review vault actions">
+            <span id="reviewVaultSummary" class="status-chip">Local snapshots</span>
+            <button class="text-button" id="saveReviewSnapshot" type="button">Save snapshot</button>
+            <button class="text-button" id="copyReviewVault" type="button">Copy vault brief</button>
+            <button class="text-button" id="clearReviewVault" type="button">Clear vault</button>
+          </div>
+        </div>
+        <div id="reviewVaultOutput" class="review-vault-output" aria-live="polite">
+          Save review snapshots from the Portfolio Review Room to compare discipline over time in this browser only.
+        </div>
+      </section>
+
+      <section id="investor-record" class="workspace-band investor-record-band" aria-labelledby="investor-record-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Account-ready layer</p>
+            <h2 id="investor-record-title">Nadi Investor Record Desk</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Investor record actions">
+            <span id="investorRecordSummary" class="status-chip">Local records</span>
+            <button class="text-button" id="saveInvestorRecord" type="button">Save record</button>
+            <button class="text-button" id="copyInvestorRecord" type="button">Copy record</button>
+            <button class="text-button" id="clearInvestorRecords" type="button">Clear records</button>
+          </div>
+        </div>
+        <div class="investor-record-grid">
+          <form id="investorRecordForm" class="tool-panel">
+            <h3>Compose review record</h3>
+            <label>
+              Record label
+              <input id="investorRecordLabel" type="text" maxlength="80" placeholder="Goal label, no PAN or folio">
+            </label>
+            <label>
+              Review stance
+              <select id="investorRecordStance">
+                <option value="research-only">Research only</option>
+                <option value="watch">Watch and review</option>
+                <option value="memo-ready">Memo ready</option>
+                <option value="source-refresh">Source refresh needed</option>
+              </select>
+            </label>
+            <label>
+              Audience
+              <select id="investorRecordAudience">
+                <option value="self-review">Self review</option>
+                <option value="family-discussion">Family discussion note</option>
+                <option value="advisor-conversation">Advisor conversation note</option>
+                <option value="future-mfd">Future distributor handoff draft</option>
+              </select>
+            </label>
+            <label>
+              Boundary
+              <select id="investorRecordBoundary">
+                <option value="no-action">No action from this record</option>
+                <option value="verify-sources">Verify live sources first</option>
+                <option value="wait-review-date">Wait until review date</option>
+                <option value="resolve-flags">Resolve alerts and flags</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build record</button>
+          </form>
+          <div id="investorRecordOutput" class="investor-record-output" aria-live="polite">
+            Build an identity-light review record from the latest Vault snapshot or current Portfolio Review preview.
+          </div>
+        </div>
+      </section>
+
       <section id="evidence" class="workspace-band evidence-band" aria-labelledby="evidence-title">
         <div class="section-heading">
           <div>
@@ -661,6 +946,23 @@
           <div id="evidenceOutput" class="evidence-output" aria-live="polite">
             Evidence source map will appear here.
           </div>
+        </div>
+      </section>
+
+      <section id="fund-house-lens" class="workspace-band house-band" aria-labelledby="house-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Stewardship lens</p>
+            <h2 id="house-title">Fund House Lens</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Fund house lens actions">
+            <span id="houseSummary" class="status-chip">Stewardship review</span>
+            <button class="text-button" id="watchHouseReview" type="button">Watch house review</button>
+            <button class="text-button" id="copyHouseLens" type="button">Copy house note</button>
+          </div>
+        </div>
+        <div id="houseOutput" class="house-output" aria-live="polite">
+          Select a fund to review process clarity, evidence depth, cost discipline, capacity comfort, manager visibility, and style stability.
         </div>
       </section>
 
@@ -713,6 +1015,107 @@
           </form>
           <div id="dataOutput" class="data-output" aria-live="polite">
             Select a source to see live-data launch gates, validation checks, and blockers before connecting feeds.
+          </div>
+        </div>
+      </section>
+
+      <section id="doc-decoder" class="workspace-band doc-band" aria-labelledby="doc-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Document plain English</p>
+            <h2 id="doc-title">Nadi Doc Decoder</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Doc decoder actions">
+            <span id="docSummary" class="status-chip">SID/KIM lens</span>
+            <button class="text-button" id="copyDocNote" type="button">Copy doc note</button>
+          </div>
+        </div>
+        <div class="doc-grid">
+          <form id="docForm" class="tool-panel doc-form">
+            <h3>Decode a scheme document</h3>
+            <label>
+              Document
+              <select id="docFocus">
+                <option value="kim">KIM snapshot</option>
+                <option value="sid">SID deep read</option>
+                <option value="factsheet">AMC factsheet</option>
+                <option value="portfolio">Portfolio disclosure</option>
+                <option value="risk-ter">Riskometer and TER history</option>
+              </select>
+            </label>
+            <label>
+              Investor question
+              <select id="docQuestion">
+                <option value="role">What does this fund do?</option>
+                <option value="risk">What can go wrong?</option>
+                <option value="cost">What will it cost?</option>
+                <option value="evidence">Is the evidence fresh?</option>
+                <option value="review">When should I re-check?</option>
+              </select>
+            </label>
+            <label>
+              Reading depth
+              <select id="docDepth">
+                <option value="standard">Standard</option>
+                <option value="quick">Quick scan</option>
+                <option value="deep">Deep review</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Decode document</button>
+          </form>
+          <div id="docOutput" class="doc-output" aria-live="polite">
+            Choose a document lens to convert SID, KIM, factsheet, portfolio disclosure, riskometer, and TER language into research questions.
+          </div>
+        </div>
+      </section>
+
+      <section id="review-rhythm" class="workspace-band rhythm-band" aria-labelledby="rhythm-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Review habit</p>
+            <h2 id="rhythm-title">Review Rhythm Board</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Review rhythm actions">
+            <span id="rhythmSummary" class="status-chip">30/60/90 review</span>
+            <button class="text-button" id="addRhythmTrigger" type="button">Save review trigger</button>
+            <button class="text-button" id="copyRhythmNote" type="button">Copy rhythm note</button>
+          </div>
+        </div>
+        <div class="rhythm-grid">
+          <form id="rhythmForm" class="tool-panel rhythm-form">
+            <h3>Build the next review</h3>
+            <label>
+              Review focus
+              <select id="rhythmFocus">
+                <option value="evidence">Evidence refresh</option>
+                <option value="sip">SIP review</option>
+                <option value="switch">Switch review</option>
+                <option value="cost">Cost audit</option>
+                <option value="portfolio">Portfolio X-Ray</option>
+                <option value="behavior">Behavior check</option>
+              </select>
+            </label>
+            <label>
+              Primary review date
+              <input id="rhythmDate" type="date" value="2026-06-30">
+            </label>
+            <label>
+              Cadence
+              <select id="rhythmCadence">
+                <option value="quarterly">Quarterly</option>
+                <option value="monthly">Monthly</option>
+                <option value="halfyear">Half-yearly</option>
+                <option value="annual">Annual</option>
+              </select>
+            </label>
+            <label>
+              Review note
+              <textarea id="rhythmNote" rows="4" placeholder="What must be checked before the next decision?"></textarea>
+            </label>
+            <button class="primary-button" type="submit">Build rhythm</button>
+          </form>
+          <div id="rhythmOutput" class="rhythm-output" aria-live="polite">
+            Build a 30/60/90-day review rhythm from the selected fund, saved alerts, watchlist, compare set, and decision dates.
           </div>
         </div>
       </section>
@@ -984,6 +1387,7 @@
           <a href="#suitability-passport">Passport</a>
           <a href="#fit-heatmap">Fit Map</a>
           <a href="#red-flag-radar">Flags</a>
+          <a href="#switch-lab">Switch Lab</a>
           <a href="#peer-bench">Bench</a>
           <a href="#compare">Compare</a>
           <a href="#goal-fit">Goal Fit</a>
@@ -993,8 +1397,16 @@
           <a href="#cost-lab">Cost</a>
           <a href="#readiness-gate">Gate</a>
           <a href="#portfolio">X-Ray</a>
+          <a href="#blueprint">Blueprint</a>
+          <a href="#rebalance-guard">Rebalance</a>
+          <a href="#portfolio-review">Review</a>
+          <a href="#review-vault">Vault</a>
+          <a href="#investor-record">Record</a>
           <a href="#evidence">Evidence</a>
+          <a href="#fund-house-lens">House Lens</a>
           <a href="#data-readiness">Data</a>
+          <a href="#doc-decoder">Docs</a>
+          <a href="#review-rhythm">Rhythm</a>
           <a href="#watchlist">Watchlist</a>
           <a href="#decision-pack">Pack</a>
           <a href="#pricing">Pricing</a>
@@ -1010,6 +1422,6 @@
       <span aria-hidden="true">&#8593;</span>
     </button>
 
-    <script src="app.js?v=20260511-02"></script>
+    <script src="app.js?v=20260511-11"></script>
   </body>
 </html>

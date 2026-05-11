@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260511-13";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v31 Workspace Navigator";
+const DATA_VERSION = "20260511-16";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v34 Research Lanes";
 
 const FUNDS = [
   {
@@ -606,6 +606,441 @@ function renderFundGrid() {
       </article>
     `;
   }).join("");
+}
+
+function readResearchLaneConfig() {
+  return {
+    amount: clampNumber(Number(els.laneAmount?.value || 0), 0, 10000000),
+    horizon: els.laneHorizon?.value || "long",
+    mode: els.laneMode?.value || "first-sip"
+  };
+}
+
+function researchLaneConfig() {
+  const config = readResearchLaneConfig();
+  const fund = selectedFund();
+  const evidence = evidenceReadinessScore(fund);
+  const compareFunds = compareSet();
+  const pulse = researchPulseConfig();
+  const base = {
+    action: "journey",
+    amountLabel: formatMoney(config.amount),
+    compareFunds,
+    config,
+    evidence,
+    fund,
+    label: "Start first SIP",
+    laneScore: 76,
+    posture: "Goal before fund",
+    primaryTool: "First SIP Coach",
+    route: "#journey",
+    routeLabel: "Open First SIP Coach",
+    steps: [
+      "Define the goal and time horizon before selecting a scheme.",
+      "Run Goal Fit and SIP math before adding money.",
+      "Write the decision reason and review date before acting."
+    ],
+    tools: ["Goal Fit", "SIP/STP", "Research Pulse", "Decision Pack"]
+  };
+
+  if (config.mode === "compare") {
+    Object.assign(base, {
+      action: "compare",
+      label: "Compare shortlisted funds",
+      laneScore: Math.round(clampNumber(62 + compareFunds.length * 7 + evidence * 0.12, 48, 94)),
+      posture: compareFunds.length >= 2 ? "Shortlist ready" : "Add benchmark",
+      primaryTool: "Fund Compare Matrix",
+      route: "#compare",
+      routeLabel: "Open Compare",
+      steps: [
+        "Compare role, expense, drawdown, evidence readiness, and overlap.",
+        "Keep only funds with a distinct portfolio job.",
+        "Use Evidence Ledger before treating demo metrics as current."
+      ],
+      tools: ["Compare", "Peer Bench", "Evidence", "X-Ray"]
+    });
+  } else if (config.mode === "review") {
+    Object.assign(base, {
+      action: "review",
+      label: "Review current portfolio",
+      laneScore: Math.round(clampNumber(58 + Math.min(compareFunds.length, 4) * 5 + (pulse.activeAlerts.length ? 8 : 0), 45, 92)),
+      posture: "Review discipline",
+      primaryTool: "Portfolio Review Room",
+      route: "#portfolio-review",
+      routeLabel: "Open Review Room",
+      steps: [
+        "Check drift, overlap, cost, evidence freshness, and role clarity.",
+        "Save a review snapshot for future comparison.",
+        "Set the next review rhythm before changing anything."
+      ],
+      tools: ["X-Ray", "Review Room", "Review Vault", "Rhythm"]
+    });
+  } else if (config.mode === "switch") {
+    Object.assign(base, {
+      action: "switch",
+      label: "Study switch question",
+      laneScore: Math.round(clampNumber(55 + evidence * 0.18 - Math.max(0, fund.maxDrawdown - 18) * 0.5, 42, 88)),
+      posture: "Evidence before change",
+      primaryTool: "Switch Decision Lab",
+      route: "#switch-lab",
+      routeLabel: "Open Switch Lab",
+      steps: [
+        "Separate discomfort, cost, tax friction, and evidence from performance noise.",
+        "Compare candidate role and overlap before any switch decision.",
+        "Use Cost Lab and Stress Lab before writing the memo."
+      ],
+      tools: ["Switch Lab", "Cost Lab", "Stress Lab", "Decision Pack"]
+    });
+  } else if (config.mode === "memo") {
+    Object.assign(base, {
+      action: "memo",
+      label: "Prepare decision memo",
+      laneScore: Math.round(clampNumber(58 + evidence * 0.2 + (els.packReason?.value.trim() ? 12 : 0), 44, 95)),
+      posture: els.packReason?.value.trim() ? "Memo draft ready" : "Reason pending",
+      primaryTool: "Nadi Decision Pack",
+      route: "#decision-pack",
+      routeLabel: "Open Decision Pack",
+      steps: [
+        "Record fund role, amount, horizon, evidence status, and review date.",
+        "Write the reason in plain words before acting.",
+        "Copy or save the memo for future review discipline."
+      ],
+      tools: ["Research Pulse", "Readiness Gate", "Decision Pack", "Journal"]
+    });
+  } else if (config.horizon === "short") {
+    Object.assign(base, {
+      laneScore: 68,
+      posture: "Liquidity first",
+      steps: [
+        "Short horizons need liquidity and drawdown review before return chasing.",
+        "Research debt or parking roles before equity exposure.",
+        "Use Stress Lab and Evidence Ledger before writing any memo."
+      ],
+      tools: ["Category Playbook", "Stress Lab", "Evidence", "Decision Pack"]
+    });
+  }
+
+  if (config.horizon === "short" && ["first-sip", "compare"].includes(config.mode)) {
+    base.steps = [
+      ...base.steps,
+      "Short horizon flag: confirm the goal can tolerate market drawdown before researching equity-heavy funds."
+    ];
+  }
+
+  return base;
+}
+
+function renderResearchLanes() {
+  if (!els.laneOutput) return;
+  const lane = researchLaneConfig();
+  if (els.laneSummary) {
+    els.laneSummary.textContent = `${lane.posture} | ${lane.laneScore}/100`;
+  }
+  els.laneOutput.innerHTML = `
+    <div class="lane-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(lane.posture)}</span>
+        <h3>${escapeHtml(lane.label)}</h3>
+        <p>${escapeHtml(lane.primaryTool)} route for ${escapeHtml(lane.fund.name)} with ${escapeHtml(lane.amountLabel)} monthly amount.</p>
+      </div>
+      <div class="lane-score" style="--score:${lane.laneScore}">
+        <b>${lane.laneScore}</b>
+        <span>Lane</span>
+      </div>
+    </div>
+    <div class="lane-tool-strip">
+      ${lane.tools.map((tool) => `<span>${escapeHtml(tool)}</span>`).join("")}
+    </div>
+    <div class="lane-step-grid">
+      ${lane.steps.map((step, index) => `
+        <article>
+          <span>Step ${index + 1}</span>
+          <p>${escapeHtml(step)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="lane-next">
+      <strong>${escapeHtml(lane.routeLabel)}</strong>
+      <p>Research routing only. This does not approve, recommend, execute, or guarantee any investment action.</p>
+    </div>
+  `;
+}
+
+function makeResearchLaneNote() {
+  const lane = researchLaneConfig();
+  return [
+    "# NiveshNadi Research Lane",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Lane: ${lane.label}`,
+    `Posture: ${lane.posture}`,
+    `Lane score: ${lane.laneScore}/100`,
+    `Selected fund: ${lane.fund.name}`,
+    `Amount: ${lane.amountLabel}`,
+    `Primary tool: ${lane.primaryTool}`,
+    `Evidence readiness: ${lane.evidence}/100`,
+    "",
+    "## Route Tools",
+    ...lane.tools.map((tool) => `- ${tool}`),
+    "",
+    "## Research Steps",
+    ...lane.steps.map((step) => `- ${step}`),
+    "",
+    "Research routing only. This is not investment advice, suitability approval, execution instruction, or a return guarantee."
+  ].join("\n");
+}
+
+function applyResearchLane() {
+  const lane = researchLaneConfig();
+  if (lane.action === "journey") {
+    if (els.journeySip) els.journeySip.value = lane.config.amount;
+    if (els.journeyYears) els.journeyYears.value = lane.config.horizon === "long" ? 10 : lane.config.horizon === "medium" ? 5 : 2;
+    renderFirstSipCoach();
+  }
+  if (lane.action === "compare" && state.compare.size < 2) {
+    state.compare = new Set([state.selectedId, "index-nifty"]);
+    renderAll();
+  }
+  if (lane.action === "review") {
+    analyzePortfolio();
+    renderPortfolioReviewRoom();
+    renderReviewVault();
+  }
+  if (lane.action === "switch") {
+    renderSwitchDecisionLab();
+    renderCostRealityLab();
+  }
+  if (lane.action === "memo") {
+    if (els.packAmount) els.packAmount.value = lane.config.amount;
+    renderDecisionPack();
+  }
+  scrollToHash(lane.route, "smooth", true);
+}
+
+function researchPulseConfig() {
+  const fund = selectedFund();
+  const compareFunds = compareSet();
+  const score = nadiScore(fund);
+  const evidence = evidenceReadinessScore(fund);
+  const watchlist = loadWatchlist();
+  const alerts = loadAlerts();
+  const watchedSelected = watchlist.some((entry) => entry.fundId === fund.id);
+  const activeAlerts = alerts.filter((alert) => alert.fundId === fund.id || state.compare.has(alert.fundId));
+  const hasMemoReason = Boolean(els.packReason?.value.trim());
+  const compareBonus = Math.min(compareFunds.length, 4) * 5;
+  const watchBonus = watchedSelected || activeAlerts.length ? 6 : 0;
+  const memoBonus = hasMemoReason ? 8 : -4;
+  const stressPenalty = fund.maxDrawdown >= 20 || fund.risk === "Very High" ? 7 : 0;
+  const pulseScore = Math.round(clampNumber(
+    score * 0.32 + evidence * 0.28 + compareBonus + watchBonus + memoBonus - stressPenalty + 22,
+    32,
+    96
+  ));
+  const openChecks = [];
+
+  if (compareFunds.length < 2) {
+    openChecks.push({
+      action: "compare",
+      label: "Build compare set",
+      detail: "Add at least two funds before relying on a shortlist."
+    });
+  }
+  if (evidence < 78) {
+    openChecks.push({
+      action: "evidence",
+      label: "Verify evidence",
+      detail: "Check source readiness before copying a memo."
+    });
+  }
+  if (fund.maxDrawdown >= 16 || fund.risk === "High" || fund.risk === "Very High") {
+    openChecks.push({
+      action: "stress",
+      label: "Stress test",
+      detail: "Translate drawdown risk into rupee behavior before acting."
+    });
+  }
+  if (!hasMemoReason) {
+    openChecks.push({
+      action: "pack",
+      label: "Write decision reason",
+      detail: "Complete the memo reason before any real-world decision."
+    });
+  }
+  if (!watchedSelected && !activeAlerts.length) {
+    openChecks.push({
+      action: "watchlist",
+      label: "Set review trigger",
+      detail: "Create a watch or review date so research does not become impulse."
+    });
+  }
+
+  let posture = "Research in progress";
+  if (pulseScore >= 82 && openChecks.length <= 2) posture = "Memo workflow ready";
+  else if (evidence < 68) posture = "Evidence first";
+  else if (compareFunds.length < 2) posture = "Shortlist incomplete";
+  else if (fund.maxDrawdown >= 20) posture = "Stress discipline needed";
+
+  const next = openChecks[0] || {
+    action: "review",
+    label: "Review room",
+    detail: "Refresh the portfolio review file and next review date."
+  };
+
+  return {
+    activeAlerts,
+    compareFunds,
+    evidence,
+    fund,
+    hasMemoReason,
+    next,
+    openChecks,
+    posture,
+    pulseScore,
+    score,
+    watchedSelected
+  };
+}
+
+function researchPulseActionCards(config) {
+  return [
+    {
+      action: "compare",
+      title: "Compare discipline",
+      value: `${config.compareFunds.length} selected`,
+      detail: config.compareFunds.length >= 2
+        ? "Shortlist is ready for role, cost, and overlap comparison."
+        : "Add a benchmark or peer fund before treating this as a shortlist."
+    },
+    {
+      action: "evidence",
+      title: "Evidence gate",
+      value: `${config.evidence}/100`,
+      detail: config.evidence >= 78
+        ? "Demo evidence is mapped; live citations still need source dates."
+        : "Open the ledger before relying on expense, holdings, or style claims."
+    },
+    {
+      action: "stress",
+      title: "Risk rehearsal",
+      value: `${config.fund.maxDrawdown}% drawdown`,
+      detail: config.fund.maxDrawdown >= 16
+        ? "Run the Stress Lab to see behavior pressure in rupee terms."
+        : "Risk control is calmer, but still rehearse before a memo."
+    },
+    {
+      action: "pack",
+      title: "Decision memo",
+      value: config.hasMemoReason ? "Reason drafted" : "Reason pending",
+      detail: config.hasMemoReason
+        ? "The pack can be refreshed and copied with the latest selected fund."
+        : "Write the reason in your own words before any investing decision."
+    }
+  ];
+}
+
+function renderResearchPulse() {
+  if (!els.researchPulse) return;
+  const config = researchPulseConfig();
+  const openCopy = config.openChecks.length
+    ? config.openChecks.slice(0, 3).map((item) => `<li>${escapeHtml(item.label)}: ${escapeHtml(item.detail)}</li>`).join("")
+    : "<li>No major demo workflow gap remains. Refresh the review room before relying on this outside demo data.</li>";
+  if (els.pulseSummary) {
+    els.pulseSummary.textContent = `${config.openChecks.length} open checks`;
+  }
+  els.researchPulse.innerHTML = `
+    <article class="pulse-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(config.posture)}</span>
+        <h3>${escapeHtml(config.fund.name)}</h3>
+        <p>${escapeHtml(config.fund.role)}</p>
+      </div>
+      <div class="pulse-score" style="--score:${config.pulseScore}">
+        <b>${config.pulseScore}</b>
+        <span>Pulse</span>
+      </div>
+      <div class="pulse-facts" aria-label="Research Pulse facts">
+        <div><span>Nadi score</span><strong>${config.score}/100</strong></div>
+        <div><span>Evidence</span><strong>${config.evidence}/100</strong></div>
+        <div><span>Watch triggers</span><strong>${config.activeAlerts.length}</strong></div>
+        <div><span>Next check</span><strong>${escapeHtml(config.next.label)}</strong></div>
+      </div>
+      <ul class="pulse-checks">${openCopy}</ul>
+    </article>
+    <div class="pulse-action-grid">
+      ${researchPulseActionCards(config).map((item) => `
+        <article class="pulse-action-card">
+          <span>${escapeHtml(item.title)}</span>
+          <strong>${escapeHtml(item.value)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+          <button class="text-button" type="button" data-pulse-action="${escapeHtml(item.action)}">Open</button>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function makeResearchPulseNote() {
+  const config = researchPulseConfig();
+  const openChecks = config.openChecks.length
+    ? config.openChecks.map((item) => `- ${item.label}: ${item.detail}`).join("\n")
+    : "- No major demo workflow gap remains. Refresh review room before relying on this outside demo data.";
+  const compareLines = config.compareFunds.length
+    ? config.compareFunds.map((fund) => `- ${fund.name} | ${fund.category} | Score ${nadiScore(fund)}/100`).join("\n")
+    : "- No compare set selected.";
+  return [
+    "# NiveshNadi Research Pulse",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Selected fund: ${config.fund.name}`,
+    `Category: ${config.fund.category}`,
+    `Risk: ${config.fund.risk}`,
+    `Pulse posture: ${config.posture}`,
+    `Pulse score: ${config.pulseScore}/100`,
+    `Nadi score: ${config.score}/100`,
+    `Evidence readiness: ${config.evidence}/100`,
+    `Watch triggers: ${config.activeAlerts.length}`,
+    `Next check: ${config.next.label}`,
+    "",
+    "## Open Checks",
+    openChecks,
+    "",
+    "## Compare Set",
+    compareLines,
+    "",
+    "Research support only. This pulse organizes checks; it is not a recommendation, approval, execution instruction, or return guarantee."
+  ].join("\n");
+}
+
+function handlePulseAction(action) {
+  const config = researchPulseConfig();
+  const resolved = action === "next" ? config.next.action : action;
+  if (resolved === "compare") {
+    scrollToHash("#compare", "smooth", true);
+    return;
+  }
+  if (resolved === "evidence") {
+    renderEvidenceLedger();
+    scrollToHash("#evidence", "smooth", true);
+    return;
+  }
+  if (resolved === "stress") {
+    if (els.stressShock) {
+      els.stressShock.value = Math.max(10, Math.min(45, config.fund.maxDrawdown || 18));
+    }
+    renderStressLab();
+    scrollToHash("#risk-lab", "smooth", true);
+    return;
+  }
+  if (resolved === "watchlist") {
+    addToWatchlist(config.fund.id);
+    scrollToHash("#watchlist", "smooth", true);
+    return;
+  }
+  if (resolved === "review") {
+    renderPortfolioReviewRoom();
+    scrollToHash("#portfolio-review", "smooth", true);
+    return;
+  }
+  renderDecisionPack();
+  scrollToHash("#decision-pack", "smooth", true);
 }
 
 function readCategoryPlaybookConfig() {
@@ -2485,6 +2920,8 @@ function makeCompareNote() {
 
 function renderAll() {
   renderFundGrid();
+  renderResearchLanes();
+  renderResearchPulse();
   renderCategoryPlaybook();
   renderFundDetail();
   renderSuitabilityPassport();
@@ -2550,6 +2987,48 @@ function settleHashNavigation() {
   requestAnimationFrame(() => scrollToHash(hash, "auto"));
   window.setTimeout(() => scrollToHash(hash, "auto"), 120);
   window.setTimeout(() => scrollToHash(hash, "auto"), 360);
+}
+
+function workspaceOption(hash) {
+  if (!els.workspaceJump || !hash) return null;
+  return Array.from(els.workspaceJump.options).find((option) => option.value === hash) || null;
+}
+
+function workspaceHashFromViewport() {
+  const sections = qsa(".workspace-band[id]");
+  if (!sections.length) return "#screener";
+  const offset = stickyHeaderOffset() + 28;
+  let active = sections[0];
+  for (const section of sections) {
+    if (section.getBoundingClientRect().top <= offset) {
+      active = section;
+    } else {
+      break;
+    }
+  }
+  return `#${active.id}`;
+}
+
+function updateWorkspaceNavigator(hash = "") {
+  const fallbackHash = hash && workspaceOption(hash) ? hash : workspaceHashFromViewport();
+  const option = workspaceOption(fallbackHash);
+  const activeHash = option ? fallbackHash : "";
+  if (els.workspaceJump) {
+    els.workspaceJump.value = activeHash;
+  }
+  if (els.workspaceStatus) {
+    const group = option?.parentElement?.tagName === "OPTGROUP" ? option.parentElement.label : "Workspace";
+    const label = option?.textContent?.trim() || "Screener";
+    els.workspaceStatus.textContent = `${group}: ${label}`;
+    els.workspaceStatus.title = `Current workspace: ${label}`;
+  }
+  if (els.navLinks) {
+    els.navLinks.forEach((link) => {
+      const isActive = link.getAttribute("href") === activeHash;
+      if (isActive) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    });
+  }
 }
 
 window.addEventListener("load", settleHashNavigation);
@@ -5171,6 +5650,8 @@ function addToWatchlist(fundId, shouldRender = true) {
     saveWatchlist(watchlist.slice(0, 30));
   }
   if (shouldRender) {
+    renderResearchLanes();
+    renderResearchPulse();
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
@@ -5185,6 +5666,8 @@ function removeFromWatchlist(fundId) {
   const alerts = loadAlerts().filter((alert) => alert.fundId !== fundId);
   saveWatchlist(watchlist);
   saveAlerts(alerts);
+  renderResearchLanes();
+  renderResearchPulse();
   renderPortfolioReviewRoom();
   renderReviewVault();
   renderInvestorRecordDesk();
@@ -5209,6 +5692,8 @@ function handleAlertForm(event) {
   const alerts = [alert, ...loadAlerts()].slice(0, 60);
   saveAlerts(alerts);
   els.alertNote.value = "";
+  renderResearchLanes();
+  renderResearchPulse();
   renderPortfolioReviewRoom();
   renderReviewVault();
   renderInvestorRecordDesk();
@@ -6944,6 +7429,16 @@ function bindEvents() {
     renderFundGrid();
   });
   els.copyBrief.addEventListener("click", () => copyText(makeBrief()));
+  els.laneForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    applyResearchLane();
+  });
+  [els.laneMode, els.laneHorizon, els.laneAmount].forEach((input) => {
+    input?.addEventListener(input.tagName === "INPUT" ? "input" : "change", () => renderResearchLanes());
+  });
+  els.applyLane?.addEventListener("click", applyResearchLane);
+  els.copyLane?.addEventListener("click", () => copyText(makeResearchLaneNote()));
+  els.copyPulse?.addEventListener("click", () => copyText(makeResearchPulseNote()));
   els.passportForm?.addEventListener("submit", (event) => {
     event.preventDefault();
     renderSuitabilityPassport();
@@ -7154,6 +7649,8 @@ function bindEvents() {
   });
   els.watchCompareSet?.addEventListener("click", () => {
     FUNDS.filter((fund) => state.compare.has(fund.id)).forEach((fund) => addToWatchlist(fund.id, false));
+    renderResearchLanes();
+    renderResearchPulse();
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
@@ -7163,6 +7660,8 @@ function bindEvents() {
   });
   els.clearAlerts?.addEventListener("click", () => {
     saveAlerts([]);
+    renderResearchLanes();
+    renderResearchPulse();
     renderPortfolioReviewRoom();
     renderReviewVault();
     renderInvestorRecordDesk();
@@ -7172,9 +7671,17 @@ function bindEvents() {
   });
   els.packForm?.addEventListener("submit", renderDecisionPack);
   [els.packDecision, els.packAmount, els.packReviewDate, els.packConviction, els.packReason].forEach((input) => {
-    input?.addEventListener("change", () => renderDecisionPack());
+    input?.addEventListener("change", () => {
+      renderDecisionPack();
+      renderResearchLanes();
+      renderResearchPulse();
+    });
   });
-  els.packReason?.addEventListener("input", () => renderDecisionPack());
+  els.packReason?.addEventListener("input", () => {
+    renderDecisionPack();
+    renderResearchLanes();
+    renderResearchPulse();
+  });
   els.copyPack?.addEventListener("click", () => copyText(makeDecisionPackText()));
   els.savePackJournal?.addEventListener("click", saveDecisionPackToJournal);
   els.journalForm.addEventListener("submit", handleJournal);
@@ -7194,6 +7701,8 @@ function bindEvents() {
     if (!button) return;
     state.selectedId = button.dataset.selectFund;
     renderFundGrid();
+    renderResearchLanes();
+    renderResearchPulse();
     renderFundDetail();
     renderSuitabilityPassport();
     renderGoalFundFitHeatmap();
@@ -7225,6 +7734,12 @@ function bindEvents() {
   });
 
   document.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-pulse-action]");
+    if (!button) return;
+    handlePulseAction(button.dataset.pulseAction);
+  });
+
+  document.addEventListener("click", (event) => {
     const removeWatch = event.target.closest("[data-remove-watch]");
     const removeAlert = event.target.closest("[data-remove-alert]");
     if (removeWatch) {
@@ -7233,6 +7748,8 @@ function bindEvents() {
     }
     if (removeAlert) {
       saveAlerts(loadAlerts().filter((alert) => alert.id !== removeAlert.dataset.removeAlert));
+      renderResearchLanes();
+      renderResearchPulse();
       renderPortfolioReviewRoom();
       renderReviewVault();
       renderInvestorRecordDesk();
@@ -7250,6 +7767,8 @@ function bindEvents() {
     if (event.target.checked) state.compare.add(id);
     else state.compare.delete(id);
     renderFundGrid();
+    renderResearchLanes();
+    renderResearchPulse();
     renderPortfolioChoices();
     renderFundDetail();
     renderSuitabilityPassport();
@@ -7355,29 +7874,51 @@ function bindScrollTopButton() {
 
 function bindWorkspaceJump() {
   if (!els.workspaceJump) return;
+  let scrollFrame = 0;
+  const syncFromScroll = () => {
+    scrollFrame = 0;
+    updateWorkspaceNavigator(workspaceHashFromViewport());
+  };
+  const queueScrollSync = () => {
+    if (scrollFrame) return;
+    scrollFrame = window.requestAnimationFrame(syncFromScroll);
+  };
   els.workspaceJump.addEventListener("change", () => {
     const hash = els.workspaceJump.value;
     if (!hash) return;
+    updateWorkspaceNavigator(hash);
     scrollToHash(hash, "smooth", true);
   });
   window.addEventListener("hashchange", () => {
-    if (!els.workspaceJump) return;
-    const selected = Array.from(els.workspaceJump.options).some((option) => option.value === window.location.hash);
-    els.workspaceJump.value = selected ? window.location.hash : "";
+    updateWorkspaceNavigator(window.location.hash);
   });
-  const selected = Array.from(els.workspaceJump.options).some((option) => option.value === window.location.hash);
-  els.workspaceJump.value = selected ? window.location.hash : "";
+  window.addEventListener("scroll", queueScrollSync, { passive: true });
+  window.addEventListener("resize", queueScrollSync);
+  updateWorkspaceNavigator(window.location.hash || "#screener");
 }
 
 function cacheElements() {
   Object.assign(els, {
     workspaceJump: qs("#workspaceJump"),
+    workspaceStatus: qs("#workspaceStatus"),
+    navLinks: qsa(".top-nav a[href^='#']"),
     searchInput: qs("#searchInput"),
     categoryFilter: qs("#categoryFilter"),
     riskFilter: qs("#riskFilter"),
     sortSelect: qs("#sortSelect"),
     resetFilters: qs("#resetFilters"),
     copyBrief: qs("#copyBrief"),
+    laneForm: qs("#laneForm"),
+    laneMode: qs("#laneMode"),
+    laneHorizon: qs("#laneHorizon"),
+    laneAmount: qs("#laneAmount"),
+    laneSummary: qs("#laneSummary"),
+    laneOutput: qs("#laneOutput"),
+    applyLane: qs("#applyLane"),
+    copyLane: qs("#copyLane"),
+    copyPulse: qs("#copyPulse"),
+    pulseSummary: qs("#pulseSummary"),
+    researchPulse: qs("#researchPulse"),
     fundGrid: qs("#fundGrid"),
     selectedStatus: qs("#selectedStatus"),
     fundDetail: qs("#fundDetail"),

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260512-36";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v77 Build Tracker";
+const DATA_VERSION = "20260512-37";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v78 Executive Build Tracker";
 
 const FUNDS = [
   {
@@ -776,7 +776,8 @@ const BUILD_TRACKER_PHASES = [
     phase: "Phase 0",
     label: "Brand and static foundation",
     progress: 100,
-    status: "Complete",
+    launch: 100,
+    status: "Done",
     route: "#build-tracker",
     done: ["NiveshNadi brand system", "static GitHub Pages app", "security headers and release checks"],
     next: "Keep release packaging clean."
@@ -785,25 +786,28 @@ const BUILD_TRACKER_PHASES = [
     phase: "Phase 1A",
     label: "Retail self-research cockpit",
     progress: 94,
-    status: "Active",
+    launch: 62,
+    status: "Done",
     route: "#screener",
     done: ["screener", "profile room", "compare matrix", "goal fit", "SIP/STP lab"],
-    next: "Polish flows and reduce decision friction."
+    next: "Polish flows and reduce decision friction before account launch."
   },
   {
     phase: "Phase 1B",
     label: "Decision discipline and memo path",
     progress: 88,
-    status: "Active",
+    launch: 54,
+    status: "Done",
     route: "#clearance-sprint",
     done: ["question stack", "answer sheet", "conviction ladder", "proof queue", "memo clearance", "clearance sprint"],
-    next: "Make every blocker route measurable."
+    next: "Make every blocker route measurable and ready for saved accounts."
   },
   {
     phase: "Phase 1C",
     label: "Trust, evidence, and safety layer",
     progress: 82,
-    status: "Active",
+    launch: 46,
+    status: "In progress",
     route: "#evidence",
     done: ["evidence ledger", "citation binder", "source QA", "claim gates", "privacy controls"],
     next: "Connect live source-date and citation status."
@@ -812,7 +816,8 @@ const BUILD_TRACKER_PHASES = [
     phase: "Phase 1D",
     label: "Portfolio review and habit layer",
     progress: 78,
-    status: "Active",
+    launch: 44,
+    status: "In progress",
     route: "#portfolio-review",
     done: ["X-Ray", "blueprint", "rebalance guard", "review vault", "watchlist", "dossier builder"],
     next: "Tighten recurring review and saved research packets."
@@ -821,7 +826,8 @@ const BUILD_TRACKER_PHASES = [
     phase: "Phase 1E",
     label: "Launch, monetization, and account layer",
     progress: 42,
-    status: "Planned",
+    launch: 22,
+    status: "Next",
     route: "#pricing",
     done: ["pricing posture", "share-safe export", "consent gate", "security model"],
     next: "Add auth, subscriptions, backend storage, live feeds, and payment rails."
@@ -830,10 +836,38 @@ const BUILD_TRACKER_PHASES = [
     phase: "Phase 2",
     label: "Distributor and client management",
     progress: 18,
-    status: "Planned",
+    launch: 8,
+    status: "Later",
     route: "#consent-gate",
     done: ["handoff boundaries", "privacy model", "future MFD workflow notes"],
     next: "Design ARN/EUIN, PAN consent, client book, and distributor dashboard after Phase 1 launch."
+  }
+];
+
+const BUILD_TRACKER_CURRENT_SPRINT = [
+  {
+    label: "Tracker polish",
+    status: "Shipping now",
+    route: "#build-tracker",
+    detail: "Separate build progress from launch readiness and make the roadmap easier to scan."
+  },
+  {
+    label: "Live data gate",
+    status: "Next",
+    route: "#data-readiness",
+    detail: "Turn AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, and benchmark feeds into source-dated checks."
+  },
+  {
+    label: "Retail account launch",
+    status: "Next",
+    route: "#pricing",
+    detail: "Prepare login, saved research packs, low-cost pricing, payments, limits, and privacy controls."
+  },
+  {
+    label: "MFD preview",
+    status: "Later",
+    route: "#consent-gate",
+    detail: "Keep ARN/EUIN, PAN-consent, client book, and distributor dashboard visible as Phase 2."
   }
 ];
 
@@ -1125,62 +1159,85 @@ function makeSignalStripNote() {
 }
 
 function buildTrackerConfig() {
-  const weightedProgress = Math.round(
+  const buildProgress = Math.round(
     BUILD_TRACKER_PHASES.reduce((sum, phase) => sum + phase.progress, 0) / BUILD_TRACKER_PHASES.length
   );
-  const completed = BUILD_TRACKER_PHASES.filter((phase) => phase.progress >= 95).length;
-  const active = BUILD_TRACKER_PHASES.filter((phase) => phase.status === "Active");
-  const planned = BUILD_TRACKER_PHASES.filter((phase) => phase.status === "Planned");
-  const current = active[active.length - 1] || BUILD_TRACKER_PHASES[0];
-  const nextLane = planned[0] || current;
+  const launchReadiness = Math.round(
+    BUILD_TRACKER_PHASES.reduce((sum, phase) => sum + phase.launch, 0) / BUILD_TRACKER_PHASES.length
+  );
+  const completed = BUILD_TRACKER_PHASES.filter((phase) => phase.status === "Done");
+  const active = BUILD_TRACKER_PHASES.filter((phase) => phase.status === "In progress");
+  const next = BUILD_TRACKER_PHASES.filter((phase) => phase.status === "Next");
+  const later = BUILD_TRACKER_PHASES.filter((phase) => phase.status === "Later");
+  const current = active[active.length - 1] || next[0] || BUILD_TRACKER_PHASES[0];
+  const nextLane = next[0] || current;
   const doneModules = BUILD_TRACKER_PHASES.flatMap((phase) => phase.done.map((item) => ({
     phase: phase.phase,
     item
   })));
-  const nextMoves = [
+  const nextMoves = BUILD_TRACKER_CURRENT_SPRINT;
+  const launchGates = [
     {
-      label: "Phase 1 polish",
-      route: "#clearance-sprint",
-      owner: "Current build",
-      detail: "Keep tightening the self-research journey from signal to memo to review."
-    },
-    {
-      label: "Live data readiness",
+      label: "Live data",
+      score: 36,
       route: "#data-readiness",
-      owner: "Launch gate",
-      detail: "Connect AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, benchmark, and citation dates."
+      detail: "AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, benchmark, and citation dates."
     },
     {
-      label: "Membership layer",
+      label: "Account and storage",
+      score: 24,
+      route: "#privacy-control",
+      detail: "Login, saved research packs, browser-to-backend migration, privacy controls, and data deletion."
+    },
+    {
+      label: "Payments",
+      score: 18,
       route: "#pricing",
-      owner: "Phase 1 launch",
-      detail: "Prepare low-cost retail plans, account storage, payments, limits, and trust-first onboarding."
+      detail: "Retail pricing, subscription rails, invoices, limits, refunds, and launch-plan experiments."
     },
     {
-      label: "Distributor foundation",
-      route: "#consent-gate",
-      owner: "Phase 2",
-      detail: "Plan ARN/EUIN, PAN-consent workflow, client book, distributor dashboard, and privacy controls."
+      label: "Compliance and security",
+      score: 44,
+      route: "#trust-center",
+      detail: "Disclosures, audit logs, no-advice guardrails, vulnerability scans, legal review, and release gates."
     }
   ];
-  const pace = `v77 | ${BUILD_TRACKER_PHASES.length} build lanes | ${doneModules.length} completed or drafted modules`;
+  const statusCounts = {
+    done: completed.length,
+    progress: active.length,
+    next: next.length,
+    later: later.length
+  };
+  const distributorPreview = {
+    label: "Phase 2 distributor preview",
+    route: "#consent-gate",
+    progress: later[0]?.progress || 0,
+    readiness: later[0]?.launch || 0,
+    detail: "MFD dashboard, ARN/EUIN, PAN-consent, registered clients, review packs, and handoff audit trail stay planned after Phase 1 retail launch.",
+    blockers: ["Phase 1 account model", "consent workflow", "privacy review", "role-based distributor access"]
+  };
+  const pace = `v78 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
   const guardrails = [
     "Build Tracker is a project roadmap for this prototype; it is not an investor-facing recommendation or launch promise.",
-    "Completion percentages are product-build estimates, not regulatory, legal, data, security, or commercial readiness certifications.",
+    "Product build progress and launch readiness are intentionally separate because a prototype can be polished before live data, auth, payments, and legal gates are complete.",
     "Before production launch, live data, auth, privacy, payment, audit logs, disclosures, and legal review must be handled separately."
   ];
   return {
     active,
+    buildProgress,
     completed,
     current,
+    distributorPreview,
     doneModules,
     guardrails,
+    later,
+    launchGates,
+    launchReadiness,
     nextLane,
     nextMoves,
     pace,
     phases: BUILD_TRACKER_PHASES,
-    planned,
-    weightedProgress
+    statusCounts
   };
 }
 
@@ -1188,33 +1245,63 @@ function renderBuildTracker() {
   if (!els.buildTrackerOutput) return;
   const tracker = buildTrackerConfig();
   if (els.buildTrackerSummary) {
-    els.buildTrackerSummary.textContent = `${tracker.weightedProgress}/100 | ${tracker.current.phase}`;
+    els.buildTrackerSummary.textContent = `Build ${tracker.buildProgress}/100 | Launch ${tracker.launchReadiness}/100`;
   }
   els.buildTrackerOutput.innerHTML = `
     <div class="build-tracker-hero">
       <div>
-        <span class="metric-label">Current build phase</span>
-        <h3>${escapeHtml(tracker.current.phase)}: ${escapeHtml(tracker.current.label)}</h3>
-        <p>${escapeHtml(tracker.current.next)}</p>
+        <span class="metric-label">Executive build view</span>
+        <h3>Build ${tracker.buildProgress}/100 | Launch readiness ${tracker.launchReadiness}/100</h3>
+        <p>${escapeHtml(tracker.current.phase)} is the active product lane. ${escapeHtml(tracker.current.next)}</p>
       </div>
-      <div class="build-tracker-score" style="--score:${tracker.weightedProgress}">
-        <b>${tracker.weightedProgress}</b>
+      <div class="build-tracker-score" style="--score:${tracker.buildProgress}">
+        <b>${tracker.buildProgress}</b>
         <span>Build</span>
       </div>
     </div>
+    <div class="build-sprint-strip">
+      ${tracker.nextMoves.map((move, index) => `
+        <article class="${index === 0 ? "current" : move.status.toLowerCase().replaceAll(" ", "-")}">
+          <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(move.status)}</span>
+          <strong>${escapeHtml(move.label)}</strong>
+          <p>${escapeHtml(move.detail)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(move.route)}">Open</button>
+        </article>
+      `).join("")}
+    </div>
     <div class="build-tracker-metrics">
-      <article><span>Prototype version</span><strong>Phase 1 v77</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
-      <article><span>Current phase</span><strong>${escapeHtml(tracker.current.phase)}</strong><p>${escapeHtml(tracker.current.label)}</p></article>
-      <article><span>Active lanes</span><strong>${tracker.active.length}</strong><p>${tracker.planned.length} planned lanes waiting</p></article>
+      <article><span>Prototype version</span><strong>Phase 1 v78</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+      <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
+      <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
+    </div>
+    <div class="build-status-grid">
+      <article><span>Done</span><strong>${tracker.statusCounts.done}</strong><p>Stable prototype lanes</p></article>
+      <article><span>In progress</span><strong>${tracker.statusCounts.progress}</strong><p>Current polish and trust layers</p></article>
+      <article><span>Next</span><strong>${tracker.statusCounts.next}</strong><p>Launch, accounts, and monetization</p></article>
+      <article><span>Later</span><strong>${tracker.statusCounts.later}</strong><p>Phase 2 distributor layer</p></article>
     </div>
     <div class="build-phase-grid">
       ${tracker.phases.map((phase) => `
-        <article class="${phase.status === "Complete" ? "complete" : phase.status === "Active" ? "active" : "planned"}">
+        <article class="${phase.status.toLowerCase().replaceAll(" ", "-")}">
           <div><span>${escapeHtml(phase.phase)} | ${escapeHtml(phase.status)}</span><strong>${escapeHtml(phase.label)}</strong></div>
-          <div class="build-progress-bar" aria-label="${escapeHtml(phase.label)} progress"><span style="width:${phase.progress}%"></span></div>
-          <p>${phase.progress}/100 | ${escapeHtml(phase.next)}</p>
+          <div class="build-progress-stack">
+            <div><small>Build</small><div class="build-progress-bar"><span style="width:${phase.progress}%"></span></div><b>${phase.progress}</b></div>
+            <div><small>Launch</small><div class="build-progress-bar launch"><span style="width:${phase.launch}%"></span></div><b>${phase.launch}</b></div>
+          </div>
+          <p>${escapeHtml(phase.next)}</p>
           <button class="text-button" type="button" data-build-route="${escapeHtml(phase.route)}">Open lane</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="build-readiness-grid">
+      ${tracker.launchGates.map((gate) => `
+        <article>
+          <span>Launch gate</span>
+          <strong>${escapeHtml(gate.label)}</strong>
+          <div class="build-progress-bar launch"><span style="width:${gate.score}%"></span></div>
+          <p>${gate.score}/100 | ${escapeHtml(gate.detail)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(gate.route)}">Open gate</button>
         </article>
       `).join("")}
     </div>
@@ -1234,10 +1321,25 @@ function renderBuildTracker() {
         </ul>
       </article>
     </div>
+    <div class="build-phase2-card">
+      <div>
+        <span>${escapeHtml(tracker.distributorPreview.label)}</span>
+        <strong>Distributor layer stays visible, but after retail Phase 1</strong>
+        <p>${escapeHtml(tracker.distributorPreview.detail)}</p>
+      </div>
+      <div class="build-phase2-metrics">
+        <article><span>Build</span><strong>${tracker.distributorPreview.progress}/100</strong></article>
+        <article><span>Readiness</span><strong>${tracker.distributorPreview.readiness}/100</strong></article>
+      </div>
+      <ul>
+        ${tracker.distributorPreview.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+      <button class="text-button" type="button" data-build-route="${escapeHtml(tracker.distributorPreview.route)}">Open Phase 2 boundary</button>
+    </div>
     <div class="build-move-grid">
       ${tracker.nextMoves.map((move) => `
         <article>
-          <span>${escapeHtml(move.owner)}</span>
+          <span>${escapeHtml(move.status)}</span>
           <strong>${escapeHtml(move.label)}</strong>
           <p>${escapeHtml(move.detail)}</p>
           <button class="text-button" type="button" data-build-route="${escapeHtml(move.route)}">Open</button>
@@ -1258,16 +1360,24 @@ function makeBuildTrackerBrief() {
   return [
     "# NiveshNadi Build Tracker",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
-    `Overall prototype progress: ${tracker.weightedProgress}/100`,
+    `Product build progress: ${tracker.buildProgress}/100`,
+    `Launch readiness: ${tracker.launchReadiness}/100`,
     `Current phase: ${tracker.current.phase} - ${tracker.current.label}`,
     `Active lanes: ${tracker.active.length}`,
-    `Planned lanes: ${tracker.planned.length}`,
+    `Next lane: ${tracker.nextLane.phase} - ${tracker.nextLane.label}`,
     "",
     "## Phase Status",
-    ...tracker.phases.map((phase) => `- ${phase.phase}: ${phase.label} | ${phase.status} | ${phase.progress}/100 | Next: ${phase.next}`),
+    ...tracker.phases.map((phase) => `- ${phase.phase}: ${phase.label} | ${phase.status} | Build ${phase.progress}/100 | Launch ${phase.launch}/100 | Next: ${phase.next}`),
     "",
-    "## Next Moves",
+    "## Launch Gates",
+    ...tracker.launchGates.map((gate) => `- ${gate.label}: ${gate.score}/100 | ${gate.detail}`),
+    "",
+    "## Current Sprint",
     ...tracker.nextMoves.map((move) => `- ${move.label}: ${move.detail}`),
+    "",
+    "## Phase 2 Preview",
+    `- ${tracker.distributorPreview.detail}`,
+    ...tracker.distributorPreview.blockers.map((item) => `- Blocker: ${item}`),
     "",
     "## Guardrails",
     ...tracker.guardrails.map((item) => `- ${item}`),

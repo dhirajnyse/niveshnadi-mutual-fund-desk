@@ -113,6 +113,7 @@ assert(app.includes("Nadi Large Cap Core Fund"), "app.js is missing demo fund da
 assert(app.includes("function whyFundLens") && app.includes("function makeWhyFundNote"), "app.js is missing Why This Fund Lens behavior.");
 assert(app.includes("function renderSignalStrip") && app.includes("function makeSignalStripNote"), "app.js is missing Nadi Signal Strip behavior.");
 assert(app.includes("function renderBuildTracker") && app.includes("function makeBuildTrackerBrief"), "app.js is missing Nadi Build Tracker behavior.");
+assert(app.includes("BUILD_TRACKER_CURRENT_SPRINT") && app.includes("launchReadiness") && app.includes("distributorPreview"), "app.js is missing V78 executive Build Tracker behavior.");
 assert(app.includes("function renderDailyCommandBrief") && app.includes("function makeDailyCommandBrief"), "app.js is missing Nadi Daily Command Brief behavior.");
 assert(app.includes("function renderDecisionRadar") && app.includes("function makeDecisionRadarBrief"), "app.js is missing Nadi Research Decision Radar behavior.");
 assert(app.includes("function renderQuestionStack") && app.includes("function makeQuestionStackBrief"), "app.js is missing Nadi Research Question Stack behavior.");
@@ -195,6 +196,7 @@ assert(styles.includes("scroll-padding-top") && styles.includes("scroll-margin-t
 assert(styles.includes(".workspace-jump") && styles.includes(".nav-mode-strip") && styles.includes(".nav-stack"), "styles.css is missing Smart Navigation Shell styles.");
 assert(styles.includes(".nadi-signal-strip") && styles.includes(".signal-score"), "styles.css is missing Nadi Signal Strip styles.");
 assert(styles.includes(".build-tracker-output") && styles.includes(".build-tracker-hero"), "styles.css is missing Nadi Build Tracker styles.");
+assert(styles.includes(".build-sprint-strip") && styles.includes(".build-readiness-grid") && styles.includes(".build-phase2-card"), "styles.css is missing V78 executive Build Tracker styles.");
 assert(styles.includes(".daily-command-output") && styles.includes(".daily-command-hero"), "styles.css is missing Nadi Daily Command Brief styles.");
 assert(styles.includes(".decision-radar-output") && styles.includes(".decision-radar-hero"), "styles.css is missing Nadi Research Decision Radar styles.");
 assert(styles.includes(".question-stack-output") && styles.includes(".question-stack-hero"), "styles.css is missing Nadi Research Question Stack styles.");

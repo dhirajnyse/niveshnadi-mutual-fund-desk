@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260512-21">
+    <link rel="stylesheet" href="styles.css?v=20260512-34">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -24,25 +24,23 @@
         </div>
       </div>
       <nav class="top-nav" aria-label="Workspace">
-        <div class="nav-cluster" aria-label="Primary research shortcuts">
-          <a href="#screener">Screener</a>
-          <a href="#profile-room">Profile</a>
-          <a href="#research-briefing">Brief</a>
-          <a href="#briefing-vault">B Vault</a>
-          <a href="#research-memory">Memory</a>
-          <a href="#privacy-control">Privacy</a>
-          <a href="#share-safe">Share</a>
-          <a href="#consent-gate">Consent</a>
-          <a href="#starter-guide">Start</a>
-          <a href="#investor-passport">Passport</a>
-          <a href="#coach-desk">Coach</a>
-          <a href="#category-playbook">Playbook</a>
-          <a href="#compare">Compare</a>
-          <a href="#portfolio">X-Ray</a>
-          <a href="#portfolio-review">Review</a>
-          <a href="#action-planner">Plan</a>
-          <a href="#research-dossier">Dossier</a>
-          <a href="#pricing">Pricing</a>
+        <div class="nav-stack">
+          <div class="nav-cluster nav-primary" aria-label="Primary research shortcuts">
+            <a href="#daily-brief">Today</a>
+            <a href="#screener">Screener</a>
+            <a href="#profile-room">Profile</a>
+            <a href="#compare">Compare</a>
+            <a href="#portfolio">X-Ray</a>
+            <a href="#research-dossier">Dossier</a>
+            <a href="#pricing">Pricing</a>
+          </div>
+          <div class="nav-mode-strip" aria-label="Guided workspace phases">
+            <a href="#profile-room"><span>01</span> Profile</a>
+            <a href="#screener"><span>02</span> Find</a>
+            <a href="#evidence"><span>03</span> Verify</a>
+            <a href="#decision-pack"><span>04</span> Memo</a>
+            <a href="#review-vault"><span>05</span> Review</a>
+          </div>
         </div>
         <div class="workspace-command" aria-label="Workspace command">
           <span id="workspaceStatus" class="workspace-status">Discover: Screener</span>
@@ -51,8 +49,19 @@
             <select id="workspaceJump" aria-label="Jump to workspace section">
               <option value="">Jump to tool</option>
               <optgroup label="Discover">
+                <option value="#daily-brief">Daily Command Brief</option>
+                <option value="#decision-radar">Decision Radar</option>
+                <option value="#question-stack">Question Stack</option>
+                <option value="#answer-sheet">Answer Sheet</option>
+                <option value="#conviction-ladder">Conviction Ladder</option>
+                <option value="#selection-funnel">Selection Funnel</option>
+                <option value="#shortlist-board">Shortlist Board</option>
+                <option value="#proof-gap-queue">Proof Gap Queue</option>
+                <option value="#memo-clearance">Memo Clearance</option>
+                <option value="#clearance-sprint">Clearance Sprint</option>
                 <option value="#screener">Screener</option>
                 <option value="#profile-room">Investor Profile Room</option>
+                <option value="#journey-timeline">Journey Timeline</option>
                 <option value="#research-briefing">Research Briefing</option>
                 <option value="#briefing-vault">Briefing Vault</option>
                 <option value="#research-memory">Research Memory</option>
@@ -129,7 +138,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-              <p class="release-pill">Phase 1 v63</p>
+            <p class="release-pill">Phase 1 v75</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -191,6 +200,209 @@
               <span>No personalized advice or return guarantee</span>
             </div>
           </aside>
+        </div>
+      </section>
+
+      <section id="daily-brief" class="workspace-band daily-brief-band" aria-labelledby="daily-brief-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Daily research command</p>
+            <h2 id="daily-brief-title">Nadi Daily Command Brief</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Daily Command Brief actions">
+            <span id="dailyCommandSummary" class="status-chip">Daily scan</span>
+            <button class="text-button" id="openDailyPriority" type="button">Open priority</button>
+            <button class="text-button" id="copyDailyCommand" type="button">Copy daily brief</button>
+          </div>
+        </div>
+        <div id="dailyCommandOutput" class="daily-command-output" aria-live="polite">
+          Daily Command Brief will summarize the selected fund, evidence, compare set, watchlist, memo, and next research action.
+        </div>
+      </section>
+
+      <section id="decision-radar" class="workspace-band decision-radar-band" aria-labelledby="decision-radar-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Decision readiness</p>
+            <h2 id="decision-radar-title">Nadi Research Decision Radar</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Research Decision Radar actions">
+            <span id="decisionRadarSummary" class="status-chip">Radar scan</span>
+            <button class="text-button" id="openDecisionRadarFocus" type="button">Open weak spot</button>
+            <button class="text-button" id="copyDecisionRadar" type="button">Copy radar</button>
+          </div>
+        </div>
+        <div id="decisionRadarOutput" class="decision-radar-output" aria-live="polite">
+          Research Decision Radar will balance trust, fit, risk, and discipline before a fund moves toward any memo.
+        </div>
+      </section>
+
+      <section id="question-stack" class="workspace-band question-stack-band" aria-labelledby="question-stack-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Research prompts</p>
+            <h2 id="question-stack-title">Nadi Research Question Stack</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Research Question Stack actions">
+            <span id="questionStackSummary" class="status-chip">Question stack</span>
+            <button class="text-button" id="openQuestionStackFocus" type="button">Open first question</button>
+            <button class="text-button" id="copyQuestionStack" type="button">Copy questions</button>
+          </div>
+        </div>
+        <div id="questionStackOutput" class="question-stack-output" aria-live="polite">
+          Research Question Stack will turn the current fund, evidence, risk, fit, compare set, and memo posture into answer-before-action questions.
+        </div>
+      </section>
+
+      <section id="answer-sheet" class="workspace-band answer-sheet-band" aria-labelledby="answer-sheet-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Research answers</p>
+            <h2 id="answer-sheet-title">Nadi Research Answer Sheet</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Research Answer Sheet actions">
+            <span id="answerSheetSummary" class="status-chip">Answer sheet</span>
+            <button class="text-button" id="saveAnswerSheet" type="button">Save sheet</button>
+            <button class="text-button" id="copyAnswerSheet" type="button">Copy sheet</button>
+            <button class="text-button" id="clearAnswerSheet" type="button">Clear answers</button>
+          </div>
+        </div>
+        <div class="answer-sheet-grid">
+          <form id="answerSheetForm" class="tool-panel answer-sheet-form">
+            <h3>Answer in your own words</h3>
+            <label>
+              Trust answer
+              <textarea id="answerTrust" rows="3" placeholder="What source date, citation path, and demo/live label supports the key claim?"></textarea>
+            </label>
+            <label>
+              Fit answer
+              <textarea id="answerFit" rows="3" placeholder="Why does the fund fit the current intent, horizon, SIP comfort, and risk comfort?"></textarea>
+            </label>
+            <label>
+              Compare answer
+              <textarea id="answerCompare" rows="3" placeholder="Which peers were checked and what made this fund different?"></textarea>
+            </label>
+            <label>
+              Risk answer
+              <textarea id="answerRisk" rows="3" placeholder="What drawdown, cost drag, and behavior condition were reviewed?"></textarea>
+            </label>
+            <label>
+              Memo answer
+              <textarea id="answerMemo" rows="3" placeholder="What is the decision reason in your own words?"></textarea>
+            </label>
+            <label>
+              Follow-up answer
+              <textarea id="answerFollowup" rows="3" placeholder="What review date, trigger, or watch condition will keep this decision honest?"></textarea>
+            </label>
+            <button class="primary-button" type="submit">Review answers</button>
+          </form>
+          <div id="answerSheetOutput" class="answer-sheet-output" aria-live="polite">
+            Research Answer Sheet will score answer completeness and show the next missing proof before any decision memo.
+          </div>
+        </div>
+      </section>
+
+      <section id="conviction-ladder" class="workspace-band conviction-ladder-band" aria-labelledby="conviction-ladder-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Readiness tier</p>
+            <h2 id="conviction-ladder-title">Nadi Research Conviction Ladder</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Research Conviction Ladder actions">
+            <span id="convictionLadderSummary" class="status-chip">Conviction ladder</span>
+            <button class="text-button" id="openConvictionGate" type="button">Open next gate</button>
+            <button class="text-button" id="copyConvictionLadder" type="button">Copy ladder</button>
+          </div>
+        </div>
+        <div id="convictionLadderOutput" class="conviction-ladder-output" aria-live="polite">
+          Research Conviction Ladder will translate answers, evidence, compare set, risk, memo, and follow-up discipline into a research readiness tier.
+        </div>
+      </section>
+
+      <section id="selection-funnel" class="workspace-band selection-funnel-band" aria-labelledby="selection-funnel-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Universe narrowing</p>
+            <h2 id="selection-funnel-title">Nadi Fund Selection Funnel</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Fund Selection Funnel actions">
+            <span id="selectionFunnelSummary" class="status-chip">Selection funnel</span>
+            <button class="text-button" id="openSelectionBottleneck" type="button">Open bottleneck</button>
+            <button class="text-button" id="applySelectionFunnel" type="button">Apply funnel</button>
+            <button class="text-button" id="copySelectionFunnel" type="button">Copy funnel</button>
+          </div>
+        </div>
+        <div id="selectionFunnelOutput" class="selection-funnel-output" aria-live="polite">
+          Fund Selection Funnel will narrow the demo universe into a profile-aligned category lane, shortlist set, and next research bottleneck.
+        </div>
+      </section>
+
+      <section id="shortlist-board" class="workspace-band shortlist-board-band" aria-labelledby="shortlist-board-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Shortlist reasoning</p>
+            <h2 id="shortlist-board-title">Nadi Shortlist Reason Board</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Shortlist Reason Board actions">
+            <span id="shortlistBoardSummary" class="status-chip">Shortlist board</span>
+            <button class="text-button" id="openShortlistGap" type="button">Open next gap</button>
+            <button class="text-button" id="applyShortlistBoard" type="button">Apply kept</button>
+            <button class="text-button" id="copyShortlistBoard" type="button">Copy board</button>
+          </div>
+        </div>
+        <div id="shortlistBoardOutput" class="shortlist-board-output" aria-live="polite">
+          Shortlist Reason Board will explain why each candidate is kept, watched, or parked before deeper comparison.
+        </div>
+      </section>
+
+      <section id="proof-gap-queue" class="workspace-band proof-gap-band" aria-labelledby="proof-gap-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Verification queue</p>
+            <h2 id="proof-gap-title">Nadi Proof Gap Queue</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Proof Gap Queue actions">
+            <span id="proofGapSummary" class="status-chip">Proof gap queue</span>
+            <button class="text-button" id="openProofGap" type="button">Open top gap</button>
+            <button class="text-button" id="copyProofGapQueue" type="button">Copy queue</button>
+          </div>
+        </div>
+        <div id="proofGapOutput" class="proof-gap-output" aria-live="polite">
+          Proof Gap Queue will rank the missing verification work across the shortlist before a decision memo.
+        </div>
+      </section>
+
+      <section id="memo-clearance" class="workspace-band memo-clearance-band" aria-labelledby="memo-clearance-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Memo gate</p>
+            <h2 id="memo-clearance-title">Nadi Memo Clearance Desk</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Memo Clearance Desk actions">
+            <span id="memoClearanceSummary" class="status-chip">Memo clearance</span>
+            <button class="text-button" id="openMemoClearanceBlocker" type="button">Open blocker</button>
+            <button class="text-button" id="copyMemoClearance" type="button">Copy clearance</button>
+          </div>
+        </div>
+        <div id="memoClearanceOutput" class="memo-clearance-output" aria-live="polite">
+          Memo Clearance Desk will decide whether the research file is ready for a written decision memo or still blocked.
+        </div>
+      </section>
+
+      <section id="clearance-sprint" class="workspace-band clearance-sprint-band" aria-labelledby="clearance-sprint-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Research sprint</p>
+            <h2 id="clearance-sprint-title">Nadi Clearance Sprint Board</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Clearance Sprint Board actions">
+            <span id="clearanceSprintSummary" class="status-chip">Sprint board</span>
+            <button class="text-button" id="openClearanceSprintMove" type="button">Open first move</button>
+            <button class="text-button" id="copyClearanceSprint" type="button">Copy sprint</button>
+          </div>
+        </div>
+        <div id="clearanceSprintOutput" class="clearance-sprint-output" aria-live="polite">
+          Clearance Sprint Board will turn memo blockers into a short research route before the decision memo is drafted.
         </div>
       </section>
 
@@ -257,6 +469,23 @@
           <div id="profileRoomOutput" class="profile-room-output" aria-live="polite">
             Investor Profile Room will convert intent, horizon, SIP comfort, risk tolerance, and emergency readiness into a research route before any fund is treated as suitable.
           </div>
+        </div>
+      </section>
+
+      <section id="journey-timeline" class="workspace-band journey-timeline-band" aria-labelledby="journey-timeline-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Research journey</p>
+            <h2 id="journey-timeline-title">Nadi Journey Timeline</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Journey Timeline actions">
+            <span id="journeyTimelineSummary" class="status-chip">Journey scan</span>
+            <button class="text-button" id="openJourneyNext" type="button">Open next step</button>
+            <button class="text-button" id="copyJourneyTimeline" type="button">Copy timeline</button>
+          </div>
+        </div>
+        <div id="journeyTimelineOutput" class="journey-timeline-output" aria-live="polite">
+          Journey Timeline will connect Profile, Research, Compare, Evidence, Memo, and Review into one guided workflow.
         </div>
       </section>
 
@@ -2918,8 +3147,19 @@
             <input id="floatingSearchInput" type="search" placeholder="Try: debt, hybrid, low, index" autocomplete="off">
           </label>
           <div class="floating-section-links" aria-label="Quick sections">
+            <a href="#daily-brief">Today</a>
+            <a href="#decision-radar">Radar</a>
+            <a href="#question-stack">Questions</a>
+            <a href="#answer-sheet">Answers</a>
+            <a href="#conviction-ladder">Ladder</a>
+            <a href="#selection-funnel">Funnel</a>
+            <a href="#shortlist-board">Shortlist</a>
+            <a href="#proof-gap-queue">Gaps</a>
+            <a href="#memo-clearance">Clearance</a>
+            <a href="#clearance-sprint">Sprint</a>
             <a href="#screener">Screener</a>
             <a href="#profile-room">Profile</a>
+            <a href="#journey-timeline">Timeline</a>
             <a href="#why-lens">Why Lens</a>
             <a href="#score-anatomy">Score</a>
             <a href="#starter-guide">First Start</a>
@@ -2990,6 +3230,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260512-21"></script>
+    <script src="app.js?v=20260512-34"></script>
   </body>
 </html>

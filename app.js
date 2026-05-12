@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260512-21";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v63 Investor Profile Room";
+const DATA_VERSION = "20260512-34";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v75 Clearance Sprint Board";
 
 const FUNDS = [
   {
@@ -759,6 +759,7 @@ const state = {
   compare: new Set(["large-core", "index-nifty"]),
   blueprintWeights: {},
   rebalanceWeights: {},
+  answerSheetHydrated: false,
   filters: {
     search: "",
     category: "all",
@@ -1375,6 +1376,7 @@ function renderProfileRoom(event) {
       </ul>
     </div>
   `;
+  renderDailyCommandBrief();
 }
 
 function makeProfileRoomBrief() {
@@ -1447,6 +1449,2317 @@ function applyProfileRoom() {
   renderAll();
   analyzePortfolio();
   scrollToHash(profile.route, "smooth", true);
+}
+
+function journeyTimelineState(stage) {
+  if (stage.done) return "complete";
+  if (stage.active) return "active";
+  return "open";
+}
+
+function journeyTimelineConfig() {
+  const profile = profileRoomProfile();
+  const fund = selectedFund();
+  const compareFunds = compareSet();
+  const evidence = evidenceReadinessScore(fund);
+  const memoReady = Boolean(els.packReason?.value.trim());
+  const alerts = loadAlerts();
+  const watchlist = loadWatchlist();
+  const journal = loadJournal();
+  const reviewVault = loadReviewVault();
+  const receiptVault = loadReceiptVault();
+  const reviewReady = alerts.length > 0 || reviewVault.length > 0 || receiptVault.length > 0;
+  const stageSeed = [
+    {
+      id: "profile",
+      label: "Profile",
+      route: "#profile-room",
+      metric: `${profile.readiness}/100`,
+      done: profile.readiness >= 62,
+      active: true,
+      detail: `${profile.posture}. ${profileIntentLabel(profile.config.intent)} with ${profile.config.horizon} year horizon.`,
+      action: "Refine profile"
+    },
+    {
+      id: "research",
+      label: "Research",
+      route: "#research-briefing",
+      metric: `${nadiScore(fund)}/100`,
+      done: evidence >= 68,
+      active: profile.readiness >= 50,
+      detail: `${fund.name} is the current research anchor. Evidence readiness is ${evidence}/100.`,
+      action: "Open brief"
+    },
+    {
+      id: "compare",
+      label: "Compare",
+      route: "#compare",
+      metric: `${compareFunds.length} funds`,
+      done: compareFunds.length >= 2,
+      active: evidence >= 60,
+      detail: compareFunds.length >= 2
+        ? `${compareFunds.map((item) => item.name).slice(0, 3).join(" | ")} are in the compare set.`
+        : "Add at least one peer or benchmark before making the shortlist meaningful.",
+      action: "Open compare"
+    },
+    {
+      id: "evidence",
+      label: "Evidence",
+      route: "#evidence",
+      metric: `${evidence}/100`,
+      done: evidence >= 78,
+      active: compareFunds.length >= 2,
+      detail: evidence >= 78
+        ? "Evidence is usable for demo research; live source dates still need verification before launch."
+        : "Check AMFI, AMC factsheet, SID/KIM, portfolio disclosure, benchmark, riskometer, and TER.",
+      action: "Open evidence"
+    },
+    {
+      id: "memo",
+      label: "Memo",
+      route: "#decision-pack",
+      metric: memoReady ? "Reason ready" : "Reason pending",
+      done: memoReady,
+      active: evidence >= 68 && compareFunds.length >= 2,
+      detail: memoReady
+        ? "Decision Pack has a written reason in the browser-local memo field."
+        : "Write the reason, amount, review date, evidence status, and guardrail before action.",
+      action: "Build memo"
+    },
+    {
+      id: "review",
+      label: "Review",
+      route: "#review-rhythm",
+      metric: `${alerts.length + reviewVault.length + receiptVault.length} saved`,
+      done: reviewReady,
+      active: memoReady || journal.length > 0,
+      detail: reviewReady
+        ? "Review rhythm has saved alerts, reviews, or receipts for follow-up discipline."
+        : "Set watch triggers, review rhythm, receipt, or journal history before calling research complete.",
+      action: "Set review"
+    }
+  ];
+  const stages = stageSeed.map((stage) => ({ ...stage, state: journeyTimelineState(stage) }));
+  const completed = stages.filter((stage) => stage.state === "complete").length;
+  const active = stages.filter((stage) => stage.state === "active").length;
+  const progress = Math.round(((completed + active * 0.45) / stages.length) * 100);
+  const next = stages.find((stage) => stage.state !== "complete") || stages[stages.length - 1];
+  const posture = completed >= stages.length
+    ? "Research loop complete"
+    : completed >= 4
+      ? "Memo and review discipline"
+      : completed >= 2
+        ? "Evidence path in motion"
+        : "Start with profile and research";
+  const guardrails = [
+    "Timeline progress is workflow discipline, not investment advice or suitability approval.",
+    "Do not move past evidence, memo, and review only because a fund score looks attractive.",
+    "No PAN, folio, CAS, bank data, contact details, or client identifiers are required for this Phase 1 timeline."
+  ];
+  if (evidence < 78) guardrails.push("Live-looking claims still need source dates, citation paths, and extraction checks.");
+  if (!memoReady) guardrails.push("A decision without a written reason should stay in research mode.");
+  if (!reviewReady) guardrails.push("A real investment workflow needs review rhythm before it feels complete.");
+
+  return {
+    alerts,
+    compareFunds,
+    completed,
+    evidence,
+    fund,
+    guardrails,
+    journal,
+    next,
+    posture,
+    profile,
+    progress: Math.round(clampNumber(progress, 0, 100)),
+    receiptVault,
+    reviewReady,
+    reviewVault,
+    stages,
+    watchlist
+  };
+}
+
+function renderJourneyTimeline() {
+  if (!els.journeyTimelineOutput) return;
+  const timeline = journeyTimelineConfig();
+  if (els.journeyTimelineSummary) {
+    els.journeyTimelineSummary.textContent = `${timeline.progress}/100 | ${timeline.posture}`;
+  }
+  els.journeyTimelineOutput.innerHTML = `
+    <div class="journey-timeline-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(timeline.posture)}</span>
+        <h3>${escapeHtml(timeline.next.label)} is the next checkpoint</h3>
+        <p>${escapeHtml(timeline.next.detail)}</p>
+      </div>
+      <div class="journey-timeline-score" style="--score:${timeline.progress}">
+        <b>${timeline.progress}</b>
+        <span>Journey</span>
+      </div>
+    </div>
+    <div class="journey-timeline-progress" aria-label="Journey progress">
+      <span style="width:${timeline.progress}%"></span>
+    </div>
+    <div class="journey-timeline-rail">
+      ${timeline.stages.map((stage, index) => `
+        <article class="journey-timeline-step ${escapeHtml(stage.state)}">
+          <div>
+            <span>${String(index + 1).padStart(2, "0")}</span>
+            <strong>${escapeHtml(stage.label)}</strong>
+          </div>
+          <p>${escapeHtml(stage.detail)}</p>
+          <small>${escapeHtml(stage.metric)}</small>
+          <button class="text-button" type="button" data-journey-timeline-route="${escapeHtml(stage.route)}">${escapeHtml(stage.action)}</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="journey-timeline-metric-grid">
+      <article><span>Profile</span><strong>${timeline.profile.readiness}/100</strong><p>${escapeHtml(timeline.profile.posture)}</p></article>
+      <article><span>Selected fund</span><strong>${escapeHtml(timeline.fund.name)}</strong><p>${timeline.evidence}/100 evidence | ${nadiScore(timeline.fund)}/100 Nadi score</p></article>
+      <article><span>Compare set</span><strong>${timeline.compareFunds.length} funds</strong><p>${escapeHtml(timeline.compareFunds.map((fund) => fund.category).slice(0, 3).join(" | ") || "Add a peer or benchmark")}</p></article>
+      <article><span>Follow-up</span><strong>${timeline.alerts.length + timeline.reviewVault.length + timeline.receiptVault.length} saved</strong><p>${timeline.watchlist.length} watched | ${timeline.journal.length} journal entries</p></article>
+    </div>
+    <div class="journey-timeline-guardrail">
+      <span>Journey boundary</span>
+      <ul>
+        ${timeline.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+  renderDailyCommandBrief();
+}
+
+function makeJourneyTimelineBrief() {
+  const timeline = journeyTimelineConfig();
+  return [
+    "# NiveshNadi Journey Timeline",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Journey posture: ${timeline.posture}`,
+    `Journey progress: ${timeline.progress}/100`,
+    `Selected fund: ${timeline.fund.name}`,
+    `Evidence readiness: ${timeline.evidence}/100`,
+    `Compare set: ${timeline.compareFunds.length} funds`,
+    `Next checkpoint: ${timeline.next.label}`,
+    "",
+    "## Timeline",
+    ...timeline.stages.map((stage) => `- ${stage.label}: ${stage.state} | ${stage.metric} | ${stage.detail}`),
+    "",
+    "## Guardrails",
+    ...timeline.guardrails.map((item) => `- ${item}`),
+    "",
+    "Research workflow only. Journey progress is not personalized advice, suitability approval, execution, or a return guarantee."
+  ].join("\n");
+}
+
+function openNextJourneyTimelineStep() {
+  const timeline = journeyTimelineConfig();
+  scrollToHash(timeline.next.route, "smooth", true);
+}
+
+function dailyCommandPriorityConfig() {
+  const timeline = journeyTimelineConfig();
+  const signal = signalStripConfig();
+  const fund = timeline.fund;
+  const memoReady = Boolean(els.packReason?.value.trim());
+  const reviewCount = timeline.alerts.length + timeline.reviewVault.length + timeline.receiptVault.length;
+  const priorities = [];
+
+  if (timeline.profile.readiness < 62) {
+    priorities.push({
+      label: "Shape profile first",
+      route: "#profile-room",
+      metric: `${timeline.profile.readiness}/100`,
+      reason: "Intent, horizon, SIP comfort, drawdown comfort, and emergency readiness should anchor the research route."
+    });
+  }
+  if (timeline.evidence < 78) {
+    priorities.push({
+      label: "Verify evidence",
+      route: "#evidence",
+      metric: `${timeline.evidence}/100`,
+      reason: "Check source dates, citation paths, demo/live status, factsheet, SID/KIM, TER, holdings, and riskometer."
+    });
+  }
+  if (timeline.compareFunds.length < 2) {
+    priorities.push({
+      label: "Add a peer",
+      route: "#compare",
+      metric: `${timeline.compareFunds.length} funds`,
+      reason: "A fund should be inspected against at least one peer or benchmark before the decision memo."
+    });
+  }
+  if (signal.stressRequired) {
+    priorities.push({
+      label: "Run stress lab",
+      route: "#risk-lab",
+      metric: `${fund.maxDrawdown}% drawdown`,
+      reason: "High volatility needs rupee-impact and behavior checks before the fund feels actionable."
+    });
+  }
+  if (signal.costNeedsCheck) {
+    priorities.push({
+      label: "Check cost drag",
+      route: "#cost-lab",
+      metric: `${fund.expense.toFixed(2)}% TER`,
+      reason: "Expense, tax friction, and lower-cost alternatives should be translated into rupee terms."
+    });
+  }
+  if (!memoReady) {
+    priorities.push({
+      label: "Write memo reason",
+      route: "#decision-pack",
+      metric: "Reason pending",
+      reason: "A written reason, amount, review date, and guardrail should exist before any real action."
+    });
+  }
+  if (!reviewCount) {
+    priorities.push({
+      label: "Set review rhythm",
+      route: "#review-rhythm",
+      metric: "No review saved",
+      reason: "Watch triggers and review rhythm keep the investor from treating a one-time screen as a decision."
+    });
+  }
+  if (!priorities.length) {
+    priorities.push({
+      label: "Copy research brief",
+      route: "#research-briefing",
+      metric: "Loop ready",
+      reason: "The current workflow is ready to summarize for self review, family discussion, or advisor conversation."
+    });
+  }
+
+  const unique = [];
+  const seen = new Set();
+  for (const priority of priorities) {
+    if (seen.has(priority.route)) continue;
+    seen.add(priority.route);
+    unique.push(priority);
+  }
+  return { priorities: unique.slice(0, 4), signal, timeline };
+}
+
+function dailyCommandConfig() {
+  const { priorities, signal, timeline } = dailyCommandPriorityConfig();
+  const fund = timeline.fund;
+  const memoReady = Boolean(els.packReason?.value.trim());
+  const reviewCount = timeline.alerts.length + timeline.reviewVault.length + timeline.receiptVault.length;
+  const readiness = Math.round(clampNumber(
+    timeline.profile.readiness * 0.18 +
+    timeline.evidence * 0.26 +
+    nadiScore(fund) * 0.18 +
+    Math.min(timeline.compareFunds.length, 3) * 9 +
+    (memoReady ? 15 : 0) +
+    (reviewCount ? 12 : 0),
+    0,
+    100
+  ));
+  const next = priorities[0];
+  const posture = readiness >= 82
+    ? "Daily loop ready"
+    : readiness >= 68
+      ? "One check before memo"
+      : readiness >= 52
+        ? "Research path active"
+        : "Start with trust basics";
+  const reminders = [
+    `Current fund: ${fund.name} | ${fund.category} | ${fund.risk} risk.`,
+    `Evidence ${timeline.evidence}/100, Nadi score ${nadiScore(fund)}/100, compare set ${timeline.compareFunds.length} funds.`,
+    memoReady ? "Decision memo has a written reason." : "Decision memo reason is still pending.",
+    reviewCount ? `${reviewCount} review item(s) saved across alerts, review vault, or receipt vault.` : "No review rhythm is saved yet."
+  ];
+  const guardrails = [
+    "Treat this as a daily research checklist, not advice or execution.",
+    "Do not rely on score before evidence, compare context, written reason, and review rhythm.",
+    "No PAN, folio, CAS, bank, contact, or client identifiers are needed in Phase 1."
+  ];
+
+  return {
+    fund,
+    guardrails,
+    memoReady,
+    next,
+    posture,
+    priorities,
+    readiness,
+    reminders,
+    reviewCount,
+    signal,
+    timeline
+  };
+}
+
+function renderDailyCommandBrief() {
+  if (!els.dailyCommandOutput) return;
+  const command = dailyCommandConfig();
+  if (els.dailyCommandSummary) {
+    els.dailyCommandSummary.textContent = `${command.readiness}/100 | ${command.posture}`;
+  }
+  els.dailyCommandOutput.innerHTML = `
+    <div class="daily-command-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(command.posture)}</span>
+        <h3>${escapeHtml(command.next.label)}</h3>
+        <p>${escapeHtml(command.next.reason)}</p>
+      </div>
+      <div class="daily-command-score" style="--score:${command.readiness}">
+        <b>${command.readiness}</b>
+        <span>Today</span>
+      </div>
+    </div>
+    <div class="daily-command-grid">
+      ${command.priorities.map((priority, index) => `
+        <article>
+          <span>${String(index + 1).padStart(2, "0")} priority</span>
+          <strong>${escapeHtml(priority.label)}</strong>
+          <p>${escapeHtml(priority.reason)}</p>
+          <small>${escapeHtml(priority.metric)}</small>
+          <button class="text-button" type="button" data-daily-route="${escapeHtml(priority.route)}">Open</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="daily-command-metrics">
+      <article><span>Selected fund</span><strong>${escapeHtml(command.fund.name)}</strong><p>${escapeHtml(command.fund.category)} | ${escapeHtml(command.fund.risk)} risk</p></article>
+      <article><span>Trust posture</span><strong>${command.timeline.evidence}/100</strong><p>${escapeHtml(command.signal.posture)}</p></article>
+      <article><span>Compare set</span><strong>${command.timeline.compareFunds.length} funds</strong><p>${escapeHtml(command.timeline.compareFunds.map((fund) => fund.name).slice(0, 2).join(" | ") || "Add a peer")}</p></article>
+      <article><span>Follow-up</span><strong>${command.reviewCount} saved</strong><p>${command.timeline.watchlist.length} watched | ${command.timeline.journal.length} journal entries</p></article>
+    </div>
+    <div class="daily-command-guardrail">
+      <span>Daily boundary</span>
+      <ul>
+        ${command.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+  renderDecisionRadar();
+}
+
+function makeDailyCommandBrief() {
+  const command = dailyCommandConfig();
+  return [
+    "# NiveshNadi Daily Command Brief",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Daily posture: ${command.posture}`,
+    `Daily readiness: ${command.readiness}/100`,
+    `Selected fund: ${command.fund.name}`,
+    `Evidence readiness: ${command.timeline.evidence}/100`,
+    `Compare set: ${command.timeline.compareFunds.length} funds`,
+    `Next priority: ${command.next.label}`,
+    "",
+    "## Priority Queue",
+    ...command.priorities.map((priority) => `- ${priority.label}: ${priority.metric} | ${priority.reason}`),
+    "",
+    "## Snapshot",
+    ...command.reminders.map((item) => `- ${item}`),
+    "",
+    "## Guardrails",
+    ...command.guardrails.map((item) => `- ${item}`),
+    "",
+    "Research workflow only. This brief is not personalized investment advice, suitability approval, execution, or a return guarantee."
+  ].join("\n");
+}
+
+function openDailyPriority() {
+  scrollToHash(dailyCommandConfig().next.route, "smooth", true);
+}
+
+function radarBand(score) {
+  if (score >= 82) return "strong";
+  if (score >= 68) return "usable";
+  if (score >= 52) return "watch";
+  return "weak";
+}
+
+function radarBandLabel(score) {
+  if (score >= 82) return "Strong";
+  if (score >= 68) return "Usable";
+  if (score >= 52) return "Watch";
+  return "Weak";
+}
+
+function decisionRadarConfig() {
+  const command = dailyCommandConfig();
+  const timeline = command.timeline;
+  const signal = command.signal;
+  const profile = timeline.profile;
+  const fund = timeline.fund;
+  const memoReady = Boolean(els.packReason?.value.trim());
+  const reviewCount = timeline.alerts.length + timeline.reviewVault.length + timeline.receiptVault.length;
+  const trust = Math.round(clampNumber(timeline.evidence, 0, 100));
+  const fit = Math.round(clampNumber((profile.selectedFit * 0.62) + (profile.readiness * 0.38), 0, 100));
+  const risk = Math.round(clampNumber(
+    signal.riskControl * 0.52 +
+    (100 - Math.min(fund.maxDrawdown * 2.25, 100)) * 0.28 +
+    (signal.costNeedsCheck ? 8 : 20),
+    0,
+    100
+  ));
+  const discipline = Math.round(clampNumber(
+    Math.min(timeline.compareFunds.length, 3) * 18 +
+    (memoReady ? 24 : 0) +
+    (reviewCount ? 20 : 0) +
+    Math.min(timeline.watchlist.length, 2) * 5 +
+    Math.min(timeline.journal.length, 2) * 4,
+    0,
+    100
+  ));
+  const axes = [
+    {
+      id: "trust",
+      label: "Trust",
+      score: trust,
+      route: "#evidence",
+      action: "Open Evidence",
+      detail: trust >= 78
+        ? "Evidence is usable for demo research, but live source dates still matter."
+        : "Source dates, citation paths, factsheet, SID/KIM, TER, portfolio, and riskometer need attention."
+    },
+    {
+      id: "fit",
+      label: "Fit",
+      score: fit,
+      route: "#profile-room",
+      action: "Open Profile",
+      detail: fit >= 72
+        ? `${fund.name} is aligned enough for deeper research against the current profile.`
+        : "Profile intent, horizon, SIP comfort, and fund role should be rechecked before shortlisting."
+    },
+    {
+      id: "risk",
+      label: "Risk",
+      score: risk,
+      route: signal.stressRequired ? "#risk-lab" : "#cost-lab",
+      action: signal.stressRequired ? "Run Stress" : "Open Cost",
+      detail: signal.stressRequired
+        ? "Drawdown needs rupee-impact and behavior review before any memo."
+        : signal.costNeedsCheck
+          ? "Cost drag should be translated into rupee terms before deciding."
+          : "Risk and cost are not the main blockers, but still need final review."
+    },
+    {
+      id: "discipline",
+      label: "Discipline",
+      score: discipline,
+      route: memoReady ? "#review-rhythm" : "#decision-pack",
+      action: memoReady ? "Set Review" : "Build Memo",
+      detail: discipline >= 70
+        ? "Compare, memo, and follow-up discipline are moving into usable shape."
+        : "Compare set, written reason, and review rhythm need to be completed before action."
+    }
+  ];
+  const weakest = [...axes].sort((a, b) => a.score - b.score)[0];
+  const strongest = [...axes].sort((a, b) => b.score - a.score)[0];
+  const overall = Math.round(axes.reduce((sum, axis) => sum + axis.score, 0) / axes.length);
+  const posture = overall >= 82
+    ? "Radar balanced"
+    : overall >= 68
+      ? "One force still needs work"
+      : overall >= 52
+        ? "Research pressure visible"
+        : "Do not move to memo yet";
+  const guardrails = [
+    "Radar balance is a workflow readiness signal, not a recommendation or suitability approval.",
+    "A strong Nadi score cannot compensate for weak trust, fit, risk review, or discipline.",
+    "No PAN, folio, CAS, account, contact, or distributor-client data is used in this Phase 1 radar."
+  ];
+  if (weakest.score < 68) guardrails.push(`${weakest.label} is the weakest force; open that workspace before writing a decision reason.`);
+  if (!memoReady) guardrails.push("Memo discipline is incomplete until the investor writes the reason in their own words.");
+
+  return {
+    axes,
+    command,
+    fund,
+    guardrails,
+    overall,
+    posture,
+    strongest,
+    timeline,
+    weakest
+  };
+}
+
+function renderDecisionRadar() {
+  if (!els.decisionRadarOutput) return;
+  const radar = decisionRadarConfig();
+  if (els.decisionRadarSummary) {
+    els.decisionRadarSummary.textContent = `${radar.overall}/100 | ${radar.posture}`;
+  }
+  els.decisionRadarOutput.innerHTML = `
+    <div class="decision-radar-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(radar.posture)}</span>
+        <h3>${escapeHtml(radar.weakest.label)} needs the next check</h3>
+        <p>${escapeHtml(radar.weakest.detail)}</p>
+      </div>
+      <div class="decision-radar-score" style="--score:${radar.overall}">
+        <b>${radar.overall}</b>
+        <span>Radar</span>
+      </div>
+    </div>
+    <div class="decision-radar-grid">
+      ${radar.axes.map((axis) => `
+        <article class="${escapeHtml(radarBand(axis.score))}">
+          <div>
+            <span>${escapeHtml(axis.label)}</span>
+            <strong>${axis.score}/100</strong>
+          </div>
+          <div class="decision-radar-meter" aria-label="${escapeHtml(axis.label)} score">
+            <span style="width:${axis.score}%"></span>
+          </div>
+          <p>${escapeHtml(axis.detail)}</p>
+          <small>${escapeHtml(radarBandLabel(axis.score))}</small>
+          <button class="text-button" type="button" data-radar-route="${escapeHtml(axis.route)}">${escapeHtml(axis.action)}</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="decision-radar-metrics">
+      <article><span>Selected fund</span><strong>${escapeHtml(radar.fund.name)}</strong><p>${escapeHtml(radar.fund.category)} | ${escapeHtml(radar.fund.risk)} risk</p></article>
+      <article><span>Strongest force</span><strong>${escapeHtml(radar.strongest.label)}</strong><p>${radar.strongest.score}/100 | ${escapeHtml(radar.strongest.detail)}</p></article>
+      <article><span>Weakest force</span><strong>${escapeHtml(radar.weakest.label)}</strong><p>${radar.weakest.score}/100 | ${escapeHtml(radar.weakest.action)}</p></article>
+      <article><span>Daily priority</span><strong>${escapeHtml(radar.command.next.label)}</strong><p>${escapeHtml(radar.command.next.reason)}</p></article>
+    </div>
+    <div class="decision-radar-guardrail">
+      <span>Radar boundary</span>
+      <ul>
+        ${radar.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+  renderQuestionStack();
+}
+
+function makeDecisionRadarBrief() {
+  const radar = decisionRadarConfig();
+  return [
+    "# NiveshNadi Research Decision Radar",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Radar posture: ${radar.posture}`,
+    `Radar readiness: ${radar.overall}/100`,
+    `Selected fund: ${radar.fund.name}`,
+    `Strongest force: ${radar.strongest.label} (${radar.strongest.score}/100)`,
+    `Weakest force: ${radar.weakest.label} (${radar.weakest.score}/100)`,
+    "",
+    "## Radar Forces",
+    ...radar.axes.map((axis) => `- ${axis.label}: ${axis.score}/100 | ${radarBandLabel(axis.score)} | ${axis.detail}`),
+    "",
+    "## Guardrails",
+    ...radar.guardrails.map((item) => `- ${item}`),
+    "",
+    "Research workflow only. This radar is not personalized advice, suitability approval, execution, or a return guarantee."
+  ].join("\n");
+}
+
+function openDecisionRadarFocus() {
+  scrollToHash(decisionRadarConfig().weakest.route, "smooth", true);
+}
+
+function questionStackStatus(question) {
+  if (question.blocker) return "Answer first";
+  if (question.score < 68) return "Needs answer";
+  if (question.score < 82) return "Confirm";
+  return "Ready note";
+}
+
+function researchQuestionStackConfig() {
+  const radar = decisionRadarConfig();
+  const { command, timeline } = radar;
+  const { fund, profile } = timeline;
+  const { signal } = command;
+  const memoReady = Boolean(els.packReason?.value.trim());
+  const compareCount = timeline.compareFunds.length;
+  const followUpCount = timeline.alerts.length + timeline.reviewVault.length + timeline.receiptVault.length + timeline.watchlist.length;
+  const axisScore = (id) => radar.axes.find((axis) => axis.id === id)?.score || 0;
+  const trustScore = axisScore("trust");
+  const fitScore = axisScore("fit");
+  const riskScore = axisScore("risk");
+  const disciplineScore = axisScore("discipline");
+  const weakThemes = radar.weakest.id === "discipline" ? ["Decision memo", "Follow-up"] : [radar.weakest.label];
+  const candidates = [
+    {
+      theme: "Trust",
+      score: trustScore,
+      route: "#evidence",
+      action: "Open Evidence",
+      blocker: trustScore < 72,
+      question: "Which source date, citation path, and demo/live label backs the key claim?",
+      why: trustScore < 72
+        ? "Evidence is the first launch gate; weak citation posture can make a good-looking fund unsafe to research."
+        : "Evidence is usable for demo research, but the source trail still needs to be visible before launch.",
+      proof: "AMFI, AMC factsheet, SID/KIM, portfolio disclosure, benchmark, TER, and riskometer source map."
+    },
+    {
+      theme: "Fit",
+      score: fitScore,
+      route: "#profile-room",
+      action: "Open Profile",
+      blocker: fitScore < 70,
+      question: `Does ${fund.name} match the current intent, horizon, SIP comfort, drawdown comfort, and emergency readiness?`,
+      why: `Current route is ${profileIntentLabel(profile.config.intent)} with ${profile.config.horizon} year horizon and ${profileDrawdownLabel(profile.config.drawdown).toLowerCase()} drawdown comfort.`,
+      proof: "Profile route, category anchor, selected-fund fit, and category mismatch note."
+    },
+    {
+      theme: "Compare",
+      score: Math.min(100, compareCount * 34 + 18),
+      route: "#compare",
+      action: "Open Compare",
+      blocker: compareCount < 2,
+      question: "Which two peer funds prove this is not just a one-fund attraction?",
+      why: compareCount < 2
+        ? "A retail investor should see nearby alternatives before treating one fund as the obvious choice."
+        : `${compareCount} funds are already in the compare set.`,
+      proof: "Peer shortlist with category, score, cost, risk, evidence, and role differences."
+    },
+    {
+      theme: "Risk",
+      score: riskScore,
+      route: signal.stressRequired ? "#risk-lab" : "#cost-lab",
+      action: signal.stressRequired ? "Run Stress" : "Open Cost",
+      blocker: signal.stressRequired || signal.costNeedsCheck,
+      question: signal.stressRequired
+        ? "Can I tolerate the rupee drawdown if this fund has a bad year?"
+        : "What is the rupee cost drag and lower-cost alternative check?",
+      why: signal.stressRequired
+        ? `${fund.name} has ${fund.maxDrawdown}% demo drawdown and needs behavior review.`
+        : `${fund.name} expense ratio is ${fund.expense}% and should be translated into rupee terms.`,
+      proof: "Stress result, cost result, behavior trigger, and pause condition."
+    },
+    {
+      theme: "Decision memo",
+      score: memoReady ? Math.max(86, disciplineScore) : Math.min(42, disciplineScore),
+      route: "#decision-pack",
+      action: "Build Memo",
+      blocker: !memoReady,
+      question: "Can I write the decision reason in my own words before any action?",
+      why: memoReady
+        ? "A decision reason exists, so the next job is to keep it reviewable."
+        : "A copied score is not a reason; the memo must capture the investor's own logic.",
+      proof: "Decision type, amount, review date, conviction, reason, and guardrails."
+    },
+    {
+      theme: "Follow-up",
+      score: Math.min(100, followUpCount * 18 + 28),
+      route: followUpCount ? "#review-rhythm" : "#watchlist",
+      action: followUpCount ? "Open Rhythm" : "Set Watch",
+      blocker: followUpCount === 0,
+      question: "What will trigger the next review after this research session?",
+      why: followUpCount
+        ? `${followUpCount} browser-local follow-up signals are already present.`
+        : "Without a watchlist, review rhythm, or receipt, research can become a one-time impulse.",
+      proof: "Watch trigger, review date, receipt, vault snapshot, or rhythm board entry."
+    }
+  ];
+  const questions = candidates
+    .map((question) => ({
+      ...question,
+      priority: (100 - question.score) + (question.blocker ? 22 : 0) + (weakThemes.includes(question.theme) ? 8 : 0),
+      status: questionStackStatus(question)
+    }))
+    .sort((a, b) => b.priority - a.priority)
+    .slice(0, 6);
+  const first = questions[0];
+  const blockers = questions.filter((question) => question.blocker).length;
+  const posture = blockers >= 3
+    ? "Answer blockers first"
+    : blockers >= 1
+      ? "Research questions open"
+      : "Questions mostly confirmatory";
+  const guardrails = [
+    "Question Stack creates research prompts only; it does not approve, reject, buy, sell, switch, SIP, STP, or redeem.",
+    "A question is complete only when the investor can explain the source, fit, risk, compare, memo, or follow-up proof in plain words.",
+    "No PAN, folio, CAS, bank, contact, account, credential, ARN, EUIN, or distributor-client data is needed in Phase 1."
+  ];
+
+  return {
+    blockers,
+    command,
+    first,
+    fund,
+    guardrails,
+    posture,
+    questions,
+    radar
+  };
+}
+
+function renderQuestionStack() {
+  if (!els.questionStackOutput) return;
+  const stack = researchQuestionStackConfig();
+  if (els.questionStackSummary) {
+    els.questionStackSummary.textContent = `${stack.questions.length} questions | ${stack.first.theme} first`;
+  }
+  els.questionStackOutput.innerHTML = `
+    <div class="question-stack-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(stack.posture)}</span>
+        <h3>${escapeHtml(stack.first.question)}</h3>
+        <p>${escapeHtml(stack.first.why)}</p>
+      </div>
+      <div class="question-stack-badge">
+        <b>${stack.blockers}</b>
+        <span>Blockers</span>
+      </div>
+    </div>
+    <div class="question-stack-grid">
+      ${stack.questions.map((question, index) => `
+        <article class="${escapeHtml(radarBand(question.score))}">
+          <div>
+            <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(question.theme)}</span>
+            <strong>${escapeHtml(question.status)}</strong>
+          </div>
+          <h4>${escapeHtml(question.question)}</h4>
+          <p>${escapeHtml(question.why)}</p>
+          <small>${escapeHtml(question.proof)}</small>
+          <button class="text-button" type="button" data-question-route="${escapeHtml(question.route)}">${escapeHtml(question.action)}</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="question-stack-metrics">
+      <article><span>Selected fund</span><strong>${escapeHtml(stack.fund.name)}</strong><p>${escapeHtml(stack.fund.category)} | ${escapeHtml(stack.fund.risk)} risk</p></article>
+      <article><span>Radar weak spot</span><strong>${escapeHtml(stack.radar.weakest.label)}</strong><p>${stack.radar.weakest.score}/100 | ${escapeHtml(stack.radar.weakest.detail)}</p></article>
+      <article><span>Daily priority</span><strong>${escapeHtml(stack.command.next.label)}</strong><p>${escapeHtml(stack.command.next.reason)}</p></article>
+      <article><span>Research boundary</span><strong>Questions only</strong><p>No personalized advice, execution, or return guarantee.</p></article>
+    </div>
+    <div class="question-stack-guardrail">
+      <span>Question boundary</span>
+      <ul>
+        ${stack.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+  renderAnswerSheet();
+}
+
+function makeQuestionStackBrief() {
+  const stack = researchQuestionStackConfig();
+  return [
+    "# NiveshNadi Research Question Stack",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Question posture: ${stack.posture}`,
+    `Selected fund: ${stack.fund.name}`,
+    `First question: ${stack.first.question}`,
+    `Open blockers: ${stack.blockers}`,
+    "",
+    "## Answer-Before-Action Questions",
+    ...stack.questions.map((question, index) => `${index + 1}. ${question.theme} | ${question.status}: ${question.question} Proof: ${question.proof}`),
+    "",
+    "## Guardrails",
+    ...stack.guardrails.map((item) => `- ${item}`),
+    "",
+    "Research workflow only. This stack is not personalized advice, suitability approval, execution, or a return guarantee."
+  ].join("\n");
+}
+
+function openQuestionStackFocus() {
+  scrollToHash(researchQuestionStackConfig().first.route, "smooth", true);
+}
+
+const ANSWER_SHEET_FIELDS = [
+  { id: "trust", theme: "Trust", key: "trust", input: "answerTrust" },
+  { id: "fit", theme: "Fit", key: "fit", input: "answerFit" },
+  { id: "compare", theme: "Compare", key: "compare", input: "answerCompare" },
+  { id: "risk", theme: "Risk", key: "risk", input: "answerRisk" },
+  { id: "memo", theme: "Decision memo", key: "memo", input: "answerMemo" },
+  { id: "followup", theme: "Follow-up", key: "followup", input: "answerFollowup" }
+];
+
+function loadAnswerSheetDraft() {
+  try {
+    const value = JSON.parse(localStorage.getItem("niveshnadi-answer-sheet-draft") || "{}");
+    return value && typeof value === "object" ? value : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function saveAnswerSheetDraft(values = readAnswerSheetValues()) {
+  localStorage.setItem("niveshnadi-answer-sheet-draft", JSON.stringify(values));
+}
+
+function hydrateAnswerSheetDraft() {
+  if (state.answerSheetHydrated) return;
+  const draft = loadAnswerSheetDraft();
+  ANSWER_SHEET_FIELDS.forEach((field) => {
+    const input = els[field.input];
+    if (input && draft[field.key] && !input.value) input.value = draft[field.key];
+  });
+  state.answerSheetHydrated = true;
+}
+
+function readAnswerSheetValues() {
+  return ANSWER_SHEET_FIELDS.reduce((values, field) => {
+    values[field.key] = els[field.input]?.value.trim() || "";
+    return values;
+  }, {});
+}
+
+function answerSheetQuality(text) {
+  const words = text.split(/\s+/).filter(Boolean).length;
+  if (!text) return { score: 0, status: "Missing" };
+  if (words >= 28) return { score: 100, status: "Strong" };
+  if (words >= 14) return { score: 78, status: "Usable" };
+  if (words >= 6) return { score: 52, status: "Thin" };
+  return { score: 28, status: "Too short" };
+}
+
+function loadAnswerSheets() {
+  try {
+    const value = JSON.parse(localStorage.getItem("niveshnadi-answer-sheets") || "[]");
+    return Array.isArray(value) ? value : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveAnswerSheets(entries) {
+  localStorage.setItem("niveshnadi-answer-sheets", JSON.stringify(entries.slice(0, 8)));
+}
+
+function answerSheetConfig() {
+  hydrateAnswerSheetDraft();
+  const stack = researchQuestionStackConfig();
+  const questionMap = Object.fromEntries(stack.questions.map((question) => [question.theme, question]));
+  const values = readAnswerSheetValues();
+  ANSWER_SHEET_FIELDS.forEach((field) => {
+    const input = els[field.input];
+    const question = questionMap[field.theme];
+    if (input && question) input.placeholder = question.question;
+  });
+  const order = Object.fromEntries(stack.questions.map((question, index) => [question.theme, index]));
+  const entries = ANSWER_SHEET_FIELDS.map((field) => {
+    const question = questionMap[field.theme] || {};
+    const answer = values[field.key] || "";
+    const quality = answerSheetQuality(answer);
+    return {
+      ...field,
+      answer,
+      question: question.question || field.theme,
+      proof: question.proof || "Write the proof in plain language.",
+      route: question.route || "#question-stack",
+      action: question.action || "Open question",
+      priority: order[field.theme] ?? 9,
+      ...quality
+    };
+  });
+  const answered = entries.filter((entry) => entry.score >= 52).length;
+  const strong = entries.filter((entry) => entry.score >= 78).length;
+  const readiness = Math.round(entries.reduce((sum, entry) => sum + entry.score, 0) / entries.length);
+  const firstGap = [...entries]
+    .filter((entry) => entry.score < 78)
+    .sort((a, b) => a.priority - b.priority || a.score - b.score)[0] || {
+      theme: "Memo review",
+      question: "All six research answers are usable. Copy the sheet or move to the decision memo review.",
+      route: "#decision-pack",
+      action: "Build Memo",
+      status: "Ready",
+      proof: "Keep answers source-backed, plain-language, and reviewable.",
+      score: 100
+    };
+  const saved = loadAnswerSheets();
+  const posture = readiness >= 82
+    ? "Answers ready for memo review"
+    : readiness >= 64
+      ? "Answers need tightening"
+      : answered
+        ? "Answer draft started"
+        : "Blank answer sheet";
+  const guardrails = [
+    "Answer Sheet stores only browser-local research text; keep PAN, folio, CAS, bank, contact, account, credential, ARN, EUIN, and client data out.",
+    "Answers are personal research notes, not investment advice, suitability approval, execution, or a return guarantee.",
+    "Before launch with live data, every answer that cites performance, cost, holdings, or risk needs source date and citation path."
+  ];
+  return {
+    answered,
+    entries,
+    firstGap,
+    fund: stack.fund,
+    guardrails,
+    posture,
+    readiness,
+    saved,
+    stack,
+    strong,
+    values
+  };
+}
+
+function renderAnswerSheet(event) {
+  if (event) event.preventDefault();
+  if (!els.answerSheetOutput) return;
+  const sheet = answerSheetConfig();
+  if (els.answerSheetSummary) {
+    els.answerSheetSummary.textContent = `${sheet.readiness}/100 | ${sheet.answered}/6 answered`;
+  }
+  els.answerSheetOutput.innerHTML = `
+    <div class="answer-sheet-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(sheet.posture)}</span>
+        <h3>${escapeHtml(sheet.firstGap.theme === "Memo review" ? "Answer sheet is ready for memo review" : `${sheet.firstGap.theme} answer is the next gap`)}</h3>
+        <p>${escapeHtml(sheet.firstGap.question)}</p>
+      </div>
+      <div class="answer-sheet-score" style="--score:${sheet.readiness}">
+        <b>${sheet.readiness}</b>
+        <span>Answers</span>
+      </div>
+    </div>
+    <div class="answer-sheet-metrics">
+      <article><span>Selected fund</span><strong>${escapeHtml(sheet.fund.name)}</strong><p>${escapeHtml(sheet.fund.category)} | ${escapeHtml(sheet.fund.risk)} risk</p></article>
+      <article><span>Answered</span><strong>${sheet.answered}/6</strong><p>${sheet.strong} usable or strong answers</p></article>
+      <article><span>First gap</span><strong>${escapeHtml(sheet.firstGap.theme)}</strong><p>${escapeHtml(sheet.firstGap.status)} | ${escapeHtml(sheet.firstGap.proof)}</p></article>
+      <article><span>Saved sheets</span><strong>${sheet.saved.length}</strong><p>Browser-local snapshots only</p></article>
+    </div>
+    <div class="answer-sheet-check-grid">
+      ${sheet.entries.map((entry) => `
+        <article class="${escapeHtml(radarBand(entry.score))}">
+          <div><span>${escapeHtml(entry.theme)}</span><strong>${escapeHtml(entry.status)}</strong></div>
+          <p>${escapeHtml(entry.question)}</p>
+          <small>${escapeHtml(entry.answer || "No answer written yet.")}</small>
+          <button class="text-button" type="button" data-answer-route="${escapeHtml(entry.route)}">${escapeHtml(entry.action)}</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="answer-sheet-vault">
+      <span>Latest saved answer sheets</span>
+      ${sheet.saved.length ? `
+        <ul>
+          ${sheet.saved.slice(0, 4).map((entry) => `<li>${escapeHtml(entry.date)} | ${escapeHtml(entry.fund)} | ${entry.readiness}/100 | ${entry.answered}/6 answered</li>`).join("")}
+        </ul>
+      ` : "<p>No saved answer sheet yet.</p>"}
+    </div>
+    <div class="answer-sheet-guardrail">
+      <span>Answer boundary</span>
+      <ul>
+        ${sheet.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+  renderConvictionLadder();
+  renderSelectionFunnel();
+  renderShortlistReasonBoard();
+  renderProofGapQueue();
+  renderMemoClearanceDesk();
+  renderClearanceSprintBoard();
+}
+
+function makeAnswerSheetBrief() {
+  const sheet = answerSheetConfig();
+  return [
+    "# NiveshNadi Research Answer Sheet",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Selected fund: ${sheet.fund.name}`,
+    `Answer posture: ${sheet.posture}`,
+    `Answer readiness: ${sheet.readiness}/100`,
+    `Answered: ${sheet.answered}/6`,
+    `First gap: ${sheet.firstGap.theme} | ${sheet.firstGap.status}`,
+    "",
+    "## Answers",
+    ...sheet.entries.map((entry) => `- ${entry.theme} (${entry.status}): ${entry.answer || "Missing"} | Proof expected: ${entry.proof}`),
+    "",
+    "## Guardrails",
+    ...sheet.guardrails.map((item) => `- ${item}`),
+    "",
+    "Research workflow only. This answer sheet is not personalized advice, suitability approval, execution, or a return guarantee."
+  ].join("\n");
+}
+
+function persistAnswerSheetDraft() {
+  saveAnswerSheetDraft();
+  renderAnswerSheet();
+}
+
+function saveCurrentAnswerSheet() {
+  const sheet = answerSheetConfig();
+  saveAnswerSheetDraft(sheet.values);
+  const snapshot = {
+    id: `answer-${Date.now()}`,
+    date: new Date().toISOString().slice(0, 10),
+    fund: sheet.fund.name,
+    readiness: sheet.readiness,
+    answered: sheet.answered,
+    values: sheet.values
+  };
+  saveAnswerSheets([snapshot, ...sheet.saved]);
+  toast("Answer sheet saved locally.");
+  renderAnswerSheet();
+  renderPrivacyControlRoom();
+}
+
+function clearCurrentAnswerSheet() {
+  ANSWER_SHEET_FIELDS.forEach((field) => {
+    if (els[field.input]) els[field.input].value = "";
+  });
+  saveAnswerSheetDraft({});
+  toast("Answer sheet cleared.");
+  renderAnswerSheet();
+  renderPrivacyControlRoom();
+}
+
+function convictionLadderConfig() {
+  const sheet = answerSheetConfig();
+  const radar = sheet.stack.radar;
+  const timeline = radar.timeline;
+  const entry = (theme) => sheet.entries.find((item) => item.theme === theme) || { score: 0, status: "Missing", route: "#answer-sheet", action: "Answer" };
+  const trust = entry("Trust");
+  const fit = entry("Fit");
+  const compare = entry("Compare");
+  const risk = entry("Risk");
+  const memo = entry("Decision memo");
+  const followup = entry("Follow-up");
+  const compareReady = timeline.compareFunds.length >= 2;
+  const followSignals = timeline.watchlist.length + timeline.alerts.length + timeline.reviewVault.length + timeline.receiptVault.length;
+  const followReady = followup.score >= 52 || followSignals > 0;
+  const memoReady = memo.score >= 78 || Boolean(els.packReason?.value.trim());
+  const trustReady = trust.score >= 78 && timeline.evidence >= 68;
+  const riskReady = risk.score >= 52 && radar.axes.find((axis) => axis.id === "risk")?.score >= 52;
+  const answerReady = sheet.readiness >= 64 && sheet.answered >= 4;
+  const conviction = Math.round(clampNumber(
+    sheet.readiness * 0.34 +
+    radar.overall * 0.22 +
+    timeline.evidence * 0.18 +
+    Math.min(timeline.compareFunds.length, 2) * 8 +
+    (memoReady ? 8 : 0) +
+    (followReady ? 6 : 0) +
+    (trustReady ? 4 : 0),
+    0,
+    100
+  ));
+  const gates = [
+    {
+      id: "answers",
+      label: "Answer base",
+      route: "#answer-sheet",
+      done: answerReady,
+      metric: `${sheet.readiness}/100`,
+      detail: answerReady ? "Core answers are drafted." : "Answer at least four prompts with usable wording.",
+      action: "Open Answers"
+    },
+    {
+      id: "trust",
+      label: "Trust proof",
+      route: "#evidence",
+      done: trustReady,
+      metric: `${timeline.evidence}/100`,
+      detail: trustReady ? "Evidence posture is usable for demo research." : "Source date, citation path, and demo/live label need proof.",
+      action: "Open Evidence"
+    },
+    {
+      id: "compare",
+      label: "Peer check",
+      route: "#compare",
+      done: compareReady && compare.score >= 52,
+      metric: `${timeline.compareFunds.length} funds`,
+      detail: compareReady ? "Compare set is present." : "Add at least two peers or a benchmark before shortlisting.",
+      action: "Open Compare"
+    },
+    {
+      id: "risk",
+      label: "Risk comfort",
+      route: radar.axes.find((axis) => axis.id === "risk")?.route || "#risk-lab",
+      done: riskReady,
+      metric: `${risk.score}/100`,
+      detail: riskReady ? "Risk answer is present." : "Translate drawdown, cost, and behavior pressure into plain language.",
+      action: "Open Risk"
+    },
+    {
+      id: "memo",
+      label: "Memo reason",
+      route: "#decision-pack",
+      done: memoReady,
+      metric: `${memo.score}/100`,
+      detail: memoReady ? "Decision reason is reviewable." : "Write the reason in the investor's own words.",
+      action: "Build Memo"
+    },
+    {
+      id: "followup",
+      label: "Follow-up rule",
+      route: followSignals ? "#review-rhythm" : "#watchlist",
+      done: followReady,
+      metric: `${followSignals} saved`,
+      detail: followReady ? "A review habit exists." : "Set a watch trigger, review date, or receipt before moving forward.",
+      action: followSignals ? "Open Rhythm" : "Set Watch"
+    }
+  ];
+  const completed = gates.filter((gate) => gate.done).length;
+  const nextGate = gates.find((gate) => !gate.done) || {
+    label: "Memo review",
+    route: "#decision-pack",
+    action: "Build Memo",
+    metric: "Ready",
+    detail: "All ladder gates are currently complete for research workflow review."
+  };
+  const rung = (() => {
+    if (completed <= 1 || conviction < 42) return { label: "Curious", level: 1, route: "#question-stack", tone: "weak", detail: "Interest exists, but the proof trail is still too thin." };
+    if (completed <= 2 || conviction < 58) return { label: "Researching", level: 2, route: nextGate.route, tone: "watch", detail: "A few checks are present, but key questions still need answers." };
+    if (completed <= 3 || conviction < 70) return { label: "Watch-ready", level: 3, route: "#watchlist", tone: "watch", detail: "The fund can sit on a watchlist while missing gates are completed." };
+    if (completed <= 4 || conviction < 82) return { label: "Shortlist-ready", level: 4, route: "#compare", tone: "usable", detail: "Research is strong enough for shortlist review, not action." };
+    if (completed <= 5 || conviction < 90) return { label: "Memo-review ready", level: 5, route: "#decision-pack", tone: "usable", detail: "The fund can move into a written memo review." };
+    return { label: "Review-file ready", level: 6, route: "#research-dossier", tone: "strong", detail: "Answers, gates, and follow-up discipline are ready for a research dossier." };
+  })();
+  const rungs = [
+    { level: 1, label: "Curious", detail: "Interest noted" },
+    { level: 2, label: "Researching", detail: "Questions open" },
+    { level: 3, label: "Watch-ready", detail: "Follow-up framed" },
+    { level: 4, label: "Shortlist-ready", detail: "Peers reviewed" },
+    { level: 5, label: "Memo-review ready", detail: "Reason written" },
+    { level: 6, label: "Review-file ready", detail: "Dossier-ready" }
+  ].map((item) => ({
+    ...item,
+    state: item.level < rung.level ? "complete" : item.level === rung.level ? "active" : "open"
+  }));
+  const guardrails = [
+    "Conviction Ladder is a research-readiness tier, not a buy, sell, hold, switch, SIP, STP, redemption, execution, or suitability instruction.",
+    "A high rung still requires live source dates, citation paths, riskometer, TER, factsheet, SID/KIM, holdings, and review date before launch use.",
+    "No PAN, folio, CAS, bank, contact, account, credential, ARN, EUIN, or distributor-client data is required in Phase 1."
+  ];
+  return {
+    completed,
+    conviction,
+    fund: sheet.fund,
+    gates,
+    guardrails,
+    nextGate,
+    radar,
+    rung,
+    rungs,
+    sheet
+  };
+}
+
+function renderConvictionLadder() {
+  if (!els.convictionLadderOutput) return;
+  const ladder = convictionLadderConfig();
+  if (els.convictionLadderSummary) {
+    els.convictionLadderSummary.textContent = `${ladder.rung.label} | ${ladder.conviction}/100`;
+  }
+  els.convictionLadderOutput.innerHTML = `
+    <div class="conviction-ladder-hero ${escapeHtml(ladder.rung.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(ladder.rung.label)}</span>
+        <h3>${escapeHtml(ladder.rung.detail)}</h3>
+        <p>Next gate: ${escapeHtml(ladder.nextGate.label)}. ${escapeHtml(ladder.nextGate.detail)}</p>
+      </div>
+      <div class="conviction-ladder-score" style="--score:${ladder.conviction}">
+        <b>${ladder.conviction}</b>
+        <span>Ladder</span>
+      </div>
+    </div>
+    <div class="conviction-rung-grid">
+      ${ladder.rungs.map((rung) => `
+        <article class="${escapeHtml(rung.state)}">
+          <span>${String(rung.level).padStart(2, "0")}</span>
+          <strong>${escapeHtml(rung.label)}</strong>
+          <p>${escapeHtml(rung.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="conviction-gate-grid">
+      ${ladder.gates.map((gate) => `
+        <article class="${gate.done ? "complete" : "open"}">
+          <div><span>${escapeHtml(gate.label)}</span><strong>${gate.done ? "Complete" : "Open"}</strong></div>
+          <p>${escapeHtml(gate.detail)}</p>
+          <small>${escapeHtml(gate.metric)}</small>
+          <button class="text-button" type="button" data-conviction-route="${escapeHtml(gate.route)}">${escapeHtml(gate.action)}</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="conviction-metrics">
+      <article><span>Selected fund</span><strong>${escapeHtml(ladder.fund.name)}</strong><p>${escapeHtml(ladder.fund.category)} | ${escapeHtml(ladder.fund.risk)} risk</p></article>
+      <article><span>Answers</span><strong>${ladder.sheet.readiness}/100</strong><p>${ladder.sheet.answered}/6 answered | ${ladder.sheet.strong} usable or strong</p></article>
+      <article><span>Radar</span><strong>${ladder.radar.overall}/100</strong><p>${escapeHtml(ladder.radar.posture)} | Weak spot: ${escapeHtml(ladder.radar.weakest.label)}</p></article>
+      <article><span>Completed gates</span><strong>${ladder.completed}/6</strong><p>${escapeHtml(ladder.nextGate.label)} is the next gate.</p></article>
+    </div>
+    <div class="conviction-guardrail">
+      <span>Ladder boundary</span>
+      <ul>
+        ${ladder.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+}
+
+function makeConvictionLadderBrief() {
+  const ladder = convictionLadderConfig();
+  return [
+    "# NiveshNadi Research Conviction Ladder",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Selected fund: ${ladder.fund.name}`,
+    `Current rung: ${ladder.rung.label}`,
+    `Conviction readiness: ${ladder.conviction}/100`,
+    `Completed gates: ${ladder.completed}/6`,
+    `Next gate: ${ladder.nextGate.label} | ${ladder.nextGate.detail}`,
+    "",
+    "## Gate Status",
+    ...ladder.gates.map((gate) => `- ${gate.label}: ${gate.done ? "Complete" : "Open"} | ${gate.metric} | ${gate.detail}`),
+    "",
+    "## Guardrails",
+    ...ladder.guardrails.map((item) => `- ${item}`),
+    "",
+    "Research workflow only. This ladder is not personalized advice, suitability approval, execution, or a return guarantee."
+  ].join("\n");
+}
+
+function openConvictionGate() {
+  scrollToHash(convictionLadderConfig().nextGate.route, "smooth", true);
+}
+
+function selectionFunnelConfig() {
+  const profile = profileRoomProfile();
+  const ladder = convictionLadderConfig();
+  const fund = selectedFund();
+  const filtered = filteredFunds();
+  const categoryFunds = FUNDS.filter((item) => item.category === profile.primaryCategory);
+  const compareFunds = compareSet();
+  const evidence = evidenceReadinessScore(fund);
+  const categoryMatch = fund.category === profile.primaryCategory;
+  const filterReady = state.filters.category === profile.primaryCategory || filtered.length <= Math.max(3, categoryFunds.length + 1);
+  const shortlistReady = compareFunds.length >= 2;
+  const memoReady = ladder.rung.level >= 5;
+  const stages = [
+    {
+      id: "profile",
+      label: "Profile context",
+      route: "#profile-room",
+      done: profile.readiness >= 56,
+      metric: `${profile.readiness}/100`,
+      detail: `${profileIntentLabel(profile.config.intent)} | ${profile.config.horizon} years | ${profile.amountLabel}`,
+      action: "Open Profile"
+    },
+    {
+      id: "category",
+      label: "Category anchor",
+      route: "#category-playbook",
+      done: Boolean(profile.primaryCategory),
+      metric: profile.primaryCategory,
+      detail: `${categoryFunds.length} demo funds sit in the anchor category.`,
+      action: "Open Playbook"
+    },
+    {
+      id: "universe",
+      label: "Universe filter",
+      route: "#screener",
+      done: filterReady,
+      metric: `${filtered.length}/${FUNDS.length}`,
+      detail: filterReady ? "The visible list is narrowed enough to inspect." : "Apply category anchor before inspecting too many funds.",
+      action: "Open Screener"
+    },
+    {
+      id: "shortlist",
+      label: "Shortlist set",
+      route: "#compare",
+      done: shortlistReady,
+      metric: `${compareFunds.length} funds`,
+      detail: shortlistReady ? "At least two funds are ready for side-by-side review." : "Select two or more funds before judging a category.",
+      action: "Open Compare"
+    },
+    {
+      id: "evidence",
+      label: "Proof check",
+      route: "#evidence",
+      done: evidence >= 68,
+      metric: `${evidence}/100`,
+      detail: evidence >= 68 ? "Evidence posture is usable for demo research." : "Source readiness must improve before confidence rises.",
+      action: "Open Evidence"
+    },
+    {
+      id: "decision",
+      label: "Decision boundary",
+      route: "#conviction-ladder",
+      done: memoReady,
+      metric: ladder.rung.label,
+      detail: memoReady ? "Research can move into written memo review." : "Use the ladder before treating the shortlist as actionable.",
+      action: "Open Ladder"
+    }
+  ];
+  const completed = stages.filter((stage) => stage.done).length;
+  const bottleneck = stages.find((stage) => !stage.done) || {
+    label: "Memo review",
+    route: "#decision-pack",
+    action: "Build Memo",
+    metric: "Ready",
+    detail: "Selection funnel is narrow enough for memo review."
+  };
+  const topCandidates = profile.candidates.slice(0, 5).map((item) => ({
+    ...item,
+    evidence: evidenceReadinessScore(item.fund),
+    nadi: nadiScore(item.fund),
+    selected: item.fund.id === fund.id
+  }));
+  const score = Math.round(clampNumber(
+    profile.readiness * 0.22 +
+    (categoryMatch ? 12 : 5) +
+    (filterReady ? 12 : 4) +
+    Math.min(compareFunds.length, 2) * 7 +
+    evidence * 0.2 +
+    ladder.conviction * 0.18,
+    0,
+    100
+  ));
+  const posture = (() => {
+    if (score >= 84) return "Tight research lane";
+    if (score >= 70) return "Shortlist narrowing";
+    if (score >= 56) return "Category lane formed";
+    return "Discovery too wide";
+  })();
+  const tone = score >= 84 ? "strong" : score >= 64 ? "usable" : score >= 50 ? "watch" : "weak";
+  const stagesWithState = stages.map((stage, index) => ({
+    ...stage,
+    number: String(index + 1).padStart(2, "0"),
+    state: stage.done ? "complete" : stage.id === bottleneck.id ? "active" : "open"
+  }));
+  const guardrails = [
+    "Selection Funnel narrows research workflow only; it is not personalized advice, suitability approval, execution, or a return guarantee.",
+    "A narrowed shortlist still needs live source dates, citation paths, TER, riskometer, factsheets, SID/KIM, holdings, and a written decision reason.",
+    "No PAN, folio, CAS, bank, contact, account credential, ARN, EUIN, or distributor-client data is required for this Phase 1 funnel."
+  ];
+  return {
+    bottleneck,
+    categoryFunds,
+    categoryMatch,
+    completed,
+    compareFunds,
+    evidence,
+    filterReady,
+    filtered,
+    fund,
+    guardrails,
+    ladder,
+    posture,
+    profile,
+    score,
+    stages: stagesWithState,
+    tone,
+    topCandidates
+  };
+}
+
+function renderSelectionFunnel() {
+  if (!els.selectionFunnelOutput) return;
+  const funnel = selectionFunnelConfig();
+  if (els.selectionFunnelSummary) {
+    els.selectionFunnelSummary.textContent = `${funnel.posture} | ${funnel.score}/100`;
+  }
+  els.selectionFunnelOutput.innerHTML = `
+    <div class="selection-funnel-hero ${escapeHtml(funnel.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(funnel.posture)}</span>
+        <h3>${escapeHtml(`From ${FUNDS.length} demo funds to ${funnel.profile.primaryCategory}`)}</h3>
+        <p>Next bottleneck: ${escapeHtml(funnel.bottleneck.label)}. ${escapeHtml(funnel.bottleneck.detail)}</p>
+      </div>
+      <div class="selection-funnel-score" style="--score:${funnel.score}">
+        <b>${funnel.score}</b>
+        <span>Funnel</span>
+      </div>
+    </div>
+    <div class="selection-stage-grid">
+      ${funnel.stages.map((stage) => `
+        <article class="${escapeHtml(stage.state)}">
+          <div><span>${escapeHtml(stage.number)} | ${escapeHtml(stage.label)}</span><strong>${stage.done ? "Ready" : "Open"}</strong></div>
+          <p>${escapeHtml(stage.detail)}</p>
+          <small>${escapeHtml(stage.metric)}</small>
+          <button class="text-button" type="button" data-selection-route="${escapeHtml(stage.route)}">${escapeHtml(stage.action)}</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="selection-metrics">
+      <article><span>Anchor category</span><strong>${escapeHtml(funnel.profile.primaryCategory)}</strong><p>${funnel.categoryFunds.length} demo funds in lane</p></article>
+      <article><span>Visible universe</span><strong>${funnel.filtered.length}/${FUNDS.length}</strong><p>${funnel.filterReady ? "Narrowed for inspection" : "Still broad"}</p></article>
+      <article><span>Compare set</span><strong>${funnel.compareFunds.length} funds</strong><p>${escapeHtml(funnel.compareFunds.map((item) => item.category).slice(0, 3).join(", ") || "No peers selected")}</p></article>
+      <article><span>Bottleneck</span><strong>${escapeHtml(funnel.bottleneck.label)}</strong><p>${escapeHtml(funnel.bottleneck.action)}</p></article>
+    </div>
+    <div class="selection-candidate-grid">
+      ${funnel.topCandidates.map(({ fund, score, evidence, nadi, selected }) => `
+        <article class="${selected ? "is-selected" : ""}">
+          <span>${score}/100 profile fit</span>
+          <strong>${escapeHtml(fund.name)}</strong>
+          <p>${escapeHtml(fund.category)} | ${escapeHtml(fund.risk)} risk | Nadi ${nadi}/100 | Evidence ${evidence}/100</p>
+          <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">${selected ? "Selected" : "Inspect"}</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="selection-guardrail">
+      <span>Funnel boundary</span>
+      <ul>
+        ${funnel.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+}
+
+function makeSelectionFunnelBrief() {
+  const funnel = selectionFunnelConfig();
+  return [
+    "# NiveshNadi Fund Selection Funnel",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Selected fund: ${funnel.fund.name}`,
+    `Funnel posture: ${funnel.posture}`,
+    `Funnel score: ${funnel.score}/100`,
+    `Anchor category: ${funnel.profile.primaryCategory}`,
+    `Visible universe: ${funnel.filtered.length}/${FUNDS.length}`,
+    `Compare set: ${funnel.compareFunds.length} funds`,
+    `Next bottleneck: ${funnel.bottleneck.label} | ${funnel.bottleneck.detail}`,
+    "",
+    "## Funnel Stages",
+    ...funnel.stages.map((stage) => `- ${stage.label}: ${stage.done ? "Ready" : "Open"} | ${stage.metric} | ${stage.detail}`),
+    "",
+    "## Top Research Candidates",
+    ...funnel.topCandidates.map(({ fund, score, evidence, nadi }) => `- ${fund.name}: ${score}/100 fit | ${fund.category} | ${fund.risk} risk | Nadi ${nadi}/100 | Evidence ${evidence}/100`),
+    "",
+    "## Guardrails",
+    ...funnel.guardrails.map((item) => `- ${item}`),
+    "",
+    "Research workflow only. This funnel is not personalized advice, suitability approval, execution, or a return guarantee."
+  ].join("\n");
+}
+
+function openSelectionBottleneck() {
+  scrollToHash(selectionFunnelConfig().bottleneck.route, "smooth", true);
+}
+
+function applySelectionFunnel() {
+  const funnel = selectionFunnelConfig();
+  const topIds = funnel.topCandidates.slice(0, 3).map(({ fund }) => fund.id);
+  if (funnel.topCandidates[0]) state.selectedId = funnel.topCandidates[0].fund.id;
+  if (topIds.length >= 2) state.compare = new Set(topIds);
+  state.filters = { search: "", category: funnel.profile.primaryCategory, risk: "all", sort: "score" };
+  if (els.searchInput) els.searchInput.value = "";
+  if (els.floatingSearchInput) els.floatingSearchInput.value = "";
+  if (els.categoryFilter) els.categoryFilter.value = funnel.profile.primaryCategory;
+  if (els.riskFilter) els.riskFilter.value = "all";
+  if (els.sortSelect) els.sortSelect.value = "score";
+  renderAll();
+  analyzePortfolio();
+  toast("Selection funnel applied locally.");
+  scrollToHash("#screener", "smooth", true);
+}
+
+function shortlistReasonForFund(fund, fitScore, funnel) {
+  const evidence = evidenceReadinessScore(fund);
+  const score = nadiScore(fund);
+  const categoryMatch = fund.category === funnel.profile.primaryCategory;
+  const inCompare = funnel.compareFunds.some((item) => item.id === fund.id);
+  const costFlag = fund.expense > 0.55;
+  const drawdownFlag = fund.maxDrawdown >= 22;
+  const readiness = Math.round(clampNumber(
+    fitScore * 0.32 +
+    score * 0.24 +
+    evidence * 0.2 +
+    (categoryMatch ? 9 : 0) +
+    (inCompare ? 6 : 0) -
+    (costFlag ? 4 : 0) -
+    (drawdownFlag ? 4 : 0),
+    0,
+    100
+  ));
+  const proofGaps = [];
+  if (!categoryMatch) proofGaps.push(`Not in the current ${funnel.profile.primaryCategory} anchor.`);
+  if (evidence < 68) proofGaps.push("Evidence source readiness needs improvement.");
+  if (!inCompare) proofGaps.push("Not yet in the Compare set.");
+  if (drawdownFlag) proofGaps.push(`Drawdown ${fund.maxDrawdown}% needs stress review.`);
+  if (costFlag) proofGaps.push(`TER ${fund.expense.toFixed(2)}% needs cost review.`);
+  const strengths = [
+    categoryMatch ? "Matches the profile category anchor" : "May work only as an alternate lane",
+    score >= 74 ? `Nadi score ${score}/100 supports deeper inspection` : `Nadi score ${score}/100 needs peer context`,
+    fitScore >= 78 ? `Profile fit ${fitScore}/100 is strong` : `Profile fit ${fitScore}/100 is still developing`,
+    evidence >= 68 ? `Evidence ${evidence}/100 is usable for demo research` : `Evidence ${evidence}/100 is a proof gap`
+  ];
+  const status = (() => {
+    if (readiness >= 78 && proofGaps.length <= 1) return "Keep";
+    if (readiness >= 62) return "Watch";
+    return "Park";
+  })();
+  const tone = status === "Keep" ? "keep" : status === "Watch" ? "watch" : "park";
+  const nextRoute = (() => {
+    if (evidence < 68) return "#evidence";
+    if (!inCompare) return "#compare";
+    if (drawdownFlag) return "#risk-lab";
+    if (costFlag) return "#cost-lab";
+    if (!categoryMatch) return "#category-playbook";
+    return "#decision-pack";
+  })();
+  const nextAction = workspaceOption(nextRoute)?.textContent?.trim() || "Open next check";
+  const reason = status === "Keep"
+    ? "Keep for comparison because profile fit, score, and proof posture are strong enough for research review."
+    : status === "Watch"
+      ? "Watch until the proof gaps are resolved and peer context is clear."
+      : "Park for now because the profile fit or evidence trail is not strong enough.";
+  return {
+    categoryMatch,
+    evidence,
+    fitScore,
+    fund,
+    inCompare,
+    nextAction,
+    nextRoute,
+    proofGaps,
+    readiness,
+    reason,
+    score,
+    status,
+    strengths,
+    tone
+  };
+}
+
+function shortlistReasonBoardConfig() {
+  const funnel = selectionFunnelConfig();
+  const selected = funnel.fund;
+  const source = [
+    ...funnel.topCandidates.map((item) => ({ fund: item.fund, fitScore: item.score })),
+    ...funnel.compareFunds.map((fund) => ({
+      fund,
+      fitScore: funnel.profile.candidates.find((item) => item.fund.id === fund.id)?.score || investorFundFitScore(fund, funnel.profile.investorConfig)
+    })),
+    {
+      fund: selected,
+      fitScore: funnel.profile.candidates.find((item) => item.fund.id === selected.id)?.score || investorFundFitScore(selected, funnel.profile.investorConfig)
+    }
+  ];
+  const unique = [];
+  const seen = new Set();
+  for (const item of source) {
+    if (seen.has(item.fund.id)) continue;
+    seen.add(item.fund.id);
+    unique.push(item);
+  }
+  const cards = unique
+    .map((item) => shortlistReasonForFund(item.fund, item.fitScore, funnel))
+    .sort((a, b) => {
+      const rank = { Keep: 0, Watch: 1, Park: 2 };
+      return rank[a.status] - rank[b.status] || b.readiness - a.readiness || b.score - a.score;
+    })
+    .slice(0, 6);
+  const keep = cards.filter((card) => card.status === "Keep");
+  const watch = cards.filter((card) => card.status === "Watch");
+  const park = cards.filter((card) => card.status === "Park");
+  const nextGap = cards.find((card) => card.status !== "Keep") || cards.find((card) => card.proofGaps.length) || {
+    fund: selected,
+    nextRoute: "#decision-pack",
+    nextAction: "Build Memo",
+    proofGaps: ["Write the decision reason before any action."],
+    status: "Ready",
+    readiness: 100
+  };
+  const boardScore = Math.round(clampNumber(
+    funnel.score * 0.45 +
+    (keep.length ? 18 : 4) +
+    Math.min(cards.length, 5) * 4 +
+    (cards.every((card) => card.proofGaps.length <= 2) ? 10 : 3),
+    0,
+    100
+  ));
+  const posture = (() => {
+    if (keep.length >= 2 && boardScore >= 78) return "Shortlist explainable";
+    if (keep.length >= 1 || watch.length >= 2) return "Shortlist needs proof";
+    return "Shortlist too early";
+  })();
+  const tone = boardScore >= 80 ? "strong" : boardScore >= 64 ? "usable" : boardScore >= 50 ? "watch" : "weak";
+  const guardrails = [
+    "Shortlist Reason Board explains research status only; it is not personalized advice, suitability approval, execution, or a return guarantee.",
+    "Keep, Watch, and Park are workflow labels, not buy, hold, sell, switch, SIP, STP, redemption, or allocation instructions.",
+    "Live launch still needs source dates, citation paths, TER, riskometer, factsheets, SID/KIM, portfolio disclosure, and written investor reasoning."
+  ];
+  return {
+    boardScore,
+    cards,
+    funnel,
+    guardrails,
+    keep,
+    nextGap,
+    park,
+    posture,
+    selected,
+    tone,
+    watch
+  };
+}
+
+function renderShortlistReasonBoard() {
+  if (!els.shortlistBoardOutput) return;
+  const board = shortlistReasonBoardConfig();
+  if (els.shortlistBoardSummary) {
+    els.shortlistBoardSummary.textContent = `${board.posture} | ${board.keep.length} keep`;
+  }
+  els.shortlistBoardOutput.innerHTML = `
+    <div class="shortlist-board-hero ${escapeHtml(board.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(board.posture)}</span>
+        <h3>${escapeHtml(`${board.keep.length} keep | ${board.watch.length} watch | ${board.park.length} park`)}</h3>
+        <p>Next gap: ${escapeHtml(board.nextGap.fund.name)} needs ${escapeHtml(board.nextGap.proofGaps[0] || "memo review")}.</p>
+      </div>
+      <div class="shortlist-board-score" style="--score:${board.boardScore}">
+        <b>${board.boardScore}</b>
+        <span>Board</span>
+      </div>
+    </div>
+    <div class="shortlist-summary-grid">
+      <article><span>Anchor</span><strong>${escapeHtml(board.funnel.profile.primaryCategory)}</strong><p>${board.funnel.categoryFunds.length} demo funds in lane</p></article>
+      <article><span>Kept</span><strong>${board.keep.length}</strong><p>${escapeHtml(board.keep.map((card) => card.fund.name).slice(0, 2).join(" | ") || "No keep candidate yet")}</p></article>
+      <article><span>Watch</span><strong>${board.watch.length}</strong><p>${escapeHtml(board.watch.map((card) => card.fund.category).slice(0, 2).join(" | ") || "No watch candidate")}</p></article>
+      <article><span>Next gap</span><strong>${escapeHtml(board.nextGap.nextAction)}</strong><p>${escapeHtml(board.nextGap.status)} | ${board.nextGap.readiness}/100</p></article>
+    </div>
+    <div class="shortlist-card-grid">
+      ${board.cards.map((card) => `
+        <article class="${escapeHtml(card.tone)}">
+          <div class="shortlist-card-head">
+            <div>
+              <span>${escapeHtml(card.status)} | ${card.readiness}/100</span>
+              <strong>${escapeHtml(card.fund.name)}</strong>
+            </div>
+            <b>${card.score}</b>
+          </div>
+          <p>${escapeHtml(card.reason)}</p>
+          <div class="shortlist-chip-row">
+            <span>${escapeHtml(card.fund.category)}</span>
+            <span>${escapeHtml(card.fund.risk)} risk</span>
+            <span>Fit ${card.fitScore}/100</span>
+            <span>Evidence ${card.evidence}/100</span>
+          </div>
+          <ul>
+            ${card.strengths.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+            ${card.proofGaps.slice(0, 2).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+          <button class="text-button" type="button" data-shortlist-route="${escapeHtml(card.nextRoute)}">${escapeHtml(card.nextAction)}</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="shortlist-guardrail">
+      <span>Shortlist boundary</span>
+      <ul>
+        ${board.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+}
+
+function makeShortlistReasonBoardBrief() {
+  const board = shortlistReasonBoardConfig();
+  return [
+    "# NiveshNadi Shortlist Reason Board",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Selected fund: ${board.selected.name}`,
+    `Board posture: ${board.posture}`,
+    `Board score: ${board.boardScore}/100`,
+    `Anchor category: ${board.funnel.profile.primaryCategory}`,
+    `Status mix: ${board.keep.length} keep | ${board.watch.length} watch | ${board.park.length} park`,
+    `Next gap: ${board.nextGap.fund.name} | ${board.nextGap.proofGaps[0] || "Write the decision reason."}`,
+    "",
+    "## Candidate Reasons",
+    ...board.cards.map((card) => [
+      `- ${card.fund.name}: ${card.status} | ${card.readiness}/100`,
+      `  Reason: ${card.reason}`,
+      `  Proof gaps: ${card.proofGaps.join(" | ") || "No major proof gap in demo mode."}`
+    ].join("\n")),
+    "",
+    "## Guardrails",
+    ...board.guardrails.map((item) => `- ${item}`),
+    "",
+    "Research workflow only. Keep, Watch, and Park are not investment instructions."
+  ].join("\n");
+}
+
+function openShortlistGap() {
+  scrollToHash(shortlistReasonBoardConfig().nextGap.nextRoute, "smooth", true);
+}
+
+function applyShortlistBoard() {
+  const board = shortlistReasonBoardConfig();
+  const kept = board.keep.length ? board.keep : board.cards.slice(0, 2);
+  state.compare = new Set(kept.slice(0, 4).map((card) => card.fund.id));
+  state.selectedId = kept[0]?.fund.id || state.selectedId;
+  state.filters = { search: "", category: board.funnel.profile.primaryCategory, risk: "all", sort: "score" };
+  if (els.searchInput) els.searchInput.value = "";
+  if (els.floatingSearchInput) els.floatingSearchInput.value = "";
+  if (els.categoryFilter) els.categoryFilter.value = board.funnel.profile.primaryCategory;
+  if (els.riskFilter) els.riskFilter.value = "all";
+  if (els.sortSelect) els.sortSelect.value = "score";
+  renderAll();
+  analyzePortfolio();
+  toast("Shortlist board applied locally.");
+  scrollToHash("#compare", "smooth", true);
+}
+
+function proofGapRoute(gap, fallbackRoute) {
+  const lower = gap.toLowerCase();
+  if (lower.includes("evidence") || lower.includes("source")) return "#evidence";
+  if (lower.includes("compare")) return "#compare";
+  if (lower.includes("drawdown") || lower.includes("stress")) return "#risk-lab";
+  if (lower.includes("ter") || lower.includes("cost")) return "#cost-lab";
+  if (lower.includes("anchor") || lower.includes("category")) return "#category-playbook";
+  if (lower.includes("memo") || lower.includes("reason")) return "#decision-pack";
+  return fallbackRoute || "#evidence";
+}
+
+function proofGapQueueConfig() {
+  const board = shortlistReasonBoardConfig();
+  const taskSource = [];
+  for (const card of board.cards) {
+    const gaps = card.proofGaps.length
+      ? card.proofGaps
+      : card.status === "Keep"
+        ? ["Write why this candidate remains on the shortlist before memo review."]
+        : ["Recheck profile fit, peer context, and evidence before keeping this candidate."];
+    gaps.slice(0, 3).forEach((gap, index) => {
+      const route = proofGapRoute(gap, card.nextRoute);
+      const severityBase = card.status === "Park" ? 88 : card.status === "Watch" ? 76 : 58;
+      const priority = Math.round(clampNumber(
+        severityBase +
+        (card.evidence < 68 ? 8 : 0) +
+        (card.inCompare ? 0 : 7) +
+        (index === 0 ? 5 : 0) -
+        Math.max(0, card.readiness - 62) * 0.18,
+        30,
+        99
+      ));
+      taskSource.push({
+        action: workspaceOption(route)?.textContent?.trim() || "Open check",
+        fund: card.fund,
+        gap,
+        priority,
+        readiness: card.readiness,
+        route,
+        status: card.status,
+        tone: priority >= 84 ? "urgent" : priority >= 70 ? "focus" : "normal"
+      });
+    });
+  }
+  const tasks = taskSource
+    .sort((a, b) => b.priority - a.priority || a.readiness - b.readiness || a.fund.name.localeCompare(b.fund.name))
+    .slice(0, 8);
+  const topTask = tasks[0] || {
+    action: "Build Memo",
+    fund: board.selected,
+    gap: "No major demo proof gap is visible. Write the decision memo reason before any action.",
+    priority: 42,
+    route: "#decision-pack",
+    status: "Ready",
+    tone: "normal"
+  };
+  const affectedFunds = new Set(tasks.map((task) => task.fund.id));
+  const laneMap = new Map();
+  tasks.forEach((task) => {
+    const lane = workspaceOption(task.route)?.textContent?.trim() || task.action;
+    const current = laneMap.get(task.route) || { label: lane, route: task.route, count: 0, maxPriority: 0 };
+    current.count += 1;
+    current.maxPriority = Math.max(current.maxPriority, task.priority);
+    laneMap.set(task.route, current);
+  });
+  const lanes = Array.from(laneMap.values()).sort((a, b) => b.maxPriority - a.maxPriority || b.count - a.count);
+  const queueScore = Math.round(clampNumber(
+    board.boardScore * 0.52 +
+    (100 - topTask.priority) * 0.28 +
+    (tasks.length <= 3 ? 12 : tasks.length <= 6 ? 6 : 2) +
+    (board.keep.length ? 6 : 0),
+    0,
+    100
+  ));
+  const posture = (() => {
+    if (tasks.length <= 2 && queueScore >= 78) return "Focused proof queue";
+    if (tasks.length <= 5) return "Proof work mapped";
+    return "Proof queue active";
+  })();
+  const tone = queueScore >= 80 ? "strong" : queueScore >= 64 ? "usable" : queueScore >= 50 ? "watch" : "weak";
+  const guardrails = [
+    "Proof Gap Queue ranks research verification work only; it is not personalized advice, suitability approval, execution, or a return guarantee.",
+    "A completed proof queue still needs a written decision reason and live source dates before production use.",
+    "Do not enter PAN, folio, CAS, bank, contact, credential, ARN, EUIN, or distributor-client information into Phase 1 notes."
+  ];
+  return {
+    affectedFunds,
+    board,
+    guardrails,
+    lanes,
+    posture,
+    queueScore,
+    tasks,
+    tone,
+    topTask
+  };
+}
+
+function renderProofGapQueue() {
+  if (!els.proofGapOutput) return;
+  const queue = proofGapQueueConfig();
+  if (els.proofGapSummary) {
+    els.proofGapSummary.textContent = `${queue.posture} | ${queue.tasks.length} tasks`;
+  }
+  els.proofGapOutput.innerHTML = `
+    <div class="proof-gap-hero ${escapeHtml(queue.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(queue.posture)}</span>
+        <h3>${escapeHtml(queue.topTask.fund.name)}</h3>
+        <p>Top gap: ${escapeHtml(queue.topTask.gap)}</p>
+      </div>
+      <div class="proof-gap-score" style="--score:${queue.queueScore}">
+        <b>${queue.queueScore}</b>
+        <span>Proof</span>
+      </div>
+    </div>
+    <div class="proof-gap-metrics">
+      <article><span>Tasks</span><strong>${queue.tasks.length}</strong><p>${queue.tasks.length ? "Verification items ranked" : "No active gaps"}</p></article>
+      <article><span>Affected funds</span><strong>${queue.affectedFunds.size}</strong><p>${queue.board.cards.length} candidates scanned</p></article>
+      <article><span>Top route</span><strong>${escapeHtml(queue.topTask.action)}</strong><p>Priority ${queue.topTask.priority}/100</p></article>
+      <article><span>Board posture</span><strong>${escapeHtml(queue.board.posture)}</strong><p>${queue.board.keep.length} keep | ${queue.board.watch.length} watch | ${queue.board.park.length} park</p></article>
+    </div>
+    <div class="proof-gap-task-grid">
+      ${queue.tasks.map((task) => `
+        <article class="${escapeHtml(task.tone)}">
+          <div>
+            <span>${escapeHtml(task.status)} | priority ${task.priority}</span>
+            <strong>${escapeHtml(task.fund.name)}</strong>
+          </div>
+          <p>${escapeHtml(task.gap)}</p>
+          <button class="text-button" type="button" data-proof-route="${escapeHtml(task.route)}">${escapeHtml(task.action)}</button>
+        </article>
+      `).join("") || "<article><span>Ready</span><strong>No active proof task</strong><p>Write the decision memo and keep the research boundary visible.</p></article>"}
+    </div>
+    <div class="proof-gap-lane-grid">
+      ${queue.lanes.map((lane) => `
+        <article>
+          <span>${lane.count} task${lane.count === 1 ? "" : "s"}</span>
+          <strong>${escapeHtml(lane.label)}</strong>
+          <p>Highest priority ${lane.maxPriority}/100</p>
+          <button class="text-button" type="button" data-proof-route="${escapeHtml(lane.route)}">Open lane</button>
+        </article>
+      `).join("") || "<article><span>Memo</span><strong>Decision Pack</strong><p>No proof lane is currently dominant.</p></article>"}
+    </div>
+    <div class="proof-gap-guardrail">
+      <span>Proof boundary</span>
+      <ul>
+        ${queue.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+}
+
+function makeProofGapQueueBrief() {
+  const queue = proofGapQueueConfig();
+  return [
+    "# NiveshNadi Proof Gap Queue",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Queue posture: ${queue.posture}`,
+    `Queue score: ${queue.queueScore}/100`,
+    `Tasks: ${queue.tasks.length}`,
+    `Affected funds: ${queue.affectedFunds.size}`,
+    `Top gap: ${queue.topTask.fund.name} | ${queue.topTask.gap}`,
+    "",
+    "## Ranked Proof Tasks",
+    ...queue.tasks.map((task) => `- ${task.fund.name}: priority ${task.priority}/100 | ${task.status} | ${task.gap} | Route: ${task.action}`),
+    "",
+    "## Proof Lanes",
+    ...queue.lanes.map((lane) => `- ${lane.label}: ${lane.count} task(s), highest priority ${lane.maxPriority}/100`),
+    "",
+    "## Guardrails",
+    ...queue.guardrails.map((item) => `- ${item}`),
+    "",
+    "Research workflow only. This queue ranks verification tasks, not investment actions."
+  ].join("\n");
+}
+
+function openProofGap() {
+  scrollToHash(proofGapQueueConfig().topTask.route, "smooth", true);
+}
+
+function memoClearanceDeskConfig() {
+  const queue = proofGapQueueConfig();
+  const sheet = answerSheetConfig();
+  const ladder = convictionLadderConfig();
+  const fund = selectedFund();
+  const memoReason = (els.packReason?.value || sheet.values.memo || "").trim();
+  const memoEntry = sheet.entries.find((entry) => entry.theme === "Decision memo") || { score: 0 };
+  const evidence = evidenceReadinessScore(fund);
+  const answerReady = sheet.readiness >= 64 && sheet.answered >= 4;
+  const shortlistReady = queue.board.keep.length >= 1 || queue.board.watch.length >= 2;
+  const proofReady = queue.queueScore >= 54 && queue.topTask.priority < 92;
+  const ladderReady = ladder.rung.level >= 3 || ladder.completed >= 3;
+  const memoReady = memoReason.length >= 18 || memoEntry.score >= 52 || ladder.rung.level >= 5;
+  const boundaryReady = evidence >= 58 && queue.tasks.length <= 8;
+  const gates = [
+    {
+      id: "answers",
+      label: "Answer base",
+      route: "#answer-sheet",
+      done: answerReady,
+      score: sheet.readiness,
+      detail: answerReady ? "Core answers are usable enough for memo review." : "Answer at least four research prompts in plain language.",
+      action: "Open Answers"
+    },
+    {
+      id: "shortlist",
+      label: "Shortlist reason",
+      route: "#shortlist-board",
+      done: shortlistReady,
+      score: queue.board.boardScore,
+      detail: shortlistReady ? "Candidate reasons are organized into keep, watch, and park lanes." : "Build a shortlist reason before drafting the memo.",
+      action: "Open Shortlist"
+    },
+    {
+      id: "proof",
+      label: "Proof gaps",
+      route: "#proof-gap-queue",
+      done: proofReady,
+      score: queue.queueScore,
+      detail: proofReady ? "No critical proof blocker is dominating the queue." : `Top blocker: ${queue.topTask.gap}`,
+      action: "Open Proof Queue"
+    },
+    {
+      id: "ladder",
+      label: "Conviction ladder",
+      route: "#conviction-ladder",
+      done: ladderReady,
+      score: ladder.conviction,
+      detail: ladderReady ? `${ladder.rung.label} posture is usable for memo routing.` : `Next ladder gate: ${ladder.nextGate.label}.`,
+      action: "Open Ladder"
+    },
+    {
+      id: "memo",
+      label: "Memo reason",
+      route: "#decision-pack",
+      done: memoReady,
+      score: Math.round(clampNumber(memoEntry.score || memoReason.length * 3, 0, 100)),
+      detail: memoReady ? "Decision reason is visible enough to review." : "Write the reason in the investor's own words before committing the research file.",
+      action: "Build Memo"
+    },
+    {
+      id: "boundary",
+      label: "Research boundary",
+      route: "#readiness-gate",
+      done: boundaryReady,
+      score: evidence,
+      detail: boundaryReady ? "Evidence and no-advice boundaries are visible." : "Confirm source readiness and keep the no-advice boundary explicit.",
+      action: "Open Gate"
+    }
+  ];
+  const blockers = gates.filter((gate) => !gate.done);
+  const completed = gates.length - blockers.length;
+  const topBlocker = blockers[0] || {
+    label: "Decision Pack",
+    route: "#decision-pack",
+    action: "Build Memo",
+    detail: "Research file is ready to draft the memo, subject to live source verification."
+  };
+  const clearanceScore = Math.round(clampNumber(
+    sheet.readiness * 0.22 +
+    queue.queueScore * 0.2 +
+    queue.board.boardScore * 0.18 +
+    ladder.conviction * 0.18 +
+    evidence * 0.12 +
+    completed * 4 +
+    (memoReady ? 6 : 0),
+    0,
+    100
+  ));
+  const posture = (() => {
+    if (!blockers.length && clearanceScore >= 82) return "Cleared for memo drafting";
+    if (blockers.length <= 2 && clearanceScore >= 68) return "Memo nearly ready";
+    if (completed >= 3) return "Memo needs cleanup";
+    return "Memo blocked";
+  })();
+  const tone = clearanceScore >= 82 && blockers.length <= 1
+    ? "strong"
+    : clearanceScore >= 68
+      ? "usable"
+      : clearanceScore >= 52
+        ? "watch"
+        : "weak";
+  const guardrails = [
+    "Memo Clearance Desk is a research-readiness gate only; it is not personalized advice, suitability approval, execution, SIP, STP, switch, redemption, or return guidance.",
+    "A cleared memo still needs live AMFI, AMC factsheet, SID/KIM, portfolio disclosure, riskometer, TER, benchmark, source date, and citation-path checks before production use.",
+    "Do not enter PAN, folio, CAS, bank, contact, account, credential, ARN, EUIN, or distributor-client data into Phase 1 memo notes."
+  ];
+  return {
+    blockers,
+    clearanceScore,
+    completed,
+    evidence,
+    fund,
+    gates,
+    guardrails,
+    ladder,
+    memoReason,
+    posture,
+    queue,
+    sheet,
+    tone,
+    topBlocker
+  };
+}
+
+function renderMemoClearanceDesk() {
+  if (!els.memoClearanceOutput) return;
+  const clearance = memoClearanceDeskConfig();
+  if (els.memoClearanceSummary) {
+    els.memoClearanceSummary.textContent = `${clearance.posture} | ${clearance.clearanceScore}/100`;
+  }
+  els.memoClearanceOutput.innerHTML = `
+    <div class="memo-clearance-hero ${escapeHtml(clearance.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(clearance.posture)}</span>
+        <h3>${escapeHtml(clearance.fund.name)} memo clearance</h3>
+        <p>${escapeHtml(clearance.blockers.length ? clearance.topBlocker.detail : "Ready to draft a research memo, with live-source verification still required before production use.")}</p>
+      </div>
+      <div class="memo-clearance-score" style="--score:${clearance.clearanceScore}">
+        <b>${clearance.clearanceScore}</b>
+        <span>Clear</span>
+      </div>
+    </div>
+    <div class="memo-clearance-metrics">
+      <article><span>Gates complete</span><strong>${clearance.completed}/6</strong><p>${clearance.blockers.length} blocker${clearance.blockers.length === 1 ? "" : "s"} still open</p></article>
+      <article><span>Answer base</span><strong>${clearance.sheet.readiness}/100</strong><p>${clearance.sheet.answered}/6 research prompts answered</p></article>
+      <article><span>Proof queue</span><strong>${clearance.queue.queueScore}/100</strong><p>Top priority ${clearance.queue.topTask.priority}/100</p></article>
+      <article><span>Conviction rung</span><strong>${escapeHtml(clearance.ladder.rung.label)}</strong><p>${clearance.ladder.conviction}/100 ladder readiness</p></article>
+    </div>
+    <div class="memo-clearance-gate-grid">
+      ${clearance.gates.map((gate) => `
+        <article class="${gate.done ? "complete" : "open"}">
+          <div><span>${escapeHtml(gate.label)}</span><strong>${gate.done ? "Clear" : "Blocked"}</strong></div>
+          <p>${escapeHtml(gate.detail)}</p>
+          <small>${gate.score}/100</small>
+          <button class="text-button" type="button" data-memo-clearance-route="${escapeHtml(gate.route)}">${escapeHtml(gate.action)}</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="memo-clearance-blocker-grid">
+      <article>
+        <span>Top blocker</span>
+        <strong>${escapeHtml(clearance.topBlocker.label)}</strong>
+        <p>${escapeHtml(clearance.topBlocker.detail)}</p>
+        <button class="text-button" type="button" data-memo-clearance-route="${escapeHtml(clearance.topBlocker.route)}">${escapeHtml(clearance.topBlocker.action)}</button>
+      </article>
+      <article>
+        <span>Memo wording</span>
+        <strong>${clearance.memoReason ? "Reason detected" : "Reason pending"}</strong>
+        <p>${escapeHtml(clearance.memoReason || "Write the decision reason before treating the memo as ready.")}</p>
+      </article>
+      <article>
+        <span>Production caveat</span>
+        <strong>Live source check</strong>
+        <p>Demo clearance is not final until source dates, citation paths, riskometer, TER, holdings, and benchmark facts are verified.</p>
+      </article>
+    </div>
+    <div class="memo-clearance-guardrail">
+      <span>Memo boundary</span>
+      <ul>
+        ${clearance.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+}
+
+function makeMemoClearanceBrief() {
+  const clearance = memoClearanceDeskConfig();
+  return [
+    "# NiveshNadi Memo Clearance Desk",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Selected fund: ${clearance.fund.name}`,
+    `Memo posture: ${clearance.posture}`,
+    `Clearance score: ${clearance.clearanceScore}/100`,
+    `Gates complete: ${clearance.completed}/6`,
+    `Top blocker: ${clearance.topBlocker.label} | ${clearance.topBlocker.detail}`,
+    "",
+    "## Gate Status",
+    ...clearance.gates.map((gate) => `- ${gate.label}: ${gate.done ? "Clear" : "Blocked"} | ${gate.score}/100 | ${gate.detail}`),
+    "",
+    "## Open Blockers",
+    ...(clearance.blockers.length ? clearance.blockers.map((gate) => `- ${gate.label}: ${gate.detail}`) : ["- No open demo blockers. Verify live source dates and citation paths before production use."]),
+    "",
+    "## Guardrails",
+    ...clearance.guardrails.map((item) => `- ${item}`),
+    "",
+    "Research workflow only. Memo clearance is not personalized advice, suitability approval, execution, or a return guarantee."
+  ].join("\n");
+}
+
+function openMemoClearanceBlocker() {
+  scrollToHash(memoClearanceDeskConfig().topBlocker.route, "smooth", true);
+}
+
+function clearanceSprintBoardConfig() {
+  const clearance = memoClearanceDeskConfig();
+  const fallbackGates = [
+    {
+      label: "Decision memo",
+      route: "#decision-pack",
+      action: "Build Memo",
+      score: clearance.clearanceScore,
+      detail: "Draft the memo while keeping live-source verification caveats visible."
+    },
+    {
+      label: "Source refresh",
+      route: "#evidence",
+      action: "Open Evidence",
+      score: clearance.evidence,
+      detail: "Confirm AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, and source dates."
+    },
+    {
+      label: "Review rhythm",
+      route: "#review-rhythm",
+      action: "Open Rhythm",
+      score: clearance.ladder.conviction,
+      detail: "Set the next review date and watch triggers before storing the file."
+    }
+  ];
+  const sprintSource = clearance.blockers.length ? clearance.blockers : fallbackGates;
+  const lanes = ["Today", "Next", "Before memo", "Final check"];
+  const moves = sprintSource.slice(0, 4).map((gate, index) => {
+    const score = Number.isFinite(gate.score) ? gate.score : clearance.clearanceScore;
+    const minutes = score < 45 ? 35 : score < 65 ? 25 : score < 80 ? 18 : 12;
+    return {
+      action: gate.action || "Open workspace",
+      detail: gate.detail,
+      label: gate.label,
+      lane: lanes[index] || "Final check",
+      minutes,
+      route: gate.route,
+      score,
+      tone: index === 0 ? "focus" : score < 65 ? "watch" : "normal"
+    };
+  });
+  const fillerMoves = [
+    {
+      action: "Open Evidence",
+      detail: "Refresh source dates, citation paths, holdings date, riskometer, TER, factsheet, SID/KIM, and benchmark caveats.",
+      label: "Source refresh",
+      route: "#evidence",
+      score: clearance.evidence
+    },
+    {
+      action: "Open Rhythm",
+      detail: "Set the next review date and watch trigger so the memo does not become stale after it is written.",
+      label: "Review rhythm",
+      route: "#review-rhythm",
+      score: clearance.ladder.conviction
+    },
+    {
+      action: "Copy Clearance",
+      detail: "Copy the clearance brief and keep the no-advice boundary attached to the research file.",
+      label: "Research trail",
+      route: "#memo-clearance",
+      score: clearance.clearanceScore
+    }
+  ];
+  let fillerIndex = 0;
+  while (moves.length < 4) {
+    const filler = fillerMoves[fillerIndex % fillerMoves.length];
+    moves.push({
+      ...filler,
+      lane: lanes[moves.length] || "Final check",
+      minutes: moves.length === 3 ? 8 : 12,
+      tone: "normal"
+    });
+    fillerIndex += 1;
+  }
+  const totalMinutes = moves.reduce((sum, move) => sum + move.minutes, 0);
+  const firstMove = moves[0] || {
+    action: "Open Clearance",
+    detail: "Review memo clearance before drafting.",
+    label: "Memo Clearance",
+    lane: "Today",
+    minutes: 10,
+    route: "#memo-clearance",
+    score: clearance.clearanceScore,
+    tone: "normal"
+  };
+  const sprintScore = Math.round(clampNumber(
+    clearance.clearanceScore * 0.62 +
+    clearance.completed * 5 +
+    Math.max(0, 100 - clearance.blockers.length * 13) * 0.18 +
+    (totalMinutes <= 60 ? 8 : totalMinutes <= 90 ? 4 : 0),
+    0,
+    100
+  ));
+  const posture = (() => {
+    if (!clearance.blockers.length && sprintScore >= 86) return "Memo sprint ready";
+    if (clearance.blockers.length <= 2) return "One-session cleanup";
+    if (clearance.completed >= 3) return "Focused blocker sprint";
+    return "Research sprint needed";
+  })();
+  const finishLine = clearance.blockers.length
+    ? `${clearance.blockers[0].label} cleared, then rerun memo clearance.`
+    : "Memo drafted with live-source caveats still visible.";
+  const guardrails = [
+    "Clearance Sprint Board is a research workflow planner only; it is not personalized advice, suitability approval, execution, SIP, STP, switch, redemption, or return guidance.",
+    "The sprint can organize work, but production launch still needs live source dates, citation paths, riskometer, TER, benchmark, factsheet, SID/KIM, and portfolio disclosure checks.",
+    "Keep PAN, folio, CAS, bank, contact, account, credential, ARN, EUIN, and distributor-client data out of sprint notes."
+  ];
+  return {
+    clearance,
+    finishLine,
+    firstMove,
+    guardrails,
+    moves,
+    posture,
+    sprintScore,
+    totalMinutes
+  };
+}
+
+function renderClearanceSprintBoard() {
+  if (!els.clearanceSprintOutput) return;
+  const sprint = clearanceSprintBoardConfig();
+  if (els.clearanceSprintSummary) {
+    els.clearanceSprintSummary.textContent = `${sprint.posture} | ${sprint.totalMinutes} min`;
+  }
+  els.clearanceSprintOutput.innerHTML = `
+    <div class="clearance-sprint-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(sprint.posture)}</span>
+        <h3>${escapeHtml(sprint.firstMove.label)} is the first move</h3>
+        <p>${escapeHtml(sprint.firstMove.detail)}</p>
+      </div>
+      <div class="clearance-sprint-score" style="--score:${sprint.sprintScore}">
+        <b>${sprint.sprintScore}</b>
+        <span>Sprint</span>
+      </div>
+    </div>
+    <div class="clearance-sprint-metrics">
+      <article><span>First move</span><strong>${escapeHtml(sprint.firstMove.action)}</strong><p>${escapeHtml(sprint.firstMove.lane)} | ${sprint.firstMove.minutes} min</p></article>
+      <article><span>Open blockers</span><strong>${sprint.clearance.blockers.length}</strong><p>${sprint.clearance.completed}/6 clearance gates complete</p></article>
+      <article><span>Total effort</span><strong>${sprint.totalMinutes} min</strong><p>Demo time estimate for research cleanup</p></article>
+      <article><span>Finish line</span><strong>${escapeHtml(sprint.clearance.posture)}</strong><p>${escapeHtml(sprint.finishLine)}</p></article>
+    </div>
+    <div class="clearance-sprint-move-grid">
+      ${sprint.moves.map((move, index) => `
+        <article class="${escapeHtml(move.tone)}">
+          <div><span>${escapeHtml(move.lane)} | ${move.minutes} min</span><strong>${String(index + 1).padStart(2, "0")} ${escapeHtml(move.label)}</strong></div>
+          <p>${escapeHtml(move.detail)}</p>
+          <small>${move.score}/100 source score</small>
+          <button class="text-button" type="button" data-clearance-sprint-route="${escapeHtml(move.route)}">${escapeHtml(move.action)}</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="clearance-sprint-guardrail">
+      <span>Sprint boundary</span>
+      <ul>
+        ${sprint.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+}
+
+function makeClearanceSprintBrief() {
+  const sprint = clearanceSprintBoardConfig();
+  return [
+    "# NiveshNadi Clearance Sprint Board",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Selected fund: ${sprint.clearance.fund.name}`,
+    `Sprint posture: ${sprint.posture}`,
+    `Sprint score: ${sprint.sprintScore}/100`,
+    `Total effort: ${sprint.totalMinutes} minutes`,
+    `First move: ${sprint.firstMove.label} | ${sprint.firstMove.detail}`,
+    `Finish line: ${sprint.finishLine}`,
+    "",
+    "## Sprint Moves",
+    ...sprint.moves.map((move, index) => `${index + 1}. ${move.lane}: ${move.label} | ${move.minutes} min | ${move.detail} | Route: ${move.action}`),
+    "",
+    "## Guardrails",
+    ...sprint.guardrails.map((item) => `- ${item}`),
+    "",
+    "Research workflow only. This sprint board is not personalized advice, suitability approval, execution, or a return guarantee."
+  ].join("\n");
+}
+
+function openClearanceSprintMove() {
+  scrollToHash(clearanceSprintBoardConfig().firstMove.route, "smooth", true);
 }
 
 function loadStarterGuideProgress() {
@@ -4957,6 +7270,12 @@ function makeCompareNote() {
 function renderAll() {
   renderSignalStrip();
   renderProfileRoom();
+  renderSelectionFunnel();
+  renderShortlistReasonBoard();
+  renderProofGapQueue();
+  renderMemoClearanceDesk();
+  renderClearanceSprintBoard();
+  renderJourneyTimeline();
   renderResearchBriefing();
   renderBriefingVault();
   renderResearchMemory();
@@ -5107,6 +7426,11 @@ function syncSearchInputs(value) {
   els.searchInput.value = value;
   if (els.floatingSearchInput) els.floatingSearchInput.value = value;
   renderFundGrid();
+  renderSelectionFunnel();
+  renderShortlistReasonBoard();
+  renderProofGapQueue();
+  renderMemoClearanceDesk();
+  renderClearanceSprintBoard();
 }
 
 function sharedHoldings(funds) {
@@ -6262,6 +8586,7 @@ function saveCurrentReviewSnapshot() {
   renderReviewVault();
   renderInvestorRecordDesk();
   renderResearchDossier();
+  renderJourneyTimeline();
   renderResearchMemory();
   renderPrivacyControlRoom();
   toast("Review snapshot saved locally.");
@@ -6272,6 +8597,7 @@ function clearReviewVault() {
   renderReviewVault();
   renderInvestorRecordDesk();
   renderResearchDossier();
+  renderJourneyTimeline();
   renderResearchMemory();
   renderPrivacyControlRoom();
   toast("Review vault cleared.");
@@ -12659,6 +14985,7 @@ function saveCurrentReceiptSnapshot() {
   const entries = [snapshot, ...loadReceiptVault()].slice(0, 24);
   saveReceiptVault(entries);
   renderReceiptVault();
+  renderJourneyTimeline();
   renderResearchMemory();
   renderPrivacyControlRoom();
   toast("Research receipt saved locally.");
@@ -12667,6 +14994,7 @@ function saveCurrentReceiptSnapshot() {
 function clearReceiptVault() {
   saveReceiptVault([]);
   renderReceiptVault();
+  renderJourneyTimeline();
   renderResearchMemory();
   renderPrivacyControlRoom();
   toast("Receipt vault cleared.");
@@ -12896,6 +15224,7 @@ function addToWatchlist(fundId, shouldRender = true) {
     renderReviewRhythmBoard();
     renderResearchBriefing();
     renderBriefingVault();
+    renderJourneyTimeline();
     renderResearchMemory();
     renderPrivacyControlRoom();
   }
@@ -12919,6 +15248,7 @@ function removeFromWatchlist(fundId) {
   renderReviewRhythmBoard();
   renderResearchBriefing();
   renderBriefingVault();
+  renderJourneyTimeline();
   renderResearchMemory();
   renderPrivacyControlRoom();
 }
@@ -12952,6 +15282,7 @@ function handleAlertForm(event) {
   renderReviewRhythmBoard();
   renderResearchBriefing();
   renderBriefingVault();
+  renderJourneyTimeline();
   renderResearchMemory();
   renderPrivacyControlRoom();
 }
@@ -13294,6 +15625,7 @@ function addRhythmReviewTrigger() {
   saveAlerts([alert, ...loadAlerts()].slice(0, 60));
   renderWatchlistRoom();
   renderReviewRhythmBoard();
+  renderJourneyTimeline();
   toast("Review rhythm added to Watchlist.");
 }
 
@@ -13502,6 +15834,7 @@ function saveDecisionPackToJournal() {
   const entries = [entry, ...loadJournal()].slice(0, 20);
   saveJournal(entries);
   renderJournal();
+  renderJourneyTimeline();
   renderResearchMemory();
   renderPrivacyControlRoom();
   toast("Decision pack saved to journal.");
@@ -14693,6 +17026,7 @@ function handleJournal(event) {
   saveJournal(entries);
   els.journalReason.value = "";
   renderJournal();
+  renderJourneyTimeline();
   renderResearchMemory();
   renderPrivacyControlRoom();
 }
@@ -14704,14 +17038,29 @@ function bindEvents() {
   els.categoryFilter.addEventListener("change", (event) => {
     state.filters.category = event.target.value;
     renderFundGrid();
+    renderSelectionFunnel();
+    renderShortlistReasonBoard();
+    renderProofGapQueue();
+    renderMemoClearanceDesk();
+    renderClearanceSprintBoard();
   });
   els.riskFilter.addEventListener("change", (event) => {
     state.filters.risk = event.target.value;
     renderFundGrid();
+    renderSelectionFunnel();
+    renderShortlistReasonBoard();
+    renderProofGapQueue();
+    renderMemoClearanceDesk();
+    renderClearanceSprintBoard();
   });
   els.sortSelect.addEventListener("change", (event) => {
     state.filters.sort = event.target.value;
     renderFundGrid();
+    renderSelectionFunnel();
+    renderShortlistReasonBoard();
+    renderProofGapQueue();
+    renderMemoClearanceDesk();
+    renderClearanceSprintBoard();
   });
   els.resetFilters.addEventListener("click", () => {
     state.filters = { search: "", category: "all", risk: "all", sort: "score" };
@@ -14721,10 +17070,21 @@ function bindEvents() {
     els.riskFilter.value = "all";
     els.sortSelect.value = "score";
     renderFundGrid();
+    renderSelectionFunnel();
+    renderShortlistReasonBoard();
+    renderProofGapQueue();
+    renderMemoClearanceDesk();
+    renderClearanceSprintBoard();
   });
   els.copyBrief.addEventListener("click", () => copyText(makeBrief()));
   els.profileRoomForm?.addEventListener("submit", (event) => {
     renderProfileRoom(event);
+    renderSelectionFunnel();
+    renderShortlistReasonBoard();
+    renderProofGapQueue();
+    renderMemoClearanceDesk();
+    renderClearanceSprintBoard();
+    renderJourneyTimeline();
     renderStarterGuide();
     renderInvestorPassport();
     renderNadiCoach();
@@ -14739,13 +17099,53 @@ function bindEvents() {
   ].forEach((input) => {
     input?.addEventListener(input.tagName === "INPUT" ? "input" : "change", () => {
       renderProfileRoom();
+      renderJourneyTimeline();
       renderStarterGuide();
       renderInvestorPassport();
       renderNadiCoach();
+      renderSelectionFunnel();
+      renderShortlistReasonBoard();
+      renderProofGapQueue();
+      renderMemoClearanceDesk();
+      renderClearanceSprintBoard();
     });
   });
   els.applyProfileRoom?.addEventListener("click", applyProfileRoom);
   els.copyProfileRoom?.addEventListener("click", () => copyText(makeProfileRoomBrief()));
+  els.openDailyPriority?.addEventListener("click", openDailyPriority);
+  els.copyDailyCommand?.addEventListener("click", () => copyText(makeDailyCommandBrief()));
+  els.openDecisionRadarFocus?.addEventListener("click", openDecisionRadarFocus);
+  els.copyDecisionRadar?.addEventListener("click", () => copyText(makeDecisionRadarBrief()));
+  els.openQuestionStackFocus?.addEventListener("click", openQuestionStackFocus);
+  els.copyQuestionStack?.addEventListener("click", () => copyText(makeQuestionStackBrief()));
+  els.answerSheetForm?.addEventListener("submit", renderAnswerSheet);
+  [
+    els.answerTrust,
+    els.answerFit,
+    els.answerCompare,
+    els.answerRisk,
+    els.answerMemo,
+    els.answerFollowup
+  ].forEach((input) => input?.addEventListener("input", persistAnswerSheetDraft));
+  els.saveAnswerSheet?.addEventListener("click", saveCurrentAnswerSheet);
+  els.copyAnswerSheet?.addEventListener("click", () => copyText(makeAnswerSheetBrief()));
+  els.clearAnswerSheet?.addEventListener("click", clearCurrentAnswerSheet);
+  els.openConvictionGate?.addEventListener("click", openConvictionGate);
+  els.copyConvictionLadder?.addEventListener("click", () => copyText(makeConvictionLadderBrief()));
+  els.openSelectionBottleneck?.addEventListener("click", openSelectionBottleneck);
+  els.applySelectionFunnel?.addEventListener("click", applySelectionFunnel);
+  els.copySelectionFunnel?.addEventListener("click", () => copyText(makeSelectionFunnelBrief()));
+  els.openShortlistGap?.addEventListener("click", openShortlistGap);
+  els.applyShortlistBoard?.addEventListener("click", applyShortlistBoard);
+  els.copyShortlistBoard?.addEventListener("click", () => copyText(makeShortlistReasonBoardBrief()));
+  els.openProofGap?.addEventListener("click", openProofGap);
+  els.copyProofGapQueue?.addEventListener("click", () => copyText(makeProofGapQueueBrief()));
+  els.openMemoClearanceBlocker?.addEventListener("click", openMemoClearanceBlocker);
+  els.copyMemoClearance?.addEventListener("click", () => copyText(makeMemoClearanceBrief()));
+  els.openClearanceSprintMove?.addEventListener("click", openClearanceSprintMove);
+  els.copyClearanceSprint?.addEventListener("click", () => copyText(makeClearanceSprintBrief()));
+  els.openJourneyNext?.addEventListener("click", openNextJourneyTimelineStep);
+  els.copyJourneyTimeline?.addEventListener("click", () => copyText(makeJourneyTimelineBrief()));
   els.briefingForm?.addEventListener("submit", (event) => {
     renderResearchBriefing(event);
     renderBriefingVault();
@@ -15297,16 +17697,19 @@ function bindEvents() {
   els.receiptForm?.addEventListener("submit", (event) => {
     renderResearchReceipt(event);
     renderReceiptVault();
+    renderJourneyTimeline();
   });
   [els.receiptMode, els.receiptDecision, els.receiptReviewDate].forEach((input) => {
     input?.addEventListener("change", () => {
       renderResearchReceipt();
       renderReceiptVault();
+      renderJourneyTimeline();
     });
   });
   els.receiptNote?.addEventListener("input", () => {
     renderResearchReceipt();
     renderReceiptVault();
+    renderJourneyTimeline();
   });
   els.copyReceiptNote?.addEventListener("click", () => copyText(makeResearchReceiptNote()));
   els.saveReceiptSnapshot?.addEventListener("click", saveCurrentReceiptSnapshot);
@@ -15314,9 +17717,15 @@ function bindEvents() {
   els.clearReceiptVault?.addEventListener("click", clearReceiptVault);
   els.rhythmForm?.addEventListener("submit", renderReviewRhythmBoard);
   [els.rhythmFocus, els.rhythmDate, els.rhythmCadence, els.rhythmNote].forEach((input) => {
-    input?.addEventListener("change", () => renderReviewRhythmBoard());
+    input?.addEventListener("change", () => {
+      renderReviewRhythmBoard();
+      renderJourneyTimeline();
+    });
   });
-  els.rhythmNote?.addEventListener("input", () => renderReviewRhythmBoard());
+  els.rhythmNote?.addEventListener("input", () => {
+    renderReviewRhythmBoard();
+    renderJourneyTimeline();
+  });
   els.copyRhythmNote?.addEventListener("click", () => copyText(makeReviewRhythmNote()));
   els.addRhythmTrigger?.addEventListener("click", addRhythmReviewTrigger);
   els.alertForm?.addEventListener("submit", handleAlertForm);
@@ -15342,6 +17751,7 @@ function bindEvents() {
     renderResearchReceipt();
     renderReceiptVault();
     renderReviewRhythmBoard();
+    renderJourneyTimeline();
     renderPrivacyControlRoom();
   });
   els.clearAlerts?.addEventListener("click", () => {
@@ -15357,12 +17767,14 @@ function bindEvents() {
     renderResearchReceipt();
     renderReceiptVault();
     renderReviewRhythmBoard();
+    renderJourneyTimeline();
     renderPrivacyControlRoom();
   });
   els.packForm?.addEventListener("submit", renderDecisionPack);
   [els.packDecision, els.packAmount, els.packReviewDate, els.packConviction, els.packReason].forEach((input) => {
     input?.addEventListener("change", () => {
       renderDecisionPack();
+      renderJourneyTimeline();
       renderResearchLanes();
       renderResearchPulse();
       renderNadiCoach();
@@ -15370,6 +17782,7 @@ function bindEvents() {
   });
   els.packReason?.addEventListener("input", () => {
     renderDecisionPack();
+    renderJourneyTimeline();
     renderResearchLanes();
     renderResearchPulse();
     renderNadiCoach();
@@ -15380,6 +17793,7 @@ function bindEvents() {
   els.clearJournal.addEventListener("click", () => {
     saveJournal([]);
     renderJournal();
+    renderJourneyTimeline();
     renderResearchMemory();
     renderPrivacyControlRoom();
   });
@@ -15445,11 +17859,83 @@ function bindEvents() {
   });
 
   document.addEventListener("click", (event) => {
+    const journeyRoute = event.target.closest("[data-journey-timeline-route]");
+    if (!journeyRoute) return;
+    scrollToHash(journeyRoute.dataset.journeyTimelineRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const dailyRoute = event.target.closest("[data-daily-route]");
+    if (!dailyRoute) return;
+    scrollToHash(dailyRoute.dataset.dailyRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const radarRoute = event.target.closest("[data-radar-route]");
+    if (!radarRoute) return;
+    scrollToHash(radarRoute.dataset.radarRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const questionRoute = event.target.closest("[data-question-route]");
+    if (!questionRoute) return;
+    scrollToHash(questionRoute.dataset.questionRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const answerRoute = event.target.closest("[data-answer-route]");
+    if (!answerRoute) return;
+    scrollToHash(answerRoute.dataset.answerRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const convictionRoute = event.target.closest("[data-conviction-route]");
+    if (!convictionRoute) return;
+    scrollToHash(convictionRoute.dataset.convictionRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const selectionRoute = event.target.closest("[data-selection-route]");
+    if (!selectionRoute) return;
+    scrollToHash(selectionRoute.dataset.selectionRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const shortlistRoute = event.target.closest("[data-shortlist-route]");
+    if (!shortlistRoute) return;
+    scrollToHash(shortlistRoute.dataset.shortlistRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const proofRoute = event.target.closest("[data-proof-route]");
+    if (!proofRoute) return;
+    scrollToHash(proofRoute.dataset.proofRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const memoRoute = event.target.closest("[data-memo-clearance-route]");
+    if (!memoRoute) return;
+    scrollToHash(memoRoute.dataset.memoClearanceRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const sprintRoute = event.target.closest("[data-clearance-sprint-route]");
+    if (!sprintRoute) return;
+    scrollToHash(sprintRoute.dataset.clearanceSprintRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
     const button = event.target.closest("[data-select-fund]");
     if (!button) return;
     state.selectedId = button.dataset.selectFund;
     renderSignalStrip();
     renderProfileRoom();
+    renderSelectionFunnel();
+    renderShortlistReasonBoard();
+    renderProofGapQueue();
+    renderMemoClearanceDesk();
+    renderClearanceSprintBoard();
+    renderJourneyTimeline();
     renderResearchBriefing();
     renderBriefingVault();
     renderFundGrid();
@@ -15538,6 +18024,7 @@ function bindEvents() {
       renderResearchReceipt();
       renderReceiptVault();
       renderReviewRhythmBoard();
+      renderJourneyTimeline();
       renderResearchMemory();
       renderPrivacyControlRoom();
     }
@@ -15558,6 +18045,12 @@ function bindEvents() {
     else state.compare.delete(id);
     renderSignalStrip();
     renderProfileRoom();
+    renderSelectionFunnel();
+    renderShortlistReasonBoard();
+    renderProofGapQueue();
+    renderMemoClearanceDesk();
+    renderClearanceSprintBoard();
+    renderJourneyTimeline();
     renderFundGrid();
     renderStarterGuide();
     renderInvestorPassport();
@@ -15727,6 +18220,60 @@ function cacheElements() {
     profileRoomOutput: qs("#profileRoomOutput"),
     applyProfileRoom: qs("#applyProfileRoom"),
     copyProfileRoom: qs("#copyProfileRoom"),
+    dailyCommandSummary: qs("#dailyCommandSummary"),
+    dailyCommandOutput: qs("#dailyCommandOutput"),
+    openDailyPriority: qs("#openDailyPriority"),
+    copyDailyCommand: qs("#copyDailyCommand"),
+    decisionRadarSummary: qs("#decisionRadarSummary"),
+    decisionRadarOutput: qs("#decisionRadarOutput"),
+    openDecisionRadarFocus: qs("#openDecisionRadarFocus"),
+    copyDecisionRadar: qs("#copyDecisionRadar"),
+    questionStackSummary: qs("#questionStackSummary"),
+    questionStackOutput: qs("#questionStackOutput"),
+    openQuestionStackFocus: qs("#openQuestionStackFocus"),
+    copyQuestionStack: qs("#copyQuestionStack"),
+    answerSheetForm: qs("#answerSheetForm"),
+    answerSheetSummary: qs("#answerSheetSummary"),
+    answerSheetOutput: qs("#answerSheetOutput"),
+    answerTrust: qs("#answerTrust"),
+    answerFit: qs("#answerFit"),
+    answerCompare: qs("#answerCompare"),
+    answerRisk: qs("#answerRisk"),
+    answerMemo: qs("#answerMemo"),
+    answerFollowup: qs("#answerFollowup"),
+    saveAnswerSheet: qs("#saveAnswerSheet"),
+    copyAnswerSheet: qs("#copyAnswerSheet"),
+    clearAnswerSheet: qs("#clearAnswerSheet"),
+    convictionLadderSummary: qs("#convictionLadderSummary"),
+    convictionLadderOutput: qs("#convictionLadderOutput"),
+    openConvictionGate: qs("#openConvictionGate"),
+    copyConvictionLadder: qs("#copyConvictionLadder"),
+    selectionFunnelSummary: qs("#selectionFunnelSummary"),
+    selectionFunnelOutput: qs("#selectionFunnelOutput"),
+    openSelectionBottleneck: qs("#openSelectionBottleneck"),
+    applySelectionFunnel: qs("#applySelectionFunnel"),
+    copySelectionFunnel: qs("#copySelectionFunnel"),
+    shortlistBoardSummary: qs("#shortlistBoardSummary"),
+    shortlistBoardOutput: qs("#shortlistBoardOutput"),
+    openShortlistGap: qs("#openShortlistGap"),
+    applyShortlistBoard: qs("#applyShortlistBoard"),
+    copyShortlistBoard: qs("#copyShortlistBoard"),
+    proofGapSummary: qs("#proofGapSummary"),
+    proofGapOutput: qs("#proofGapOutput"),
+    openProofGap: qs("#openProofGap"),
+    copyProofGapQueue: qs("#copyProofGapQueue"),
+    memoClearanceSummary: qs("#memoClearanceSummary"),
+    memoClearanceOutput: qs("#memoClearanceOutput"),
+    openMemoClearanceBlocker: qs("#openMemoClearanceBlocker"),
+    copyMemoClearance: qs("#copyMemoClearance"),
+    clearanceSprintSummary: qs("#clearanceSprintSummary"),
+    clearanceSprintOutput: qs("#clearanceSprintOutput"),
+    openClearanceSprintMove: qs("#openClearanceSprintMove"),
+    copyClearanceSprint: qs("#copyClearanceSprint"),
+    journeyTimelineSummary: qs("#journeyTimelineSummary"),
+    journeyTimelineOutput: qs("#journeyTimelineOutput"),
+    openJourneyNext: qs("#openJourneyNext"),
+    copyJourneyTimeline: qs("#copyJourneyTimeline"),
     briefingForm: qs("#briefingForm"),
     briefingFocus: qs("#briefingFocus"),
     briefingAudience: qs("#briefingAudience"),

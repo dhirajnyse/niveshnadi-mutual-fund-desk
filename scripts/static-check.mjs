@@ -82,8 +82,20 @@ assert(index.includes("id=\"pricing\""), "index.html is missing the Pricing sect
 assert(index.includes("id=\"journal\""), "index.html is missing Decision Journal.");
 assert(index.includes("id=\"workspaceJump\""), "index.html is missing the Workspace Navigator.");
 assert(index.includes("id=\"workspaceStatus\""), "index.html is missing the Workspace Command status.");
+assert(index.includes("nav-mode-strip"), "index.html is missing the Smart Navigation phase rail.");
 assert(index.includes("id=\"nadiSignalStrip\""), "index.html is missing the Nadi Signal Strip.");
+assert(index.includes("id=\"daily-brief\""), "index.html is missing the Nadi Daily Command Brief.");
+assert(index.includes("id=\"decision-radar\""), "index.html is missing the Nadi Research Decision Radar.");
+assert(index.includes("id=\"question-stack\""), "index.html is missing the Nadi Research Question Stack.");
+assert(index.includes("id=\"answer-sheet\""), "index.html is missing the Nadi Research Answer Sheet.");
+assert(index.includes("id=\"conviction-ladder\""), "index.html is missing the Nadi Research Conviction Ladder.");
+assert(index.includes("id=\"selection-funnel\""), "index.html is missing the Nadi Fund Selection Funnel.");
+assert(index.includes("id=\"shortlist-board\""), "index.html is missing the Nadi Shortlist Reason Board.");
+assert(index.includes("id=\"proof-gap-queue\""), "index.html is missing the Nadi Proof Gap Queue.");
+assert(index.includes("id=\"memo-clearance\""), "index.html is missing the Nadi Memo Clearance Desk.");
+assert(index.includes("id=\"clearance-sprint\""), "index.html is missing the Nadi Clearance Sprint Board.");
 assert(index.includes("id=\"profile-room\""), "index.html is missing the Nadi Investor Profile Room.");
+assert(index.includes("id=\"journey-timeline\""), "index.html is missing the Nadi Journey Timeline.");
 assert(index.includes("id=\"research-briefing\""), "index.html is missing the Nadi Research Briefing.");
 assert(index.includes("id=\"briefing-vault\""), "index.html is missing the Nadi Briefing Vault.");
 assert(index.includes("id=\"research-memory\""), "index.html is missing the Nadi Research Memory.");
@@ -99,7 +111,18 @@ assert(app.includes("const DATA_VERSION"), "app.js is missing DATA_VERSION.");
 assert(app.includes("Nadi Large Cap Core Fund"), "app.js is missing demo fund data.");
 assert(app.includes("function whyFundLens") && app.includes("function makeWhyFundNote"), "app.js is missing Why This Fund Lens behavior.");
 assert(app.includes("function renderSignalStrip") && app.includes("function makeSignalStripNote"), "app.js is missing Nadi Signal Strip behavior.");
+assert(app.includes("function renderDailyCommandBrief") && app.includes("function makeDailyCommandBrief"), "app.js is missing Nadi Daily Command Brief behavior.");
+assert(app.includes("function renderDecisionRadar") && app.includes("function makeDecisionRadarBrief"), "app.js is missing Nadi Research Decision Radar behavior.");
+assert(app.includes("function renderQuestionStack") && app.includes("function makeQuestionStackBrief"), "app.js is missing Nadi Research Question Stack behavior.");
+assert(app.includes("function renderAnswerSheet") && app.includes("function makeAnswerSheetBrief"), "app.js is missing Nadi Research Answer Sheet behavior.");
+assert(app.includes("function renderConvictionLadder") && app.includes("function makeConvictionLadderBrief"), "app.js is missing Nadi Research Conviction Ladder behavior.");
+assert(app.includes("function renderSelectionFunnel") && app.includes("function makeSelectionFunnelBrief"), "app.js is missing Nadi Fund Selection Funnel behavior.");
+assert(app.includes("function renderShortlistReasonBoard") && app.includes("function makeShortlistReasonBoardBrief"), "app.js is missing Nadi Shortlist Reason Board behavior.");
+assert(app.includes("function renderProofGapQueue") && app.includes("function makeProofGapQueueBrief"), "app.js is missing Nadi Proof Gap Queue behavior.");
+assert(app.includes("function renderMemoClearanceDesk") && app.includes("function makeMemoClearanceBrief"), "app.js is missing Nadi Memo Clearance Desk behavior.");
+assert(app.includes("function renderClearanceSprintBoard") && app.includes("function makeClearanceSprintBrief"), "app.js is missing Nadi Clearance Sprint Board behavior.");
 assert(app.includes("function renderProfileRoom") && app.includes("function makeProfileRoomBrief"), "app.js is missing Nadi Investor Profile Room behavior.");
+assert(app.includes("function renderJourneyTimeline") && app.includes("function makeJourneyTimelineBrief"), "app.js is missing Nadi Journey Timeline behavior.");
 assert(app.includes("function renderResearchBriefing") && app.includes("function makeResearchBriefingNote"), "app.js is missing Nadi Research Briefing behavior.");
 assert(app.includes("function renderBriefingVault") && app.includes("function makeBriefingVaultBrief"), "app.js is missing Nadi Briefing Vault behavior.");
 assert(app.includes("function renderResearchMemory") && app.includes("function makeResearchMemoryBrief"), "app.js is missing Nadi Research Memory behavior.");
@@ -167,9 +190,20 @@ assert(packageJson.scripts?.check?.includes("security-audit.mjs"), "package.json
 
 assert(styles.includes("--mint") && styles.includes("--gold") && styles.includes("--blue"), "styles.css is missing brand color tokens.");
 assert(styles.includes("scroll-padding-top") && styles.includes("scroll-margin-top"), "styles.css is missing sticky-header anchor offset rules.");
-assert(styles.includes(".workspace-jump"), "styles.css is missing Workspace Navigator styles.");
+assert(styles.includes(".workspace-jump") && styles.includes(".nav-mode-strip") && styles.includes(".nav-stack"), "styles.css is missing Smart Navigation Shell styles.");
 assert(styles.includes(".nadi-signal-strip") && styles.includes(".signal-score"), "styles.css is missing Nadi Signal Strip styles.");
+assert(styles.includes(".daily-command-output") && styles.includes(".daily-command-hero"), "styles.css is missing Nadi Daily Command Brief styles.");
+assert(styles.includes(".decision-radar-output") && styles.includes(".decision-radar-hero"), "styles.css is missing Nadi Research Decision Radar styles.");
+assert(styles.includes(".question-stack-output") && styles.includes(".question-stack-hero"), "styles.css is missing Nadi Research Question Stack styles.");
+assert(styles.includes(".answer-sheet-output") && styles.includes(".answer-sheet-hero"), "styles.css is missing Nadi Research Answer Sheet styles.");
+assert(styles.includes(".conviction-ladder-output") && styles.includes(".conviction-ladder-hero"), "styles.css is missing Nadi Research Conviction Ladder styles.");
+assert(styles.includes(".selection-funnel-output") && styles.includes(".selection-funnel-hero"), "styles.css is missing Nadi Fund Selection Funnel styles.");
+assert(styles.includes(".shortlist-board-output") && styles.includes(".shortlist-board-hero"), "styles.css is missing Nadi Shortlist Reason Board styles.");
+assert(styles.includes(".proof-gap-output") && styles.includes(".proof-gap-hero"), "styles.css is missing Nadi Proof Gap Queue styles.");
+assert(styles.includes(".memo-clearance-output") && styles.includes(".memo-clearance-hero"), "styles.css is missing Nadi Memo Clearance Desk styles.");
+assert(styles.includes(".clearance-sprint-output") && styles.includes(".clearance-sprint-hero"), "styles.css is missing Nadi Clearance Sprint Board styles.");
 assert(styles.includes(".profile-room-grid") && styles.includes(".profile-room-hero"), "styles.css is missing Nadi Investor Profile Room styles.");
+assert(styles.includes(".journey-timeline-rail") && styles.includes(".journey-timeline-hero"), "styles.css is missing Nadi Journey Timeline styles.");
 assert(styles.includes(".briefing-layout") && styles.includes(".briefing-card"), "styles.css is missing Nadi Research Briefing styles.");
 assert(styles.includes(".briefing-vault-output") && styles.includes(".briefing-vault-card"), "styles.css is missing Nadi Briefing Vault styles.");
 assert(styles.includes(".research-memory-output") && styles.includes(".research-memory-event"), "styles.css is missing Nadi Research Memory styles.");
@@ -278,15 +312,27 @@ for (const file of [
   "docs/SHARE_SAFE_EXPORT_ROOM.md",
   "docs/CONSENT_HANDOFF_GATE.md",
   "docs/INVESTOR_PROFILE_ROOM.md",
+  "docs/JOURNEY_TIMELINE.md",
   "docs/FIRST_5_MINUTE_START.md",
   "docs/WHY_THIS_FUND_LENS.md",
   "docs/NADI_SIGNAL_STRIP.md",
+  "docs/DAILY_COMMAND_BRIEF.md",
+  "docs/DECISION_RADAR.md",
+  "docs/RESEARCH_QUESTION_STACK.md",
+  "docs/RESEARCH_ANSWER_SHEET.md",
+  "docs/RESEARCH_CONVICTION_LADDER.md",
+  "docs/FUND_SELECTION_FUNNEL.md",
+  "docs/SHORTLIST_REASON_BOARD.md",
+  "docs/PROOF_GAP_QUEUE.md",
+  "docs/MEMO_CLEARANCE_DESK.md",
+  "docs/CLEARANCE_SPRINT_BOARD.md",
   "docs/NADI_SCORE_ANATOMY.md",
   "docs/INVESTOR_PASSPORT.md",
   "docs/NADI_COACH_QA.md",
   "docs/RESEARCH_LANES.md",
   "docs/RESEARCH_PULSE.md",
   "docs/WORKSPACE_NAVIGATOR.md",
+  "docs/NAVIGATION_SHELL.md",
   "docs/FUND_COMPARE_MATRIX.md",
   "docs/GOAL_FUND_FIT_HEATMAP.md",
   "docs/SUITABILITY_PASSPORT.md",

@@ -8,7 +8,7 @@ Phase 1 is a static browser application:
 
 - `index.html`, `styles.css`, and `app.js` are served as static files.
 - Demo fund data is embedded in the frontend.
-- User notes, watchlists, alert triggers, and decision packs are stored in browser `localStorage`.
+- User notes, watchlists, alert triggers, review vault snapshots, and decision packs are stored in browser `localStorage`.
 - There is no server, database, account system, payment gateway, API integration, or admin panel.
 
 This keeps the current attack surface small, but it does not remove the need for disciplined controls.
@@ -17,7 +17,7 @@ This keeps the current attack surface small, but it does not remove the need for
 
 - Product code and release packages.
 - Demo research logic and scoring formulas.
-- User-entered local notes, alerts, and decision-pack reasons.
+- User-entered local notes, alerts, review vault snapshots, and decision-pack reasons.
 - Future account identifiers such as email and phone.
 - Future investor identifiers such as PAN.
 - Future distributor identifiers such as ARN and EUIN.
@@ -40,6 +40,11 @@ This keeps the current attack surface small, but it does not remove the need for
 - No dynamic code execution.
 - Namespaced local storage keys.
 - Suitability Passport profile fields are in-memory only in Phase 1.
+- Switch Decision Lab change-review fields are in-memory only in Phase 1.
+- Review Vault stores compact review metrics and queue items only; it does not store the free-form Portfolio Review Room note.
+- Investor Record Desk stores compact identity-light review records only; it does not store PAN, CAS, contact data, client identifiers, or free-form review notes.
+- Research Dossier Builder stores compact dossier metadata only; it does not store PAN, CAS, account credentials, contact data, client identifiers, transaction records, or free-form private notes.
+- Review Rhythm Board fields are in-memory unless the user saves a watchlist review trigger.
 - Output escaping for user-provided text before injecting into HTML.
 - Static checks for required product sections and unsafe HTML patterns.
 - Security audit script for CSP, secrets, script policy, local storage keys, and prohibited network/runtime APIs.
@@ -68,7 +73,10 @@ Allowed:
 
 - Demo data.
 - Browser-only notes and watchlists.
+- Browser-only review vault snapshots without regulated identifiers.
 - In-memory profile discipline inputs without identity data.
+- In-memory change-review inputs without identity, PAN, folio, or transaction data.
+- In-memory review-rhythm inputs, with optional local watchlist trigger save.
 - Copy/export research text without real account sync.
 
 Not allowed:

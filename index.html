@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260512-10">
+    <link rel="stylesheet" href="styles.css?v=20260512-21">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -26,6 +26,13 @@
       <nav class="top-nav" aria-label="Workspace">
         <div class="nav-cluster" aria-label="Primary research shortcuts">
           <a href="#screener">Screener</a>
+          <a href="#profile-room">Profile</a>
+          <a href="#research-briefing">Brief</a>
+          <a href="#briefing-vault">B Vault</a>
+          <a href="#research-memory">Memory</a>
+          <a href="#privacy-control">Privacy</a>
+          <a href="#share-safe">Share</a>
+          <a href="#consent-gate">Consent</a>
           <a href="#starter-guide">Start</a>
           <a href="#investor-passport">Passport</a>
           <a href="#coach-desk">Coach</a>
@@ -33,6 +40,7 @@
           <a href="#compare">Compare</a>
           <a href="#portfolio">X-Ray</a>
           <a href="#portfolio-review">Review</a>
+          <a href="#action-planner">Plan</a>
           <a href="#research-dossier">Dossier</a>
           <a href="#pricing">Pricing</a>
         </div>
@@ -44,6 +52,13 @@
               <option value="">Jump to tool</option>
               <optgroup label="Discover">
                 <option value="#screener">Screener</option>
+                <option value="#profile-room">Investor Profile Room</option>
+                <option value="#research-briefing">Research Briefing</option>
+                <option value="#briefing-vault">Briefing Vault</option>
+                <option value="#research-memory">Research Memory</option>
+                <option value="#privacy-control">Privacy Control</option>
+                <option value="#share-safe">Share-Safe Export</option>
+                <option value="#consent-gate">Consent Handoff Gate</option>
                 <option value="#why-lens">Why This Fund Lens</option>
                 <option value="#score-anatomy">Score Anatomy</option>
                 <option value="#starter-guide">First 5-Minute Start</option>
@@ -87,6 +102,10 @@
                 <option value="#claim-release">Claim Release Gate</option>
                 <option value="#claim-ledger">Claim Release Ledger</option>
                 <option value="#claim-rollback">Claim Rollback Console</option>
+                <option value="#correction-notice">Correction Notice Builder</option>
+                <option value="#correction-ledger">Correction Notice Ledger</option>
+                <option value="#trust-center">Trust Center</option>
+                <option value="#action-planner">Action Planner</option>
                 <option value="#doc-decoder">Doc Decoder</option>
                 <option value="#glossary">Retail Glossary</option>
                 <option value="#behavior-guard">Behavior Guard</option>
@@ -110,7 +129,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-              <p class="release-pill">Phase 1 v52</p>
+              <p class="release-pill">Phase 1 v63</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -172,6 +191,302 @@
               <span>No personalized advice or return guarantee</span>
             </div>
           </aside>
+        </div>
+      </section>
+
+      <section id="profile-room" class="workspace-band profile-room-band" aria-labelledby="profile-room-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Before fund selection</p>
+            <h2 id="profile-room-title">Nadi Investor Profile Room</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Investor Profile actions">
+            <span id="profileRoomSummary" class="status-chip">Profile scan</span>
+            <button class="text-button" id="applyProfileRoom" type="button">Apply profile</button>
+            <button class="text-button" id="copyProfileRoom" type="button">Copy profile brief</button>
+          </div>
+        </div>
+        <div class="profile-room-grid">
+          <form id="profileRoomForm" class="tool-panel profile-room-form">
+            <h3>Shape research context</h3>
+            <label>
+              Primary intent
+              <select id="profileIntent">
+                <option value="first-sip">Start or improve SIP</option>
+                <option value="parking">Park money or STP source</option>
+                <option value="tax">Study ELSS tax route</option>
+                <option value="retirement">Long-term wealth goal</option>
+                <option value="review">Review current portfolio</option>
+              </select>
+            </label>
+            <label>
+              Horizon in years
+              <input id="profileHorizon" type="number" min="1" max="40" step="1" value="7">
+            </label>
+            <label>
+              Monthly SIP comfort
+              <input id="profileMonthlySip" type="number" min="0" step="500" value="10000">
+            </label>
+            <label>
+              Drawdown comfort
+              <select id="profileDrawdown">
+                <option value="balanced">Can tolerate normal equity swings</option>
+                <option value="low">Low volatility preferred</option>
+                <option value="growth">Can tolerate high volatility</option>
+                <option value="aggressive">Comfortable with sharp drawdowns</option>
+              </select>
+            </label>
+            <label>
+              Emergency buffer
+              <select id="profileEmergency">
+                <option value="partial">Partly ready</option>
+                <option value="yes">Available</option>
+                <option value="no">Not ready</option>
+              </select>
+            </label>
+            <label>
+              Research confidence
+              <select id="profileConfidence">
+                <option value="new">New to mutual funds</option>
+                <option value="building">Building research habit</option>
+                <option value="reviewing">Already reviewing funds</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build profile route</button>
+          </form>
+          <div id="profileRoomOutput" class="profile-room-output" aria-live="polite">
+            Investor Profile Room will convert intent, horizon, SIP comfort, risk tolerance, and emergency readiness into a research route before any fund is treated as suitable.
+          </div>
+        </div>
+      </section>
+
+      <section id="research-briefing" class="workspace-band briefing-band" aria-labelledby="research-briefing-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Brief me first</p>
+            <h2 id="research-briefing-title">Nadi Research Briefing</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Research briefing actions">
+            <span id="briefingSummary" class="status-chip">Brief posture</span>
+            <button class="text-button" id="openBriefAction" type="button">Open plan</button>
+            <button class="text-button" id="copyResearchBriefing" type="button">Copy briefing</button>
+          </div>
+        </div>
+        <div class="briefing-layout">
+          <form id="briefingForm" class="tool-panel briefing-form">
+            <h3>Shape the briefing</h3>
+            <label>
+              Brief focus
+              <select id="briefingFocus">
+                <option value="today">Today research brief</option>
+                <option value="before-sip">Before SIP decision</option>
+                <option value="portfolio">Portfolio review brief</option>
+                <option value="switch">Switch question brief</option>
+                <option value="trust">Evidence and trust brief</option>
+              </select>
+            </label>
+            <label>
+              Audience
+              <select id="briefingAudience">
+                <option value="self">Self research</option>
+                <option value="family">Family discussion</option>
+                <option value="advisor">Advisor discussion</option>
+                <option value="distributor">Future distributor handoff</option>
+              </select>
+            </label>
+            <label>
+              Depth
+              <select id="briefingDepth">
+                <option value="quick">5-minute scan</option>
+                <option value="standard">Standard briefing</option>
+                <option value="deep">Deep review</option>
+              </select>
+            </label>
+            <label>
+              Priority
+              <select id="briefingPriority">
+                <option value="action">Action discipline first</option>
+                <option value="trust">Evidence trust first</option>
+                <option value="risk">Risk and behavior first</option>
+                <option value="portfolio">Portfolio fit first</option>
+              </select>
+            </label>
+            <label>
+              Briefing note
+              <textarea id="briefingNote" rows="4" placeholder="Optional context for this briefing."></textarea>
+            </label>
+            <button class="primary-button" type="submit">Refresh briefing</button>
+          </form>
+          <div id="briefingOutput" class="briefing-output" aria-live="polite">
+            One compact briefing will summarize the selected fund, trust posture, action plan, evidence, watchlist, and review rhythm.
+          </div>
+        </div>
+      </section>
+
+      <section id="briefing-vault" class="workspace-band briefing-vault-band" aria-labelledby="briefing-vault-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Briefing memory</p>
+            <h2 id="briefing-vault-title">Nadi Briefing Vault</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Briefing vault actions">
+            <span id="briefingVaultSummary" class="status-chip">0 briefings</span>
+            <button class="text-button" id="saveBriefingSnapshot" type="button">Save briefing</button>
+            <button class="text-button" id="copyBriefingVault" type="button">Copy vault</button>
+            <button class="text-button" id="clearBriefingVault" type="button">Clear vault</button>
+          </div>
+        </div>
+        <div id="briefingVaultOutput" class="briefing-vault-output" aria-live="polite">
+          Save Research Briefing snapshots to build a browser-local memory of how research posture changes over time.
+        </div>
+      </section>
+
+      <section id="research-memory" class="workspace-band research-memory-band" aria-labelledby="research-memory-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Research memory</p>
+            <h2 id="research-memory-title">Nadi Research Memory</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Research memory actions">
+            <span id="researchMemorySummary" class="status-chip">Memory scan</span>
+            <button class="text-button" id="refreshResearchMemory" type="button">Refresh memory</button>
+            <button class="text-button" id="copyResearchMemory" type="button">Copy memory</button>
+          </div>
+        </div>
+        <div id="researchMemoryOutput" class="research-memory-output" aria-live="polite">
+          Browser-local research memory will combine vaults, watchlist, alerts, dossiers, and the current fund context.
+        </div>
+      </section>
+
+      <section id="privacy-control" class="workspace-band privacy-control-band" aria-labelledby="privacy-control-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Local data control</p>
+            <h2 id="privacy-control-title">Nadi Privacy Control Room</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Privacy control actions">
+            <span id="privacyControlSummary" class="status-chip">Privacy scan</span>
+            <button class="text-button" id="refreshPrivacyControl" type="button">Refresh privacy</button>
+            <button class="text-button" id="copyPrivacyReport" type="button">Copy privacy report</button>
+          </div>
+        </div>
+        <div id="privacyControlOutput" class="privacy-control-output" aria-live="polite">
+          Privacy Control Room will show browser-local storage buckets, record counts, free-text flags, and clear controls.
+        </div>
+      </section>
+
+      <section id="share-safe" class="workspace-band share-safe-band" aria-labelledby="share-safe-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Clean handoff</p>
+            <h2 id="share-safe-title">Nadi Share-Safe Export Room</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Share-safe export actions">
+            <span id="shareSafeSummary" class="status-chip">Export scan</span>
+            <button class="text-button" id="refreshShareSafe" type="button">Refresh export</button>
+            <button class="text-button" id="copyShareSafePack" type="button">Copy share-safe pack</button>
+          </div>
+        </div>
+        <div class="share-safe-layout">
+          <form id="shareSafeForm" class="tool-panel share-safe-form">
+            <h3>Prepare clean pack</h3>
+            <label>
+              Share audience
+              <select id="shareSafeAudience">
+                <option value="self">Self review</option>
+                <option value="family">Family discussion</option>
+                <option value="advisor">Advisor conversation</option>
+                <option value="distributor">Future distributor handoff</option>
+              </select>
+            </label>
+            <label>
+              Pack depth
+              <select id="shareSafeDepth">
+                <option value="quick">Quick summary</option>
+                <option value="standard">Standard research pack</option>
+                <option value="complete">Complete research trail</option>
+              </select>
+            </label>
+            <label>
+              Local history
+              <select id="shareSafeHistory">
+                <option value="current">Current fund only</option>
+                <option value="recent">Recent local artifacts</option>
+                <option value="timeline">Memory timeline summary</option>
+              </select>
+            </label>
+            <label>
+              Scrub strictness
+              <select id="shareSafeScrub">
+                <option value="strict">Strict identity scrub</option>
+                <option value="standard">Standard scrub</option>
+                <option value="distributor">Distributor-ready boundary</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Preview clean pack</button>
+          </form>
+          <div id="shareSafeOutput" class="share-safe-output" aria-live="polite">
+            Share-Safe Export Room will assemble a clean research pack and show what is included, scrubbed, and still needs review.
+          </div>
+        </div>
+      </section>
+
+      <section id="consent-gate" class="workspace-band consent-gate-band" aria-labelledby="consent-gate-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Consent before handoff</p>
+            <h2 id="consent-gate-title">Nadi Consent Handoff Gate</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Consent handoff actions">
+            <span id="consentGateSummary" class="status-chip">Consent scan</span>
+            <button class="text-button" id="refreshConsentGate" type="button">Refresh consent</button>
+            <button class="text-button" id="copyConsentBrief" type="button">Copy consent brief</button>
+          </div>
+        </div>
+        <div class="consent-gate-layout">
+          <form id="consentGateForm" class="tool-panel consent-gate-form">
+            <h3>Set handoff boundary</h3>
+            <label>
+              Recipient
+              <select id="consentAudience">
+                <option value="self">Self only</option>
+                <option value="family">Family reviewer</option>
+                <option value="advisor">Advisor discussion</option>
+                <option value="distributor">Future distributor</option>
+              </select>
+            </label>
+            <label>
+              Consent scope
+              <select id="consentScope">
+                <option value="research">Research pack only</option>
+                <option value="review">Research plus review checklist</option>
+                <option value="watch">Research plus watch triggers</option>
+                <option value="phase2">Phase 2 handoff readiness</option>
+              </select>
+            </label>
+            <label>
+              Time boundary
+              <select id="consentDuration">
+                <option value="one-time">One-time discussion</option>
+                <option value="30-days">30-day review window</option>
+                <option value="90-days">90-day review window</option>
+                <option value="revoke">Until revoked in writing</option>
+              </select>
+            </label>
+            <label>
+              Sharing channel
+              <select id="consentChannel">
+                <option value="offline">Offline conversation</option>
+                <option value="copy">Copied text pack</option>
+                <option value="secure">Secure portal later</option>
+                <option value="api">Future API handoff</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Preview consent gate</button>
+          </form>
+          <div id="consentGateOutput" class="consent-gate-output" aria-live="polite">
+            Consent Handoff Gate will show what can be shared, what stays blocked, and what must be reviewed before any external handoff.
+          </div>
         </div>
       </section>
 
@@ -1775,6 +2090,227 @@
         </div>
       </section>
 
+      <section id="correction-notice" class="workspace-band correction-notice-band" aria-labelledby="correction-notice-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Public correction discipline</p>
+            <h2 id="correction-notice-title">Nadi Correction Notice Builder</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Correction notice actions">
+            <span id="correctionNoticeSummary" class="status-chip">Notice draft</span>
+            <button class="text-button" id="saveCorrectionNotice" type="button">Save notice</button>
+            <button class="text-button" id="copyCorrectionNotice" type="button">Copy notice</button>
+          </div>
+        </div>
+        <div class="correction-notice-layout">
+          <form id="correctionNoticeForm" class="tool-panel correction-notice-form">
+            <h3>Compose correction notice</h3>
+            <label>
+              Audience
+              <select id="correctionNoticeAudience">
+                <option value="fund-page">Fund page note</option>
+                <option value="user-banner">User-visible banner</option>
+                <option value="release-log">Release log entry</option>
+                <option value="internal-review">Internal reviewer note</option>
+              </select>
+            </label>
+            <label>
+              Status
+              <select id="correctionNoticeStatus">
+                <option value="investigating">Investigating</option>
+                <option value="corrected">Corrected</option>
+                <option value="reverted">Reverted</option>
+                <option value="verified">Verified</option>
+              </select>
+            </label>
+            <label>
+              Change type
+              <select id="correctionNoticeChange">
+                <option value="source-date">Source date or citation</option>
+                <option value="value-label">Value or label</option>
+                <option value="risk-cost">Risk or cost field</option>
+                <option value="wording">Wording clarity</option>
+                <option value="holdings">Holdings or exposure</option>
+              </select>
+            </label>
+            <label>
+              Tone
+              <select id="correctionNoticeTone">
+                <option value="plain">Plain</option>
+                <option value="calm">Calm and transparent</option>
+                <option value="urgent">Urgent freeze</option>
+                <option value="compliance">Compliance reviewed</option>
+              </select>
+            </label>
+            <label>
+              Visibility
+              <select id="correctionNoticeVisibility">
+                <option value="preview">Preview only</option>
+                <option value="single-fund">Single fund</option>
+                <option value="category">Category surface</option>
+                <option value="all-users">All public users</option>
+              </select>
+            </label>
+            <label>
+              Owner
+              <select id="correctionNoticeOwner">
+                <option value="research">Research owner</option>
+                <option value="data">Data operations</option>
+                <option value="compliance">Compliance reviewer</option>
+                <option value="product">Product release owner</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build notice</button>
+          </form>
+          <div id="correctionNoticeOutput" class="correction-notice-output" aria-live="polite">
+            Convert a rollback or claim-release concern into a clear correction notice with public wording, internal controls, and privacy guardrails.
+          </div>
+        </div>
+      </section>
+
+      <section id="correction-ledger" class="workspace-band correction-ledger-band" aria-labelledby="correction-ledger-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Correction audit trail</p>
+            <h2 id="correction-ledger-title">Nadi Correction Notice Ledger</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Correction notice ledger actions">
+            <span id="correctionLedgerSummary" class="status-chip">0 notices</span>
+            <button class="text-button" id="copyCorrectionLedger" type="button">Copy ledger</button>
+            <button class="text-button" id="clearCorrectionLedger" type="button">Clear ledger</button>
+          </div>
+        </div>
+        <div id="correctionLedgerOutput" class="correction-ledger-output" aria-live="polite">
+          Save correction notices to build a browser-local audit trail for public research updates.
+        </div>
+      </section>
+
+      <section id="trust-center" class="workspace-band trust-center-band" aria-labelledby="trust-center-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Launch trust command</p>
+            <h2 id="trust-center-title">Nadi Trust Center</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Trust center actions">
+            <span id="trustCenterSummary" class="status-chip">Trust posture</span>
+            <button class="text-button" id="copyTrustCenter" type="button">Copy trust brief</button>
+          </div>
+        </div>
+        <div class="trust-center-layout">
+          <form id="trustCenterForm" class="tool-panel trust-center-form">
+            <h3>Build trust readiness view</h3>
+            <label>
+              Audience
+              <select id="trustCenterAudience">
+                <option value="retail">Retail investor view</option>
+                <option value="reviewer">Internal reviewer</option>
+                <option value="launch">Launch gate</option>
+                <option value="distributor">Future distributor desk</option>
+              </select>
+            </label>
+            <label>
+              Scope
+              <select id="trustCenterScope">
+                <option value="selected-fund">Selected fund</option>
+                <option value="compare-set">Compare set</option>
+                <option value="public-claims">Public claim surfaces</option>
+                <option value="full-desk">Full research desk</option>
+              </select>
+            </label>
+            <label>
+              Data mode
+              <select id="trustCenterMode">
+                <option value="demo">Demo research data</option>
+                <option value="dry-run">Live-data dry run</option>
+                <option value="candidate">Launch candidate</option>
+                <option value="hold">Launch hold</option>
+              </select>
+            </label>
+            <label>
+              Tolerance
+              <select id="trustCenterTolerance">
+                <option value="strict">Strict public launch</option>
+                <option value="balanced">Balanced preview</option>
+                <option value="prototype">Prototype demo</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Run trust view</button>
+          </form>
+          <div id="trustCenterOutput" class="trust-center-output" aria-live="polite">
+            Combine evidence, release gates, rollback posture, correction notices, and privacy controls into one launch trust view.
+          </div>
+        </div>
+      </section>
+
+      <section id="action-planner" class="workspace-band action-planner-band" aria-labelledby="action-planner-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Research to action</p>
+            <h2 id="action-planner-title">Nadi Action Planner</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Action planner actions">
+            <span id="actionPlannerSummary" class="status-chip">Plan posture</span>
+            <button class="text-button" id="copyActionPlan" type="button">Copy action plan</button>
+          </div>
+        </div>
+        <div class="action-planner-layout">
+          <form id="actionPlannerForm" class="tool-panel action-planner-form">
+            <h3>Convert research into a plan</h3>
+            <label>
+              Action lane
+              <select id="actionLane">
+                <option value="start-sip">Start SIP research</option>
+                <option value="continue-sip">Continue SIP review</option>
+                <option value="watch">Watch before action</option>
+                <option value="stp">Plan STP research</option>
+                <option value="switch-review">Switch review only</option>
+              </select>
+            </label>
+            <label>
+              Capital mode
+              <select id="actionCapitalMode">
+                <option value="monthly-sip">Monthly SIP amount</option>
+                <option value="stp-transfer">Monthly STP transfer</option>
+                <option value="lump-sum">One-time research amount</option>
+                <option value="no-money">No money movement</option>
+              </select>
+            </label>
+            <label>
+              Amount being reviewed
+              <input id="actionAmount" type="number" min="0" step="500" value="10000">
+            </label>
+            <label>
+              Conviction
+              <select id="actionConviction">
+                <option value="medium">Medium - still testing</option>
+                <option value="low">Low - learning only</option>
+                <option value="high">High - reason is clear</option>
+              </select>
+            </label>
+            <label>
+              Evidence standard
+              <select id="actionEvidenceMode">
+                <option value="demo">Demo data only</option>
+                <option value="checked">Checked source dates</option>
+                <option value="fresh">Fresh cited sources</option>
+              </select>
+            </label>
+            <label>
+              Review date
+              <input id="actionReviewDate" type="date" value="2026-07-31">
+            </label>
+            <label>
+              Research reason
+              <textarea id="actionReason" rows="4" placeholder="Write the plain reason before any real-world action."></textarea>
+            </label>
+            <button class="primary-button" type="submit">Build action plan</button>
+          </form>
+          <div id="actionPlannerOutput" class="action-planner-output" aria-live="polite">
+            Build a research-only plan that turns the selected fund, readiness gate, trust posture, and review discipline into next steps.
+          </div>
+        </div>
+      </section>
+
       <section id="doc-decoder" class="workspace-band doc-band" aria-labelledby="doc-title">
         <div class="section-heading">
           <div>
@@ -2383,6 +2919,7 @@
           </label>
           <div class="floating-section-links" aria-label="Quick sections">
             <a href="#screener">Screener</a>
+            <a href="#profile-room">Profile</a>
             <a href="#why-lens">Why Lens</a>
             <a href="#score-anatomy">Score</a>
             <a href="#starter-guide">First Start</a>
@@ -2394,6 +2931,12 @@
             <a href="#suitability-passport">Passport</a>
             <a href="#fit-heatmap">Fit Map</a>
             <a href="#red-flag-radar">Flags</a>
+            <a href="#research-briefing">Brief</a>
+            <a href="#briefing-vault">B Vault</a>
+            <a href="#research-memory">Memory</a>
+            <a href="#privacy-control">Privacy</a>
+            <a href="#share-safe">Share</a>
+            <a href="#consent-gate">Consent</a>
             <a href="#switch-lab">Switch Lab</a>
             <a href="#peer-bench">Bench</a>
             <a href="#compare">Compare</a>
@@ -2420,6 +2963,10 @@
             <a href="#claim-release">Release</a>
             <a href="#claim-ledger">Ledger</a>
             <a href="#claim-rollback">Rollback</a>
+            <a href="#correction-notice">Notice</a>
+            <a href="#correction-ledger">N Ledger</a>
+            <a href="#trust-center">Trust</a>
+            <a href="#action-planner">Plan</a>
             <a href="#doc-decoder">Docs</a>
             <a href="#glossary">Glossary</a>
             <a href="#behavior-guard">Guard</a>
@@ -2443,6 +2990,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260512-10"></script>
+    <script src="app.js?v=20260512-21"></script>
   </body>
 </html>

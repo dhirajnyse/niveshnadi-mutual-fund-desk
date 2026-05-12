@@ -13,6 +13,9 @@ Use this checklist before packaging or publishing NiveshNadi. The current Phase 
 - Confirm user-entered text is escaped before rendering.
 - Confirm local storage keys remain namespaced with `niveshnadi-`.
 - Confirm no PAN, ARN, EUIN, payment, account, or client data is added to local storage.
+- Confirm Review Vault snapshots do not store free-form review notes, PAN, folio, CAS text, or account identifiers.
+- Confirm Investor Record Desk records do not store PAN, folio, CAS text, contact data, account identifiers, client identifiers, or free-form review notes.
+- Confirm Research Dossier Builder snapshots do not store PAN, folio, CAS text, contact data, account identifiers, client identifiers, transaction records, or free-form private notes.
 - Confirm release package extraction passes the static checks.
 - Confirm the Evidence Ledger does not claim live data unless source date and citation path are present.
 

@@ -29,10 +29,17 @@ const packageJson = JSON.parse(read("package.json"));
 assert(index.includes("Content-Security-Policy"), "index.html is missing a CSP meta tag.");
 assert(index.includes("NiveshNadi Mutual Fund Desk"), "index.html is missing the product title.");
 assert(index.includes("id=\"screener\""), "index.html is missing the screener section.");
+assert(index.includes("id=\"why-lens\""), "index.html is missing the Why This Fund Lens.");
+assert(index.includes("id=\"starter-guide\""), "index.html is missing the First 5-Minute Start guide.");
+assert(index.includes("id=\"investor-passport\""), "index.html is missing the Retail Investor Passport.");
+assert(index.includes("id=\"coach-desk\""), "index.html is missing Nadi Coach Q&A.");
+assert(index.includes("id=\"research-lanes\""), "index.html is missing Research Lanes.");
+assert(index.includes("id=\"research-pulse\""), "index.html is missing Research Pulse.");
 assert(index.includes("id=\"category-playbook\""), "index.html is missing the Category Playbook.");
 assert(index.includes("id=\"suitability-passport\""), "index.html is missing the Suitability Passport.");
 assert(index.includes("id=\"fit-heatmap\""), "index.html is missing the Goal-Fund Fit Heatmap.");
 assert(index.includes("id=\"red-flag-radar\""), "index.html is missing the Red Flag Radar.");
+assert(index.includes("id=\"switch-lab\""), "index.html is missing the Switch Decision Lab.");
 assert(index.includes("id=\"peer-bench\""), "index.html is missing the Peer Benchmark Board.");
 assert(index.includes("id=\"compare\""), "index.html is missing the Fund Compare Matrix.");
 assert(index.includes("id=\"goal-fit\""), "index.html is missing the Goal Fit Compass.");
@@ -42,24 +49,76 @@ assert(index.includes("id=\"risk-lab\""), "index.html is missing the Risk Stress
 assert(index.includes("id=\"cost-lab\""), "index.html is missing the Cost Reality Lab.");
 assert(index.includes("id=\"readiness-gate\""), "index.html is missing the Investor Readiness Gate.");
 assert(index.includes("id=\"portfolio\""), "index.html is missing Portfolio X-Ray.");
+assert(index.includes("id=\"blueprint\""), "index.html is missing the Portfolio Blueprint Lab.");
+assert(index.includes("id=\"rebalance-guard\""), "index.html is missing the Rebalance Guard.");
+assert(index.includes("id=\"portfolio-review\""), "index.html is missing the Portfolio Review Room.");
+assert(index.includes("id=\"review-vault\""), "index.html is missing the Review Vault.");
+assert(index.includes("id=\"investor-record\""), "index.html is missing the Investor Record Desk.");
+assert(index.includes("id=\"research-dossier\""), "index.html is missing the Research Dossier Builder.");
 assert(index.includes("id=\"evidence\""), "index.html is missing the Evidence Ledger.");
+assert(index.includes("id=\"citation-binder\""), "index.html is missing the Citation Binder.");
+assert(index.includes("id=\"fund-house-lens\""), "index.html is missing the Fund House Lens.");
 assert(index.includes("id=\"data-readiness\""), "index.html is missing the Data Readiness Room.");
+assert(index.includes("id=\"source-qa\""), "index.html is missing the Source QA Queue.");
+assert(index.includes("id=\"source-intake\""), "index.html is missing the Source Intake Console.");
+assert(index.includes("id=\"source-drift\""), "index.html is missing the Source Drift Monitor.");
+assert(index.includes("id=\"claim-release\""), "index.html is missing the Claim Release Gate.");
+assert(index.includes("id=\"claim-ledger\""), "index.html is missing the Claim Release Ledger.");
+assert(index.includes("id=\"claim-rollback\""), "index.html is missing the Claim Rollback Console.");
+assert(index.includes("id=\"correction-notice\""), "index.html is missing the Correction Notice Builder.");
+assert(index.includes("id=\"correction-ledger\""), "index.html is missing the Correction Notice Ledger.");
+assert(index.includes("id=\"trust-center\""), "index.html is missing the Nadi Trust Center.");
+assert(index.includes("id=\"action-planner\""), "index.html is missing the Nadi Action Planner.");
+assert(index.includes("id=\"doc-decoder\""), "index.html is missing the Nadi Doc Decoder.");
+assert(index.includes("id=\"glossary\""), "index.html is missing the Retail Glossary.");
+assert(index.includes("id=\"behavior-guard\""), "index.html is missing the Behavior Guard.");
+assert(index.includes("id=\"claim-checker\""), "index.html is missing the Claim Checker.");
+assert(index.includes("id=\"research-receipt\""), "index.html is missing the Research Receipt.");
+assert(index.includes("id=\"receipt-vault\""), "index.html is missing the Receipt Vault.");
+assert(index.includes("id=\"review-rhythm\""), "index.html is missing the Review Rhythm Board.");
 assert(index.includes("id=\"watchlist\""), "index.html is missing the Watchlist and Alerts Room.");
 assert(index.includes("id=\"decision-pack\""), "index.html is missing the Nadi Decision Pack.");
 assert(index.includes("id=\"pricing\""), "index.html is missing the Pricing section.");
 assert(index.includes("id=\"journal\""), "index.html is missing Decision Journal.");
+assert(index.includes("id=\"workspaceJump\""), "index.html is missing the Workspace Navigator.");
+assert(index.includes("id=\"workspaceStatus\""), "index.html is missing the Workspace Command status.");
+assert(index.includes("id=\"nadiSignalStrip\""), "index.html is missing the Nadi Signal Strip.");
+assert(index.includes("id=\"profile-room\""), "index.html is missing the Nadi Investor Profile Room.");
+assert(index.includes("id=\"research-briefing\""), "index.html is missing the Nadi Research Briefing.");
+assert(index.includes("id=\"briefing-vault\""), "index.html is missing the Nadi Briefing Vault.");
+assert(index.includes("id=\"research-memory\""), "index.html is missing the Nadi Research Memory.");
+assert(index.includes("id=\"privacy-control\""), "index.html is missing the Nadi Privacy Control Room.");
+assert(index.includes("id=\"share-safe\""), "index.html is missing the Nadi Share-Safe Export Room.");
+assert(index.includes("id=\"consent-gate\""), "index.html is missing the Nadi Consent Handoff Gate.");
+assert(index.includes("floating-dock"), "index.html is missing the floating action dock.");
 assert(index.includes("floatingSearchToggle") && index.includes("floatingSearchInput"), "index.html is missing floating search controls.");
 assert(index.includes("scrollTopButton"), "index.html is missing the back-to-top button.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 
 assert(app.includes("const DATA_VERSION"), "app.js is missing DATA_VERSION.");
 assert(app.includes("Nadi Large Cap Core Fund"), "app.js is missing demo fund data.");
+assert(app.includes("function whyFundLens") && app.includes("function makeWhyFundNote"), "app.js is missing Why This Fund Lens behavior.");
+assert(app.includes("function renderSignalStrip") && app.includes("function makeSignalStripNote"), "app.js is missing Nadi Signal Strip behavior.");
+assert(app.includes("function renderProfileRoom") && app.includes("function makeProfileRoomBrief"), "app.js is missing Nadi Investor Profile Room behavior.");
+assert(app.includes("function renderResearchBriefing") && app.includes("function makeResearchBriefingNote"), "app.js is missing Nadi Research Briefing behavior.");
+assert(app.includes("function renderBriefingVault") && app.includes("function makeBriefingVaultBrief"), "app.js is missing Nadi Briefing Vault behavior.");
+assert(app.includes("function renderResearchMemory") && app.includes("function makeResearchMemoryBrief"), "app.js is missing Nadi Research Memory behavior.");
+assert(app.includes("function renderPrivacyControlRoom") && app.includes("function makePrivacyControlReport"), "app.js is missing Nadi Privacy Control Room behavior.");
+assert(app.includes("function renderShareSafeExportRoom") && app.includes("function makeShareSafePack"), "app.js is missing Nadi Share-Safe Export Room behavior.");
+assert(app.includes("function renderConsentHandoffGate") && app.includes("function makeConsentHandoffBrief"), "app.js is missing Nadi Consent Handoff Gate behavior.");
+assert(app.includes("function scoreAnatomyConfig") && app.includes("function makeScoreAnatomyNote"), "app.js is missing Nadi Score Anatomy behavior.");
+assert(app.includes("function renderStarterGuide") && app.includes("function makeStarterGuideNote"), "app.js is missing First 5-Minute Start behavior.");
+assert(app.includes("function renderInvestorPassport") && app.includes("function makeInvestorPassportNote"), "app.js is missing Retail Investor Passport behavior.");
+assert(app.includes("function renderNadiCoach") && app.includes("function makeCoachNote"), "app.js is missing Nadi Coach Q&A behavior.");
+assert(app.includes("function renderResearchLanes") && app.includes("function makeResearchLaneNote"), "app.js is missing Research Lanes behavior.");
+assert(app.includes("function renderResearchPulse") && app.includes("function makeResearchPulseNote"), "app.js is missing Research Pulse behavior.");
 assert(app.includes("function runSip"), "app.js is missing SIP calculation.");
 assert(app.includes("function runStp"), "app.js is missing STP calculation.");
 assert(app.includes("function renderCategoryPlaybook") && app.includes("function makeCategoryPlaybookNote"), "app.js is missing Category Playbook behavior.");
 assert(app.includes("function renderSuitabilityPassport") && app.includes("function makeSuitabilityPassportNote"), "app.js is missing Suitability Passport behavior.");
 assert(app.includes("function renderGoalFundFitHeatmap") && app.includes("function makeGoalFundFitNote"), "app.js is missing Goal-Fund Fit Heatmap behavior.");
 assert(app.includes("function renderRedFlagRadar") && app.includes("function makeRedFlagNote"), "app.js is missing Red Flag Radar behavior.");
+assert(app.includes("function renderSwitchDecisionLab") && app.includes("function makeSwitchDecisionNote"), "app.js is missing Switch Decision Lab behavior.");
 assert(app.includes("function renderPeerBenchmarkBoard") && app.includes("function makePeerBenchmarkNote"), "app.js is missing Peer Benchmark Board behavior.");
 assert(app.includes("function renderStressLab") && app.includes("function makeStressNote"), "app.js is missing Risk Stress Lab behavior.");
 assert(app.includes("function renderCostRealityLab") && app.includes("function makeCostNote"), "app.js is missing Cost Reality Lab behavior.");
@@ -71,9 +130,35 @@ assert(app.includes("renderWatchlistRoom"), "app.js is missing Watchlist and Ale
 assert(app.includes("renderDecisionPack"), "app.js is missing Nadi Decision Pack behavior.");
 assert(app.includes("function analyzePortfolio"), "app.js is missing portfolio analysis.");
 assert(app.includes("function portfolioThesis") && app.includes("function duplicationScore"), "app.js is missing Portfolio Intelligence behavior.");
+assert(app.includes("function renderBlueprintLab") && app.includes("function makeBlueprintNote"), "app.js is missing Portfolio Blueprint Lab behavior.");
+assert(app.includes("function renderRebalanceGuard") && app.includes("function makeRebalanceNote"), "app.js is missing Rebalance Guard behavior.");
+assert(app.includes("function renderPortfolioReviewRoom") && app.includes("function makePortfolioReviewNote"), "app.js is missing Portfolio Review Room behavior.");
+assert(app.includes("function renderReviewVault") && app.includes("function makeReviewVaultBrief"), "app.js is missing Review Vault behavior.");
+assert(app.includes("function renderInvestorRecordDesk") && app.includes("function makeInvestorRecordBrief"), "app.js is missing Investor Record Desk behavior.");
+assert(app.includes("function renderResearchDossier") && app.includes("function makeResearchDossierBrief"), "app.js is missing Research Dossier Builder behavior.");
 assert(app.includes("function renderEvidenceLedger") && app.includes("EVIDENCE_SOURCES"), "app.js is missing Evidence Ledger behavior.");
+assert(app.includes("function renderCitationBinder") && app.includes("CITATION_SOURCES"), "app.js is missing Citation Binder behavior.");
+assert(app.includes("function renderFundHouseLens") && app.includes("function makeFundHouseLensNote"), "app.js is missing Fund House Lens behavior.");
 assert(app.includes("function renderDataReadinessRoom") && app.includes("DATA_PIPELINES"), "app.js is missing Data Readiness Room behavior.");
+assert(app.includes("function renderSourceQaQueue") && app.includes("function makeSourceQaNote"), "app.js is missing Source QA Queue behavior.");
+assert(app.includes("function renderSourceIntakeConsole") && app.includes("function makeSourceIntakeNote"), "app.js is missing Source Intake Console behavior.");
+assert(app.includes("function renderSourceDriftMonitor") && app.includes("function makeSourceDriftNote"), "app.js is missing Source Drift Monitor behavior.");
+assert(app.includes("function renderClaimReleaseGate") && app.includes("function makeClaimReleaseNote"), "app.js is missing Claim Release Gate behavior.");
+assert(app.includes("function renderClaimReleaseLedger") && app.includes("function makeClaimReleaseLedgerBrief"), "app.js is missing Claim Release Ledger behavior.");
+assert(app.includes("function renderClaimRollbackConsole") && app.includes("function makeClaimRollbackNote"), "app.js is missing Claim Rollback Console behavior.");
+assert(app.includes("function renderCorrectionNoticeBuilder") && app.includes("function makeCorrectionNoticeBrief"), "app.js is missing Correction Notice Builder behavior.");
+assert(app.includes("function renderCorrectionNoticeLedger") && app.includes("function makeCorrectionNoticeLedgerBrief"), "app.js is missing Correction Notice Ledger behavior.");
+assert(app.includes("function renderTrustCenter") && app.includes("function makeTrustCenterBrief"), "app.js is missing Nadi Trust Center behavior.");
+assert(app.includes("function renderActionPlanner") && app.includes("function makeActionPlannerBrief"), "app.js is missing Nadi Action Planner behavior.");
+assert(app.includes("function renderDocDecoder") && app.includes("DOC_DECODER_GUIDES"), "app.js is missing Nadi Doc Decoder behavior.");
+assert(app.includes("function renderGlossary") && app.includes("GLOSSARY_TERMS"), "app.js is missing Retail Glossary behavior.");
+assert(app.includes("function renderBehaviorGuard") && app.includes("BEHAVIOR_TRIGGERS"), "app.js is missing Behavior Guard behavior.");
+assert(app.includes("function renderClaimChecker") && app.includes("CLAIM_PATTERNS"), "app.js is missing Claim Checker behavior.");
+assert(app.includes("function renderResearchReceipt") && app.includes("function makeResearchReceiptNote"), "app.js is missing Research Receipt behavior.");
+assert(app.includes("function renderReceiptVault") && app.includes("function makeReceiptVaultBrief"), "app.js is missing Receipt Vault behavior.");
+assert(app.includes("function renderReviewRhythmBoard") && app.includes("function makeReviewRhythmNote"), "app.js is missing Review Rhythm Board behavior.");
 assert(app.includes("bindFloatingSearch"), "app.js is missing floating search behavior.");
+assert(app.includes("bindWorkspaceJump"), "app.js is missing Workspace Navigator behavior.");
 assert(app.includes("bindScrollTopButton"), "app.js is missing scroll-to-top behavior.");
 assert(app.includes("localStorage"), "app.js is missing browser-local decision journal storage.");
 
@@ -82,11 +167,28 @@ assert(packageJson.scripts?.check?.includes("security-audit.mjs"), "package.json
 
 assert(styles.includes("--mint") && styles.includes("--gold") && styles.includes("--blue"), "styles.css is missing brand color tokens.");
 assert(styles.includes("scroll-padding-top") && styles.includes("scroll-margin-top"), "styles.css is missing sticky-header anchor offset rules.");
-assert(styles.includes(".floating-search") && styles.includes(".scroll-top-button"), "styles.css is missing floating control styles.");
+assert(styles.includes(".workspace-jump"), "styles.css is missing Workspace Navigator styles.");
+assert(styles.includes(".nadi-signal-strip") && styles.includes(".signal-score"), "styles.css is missing Nadi Signal Strip styles.");
+assert(styles.includes(".profile-room-grid") && styles.includes(".profile-room-hero"), "styles.css is missing Nadi Investor Profile Room styles.");
+assert(styles.includes(".briefing-layout") && styles.includes(".briefing-card"), "styles.css is missing Nadi Research Briefing styles.");
+assert(styles.includes(".briefing-vault-output") && styles.includes(".briefing-vault-card"), "styles.css is missing Nadi Briefing Vault styles.");
+assert(styles.includes(".research-memory-output") && styles.includes(".research-memory-event"), "styles.css is missing Nadi Research Memory styles.");
+assert(styles.includes(".privacy-control-output") && styles.includes(".privacy-store-card"), "styles.css is missing Nadi Privacy Control Room styles.");
+assert(styles.includes(".share-safe-output") && styles.includes(".share-safe-card"), "styles.css is missing Nadi Share-Safe Export Room styles.");
+assert(styles.includes(".consent-gate-output") && styles.includes(".consent-gate-card"), "styles.css is missing Nadi Consent Handoff Gate styles.");
+assert(styles.includes(".why-lens-hero") && styles.includes(".why-card-grid"), "styles.css is missing Why This Fund Lens styles.");
+assert(styles.includes(".score-anatomy") && styles.includes(".score-part-grid"), "styles.css is missing Nadi Score Anatomy styles.");
+assert(styles.includes(".starter-grid") && styles.includes(".starter-step-grid"), "styles.css is missing First 5-Minute Start styles.");
+assert(styles.includes(".investor-passport-grid") && styles.includes(".investor-passport-hero"), "styles.css is missing Retail Investor Passport styles.");
+assert(styles.includes(".coach-grid") && styles.includes(".coach-hero"), "styles.css is missing Nadi Coach Q&A styles.");
+assert(styles.includes(".lane-grid") && styles.includes(".lane-step-grid"), "styles.css is missing Research Lanes styles.");
+assert(styles.includes(".pulse-panel") && styles.includes(".pulse-action-grid"), "styles.css is missing Research Pulse styles.");
+assert(styles.includes(".floating-dock") && styles.includes(".floating-search") && styles.includes(".scroll-top-button"), "styles.css is missing floating control styles.");
 assert(styles.includes(".playbook-grid") && styles.includes(".playbook-hero"), "styles.css is missing Category Playbook styles.");
 assert(styles.includes(".passport-grid") && styles.includes(".passport-hero"), "styles.css is missing Suitability Passport styles.");
 assert(styles.includes(".fit-map-output") && styles.includes(".fit-map-hero"), "styles.css is missing Goal-Fund Fit Heatmap styles.");
 assert(styles.includes(".red-flag-output") && styles.includes(".red-flag-hero"), "styles.css is missing Red Flag Radar styles.");
+assert(styles.includes(".switch-output") && styles.includes(".switch-hero"), "styles.css is missing Switch Decision Lab styles.");
 assert(styles.includes(".peer-output") && styles.includes(".peer-hero"), "styles.css is missing Peer Benchmark Board styles.");
 assert(styles.includes(".compare-output") && styles.includes(".compare-card"), "styles.css is missing Fund Compare Matrix styles.");
 assert(styles.includes(".stress-grid") && styles.includes(".stress-hero"), "styles.css is missing Risk Stress Lab styles.");
@@ -96,8 +198,33 @@ assert(styles.includes(".journey-grid") && styles.includes(".journey-output"), "
 assert(styles.includes(".watch-grid") && styles.includes(".watch-card"), "styles.css is missing Watchlist and Alerts styles.");
 assert(styles.includes(".pack-grid") && styles.includes(".pack-card"), "styles.css is missing Nadi Decision Pack styles.");
 assert(styles.includes(".xray-thesis") && styles.includes(".role-list"), "styles.css is missing Portfolio Intelligence styles.");
+assert(styles.includes(".blueprint-grid") && styles.includes(".blueprint-hero"), "styles.css is missing Portfolio Blueprint Lab styles.");
+assert(styles.includes(".rebalance-grid") && styles.includes(".rebalance-hero"), "styles.css is missing Rebalance Guard styles.");
+assert(styles.includes(".review-room-grid") && styles.includes(".review-room-hero"), "styles.css is missing Portfolio Review Room styles.");
+assert(styles.includes(".review-vault-output") && styles.includes(".review-vault-card"), "styles.css is missing Review Vault styles.");
+assert(styles.includes(".investor-record-output") && styles.includes(".investor-record-card"), "styles.css is missing Investor Record Desk styles.");
+assert(styles.includes(".dossier-output") && styles.includes(".dossier-card"), "styles.css is missing Research Dossier Builder styles.");
 assert(styles.includes(".evidence-grid") && styles.includes(".source-card"), "styles.css is missing Evidence Ledger styles.");
+assert(styles.includes(".citation-layout") && styles.includes(".citation-hero"), "styles.css is missing Citation Binder styles.");
+assert(styles.includes(".house-output") && styles.includes(".house-hero"), "styles.css is missing Fund House Lens styles.");
 assert(styles.includes(".data-grid") && styles.includes(".data-hero"), "styles.css is missing Data Readiness Room styles.");
+assert(styles.includes(".source-queue-layout") && styles.includes(".source-queue-card"), "styles.css is missing Source QA Queue styles.");
+assert(styles.includes(".source-intake-layout") && styles.includes(".source-intake-card"), "styles.css is missing Source Intake Console styles.");
+assert(styles.includes(".source-drift-layout") && styles.includes(".source-drift-card"), "styles.css is missing Source Drift Monitor styles.");
+assert(styles.includes(".claim-release-layout") && styles.includes(".claim-release-card"), "styles.css is missing Claim Release Gate styles.");
+assert(styles.includes(".claim-ledger-output") && styles.includes(".claim-ledger-card"), "styles.css is missing Claim Release Ledger styles.");
+assert(styles.includes(".claim-rollback-layout") && styles.includes(".claim-rollback-card"), "styles.css is missing Claim Rollback Console styles.");
+assert(styles.includes(".correction-notice-layout") && styles.includes(".correction-notice-card"), "styles.css is missing Correction Notice Builder styles.");
+assert(styles.includes(".correction-ledger-output") && styles.includes(".correction-ledger-card"), "styles.css is missing Correction Notice Ledger styles.");
+assert(styles.includes(".trust-center-layout") && styles.includes(".trust-center-card"), "styles.css is missing Nadi Trust Center styles.");
+assert(styles.includes(".action-planner-layout") && styles.includes(".action-planner-card"), "styles.css is missing Nadi Action Planner styles.");
+assert(styles.includes(".doc-grid") && styles.includes(".doc-hero"), "styles.css is missing Nadi Doc Decoder styles.");
+assert(styles.includes(".glossary-grid") && styles.includes(".glossary-term-card"), "styles.css is missing Retail Glossary styles.");
+assert(styles.includes(".behavior-layout") && styles.includes(".behavior-hero"), "styles.css is missing Behavior Guard styles.");
+assert(styles.includes(".claim-layout") && styles.includes(".claim-hero"), "styles.css is missing Claim Checker styles.");
+assert(styles.includes(".receipt-layout") && styles.includes(".receipt-hero"), "styles.css is missing Research Receipt styles.");
+assert(styles.includes(".receipt-vault-output") && styles.includes(".receipt-vault-card"), "styles.css is missing Receipt Vault styles.");
+assert(styles.includes(".rhythm-grid") && styles.includes(".rhythm-hero"), "styles.css is missing Review Rhythm Board styles.");
 assert(styles.includes(".pricing-grid") && styles.includes(".pricing-card"), "styles.css is missing pricing section styles.");
 assert(!styles.includes("letter-spacing: -"), "styles.css uses negative letter spacing.");
 assert(!styles.includes("vw;"), "styles.css appears to scale font size directly with viewport width.");
@@ -120,10 +247,52 @@ for (const file of [
   "docs/DECISION_PACK.md",
   "docs/DATA_CLASSIFICATION.md",
   "docs/EVIDENCE_LEDGER.md",
+  "docs/FUND_HOUSE_LENS.md",
+  "docs/DOC_DECODER.md",
+  "docs/RETAIL_GLOSSARY.md",
+  "docs/BEHAVIOR_GUARD.md",
+  "docs/CLAIM_CHECKER.md",
+  "docs/RESEARCH_RECEIPT.md",
+  "docs/RECEIPT_VAULT.md",
+  "docs/PORTFOLIO_BLUEPRINT_LAB.md",
+  "docs/REBALANCE_GUARD.md",
+  "docs/PORTFOLIO_REVIEW_ROOM.md",
+  "docs/REVIEW_VAULT.md",
+  "docs/INVESTOR_REVIEW_RECORD.md",
+  "docs/RESEARCH_DOSSIER.md",
+  "docs/CITATION_BINDER.md",
+  "docs/SOURCE_QA_QUEUE.md",
+  "docs/SOURCE_INTAKE_CONSOLE.md",
+  "docs/SOURCE_DRIFT_MONITOR.md",
+  "docs/CLAIM_RELEASE_GATE.md",
+  "docs/CLAIM_RELEASE_LEDGER.md",
+  "docs/CLAIM_ROLLBACK_CONSOLE.md",
+  "docs/CORRECTION_NOTICE_BUILDER.md",
+  "docs/CORRECTION_NOTICE_LEDGER.md",
+  "docs/TRUST_CENTER.md",
+  "docs/ACTION_PLANNER.md",
+  "docs/RESEARCH_BRIEFING.md",
+  "docs/BRIEFING_VAULT.md",
+  "docs/RESEARCH_MEMORY.md",
+  "docs/PRIVACY_CONTROL_ROOM.md",
+  "docs/SHARE_SAFE_EXPORT_ROOM.md",
+  "docs/CONSENT_HANDOFF_GATE.md",
+  "docs/INVESTOR_PROFILE_ROOM.md",
+  "docs/FIRST_5_MINUTE_START.md",
+  "docs/WHY_THIS_FUND_LENS.md",
+  "docs/NADI_SIGNAL_STRIP.md",
+  "docs/NADI_SCORE_ANATOMY.md",
+  "docs/INVESTOR_PASSPORT.md",
+  "docs/NADI_COACH_QA.md",
+  "docs/RESEARCH_LANES.md",
+  "docs/RESEARCH_PULSE.md",
+  "docs/WORKSPACE_NAVIGATOR.md",
   "docs/FUND_COMPARE_MATRIX.md",
   "docs/GOAL_FUND_FIT_HEATMAP.md",
   "docs/SUITABILITY_PASSPORT.md",
   "docs/RED_FLAG_RADAR.md",
+  "docs/SWITCH_DECISION_LAB.md",
+  "docs/REVIEW_RHYTHM_BOARD.md",
   "docs/INVESTOR_READINESS_GATE.md",
   "docs/CATEGORY_PLAYBOOK.md",
   "docs/PEER_BENCHMARK_BOARD.md",

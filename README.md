@@ -2,13 +2,20 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v52 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v63 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
 - Self-research command desk with search, category, risk, and sorting controls.
 - Nadi Signal Strip on the first screen that turns the selected fund into a compact posture, score, evidence, risk, peer delta, next check, and quick-jump command layer.
+- Nadi Investor Profile Room that turns intent, horizon, monthly SIP comfort, drawdown tolerance, emergency readiness, and research confidence into a research route before any fund is treated as suitable.
+- Nadi Research Briefing that combines selected fund, compare set, Trust Center, Action Planner, Readiness Gate, evidence readiness, watchlist, and review rhythm into one copyable "brief me first" research view.
+- Nadi Briefing Vault that saves browser-local briefing snapshots, compares trust/action/pause-flag deltas, and creates a copyable research-memory brief without storing private notes or identifiers.
+- Nadi Research Memory that combines local vaults, watchlist, alerts, dossiers, investor records, journal metadata, and claim gates into one copyable browser-local research timeline.
+- Nadi Privacy Control Room that shows browser-local storage buckets, record counts, free-text attention, data never stored in Phase 1, copyable privacy reporting, and controlled local-clear actions.
+- Nadi Share-Safe Export Room that prepares a clean research pack for self review, family discussion, advisor conversation, or future distributor handoff while scrubbing private identifiers and note bodies.
+- Nadi Consent Handoff Gate that defines recipient, scope, duration, channel, allowed data, blocked data, and pre-handoff gaps before any research pack leaves the investor's own workspace.
 - Demo mutual fund screener across equity, debt, hybrid, passive, and life-cycle categories.
 - Why This Fund Lens that explains the selected fund's plain role, strongest research fit, positives, challenges, pause conditions, and change-my-mind triggers before deeper research.
 - Nadi Score Anatomy that breaks the Nadi score into weighted drivers for consistency, drawdown control, expense discipline, research coverage, and return support.
@@ -48,6 +55,10 @@ This Phase 1 v52 prototype is a compact static web app with no build step. Open 
 - Nadi Claim Release Gate that decides whether updated source evidence can refresh public research claims, stay in preview, route to reviewer approval, or remain frozen.
 - Nadi Claim Release Ledger that saves browser-local release-gate decisions with deltas, affected claim surfaces, flags, and privacy guardrails.
 - Nadi Claim Rollback Console that turns stale, wrong, confusing, or compliance-sensitive public claims into rollback, freeze, correction, or monitor plans.
+- Nadi Correction Notice Builder that converts release or rollback concerns into public wording drafts, internal reviewer notes, affected-surface checks, and no-personal-data notice guardrails.
+- Nadi Correction Notice Ledger that saves browser-local correction notices, status mix, public visibility counts, affected surfaces, and privacy guardrails for launch audit review.
+- Nadi Trust Center that combines evidence readiness, claim release gates, rollback posture, correction ledgers, data mode, and privacy controls into one copyable launch trust brief.
+- Nadi Action Planner that turns the selected fund, Trust Center posture, Investor Readiness Gate, evidence standard, conviction, amount, review date, and written reason into a copyable research-to-action memo.
 - Fund House Lens that reviews process clarity, evidence depth, cost discipline, AUM/capacity comfort, manager visibility, style stability, and house-level launch gates.
 - Data Readiness Room that scores AMFI, AMC, SID/KIM, portfolio disclosure, benchmark, and TER pipelines before any live claim is allowed.
 - Nadi Doc Decoder that turns SID, KIM, factsheet, portfolio disclosure, riskometer, and TER language into plain research questions and document guardrails.
@@ -63,7 +74,7 @@ This Phase 1 v52 prototype is a compact static web app with no build step. Open 
 - Pricing and monetization preview with Free, Nadi Plus, Founder Circle, and Phase 2 Distributor Desk plans.
 - Phase 2 distributor roadmap for ARN/EUIN/PAN-based client management.
 - Security foundation with `SECURITY.md`, threat model, data classification, release checklist, and automated security audit.
-- Compact v52 product layout with Claim Rollback Console, Claim Release Ledger, Claim Release Gate, Source Drift Monitor, Source Intake Console, Source QA Queue, Citation Binder, Receipt Vault, Research Receipt, Claim Checker, Behavior Guard, Retail Glossary, first-screen Signal Strip, denser screener, signal bars, mobile checks, Workspace Command, Why This Fund Lens, Nadi Score Anatomy, First 5-Minute Start, Retail Investor Passport, Nadi Coach Q&A, Research Lanes, Research Pulse, polished floating search/top dock, tuned sticky-header anchor landing, Category Playbook, Suitability Passport, Goal-Fund Fit Heatmap, Red Flag Radar, Switch Decision Lab, Peer Benchmark Board, Fund Compare Matrix, goal-fit research mapping, First SIP Coach, Risk Stress Lab, Cost Reality Lab, Investor Readiness Gate, Portfolio Intelligence X-Ray, Portfolio Blueprint Lab, Rebalance Guard, Portfolio Review Room, Review Vault, Investor Record Desk, Research Dossier Builder, Evidence Ledger, Fund House Lens, Data Readiness Room, Nadi Doc Decoder, Review Rhythm Board, Watchlist and Alerts Room, Nadi Decision Pack, and a trust-first retail membership model.
+- Compact v63 product layout with Nadi Investor Profile Room, Nadi Consent Handoff Gate, Nadi Share-Safe Export Room, Nadi Privacy Control Room, Nadi Research Memory, Nadi Briefing Vault, Nadi Research Briefing, Nadi Action Planner, Nadi Trust Center, Correction Notice Ledger, Correction Notice Builder, Claim Rollback Console, Claim Release Ledger, Claim Release Gate, Source Drift Monitor, Source Intake Console, Source QA Queue, Citation Binder, Receipt Vault, Research Receipt, Claim Checker, Behavior Guard, Retail Glossary, first-screen Signal Strip, denser screener, signal bars, mobile checks, Workspace Command, Why This Fund Lens, Nadi Score Anatomy, First 5-Minute Start, Retail Investor Passport, Nadi Coach Q&A, Research Lanes, Research Pulse, polished floating search/top dock, tuned sticky-header anchor landing, Category Playbook, Suitability Passport, Goal-Fund Fit Heatmap, Red Flag Radar, Switch Decision Lab, Peer Benchmark Board, Fund Compare Matrix, goal-fit research mapping, First SIP Coach, Risk Stress Lab, Cost Reality Lab, Investor Readiness Gate, Portfolio Intelligence X-Ray, Portfolio Blueprint Lab, Rebalance Guard, Portfolio Review Room, Review Vault, Investor Record Desk, Research Dossier Builder, Evidence Ledger, Fund House Lens, Data Readiness Room, Nadi Doc Decoder, Review Rhythm Board, Watchlist and Alerts Room, Nadi Decision Pack, and a trust-first retail membership model.
 
 ## Important compliance posture
 

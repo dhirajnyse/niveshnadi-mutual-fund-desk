@@ -1,0 +1,7 @@
+# Nadi Investor Profile Room
+
+The Investor Profile Room is the first research-routing layer for Phase 1. It asks for only lightweight, non-identifying context: intent, time horizon, monthly SIP comfort, drawdown comfort, emergency readiness, and research confidence. It does not ask for PAN, folio, CAS files, bank information, account credentials, address, phone number, or other personal identifiers.
+
+The room converts the inputs into a research posture, readiness score, category anchor, route, selected-fund fit, and shortlist candidates. The Apply Profile action synchronizes the deeper Retail Investor Passport, Research Lanes, Category Playbook, Suitability Passport, SIP inputs, and screener filters so the investor starts with a workflow rather than a fund name. This is deliberately positioned before recommendation-like behavior: it tells the user what to research first, not what to buy.
+
+The launch boundary remains research-only. The profile score is not suitability approval, investment advice, transaction instruction, or a return guarantee. Before any production use, live AMFI, AMC factsheet, SID/KIM, riskometer, TER, benchmark, and portfolio disclosure sources must be connected with citation dates, extraction checks, and visible source status. Phase 2 distributor workflows must add explicit consent, audit logs, role-based access, ARN/EUIN controls, and revocation handling before client-specific handoff is allowed.

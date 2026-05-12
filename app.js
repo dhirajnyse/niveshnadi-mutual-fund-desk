@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260512-10";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v52 Claim Rollback Console";
+const DATA_VERSION = "20260512-21";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v63 Investor Profile Room";
 
 const FUNDS = [
   {
@@ -1167,6 +1167,288 @@ function renderFundGrid() {
   }).join("");
 }
 
+function readProfileRoomConfig() {
+  return {
+    confidence: els.profileConfidence?.value || "new",
+    drawdown: els.profileDrawdown?.value || "balanced",
+    emergency: els.profileEmergency?.value || "partial",
+    horizon: clampNumber(Number(els.profileHorizon?.value || 7), 1, 40),
+    intent: els.profileIntent?.value || "first-sip",
+    sip: clampNumber(Number(els.profileMonthlySip?.value || 10000), 0, 10000000)
+  };
+}
+
+function profileIntentLabel(intent) {
+  return {
+    "first-sip": "Start or improve SIP",
+    parking: "Park money or STP source",
+    tax: "ELSS tax route",
+    retirement: "Long-term wealth goal",
+    review: "Portfolio review"
+  }[intent] || "Start or improve SIP";
+}
+
+function profileDrawdownLabel(drawdown) {
+  return {
+    low: "Low volatility preferred",
+    balanced: "Normal equity swings",
+    growth: "High volatility accepted",
+    aggressive: "Sharp drawdowns accepted"
+  }[drawdown] || "Normal equity swings";
+}
+
+function profileConfidenceLabel(confidence) {
+  return {
+    new: "New to mutual funds",
+    building: "Building research habit",
+    reviewing: "Already reviewing funds"
+  }[confidence] || "New to mutual funds";
+}
+
+function profileRoomRisk(drawdown) {
+  if (drawdown === "low") return "conservative";
+  if (drawdown === "growth") return "growth";
+  if (drawdown === "aggressive") return "aggressive";
+  return "balanced";
+}
+
+function profileRoomInvestorConfig(config = readProfileRoomConfig()) {
+  return {
+    confidence: config.confidence === "reviewing" || config.intent === "review" ? "shortlist" : config.confidence === "building" ? "shortlist" : "exploring",
+    emergency: config.emergency,
+    goal: config.intent,
+    horizon: config.horizon,
+    risk: profileRoomRisk(config.drawdown),
+    sip: config.sip,
+    stage: config.confidence === "new" ? "new" : config.confidence === "reviewing" ? "reviewing" : "building"
+  };
+}
+
+function profilePrimaryCategory(config, investorConfig) {
+  if (config.emergency === "no" || config.intent === "parking" || config.horizon < 3) return "Liquid Fund";
+  if (config.intent === "tax") return "ELSS Fund";
+  if (config.intent === "retirement" && config.horizon >= 12) return "Life Cycle Fund";
+  if (config.intent === "review") return "Index Fund";
+  if (investorConfig.risk === "conservative") return "Balanced Hybrid Fund";
+  if (investorConfig.risk === "aggressive") return "Flexi Cap Fund";
+  return config.horizon >= 7 ? "Large Cap Fund" : "Balanced Hybrid Fund";
+}
+
+function profileRoomRoute(config, investorConfig) {
+  if (config.intent === "review") return "#portfolio-review";
+  if (config.emergency === "no" || config.intent === "parking" || config.intent === "tax") return "#category-playbook";
+  if (config.confidence === "reviewing") return "#compare";
+  return investorRoute(investorConfig);
+}
+
+function profileRoomProfile() {
+  const config = readProfileRoomConfig();
+  const investorConfig = profileRoomInvestorConfig(config);
+  const route = profileRoomRoute(config, investorConfig);
+  const primaryCategory = profilePrimaryCategory(config, investorConfig);
+  const selected = selectedFund();
+  const candidates = FUNDS
+    .map((fund) => {
+      let score = investorFundFitScore(fund, investorConfig);
+      if (fund.category === primaryCategory) score += 10;
+      if (config.confidence === "new" && ["Small Cap Fund", "Mid Cap Fund"].includes(fund.category)) score -= 10;
+      if (config.drawdown === "aggressive" && ["Mid Cap Fund", "Small Cap Fund", "Flexi Cap Fund"].includes(fund.category)) score += 6;
+      return { fund, score: Math.round(clampNumber(score, 18, 98)) };
+    })
+    .sort((a, b) => b.score - a.score || nadiScore(b.fund) - nadiScore(a.fund));
+
+  const selectedFit = candidates.find((item) => item.fund.id === selected.id)?.score || investorFundFitScore(selected, investorConfig);
+  let readiness = 58;
+  readiness += config.emergency === "yes" ? 12 : config.emergency === "partial" ? 4 : -18;
+  readiness += config.horizon >= 7 ? 9 : config.horizon >= 3 ? 3 : -9;
+  readiness += config.sip > 0 ? 5 : -8;
+  readiness += config.confidence === "reviewing" ? 7 : config.confidence === "building" ? 4 : 0;
+  readiness += config.drawdown === "aggressive" && config.horizon < 7 ? -12 : 0;
+  readiness += selectedFit >= 75 ? 4 : selectedFit < 50 ? -6 : 0;
+  readiness = Math.round(clampNumber(readiness, 24, 95));
+
+  const posture = (() => {
+    if (config.emergency === "no") return "Safety buffer first";
+    if (config.horizon < 3) return "Liquidity-first route";
+    if (config.intent === "review") return "Review route ready";
+    if (config.intent === "tax") return "Tax route framed";
+    if (config.drawdown === "aggressive") return "Satellite discipline needed";
+    if (config.confidence === "new") return "Starter route ready";
+    return "Research route ready";
+  })();
+  const tone = readiness >= 74 ? "strong" : readiness >= 56 ? "watch" : "caution";
+  const categoryRoute = (() => {
+    if (config.emergency === "no") return "Emergency buffer and liquid/debt research should come before volatile fund selection.";
+    if (config.intent === "parking") return "Cash parking, STP source, liquid fund, and debt quality checks come first.";
+    if (config.intent === "tax") return "ELSS can be studied, but tax benefit must be separated from investment fit.";
+    if (config.intent === "retirement") return "Long-horizon route should compare core equity, passive, hybrid, and glide-path options.";
+    if (config.intent === "review") return "Review starts with X-Ray, compare, cost, evidence, and role duplication checks.";
+    return "Starter SIP route should compare simple core categories before satellite risk.";
+  })();
+  const guardrails = [
+    "No PAN, folio, CAS file, bank detail, account credential, or personal identifier is needed for this profile.",
+    "The profile only routes research workflow; it is not suitability approval, advice, execution, or a return guarantee.",
+    "Before launch use, connect live AMFI, AMC factsheet, SID/KIM, TER, riskometer, and portfolio disclosure sources."
+  ];
+  if (config.emergency === "no") guardrails.push("Do not frame equity SIP research as urgent until emergency money is protected.");
+  if (config.drawdown === "aggressive") guardrails.push("Aggressive drawdown comfort still needs sizing, core allocation, and stress testing.");
+  if (config.horizon < 5 && ["growth", "aggressive"].includes(investorConfig.risk)) guardrails.push("High volatility with a short horizon needs a written pause rule.");
+
+  return {
+    amountLabel: formatMoney(config.sip),
+    candidates,
+    categoryRoute,
+    config,
+    guardrails,
+    investorConfig,
+    posture,
+    primaryCategory,
+    readiness,
+    route,
+    routeLabel: workspaceOption(route)?.textContent?.trim() || "Research route",
+    selected,
+    selectedFit,
+    tone
+  };
+}
+
+function renderProfileRoom(event) {
+  if (event) event.preventDefault();
+  if (!els.profileRoomOutput) return;
+  const profile = profileRoomProfile();
+  const config = profile.config;
+  if (els.profileRoomSummary) {
+    els.profileRoomSummary.textContent = `${profile.readiness}/100 | ${profile.posture}`;
+  }
+  els.profileRoomOutput.innerHTML = `
+    <div class="profile-room-hero ${escapeHtml(profile.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(profile.posture)}</span>
+        <h3>${escapeHtml(profileIntentLabel(config.intent))}</h3>
+        <p>${escapeHtml(profile.categoryRoute)}</p>
+      </div>
+      <div class="profile-room-score" style="--score:${profile.readiness}">
+        <b>${profile.readiness}</b>
+        <span>Profile</span>
+      </div>
+    </div>
+    <div class="profile-room-signal-grid">
+      <div><span>Intent</span><strong>${escapeHtml(profileIntentLabel(config.intent))}</strong></div>
+      <div><span>Horizon</span><strong>${config.horizon} years</strong></div>
+      <div><span>SIP comfort</span><strong>${escapeHtml(profile.amountLabel)}</strong></div>
+      <div><span>Drawdown</span><strong>${escapeHtml(profileDrawdownLabel(config.drawdown))}</strong></div>
+      <div><span>Emergency</span><strong>${escapeHtml(investorEmergencyLabel(config.emergency))}</strong></div>
+      <div><span>Research level</span><strong>${escapeHtml(profileConfidenceLabel(config.confidence))}</strong></div>
+    </div>
+    <div class="profile-room-route-grid">
+      <article>
+        <span>Suggested route</span>
+        <strong>${escapeHtml(profile.routeLabel)}</strong>
+        <p>Apply profile to synchronize Passport, Lanes, Playbook, Suitability Passport, SIP math, and the screener.</p>
+      </article>
+      <article>
+        <span>Category anchor</span>
+        <strong>${escapeHtml(profile.primaryCategory)}</strong>
+        <p>This is the first category to research, not an instruction to invest.</p>
+        <button class="text-button" type="button" data-playbook-category="${escapeHtml(profile.primaryCategory)}">Filter category</button>
+      </article>
+      <article>
+        <span>Selected fund fit</span>
+        <strong>${profile.selectedFit}/100</strong>
+        <p>${escapeHtml(profile.selected.name)} is checked against the profile before deeper research.</p>
+      </article>
+    </div>
+    <div class="profile-room-candidate-grid">
+      ${profile.candidates.slice(0, 4).map(({ fund, score }) => `
+        <article class="profile-room-candidate">
+          <span>${score}/100 profile fit</span>
+          <strong>${escapeHtml(fund.name)}</strong>
+          <p>${escapeHtml(fund.category)} | ${escapeHtml(fund.risk)} risk | TER ${fund.expense.toFixed(2)}%</p>
+          <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">Inspect</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="profile-room-guardrail">
+      <span>Profile boundary</span>
+      <ul>
+        ${profile.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+}
+
+function makeProfileRoomBrief() {
+  const profile = profileRoomProfile();
+  const config = profile.config;
+  return [
+    "# NiveshNadi Investor Profile Room",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Intent: ${profileIntentLabel(config.intent)}`,
+    `Horizon: ${config.horizon} years`,
+    `Monthly SIP comfort: ${profile.amountLabel}`,
+    `Drawdown comfort: ${profileDrawdownLabel(config.drawdown)}`,
+    `Emergency buffer: ${investorEmergencyLabel(config.emergency)}`,
+    `Research confidence: ${profileConfidenceLabel(config.confidence)}`,
+    `Profile posture: ${profile.posture}`,
+    `Profile readiness: ${profile.readiness}/100`,
+    `Suggested route: ${profile.routeLabel}`,
+    `Category anchor: ${profile.primaryCategory}`,
+    "",
+    "## Top Research Candidates",
+    ...profile.candidates.slice(0, 4).map(({ fund, score }) => `- ${fund.name}: ${score}/100 profile fit | ${fund.category} | ${fund.risk} risk | TER ${fund.expense.toFixed(2)}%`),
+    "",
+    "## Guardrails",
+    ...profile.guardrails.map((item) => `- ${item}`),
+    "",
+    "Research workflow only. This profile is not personalized advice, suitability approval, execution, or a return guarantee."
+  ].join("\n");
+}
+
+function applyProfileRoom() {
+  const profile = profileRoomProfile();
+  const config = profile.config;
+  const investorConfig = profile.investorConfig;
+  const topIds = profile.candidates.slice(0, 3).map(({ fund }) => fund.id);
+
+  if (els.investorGoal) els.investorGoal.value = investorConfig.goal;
+  if (els.investorStage) els.investorStage.value = investorConfig.stage;
+  if (els.investorHorizon) els.investorHorizon.value = investorConfig.horizon;
+  if (els.investorMonthlySip) els.investorMonthlySip.value = investorConfig.sip;
+  if (els.investorRisk) els.investorRisk.value = investorConfig.risk;
+  if (els.investorEmergency) els.investorEmergency.value = investorConfig.emergency;
+  if (els.investorConfidence) els.investorConfidence.value = investorConfig.confidence;
+  if (els.starterIntent) els.starterIntent.value = config.intent === "first-sip" ? "first-sip" : config.intent === "review" ? "review" : "profile";
+  if (els.laneMode) els.laneMode.value = investorLaneMode(investorConfig);
+  if (els.laneHorizon) els.laneHorizon.value = investorHorizonBand(investorConfig.horizon);
+  if (els.laneAmount) els.laneAmount.value = investorConfig.sip;
+  if (els.playbookNeed) els.playbookNeed.value = investorPlaybookNeed(investorConfig.goal, investorConfig.risk);
+  if (els.playbookYears) els.playbookYears.value = investorConfig.horizon;
+  if (els.playbookRisk) els.playbookRisk.value = investorConfig.risk === "conservative" ? "conservative" : ["growth", "aggressive"].includes(investorConfig.risk) ? "aggressive" : "balanced";
+  if (els.passportHorizon) els.passportHorizon.value = investorConfig.horizon;
+  if (els.passportRisk) els.passportRisk.value = investorConfig.risk === "conservative" ? "conservative" : ["growth", "aggressive"].includes(investorConfig.risk) ? "aggressive" : "balanced";
+  if (els.passportLiquidity) els.passportLiquidity.value = config.emergency === "no" || config.intent === "parking" || config.horizon < 3 ? "high" : config.horizon >= 7 ? "low" : "medium";
+  if (els.passportSip) els.passportSip.value = investorConfig.sip;
+  if (els.passportExperience) els.passportExperience.value = investorConfig.stage === "new" ? "new" : investorConfig.stage === "reviewing" ? "advanced" : "continuing";
+  if (els.passportEmergency) els.passportEmergency.value = config.emergency === "no" ? "no" : "yes";
+  if (els.journeySip) els.journeySip.value = investorConfig.sip;
+  if (els.journeyYears) els.journeyYears.value = investorConfig.horizon;
+  if (els.goalYears) els.goalYears.value = investorConfig.horizon;
+  if (els.goalSip) els.goalSip.value = investorConfig.sip;
+
+  if (profile.candidates[0]) state.selectedId = profile.candidates[0].fund.id;
+  if (topIds.length >= 2) state.compare = new Set(topIds);
+  state.filters = { search: "", category: profile.primaryCategory, risk: "all", sort: "score" };
+  if (els.searchInput) els.searchInput.value = "";
+  if (els.floatingSearchInput) els.floatingSearchInput.value = "";
+  if (els.categoryFilter) els.categoryFilter.value = profile.primaryCategory;
+  if (els.riskFilter) els.riskFilter.value = "all";
+  if (els.sortSelect) els.sortSelect.value = "score";
+
+  renderAll();
+  analyzePortfolio();
+  scrollToHash(profile.route, "smooth", true);
+}
+
 function loadStarterGuideProgress() {
   try {
     const value = JSON.parse(localStorage.getItem("niveshnadi-starter-guide") || "{}");
@@ -1307,6 +1589,7 @@ function setStarterStepProgress(stepId, value, rerender = true) {
   if (rerender) {
     renderStarterGuide();
     renderNadiCoach();
+    renderPrivacyControlRoom();
   }
 }
 
@@ -4673,6 +4956,13 @@ function makeCompareNote() {
 
 function renderAll() {
   renderSignalStrip();
+  renderProfileRoom();
+  renderResearchBriefing();
+  renderBriefingVault();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
+  renderShareSafeExportRoom();
+  renderConsentHandoffGate();
   renderFundGrid();
   renderStarterGuide();
   renderInvestorPassport();
@@ -4706,6 +4996,16 @@ function renderAll() {
   renderClaimReleaseGate();
   renderClaimReleaseLedger();
   renderClaimRollbackConsole();
+  renderCorrectionNoticeBuilder();
+  renderCorrectionNoticeLedger();
+  renderTrustCenter();
+  renderActionPlanner();
+  renderResearchBriefing();
+  renderBriefingVault();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
+  renderShareSafeExportRoom();
+  renderConsentHandoffGate();
   renderDocDecoder();
   renderGlossary();
   renderBehaviorGuard();
@@ -5962,6 +6262,8 @@ function saveCurrentReviewSnapshot() {
   renderReviewVault();
   renderInvestorRecordDesk();
   renderResearchDossier();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
   toast("Review snapshot saved locally.");
 }
 
@@ -5970,6 +6272,8 @@ function clearReviewVault() {
   renderReviewVault();
   renderInvestorRecordDesk();
   renderResearchDossier();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
   toast("Review vault cleared.");
 }
 
@@ -6220,6 +6524,8 @@ function saveCurrentInvestorRecord() {
   saveInvestorRecords(entries);
   renderInvestorRecordDesk();
   renderResearchDossier();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
   toast("Investor review record saved locally.");
 }
 
@@ -6227,6 +6533,8 @@ function clearInvestorRecords() {
   saveInvestorRecords([]);
   renderInvestorRecordDesk();
   renderResearchDossier();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
   toast("Investor records cleared.");
 }
 
@@ -6512,12 +6820,16 @@ function saveCurrentDossier() {
   const entries = [snapshot, ...loadResearchDossiers()].slice(0, 16);
   saveResearchDossiers(entries);
   renderResearchDossier();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
   toast("Research dossier saved locally.");
 }
 
 function clearResearchDossiers() {
   saveResearchDossiers([]);
   renderResearchDossier();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
   toast("Research dossiers cleared.");
 }
 
@@ -8343,6 +8655,12 @@ function saveCurrentClaimReleaseSnapshot() {
   saveClaimReleaseLedger(entries);
   renderClaimReleaseLedger();
   renderClaimRollbackConsole();
+  renderCorrectionNoticeBuilder();
+  renderCorrectionNoticeLedger();
+  renderTrustCenter();
+  renderActionPlanner();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
   toast("Claim release saved locally.");
 }
 
@@ -8350,6 +8668,12 @@ function clearClaimReleaseLedger() {
   saveClaimReleaseLedger([]);
   renderClaimReleaseLedger();
   renderClaimRollbackConsole();
+  renderCorrectionNoticeBuilder();
+  renderCorrectionNoticeLedger();
+  renderTrustCenter();
+  renderActionPlanner();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
   toast("Claim release ledger cleared.");
 }
 
@@ -8809,6 +9133,2529 @@ function makeClaimRollbackNote() {
     "Rollback records are product-control notes only. Exclude PAN, folio, CAS, account credentials, bank data, client identifiers, contact data, and private investor notes.",
     "",
     "Research support only. This is not investment advice, execution approval, distributor approval, tax guidance, or a return guarantee."
+  ].join("\n");
+}
+
+function correctionNoticeAudienceLabel(value) {
+  return {
+    "fund-page": "Fund page note",
+    "user-banner": "User-visible banner",
+    "release-log": "Release log entry",
+    "internal-review": "Internal reviewer note"
+  }[value] || "Fund page note";
+}
+
+function correctionNoticeStatusLabel(value) {
+  return {
+    investigating: "Investigating",
+    corrected: "Corrected",
+    reverted: "Reverted",
+    verified: "Verified"
+  }[value] || "Investigating";
+}
+
+function correctionNoticeChangeProfile(value) {
+  return {
+    "source-date": {
+      label: "Source date or citation",
+      score: 44,
+      changed: "The source date, citation path, or evidence status behind the research claim needs to be refreshed.",
+      unchanged: "The fund role, investor decision boundary, and research-only posture do not change.",
+      checks: ["source date", "citation URL", "evidence ledger row", "release ledger entry"]
+    },
+    "value-label": {
+      label: "Value or label",
+      score: 78,
+      changed: "A displayed value, label, score, or field name needs correction before it is treated as current.",
+      unchanged: "No transaction instruction, recommendation, or personal suitability decision is created by this correction.",
+      checks: ["old value", "new value", "affected surface", "rollback owner"]
+    },
+    "risk-cost": {
+      label: "Risk or cost field",
+      score: 84,
+      changed: "A risk, drawdown, TER, load, cost, or riskometer field needs visible review before reuse.",
+      unchanged: "The correction does not guarantee returns or reduce market, credit, liquidity, tax, or behavior risk.",
+      checks: ["TER date", "riskometer date", "drawdown field", "source proof"]
+    },
+    wording: {
+      label: "Wording clarity",
+      score: 50,
+      changed: "The wording should be clearer so a retail investor does not read a research note as advice.",
+      unchanged: "The underlying fund data remains a research input until the evidence chain is refreshed.",
+      checks: ["plain-English wording", "research-only language", "claim checker result", "reviewer note"]
+    },
+    holdings: {
+      label: "Holdings or exposure",
+      score: 72,
+      changed: "Holdings, sector, concentration, or exposure language needs a dated portfolio disclosure check.",
+      unchanged: "Portfolio overlap, concentration, and X-Ray outputs still require current holdings files before reliance.",
+      checks: ["portfolio disclosure date", "top holdings", "sector map", "stale-holdings warning"]
+    }
+  }[value] || correctionNoticeChangeProfile("source-date");
+}
+
+function correctionNoticeToneLabel(value) {
+  return {
+    plain: "Plain",
+    calm: "Calm and transparent",
+    urgent: "Urgent freeze",
+    compliance: "Compliance reviewed"
+  }[value] || "Plain";
+}
+
+function correctionNoticeVisibilityLabel(value) {
+  return {
+    preview: "Preview only",
+    "single-fund": "Single fund",
+    category: "Category surface",
+    "all-users": "All public users"
+  }[value] || "Preview only";
+}
+
+function correctionNoticeOwnerLabel(value) {
+  return claimRollbackOwnerLabel(value);
+}
+
+function correctionNoticeConfig() {
+  const rollback = claimRollbackConfig();
+  const gate = rollback.currentGate || claimReleaseConfig();
+  const latest = rollback.latest || claimReleaseSnapshotFromConfig(gate);
+  const fund = latest.fund?.name ? latest.fund : selectedFund();
+  const audience = els.correctionNoticeAudience?.value || "fund-page";
+  const status = els.correctionNoticeStatus?.value || "investigating";
+  const change = els.correctionNoticeChange?.value || "source-date";
+  const tone = els.correctionNoticeTone?.value || "plain";
+  const visibility = els.correctionNoticeVisibility?.value || "preview";
+  const owner = els.correctionNoticeOwner?.value || "research";
+  const profile = correctionNoticeChangeProfile(change);
+  const statusScore = {
+    investigating: 42,
+    corrected: 72,
+    reverted: 82,
+    verified: 92
+  }[status] || 42;
+  const visibilityScore = {
+    preview: 22,
+    "single-fund": 48,
+    category: 68,
+    "all-users": 90
+  }[visibility] || 22;
+  const toneScore = {
+    plain: 62,
+    calm: 76,
+    urgent: 58,
+    compliance: 88
+  }[tone] || 62;
+  const publicFacing = audience === "user-banner" || audience === "fund-page" || visibility === "all-users" || visibility === "category";
+  const exposureRisk = Math.round(clampNumber(
+    rollback.urgency * 0.32 +
+      visibilityScore * 0.28 +
+      profile.score * 0.18 +
+      (publicFacing ? 8 : 0) +
+      (status === "investigating" ? 12 : 0),
+    12,
+    98
+  ));
+  const noticeScore = Math.round(clampNumber(
+    statusScore * 0.28 +
+      toneScore * 0.18 +
+      rollback.recoveryScore * 0.18 +
+      gate.evidenceScore * 0.14 +
+      (100 - exposureRisk) * 0.12 +
+      (owner === "compliance" ? 8 : owner === "product" ? 6 : 4),
+    18,
+    96
+  ));
+  const posture = status === "investigating" && exposureRisk >= 72
+    ? "Freeze notice"
+    : status === "reverted"
+      ? "Rollback notice"
+      : status === "verified"
+        ? "Verified correction"
+        : publicFacing
+          ? "Public correction notice"
+          : "Internal correction note";
+  const noticeTone = exposureRisk >= 78 || tone === "urgent"
+    ? "caution"
+    : noticeScore >= 78
+      ? "ready"
+      : "watch";
+  const action = status === "investigating"
+    ? "Keep the affected field paused while source evidence and reviewer status are checked."
+    : status === "reverted"
+      ? "Show the prior approved value or hide the claim until a replacement release is approved."
+      : status === "verified"
+        ? "Publish the verified correction with source date, release ledger link, and reviewer owner."
+        : "Publish the corrected wording only on the selected visibility surface and keep a release-log entry.";
+  const affectedClaims = Array.from(new Set([
+    ...rollback.affectedClaims,
+    `${fund.name} | ${profile.label}`,
+    gate.profile?.label ? `${fund.name} | ${gate.profile.label}` : ""
+  ].filter(Boolean))).slice(0, 8);
+  const publicCopy = status === "investigating"
+    ? `We are reviewing the ${profile.label.toLowerCase()} shown for ${fund.name}. The affected research field is paused until source evidence and reviewer checks are complete.`
+    : status === "reverted"
+      ? `We have reverted the ${profile.label.toLowerCase()} for ${fund.name} to the prior approved research display while the latest source evidence is reviewed.`
+      : status === "verified"
+        ? `We have verified the ${profile.label.toLowerCase()} for ${fund.name} and refreshed the research display with the latest available source evidence.`
+        : `We have corrected the ${profile.label.toLowerCase()} for ${fund.name}. Please review the updated source date, citation status, and research-only boundary before relying on the field.`;
+  const internalNote = `${correctionNoticeOwnerLabel(owner)} owns the notice for ${correctionNoticeAudienceLabel(audience)}. Current rollback posture is ${rollback.posture}; current release gate is ${gate.decision}.`;
+  const doNotInclude = [
+    "PAN, folio, CAS, bank, account, contact, credential, or client identifiers",
+    "personalized recommendation language",
+    "return guarantee or best-fund language",
+    "transaction instruction or distributor-client approval"
+  ];
+  return {
+    action,
+    affectedClaims,
+    audience,
+    change,
+    doNotInclude,
+    exposureRisk,
+    fund,
+    gate,
+    internalNote,
+    latest,
+    noticeScore,
+    noticeTone,
+    owner,
+    posture,
+    profile,
+    publicCopy,
+    publicFacing,
+    rollback,
+    status,
+    statusScore,
+    tone,
+    toneScore,
+    visibility,
+    visibilityScore
+  };
+}
+
+function renderCorrectionNoticeBuilder(event) {
+  if (event) event.preventDefault();
+  if (!els.correctionNoticeOutput || !els.correctionNoticeSummary) return;
+  const config = correctionNoticeConfig();
+  els.correctionNoticeSummary.textContent = `${config.noticeScore}/100 | ${config.posture}`;
+  els.correctionNoticeOutput.innerHTML = `
+    <div class="correction-notice-hero ${escapeHtml(config.noticeTone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(correctionNoticeAudienceLabel(config.audience))}</span>
+        <h3>${escapeHtml(config.posture)}</h3>
+        <p>${escapeHtml(config.action)}</p>
+      </div>
+      <div class="correction-notice-score" style="--score:${config.noticeScore}">
+        <b>${config.noticeScore}</b>
+        <span>Notice</span>
+      </div>
+    </div>
+    <div class="correction-notice-metric-grid">
+      <article><span>Status</span><strong>${escapeHtml(correctionNoticeStatusLabel(config.status))}</strong><p>${config.statusScore}/100 readiness</p></article>
+      <article><span>Exposure</span><strong>${config.exposureRisk}/100</strong><p>${escapeHtml(correctionNoticeVisibilityLabel(config.visibility))}</p></article>
+      <article><span>Rollback</span><strong>${config.rollback.urgency}/100</strong><p>${escapeHtml(config.rollback.posture)}</p></article>
+      <article><span>Owner</span><strong>${escapeHtml(correctionNoticeOwnerLabel(config.owner))}</strong><p>${escapeHtml(correctionNoticeToneLabel(config.tone))}</p></article>
+    </div>
+    <div class="correction-notice-copy">
+      <span class="metric-label">Public wording draft</span>
+      <p>${escapeHtml(config.publicCopy)}</p>
+    </div>
+    <div class="correction-notice-grid">
+      <article class="correction-notice-card">
+        <h3>What changed</h3>
+        <p>${escapeHtml(config.profile.changed)}</p>
+      </article>
+      <article class="correction-notice-card">
+        <h3>What did not change</h3>
+        <p>${escapeHtml(config.profile.unchanged)}</p>
+      </article>
+      <article class="correction-notice-card ${escapeHtml(config.noticeTone)}">
+        <h3>Affected surfaces</h3>
+        <div class="field-chip-list">
+          ${config.affectedClaims.map((claim) => `<span>${escapeHtml(claim)}</span>`).join("")}
+        </div>
+      </article>
+      <article class="correction-notice-card">
+        <h3>Internal reviewer note</h3>
+        <p>${escapeHtml(config.internalNote)}</p>
+      </article>
+    </div>
+    <div class="correction-notice-panel-grid">
+      <article class="correction-notice-panel">
+        <h3>Evidence checks</h3>
+        <ul class="data-check-list">
+          ${config.profile.checks.map((check) => `<li>${escapeHtml(check)}</li>`).join("")}
+          <li>release ledger entry</li>
+          <li>source date visible to reviewer</li>
+        </ul>
+      </article>
+      <article class="correction-notice-panel correction-notice-guardrail">
+        <h3>Do not include</h3>
+        <ul class="data-check-list">
+          ${config.doNotInclude.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+  `;
+}
+
+function makeCorrectionNoticeBrief() {
+  const config = correctionNoticeConfig();
+  return [
+    "# NiveshNadi Correction Notice Builder",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Audience: ${correctionNoticeAudienceLabel(config.audience)}`,
+    `Status: ${correctionNoticeStatusLabel(config.status)}`,
+    `Change type: ${config.profile.label}`,
+    `Visibility: ${correctionNoticeVisibilityLabel(config.visibility)}`,
+    `Tone: ${correctionNoticeToneLabel(config.tone)}`,
+    `Owner: ${correctionNoticeOwnerLabel(config.owner)}`,
+    `Notice posture: ${config.posture}`,
+    `Notice readiness: ${config.noticeScore}/100`,
+    `Exposure risk: ${config.exposureRisk}/100`,
+    `Rollback posture: ${config.rollback.posture}`,
+    `Current release gate: ${config.gate.decision}`,
+    "",
+    "## Public Wording Draft",
+    config.publicCopy,
+    "",
+    "## What Changed",
+    config.profile.changed,
+    "",
+    "## What Did Not Change",
+    config.profile.unchanged,
+    "",
+    "## Affected Surfaces",
+    ...config.affectedClaims.map((claim) => `- ${claim}`),
+    "",
+    "## Evidence Checks",
+    ...config.profile.checks.map((check) => `- ${check}`),
+    "- release ledger entry",
+    "- source date visible to reviewer",
+    "",
+    "## Do Not Include",
+    ...config.doNotInclude.map((item) => `- ${item}`),
+    "",
+    "## Privacy boundary",
+    "Correction notices are product-control records only. Exclude PAN, folio, CAS, account credentials, bank data, client identifiers, contact data, and private investor notes.",
+    "",
+    "Research support only. A correction notice is not investment advice, execution approval, distributor approval, tax guidance, or a return guarantee."
+  ].join("\n");
+}
+
+function correctionNoticeSnapshotFromConfig(config = correctionNoticeConfig()) {
+  return {
+    id: `correction-notice-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    createdAt: new Date().toISOString(),
+    release: RELEASE_LABEL,
+    dataVersion: DATA_VERSION,
+    fund: {
+      id: config.fund.id || state.selectedId,
+      name: config.fund.name,
+      category: config.fund.category,
+      risk: config.fund.risk
+    },
+    audience: config.audience,
+    audienceLabel: correctionNoticeAudienceLabel(config.audience),
+    status: config.status,
+    statusLabel: correctionNoticeStatusLabel(config.status),
+    change: config.change,
+    changeLabel: config.profile.label,
+    tone: config.tone,
+    toneLabel: correctionNoticeToneLabel(config.tone),
+    visibility: config.visibility,
+    visibilityLabel: correctionNoticeVisibilityLabel(config.visibility),
+    owner: config.owner,
+    ownerLabel: correctionNoticeOwnerLabel(config.owner),
+    posture: config.posture,
+    noticeScore: config.noticeScore,
+    exposureRisk: config.exposureRisk,
+    publicFacing: config.publicFacing,
+    publicCopy: config.publicCopy,
+    internalNote: config.internalNote,
+    changed: config.profile.changed,
+    unchanged: config.profile.unchanged,
+    affectedClaims: config.affectedClaims.slice(0, 8),
+    evidenceChecks: [...config.profile.checks, "release ledger entry", "source date visible to reviewer"].slice(0, 8),
+    rollback: {
+      posture: config.rollback.posture,
+      urgency: config.rollback.urgency,
+      recoveryScore: config.rollback.recoveryScore
+    },
+    releaseGate: {
+      decision: config.gate.decision,
+      evidenceScore: config.gate.evidenceScore
+    },
+    privacyStatus: "Identity-light correction notice record"
+  };
+}
+
+function loadCorrectionNoticeLedger() {
+  try {
+    const entries = JSON.parse(localStorage.getItem("niveshnadi-correction-notices") || "[]");
+    return Array.isArray(entries) ? entries : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveCorrectionNoticeLedger(entries) {
+  localStorage.setItem("niveshnadi-correction-notices", JSON.stringify(entries));
+}
+
+function saveCurrentCorrectionNotice() {
+  const snapshot = correctionNoticeSnapshotFromConfig();
+  const entries = [snapshot, ...loadCorrectionNoticeLedger()].slice(0, 24);
+  saveCorrectionNoticeLedger(entries);
+  renderCorrectionNoticeLedger();
+  renderTrustCenter();
+  renderActionPlanner();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
+  toast("Correction notice saved locally.");
+}
+
+function clearCorrectionNoticeLedger() {
+  saveCorrectionNoticeLedger([]);
+  renderCorrectionNoticeLedger();
+  renderTrustCenter();
+  renderActionPlanner();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
+  toast("Correction notice ledger cleared.");
+}
+
+function correctionLedgerCounts(entries) {
+  return entries.reduce((counts, entry) => {
+    counts[entry.statusLabel] = (counts[entry.statusLabel] || 0) + 1;
+    return counts;
+  }, {});
+}
+
+function correctionLedgerPosture(entry) {
+  if (!entry) return "No saved correction notices yet";
+  if (entry.status === "verified") return "Verified correction ready for release log";
+  if (entry.status === "reverted") return "Rollback notice preserved";
+  if (entry.status === "corrected") return "Corrected wording saved";
+  return "Investigation notice pending evidence";
+}
+
+function renderCorrectionNoticeLedger() {
+  if (!els.correctionLedgerOutput || !els.correctionLedgerSummary) return;
+  const entries = loadCorrectionNoticeLedger();
+  els.correctionLedgerSummary.textContent = `${entries.length} notice${entries.length === 1 ? "" : "s"}`;
+  if (!entries.length) {
+    const preview = correctionNoticeSnapshotFromConfig();
+    els.correctionLedgerOutput.innerHTML = `
+      <div class="correction-ledger-empty">
+        <div>
+          <span class="metric-label">Current preview</span>
+          <h3>No correction notices saved yet</h3>
+          <p>${escapeHtml(preview.publicCopy)}</p>
+        </div>
+        <button class="text-button" type="button" data-save-correction-preview>Save current notice</button>
+      </div>
+    `;
+    return;
+  }
+  const latest = entries[0];
+  const publicCount = entries.filter((entry) => entry.publicFacing).length;
+  const allUserCount = entries.filter((entry) => entry.visibility === "all-users").length;
+  const averageScore = Math.round(entries.reduce((sum, entry) => sum + Number(entry.noticeScore || 0), 0) / entries.length);
+  const counts = correctionLedgerCounts(entries);
+  const statusChips = Object.entries(counts)
+    .map(([label, count]) => `<span>${escapeHtml(label)}: ${count}</span>`)
+    .join("");
+  els.correctionLedgerOutput.innerHTML = `
+    <div class="correction-ledger-hero">
+      <div>
+        <span class="metric-label">${escapeHtml(latest.audienceLabel)} | ${escapeHtml(latest.visibilityLabel)}</span>
+        <h3>${escapeHtml(latest.posture)}</h3>
+        <p>${escapeHtml(correctionLedgerPosture(latest))} | Saved ${escapeHtml(new Date(latest.createdAt).toLocaleString("en-IN"))} | ${escapeHtml(latest.fund.name)}.</p>
+      </div>
+      <div class="correction-ledger-score" style="--score:${latest.noticeScore}">
+        <b>${latest.noticeScore}</b>
+        <span>Latest</span>
+      </div>
+    </div>
+    <div class="correction-ledger-metric-grid">
+      <article><span>Saved</span><strong>${entries.length}</strong><p>Browser-local correction notices</p></article>
+      <article><span>Avg notice</span><strong>${averageScore}/100</strong><p>Notice readiness across ledger</p></article>
+      <article><span>Public</span><strong>${publicCount}</strong><p>User-visible or fund-page notices</p></article>
+      <article><span>All-user</span><strong>${allUserCount}</strong><p>Broad public visibility notices</p></article>
+    </div>
+    <div class="correction-ledger-grid">
+      <article class="correction-ledger-card">
+        <h3>Latest public wording</h3>
+        <p>${escapeHtml(latest.publicCopy)}</p>
+      </article>
+      <article class="correction-ledger-card">
+        <h3>Status mix</h3>
+        <div class="field-chip-list">${statusChips || "<span>No status mix</span>"}</div>
+      </article>
+      <article class="correction-ledger-card">
+        <h3>Affected surfaces</h3>
+        <div class="correction-ledger-funds">
+          ${latest.affectedClaims.map((claim) => `<span>${escapeHtml(claim)}</span>`).join("") || "<span>No affected surfaces saved</span>"}
+        </div>
+      </article>
+      <article class="correction-ledger-card correction-ledger-guardrail">
+        <h3>Privacy guardrail</h3>
+        <p>Ledger entries are product-control notes only. They must not store PAN, folio, CAS, credentials, bank data, client identifiers, contact data, or private investor notes.</p>
+      </article>
+    </div>
+    <div class="correction-ledger-card-grid">
+      ${entries.slice(0, 6).map((entry) => `
+        <article class="correction-ledger-entry">
+          <span class="metric-label">${escapeHtml(entry.statusLabel)} | ${escapeHtml(entry.changeLabel)}</span>
+          <h3>${escapeHtml(entry.fund.name)}</h3>
+          <p>${escapeHtml(entry.visibilityLabel)} | ${entry.noticeScore}/100 | ${escapeHtml(new Date(entry.createdAt).toLocaleString("en-IN"))}</p>
+          <p>${escapeHtml(entry.publicCopy)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function makeCorrectionNoticeLedgerBrief() {
+  const entries = loadCorrectionNoticeLedger();
+  const preview = correctionNoticeSnapshotFromConfig();
+  const latest = entries[0] || preview;
+  return [
+    "# NiveshNadi Correction Notice Ledger",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Saved notices: ${entries.length}`,
+    `Latest posture: ${latest.posture}`,
+    `Latest fund: ${latest.fund.name}`,
+    `Latest status: ${latest.statusLabel}`,
+    `Latest visibility: ${latest.visibilityLabel}`,
+    `Latest notice readiness: ${latest.noticeScore}/100`,
+    `Latest exposure risk: ${latest.exposureRisk}/100`,
+    "",
+    "## Latest Public Wording",
+    latest.publicCopy,
+    "",
+    "## Saved Notice Trail",
+    ...(entries.length ? entries.slice(0, 10).map((entry) => `- ${new Date(entry.createdAt).toLocaleString("en-IN")}: ${entry.statusLabel}, ${entry.changeLabel}, ${entry.visibilityLabel}, ${entry.noticeScore}/100, ${entry.fund.name}`) : ["- No saved notices yet. This brief uses the current notice preview."]),
+    "",
+    "## Latest Affected Surfaces",
+    ...(latest.affectedClaims.length ? latest.affectedClaims.map((claim) => `- ${claim}`) : ["- No affected surfaces saved."]),
+    "",
+    "## Evidence Checks",
+    ...(latest.evidenceChecks || []).map((check) => `- ${check}`),
+    "",
+    "## Privacy boundary",
+    "Correction Notice Ledger stores browser-local product-control metadata only. Exclude PAN, folio, CAS, account credentials, bank data, client identifiers, contact data, and private investor notes.",
+    "",
+    "Research support only. The ledger is not investment advice, execution approval, distributor workflow approval, tax guidance, or a return guarantee."
+  ].join("\n");
+}
+
+function trustCenterAudienceLabel(value) {
+  return {
+    retail: "Retail investor view",
+    reviewer: "Internal reviewer",
+    launch: "Launch gate",
+    distributor: "Future distributor desk"
+  }[value] || "Retail investor view";
+}
+
+function trustCenterScopeLabel(value) {
+  return {
+    "selected-fund": "Selected fund",
+    "compare-set": "Compare set",
+    "public-claims": "Public claim surfaces",
+    "full-desk": "Full research desk"
+  }[value] || "Selected fund";
+}
+
+function trustCenterModeLabel(value) {
+  return {
+    demo: "Demo research data",
+    "dry-run": "Live-data dry run",
+    candidate: "Launch candidate",
+    hold: "Launch hold"
+  }[value] || "Demo research data";
+}
+
+function trustCenterToleranceLabel(value) {
+  return {
+    strict: "Strict public launch",
+    balanced: "Balanced preview",
+    prototype: "Prototype demo"
+  }[value] || "Strict public launch";
+}
+
+function trustCenterModeScore(value) {
+  return {
+    demo: 62,
+    "dry-run": 76,
+    candidate: 88,
+    hold: 42
+  }[value] || 62;
+}
+
+function trustCenterConfig() {
+  const audience = els.trustCenterAudience?.value || "retail";
+  const scope = els.trustCenterScope?.value || "selected-fund";
+  const mode = els.trustCenterMode?.value || "demo";
+  const tolerance = els.trustCenterTolerance?.value || "strict";
+  const selected = selectedFund();
+  const scopedFunds = scope === "compare-set"
+    ? FUNDS.filter((fund) => state.compare.has(fund.id))
+    : scope === "full-desk"
+      ? FUNDS
+      : [selected];
+  const funds = scopedFunds.length ? scopedFunds : [selected];
+  const gate = claimReleaseConfig();
+  const rollback = claimRollbackConfig();
+  const notice = correctionNoticeConfig();
+  const correctionEntries = loadCorrectionNoticeLedger();
+  const releaseEntries = loadClaimReleaseLedger();
+  const avgEvidence = Math.round(funds.reduce((sum, fund) => sum + evidenceReadinessScore(fund), 0) / funds.length);
+  const avgNadi = Math.round(funds.reduce((sum, fund) => sum + nadiScore(fund), 0) / funds.length);
+  const correctionScore = correctionEntries.length
+    ? Math.round(correctionEntries.reduce((sum, entry) => sum + Number(entry.noticeScore || 0), 0) / correctionEntries.length)
+    : notice.noticeScore;
+  const rollbackControl = Math.round(clampNumber(100 - rollback.urgency * 0.62 + rollback.recoveryScore * 0.32, 18, 96));
+  const privacyScore = Math.round(clampNumber(
+    94 -
+      (scope === "full-desk" ? 8 : 0) -
+      (audience === "distributor" ? 10 : 0) -
+      (correctionEntries.some((entry) => entry.visibility === "all-users") ? 4 : 0),
+    48,
+    96
+  ));
+  const modeScore = trustCenterModeScore(mode);
+  const strictPenalty = tolerance === "strict"
+    ? (avgEvidence < 78 ? 8 : 0) + (gate.decision !== "Release selected claim" ? 8 : 0) + (mode === "demo" ? 10 : 0)
+    : tolerance === "balanced"
+      ? (avgEvidence < 68 ? 5 : 0)
+      : 0;
+  const trustScore = Math.round(clampNumber(
+    avgEvidence * 0.22 +
+      gate.releaseScore * 0.2 +
+      rollbackControl * 0.14 +
+      correctionScore * 0.13 +
+      privacyScore * 0.16 +
+      modeScore * 0.15 -
+      strictPenalty,
+    18,
+    96
+  ));
+  const hardBlocks = [
+    ...(mode === "hold" ? ["data mode is launch hold"] : []),
+    ...(mode === "demo" && tolerance === "strict" ? ["demo data cannot be treated as live launch evidence"] : []),
+    ...(gate.decision === "Keep claims frozen" || gate.decision === "Do not release" ? [`claim release gate says ${gate.decision.toLowerCase()}`] : []),
+    ...(rollback.posture === "Immediate rollback" ? ["rollback console requires immediate action"] : []),
+    ...(privacyScore < 72 ? ["privacy boundary needs tighter role and data controls"] : [])
+  ];
+  const posture = hardBlocks.length
+    ? "Launch hold"
+    : trustScore >= 84 && mode === "candidate"
+      ? "Launch-ready trust pack"
+      : trustScore >= 74
+        ? "Reviewer-ready trust view"
+        : mode === "demo" || tolerance === "prototype"
+          ? "Demo-safe trust view"
+          : "Trust review queue";
+  const tone = posture === "Launch-ready trust pack"
+    ? "ready"
+    : posture === "Launch hold"
+      ? "caution"
+      : "watch";
+  const safeToShow = [
+    `${funds.length} fund${funds.length === 1 ? "" : "s"} in ${trustCenterScopeLabel(scope).toLowerCase()} scope`,
+    `Average evidence readiness ${avgEvidence}/100`,
+    `Claim release gate: ${gate.decision}`,
+    `Correction notice posture: ${notice.posture}`,
+    `Correction ledger entries: ${correctionEntries.length}`
+  ];
+  const blockers = [
+    ...hardBlocks,
+    ...(avgEvidence < 78 ? ["live source dates and citations still need review"] : []),
+    ...(releaseEntries.length === 0 ? ["no saved claim release ledger entry yet"] : []),
+    ...(correctionEntries.length === 0 ? ["no saved correction notice ledger entry yet"] : []),
+    ...(scope === "full-desk" ? ["full-desk view needs source QA across every data pipeline"] : []),
+    ...(audience === "distributor" ? ["future distributor desk must stay separate from Phase 1 retail research"] : [])
+  ];
+  const queue = [
+    "Verify AMFI, AMC factsheet, SID/KIM, portfolio disclosure, benchmark, riskometer, and TER source dates.",
+    "Save release-gate and correction-ledger entries before public claim refresh.",
+    "Keep PAN, folio, CAS, bank, contact, credential, and client data outside Phase 1 trust artifacts.",
+    "Use research-only language until regulatory and distributor workflows are resolved."
+  ];
+  return {
+    audience,
+    avgEvidence,
+    avgNadi,
+    blockers,
+    correctionEntries,
+    correctionScore,
+    funds,
+    gate,
+    mode,
+    modeScore,
+    notice,
+    posture,
+    privacyScore,
+    queue,
+    releaseEntries,
+    rollback,
+    rollbackControl,
+    safeToShow,
+    scope,
+    strictPenalty,
+    tone,
+    tolerance,
+    trustScore
+  };
+}
+
+function renderTrustCenter(event) {
+  if (event) event.preventDefault();
+  if (!els.trustCenterOutput || !els.trustCenterSummary) return;
+  const config = trustCenterConfig();
+  els.trustCenterSummary.textContent = `${config.trustScore}/100 | ${config.posture}`;
+  els.trustCenterOutput.innerHTML = `
+    <div class="trust-center-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(trustCenterAudienceLabel(config.audience))} | ${escapeHtml(trustCenterModeLabel(config.mode))}</span>
+        <h3>${escapeHtml(config.posture)}</h3>
+        <p>${escapeHtml(trustCenterScopeLabel(config.scope))} trust view for ${config.funds.length} fund${config.funds.length === 1 ? "" : "s"}. Average Nadi score ${config.avgNadi}/100.</p>
+      </div>
+      <div class="trust-center-score" style="--score:${config.trustScore}">
+        <b>${config.trustScore}</b>
+        <span>Trust</span>
+      </div>
+    </div>
+    <div class="trust-center-metric-grid">
+      <article><span>Evidence</span><strong>${config.avgEvidence}/100</strong><p>Mapped source readiness</p></article>
+      <article><span>Release</span><strong>${config.gate.releaseScore}/100</strong><p>${escapeHtml(config.gate.decision)}</p></article>
+      <article><span>Recovery</span><strong>${config.rollbackControl}/100</strong><p>${escapeHtml(config.rollback.posture)}</p></article>
+      <article><span>Privacy</span><strong>${config.privacyScore}/100</strong><p>Identity-light boundary</p></article>
+    </div>
+    <div class="trust-center-grid">
+      <article class="trust-center-card">
+        <h3>Safe to show</h3>
+        <ul class="data-check-list">
+          ${config.safeToShow.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="trust-center-card ${escapeHtml(config.tone)}">
+        <h3>Launch blockers</h3>
+        <ul class="data-check-list">
+          ${config.blockers.slice(0, 8).map((item) => `<li>${escapeHtml(item)}</li>`).join("") || "<li>No hard blocker in the current trust view.</li>"}
+        </ul>
+      </article>
+      <article class="trust-center-card">
+        <h3>Audit trail</h3>
+        <p>${config.releaseEntries.length} claim release record${config.releaseEntries.length === 1 ? "" : "s"} and ${config.correctionEntries.length} correction notice record${config.correctionEntries.length === 1 ? "" : "s"} saved locally.</p>
+        <p>Correction readiness ${config.correctionScore}/100 and current notice posture ${escapeHtml(config.notice.posture)}.</p>
+      </article>
+      <article class="trust-center-card trust-center-guardrail">
+        <h3>Privacy boundary</h3>
+        <p>Trust artifacts are product-control records only. They exclude PAN, folio, CAS, credentials, bank data, contact data, client identifiers, and private investor notes.</p>
+      </article>
+    </div>
+    <div class="trust-center-panel">
+      <h3>Next launch queue</h3>
+      <ol class="trust-center-list">
+        ${config.queue.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ol>
+    </div>
+  `;
+}
+
+function makeTrustCenterBrief() {
+  const config = trustCenterConfig();
+  return [
+    "# NiveshNadi Trust Center",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Audience: ${trustCenterAudienceLabel(config.audience)}`,
+    `Scope: ${trustCenterScopeLabel(config.scope)}`,
+    `Data mode: ${trustCenterModeLabel(config.mode)}`,
+    `Tolerance: ${trustCenterToleranceLabel(config.tolerance)}`,
+    `Trust posture: ${config.posture}`,
+    `Trust score: ${config.trustScore}/100`,
+    `Average evidence readiness: ${config.avgEvidence}/100`,
+    `Claim release gate: ${config.gate.decision} (${config.gate.releaseScore}/100)`,
+    `Rollback posture: ${config.rollback.posture}`,
+    `Correction notice posture: ${config.notice.posture}`,
+    `Saved release records: ${config.releaseEntries.length}`,
+    `Saved correction notices: ${config.correctionEntries.length}`,
+    "",
+    "## Safe To Show",
+    ...config.safeToShow.map((item) => `- ${item}`),
+    "",
+    "## Launch Blockers",
+    ...(config.blockers.length ? config.blockers.map((item) => `- ${item}`) : ["- No hard blocker in the current trust view."]),
+    "",
+    "## Next Launch Queue",
+    ...config.queue.map((item) => `- ${item}`),
+    "",
+    "## Privacy boundary",
+    "Trust Center artifacts are product-control records only. Exclude PAN, folio, CAS, account credentials, bank data, client identifiers, contact data, and private investor notes.",
+    "",
+    "Research support only. This trust brief is not investment advice, execution approval, distributor workflow approval, tax guidance, or a return guarantee."
+  ].join("\n");
+}
+
+function actionLaneLabel(value) {
+  return {
+    "start-sip": "Start SIP research",
+    "continue-sip": "Continue SIP review",
+    watch: "Watch before action",
+    stp: "Plan STP research",
+    "switch-review": "Switch review only"
+  }[value] || "Watch before action";
+}
+
+function actionCapitalModeLabel(value) {
+  return {
+    "monthly-sip": "Monthly SIP amount",
+    "stp-transfer": "Monthly STP transfer",
+    "lump-sum": "One-time research amount",
+    "no-money": "No money movement"
+  }[value] || "Monthly SIP amount";
+}
+
+function actionConvictionLabel(value) {
+  return {
+    low: "Low - learning only",
+    medium: "Medium - still testing",
+    high: "High - reason is clear"
+  }[value] || "Medium - still testing";
+}
+
+function actionEvidenceModeLabel(value) {
+  return {
+    demo: "Demo data only",
+    checked: "Checked source dates",
+    fresh: "Fresh cited sources"
+  }[value] || "Demo data only";
+}
+
+function actionScoreValue(value, map, fallback) {
+  return map[value] ?? fallback;
+}
+
+function actionPlannerConfig() {
+  const fund = selectedFund();
+  const lane = els.actionLane?.value || "start-sip";
+  const capitalMode = els.actionCapitalMode?.value || "monthly-sip";
+  const amount = clampNumber(Number(els.actionAmount?.value || 0), 0, 10000000);
+  const conviction = els.actionConviction?.value || "medium";
+  const evidenceMode = els.actionEvidenceMode?.value || "demo";
+  const reviewDate = els.actionReviewDate?.value || "2026-07-31";
+  const reason = (els.actionReason?.value || "").trim();
+  const readiness = readinessConfig();
+  const trust = trustCenterConfig();
+  const compareFunds = FUNDS.filter((item) => state.compare.has(item.id));
+  const compareCount = compareFunds.length;
+  const moneyLane = ["start-sip", "continue-sip", "stp", "switch-review"].includes(lane) && capitalMode !== "no-money";
+  const reasonScore = reason.length >= 80 ? 92 : reason.length >= 35 ? 76 : reason.length >= 12 ? 55 : 30;
+  const convictionScore = actionScoreValue(conviction, { low: 48, medium: 72, high: 88 }, 72);
+  const evidenceModeScore = actionScoreValue(evidenceMode, { demo: 46, checked: 76, fresh: 92 }, 46);
+  const laneRiskPenalty = lane === "switch-review" ? 10 : lane === "stp" ? 6 : lane === "start-sip" ? 4 : 0;
+  const compareBonus = compareCount >= 2 ? 5 : compareCount === 1 ? 2 : 0;
+  const amountSignal = capitalMode === "no-money" ? 6 : amount >= fund.minSip ? 4 : -7;
+  const actionScore = Math.round(clampNumber(
+    nadiScore(fund) * 0.22 +
+      evidenceReadinessScore(fund) * 0.16 +
+      trust.trustScore * 0.18 +
+      readiness.score * 0.14 +
+      convictionScore * 0.1 +
+      evidenceModeScore * 0.12 +
+      reasonScore * 0.08 +
+      compareBonus +
+      amountSignal -
+      laneRiskPenalty,
+    22,
+    96
+  ));
+  const readinessCritical = readiness.criticalMisses.map((item) => item.label);
+  const blockers = [
+    ...(reason.length < 35 ? ["write the research reason in plain words before acting"] : []),
+    ...(moneyLane && amount < fund.minSip ? [`reviewed amount is below the fund minimum SIP of ${formatMoney(fund.minSip)}`] : []),
+    ...(moneyLane && evidenceMode === "demo" ? ["demo data must be replaced with checked or fresh source evidence before any money movement"] : []),
+    ...(trust.posture === "Launch hold" ? ["Trust Center is currently in launch hold posture"] : []),
+    ...(moneyLane ? readinessCritical : []),
+    ...(lane === "switch-review" ? ["switch review needs Cost Reality Lab, tax friction, exit load, and overlap checks"] : []),
+    ...(fund.risk === "Very High" && moneyLane ? ["very high risk fund requires stress scenario and written review trigger"] : [])
+  ];
+  const posture = blockers.length >= 3
+    ? "Research hold"
+    : blockers.length
+      ? "Watch before action"
+      : actionScore >= 84
+        ? "Plan memo ready"
+        : actionScore >= 72
+          ? "Advisor-review ready"
+          : "More research needed";
+  const tone = posture === "Plan memo ready"
+    ? "ready"
+    : posture === "Research hold"
+      ? "caution"
+      : "watch";
+  const todaySteps = [
+    `Confirm the role: ${fund.role}`,
+    `Compare set: ${compareCount ? compareFunds.map((item) => item.name).slice(0, 3).join(", ") : "add at least one peer if comparison matters"}.`,
+    `Decision lane: ${actionLaneLabel(lane)} with ${actionCapitalModeLabel(capitalMode).toLowerCase()}.`,
+    `Write the reason in your own words and keep the amount as a research input until evidence is checked.`
+  ];
+  const beforeMoney = [
+    "Verify latest AMFI scheme details, AMC factsheet, portfolio date, riskometer, TER, SID/KIM, benchmark, and holdings.",
+    "Run Stress Lab, Cost Reality Lab, and Portfolio X-Ray for overlap and drawdown comfort.",
+    "Use Watchlist or Review Rhythm to set the next check before increasing, switching, or continuing allocation.",
+    "Do not store PAN, folio, CAS, bank data, account credentials, client identifiers, or private account notes in Phase 1."
+  ];
+  const reviewTriggers = [
+    `Review date: ${reviewDate || "Not set"}.`,
+    `Re-check if Nadi score drops below ${Math.max(55, nadiScore(fund) - 8)}/100 or evidence readiness falls below 70/100.`,
+    `Re-check if expense, drawdown, manager, style, or portfolio holdings change materially.`,
+    "Re-check if a correction notice, claim rollback, or source drift event touches this fund."
+  ];
+  return {
+    actionScore,
+    amount,
+    beforeMoney,
+    blockers,
+    capitalMode,
+    compareCount,
+    compareFunds,
+    conviction,
+    evidenceMode,
+    fund,
+    lane,
+    moneyLane,
+    posture,
+    readiness,
+    reason,
+    reviewDate,
+    reviewTriggers,
+    todaySteps,
+    tone,
+    trust
+  };
+}
+
+function renderActionPlanner(event) {
+  if (event) event.preventDefault();
+  if (!els.actionPlannerOutput || !els.actionPlannerSummary) return;
+  const config = actionPlannerConfig();
+  els.actionPlannerSummary.textContent = `${config.actionScore}/100 | ${config.posture}`;
+  els.actionPlannerOutput.innerHTML = `
+    <div class="action-planner-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(actionLaneLabel(config.lane))} | ${escapeHtml(actionEvidenceModeLabel(config.evidenceMode))}</span>
+        <h3>${escapeHtml(config.posture)}</h3>
+        <p>${escapeHtml(config.fund.name)} plan for ${escapeHtml(formatMoney(config.amount))}. This is a research workflow, not an instruction to transact.</p>
+      </div>
+      <div class="action-planner-score" style="--score:${config.actionScore}">
+        <b>${config.actionScore}</b>
+        <span>Plan</span>
+      </div>
+    </div>
+    <div class="action-planner-metric-grid">
+      <article><span>Trust</span><strong>${config.trust.trustScore}/100</strong><p>${escapeHtml(config.trust.posture)}</p></article>
+      <article><span>Readiness</span><strong>${config.readiness.score}/100</strong><p>${escapeHtml(config.readiness.posture)}</p></article>
+      <article><span>Evidence</span><strong>${evidenceReadinessScore(config.fund)}/100</strong><p>${escapeHtml(actionEvidenceModeLabel(config.evidenceMode))}</p></article>
+      <article><span>Compare</span><strong>${config.compareCount}</strong><p>Funds selected</p></article>
+    </div>
+    <div class="action-planner-grid">
+      <article class="action-planner-card">
+        <h3>Today</h3>
+        <ol class="action-planner-list">
+          ${config.todaySteps.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ol>
+      </article>
+      <article class="action-planner-card ${escapeHtml(config.tone)}">
+        <h3>Blockers</h3>
+        <ul class="data-check-list">
+          ${config.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("") || "<li>No hard blocker in this research plan.</li>"}
+        </ul>
+      </article>
+      <article class="action-planner-card">
+        <h3>Before money moves</h3>
+        <ul class="data-check-list">
+          ${config.beforeMoney.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="action-planner-card">
+        <h3>Review triggers</h3>
+        <ul class="data-check-list">
+          ${config.reviewTriggers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+    <div class="action-planner-panel">
+      <h3>Decision boundary</h3>
+      <p>${config.reason ? escapeHtml(config.reason) : "Write the reason in the form before treating this as a serious memo."}</p>
+      <p>Nadi Action Planner organizes research discipline only. It does not recommend, approve, execute, guarantee, or replace a SEBI-regulated professional review.</p>
+    </div>
+  `;
+}
+
+function makeActionPlannerBrief() {
+  const config = actionPlannerConfig();
+  return [
+    "# NiveshNadi Action Planner",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${config.fund.name}`,
+    `Action lane: ${actionLaneLabel(config.lane)}`,
+    `Capital mode: ${actionCapitalModeLabel(config.capitalMode)}`,
+    `Amount reviewed: ${formatMoney(config.amount)}`,
+    `Conviction: ${actionConvictionLabel(config.conviction)}`,
+    `Evidence standard: ${actionEvidenceModeLabel(config.evidenceMode)}`,
+    `Review date: ${config.reviewDate || "Not set"}`,
+    `Plan posture: ${config.posture}`,
+    `Plan score: ${config.actionScore}/100`,
+    `Trust posture: ${config.trust.posture} (${config.trust.trustScore}/100)`,
+    `Readiness posture: ${config.readiness.posture} (${config.readiness.score}/100)`,
+    "",
+    "## Today",
+    ...config.todaySteps.map((item) => `- ${item}`),
+    "",
+    "## Blockers",
+    ...(config.blockers.length ? config.blockers.map((item) => `- ${item}`) : ["- No hard blocker in this research plan."]),
+    "",
+    "## Before Money Moves",
+    ...config.beforeMoney.map((item) => `- ${item}`),
+    "",
+    "## Review Triggers",
+    ...config.reviewTriggers.map((item) => `- ${item}`),
+    "",
+    "## Research Reason",
+    config.reason || "Not written yet.",
+    "",
+    "Research support only. This action plan is not investment advice, a recommendation, execution approval, tax guidance, distributor workflow approval, or a return guarantee."
+  ].join("\n");
+}
+
+function briefingFocusLabel(value) {
+  return {
+    today: "Today research brief",
+    "before-sip": "Before SIP decision",
+    portfolio: "Portfolio review brief",
+    switch: "Switch question brief",
+    trust: "Evidence and trust brief"
+  }[value] || "Today research brief";
+}
+
+function briefingAudienceLabel(value) {
+  return {
+    self: "Self research",
+    family: "Family discussion",
+    advisor: "Advisor discussion",
+    distributor: "Future distributor handoff"
+  }[value] || "Self research";
+}
+
+function briefingDepthLabel(value) {
+  return {
+    quick: "5-minute scan",
+    standard: "Standard briefing",
+    deep: "Deep review"
+  }[value] || "Standard briefing";
+}
+
+function briefingPriorityLabel(value) {
+  return {
+    action: "Action discipline first",
+    trust: "Evidence trust first",
+    risk: "Risk and behavior first",
+    portfolio: "Portfolio fit first"
+  }[value] || "Action discipline first";
+}
+
+function briefingPrimaryMove(priority, focus) {
+  if (priority === "trust" || focus === "trust") return "Open Evidence Ledger and Trust Center before trusting any live-looking claim.";
+  if (priority === "risk") return "Run Stress Lab and Behavior Guard before changing SIP, STP, or switch behavior.";
+  if (priority === "portfolio" || focus === "portfolio") return "Open Portfolio X-Ray and Review Room to check overlap, role duplication, and drift.";
+  if (focus === "switch") return "Open Switch Decision Lab and Cost Reality Lab before treating a switch as sensible.";
+  if (focus === "before-sip") return "Open Action Planner and Readiness Gate before converting research into a SIP memo.";
+  return "Open Action Planner, then review the blockers before doing anything else.";
+}
+
+function briefingConfig() {
+  const focus = els.briefingFocus?.value || "today";
+  const audience = els.briefingAudience?.value || "self";
+  const depth = els.briefingDepth?.value || "standard";
+  const priority = els.briefingPriority?.value || "action";
+  const note = (els.briefingNote?.value || "").trim();
+  const fund = selectedFund();
+  const compareFunds = FUNDS.filter((item) => state.compare.has(item.id));
+  const watchlist = loadWatchlist();
+  const alerts = loadAlerts();
+  const fundAlerts = alerts.filter((alert) => alert.fundId === fund.id);
+  const rhythmItems = reviewRhythmItems();
+  const nextRhythm = rhythmItems[0];
+  const trust = trustCenterConfig();
+  const action = actionPlannerConfig();
+  const readiness = readinessConfig();
+  const evidence = evidenceReadinessScore(fund);
+  const watchSignal = Math.min(96, 54 + watchlist.length * 6 + alerts.length * 4 + (nextRhythm ? 8 : 0));
+  const briefingScore = Math.round(clampNumber(
+    action.actionScore * 0.26 +
+      trust.trustScore * 0.22 +
+      readiness.score * 0.16 +
+      evidence * 0.14 +
+      nadiScore(fund) * 0.12 +
+      watchSignal * 0.1 -
+      (audience === "distributor" ? 6 : 0) -
+      (depth === "quick" && action.blockers.length ? 3 : 0),
+    24,
+    96
+  ));
+  const criticalFlags = [
+    ...(trust.posture === "Launch hold" ? ["Trust Center is in launch hold posture."] : []),
+    ...(action.blockers.slice(0, 4)),
+    ...(readiness.criticalMisses.map((item) => item.label)),
+    ...(evidence < 70 ? ["Evidence readiness is below live-use comfort."] : []),
+    ...(audience === "distributor" ? ["Distributor handoff needs separate ARN/EUIN, consent, and regulated workflow design."] : [])
+  ];
+  const posture = criticalFlags.length >= 4
+    ? "Briefing says pause"
+    : criticalFlags.length
+      ? "Briefing says review"
+      : briefingScore >= 84
+        ? "Memo-ready briefing"
+        : briefingScore >= 72
+          ? "Focused research briefing"
+          : "Starter research briefing";
+  const tone = posture === "Memo-ready briefing"
+    ? "ready"
+    : posture === "Briefing says pause"
+      ? "caution"
+      : "watch";
+  const readFirst = [
+    `${fund.name}: ${fund.role}`,
+    `Nadi score ${nadiScore(fund)}/100, evidence ${evidence}/100, risk band ${fund.risk}.`,
+    `Trust posture: ${trust.posture} (${trust.trustScore}/100).`,
+    `Action plan: ${action.posture} (${action.actionScore}/100).`
+  ];
+  const doNext = [
+    briefingPrimaryMove(priority, focus),
+    compareFunds.length
+      ? `Keep compare set visible: ${compareFunds.map((item) => item.name).slice(0, 3).join(", ")}.`
+      : "Add at least one peer before treating this as a shortlist.",
+    nextRhythm
+      ? `Next review rhythm: ${nextRhythm.fund.name} | ${humanReviewDate(nextRhythm.date)} | ${nextRhythm.source}.`
+      : "Set a Watchlist or Review Rhythm trigger before any real-world action.",
+    note || "Write one sentence explaining what would change this view."
+  ];
+  const watchNow = [
+    `${watchlist.length} watched fund${watchlist.length === 1 ? "" : "s"} and ${alerts.length} saved trigger${alerts.length === 1 ? "" : "s"} in this browser.`,
+    fundAlerts.length
+      ? `${fundAlerts.length} trigger${fundAlerts.length === 1 ? "" : "s"} attached to ${fund.name}.`
+      : `No saved trigger attached to ${fund.name}.`,
+    `Review rhythm queue: ${rhythmItems.length} task${rhythmItems.length === 1 ? "" : "s"}.`,
+    `Depth: ${briefingDepthLabel(depth)} for ${briefingAudienceLabel(audience).toLowerCase()}.`
+  ];
+  return {
+    action,
+    alerts,
+    audience,
+    briefingScore,
+    compareFunds,
+    criticalFlags,
+    depth,
+    doNext,
+    evidence,
+    focus,
+    fund,
+    note,
+    posture,
+    priority,
+    readFirst,
+    readiness,
+    rhythmItems,
+    tone,
+    trust,
+    watchlist,
+    watchNow
+  };
+}
+
+function renderResearchBriefing(event) {
+  if (event) event.preventDefault();
+  if (!els.briefingOutput || !els.briefingSummary) return;
+  const config = briefingConfig();
+  els.briefingSummary.textContent = `${config.briefingScore}/100 | ${config.posture}`;
+  els.briefingOutput.innerHTML = `
+    <div class="briefing-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(briefingFocusLabel(config.focus))} | ${escapeHtml(briefingPriorityLabel(config.priority))}</span>
+        <h3>${escapeHtml(config.posture)}</h3>
+        <p>${escapeHtml(config.fund.name)} briefing for ${escapeHtml(briefingAudienceLabel(config.audience).toLowerCase())}. It summarizes research posture; it does not recommend a transaction.</p>
+      </div>
+      <div class="briefing-score" style="--score:${config.briefingScore}">
+        <b>${config.briefingScore}</b>
+        <span>Brief</span>
+      </div>
+    </div>
+    <div class="briefing-metric-grid">
+      <article><span>Action</span><strong>${config.action.actionScore}/100</strong><p>${escapeHtml(config.action.posture)}</p></article>
+      <article><span>Trust</span><strong>${config.trust.trustScore}/100</strong><p>${escapeHtml(config.trust.posture)}</p></article>
+      <article><span>Evidence</span><strong>${config.evidence}/100</strong><p>Selected fund readiness</p></article>
+      <article><span>Rhythm</span><strong>${config.rhythmItems.length}</strong><p>Review tasks</p></article>
+    </div>
+    <div class="briefing-grid">
+      <article class="briefing-card">
+        <h3>Read first</h3>
+        <ul class="data-check-list">${config.readFirst.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article class="briefing-card ${escapeHtml(config.tone)}">
+        <h3>Do next</h3>
+        <ol class="briefing-list">${config.doNext.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol>
+      </article>
+      <article class="briefing-card">
+        <h3>Watch now</h3>
+        <ul class="data-check-list">${config.watchNow.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article class="briefing-card">
+        <h3>Pause flags</h3>
+        <ul class="data-check-list">
+          ${config.criticalFlags.length ? config.criticalFlags.slice(0, 7).map((item) => `<li>${escapeHtml(item)}</li>`).join("") : "<li>No hard pause flag in the current briefing.</li>"}
+        </ul>
+      </article>
+    </div>
+    <div class="briefing-panel">
+      <h3>Boundary</h3>
+      <p>Use this briefing to decide what to research next, not whether to buy, sell, switch, or continue. Verify live source dates, costs, riskometer, portfolio disclosure, and written reason before any real-world decision.</p>
+    </div>
+  `;
+}
+
+function makeResearchBriefingNote() {
+  const config = briefingConfig();
+  return [
+    "# NiveshNadi Research Briefing",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${config.fund.name}`,
+    `Focus: ${briefingFocusLabel(config.focus)}`,
+    `Audience: ${briefingAudienceLabel(config.audience)}`,
+    `Depth: ${briefingDepthLabel(config.depth)}`,
+    `Priority: ${briefingPriorityLabel(config.priority)}`,
+    `Briefing posture: ${config.posture}`,
+    `Briefing score: ${config.briefingScore}/100`,
+    `Action posture: ${config.action.posture} (${config.action.actionScore}/100)`,
+    `Trust posture: ${config.trust.posture} (${config.trust.trustScore}/100)`,
+    `Evidence readiness: ${config.evidence}/100`,
+    "",
+    "## Read First",
+    ...config.readFirst.map((item) => `- ${item}`),
+    "",
+    "## Do Next",
+    ...config.doNext.map((item) => `- ${item}`),
+    "",
+    "## Watch Now",
+    ...config.watchNow.map((item) => `- ${item}`),
+    "",
+    "## Pause Flags",
+    ...(config.criticalFlags.length ? config.criticalFlags.map((item) => `- ${item}`) : ["- No hard pause flag in the current briefing."]),
+    "",
+    "Research support only. This briefing is not investment advice, a recommendation, execution approval, distributor workflow approval, tax guidance, or a return guarantee."
+  ].join("\n");
+}
+
+function briefingSnapshotFromConfig(config = briefingConfig()) {
+  return {
+    id: `briefing-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    createdAt: new Date().toISOString(),
+    release: RELEASE_LABEL,
+    dataVersion: DATA_VERSION,
+    focus: config.focus,
+    focusLabel: briefingFocusLabel(config.focus),
+    audience: config.audience,
+    audienceLabel: briefingAudienceLabel(config.audience),
+    depth: config.depth,
+    depthLabel: briefingDepthLabel(config.depth),
+    priority: config.priority,
+    priorityLabel: briefingPriorityLabel(config.priority),
+    briefingScore: config.briefingScore,
+    posture: config.posture,
+    tone: config.tone,
+    fund: {
+      id: config.fund.id,
+      name: config.fund.name,
+      category: config.fund.category,
+      risk: config.fund.risk,
+      expense: Number(config.fund.expense.toFixed(2))
+    },
+    metrics: {
+      action: config.action.actionScore,
+      trust: config.trust.trustScore,
+      readiness: config.readiness.score,
+      evidence: config.evidence,
+      compareCount: config.compareFunds.length,
+      watchCount: config.watchlist.length,
+      alertCount: config.alerts.length,
+      rhythmCount: config.rhythmItems.length,
+      pauseFlags: config.criticalFlags.length
+    },
+    doNext: config.doNext.slice(0, 4),
+    pauseFlags: config.criticalFlags.slice(0, 8),
+    noteStatus: config.note ? "Briefing note present; note body not saved in vault" : "No optional briefing note",
+    boundary: "Research briefing metadata only; excludes PAN, folio, CAS, credentials, bank data, account details, contact data, advice, approval, and guarantees."
+  };
+}
+
+function saveCurrentBriefingSnapshot() {
+  const snapshot = briefingSnapshotFromConfig();
+  const entries = [snapshot, ...loadBriefingVault()].slice(0, 24);
+  saveBriefingVault(entries);
+  renderBriefingVault();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
+  toast("Research briefing saved locally.");
+}
+
+function clearBriefingVault() {
+  saveBriefingVault([]);
+  renderBriefingVault();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
+  toast("Briefing vault cleared.");
+}
+
+function renderBriefingVault() {
+  if (!els.briefingVaultOutput || !els.briefingVaultSummary) return;
+  const entries = loadBriefingVault();
+  const current = briefingSnapshotFromConfig();
+  const latest = entries[0] || null;
+  const prior = entries[1] || null;
+  const scoreDelta = latest ? reviewVaultDelta(latest.briefingScore, prior?.briefingScore) : "New";
+  const trustDelta = latest ? reviewVaultDelta(latest.metrics.trust, prior?.metrics.trust) : "New";
+  const actionDelta = latest ? reviewVaultDelta(latest.metrics.action, prior?.metrics.action) : "New";
+  const pauseDelta = latest ? reviewVaultDelta(latest.metrics.pauseFlags, prior?.metrics.pauseFlags) : "New";
+  els.briefingVaultSummary.textContent = `${entries.length} briefing${entries.length === 1 ? "" : "s"}`;
+
+  if (!entries.length) {
+    els.briefingVaultOutput.innerHTML = `
+      <div class="briefing-vault-empty">
+        <div>
+          <span class="metric-label">Current briefing preview</span>
+          <h3>${current.briefingScore}/100 ${escapeHtml(current.posture)}</h3>
+          <p>Save the current Research Briefing to begin a browser-local briefing memory. The vault stores fund name, posture, scores, next actions, and pause flag counts only; it does not store PAN, folio, CAS, credentials, account data, or private notes.</p>
+        </div>
+        <div class="briefing-vault-score" style="--score:${current.briefingScore}">
+          <b>${current.briefingScore}</b>
+          <span>Now</span>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const postureCounts = entries.reduce((counts, entry) => {
+    counts[entry.posture] = (counts[entry.posture] || 0) + 1;
+    return counts;
+  }, {});
+  const flagged = entries.filter((entry) => entry.metrics.pauseFlags > 0).length;
+  els.briefingVaultOutput.innerHTML = `
+    <div class="briefing-vault-hero ${escapeHtml(latest.tone)}">
+      <div>
+        <span class="metric-label">Latest saved briefing</span>
+        <h3>${latest.briefingScore}/100 ${escapeHtml(latest.posture)}</h3>
+        <p>${escapeHtml(latest.fund.name)} | ${escapeHtml(latest.focusLabel)} | Saved ${new Date(latest.createdAt).toLocaleString("en-IN")} | ${escapeHtml(latest.priorityLabel)}.</p>
+      </div>
+      <div class="briefing-vault-score" style="--score:${latest.briefingScore}">
+        <b>${latest.briefingScore}</b>
+        <span>Vault</span>
+      </div>
+    </div>
+    <div class="briefing-vault-metric-grid">
+      <div><span>Briefing delta</span><strong>${escapeHtml(scoreDelta)}</strong></div>
+      <div><span>Trust delta</span><strong>${escapeHtml(trustDelta)}</strong></div>
+      <div><span>Action delta</span><strong>${escapeHtml(actionDelta)}</strong></div>
+      <div><span>Pause flag delta</span><strong>${escapeHtml(pauseDelta)}</strong></div>
+      <div><span>Flagged briefings</span><strong>${flagged}</strong></div>
+      <div><span>Postures</span><strong>${Object.keys(postureCounts).length}</strong></div>
+    </div>
+    <div class="briefing-vault-grid">
+      ${entries.slice(0, 8).map((entry, index) => {
+        const previous = entries[index + 1] || null;
+        return `
+          <article class="briefing-vault-card">
+            <div class="briefing-vault-card-head">
+              <span>${escapeHtml(entry.focusLabel)}</span>
+              <strong>${entry.briefingScore}/100</strong>
+            </div>
+            <p>${escapeHtml(entry.fund.name)} | ${escapeHtml(entry.fund.category)} | ${escapeHtml(entry.fund.risk)} risk</p>
+            <div class="briefing-vault-mini-grid">
+              <div><span>Trust</span><b>${entry.metrics.trust}/100</b></div>
+              <div><span>Action</span><b>${entry.metrics.action}/100</b></div>
+              <div><span>Flags</span><b>${entry.metrics.pauseFlags}</b></div>
+            </div>
+            <small>Score ${escapeHtml(reviewVaultDelta(entry.briefingScore, previous?.briefingScore))} from prior briefing | ${escapeHtml(entry.noteStatus)}</small>
+          </article>
+        `;
+      }).join("")}
+    </div>
+    <div class="briefing-vault-card-grid">
+      <article class="briefing-vault-panel">
+        <h3>Latest next actions</h3>
+        <ol class="briefing-vault-list">
+          ${latest.doNext.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ol>
+      </article>
+      <article class="briefing-vault-panel">
+        <h3>Pause flag mix</h3>
+        <div class="briefing-vault-funds">
+          ${latest.pauseFlags.length ? latest.pauseFlags.map((item) => `<span>${escapeHtml(item)}</span>`).join("") : "<span>No pause flag in latest briefing.</span>"}
+        </div>
+      </article>
+      <article class="briefing-vault-panel briefing-vault-guardrail">
+        <h3>Vault boundary</h3>
+        <p>Briefing Vault stores browser-local research metadata only. It excludes PAN, folio, CAS, credentials, bank data, contact data, client identifiers, private notes, advice, approval, and guarantees.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeBriefingVaultBrief() {
+  const entries = loadBriefingVault();
+  const latest = entries[0];
+  const prior = entries[1];
+  if (!latest) {
+    return [
+      "# NiveshNadi Briefing Vault",
+      `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+      "No saved briefing snapshots yet.",
+      "",
+      "Save a Research Briefing snapshot to begin a browser-local research memory. Do not store PAN, folio, CAS, credentials, bank data, client identifiers, or private notes."
+    ].join("\n");
+  }
+  return [
+    "# NiveshNadi Briefing Vault",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Saved briefings: ${entries.length}`,
+    `Latest fund: ${latest.fund.name}`,
+    `Latest focus: ${latest.focusLabel}`,
+    `Latest posture: ${latest.posture}`,
+    `Briefing score: ${latest.briefingScore}/100`,
+    `Score delta: ${reviewVaultDelta(latest.briefingScore, prior?.briefingScore)}`,
+    `Trust delta: ${reviewVaultDelta(latest.metrics.trust, prior?.metrics.trust)}`,
+    `Action delta: ${reviewVaultDelta(latest.metrics.action, prior?.metrics.action)}`,
+    `Pause flags: ${latest.metrics.pauseFlags}`,
+    "",
+    "## Latest Next Actions",
+    ...latest.doNext.map((item) => `- ${item}`),
+    "",
+    "## Latest Pause Flags",
+    ...(latest.pauseFlags.length ? latest.pauseFlags.map((item) => `- ${item}`) : ["- No pause flag in latest briefing."]),
+    "",
+    "## Recent Briefings",
+    ...entries.slice(0, 8).map((entry) => `- ${new Date(entry.createdAt).toLocaleDateString("en-IN")}: ${entry.fund.name} | ${entry.posture} | ${entry.briefingScore}/100 | ${entry.focusLabel}`),
+    "",
+    "Briefing Vault stores browser-local research metadata only. It is not investment advice, a recommendation, execution approval, distributor workflow approval, tax guidance, or a return guarantee."
+  ].join("\n");
+}
+
+function researchMemoryDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Not dated";
+  return date.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+}
+
+function researchMemoryShortDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Not dated";
+  return date.toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
+}
+
+function researchMemoryTone(score) {
+  if (score >= 76) return "ready";
+  if (score >= 56) return "watch";
+  return "caution";
+}
+
+function researchMemoryPosture(score) {
+  if (score >= 76) return "Memory trail forming";
+  if (score >= 56) return "Memory trail started";
+  return "Start memory trail";
+}
+
+function researchMemoryTimeline() {
+  const timeline = [];
+  const add = (entry) => {
+    const score = clampNumber(Number(entry.score) || 0, 0, 100);
+    timeline.push({
+      ...entry,
+      createdAt: entry.createdAt || new Date().toISOString(),
+      score
+    });
+  };
+
+  loadBriefingVault().forEach((entry) => add({
+    type: "Briefing",
+    tone: entry.tone || researchMemoryTone(entry.briefingScore),
+    createdAt: entry.createdAt,
+    title: entry.fund?.name || "Research briefing",
+    meta: `${entry.posture || "Saved briefing"} | ${entry.briefingScore || 0}/100`,
+    detail: `${entry.focusLabel || "Briefing"} | Trust ${entry.metrics?.trust || 0}/100 | Action ${entry.metrics?.action || 0}/100 | Flags ${entry.metrics?.pauseFlags || 0}`,
+    score: entry.briefingScore,
+    next: entry.doNext?.[0] || "Review latest briefing actions."
+  }));
+
+  loadReviewVault().forEach((entry) => add({
+    type: "Review",
+    tone: researchMemoryTone(entry.score),
+    createdAt: entry.createdAt,
+    title: entry.funds?.[0]?.name || "Portfolio review",
+    meta: `${entry.posture || "Saved review"} | ${entry.score || 0}/100`,
+    detail: `${entry.funds?.length || 0} fund${entry.funds?.length === 1 ? "" : "s"} | Evidence ${entry.metrics?.evidence || 0}/100 | Drift ${entry.metrics?.drift || 0}% | Queue ${entry.metrics?.queue || 0}`,
+    score: entry.score,
+    next: entry.queue?.[0] || "Open Review Vault before making portfolio changes."
+  }));
+
+  loadReceiptVault().forEach((entry) => add({
+    type: "Receipt",
+    tone: entry.tone || researchMemoryTone(entry.receiptScore),
+    createdAt: entry.createdAt,
+    title: entry.fund?.name || "Research receipt",
+    meta: `${entry.decisionLabel || "Saved receipt"} | ${entry.receiptScore || 0}/100`,
+    detail: `${entry.modeLabel || "Receipt"} | Evidence ${entry.metrics?.evidence || 0}/100 | Claims ${entry.metrics?.claimFlags || 0} | Watch ${entry.metrics?.watchCount || 0}`,
+    score: entry.receiptScore,
+    next: entry.nextChecks?.[0] || "Keep proof checks current before action."
+  }));
+
+  loadResearchDossiers().forEach((entry) => add({
+    type: "Dossier",
+    tone: researchMemoryTone(entry.readiness),
+    createdAt: entry.createdAt,
+    title: entry.label || entry.primary?.name || "Research dossier",
+    meta: `${entry.depthLabel || "Dossier"} | ${entry.readiness || 0}/100`,
+    detail: `${entry.primary?.name || "Selected fund"} | Evidence ${entry.metrics?.evidence || 0}/100 | Compare ${entry.metrics?.compareCount || 0} | Vault ${entry.metrics?.vaultCount || 0}`,
+    score: entry.readiness,
+    next: entry.reviewQueue?.[0] || "Use dossier as a research packet, not an approval."
+  }));
+
+  loadInvestorRecords().forEach((entry) => add({
+    type: "Record",
+    tone: researchMemoryTone(entry.recordScore),
+    createdAt: entry.createdAt,
+    title: entry.recordCode || "Investor review record",
+    meta: `${entry.stanceLabel || "Record"} | ${entry.recordScore || 0}/100`,
+    detail: `${entry.audienceLabel || "Self review"} | ${entry.funds?.length || 0} fund${entry.funds?.length === 1 ? "" : "s"} | ${entry.noteStatus || "No private note stored"}`,
+    score: entry.recordScore,
+    next: entry.gates?.[0] || "Keep records identity-light."
+  }));
+
+  loadClaimReleaseLedger().forEach((entry) => add({
+    type: "Claim gate",
+    tone: entry.tone || researchMemoryTone(entry.score),
+    createdAt: entry.createdAt,
+    title: entry.fund?.name || "Claim release",
+    meta: `${entry.decision || "Claim gate"} | ${entry.score || 0}/100`,
+    detail: `${entry.surfaceLabel || "Surface"} | Evidence ${entry.metrics?.evidence || 0}/100 | Source ${entry.source?.readiness || 0}/100 | Flags ${entry.flags?.length || 0}`,
+    score: entry.score,
+    next: entry.nextStep || "Keep public claims behind source and rollback gates."
+  }));
+
+  loadWatchlist().forEach((entry) => {
+    const fund = FUNDS.find((item) => item.id === entry.fundId) || selectedFund();
+    add({
+      type: "Watchlist",
+      tone: "watch",
+      createdAt: entry.createdAt,
+      title: fund.name,
+      meta: `${fund.category} | ${fund.risk} risk`,
+      detail: `Watchlist fund | Nadi score ${nadiScore(fund)}/100 | Evidence ${evidenceReadinessScore(fund)}/100`,
+      score: nadiScore(fund),
+      next: "Open Watchlist and confirm trigger discipline."
+    });
+  });
+
+  loadAlerts().forEach((entry) => {
+    const fund = FUNDS.find((item) => item.id === entry.fundId) || selectedFund();
+    add({
+      type: "Alert",
+      tone: "caution",
+      createdAt: entry.createdAt,
+      title: fund.name,
+      meta: `${entry.trigger || "review"} trigger | ${entry.limit || "No limit"}`,
+      detail: entry.note ? "Alert note present; note body not copied into memory." : "Alert saved without private note.",
+      score: Math.max(35, nadiScore(fund) - 12),
+      next: "Check alert before adding, switching, or increasing exposure."
+    });
+  });
+
+  loadJournal().forEach((entry) => add({
+    type: "Journal",
+    tone: "watch",
+    createdAt: entry.createdAt,
+    title: entry.fund || "Decision journal",
+    meta: entry.decision || "Journal entry",
+    detail: entry.reason ? "Written reason present; reason text is not copied into memory." : "No written reason captured.",
+    score: entry.reason ? 62 : 46,
+    next: "Review journal reason before treating the decision as ready."
+  }));
+
+  return timeline
+    .filter((entry) => entry.createdAt)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 40);
+}
+
+function researchMemoryConfig() {
+  const fund = selectedFund();
+  const compareFunds = compareSet();
+  const briefingVault = loadBriefingVault();
+  const reviewVault = loadReviewVault();
+  const receiptVault = loadReceiptVault();
+  const dossiers = loadResearchDossiers();
+  const investorRecords = loadInvestorRecords();
+  const claimLedger = loadClaimReleaseLedger();
+  const watchlist = loadWatchlist();
+  const alerts = loadAlerts();
+  const journal = loadJournal();
+  const timeline = researchMemoryTimeline();
+  const artifactCount = briefingVault.length + reviewVault.length + receiptVault.length + dossiers.length + investorRecords.length + claimLedger.length + journal.length;
+  const evidence = evidenceReadinessScore(fund);
+  const memoryScore = clampNumber(Math.round(
+    28 +
+    Math.min(artifactCount * 5, 32) +
+    Math.min(watchlist.length * 3, 9) +
+    Math.min(compareFunds.length * 3, 9) +
+    Math.round(evidence / 4) -
+    Math.min(alerts.length * 2, 12)
+  ), 0, 100);
+  const gaps = [
+    briefingVault.length ? null : "Save at least one Research Briefing snapshot.",
+    receiptVault.length ? null : "Save one Research Receipt after proof checks.",
+    reviewVault.length ? null : "Save a Portfolio Review snapshot before major changes.",
+    dossiers.length ? null : "Build one Research Dossier for the selected fund.",
+    watchlist.length ? null : "Add selected or compared funds to the Watchlist.",
+    evidence >= 76 ? null : "Refresh Evidence Ledger and citation path before live reliance.",
+    alerts.length <= 3 ? null : "Review active alerts before new action."
+  ].filter(Boolean);
+  const coverage = [
+    { label: "Briefings", count: briefingVault.length },
+    { label: "Reviews", count: reviewVault.length },
+    { label: "Receipts", count: receiptVault.length },
+    { label: "Dossiers", count: dossiers.length },
+    { label: "Records", count: investorRecords.length },
+    { label: "Claim gates", count: claimLedger.length }
+  ];
+  return {
+    fund,
+    compareFunds,
+    evidence,
+    watchlist,
+    alerts,
+    journal,
+    timeline,
+    artifactCount,
+    coverage,
+    gaps,
+    memoryScore,
+    tone: researchMemoryTone(memoryScore),
+    posture: researchMemoryPosture(memoryScore),
+    latest: timeline[0] || null
+  };
+}
+
+function renderResearchMemory() {
+  if (!els.researchMemoryOutput || !els.researchMemorySummary) return;
+  const config = researchMemoryConfig();
+  const latest = config.latest;
+  els.researchMemorySummary.textContent = `${config.artifactCount} artifact${config.artifactCount === 1 ? "" : "s"} | ${config.timeline.length} events`;
+
+  const latestTitle = latest ? `${escapeHtml(latest.type)}: ${escapeHtml(latest.title)}` : `Current fund: ${escapeHtml(config.fund.name)}`;
+  const latestDetail = latest
+    ? `${escapeHtml(latest.meta)} | ${researchMemoryDate(latest.createdAt)}`
+    : `${escapeHtml(config.fund.category)} | ${escapeHtml(config.fund.risk)} risk | Evidence ${config.evidence}/100`;
+
+  els.researchMemoryOutput.innerHTML = `
+    <div class="research-memory-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${latest ? "Latest memory event" : "Memory starting point"}</span>
+        <h3>${latestTitle}</h3>
+        <p>${latestDetail}</p>
+      </div>
+      <div class="research-memory-score" style="--score:${config.memoryScore}">
+        <b>${config.memoryScore}</b>
+        <span>Memory</span>
+      </div>
+    </div>
+    <div class="research-memory-metric-grid">
+      <article><span>Memory posture</span><strong>${escapeHtml(config.posture)}</strong></article>
+      <article><span>Artifacts</span><strong>${config.artifactCount}</strong></article>
+      <article><span>Watchlist</span><strong>${config.watchlist.length}</strong></article>
+      <article><span>Alerts</span><strong>${config.alerts.length}</strong></article>
+      <article><span>Compare set</span><strong>${config.compareFunds.length}</strong></article>
+      <article><span>Evidence</span><strong>${config.evidence}/100</strong></article>
+    </div>
+    <div class="research-memory-grid">
+      <article class="research-memory-panel">
+        <h3>Memory coverage</h3>
+        <div class="research-memory-coverage">
+          ${config.coverage.map((item) => `<span><b>${item.count}</b>${escapeHtml(item.label)}</span>`).join("")}
+        </div>
+      </article>
+      <article class="research-memory-panel">
+        <h3>Next memory moves</h3>
+        <ol class="research-memory-list">
+          ${(config.gaps.length ? config.gaps.slice(0, 5) : ["Memory coverage is broad enough for the next research review."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ol>
+      </article>
+      <article class="research-memory-panel research-memory-guardrail">
+        <h3>Privacy boundary</h3>
+        <p>Research Memory reads browser-local metadata only. It does not copy PAN, folio, CAS, credentials, bank data, contact details, client identifiers, private note bodies, advice, approval, or guarantees.</p>
+      </article>
+    </div>
+    <div class="research-memory-timeline">
+      ${(config.timeline.length ? config.timeline.slice(0, 10) : [{
+        type: "Start",
+        tone: "watch",
+        createdAt: new Date().toISOString(),
+        title: config.fund.name,
+        meta: `${config.fund.category} | Nadi score ${nadiScore(config.fund)}/100`,
+        detail: "Save a briefing, receipt, review, or dossier to create the first durable memory point.",
+        score: nadiScore(config.fund),
+        next: "Open Research Briefing and save the first snapshot."
+      }]).map((entry) => `
+        <article class="research-memory-event ${escapeHtml(entry.tone || "watch")}">
+          <div class="research-memory-event-date">
+            <span>${escapeHtml(researchMemoryShortDate(entry.createdAt))}</span>
+            <b>${escapeHtml(entry.type)}</b>
+          </div>
+          <div>
+            <h3>${escapeHtml(entry.title)}</h3>
+            <p>${escapeHtml(entry.meta)}</p>
+            <small>${escapeHtml(entry.detail)}</small>
+          </div>
+          <div class="research-memory-event-score">${entry.score}</div>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function makeResearchMemoryBrief() {
+  const config = researchMemoryConfig();
+  return [
+    "# NiveshNadi Research Memory",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Selected fund: ${config.fund.name}`,
+    `Memory posture: ${config.posture}`,
+    `Memory score: ${config.memoryScore}/100`,
+    `Saved artifacts: ${config.artifactCount}`,
+    `Timeline events: ${config.timeline.length}`,
+    `Watchlist funds: ${config.watchlist.length}`,
+    `Active alerts: ${config.alerts.length}`,
+    `Evidence readiness: ${config.evidence}/100`,
+    "",
+    "## Coverage",
+    ...config.coverage.map((item) => `- ${item.label}: ${item.count}`),
+    "",
+    "## Next Memory Moves",
+    ...(config.gaps.length ? config.gaps.slice(0, 7).map((item) => `- ${item}`) : ["- Memory coverage is broad enough for the next research review."]),
+    "",
+    "## Recent Memory Events",
+    ...(config.timeline.length ? config.timeline.slice(0, 10).map((entry) => `- ${researchMemoryDate(entry.createdAt)} | ${entry.type} | ${entry.title} | ${entry.meta}`) : ["- No saved memory events yet."]),
+    "",
+    "Research Memory is browser-local metadata only. It excludes PAN, folio, CAS, credentials, bank data, contact details, client identifiers, free-form private note bodies, personalized advice, execution approval, tax guidance, and return guarantees."
+  ].join("\n");
+}
+
+const PRIVACY_STORES = [
+  {
+    id: "starter",
+    key: "niveshnadi-starter-guide",
+    label: "First 5-Minute Start",
+    purpose: "Progress ticks for the first-session checklist.",
+    fields: "Checklist status only",
+    sensitivity: "Low"
+  },
+  {
+    id: "watchlist",
+    key: "niveshnadi-watchlist",
+    label: "Watchlist",
+    purpose: "Saved fund IDs and created dates for research follow-up.",
+    fields: "Fund ID, timestamp",
+    sensitivity: "Low"
+  },
+  {
+    id: "alerts",
+    key: "niveshnadi-alerts",
+    label: "Alerts",
+    purpose: "Review, expense, drawdown, score, and style triggers.",
+    fields: "Fund ID, trigger, limit, optional note",
+    sensitivity: "Free text possible",
+    freeText: true
+  },
+  {
+    id: "briefing-vault",
+    key: "niveshnadi-briefing-vault",
+    label: "Briefing Vault",
+    purpose: "Saved briefing metadata and pause flags.",
+    fields: "Fund name, scores, posture, next actions",
+    sensitivity: "Metadata"
+  },
+  {
+    id: "review-vault",
+    key: "niveshnadi-review-vault",
+    label: "Review Vault",
+    purpose: "Portfolio review snapshots and queue posture.",
+    fields: "Fund names, review score, evidence, drift",
+    sensitivity: "Metadata"
+  },
+  {
+    id: "receipt-vault",
+    key: "niveshnadi-receipt-vault",
+    label: "Receipt Vault",
+    purpose: "Proof-of-research receipt metadata.",
+    fields: "Fund name, proof score, claim flags",
+    sensitivity: "Metadata"
+  },
+  {
+    id: "journal",
+    key: "niveshnadi-journal",
+    label: "Decision Journal",
+    purpose: "Browser-local decision notes written by the user.",
+    fields: "Fund, decision, written reason",
+    sensitivity: "Free text",
+    freeText: true
+  },
+  {
+    id: "investor-records",
+    key: "niveshnadi-investor-records",
+    label: "Investor Records",
+    purpose: "Identity-light review records for self discipline.",
+    fields: "Record code, stance, audience, fund names",
+    sensitivity: "Metadata"
+  },
+  {
+    id: "research-dossiers",
+    key: "niveshnadi-research-dossiers",
+    label: "Research Dossiers",
+    purpose: "Saved research packet metadata.",
+    fields: "Dossier label, funds, scores, review queue",
+    sensitivity: "Label text possible",
+    freeText: true
+  },
+  {
+    id: "claim-ledger",
+    key: "niveshnadi-claim-release-ledger",
+    label: "Claim Release Ledger",
+    purpose: "Saved product-claim release gate decisions.",
+    fields: "Claim surface, source family, flags, score",
+    sensitivity: "Metadata"
+  },
+  {
+    id: "correction-ledger",
+    key: "niveshnadi-correction-notices",
+    label: "Correction Notices",
+    purpose: "Saved correction notice drafts and status metadata.",
+    fields: "Affected surface, status, drafted language",
+    sensitivity: "Free text possible",
+    freeText: true
+  }
+];
+
+const PRIVACY_NEVER_STORED = [
+  "PAN, folio, CAS, demat, bank, UPI, or card details",
+  "ARN, EUIN, distributor client records, or account credentials",
+  "Phone, email, address, nominee, family identity, or uploaded documents",
+  "Execution instructions, personalized advice, tax advice, approval, or return guarantee"
+];
+
+function privacyParseStore(definition) {
+  const raw = localStorage.getItem(definition.key);
+  if (!raw) return { definition, raw: "", value: null, count: 0, bytes: 0, present: false };
+  let value = raw;
+  try {
+    value = JSON.parse(raw);
+  } catch {
+    value = raw;
+  }
+  const count = Array.isArray(value)
+    ? value.length
+    : value && typeof value === "object"
+      ? Object.keys(value).length
+      : raw ? 1 : 0;
+  return {
+    definition,
+    raw,
+    value,
+    count,
+    bytes: raw.length,
+    present: true
+  };
+}
+
+function privacyFormatBytes(value) {
+  if (value < 1024) return `${value} B`;
+  return `${(value / 1024).toFixed(1)} KB`;
+}
+
+function privacyControlConfig() {
+  const stores = PRIVACY_STORES.map(privacyParseStore);
+  const activeStores = stores.filter((store) => store.present);
+  const totalRecords = stores.reduce((sum, store) => sum + store.count, 0);
+  const totalBytes = stores.reduce((sum, store) => sum + store.bytes, 0);
+  const freeTextStores = stores.filter((store) => store.present && store.definition.freeText);
+  const privacyScore = clampNumber(Math.round(
+    92 -
+    Math.min(freeTextStores.length * 7, 28) -
+    Math.min(activeStores.length * 1.5, 12) +
+    (totalRecords ? 0 : 4)
+  ), 45, 98);
+  const posture = freeTextStores.length
+    ? "Review free-text buckets"
+    : activeStores.length
+      ? "Local metadata only"
+      : "Clean local slate";
+  const tone = freeTextStores.length ? "watch" : "ready";
+  return {
+    stores,
+    activeStores,
+    totalRecords,
+    totalBytes,
+    freeTextStores,
+    privacyScore,
+    posture,
+    tone
+  };
+}
+
+function clearPrivacyStore(key) {
+  const definition = PRIVACY_STORES.find((item) => item.key === key);
+  if (!definition) return;
+  localStorage.removeItem(key);
+  renderAll();
+  toast(`${definition.label} cleared locally.`);
+}
+
+function clearAllPrivacyStores() {
+  const ok = window.confirm("Clear all NiveshNadi browser-local research data on this device?");
+  if (!ok) return;
+  PRIVACY_STORES.forEach((definition) => localStorage.removeItem(definition.key));
+  renderAll();
+  toast("All NiveshNadi local research data cleared.");
+}
+
+function renderPrivacyControlRoom() {
+  if (!els.privacyControlOutput || !els.privacyControlSummary) return;
+  const config = privacyControlConfig();
+  els.privacyControlSummary.textContent = `${config.activeStores.length} active store${config.activeStores.length === 1 ? "" : "s"} | ${config.totalRecords} record${config.totalRecords === 1 ? "" : "s"}`;
+
+  els.privacyControlOutput.innerHTML = `
+    <div class="privacy-control-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">Browser-local storage posture</span>
+        <h3>${escapeHtml(config.posture)}</h3>
+        <p>NiveshNadi stores research workflow data only in this browser. Use this room to inspect local buckets, spot free-text areas, copy a privacy report, or clear saved research artifacts.</p>
+      </div>
+      <div class="privacy-control-score" style="--score:${config.privacyScore}">
+        <b>${config.privacyScore}</b>
+        <span>Privacy</span>
+      </div>
+    </div>
+    <div class="privacy-control-metric-grid">
+      <article><span>Active stores</span><strong>${config.activeStores.length}</strong></article>
+      <article><span>Local records</span><strong>${config.totalRecords}</strong></article>
+      <article><span>Storage size</span><strong>${privacyFormatBytes(config.totalBytes)}</strong></article>
+      <article><span>Free-text buckets</span><strong>${config.freeTextStores.length}</strong></article>
+      <article><span>Cloud sync</span><strong>Off</strong></article>
+      <article><span>Private IDs</span><strong>Not stored</strong></article>
+    </div>
+    <div class="privacy-control-grid">
+      ${config.stores.map((store) => `
+        <article class="privacy-store-card ${store.present ? "active" : ""}">
+          <div class="privacy-store-head">
+            <span>${escapeHtml(store.definition.sensitivity)}</span>
+            <strong>${store.count}</strong>
+          </div>
+          <h3>${escapeHtml(store.definition.label)}</h3>
+          <p>${escapeHtml(store.definition.purpose)}</p>
+          <div class="privacy-store-fields">
+            <span>${escapeHtml(store.definition.fields)}</span>
+            <b>${privacyFormatBytes(store.bytes)}</b>
+          </div>
+          <button class="text-button" type="button" data-privacy-clear="${escapeHtml(store.definition.key)}" ${store.present ? "" : "disabled"}>Clear bucket</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="privacy-control-panel-grid">
+      <article class="privacy-control-panel">
+        <h3>Never stored in Phase 1</h3>
+        <ul class="privacy-control-list">
+          ${PRIVACY_NEVER_STORED.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="privacy-control-panel">
+        <h3>Free-text attention</h3>
+        <p>${config.freeTextStores.length ? `${config.freeTextStores.map((store) => store.definition.label).join(", ")} may contain user-written text. Review or clear these before sharing a device.` : "No active free-text bucket is currently stored in this browser."}</p>
+      </article>
+      <article class="privacy-control-panel privacy-control-guardrail">
+        <h3>Clear local research</h3>
+        <p>This only clears NiveshNadi data in this browser. It does not affect GitHub, uploaded files, external accounts, or any future backend.</p>
+        <button class="primary-button" type="button" data-privacy-clear-all>Clear all local research</button>
+      </article>
+    </div>
+  `;
+}
+
+function makePrivacyControlReport() {
+  const config = privacyControlConfig();
+  return [
+    "# NiveshNadi Privacy Control Room",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Storage posture: ${config.posture}`,
+    `Privacy score: ${config.privacyScore}/100`,
+    `Active browser-local stores: ${config.activeStores.length}`,
+    `Local records: ${config.totalRecords}`,
+    `Approx storage size: ${privacyFormatBytes(config.totalBytes)}`,
+    `Free-text buckets: ${config.freeTextStores.length}`,
+    "",
+    "## Local storage buckets",
+    ...config.stores.map((store) => `- ${store.definition.label}: ${store.count} record(s), ${privacyFormatBytes(store.bytes)}, ${store.definition.sensitivity}`),
+    "",
+    "## Never stored in Phase 1",
+    ...PRIVACY_NEVER_STORED.map((item) => `- ${item}`),
+    "",
+    "Privacy Control Room is a browser-local transparency layer. It does not transmit data, create accounts, sync cloud storage, collect PAN/folio/CAS/bank/credential/contact/client data, or provide advice, approval, or guarantees."
+  ].join("\n");
+}
+
+const SHARE_SAFE_AUDIENCES = {
+  self: {
+    label: "Self review",
+    purpose: "Use the pack as a personal research checkpoint before writing or revisiting a decision memo.",
+    boundary: "Keep it as research workflow text; do not treat it as execution approval."
+  },
+  family: {
+    label: "Family discussion",
+    purpose: "Explain the fund role, risks, evidence posture, and next review discipline without exposing private account data.",
+    boundary: "Keep family identity, contact details, account references, and transaction instructions outside the pack."
+  },
+  advisor: {
+    label: "Advisor conversation",
+    purpose: "Share a structured research view so an advisor can discuss assumptions, gaps, and documents to verify.",
+    boundary: "This is not a recommendation request or transaction instruction."
+  },
+  distributor: {
+    label: "Future distributor handoff",
+    purpose: "Prototype the kind of clean research packet Phase 2 could hand to an ARN/EUIN workflow after consent design.",
+    boundary: "Phase 1 excludes PAN, ARN, EUIN, client lists, folio, CAS, mandate, and contact data."
+  }
+};
+
+const SHARE_SAFE_DEPTHS = {
+  quick: {
+    label: "Quick summary",
+    includes: ["Selected fund snapshot", "Compare-set names", "Evidence posture", "Privacy boundary"],
+    scoreBonus: 5
+  },
+  standard: {
+    label: "Standard research pack",
+    includes: ["Selected fund snapshot", "Compare-set summary", "Research Memory coverage", "Privacy boundary", "Next checks"],
+    scoreBonus: 2
+  },
+  complete: {
+    label: "Complete research trail",
+    includes: ["Selected fund snapshot", "Compare-set summary", "Research Memory timeline", "Privacy bucket summary", "Next checks"],
+    scoreBonus: -2
+  }
+};
+
+const SHARE_SAFE_HISTORY = {
+  current: {
+    label: "Current fund only",
+    detail: "No saved local timeline events are copied unless they support the current fund context.",
+    scoreBonus: 5
+  },
+  recent: {
+    label: "Recent local artifacts",
+    detail: "Saved artifact counts and latest memory event are summarized, not full private notes.",
+    scoreBonus: 1
+  },
+  timeline: {
+    label: "Memory timeline summary",
+    detail: "Recent memory event metadata is included while private note bodies remain excluded.",
+    scoreBonus: -3
+  }
+};
+
+const SHARE_SAFE_SCRUBS = {
+  strict: {
+    label: "Strict identity scrub",
+    detail: "Remove identifiers, free-text note bodies, contact details, and transaction language from the copied pack.",
+    scoreBonus: 8
+  },
+  standard: {
+    label: "Standard scrub",
+    detail: "Remove sensitive identifiers and keep only research metadata and fund context.",
+    scoreBonus: 4
+  },
+  distributor: {
+    label: "Distributor-ready boundary",
+    detail: "Show Phase 2 handoff intent while still excluding PAN, ARN, EUIN, folio, CAS, contact, and client data.",
+    scoreBonus: 6
+  }
+};
+
+function readShareSafeConfig() {
+  return {
+    audience: els.shareSafeAudience?.value || "self",
+    depth: els.shareSafeDepth?.value || "standard",
+    history: els.shareSafeHistory?.value || "current",
+    scrub: els.shareSafeScrub?.value || "strict"
+  };
+}
+
+function shareSafePosture(score, attentionCount) {
+  if (score >= 82 && attentionCount === 0) return "Clean to share";
+  if (score >= 68) return "Share after review";
+  return "Scrub before sharing";
+}
+
+function shareSafeTone(score) {
+  if (score >= 82) return "ready";
+  if (score >= 64) return "watch";
+  return "caution";
+}
+
+function shareSafeConfig() {
+  const input = readShareSafeConfig();
+  const audience = SHARE_SAFE_AUDIENCES[input.audience] || SHARE_SAFE_AUDIENCES.self;
+  const depth = SHARE_SAFE_DEPTHS[input.depth] || SHARE_SAFE_DEPTHS.standard;
+  const history = SHARE_SAFE_HISTORY[input.history] || SHARE_SAFE_HISTORY.current;
+  const scrub = SHARE_SAFE_SCRUBS[input.scrub] || SHARE_SAFE_SCRUBS.strict;
+  const fund = selectedFund();
+  const compareFunds = compareSet();
+  const memory = researchMemoryConfig();
+  const privacy = privacyControlConfig();
+  const evidence = evidenceReadinessScore(fund);
+  const freeTextLabels = privacy.freeTextStores.map((store) => store.definition.label);
+  const attention = [
+    freeTextLabels.length ? `Review free-text buckets before sharing: ${freeTextLabels.join(", ")}.` : null,
+    memory.artifactCount ? null : "No saved local artifacts yet; pack will rely on current screen context.",
+    evidence >= 76 ? null : "Evidence readiness is below launch comfort; cite source date before external sharing.",
+    compareFunds.length ? null : "No compare set selected; add at least one peer when sharing a comparison pack.",
+    input.history === "timeline" && memory.timeline.length > 6 ? "Timeline mode includes several metadata events; keep it short for external review." : null,
+    input.audience === "distributor" ? "Future distributor handoff still needs consent, ARN/EUIN, PAN, and role-based access design before real launch." : null
+  ].filter(Boolean);
+  const included = [
+    ...depth.includes,
+    input.history !== "current" ? history.label : null,
+    compareFunds.length ? `${compareFunds.length} compare fund${compareFunds.length === 1 ? "" : "s"}` : null
+  ].filter(Boolean);
+  const scrubbed = [
+    "PAN, folio, CAS, bank, UPI, card, demat, mandate, and account credentials",
+    "Phone, email, address, nominee, family identity, client identifiers, ARN, and EUIN",
+    "Private note bodies from alerts, journal, receipt, review, dossier, and correction surfaces",
+    "Execution instructions, personalized advice, tax advice, approval language, and return guarantees"
+  ];
+  const score = clampNumber(Math.round(
+    privacy.privacyScore * 0.42 +
+    memory.memoryScore * 0.24 +
+    evidence * 0.22 +
+    depth.scoreBonus +
+    history.scoreBonus +
+    scrub.scoreBonus -
+    Math.min(privacy.freeTextStores.length * 5, 18) -
+    (attention.length > 3 ? 6 : 0)
+  ), 35, 98);
+  return {
+    input,
+    audience,
+    depth,
+    history,
+    scrub,
+    fund,
+    compareFunds,
+    memory,
+    privacy,
+    evidence,
+    freeTextLabels,
+    included,
+    scrubbed,
+    attention,
+    score,
+    posture: shareSafePosture(score, attention.length),
+    tone: shareSafeTone(score)
+  };
+}
+
+function renderShareSafeExportRoom(event) {
+  if (event) event.preventDefault();
+  if (!els.shareSafeOutput || !els.shareSafeSummary) return;
+  const config = shareSafeConfig();
+  els.shareSafeSummary.textContent = `${config.score}/100 | ${config.audience.label}`;
+
+  els.shareSafeOutput.innerHTML = `
+    <div class="share-safe-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">Share-safe posture</span>
+        <h3>${escapeHtml(config.posture)}</h3>
+        <p>${escapeHtml(config.audience.purpose)} ${escapeHtml(config.scrub.detail)}</p>
+      </div>
+      <div class="share-safe-score" style="--score:${config.score}">
+        <b>${config.score}</b>
+        <span>Share</span>
+      </div>
+    </div>
+    <div class="share-safe-metric-grid">
+      <article><span>Audience</span><strong>${escapeHtml(config.audience.label)}</strong></article>
+      <article><span>Depth</span><strong>${escapeHtml(config.depth.label)}</strong></article>
+      <article><span>Funds</span><strong>${1 + config.compareFunds.length}</strong></article>
+      <article><span>Artifacts</span><strong>${config.memory.artifactCount}</strong></article>
+      <article><span>Privacy</span><strong>${config.privacy.privacyScore}/100</strong></article>
+      <article><span>Evidence</span><strong>${config.evidence}/100</strong></article>
+    </div>
+    <div class="share-safe-card-grid">
+      <article class="share-safe-card">
+        <h3>Included in clean pack</h3>
+        <ul class="share-safe-list">
+          ${config.included.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="share-safe-card scrubbed">
+        <h3>Scrubbed out</h3>
+        <ul class="share-safe-list">
+          ${config.scrubbed.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="share-safe-card">
+        <h3>Attention before sharing</h3>
+        <ul class="share-safe-list">
+          ${(config.attention.length ? config.attention : ["No immediate share-safety attention item for this pack."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+    <div class="share-safe-preview">
+      <div>
+        <span class="metric-label">Pack anchor</span>
+        <h3>${escapeHtml(config.fund.name)}</h3>
+        <p>${escapeHtml(config.fund.category)} | ${escapeHtml(config.fund.risk)} risk | Nadi score ${nadiScore(config.fund)}/100 | Expense ${config.fund.expense.toFixed(2)}%</p>
+      </div>
+      <div>
+        <span class="metric-label">Boundary</span>
+        <p>${escapeHtml(config.audience.boundary)} This pack remains research support only and does not approve, recommend, or execute any mutual fund transaction.</p>
+      </div>
+    </div>
+  `;
+}
+
+function makeShareSafePack() {
+  const config = shareSafeConfig();
+  const compareLines = config.compareFunds.length
+    ? config.compareFunds.map((fund) => `- ${fund.name} | ${fund.category} | ${fund.risk} risk | Score ${nadiScore(fund)}/100 | Expense ${fund.expense.toFixed(2)}%`)
+    : ["- No compare set selected"];
+  const timelineLines = config.input.history === "timeline"
+    ? (config.memory.timeline.length ? config.memory.timeline.slice(0, 8).map((entry) => `- ${researchMemoryDate(entry.createdAt)} | ${entry.type} | ${entry.title} | ${entry.meta}`) : ["- No local memory timeline yet."])
+    : [`- ${config.history.detail}`];
+  return [
+    "# NiveshNadi Share-Safe Export Pack",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Share posture: ${config.posture}`,
+    `Share-safe score: ${config.score}/100`,
+    `Audience: ${config.audience.label}`,
+    `Pack depth: ${config.depth.label}`,
+    `Scrub strictness: ${config.scrub.label}`,
+    "",
+    "## Fund Anchor",
+    `- ${config.fund.name}`,
+    `- Category: ${config.fund.category}`,
+    `- Risk: ${config.fund.risk}`,
+    `- Nadi score: ${nadiScore(config.fund)}/100`,
+    `- Expense: ${config.fund.expense.toFixed(2)}%`,
+    `- Evidence readiness: ${config.evidence}/100`,
+    `- Role: ${config.fund.role}`,
+    "",
+    "## Compare Set",
+    ...compareLines,
+    "",
+    "## Included",
+    ...config.included.map((item) => `- ${item}`),
+    "",
+    "## Local Research Summary",
+    `- Research Memory score: ${config.memory.memoryScore}/100`,
+    `- Saved artifacts: ${config.memory.artifactCount}`,
+    `- Timeline events: ${config.memory.timeline.length}`,
+    `- Active local stores: ${config.privacy.activeStores.length}`,
+    `- Free-text buckets flagged: ${config.privacy.freeTextStores.length}`,
+    ...timelineLines,
+    "",
+    "## Scrubbed Out",
+    ...config.scrubbed.map((item) => `- ${item}`),
+    "",
+    "## Attention Before Sharing",
+    ...(config.attention.length ? config.attention.map((item) => `- ${item}`) : ["- No immediate share-safety attention item for this pack."]),
+    "",
+    "## Boundary",
+    config.audience.boundary,
+    "This is a clean research pack, not personalized investment advice, tax advice, execution approval, distributor service, or a return guarantee."
+  ].join("\n");
+}
+
+const CONSENT_AUDIENCES = {
+  self: {
+    label: "Self only",
+    purpose: "Keep the handoff inside the investor's own research workspace.",
+    scoreBonus: 8
+  },
+  family: {
+    label: "Family reviewer",
+    purpose: "Share clean research context for discussion without exposing account or identity data.",
+    scoreBonus: 4
+  },
+  advisor: {
+    label: "Advisor discussion",
+    purpose: "Give a professional reviewer the research trail, assumptions, gaps, and source checks to challenge.",
+    scoreBonus: 1
+  },
+  distributor: {
+    label: "Future distributor",
+    purpose: "Prototype a Phase 2 handoff boundary before any ARN/EUIN, PAN, consent, or client-record workflow exists.",
+    scoreBonus: -4
+  }
+};
+
+const CONSENT_SCOPES = {
+  research: {
+    label: "Research pack only",
+    allowed: ["Selected fund snapshot", "Compare-set names", "Evidence readiness", "Share-safe boundary"],
+    scoreBonus: 9
+  },
+  review: {
+    label: "Research plus review checklist",
+    allowed: ["Selected fund snapshot", "Compare-set names", "Review checklist", "Next-check date"],
+    scoreBonus: 5
+  },
+  watch: {
+    label: "Research plus watch triggers",
+    allowed: ["Selected fund snapshot", "Compare-set names", "Watch trigger metadata", "Review cadence"],
+    scoreBonus: 1
+  },
+  phase2: {
+    label: "Phase 2 handoff readiness",
+    allowed: ["Selected fund snapshot", "Compare-set names", "Consent intent", "Future role boundary"],
+    scoreBonus: -3
+  }
+};
+
+const CONSENT_DURATIONS = {
+  "one-time": {
+    label: "One-time discussion",
+    detail: "Use once for a specific research conversation, then refresh the pack before reuse.",
+    scoreBonus: 8
+  },
+  "30-days": {
+    label: "30-day review window",
+    detail: "Suitable for a short research loop if source dates and review triggers remain current.",
+    scoreBonus: 4
+  },
+  "90-days": {
+    label: "90-day review window",
+    detail: "Needs stronger source-date and stale-data discipline before relying on the pack.",
+    scoreBonus: 0
+  },
+  revoke: {
+    label: "Until revoked in writing",
+    detail: "Too broad for Phase 1 unless formal consent, audit trail, and deletion controls exist.",
+    scoreBonus: -6
+  }
+};
+
+const CONSENT_CHANNELS = {
+  offline: {
+    label: "Offline conversation",
+    detail: "Lowest technical risk; no digital transfer is created by the product.",
+    scoreBonus: 8
+  },
+  copy: {
+    label: "Copied text pack",
+    detail: "Keep the pack share-safe and avoid pasting private notes or account identifiers.",
+    scoreBonus: 3
+  },
+  secure: {
+    label: "Secure portal later",
+    detail: "Requires login, encryption, access controls, retention, and deletion policy before launch.",
+    scoreBonus: -2
+  },
+  api: {
+    label: "Future API handoff",
+    detail: "Requires consent records, authentication, authorization, audit logs, and data minimization.",
+    scoreBonus: -8
+  }
+};
+
+const CONSENT_BLOCKED_ITEMS = [
+  "PAN, folio, CAS, demat, bank, UPI, card, mandate, and credential data",
+  "Phone, email, address, nominee, family identity, client identifiers, ARN, and EUIN",
+  "Private note bodies, uploaded documents, account statements, and contact records",
+  "Transaction instructions, personalized advice, suitability approval, tax advice, and return guarantees"
+];
+
+function readConsentGateConfig() {
+  return {
+    audience: els.consentAudience?.value || "self",
+    scope: els.consentScope?.value || "research",
+    duration: els.consentDuration?.value || "one-time",
+    channel: els.consentChannel?.value || "offline"
+  };
+}
+
+function consentGateTone(score) {
+  if (score >= 82) return "ready";
+  if (score >= 64) return "watch";
+  return "caution";
+}
+
+function consentGatePosture(score) {
+  if (score >= 82) return "Consent boundary clean";
+  if (score >= 64) return "Review consent before sharing";
+  return "Consent design not ready";
+}
+
+function consentGateConfig() {
+  const input = readConsentGateConfig();
+  const audience = CONSENT_AUDIENCES[input.audience] || CONSENT_AUDIENCES.self;
+  const scope = CONSENT_SCOPES[input.scope] || CONSENT_SCOPES.research;
+  const duration = CONSENT_DURATIONS[input.duration] || CONSENT_DURATIONS["one-time"];
+  const channel = CONSENT_CHANNELS[input.channel] || CONSENT_CHANNELS.offline;
+  const fund = selectedFund();
+  const share = shareSafeConfig();
+  const privacy = privacyControlConfig();
+  const memory = researchMemoryConfig();
+  const evidence = evidenceReadinessScore(fund);
+  const gaps = [
+    share.score >= 78 ? null : "Refresh Share-Safe Export before external handoff.",
+    privacy.freeTextStores.length ? "Review or clear free-text local buckets before sharing a device or copied pack." : null,
+    evidence >= 76 ? null : "Evidence readiness needs source-date review before relying on the handoff.",
+    input.audience === "distributor" ? "Real distributor workflow needs explicit consent, ARN/EUIN design, PAN handling rules, and role-based access before launch." : null,
+    input.scope === "phase2" ? "Phase 2 scope is conceptual; do not collect client records in this static prototype." : null,
+    input.channel === "secure" || input.channel === "api" ? "Digital handoff channel needs authentication, encryption, audit logs, retention, and deletion policy." : null,
+    input.duration === "revoke" ? "Open-ended duration is not ready without formal consent history and revoke controls." : null
+  ].filter(Boolean);
+  const score = clampNumber(Math.round(
+    share.score * 0.32 +
+    privacy.privacyScore * 0.26 +
+    memory.memoryScore * 0.16 +
+    evidence * 0.14 +
+    audience.scoreBonus +
+    scope.scoreBonus +
+    duration.scoreBonus +
+    channel.scoreBonus -
+    Math.min(gaps.length * 5, 25)
+  ), 30, 98);
+  const consentLine = `${audience.label} can receive ${scope.label.toLowerCase()} for ${duration.label.toLowerCase()} through ${channel.label.toLowerCase()}.`;
+  return {
+    input,
+    audience,
+    scope,
+    duration,
+    channel,
+    fund,
+    share,
+    privacy,
+    memory,
+    evidence,
+    gaps,
+    score,
+    posture: consentGatePosture(score),
+    tone: consentGateTone(score),
+    allowed: scope.allowed,
+    blocked: CONSENT_BLOCKED_ITEMS,
+    consentLine
+  };
+}
+
+function renderConsentHandoffGate(event) {
+  if (event) event.preventDefault();
+  if (!els.consentGateOutput || !els.consentGateSummary) return;
+  const config = consentGateConfig();
+  els.consentGateSummary.textContent = `${config.score}/100 | ${config.audience.label}`;
+
+  els.consentGateOutput.innerHTML = `
+    <div class="consent-gate-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">Consent readiness</span>
+        <h3>${escapeHtml(config.posture)}</h3>
+        <p>${escapeHtml(config.consentLine)} ${escapeHtml(config.channel.detail)}</p>
+      </div>
+      <div class="consent-gate-score" style="--score:${config.score}">
+        <b>${config.score}</b>
+        <span>Consent</span>
+      </div>
+    </div>
+    <div class="consent-gate-metric-grid">
+      <article><span>Recipient</span><strong>${escapeHtml(config.audience.label)}</strong></article>
+      <article><span>Scope</span><strong>${escapeHtml(config.scope.label)}</strong></article>
+      <article><span>Duration</span><strong>${escapeHtml(config.duration.label)}</strong></article>
+      <article><span>Channel</span><strong>${escapeHtml(config.channel.label)}</strong></article>
+      <article><span>Share safe</span><strong>${config.share.score}/100</strong></article>
+      <article><span>Privacy</span><strong>${config.privacy.privacyScore}/100</strong></article>
+    </div>
+    <div class="consent-gate-card-grid">
+      <article class="consent-gate-card">
+        <h3>Allowed for handoff</h3>
+        <ul class="consent-gate-list">
+          ${config.allowed.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="consent-gate-card blocked">
+        <h3>Blocked from handoff</h3>
+        <ul class="consent-gate-list">
+          ${config.blocked.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="consent-gate-card">
+        <h3>Before handoff</h3>
+        <ul class="consent-gate-list">
+          ${(config.gaps.length ? config.gaps : ["Consent boundary is clean for this prototype context."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+    <div class="consent-gate-preview">
+      <div>
+        <span class="metric-label">Consent line</span>
+        <h3>${escapeHtml(config.fund.name)}</h3>
+        <p>${escapeHtml(config.consentLine)}</p>
+      </div>
+      <div>
+        <span class="metric-label">Revocation discipline</span>
+        <p>${escapeHtml(config.duration.detail)} Consent Gate is a readiness preview only; Phase 1 does not store consent records or transmit research packs.</p>
+      </div>
+    </div>
+  `;
+}
+
+function makeConsentHandoffBrief() {
+  const config = consentGateConfig();
+  return [
+    "# NiveshNadi Consent Handoff Gate",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Consent posture: ${config.posture}`,
+    `Consent readiness score: ${config.score}/100`,
+    `Selected fund: ${config.fund.name}`,
+    `Recipient: ${config.audience.label}`,
+    `Scope: ${config.scope.label}`,
+    `Duration: ${config.duration.label}`,
+    `Channel: ${config.channel.label}`,
+    "",
+    "## Consent Line",
+    config.consentLine,
+    "",
+    "## Allowed For Handoff",
+    ...config.allowed.map((item) => `- ${item}`),
+    "",
+    "## Blocked From Handoff",
+    ...config.blocked.map((item) => `- ${item}`),
+    "",
+    "## Before Handoff",
+    ...(config.gaps.length ? config.gaps.map((item) => `- ${item}`) : ["- Consent boundary is clean for this prototype context."]),
+    "",
+    "## Guardrail",
+    "Phase 1 does not store consent records, transmit data, collect PAN/folio/CAS/contact/client data, create distributor records, approve transactions, or provide personalized advice. Real Phase 2 handoff requires explicit consent, data minimization, role-based access, audit logging, retention policy, deletion workflow, and regulatory review."
   ].join("\n");
 }
 
@@ -9812,12 +12659,16 @@ function saveCurrentReceiptSnapshot() {
   const entries = [snapshot, ...loadReceiptVault()].slice(0, 24);
   saveReceiptVault(entries);
   renderReceiptVault();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
   toast("Research receipt saved locally.");
 }
 
 function clearReceiptVault() {
   saveReceiptVault([]);
   renderReceiptVault();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
   toast("Receipt vault cleared.");
 }
 
@@ -10043,6 +12894,10 @@ function addToWatchlist(fundId, shouldRender = true) {
     renderResearchReceipt();
     renderReceiptVault();
     renderReviewRhythmBoard();
+    renderResearchBriefing();
+    renderBriefingVault();
+    renderResearchMemory();
+    renderPrivacyControlRoom();
   }
 }
 
@@ -10062,6 +12917,10 @@ function removeFromWatchlist(fundId) {
   renderResearchReceipt();
   renderReceiptVault();
   renderReviewRhythmBoard();
+  renderResearchBriefing();
+  renderBriefingVault();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
 }
 
 function handleAlertForm(event) {
@@ -10091,6 +12950,10 @@ function handleAlertForm(event) {
   renderResearchReceipt();
   renderReceiptVault();
   renderReviewRhythmBoard();
+  renderResearchBriefing();
+  renderBriefingVault();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
 }
 
 function evaluateAlert(alert, fund) {
@@ -10639,6 +13502,8 @@ function saveDecisionPackToJournal() {
   const entries = [entry, ...loadJournal()].slice(0, 20);
   saveJournal(entries);
   renderJournal();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
   toast("Decision pack saved to journal.");
 }
 
@@ -11744,6 +14609,18 @@ function saveAlerts(entries) {
   localStorage.setItem("niveshnadi-alerts", JSON.stringify(entries));
 }
 
+function loadBriefingVault() {
+  try {
+    return JSON.parse(localStorage.getItem("niveshnadi-briefing-vault") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveBriefingVault(entries) {
+  localStorage.setItem("niveshnadi-briefing-vault", JSON.stringify(entries));
+}
+
 function loadReviewVault() {
   try {
     return JSON.parse(localStorage.getItem("niveshnadi-review-vault") || "[]");
@@ -11816,6 +14693,8 @@ function handleJournal(event) {
   saveJournal(entries);
   els.journalReason.value = "";
   renderJournal();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
 }
 
 function bindEvents() {
@@ -11844,6 +14723,76 @@ function bindEvents() {
     renderFundGrid();
   });
   els.copyBrief.addEventListener("click", () => copyText(makeBrief()));
+  els.profileRoomForm?.addEventListener("submit", (event) => {
+    renderProfileRoom(event);
+    renderStarterGuide();
+    renderInvestorPassport();
+    renderNadiCoach();
+  });
+  [
+    els.profileIntent,
+    els.profileHorizon,
+    els.profileMonthlySip,
+    els.profileDrawdown,
+    els.profileEmergency,
+    els.profileConfidence
+  ].forEach((input) => {
+    input?.addEventListener(input.tagName === "INPUT" ? "input" : "change", () => {
+      renderProfileRoom();
+      renderStarterGuide();
+      renderInvestorPassport();
+      renderNadiCoach();
+    });
+  });
+  els.applyProfileRoom?.addEventListener("click", applyProfileRoom);
+  els.copyProfileRoom?.addEventListener("click", () => copyText(makeProfileRoomBrief()));
+  els.briefingForm?.addEventListener("submit", (event) => {
+    renderResearchBriefing(event);
+    renderBriefingVault();
+    renderResearchMemory();
+    renderPrivacyControlRoom();
+  });
+  [els.briefingFocus, els.briefingAudience, els.briefingDepth, els.briefingPriority].forEach((input) => {
+    input?.addEventListener("change", () => {
+      renderResearchBriefing();
+      renderBriefingVault();
+      renderResearchMemory();
+      renderPrivacyControlRoom();
+    });
+  });
+  els.briefingNote?.addEventListener("input", () => {
+    renderResearchBriefing();
+    renderBriefingVault();
+    renderResearchMemory();
+    renderPrivacyControlRoom();
+  });
+  els.openBriefAction?.addEventListener("click", () => scrollToHash("#action-planner", "smooth", true));
+  els.copyResearchBriefing?.addEventListener("click", () => copyText(makeResearchBriefingNote()));
+  els.saveBriefingSnapshot?.addEventListener("click", saveCurrentBriefingSnapshot);
+  els.copyBriefingVault?.addEventListener("click", () => copyText(makeBriefingVaultBrief()));
+  els.clearBriefingVault?.addEventListener("click", clearBriefingVault);
+  els.refreshResearchMemory?.addEventListener("click", renderResearchMemory);
+  els.copyResearchMemory?.addEventListener("click", () => copyText(makeResearchMemoryBrief()));
+  els.refreshPrivacyControl?.addEventListener("click", renderPrivacyControlRoom);
+  els.copyPrivacyReport?.addEventListener("click", () => copyText(makePrivacyControlReport()));
+  els.shareSafeForm?.addEventListener("submit", renderShareSafeExportRoom);
+  [els.shareSafeAudience, els.shareSafeDepth, els.shareSafeHistory, els.shareSafeScrub].forEach((input) => {
+    input?.addEventListener("change", () => {
+      renderShareSafeExportRoom();
+      renderConsentHandoffGate();
+    });
+  });
+  els.refreshShareSafe?.addEventListener("click", () => {
+    renderShareSafeExportRoom();
+    renderConsentHandoffGate();
+  });
+  els.copyShareSafePack?.addEventListener("click", () => copyText(makeShareSafePack()));
+  els.consentGateForm?.addEventListener("submit", renderConsentHandoffGate);
+  [els.consentAudience, els.consentScope, els.consentDuration, els.consentChannel].forEach((input) => {
+    input?.addEventListener("change", () => renderConsentHandoffGate());
+  });
+  els.refreshConsentGate?.addEventListener("click", renderConsentHandoffGate);
+  els.copyConsentBrief?.addEventListener("click", () => copyText(makeConsentHandoffBrief()));
   els.openWhyCoach?.addEventListener("click", openWhyFundCoach);
   els.copyWhyLens?.addEventListener("click", () => copyText(makeWhyFundNote()));
   els.copyScoreAnatomy?.addEventListener("click", () => copyText(makeScoreAnatomyNote()));
@@ -11867,6 +14816,7 @@ function bindEvents() {
     saveStarterGuideProgress({});
     renderStarterGuide();
     renderNadiCoach();
+    renderPrivacyControlRoom();
   });
   els.investorPassportForm?.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -11969,7 +14919,14 @@ function bindEvents() {
     input?.addEventListener("change", () => renderCostRealityLab());
   });
   els.copyCostNote?.addEventListener("click", () => copyText(makeCostNote()));
-  els.readinessForm?.addEventListener("submit", renderInvestorReadinessGate);
+  els.readinessForm?.addEventListener("submit", (event) => {
+    renderInvestorReadinessGate(event);
+    renderActionPlanner();
+    renderResearchBriefing();
+    renderBriefingVault();
+    renderResearchMemory();
+    renderPrivacyControlRoom();
+  });
   [
     els.readinessIntent,
     els.readinessAmount,
@@ -11982,7 +14939,14 @@ function bindEvents() {
     els.readyEmergency,
     els.readyReason
   ].forEach((input) => {
-    input?.addEventListener("change", () => renderInvestorReadinessGate());
+    input?.addEventListener("change", () => {
+      renderInvestorReadinessGate();
+      renderActionPlanner();
+      renderResearchBriefing();
+      renderBriefingVault();
+      renderResearchMemory();
+      renderPrivacyControlRoom();
+    });
   });
   els.copyReadinessNote?.addEventListener("click", () => copyText(makeReadinessNote()));
   els.runXray.addEventListener("click", analyzePortfolio);
@@ -12050,6 +15014,8 @@ function bindEvents() {
     renderReviewVault();
     renderInvestorRecordDesk();
     renderResearchDossier();
+    renderResearchMemory();
+    renderPrivacyControlRoom();
   });
   [els.portfolioReviewFocus, els.portfolioReviewDate, els.portfolioReviewConviction].forEach((input) => {
     input?.addEventListener("change", () => {
@@ -12057,6 +15023,8 @@ function bindEvents() {
       renderReviewVault();
       renderInvestorRecordDesk();
       renderResearchDossier();
+      renderResearchMemory();
+      renderPrivacyControlRoom();
     });
   });
   els.portfolioReviewNote?.addEventListener("input", () => {
@@ -12064,6 +15032,8 @@ function bindEvents() {
     renderReviewVault();
     renderInvestorRecordDesk();
     renderResearchDossier();
+    renderResearchMemory();
+    renderPrivacyControlRoom();
   });
   els.copyPortfolioReview?.addEventListener("click", () => copyText(makePortfolioReviewNote()));
   els.savePortfolioReview?.addEventListener("click", savePortfolioReviewTrigger);
@@ -12073,19 +15043,31 @@ function bindEvents() {
   els.investorRecordForm?.addEventListener("submit", (event) => {
     renderInvestorRecordDesk(event);
     renderResearchDossier();
+    renderResearchMemory();
+    renderPrivacyControlRoom();
   });
   [els.investorRecordLabel, els.investorRecordStance, els.investorRecordAudience, els.investorRecordBoundary].forEach((input) => {
     input?.addEventListener(input.tagName === "INPUT" ? "input" : "change", () => {
       renderInvestorRecordDesk();
       renderResearchDossier();
+      renderResearchMemory();
+      renderPrivacyControlRoom();
     });
   });
   els.saveInvestorRecord?.addEventListener("click", saveCurrentInvestorRecord);
   els.copyInvestorRecord?.addEventListener("click", () => copyText(makeInvestorRecordBrief()));
   els.clearInvestorRecords?.addEventListener("click", clearInvestorRecords);
-  els.dossierForm?.addEventListener("submit", renderResearchDossier);
+  els.dossierForm?.addEventListener("submit", (event) => {
+    renderResearchDossier(event);
+    renderResearchMemory();
+    renderPrivacyControlRoom();
+  });
   [els.dossierLabel, els.dossierMode, els.dossierDepth, els.dossierBoundary].forEach((input) => {
-    input?.addEventListener(input.tagName === "INPUT" ? "input" : "change", () => renderResearchDossier());
+    input?.addEventListener(input.tagName === "INPUT" ? "input" : "change", () => {
+      renderResearchDossier();
+      renderResearchMemory();
+      renderPrivacyControlRoom();
+    });
   });
   els.saveDossier?.addEventListener("click", saveCurrentDossier);
   els.copyDossier?.addEventListener("click", () => copyText(makeResearchDossierBrief()));
@@ -12107,6 +15089,9 @@ function bindEvents() {
     renderClaimReleaseGate();
     renderClaimReleaseLedger();
     renderClaimRollbackConsole();
+    renderCorrectionNoticeBuilder();
+    renderCorrectionNoticeLedger();
+    renderTrustCenter();
   });
   [els.dataSource, els.dataMode, els.dataAge, els.dataCitation].forEach((input) => {
     input?.addEventListener("change", () => {
@@ -12117,6 +15102,9 @@ function bindEvents() {
       renderClaimReleaseGate();
       renderClaimReleaseLedger();
       renderClaimRollbackConsole();
+      renderCorrectionNoticeBuilder();
+      renderCorrectionNoticeLedger();
+      renderTrustCenter();
     });
   });
   els.copyDataSpec?.addEventListener("click", () => copyText(makeDataSpec()));
@@ -12130,6 +15118,9 @@ function bindEvents() {
     renderClaimReleaseGate();
     renderClaimReleaseLedger();
     renderClaimRollbackConsole();
+    renderCorrectionNoticeBuilder();
+    renderCorrectionNoticeLedger();
+    renderTrustCenter();
   });
   [els.sourceIntakeSource, els.sourceIntakeChannel, els.sourceIntakeFormat, els.sourceIntakeEvidence, els.sourceIntakeAge, els.sourceIntakeScope].forEach((input) => {
     input?.addEventListener(input === els.sourceIntakeAge ? "input" : "change", () => {
@@ -12137,6 +15128,9 @@ function bindEvents() {
       renderClaimReleaseGate();
       renderClaimReleaseLedger();
       renderClaimRollbackConsole();
+      renderCorrectionNoticeBuilder();
+      renderCorrectionNoticeLedger();
+      renderTrustCenter();
     });
   });
   els.copySourceIntake?.addEventListener("click", () => copyText(makeSourceIntakeNote()));
@@ -12145,6 +15139,9 @@ function bindEvents() {
     renderClaimReleaseGate();
     renderClaimReleaseLedger();
     renderClaimRollbackConsole();
+    renderCorrectionNoticeBuilder();
+    renderCorrectionNoticeLedger();
+    renderTrustCenter();
   });
   [els.sourceDriftSource, els.sourceDriftChange, els.sourceDriftMagnitude, els.sourceDriftAge, els.sourceDriftProof, els.sourceDriftAction].forEach((input) => {
     input?.addEventListener(input === els.sourceDriftAge ? "input" : "change", () => {
@@ -12152,6 +15149,9 @@ function bindEvents() {
       renderClaimReleaseGate();
       renderClaimReleaseLedger();
       renderClaimRollbackConsole();
+      renderCorrectionNoticeBuilder();
+      renderCorrectionNoticeLedger();
+      renderTrustCenter();
     });
   });
   els.copySourceDrift?.addEventListener("click", () => copyText(makeSourceDriftNote()));
@@ -12159,23 +15159,98 @@ function bindEvents() {
     renderClaimReleaseGate(event);
     renderClaimReleaseLedger();
     renderClaimRollbackConsole();
+    renderCorrectionNoticeBuilder();
+    renderCorrectionNoticeLedger();
+    renderTrustCenter();
   });
   [els.claimReleaseSource, els.claimReleaseSurface, els.claimReleaseEvidence, els.claimReleaseReviewer, els.claimReleaseScope, els.claimReleaseRollback].forEach((input) => {
     input?.addEventListener("change", () => {
       renderClaimReleaseGate();
       renderClaimReleaseLedger();
       renderClaimRollbackConsole();
+      renderCorrectionNoticeBuilder();
+      renderCorrectionNoticeLedger();
+      renderTrustCenter();
     });
   });
   els.copyClaimRelease?.addEventListener("click", () => copyText(makeClaimReleaseNote()));
   els.saveClaimLedger?.addEventListener("click", saveCurrentClaimReleaseSnapshot);
   els.copyClaimLedger?.addEventListener("click", () => copyText(makeClaimReleaseLedgerBrief()));
   els.clearClaimLedger?.addEventListener("click", clearClaimReleaseLedger);
-  els.claimRollbackForm?.addEventListener("submit", renderClaimRollbackConsole);
+  els.claimRollbackForm?.addEventListener("submit", (event) => {
+    renderClaimRollbackConsole(event);
+    renderCorrectionNoticeBuilder();
+    renderCorrectionNoticeLedger();
+    renderTrustCenter();
+  });
   [els.claimRollbackTrigger, els.claimRollbackSeverity, els.claimRollbackExposure, els.claimRollbackAction, els.claimRollbackNotice, els.claimRollbackOwner].forEach((input) => {
-    input?.addEventListener("change", () => renderClaimRollbackConsole());
+    input?.addEventListener("change", () => {
+      renderClaimRollbackConsole();
+      renderCorrectionNoticeBuilder();
+      renderCorrectionNoticeLedger();
+      renderTrustCenter();
+    });
   });
   els.copyClaimRollback?.addEventListener("click", () => copyText(makeClaimRollbackNote()));
+  els.correctionNoticeForm?.addEventListener("submit", (event) => {
+    renderCorrectionNoticeBuilder(event);
+    renderCorrectionNoticeLedger();
+    renderTrustCenter();
+  });
+  [els.correctionNoticeAudience, els.correctionNoticeStatus, els.correctionNoticeChange, els.correctionNoticeTone, els.correctionNoticeVisibility, els.correctionNoticeOwner].forEach((input) => {
+    input?.addEventListener("change", () => {
+      renderCorrectionNoticeBuilder();
+      renderCorrectionNoticeLedger();
+      renderTrustCenter();
+    });
+  });
+  els.saveCorrectionNotice?.addEventListener("click", saveCurrentCorrectionNotice);
+  els.copyCorrectionNotice?.addEventListener("click", () => copyText(makeCorrectionNoticeBrief()));
+  els.copyCorrectionLedger?.addEventListener("click", () => copyText(makeCorrectionNoticeLedgerBrief()));
+  els.clearCorrectionLedger?.addEventListener("click", clearCorrectionNoticeLedger);
+  els.trustCenterForm?.addEventListener("submit", (event) => {
+    renderTrustCenter(event);
+    renderActionPlanner();
+    renderResearchBriefing();
+    renderBriefingVault();
+    renderResearchMemory();
+    renderPrivacyControlRoom();
+  });
+  [els.trustCenterAudience, els.trustCenterScope, els.trustCenterMode, els.trustCenterTolerance].forEach((input) => {
+    input?.addEventListener("change", () => {
+      renderTrustCenter();
+      renderActionPlanner();
+      renderResearchBriefing();
+      renderBriefingVault();
+      renderResearchMemory();
+      renderPrivacyControlRoom();
+    });
+  });
+  els.copyTrustCenter?.addEventListener("click", () => copyText(makeTrustCenterBrief()));
+  els.actionPlannerForm?.addEventListener("submit", (event) => {
+    renderActionPlanner(event);
+    renderResearchBriefing();
+    renderBriefingVault();
+    renderResearchMemory();
+    renderPrivacyControlRoom();
+  });
+  [els.actionLane, els.actionCapitalMode, els.actionAmount, els.actionConviction, els.actionEvidenceMode, els.actionReviewDate].forEach((input) => {
+    input?.addEventListener(input === els.actionAmount ? "input" : "change", () => {
+      renderActionPlanner();
+      renderResearchBriefing();
+      renderBriefingVault();
+      renderResearchMemory();
+      renderPrivacyControlRoom();
+    });
+  });
+  els.actionReason?.addEventListener("input", () => {
+    renderActionPlanner();
+    renderResearchBriefing();
+    renderBriefingVault();
+    renderResearchMemory();
+    renderPrivacyControlRoom();
+  });
+  els.copyActionPlan?.addEventListener("click", () => copyText(makeActionPlannerBrief()));
   els.docForm?.addEventListener("submit", renderDocDecoder);
   [els.docFocus, els.docQuestion, els.docDepth].forEach((input) => {
     input?.addEventListener("change", () => renderDocDecoder());
@@ -12267,6 +15342,7 @@ function bindEvents() {
     renderResearchReceipt();
     renderReceiptVault();
     renderReviewRhythmBoard();
+    renderPrivacyControlRoom();
   });
   els.clearAlerts?.addEventListener("click", () => {
     saveAlerts([]);
@@ -12281,6 +15357,7 @@ function bindEvents() {
     renderResearchReceipt();
     renderReceiptVault();
     renderReviewRhythmBoard();
+    renderPrivacyControlRoom();
   });
   els.packForm?.addEventListener("submit", renderDecisionPack);
   [els.packDecision, els.packAmount, els.packReviewDate, els.packConviction, els.packReason].forEach((input) => {
@@ -12303,6 +15380,8 @@ function bindEvents() {
   els.clearJournal.addEventListener("click", () => {
     saveJournal([]);
     renderJournal();
+    renderResearchMemory();
+    renderPrivacyControlRoom();
   });
 
   document.addEventListener("click", (event) => {
@@ -12315,6 +15394,24 @@ function bindEvents() {
     const copySignal = event.target.closest("#copySignalStrip");
     if (!copySignal) return;
     copyText(makeSignalStripNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const saveCorrectionPreview = event.target.closest("[data-save-correction-preview]");
+    if (!saveCorrectionPreview) return;
+    saveCurrentCorrectionNotice();
+  });
+
+  document.addEventListener("click", (event) => {
+    const clearStore = event.target.closest("[data-privacy-clear]");
+    if (!clearStore) return;
+    clearPrivacyStore(clearStore.dataset.privacyClear);
+  });
+
+  document.addEventListener("click", (event) => {
+    const clearAll = event.target.closest("[data-privacy-clear-all]");
+    if (!clearAll) return;
+    clearAllPrivacyStores();
   });
 
   document.addEventListener("click", (event) => {
@@ -12352,6 +15449,9 @@ function bindEvents() {
     if (!button) return;
     state.selectedId = button.dataset.selectFund;
     renderSignalStrip();
+    renderProfileRoom();
+    renderResearchBriefing();
+    renderBriefingVault();
     renderFundGrid();
     renderStarterGuide();
     renderInvestorPassport();
@@ -12379,6 +15479,13 @@ function bindEvents() {
     renderSourceQaQueue();
     renderSourceIntakeConsole();
     renderSourceDriftMonitor();
+    renderClaimReleaseGate();
+    renderClaimReleaseLedger();
+    renderClaimRollbackConsole();
+    renderCorrectionNoticeBuilder();
+    renderCorrectionNoticeLedger();
+    renderTrustCenter();
+    renderActionPlanner();
     renderFundHouseLens();
     renderDocDecoder();
     renderGlossary();
@@ -12388,6 +15495,8 @@ function bindEvents() {
     renderReceiptVault();
     renderReviewRhythmBoard();
     renderDecisionPack();
+    renderShareSafeExportRoom();
+    renderConsentHandoffGate();
     scrollToElement(document.querySelector(".detail-band"));
   });
 
@@ -12429,6 +15538,8 @@ function bindEvents() {
       renderResearchReceipt();
       renderReceiptVault();
       renderReviewRhythmBoard();
+      renderResearchMemory();
+      renderPrivacyControlRoom();
     }
   });
 
@@ -12446,6 +15557,7 @@ function bindEvents() {
     if (event.target.checked) state.compare.add(id);
     else state.compare.delete(id);
     renderSignalStrip();
+    renderProfileRoom();
     renderFundGrid();
     renderStarterGuide();
     renderInvestorPassport();
@@ -12480,7 +15592,10 @@ function bindEvents() {
     renderResearchReceipt();
     renderReceiptVault();
     renderReviewRhythmBoard();
+    renderPrivacyControlRoom();
     renderDecisionPack();
+    renderShareSafeExportRoom();
+    renderConsentHandoffGate();
   });
 
   bindFloatingSearch();
@@ -12601,6 +15716,58 @@ function cacheElements() {
     resetFilters: qs("#resetFilters"),
     copyBrief: qs("#copyBrief"),
     nadiSignalStrip: qs("#nadiSignalStrip"),
+    profileRoomForm: qs("#profileRoomForm"),
+    profileIntent: qs("#profileIntent"),
+    profileHorizon: qs("#profileHorizon"),
+    profileMonthlySip: qs("#profileMonthlySip"),
+    profileDrawdown: qs("#profileDrawdown"),
+    profileEmergency: qs("#profileEmergency"),
+    profileConfidence: qs("#profileConfidence"),
+    profileRoomSummary: qs("#profileRoomSummary"),
+    profileRoomOutput: qs("#profileRoomOutput"),
+    applyProfileRoom: qs("#applyProfileRoom"),
+    copyProfileRoom: qs("#copyProfileRoom"),
+    briefingForm: qs("#briefingForm"),
+    briefingFocus: qs("#briefingFocus"),
+    briefingAudience: qs("#briefingAudience"),
+    briefingDepth: qs("#briefingDepth"),
+    briefingPriority: qs("#briefingPriority"),
+    briefingNote: qs("#briefingNote"),
+    briefingSummary: qs("#briefingSummary"),
+    briefingOutput: qs("#briefingOutput"),
+    openBriefAction: qs("#openBriefAction"),
+    copyResearchBriefing: qs("#copyResearchBriefing"),
+    briefingVaultSummary: qs("#briefingVaultSummary"),
+    briefingVaultOutput: qs("#briefingVaultOutput"),
+    saveBriefingSnapshot: qs("#saveBriefingSnapshot"),
+    copyBriefingVault: qs("#copyBriefingVault"),
+    clearBriefingVault: qs("#clearBriefingVault"),
+    researchMemorySummary: qs("#researchMemorySummary"),
+    researchMemoryOutput: qs("#researchMemoryOutput"),
+    refreshResearchMemory: qs("#refreshResearchMemory"),
+    copyResearchMemory: qs("#copyResearchMemory"),
+    privacyControlSummary: qs("#privacyControlSummary"),
+    privacyControlOutput: qs("#privacyControlOutput"),
+    refreshPrivacyControl: qs("#refreshPrivacyControl"),
+    copyPrivacyReport: qs("#copyPrivacyReport"),
+    shareSafeForm: qs("#shareSafeForm"),
+    shareSafeAudience: qs("#shareSafeAudience"),
+    shareSafeDepth: qs("#shareSafeDepth"),
+    shareSafeHistory: qs("#shareSafeHistory"),
+    shareSafeScrub: qs("#shareSafeScrub"),
+    shareSafeSummary: qs("#shareSafeSummary"),
+    shareSafeOutput: qs("#shareSafeOutput"),
+    refreshShareSafe: qs("#refreshShareSafe"),
+    copyShareSafePack: qs("#copyShareSafePack"),
+    consentGateForm: qs("#consentGateForm"),
+    consentAudience: qs("#consentAudience"),
+    consentScope: qs("#consentScope"),
+    consentDuration: qs("#consentDuration"),
+    consentChannel: qs("#consentChannel"),
+    consentGateSummary: qs("#consentGateSummary"),
+    consentGateOutput: qs("#consentGateOutput"),
+    refreshConsentGate: qs("#refreshConsentGate"),
+    copyConsentBrief: qs("#copyConsentBrief"),
     starterGuideForm: qs("#starterGuideForm"),
     starterIntent: qs("#starterIntent"),
     starterTime: qs("#starterTime"),
@@ -12878,6 +16045,40 @@ function cacheElements() {
     claimRollbackSummary: qs("#claimRollbackSummary"),
     claimRollbackOutput: qs("#claimRollbackOutput"),
     copyClaimRollback: qs("#copyClaimRollback"),
+    correctionNoticeForm: qs("#correctionNoticeForm"),
+    correctionNoticeAudience: qs("#correctionNoticeAudience"),
+    correctionNoticeStatus: qs("#correctionNoticeStatus"),
+    correctionNoticeChange: qs("#correctionNoticeChange"),
+    correctionNoticeTone: qs("#correctionNoticeTone"),
+    correctionNoticeVisibility: qs("#correctionNoticeVisibility"),
+    correctionNoticeOwner: qs("#correctionNoticeOwner"),
+    correctionNoticeSummary: qs("#correctionNoticeSummary"),
+    correctionNoticeOutput: qs("#correctionNoticeOutput"),
+    saveCorrectionNotice: qs("#saveCorrectionNotice"),
+    copyCorrectionNotice: qs("#copyCorrectionNotice"),
+    correctionLedgerSummary: qs("#correctionLedgerSummary"),
+    correctionLedgerOutput: qs("#correctionLedgerOutput"),
+    copyCorrectionLedger: qs("#copyCorrectionLedger"),
+    clearCorrectionLedger: qs("#clearCorrectionLedger"),
+    trustCenterForm: qs("#trustCenterForm"),
+    trustCenterAudience: qs("#trustCenterAudience"),
+    trustCenterScope: qs("#trustCenterScope"),
+    trustCenterMode: qs("#trustCenterMode"),
+    trustCenterTolerance: qs("#trustCenterTolerance"),
+    trustCenterSummary: qs("#trustCenterSummary"),
+    trustCenterOutput: qs("#trustCenterOutput"),
+    copyTrustCenter: qs("#copyTrustCenter"),
+    actionPlannerForm: qs("#actionPlannerForm"),
+    actionLane: qs("#actionLane"),
+    actionCapitalMode: qs("#actionCapitalMode"),
+    actionAmount: qs("#actionAmount"),
+    actionConviction: qs("#actionConviction"),
+    actionEvidenceMode: qs("#actionEvidenceMode"),
+    actionReviewDate: qs("#actionReviewDate"),
+    actionReason: qs("#actionReason"),
+    actionPlannerSummary: qs("#actionPlannerSummary"),
+    actionPlannerOutput: qs("#actionPlannerOutput"),
+    copyActionPlan: qs("#copyActionPlan"),
     docForm: qs("#docForm"),
     docFocus: qs("#docFocus"),
     docQuestion: qs("#docQuestion"),
@@ -12985,6 +16186,10 @@ function init() {
   renderClaimReleaseGate();
   renderClaimReleaseLedger();
   renderClaimRollbackConsole();
+  renderCorrectionNoticeBuilder();
+  renderCorrectionNoticeLedger();
+  renderTrustCenter();
+  renderActionPlanner();
   renderDocDecoder();
   renderGlossary();
   renderBehaviorGuard();

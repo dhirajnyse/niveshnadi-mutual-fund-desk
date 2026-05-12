@@ -193,6 +193,7 @@ assert(packageJson.scripts?.check?.includes("security-audit.mjs"), "package.json
 
 assert(styles.includes("--mint") && styles.includes("--gold") && styles.includes("--blue"), "styles.css is missing brand color tokens.");
 assert(styles.includes("scroll-padding-top") && styles.includes("scroll-margin-top"), "styles.css is missing sticky-header anchor offset rules.");
+assert(styles.includes(".workspace-band[id]") && styles.includes("--anchor-offset: 132px"), "styles.css is missing V79 stronger section anchor landing rules.");
 assert(styles.includes(".workspace-jump") && styles.includes(".nav-mode-strip") && styles.includes(".nav-stack"), "styles.css is missing Smart Navigation Shell styles.");
 assert(styles.includes(".nadi-signal-strip") && styles.includes(".signal-score"), "styles.css is missing Nadi Signal Strip styles.");
 assert(styles.includes(".build-tracker-output") && styles.includes(".build-tracker-hero"), "styles.css is missing Nadi Build Tracker styles.");

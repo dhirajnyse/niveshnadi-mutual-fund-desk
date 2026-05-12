@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260512-37";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v78 Executive Build Tracker";
+const DATA_VERSION = "20260512-38";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v79 Anchor Landing Polish";
 
 const FUNDS = [
   {
@@ -1216,7 +1216,7 @@ function buildTrackerConfig() {
     detail: "MFD dashboard, ARN/EUIN, PAN-consent, registered clients, review packs, and handoff audit trail stay planned after Phase 1 retail launch.",
     blockers: ["Phase 1 account model", "consent workflow", "privacy review", "role-based distributor access"]
   };
-  const pace = `v78 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
+  const pace = `v79 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
   const guardrails = [
     "Build Tracker is a project roadmap for this prototype; it is not an investor-facing recommendation or launch promise.",
     "Product build progress and launch readiness are intentionally separate because a prototype can be polished before live data, auth, payments, and legal gates are complete.",
@@ -1270,7 +1270,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-      <article><span>Prototype version</span><strong>Phase 1 v78</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+      <article><span>Prototype version</span><strong>Phase 1 v79</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -7684,7 +7684,7 @@ function stickyHeaderOffset() {
   if (!header) return 14;
   const headerStyle = window.getComputedStyle(header);
   if (headerStyle.position !== "sticky" && headerStyle.position !== "fixed") return 14;
-  return Math.ceil(header.getBoundingClientRect().height) + 14;
+  return Math.ceil(header.getBoundingClientRect().height) + 28;
 }
 
 function scrollToElement(element, behavior = "smooth") {

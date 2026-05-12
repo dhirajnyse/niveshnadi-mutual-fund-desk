@@ -15,7 +15,7 @@
   --rose-soft: #ffecef;
   --shadow: 0 14px 36px rgba(15, 34, 56, 0.1);
   --radius: 8px;
-  --anchor-offset: 94px;
+  --anchor-offset: 132px;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 
@@ -298,6 +298,7 @@ main {
   padding-bottom: 42px;
 }
 
+.workspace-band[id],
 .detail-band {
   scroll-margin-top: var(--anchor-offset);
 }
@@ -12711,7 +12712,7 @@ a:focus-visible {
 
 @media (max-width: 1220px) {
   :root {
-    --anchor-offset: 96px;
+    --anchor-offset: 142px;
   }
 
   .fund-grid {

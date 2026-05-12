@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260512-34">
+    <link rel="stylesheet" href="styles.css?v=20260512-36">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -26,6 +26,7 @@
       <nav class="top-nav" aria-label="Workspace">
         <div class="nav-stack">
           <div class="nav-cluster nav-primary" aria-label="Primary research shortcuts">
+            <a href="#build-tracker">Build</a>
             <a href="#daily-brief">Today</a>
             <a href="#screener">Screener</a>
             <a href="#profile-room">Profile</a>
@@ -49,6 +50,7 @@
             <select id="workspaceJump" aria-label="Jump to workspace section">
               <option value="">Jump to tool</option>
               <optgroup label="Discover">
+                <option value="#build-tracker">Build Tracker</option>
                 <option value="#daily-brief">Daily Command Brief</option>
                 <option value="#decision-radar">Decision Radar</option>
                 <option value="#question-stack">Question Stack</option>
@@ -138,7 +140,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-            <p class="release-pill">Phase 1 v75</p>
+            <p class="release-pill">Phase 1 v77</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -200,6 +202,23 @@
               <span>No personalized advice or return guarantee</span>
             </div>
           </aside>
+        </div>
+      </section>
+
+      <section id="build-tracker" class="workspace-band build-tracker-band" aria-labelledby="build-tracker-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Build pace</p>
+            <h2 id="build-tracker-title">Nadi Build Tracker</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Build Tracker actions">
+            <span id="buildTrackerSummary" class="status-chip">Build tracker</span>
+            <button class="text-button" id="openBuildNext" type="button">Open next build lane</button>
+            <button class="text-button" id="copyBuildTracker" type="button">Copy build tracker</button>
+          </div>
+        </div>
+        <div id="buildTrackerOutput" class="build-tracker-output" aria-live="polite">
+          Build Tracker will show current phase, completion pace, completed modules, and planned implementation lanes.
         </div>
       </section>
 
@@ -3147,6 +3166,7 @@
             <input id="floatingSearchInput" type="search" placeholder="Try: debt, hybrid, low, index" autocomplete="off">
           </label>
           <div class="floating-section-links" aria-label="Quick sections">
+            <a href="#build-tracker">Build</a>
             <a href="#daily-brief">Today</a>
             <a href="#decision-radar">Radar</a>
             <a href="#question-stack">Questions</a>
@@ -3230,6 +3250,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260512-34"></script>
+    <script src="app.js?v=20260512-36"></script>
   </body>
 </html>

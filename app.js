@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260512-34";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v75 Clearance Sprint Board";
+const DATA_VERSION = "20260512-36";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v77 Build Tracker";
 
 const FUNDS = [
   {
@@ -760,6 +760,7 @@ const state = {
   blueprintWeights: {},
   rebalanceWeights: {},
   answerSheetHydrated: false,
+  hashSettleUntil: 0,
   filters: {
     search: "",
     category: "all",
@@ -769,6 +770,72 @@ const state = {
 };
 
 const els = {};
+
+const BUILD_TRACKER_PHASES = [
+  {
+    phase: "Phase 0",
+    label: "Brand and static foundation",
+    progress: 100,
+    status: "Complete",
+    route: "#build-tracker",
+    done: ["NiveshNadi brand system", "static GitHub Pages app", "security headers and release checks"],
+    next: "Keep release packaging clean."
+  },
+  {
+    phase: "Phase 1A",
+    label: "Retail self-research cockpit",
+    progress: 94,
+    status: "Active",
+    route: "#screener",
+    done: ["screener", "profile room", "compare matrix", "goal fit", "SIP/STP lab"],
+    next: "Polish flows and reduce decision friction."
+  },
+  {
+    phase: "Phase 1B",
+    label: "Decision discipline and memo path",
+    progress: 88,
+    status: "Active",
+    route: "#clearance-sprint",
+    done: ["question stack", "answer sheet", "conviction ladder", "proof queue", "memo clearance", "clearance sprint"],
+    next: "Make every blocker route measurable."
+  },
+  {
+    phase: "Phase 1C",
+    label: "Trust, evidence, and safety layer",
+    progress: 82,
+    status: "Active",
+    route: "#evidence",
+    done: ["evidence ledger", "citation binder", "source QA", "claim gates", "privacy controls"],
+    next: "Connect live source-date and citation status."
+  },
+  {
+    phase: "Phase 1D",
+    label: "Portfolio review and habit layer",
+    progress: 78,
+    status: "Active",
+    route: "#portfolio-review",
+    done: ["X-Ray", "blueprint", "rebalance guard", "review vault", "watchlist", "dossier builder"],
+    next: "Tighten recurring review and saved research packets."
+  },
+  {
+    phase: "Phase 1E",
+    label: "Launch, monetization, and account layer",
+    progress: 42,
+    status: "Planned",
+    route: "#pricing",
+    done: ["pricing posture", "share-safe export", "consent gate", "security model"],
+    next: "Add auth, subscriptions, backend storage, live feeds, and payment rails."
+  },
+  {
+    phase: "Phase 2",
+    label: "Distributor and client management",
+    progress: 18,
+    status: "Planned",
+    route: "#consent-gate",
+    done: ["handoff boundaries", "privacy model", "future MFD workflow notes"],
+    next: "Design ARN/EUIN, PAN consent, client book, and distributor dashboard after Phase 1 launch."
+  }
+];
 
 function qs(selector) {
   return document.querySelector(selector);
@@ -1055,6 +1122,162 @@ function makeSignalStripNote() {
     "",
     "Research support only. This signal is not a recommendation, personalized advice, execution instruction, or return guarantee."
   ].join("\n");
+}
+
+function buildTrackerConfig() {
+  const weightedProgress = Math.round(
+    BUILD_TRACKER_PHASES.reduce((sum, phase) => sum + phase.progress, 0) / BUILD_TRACKER_PHASES.length
+  );
+  const completed = BUILD_TRACKER_PHASES.filter((phase) => phase.progress >= 95).length;
+  const active = BUILD_TRACKER_PHASES.filter((phase) => phase.status === "Active");
+  const planned = BUILD_TRACKER_PHASES.filter((phase) => phase.status === "Planned");
+  const current = active[active.length - 1] || BUILD_TRACKER_PHASES[0];
+  const nextLane = planned[0] || current;
+  const doneModules = BUILD_TRACKER_PHASES.flatMap((phase) => phase.done.map((item) => ({
+    phase: phase.phase,
+    item
+  })));
+  const nextMoves = [
+    {
+      label: "Phase 1 polish",
+      route: "#clearance-sprint",
+      owner: "Current build",
+      detail: "Keep tightening the self-research journey from signal to memo to review."
+    },
+    {
+      label: "Live data readiness",
+      route: "#data-readiness",
+      owner: "Launch gate",
+      detail: "Connect AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, benchmark, and citation dates."
+    },
+    {
+      label: "Membership layer",
+      route: "#pricing",
+      owner: "Phase 1 launch",
+      detail: "Prepare low-cost retail plans, account storage, payments, limits, and trust-first onboarding."
+    },
+    {
+      label: "Distributor foundation",
+      route: "#consent-gate",
+      owner: "Phase 2",
+      detail: "Plan ARN/EUIN, PAN-consent workflow, client book, distributor dashboard, and privacy controls."
+    }
+  ];
+  const pace = `v77 | ${BUILD_TRACKER_PHASES.length} build lanes | ${doneModules.length} completed or drafted modules`;
+  const guardrails = [
+    "Build Tracker is a project roadmap for this prototype; it is not an investor-facing recommendation or launch promise.",
+    "Completion percentages are product-build estimates, not regulatory, legal, data, security, or commercial readiness certifications.",
+    "Before production launch, live data, auth, privacy, payment, audit logs, disclosures, and legal review must be handled separately."
+  ];
+  return {
+    active,
+    completed,
+    current,
+    doneModules,
+    guardrails,
+    nextLane,
+    nextMoves,
+    pace,
+    phases: BUILD_TRACKER_PHASES,
+    planned,
+    weightedProgress
+  };
+}
+
+function renderBuildTracker() {
+  if (!els.buildTrackerOutput) return;
+  const tracker = buildTrackerConfig();
+  if (els.buildTrackerSummary) {
+    els.buildTrackerSummary.textContent = `${tracker.weightedProgress}/100 | ${tracker.current.phase}`;
+  }
+  els.buildTrackerOutput.innerHTML = `
+    <div class="build-tracker-hero">
+      <div>
+        <span class="metric-label">Current build phase</span>
+        <h3>${escapeHtml(tracker.current.phase)}: ${escapeHtml(tracker.current.label)}</h3>
+        <p>${escapeHtml(tracker.current.next)}</p>
+      </div>
+      <div class="build-tracker-score" style="--score:${tracker.weightedProgress}">
+        <b>${tracker.weightedProgress}</b>
+        <span>Build</span>
+      </div>
+    </div>
+    <div class="build-tracker-metrics">
+      <article><span>Prototype version</span><strong>Phase 1 v77</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+      <article><span>Current phase</span><strong>${escapeHtml(tracker.current.phase)}</strong><p>${escapeHtml(tracker.current.label)}</p></article>
+      <article><span>Active lanes</span><strong>${tracker.active.length}</strong><p>${tracker.planned.length} planned lanes waiting</p></article>
+      <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
+    </div>
+    <div class="build-phase-grid">
+      ${tracker.phases.map((phase) => `
+        <article class="${phase.status === "Complete" ? "complete" : phase.status === "Active" ? "active" : "planned"}">
+          <div><span>${escapeHtml(phase.phase)} | ${escapeHtml(phase.status)}</span><strong>${escapeHtml(phase.label)}</strong></div>
+          <div class="build-progress-bar" aria-label="${escapeHtml(phase.label)} progress"><span style="width:${phase.progress}%"></span></div>
+          <p>${phase.progress}/100 | ${escapeHtml(phase.next)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(phase.route)}">Open lane</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="build-next-grid">
+      <article>
+        <span>What is done</span>
+        <strong>Core Phase 1 desk is alive</strong>
+        <ul>
+          ${tracker.doneModules.slice(0, 10).map((entry) => `<li>${escapeHtml(entry.phase)}: ${escapeHtml(entry.item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>What comes next</span>
+        <strong>${escapeHtml(tracker.nextLane.phase)}: ${escapeHtml(tracker.nextLane.label)}</strong>
+        <ul>
+          ${tracker.nextMoves.map((move) => `<li>${escapeHtml(move.label)}: ${escapeHtml(move.detail)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+    <div class="build-move-grid">
+      ${tracker.nextMoves.map((move) => `
+        <article>
+          <span>${escapeHtml(move.owner)}</span>
+          <strong>${escapeHtml(move.label)}</strong>
+          <p>${escapeHtml(move.detail)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(move.route)}">Open</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="build-tracker-guardrail">
+      <span>Tracker boundary</span>
+      <ul>
+        ${tracker.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+}
+
+function makeBuildTrackerBrief() {
+  const tracker = buildTrackerConfig();
+  return [
+    "# NiveshNadi Build Tracker",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Overall prototype progress: ${tracker.weightedProgress}/100`,
+    `Current phase: ${tracker.current.phase} - ${tracker.current.label}`,
+    `Active lanes: ${tracker.active.length}`,
+    `Planned lanes: ${tracker.planned.length}`,
+    "",
+    "## Phase Status",
+    ...tracker.phases.map((phase) => `- ${phase.phase}: ${phase.label} | ${phase.status} | ${phase.progress}/100 | Next: ${phase.next}`),
+    "",
+    "## Next Moves",
+    ...tracker.nextMoves.map((move) => `- ${move.label}: ${move.detail}`),
+    "",
+    "## Guardrails",
+    ...tracker.guardrails.map((item) => `- ${item}`),
+    "",
+    "Project roadmap only. Completion percentages are build estimates, not launch readiness certifications."
+  ].join("\n");
+}
+
+function openBuildNextLane() {
+  scrollToHash(buildTrackerConfig().nextLane.route, "smooth", true);
 }
 
 function riskClass(risk) {
@@ -7269,6 +7492,7 @@ function makeCompareNote() {
 
 function renderAll() {
   renderSignalStrip();
+  renderBuildTracker();
   renderProfileRoom();
   renderSelectionFunnel();
   renderShortlistReasonBoard();
@@ -7372,9 +7596,24 @@ function scrollToHash(hash, behavior = "smooth", updateHash = false) {
 function settleHashNavigation() {
   const hash = window.location.hash;
   if (!targetFromHash(hash)) return;
+  state.hashSettleUntil = Date.now() + 1600;
+  updateWorkspaceNavigator(hash);
   requestAnimationFrame(() => scrollToHash(hash, "auto"));
-  window.setTimeout(() => scrollToHash(hash, "auto"), 120);
-  window.setTimeout(() => scrollToHash(hash, "auto"), 360);
+  window.setTimeout(() => {
+    updateWorkspaceNavigator(hash);
+    scrollToHash(hash, "auto");
+  }, 120);
+  window.setTimeout(() => {
+    updateWorkspaceNavigator(hash);
+    scrollToHash(hash, "auto");
+  }, 360);
+  window.setTimeout(() => {
+    updateWorkspaceNavigator(hash);
+    scrollToHash(hash, "auto");
+  }, 820);
+  window.setTimeout(() => {
+    updateWorkspaceNavigator(hash);
+  }, 1500);
 }
 
 function workspaceOption(hash) {
@@ -17112,6 +17351,8 @@ function bindEvents() {
   });
   els.applyProfileRoom?.addEventListener("click", applyProfileRoom);
   els.copyProfileRoom?.addEventListener("click", () => copyText(makeProfileRoomBrief()));
+  els.openBuildNext?.addEventListener("click", openBuildNextLane);
+  els.copyBuildTracker?.addEventListener("click", () => copyText(makeBuildTrackerBrief()));
   els.openDailyPriority?.addEventListener("click", openDailyPriority);
   els.copyDailyCommand?.addEventListener("click", () => copyText(makeDailyCommandBrief()));
   els.openDecisionRadarFocus?.addEventListener("click", openDecisionRadarFocus);
@@ -17805,6 +18046,12 @@ function bindEvents() {
   });
 
   document.addEventListener("click", (event) => {
+    const buildRoute = event.target.closest("[data-build-route]");
+    if (!buildRoute) return;
+    scrollToHash(buildRoute.dataset.buildRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
     const copySignal = event.target.closest("#copySignalStrip");
     if (!copySignal) return;
     copyText(makeSignalStripNote());
@@ -18108,6 +18355,7 @@ function bindSectionNavigation() {
 
   window.addEventListener("hashchange", () => {
     if (targetFromHash(window.location.hash)) {
+      state.hashSettleUntil = Date.now() + 900;
       scrollToHash(window.location.hash, "smooth");
     }
   });
@@ -18177,6 +18425,10 @@ function bindWorkspaceJump() {
   let scrollFrame = 0;
   const syncFromScroll = () => {
     scrollFrame = 0;
+    if (Date.now() < state.hashSettleUntil && targetFromHash(window.location.hash)) {
+      updateWorkspaceNavigator(window.location.hash);
+      return;
+    }
     updateWorkspaceNavigator(workspaceHashFromViewport());
   };
   const queueScrollSync = () => {
@@ -18190,6 +18442,9 @@ function bindWorkspaceJump() {
     scrollToHash(hash, "smooth", true);
   });
   window.addEventListener("hashchange", () => {
+    if (targetFromHash(window.location.hash)) {
+      state.hashSettleUntil = Date.now() + 900;
+    }
     updateWorkspaceNavigator(window.location.hash);
   });
   window.addEventListener("scroll", queueScrollSync, { passive: true });
@@ -18209,6 +18464,10 @@ function cacheElements() {
     resetFilters: qs("#resetFilters"),
     copyBrief: qs("#copyBrief"),
     nadiSignalStrip: qs("#nadiSignalStrip"),
+    buildTrackerSummary: qs("#buildTrackerSummary"),
+    buildTrackerOutput: qs("#buildTrackerOutput"),
+    openBuildNext: qs("#openBuildNext"),
+    copyBuildTracker: qs("#copyBuildTracker"),
     profileRoomForm: qs("#profileRoomForm"),
     profileIntent: qs("#profileIntent"),
     profileHorizon: qs("#profileHorizon"),

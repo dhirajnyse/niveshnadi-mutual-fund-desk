@@ -84,6 +84,7 @@ assert(index.includes("id=\"workspaceJump\""), "index.html is missing the Worksp
 assert(index.includes("id=\"workspaceStatus\""), "index.html is missing the Workspace Command status.");
 assert(index.includes("nav-mode-strip"), "index.html is missing the Smart Navigation phase rail.");
 assert(index.includes("id=\"nadiSignalStrip\""), "index.html is missing the Nadi Signal Strip.");
+assert(index.includes("id=\"build-tracker\""), "index.html is missing the Nadi Build Tracker.");
 assert(index.includes("id=\"daily-brief\""), "index.html is missing the Nadi Daily Command Brief.");
 assert(index.includes("id=\"decision-radar\""), "index.html is missing the Nadi Research Decision Radar.");
 assert(index.includes("id=\"question-stack\""), "index.html is missing the Nadi Research Question Stack.");
@@ -111,6 +112,7 @@ assert(app.includes("const DATA_VERSION"), "app.js is missing DATA_VERSION.");
 assert(app.includes("Nadi Large Cap Core Fund"), "app.js is missing demo fund data.");
 assert(app.includes("function whyFundLens") && app.includes("function makeWhyFundNote"), "app.js is missing Why This Fund Lens behavior.");
 assert(app.includes("function renderSignalStrip") && app.includes("function makeSignalStripNote"), "app.js is missing Nadi Signal Strip behavior.");
+assert(app.includes("function renderBuildTracker") && app.includes("function makeBuildTrackerBrief"), "app.js is missing Nadi Build Tracker behavior.");
 assert(app.includes("function renderDailyCommandBrief") && app.includes("function makeDailyCommandBrief"), "app.js is missing Nadi Daily Command Brief behavior.");
 assert(app.includes("function renderDecisionRadar") && app.includes("function makeDecisionRadarBrief"), "app.js is missing Nadi Research Decision Radar behavior.");
 assert(app.includes("function renderQuestionStack") && app.includes("function makeQuestionStackBrief"), "app.js is missing Nadi Research Question Stack behavior.");
@@ -192,6 +194,7 @@ assert(styles.includes("--mint") && styles.includes("--gold") && styles.includes
 assert(styles.includes("scroll-padding-top") && styles.includes("scroll-margin-top"), "styles.css is missing sticky-header anchor offset rules.");
 assert(styles.includes(".workspace-jump") && styles.includes(".nav-mode-strip") && styles.includes(".nav-stack"), "styles.css is missing Smart Navigation Shell styles.");
 assert(styles.includes(".nadi-signal-strip") && styles.includes(".signal-score"), "styles.css is missing Nadi Signal Strip styles.");
+assert(styles.includes(".build-tracker-output") && styles.includes(".build-tracker-hero"), "styles.css is missing Nadi Build Tracker styles.");
 assert(styles.includes(".daily-command-output") && styles.includes(".daily-command-hero"), "styles.css is missing Nadi Daily Command Brief styles.");
 assert(styles.includes(".decision-radar-output") && styles.includes(".decision-radar-hero"), "styles.css is missing Nadi Research Decision Radar styles.");
 assert(styles.includes(".question-stack-output") && styles.includes(".question-stack-hero"), "styles.css is missing Nadi Research Question Stack styles.");
@@ -316,6 +319,7 @@ for (const file of [
   "docs/FIRST_5_MINUTE_START.md",
   "docs/WHY_THIS_FUND_LENS.md",
   "docs/NADI_SIGNAL_STRIP.md",
+  "docs/BUILD_TRACKER.md",
   "docs/DAILY_COMMAND_BRIEF.md",
   "docs/DECISION_RADAR.md",
   "docs/RESEARCH_QUESTION_STACK.md",

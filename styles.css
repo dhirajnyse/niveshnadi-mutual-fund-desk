@@ -5710,6 +5710,1068 @@ a:focus-visible {
   margin: 5px 0 0;
 }
 
+.source-queue-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
+  gap: 12px;
+}
+
+.source-queue-form {
+  align-content: start;
+}
+
+.source-queue-output {
+  display: grid;
+  gap: 12px;
+  min-height: 100%;
+}
+
+.source-queue-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(234, 242, 251, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.source-queue-hero.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.source-queue-hero.watch {
+  border-color: rgba(225, 160, 55, 0.42);
+}
+
+.source-queue-hero.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.source-queue-hero h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.source-queue-hero p,
+.source-queue-card p,
+.source-queue-card li,
+.source-queue-action p,
+.source-queue-panel p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.source-queue-score {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  display: grid;
+  grid-template-rows: 1fr auto auto 1fr;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--gold) calc(var(--score) * 1%), #dce7ed 0);
+  text-align: center;
+}
+
+.source-queue-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.source-queue-score b,
+.source-queue-score span {
+  position: relative;
+}
+
+.source-queue-score b {
+  grid-row: 2;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.source-queue-score span {
+  grid-row: 3;
+  margin-top: 3px;
+  color: #dce7ed;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.source-queue-metric-grid,
+.source-queue-grid,
+.source-queue-mini-grid,
+.source-queue-panel-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.source-queue-metric-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.source-queue-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.source-queue-mini-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.source-queue-panel-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.source-queue-metric-grid article,
+.source-queue-card,
+.source-queue-panel {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.source-queue-card.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+}
+
+.source-queue-card.watch {
+  border-color: rgba(225, 160, 55, 0.36);
+}
+
+.source-queue-card.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+}
+
+.source-queue-metric-grid span,
+.source-queue-card-head span,
+.source-queue-mini-grid span,
+.source-queue-action span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.source-queue-metric-grid strong,
+.source-queue-card-head strong,
+.source-queue-mini-grid b {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.source-queue-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.source-queue-card-head b {
+  color: var(--ink);
+  font-size: 20px;
+  white-space: nowrap;
+}
+
+.source-queue-action {
+  margin: 10px 0;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ffffff;
+}
+
+.source-queue-panel h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.source-queue-guardrail {
+  background: var(--mint-soft);
+  border-color: rgba(15, 124, 107, 0.24);
+}
+
+.source-intake-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
+  gap: 12px;
+}
+
+.source-intake-form {
+  align-content: start;
+}
+
+.source-intake-output {
+  display: grid;
+  gap: 12px;
+  min-height: 100%;
+}
+
+.source-intake-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(234, 242, 251, 0.96), rgba(255, 250, 240, 0.84));
+}
+
+.source-intake-hero.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.source-intake-hero.watch {
+  border-color: rgba(225, 160, 55, 0.42);
+}
+
+.source-intake-hero.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.92), rgba(245, 249, 252, 0.94));
+}
+
+.source-intake-hero h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.source-intake-hero p,
+.source-intake-card p,
+.source-intake-card li,
+.source-intake-panel p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.source-intake-score {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  display: grid;
+  grid-template-rows: 1fr auto auto 1fr;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  text-align: center;
+}
+
+.source-intake-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.source-intake-score b,
+.source-intake-score span {
+  position: relative;
+}
+
+.source-intake-score b {
+  grid-row: 2;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.source-intake-score span {
+  grid-row: 3;
+  margin-top: 3px;
+  color: #dce7ed;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.source-intake-metric-grid,
+.source-intake-grid,
+.source-intake-panel-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.source-intake-metric-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.source-intake-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.source-intake-panel-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.source-intake-metric-grid article,
+.source-intake-card,
+.source-intake-panel {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.source-intake-card.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+}
+
+.source-intake-card.watch {
+  border-color: rgba(225, 160, 55, 0.36);
+}
+
+.source-intake-card.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+}
+
+.source-intake-metric-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.source-intake-metric-grid strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.source-intake-card h3,
+.source-intake-panel h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.source-intake-guardrail {
+  background: var(--mint-soft);
+  border-color: rgba(15, 124, 107, 0.24);
+}
+
+.source-drift-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
+  gap: 12px;
+}
+
+.source-drift-form {
+  align-content: start;
+}
+
+.source-drift-output {
+  display: grid;
+  gap: 12px;
+  min-height: 100%;
+}
+
+.source-drift-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(234, 242, 251, 0.96), rgba(245, 249, 252, 0.96));
+}
+
+.source-drift-hero.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.source-drift-hero.watch {
+  border-color: rgba(225, 160, 55, 0.42);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.96), rgba(245, 249, 252, 0.96));
+}
+
+.source-drift-hero.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.92), rgba(245, 249, 252, 0.94));
+}
+
+.source-drift-hero h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.source-drift-hero p,
+.source-drift-card p,
+.source-drift-card li,
+.source-drift-panel p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.source-drift-score {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  display: grid;
+  grid-template-rows: 1fr auto auto 1fr;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--gold) calc(var(--score) * 1%), #dce7ed 0);
+  text-align: center;
+}
+
+.source-drift-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.source-drift-score b,
+.source-drift-score span {
+  position: relative;
+}
+
+.source-drift-score b {
+  grid-row: 2;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.source-drift-score span {
+  grid-row: 3;
+  margin-top: 3px;
+  color: #dce7ed;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.source-drift-metric-grid,
+.source-drift-grid,
+.source-drift-panel-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.source-drift-metric-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.source-drift-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.source-drift-panel-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.source-drift-metric-grid article,
+.source-drift-card,
+.source-drift-panel {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.source-drift-card.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+}
+
+.source-drift-card.watch {
+  border-color: rgba(225, 160, 55, 0.36);
+}
+
+.source-drift-card.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+}
+
+.source-drift-metric-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.source-drift-metric-grid strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.source-drift-card h3,
+.source-drift-panel h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.source-drift-guardrail {
+  background: var(--mint-soft);
+  border-color: rgba(15, 124, 107, 0.24);
+}
+
+.claim-release-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
+  gap: 12px;
+}
+
+.claim-release-form {
+  align-content: start;
+}
+
+.claim-release-output {
+  display: grid;
+  gap: 12px;
+  min-height: 100%;
+}
+
+.claim-release-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.96), rgba(245, 249, 252, 0.96));
+}
+
+.claim-release-hero.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.claim-release-hero.watch {
+  border-color: rgba(225, 160, 55, 0.42);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.96), rgba(245, 249, 252, 0.96));
+}
+
+.claim-release-hero.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.92), rgba(245, 249, 252, 0.94));
+}
+
+.claim-release-hero h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.claim-release-hero p,
+.claim-release-card p,
+.claim-release-card li,
+.claim-release-panel p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.claim-release-score {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  display: grid;
+  grid-template-rows: 1fr auto auto 1fr;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--gold) calc(var(--score) * 1%), #dce7ed 0);
+  text-align: center;
+}
+
+.claim-release-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.claim-release-score b,
+.claim-release-score span {
+  position: relative;
+}
+
+.claim-release-score b {
+  grid-row: 2;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.claim-release-score span {
+  grid-row: 3;
+  margin-top: 3px;
+  color: #dce7ed;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.claim-release-metric-grid,
+.claim-release-grid,
+.claim-release-panel-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.claim-release-metric-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.claim-release-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.claim-release-panel-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.claim-release-metric-grid article,
+.claim-release-card,
+.claim-release-panel {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.claim-release-card.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+}
+
+.claim-release-card.watch {
+  border-color: rgba(225, 160, 55, 0.36);
+}
+
+.claim-release-card.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+}
+
+.claim-release-metric-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.claim-release-metric-grid strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.claim-release-card h3,
+.claim-release-panel h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.claim-release-guardrail {
+  background: var(--mint-soft);
+  border-color: rgba(15, 124, 107, 0.24);
+}
+
+.claim-ledger-output {
+  display: grid;
+  gap: 12px;
+}
+
+.claim-ledger-empty,
+.claim-ledger-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 104px;
+  gap: 15px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.96), rgba(245, 249, 252, 0.96));
+}
+
+.claim-ledger-hero.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.claim-ledger-hero.watch {
+  border-color: rgba(225, 160, 55, 0.42);
+}
+
+.claim-ledger-hero.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.92), rgba(245, 249, 252, 0.94));
+}
+
+.claim-ledger-empty h3,
+.claim-ledger-hero h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 25px;
+  line-height: 1.12;
+}
+
+.claim-ledger-empty p,
+.claim-ledger-hero p,
+.claim-ledger-card p,
+.claim-ledger-card li,
+.claim-ledger-panel p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.claim-ledger-score {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  display: grid;
+  grid-template-rows: 1fr auto auto 1fr;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--gold) calc(var(--score) * 1%), #dce7ed 0);
+  text-align: center;
+}
+
+.claim-ledger-score::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.claim-ledger-score b,
+.claim-ledger-score span {
+  position: relative;
+}
+
+.claim-ledger-score b {
+  grid-row: 2;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.claim-ledger-score span {
+  grid-row: 3;
+  margin-top: 4px;
+  color: #dce7ed;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.claim-ledger-metric-grid,
+.claim-ledger-grid,
+.claim-ledger-card-grid,
+.claim-ledger-mini-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.claim-ledger-metric-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.claim-ledger-grid,
+.claim-ledger-card-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.claim-ledger-mini-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.claim-ledger-metric-grid div,
+.claim-ledger-card,
+.claim-ledger-panel {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.claim-ledger-card.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+}
+
+.claim-ledger-card.watch {
+  border-color: rgba(225, 160, 55, 0.36);
+}
+
+.claim-ledger-card.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+}
+
+.claim-ledger-metric-grid span,
+.claim-ledger-card-head span,
+.claim-ledger-mini-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.claim-ledger-metric-grid strong,
+.claim-ledger-card-head strong,
+.claim-ledger-mini-grid b {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.22;
+}
+
+.claim-ledger-card {
+  display: grid;
+  gap: 10px;
+}
+
+.claim-ledger-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: start;
+}
+
+.claim-ledger-card small {
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.claim-ledger-panel h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+
+.claim-ledger-list {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.claim-ledger-funds {
+  display: grid;
+  gap: 7px;
+}
+
+.claim-ledger-funds span {
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ffffff;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.claim-ledger-guardrail {
+  background: var(--mint-soft);
+  border-color: rgba(15, 124, 107, 0.24);
+}
+
+.claim-rollback-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
+  gap: 12px;
+}
+
+.claim-rollback-form {
+  align-content: start;
+}
+
+.claim-rollback-output {
+  display: grid;
+  gap: 12px;
+  min-height: 100%;
+}
+
+.claim-rollback-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.96), rgba(245, 249, 252, 0.96));
+}
+
+.claim-rollback-hero.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.claim-rollback-hero.watch {
+  border-color: rgba(225, 160, 55, 0.42);
+}
+
+.claim-rollback-hero.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.92), rgba(245, 249, 252, 0.94));
+}
+
+.claim-rollback-hero h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.claim-rollback-hero p,
+.claim-rollback-card p,
+.claim-rollback-card li,
+.claim-rollback-panel p,
+.claim-rollback-panel li {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.claim-rollback-score {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  display: grid;
+  grid-template-rows: 1fr auto auto 1fr;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--gold) calc(var(--score) * 1%), #dce7ed 0);
+  text-align: center;
+}
+
+.claim-rollback-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.claim-rollback-score b,
+.claim-rollback-score span {
+  position: relative;
+}
+
+.claim-rollback-score b {
+  grid-row: 2;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.claim-rollback-score span {
+  grid-row: 3;
+  margin-top: 3px;
+  color: #dce7ed;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.claim-rollback-metric-grid,
+.claim-rollback-grid,
+.claim-rollback-panel-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.claim-rollback-metric-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.claim-rollback-grid,
+.claim-rollback-panel-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.claim-rollback-metric-grid article,
+.claim-rollback-card,
+.claim-rollback-panel {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.claim-rollback-card.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+}
+
+.claim-rollback-card.watch {
+  border-color: rgba(225, 160, 55, 0.36);
+}
+
+.claim-rollback-card.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+}
+
+.claim-rollback-metric-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.claim-rollback-metric-grid strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.claim-rollback-card h3,
+.claim-rollback-panel h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.claim-rollback-list {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.claim-rollback-guardrail {
+  background: var(--mint-soft);
+  border-color: rgba(15, 124, 107, 0.24);
+}
+
 .doc-grid {
   display: grid;
   grid-template-columns: minmax(300px, 0.48fr) minmax(0, 1.52fr);
@@ -7608,6 +8670,11 @@ a:focus-visible {
   .evidence-grid,
   .citation-layout,
   .data-grid,
+  .source-queue-layout,
+  .source-intake-layout,
+  .source-drift-layout,
+  .claim-release-layout,
+  .claim-rollback-layout,
   .doc-grid,
   .glossary-grid,
   .behavior-layout,
@@ -7709,6 +8776,26 @@ a:focus-visible {
   .dossier-ledger,
   .data-card-grid,
   .data-detail-grid,
+  .source-queue-metric-grid,
+  .source-queue-grid,
+  .source-queue-mini-grid,
+  .source-queue-panel-grid,
+  .source-intake-metric-grid,
+  .source-intake-grid,
+  .source-intake-panel-grid,
+  .source-drift-metric-grid,
+  .source-drift-grid,
+  .source-drift-panel-grid,
+  .claim-release-metric-grid,
+  .claim-release-grid,
+  .claim-release-panel-grid,
+  .claim-ledger-metric-grid,
+  .claim-ledger-grid,
+  .claim-ledger-card-grid,
+  .claim-ledger-mini-grid,
+  .claim-rollback-metric-grid,
+  .claim-rollback-grid,
+  .claim-rollback-panel-grid,
   .doc-clause-grid,
   .doc-card-grid,
   .glossary-term-grid,
@@ -7847,6 +8934,26 @@ a:focus-visible {
   .dossier-ledger,
   .data-card-grid,
   .data-detail-grid,
+  .source-queue-metric-grid,
+  .source-queue-grid,
+  .source-queue-mini-grid,
+  .source-queue-panel-grid,
+  .source-intake-metric-grid,
+  .source-intake-grid,
+  .source-intake-panel-grid,
+  .source-drift-metric-grid,
+  .source-drift-grid,
+  .source-drift-panel-grid,
+  .claim-release-metric-grid,
+  .claim-release-grid,
+  .claim-release-panel-grid,
+  .claim-ledger-metric-grid,
+  .claim-ledger-grid,
+  .claim-ledger-card-grid,
+  .claim-ledger-mini-grid,
+  .claim-rollback-metric-grid,
+  .claim-rollback-grid,
+  .claim-rollback-panel-grid,
   .doc-clause-grid,
   .doc-card-grid,
   .glossary-term-grid,
@@ -7966,6 +9073,13 @@ a:focus-visible {
   }
 
   .doc-hero,
+  .source-queue-hero,
+  .source-intake-hero,
+  .source-drift-hero,
+  .claim-release-hero,
+  .claim-ledger-empty,
+  .claim-ledger-hero,
+  .claim-rollback-hero,
   .glossary-hero,
   .behavior-hero,
   .behavior-route-card,
@@ -7986,7 +9100,13 @@ a:focus-visible {
   .claim-score,
   .receipt-score,
   .receipt-vault-score,
-  .citation-score {
+  .citation-score,
+  .source-queue-score,
+  .source-intake-score,
+  .source-drift-score,
+  .claim-release-score,
+  .claim-ledger-score,
+  .claim-rollback-score {
     justify-self: start;
   }
 

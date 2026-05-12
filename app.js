@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260512-02";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v46 Citation Binder";
+const DATA_VERSION = "20260512-10";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v52 Claim Rollback Console";
 
 const FUNDS = [
   {
@@ -4700,6 +4700,12 @@ function renderAll() {
   renderCitationBinder();
   renderFundHouseLens();
   renderDataReadinessRoom();
+  renderSourceQaQueue();
+  renderSourceIntakeConsole();
+  renderSourceDriftMonitor();
+  renderClaimReleaseGate();
+  renderClaimReleaseLedger();
+  renderClaimRollbackConsole();
   renderDocDecoder();
   renderGlossary();
   renderBehaviorGuard();
@@ -5330,7 +5336,7 @@ function makeBlueprintNote() {
     "## Guardrails",
     ...config.guardrails.map((item) => `- ${item}`),
     "",
-    "## Guardrail",
+    "## Privacy boundary",
     "Research support only. This is not personalized investment advice, a model portfolio, allocation advice, or a transaction instruction."
   ].join("\n");
 }
@@ -7282,6 +7288,1527 @@ function makeDataSpec() {
     "",
     "## Guardrail",
     "No live fund claim should appear without source date, extraction status, field validation, and citation path."
+  ].join("\n");
+}
+
+function sourceQueueModeLabel(mode) {
+  return {
+    current: "Current demo queue",
+    dry: "Live dry-run queue",
+    launch: "Launch candidate queue",
+    stale: "Stale-source stress queue"
+  }[mode] || "Current demo queue";
+}
+
+function sourceQueuePriorityLabel(priority) {
+  return {
+    blockers: "Blockers first",
+    freshness: "Freshness first",
+    citation: "Citation first",
+    score: "Lowest score first"
+  }[priority] || "Blockers first";
+}
+
+function sourceQueueConfig() {
+  return {
+    mode: els.sourceQueueMode?.value || "current",
+    priority: els.sourceQueuePriority?.value || "blockers",
+    owner: els.sourceQueueOwner?.value || "all"
+  };
+}
+
+function queueAgeForPipeline(pipeline, index, mode) {
+  if (mode === "stale") return pipeline.freshnessDays + 14 + index * 2;
+  if (mode === "launch") return Math.max(1, pipeline.freshnessDays - (index % 2));
+  if (mode === "dry") return Math.max(2, Math.round(pipeline.freshnessDays * 0.72));
+  return Math.max(1, Math.round(pipeline.freshnessDays * 0.45) + (index % 3));
+}
+
+function sourceQaItem(pipeline, index, config, fund) {
+  const citation = CITATION_SOURCES.find((source) => source.id === pipeline.id) || CITATION_SOURCES[0];
+  const age = queueAgeForPipeline(pipeline, index, config.mode);
+  const staleDays = Math.max(0, age - pipeline.freshnessDays);
+  const citationStaleDays = Math.max(0, age - citation.maxAge);
+  const visibility = config.mode === "stale" && index % 2 === 1 ? "missing" : config.mode === "dry" && index % 2 === 0 ? "internal" : "visible";
+  const confidence = config.mode === "stale" && index % 3 === 0 ? "low" : pipeline.readiness >= 70 ? "high" : "medium";
+  const freshnessScore = Math.round(clampNumber(100 - staleDays * 4 - citationStaleDays * 2, 20, 100));
+  const visibilityScore = visibility === "visible" ? 96 : visibility === "internal" ? 62 : 24;
+  const confidenceScore = confidence === "high" ? 92 : confidence === "medium" ? 72 : 38;
+  const proofScore = Math.round(clampNumber(
+    pipeline.readiness * 0.36 +
+      freshnessScore * 0.25 +
+      visibilityScore * 0.2 +
+      confidenceScore * 0.13 +
+      evidenceReadinessScore(fund) * 0.06,
+    18,
+    96
+  ));
+  const blockers = [
+    ...(staleDays ? [`fresh source date overdue by ${staleDays} day${staleDays === 1 ? "" : "s"}`] : []),
+    ...(visibility === "visible" ? [] : ["visible investor citation path"]),
+    ...(confidence === "low" ? ["extraction confidence below launch threshold"] : []),
+    ...pipeline.blockers.slice(0, config.mode === "launch" ? 2 : 3)
+  ];
+  const posture = proofScore >= 82 && !staleDays && visibility === "visible" && confidence !== "low"
+    ? "Launch ready"
+    : proofScore >= 68
+      ? "Dry-run ready"
+      : proofScore >= 52
+        ? "Fix queue"
+        : "Blocked";
+  const tone = posture === "Launch ready" ? "ready" : posture === "Blocked" ? "caution" : "watch";
+  const nextAction = staleDays
+    ? "Refresh source file and re-run freshness check."
+    : visibility !== "visible"
+      ? "Attach public citation path beside investor-facing claim."
+      : confidence === "low"
+        ? "Re-run extraction QA before launch use."
+        : blockers.length > 2
+          ? "Resolve source-specific blockers and promote to dry run."
+          : "Keep in launch candidate queue with final evidence review.";
+
+  return {
+    age,
+    blockers,
+    citation,
+    confidence,
+    confidenceScore,
+    freshnessScore,
+    nextAction,
+    pipeline,
+    posture,
+    proofScore,
+    staleDays,
+    tone,
+    visibility,
+    visibilityScore
+  };
+}
+
+function sourceQaItems(config = sourceQueueConfig()) {
+  const fund = selectedFund();
+  let items = DATA_PIPELINES.map((pipeline, index) => sourceQaItem(pipeline, index, config, fund));
+  if (config.owner !== "all") {
+    items = items.filter((item) => item.pipeline.owner === config.owner);
+  }
+  const sorters = {
+    blockers: (a, b) => b.blockers.length - a.blockers.length || a.proofScore - b.proofScore,
+    freshness: (a, b) => b.staleDays - a.staleDays || a.freshnessScore - b.freshnessScore,
+    citation: (a, b) => a.visibilityScore - b.visibilityScore || a.confidenceScore - b.confidenceScore,
+    score: (a, b) => a.proofScore - b.proofScore
+  };
+  return items.sort(sorters[config.priority] || sorters.blockers);
+}
+
+function renderSourceQaQueue(event) {
+  if (event) event.preventDefault();
+  if (!els.sourceQueueOutput || !els.sourceQueueSummary) return;
+  const config = sourceQueueConfig();
+  const items = sourceQaItems(config);
+  const avgScore = items.length ? Math.round(items.reduce((sum, item) => sum + item.proofScore, 0) / items.length) : 0;
+  const ready = items.filter((item) => item.posture === "Launch ready").length;
+  const blocked = items.filter((item) => item.posture === "Blocked").length;
+  const stale = items.filter((item) => item.staleDays > 0).length;
+  const missingCitation = items.filter((item) => item.visibility !== "visible").length;
+  const selected = selectedFund();
+  const posture = blocked ? "Source launch queue has blockers" : ready === items.length ? "All visible sources are launch shaped" : "Source queue needs final QA";
+  const tone = blocked ? "caution" : ready === items.length ? "ready" : "watch";
+  els.sourceQueueSummary.textContent = `${ready} ready | ${blocked} blocked`;
+
+  els.sourceQueueOutput.innerHTML = `
+    <div class="source-queue-hero ${escapeHtml(tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(sourceQueueModeLabel(config.mode))}</span>
+        <h3>${escapeHtml(posture)}</h3>
+        <p>${items.length} source${items.length === 1 ? "" : "s"} in view for ${escapeHtml(selected.name)}. Sorted by ${escapeHtml(sourceQueuePriorityLabel(config.priority).toLowerCase())}.</p>
+      </div>
+      <div class="source-queue-score" style="--score:${avgScore}">
+        <b>${avgScore}</b>
+        <span>Queue</span>
+      </div>
+    </div>
+    <div class="source-queue-metric-grid">
+      <article><span>Launch ready</span><strong>${ready}</strong><p>Sources with fresh, visible, confident proof.</p></article>
+      <article><span>Blocked</span><strong>${blocked}</strong><p>Sources below operating threshold.</p></article>
+      <article><span>Stale</span><strong>${stale}</strong><p>Sources past freshness rule.</p></article>
+      <article><span>Citation gaps</span><strong>${missingCitation}</strong><p>Sources without investor-visible citation.</p></article>
+    </div>
+    <div class="source-queue-grid">
+      ${items.map((item) => `
+        <article class="source-queue-card ${escapeHtml(item.tone)}">
+          <div class="source-queue-card-head">
+            <div>
+              <span>${escapeHtml(item.pipeline.owner)}</span>
+              <strong>${escapeHtml(item.pipeline.title)}</strong>
+            </div>
+            <b>${item.proofScore}/100</b>
+          </div>
+          <p>${escapeHtml(item.posture)} | ${escapeHtml(item.pipeline.cadence)} | source age ${item.age} day${item.age === 1 ? "" : "s"}</p>
+          <div class="source-queue-mini-grid">
+            <div><span>Fresh</span><b>${item.freshnessScore}</b></div>
+            <div><span>Cite</span><b>${item.visibilityScore}</b></div>
+            <div><span>Extract</span><b>${item.confidenceScore}</b></div>
+          </div>
+          <div class="source-queue-action">
+            <span>Next action</span>
+            <p>${escapeHtml(item.nextAction)}</p>
+          </div>
+          <ul class="review-vault-list">
+            ${item.blockers.slice(0, 4).map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      `).join("")}
+    </div>
+    <div class="source-queue-panel-grid">
+      <article class="source-queue-panel">
+        <h3>Owner handoff</h3>
+        <p>Data operations owns source date and ingestion. Research operations owns extraction confidence. Compliance research owns document/version boundaries. Market data owns benchmark display rights.</p>
+      </article>
+      <article class="source-queue-panel source-queue-guardrail">
+        <h3>Privacy boundary</h3>
+        <p>Source QA never needs PAN, folio, CAS, bank data, account credentials, distributor client data, or private investor notes.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeSourceQaNote() {
+  const config = sourceQueueConfig();
+  const items = sourceQaItems(config);
+  const avgScore = items.length ? Math.round(items.reduce((sum, item) => sum + item.proofScore, 0) / items.length) : 0;
+  return [
+    "# NiveshNadi Source QA Queue",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Mode: ${sourceQueueModeLabel(config.mode)}`,
+    `Priority: ${sourceQueuePriorityLabel(config.priority)}`,
+    `Owner filter: ${config.owner}`,
+    `Average QA score: ${avgScore}/100`,
+    `Launch ready: ${items.filter((item) => item.posture === "Launch ready").length}`,
+    `Blocked: ${items.filter((item) => item.posture === "Blocked").length}`,
+    "",
+    "## Queue",
+    ...items.map((item) => [
+      `- ${item.pipeline.title}: ${item.proofScore}/100 | ${item.posture}`,
+      `  Owner: ${item.pipeline.owner}`,
+      `  Age: ${item.age} days | Freshness score: ${item.freshnessScore}/100`,
+      `  Citation: ${citationVisibilityLabel(item.visibility)} | Extraction: ${citationConfidenceLabel(item.confidence)}`,
+      `  Next action: ${item.nextAction}`,
+      `  Blockers: ${item.blockers.slice(0, 4).join(", ")}`
+    ].join("\n")),
+    "",
+    "## Privacy boundary",
+    "Source QA governs launch readiness only. It is not investor advice, transaction approval, or a return guarantee. It excludes PAN, folio, CAS, credentials, bank data, and distributor client records."
+  ].join("\n");
+}
+
+function selectedSourceIntakePipeline() {
+  const id = els.sourceIntakeSource?.value || selectedDataPipeline().id;
+  return DATA_PIPELINES.find((pipeline) => pipeline.id === id) || DATA_PIPELINES[0];
+}
+
+function sourceIntakeChannelLabel(channel) {
+  return {
+    "official-url": "Official URL or file source",
+    "upload-batch": "Batch file upload",
+    "api-partner": "API or licensed data partner",
+    "manual-review": "Manual research review"
+  }[channel] || "Official URL or file source";
+}
+
+function sourceIntakeFormatLabel(format) {
+  return {
+    "csv-json": "CSV or normalized JSON",
+    "api-json": "API JSON response",
+    pdf: "PDF factsheet/document",
+    xlsx: "Spreadsheet file",
+    html: "HTML page/table"
+  }[format] || "CSV or normalized JSON";
+}
+
+function sourceIntakeEvidenceLabel(evidence) {
+  return {
+    "citation-bound": "Source date and citation visible",
+    "source-only": "Source date visible, citation pending",
+    "citation-missing": "Citation missing"
+  }[evidence] || "Source date and citation visible";
+}
+
+function sourceIntakeScopeLabel(scope) {
+  return {
+    "single-fund": "Single fund dry run",
+    "category-set": "Category test set",
+    "full-amc": "Full AMC source family"
+  }[scope] || "Single fund dry run";
+}
+
+function sourceIntakeConfig() {
+  const pipeline = selectedSourceIntakePipeline();
+  const citation = CITATION_SOURCES.find((source) => source.id === pipeline.id) || CITATION_SOURCES[0];
+  const fund = selectedFund();
+  const channel = els.sourceIntakeChannel?.value || "official-url";
+  const format = els.sourceIntakeFormat?.value || "csv-json";
+  const evidence = els.sourceIntakeEvidence?.value || "citation-bound";
+  const age = clampNumber(Number(els.sourceIntakeAge?.value || 0), 0, 365);
+  const scope = els.sourceIntakeScope?.value || "single-fund";
+  const maxAge = Math.max(1, citation.maxAge || pipeline.freshnessDays);
+  const staleDays = Math.max(0, age - maxAge);
+  const freshnessScore = clampNumber(Math.round(100 - staleDays * 2.5), 25, 100);
+  const channelScore = {
+    "official-url": 88,
+    "upload-batch": 76,
+    "api-partner": 84,
+    "manual-review": 58
+  }[channel] || 74;
+  const formatScore = {
+    "csv-json": 88,
+    "api-json": 90,
+    pdf: 62,
+    xlsx: 74,
+    html: 56
+  }[format] || 70;
+  const evidenceScore = {
+    "citation-bound": 90,
+    "source-only": 64,
+    "citation-missing": 34
+  }[evidence] || 64;
+  const scopeScore = {
+    "single-fund": 82,
+    "category-set": 76,
+    "full-amc": 66
+  }[scope] || 76;
+  let score = Math.round(
+    pipeline.readiness * 0.3 +
+      freshnessScore * 0.18 +
+      channelScore * 0.16 +
+      formatScore * 0.14 +
+      evidenceScore * 0.16 +
+      scopeScore * 0.06
+  );
+  if (channel === "api-partner" && format === "api-json") score += 5;
+  if (channel === "manual-review" && scope === "full-amc") score -= 8;
+  if (format === "pdf" && !["amc-factsheet", "sid-kim"].includes(pipeline.id)) score -= 5;
+  score = clampNumber(score, 22, 96);
+  const hardBlockers = [
+    ...(staleDays ? [`fresh source date is overdue by ${staleDays} day${staleDays === 1 ? "" : "s"}`] : []),
+    ...(evidence === "citation-bound" ? [] : ["investor-visible citation path"]),
+    ...(["pdf", "html"].includes(format) ? ["extraction parser QA"] : []),
+    ...(channel === "manual-review" ? ["manual review cannot be the only production path"] : []),
+    ...(scope === "full-amc" ? ["AMC-wide format variation test"] : [])
+  ];
+  const blockers = [...hardBlockers, ...pipeline.blockers.slice(0, 3)];
+  const posture = score >= 84 && !hardBlockers.length
+    ? "Dry-run ready"
+    : score >= 68
+      ? "Needs mapping QA"
+      : score >= 52
+        ? "Intake design only"
+        : "Do not launch";
+  const tone = posture === "Dry-run ready" ? "ready" : posture === "Do not launch" ? "caution" : "watch";
+  const contractFields = Array.from(new Set([...pipeline.fields.slice(0, 6), ...citation.fields.slice(0, 3)]));
+  const validation = Array.from(new Set([
+    ...pipeline.checks,
+    "source date captured",
+    "citation path visible",
+    "no personal identifiers in source payload"
+  ]));
+  const nextStep = hardBlockers.length
+    ? `Resolve ${hardBlockers[0]} before treating this as live research.`
+    : score >= 84
+      ? "Promote to live dry run with captured source date, citation URL, and rollback note."
+      : "Complete field mapping and extraction QA before dry-run promotion.";
+  return {
+    age,
+    blockers,
+    channel,
+    channelScore,
+    citation,
+    contractFields,
+    evidence,
+    evidenceScore,
+    format,
+    formatScore,
+    freshnessScore,
+    fund,
+    maxAge,
+    nextStep,
+    pipeline,
+    posture,
+    scope,
+    scopeScore,
+    score,
+    staleDays,
+    tone,
+    validation
+  };
+}
+
+function renderSourceIntakeConsole(event) {
+  if (event) event.preventDefault();
+  if (!els.sourceIntakeOutput || !els.sourceIntakeSummary) return;
+  const config = sourceIntakeConfig();
+  els.sourceIntakeSummary.textContent = `${config.score}/100 | ${config.posture}`;
+  els.sourceIntakeOutput.innerHTML = `
+    <div class="source-intake-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(sourceIntakeChannelLabel(config.channel))}</span>
+        <h3>${escapeHtml(config.pipeline.title)} intake gate</h3>
+        <p>${escapeHtml(config.nextStep)} Scope: ${escapeHtml(sourceIntakeScopeLabel(config.scope))} for ${escapeHtml(config.fund.name)}.</p>
+      </div>
+      <div class="source-intake-score" style="--score:${config.score}">
+        <b>${config.score}</b>
+        <span>Intake</span>
+      </div>
+    </div>
+    <div class="source-intake-metric-grid">
+      <article><span>Freshness</span><strong>${config.freshnessScore}/100</strong><p>${config.age} day${config.age === 1 ? "" : "s"} old; max ${config.maxAge} day rule.</p></article>
+      <article><span>Format</span><strong>${config.formatScore}/100</strong><p>${escapeHtml(sourceIntakeFormatLabel(config.format))}</p></article>
+      <article><span>Evidence</span><strong>${config.evidenceScore}/100</strong><p>${escapeHtml(sourceIntakeEvidenceLabel(config.evidence))}</p></article>
+      <article><span>Owner</span><strong>${escapeHtml(config.pipeline.owner)}</strong><p>${escapeHtml(config.pipeline.cadence)} source cadence.</p></article>
+    </div>
+    <div class="source-intake-grid">
+      <article class="source-intake-card">
+        <h3>Field contract</h3>
+        <div class="field-chip-list">
+          ${config.contractFields.map((field) => `<span>${escapeHtml(field)}</span>`).join("")}
+        </div>
+      </article>
+      <article class="source-intake-card">
+        <h3>Citation contract</h3>
+        <p>${escapeHtml(config.citation.citationPath)}</p>
+        <p>${escapeHtml(config.citation.launchGate)}</p>
+      </article>
+      <article class="source-intake-card">
+        <h3>Validation runbook</h3>
+        <ul class="data-check-list">
+          ${config.validation.slice(0, 7).map((check) => `<li>${escapeHtml(check)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="source-intake-card ${escapeHtml(config.tone)}">
+        <h3>Blockers and handoff</h3>
+        <ul class="data-check-list">
+          ${config.blockers.slice(0, 7).map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+    <div class="source-intake-panel-grid">
+      <article class="source-intake-panel">
+        <h3>Launch handoff</h3>
+        <p>Store source URL or file hash, source date, extraction confidence, parser version, validation result, owner, rollback note, and citation display text before enabling live claims.</p>
+      </article>
+      <article class="source-intake-panel source-intake-guardrail">
+        <h3>Privacy boundary</h3>
+        <p>Source intake is for official public or licensed data only. It must not collect PAN, folio, CAS, bank data, login credentials, or distributor client records.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeSourceIntakeNote() {
+  const config = sourceIntakeConfig();
+  return [
+    "# NiveshNadi Source Intake Console",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Source family: ${config.pipeline.title}`,
+    `Owner: ${config.pipeline.owner}`,
+    `Intake path: ${sourceIntakeChannelLabel(config.channel)}`,
+    `Format: ${sourceIntakeFormatLabel(config.format)}`,
+    `Evidence visibility: ${sourceIntakeEvidenceLabel(config.evidence)}`,
+    `Scope: ${sourceIntakeScopeLabel(config.scope)}`,
+    `Source age: ${config.age} days`,
+    `Intake score: ${config.score}/100`,
+    `Posture: ${config.posture}`,
+    `Next step: ${config.nextStep}`,
+    "",
+    "## Field contract",
+    ...config.contractFields.map((field) => `- ${field}`),
+    "",
+    "## Validation runbook",
+    ...config.validation.map((check) => `- ${check}`),
+    "",
+    "## Blockers",
+    ...config.blockers.map((blocker) => `- ${blocker}`),
+    "",
+    "## Privacy boundary",
+    "Use only official public or licensed source data. Exclude PAN, folio, CAS, bank data, credentials, distributor client records, and private investor notes."
+  ].join("\n");
+}
+
+function selectedSourceDriftPipeline() {
+  const id = els.sourceDriftSource?.value || els.sourceIntakeSource?.value || DATA_PIPELINES[0].id;
+  return DATA_PIPELINES.find((pipeline) => pipeline.id === id) || DATA_PIPELINES[0];
+}
+
+function sourceDriftChangeProfile(change) {
+  return {
+    "routine-refresh": {
+      label: "Routine data refresh",
+      baseImpact: 12,
+      fields: ["source date", "latest value", "citation timestamp"],
+      question: "Did routine refresh preserve scheme identity, source date, and visible citation?"
+    },
+    "expense-change": {
+      label: "Expense or TER change",
+      baseImpact: 46,
+      fields: ["TER", "expense history", "cost lab", "decision receipt"],
+      question: "Should cost labels, Cost Reality Lab, and research receipts be refreshed?"
+    },
+    "holdings-change": {
+      label: "Holding or sector change",
+      baseImpact: 52,
+      fields: ["top holdings", "sector map", "overlap", "portfolio X-Ray"],
+      question: "Does the portfolio X-Ray need a fresh overlap and concentration review?"
+    },
+    "document-change": {
+      label: "SID/KIM or factsheet revision",
+      baseImpact: 58,
+      fields: ["objective", "risk text", "loads", "minimum SIP", "factsheet clauses"],
+      question: "Do document summaries, launch gates, and user-facing explanations need re-approval?"
+    },
+    "risk-change": {
+      label: "Riskometer or drawdown change",
+      baseImpact: 64,
+      fields: ["risk band", "stress lab", "behavior guard", "watchlist triggers"],
+      question: "Should risk labels, stress outputs, and watchlist triggers be re-run before display?"
+    },
+    "schema-change": {
+      label: "Format or schema change",
+      baseImpact: 72,
+      fields: ["parser", "field map", "validation checks", "extraction confidence"],
+      question: "Is parser QA complete before any extracted value is trusted?"
+    }
+  }[change] || sourceDriftChangeProfile("routine-refresh");
+}
+
+function sourceDriftMagnitudeLabel(value) {
+  return {
+    small: "Small drift",
+    medium: "Medium drift",
+    high: "High drift",
+    structural: "Structural change"
+  }[value] || "Small drift";
+}
+
+function sourceDriftProofLabel(value) {
+  return {
+    verified: "Source date and citation verified",
+    partial: "Source date visible, extraction pending",
+    missing: "Proof missing"
+  }[value] || "Source date and citation verified";
+}
+
+function sourceDriftActionLabel(value) {
+  return {
+    preview: "Preview refresh only",
+    queue: "Queue research refresh",
+    block: "Block live display"
+  }[value] || "Preview refresh only";
+}
+
+function sourceDriftConfig() {
+  const pipeline = selectedSourceDriftPipeline();
+  const citation = CITATION_SOURCES.find((source) => source.id === pipeline.id) || CITATION_SOURCES[0];
+  const fund = selectedFund();
+  const change = els.sourceDriftChange?.value || "routine-refresh";
+  const magnitude = els.sourceDriftMagnitude?.value || "small";
+  const age = clampNumber(Number(els.sourceDriftAge?.value || 0), 0, 365);
+  const proof = els.sourceDriftProof?.value || "verified";
+  const action = els.sourceDriftAction?.value || "preview";
+  const profile = sourceDriftChangeProfile(change);
+  const maxAge = Math.max(1, citation.maxAge || pipeline.freshnessDays);
+  const staleDays = Math.max(0, age - maxAge);
+  const freshnessScore = clampNumber(Math.round(100 - staleDays * 3), 20, 100);
+  const magnitudeScore = {
+    small: 92,
+    medium: 74,
+    high: 48,
+    structural: 26
+  }[magnitude] || 74;
+  const proofScore = {
+    verified: 92,
+    partial: 62,
+    missing: 24
+  }[proof] || 62;
+  const actionScore = {
+    preview: 84,
+    queue: 72,
+    block: 36
+  }[action] || 72;
+  const impact = clampNumber(
+    profile.baseImpact +
+      ({ small: 0, medium: 15, high: 30, structural: 44 }[magnitude] || 0) +
+      (proof === "missing" ? 14 : proof === "partial" ? 7 : 0) +
+      (staleDays ? 12 : 0),
+    5,
+    96
+  );
+  const driftScore = Math.round(clampNumber(
+    pipeline.readiness * 0.2 +
+      freshnessScore * 0.16 +
+      proofScore * 0.24 +
+      magnitudeScore * 0.15 +
+      actionScore * 0.11 +
+      (100 - impact) * 0.14,
+    18,
+    96
+  ));
+  const hardFlags = [
+    ...(action === "block" ? ["release action blocks live display"] : []),
+    ...(proof === "missing" ? ["source proof missing"] : []),
+    ...(magnitude === "structural" ? ["structural schema or meaning change"] : []),
+    ...(staleDays ? [`new source is stale by ${staleDays} day${staleDays === 1 ? "" : "s"}`] : [])
+  ];
+  const flags = [
+    ...hardFlags,
+    ...(proof === "partial" ? ["extraction confidence pending"] : []),
+    ...(magnitude === "high" ? ["high drift needs research review"] : []),
+    ...pipeline.blockers.slice(0, 3)
+  ];
+  const posture = hardFlags.length
+    ? "Hold live claims"
+    : driftScore >= 84
+      ? "Routine refresh"
+      : driftScore >= 68
+        ? "Review before publish"
+        : driftScore >= 52
+          ? "QA escalation"
+          : "Block refresh";
+  const tone = posture === "Routine refresh" ? "ready" : posture === "Hold live claims" || posture === "Block refresh" ? "caution" : "watch";
+  const affectedFields = Array.from(new Set([...profile.fields, ...pipeline.fields.slice(0, 4)]));
+  const nextStep = hardFlags.length
+    ? `Keep investor-facing claims frozen until ${hardFlags[0]} is resolved.`
+    : posture === "Routine refresh"
+      ? "Refresh preview claims, keep citation visible, and store source-diff receipt."
+      : "Route to research QA before updating score, cost, risk, holding, or document copy.";
+  return {
+    action,
+    affectedFields,
+    age,
+    citation,
+    change,
+    driftScore,
+    flags,
+    freshnessScore,
+    fund,
+    impact,
+    magnitude,
+    magnitudeScore,
+    maxAge,
+    nextStep,
+    pipeline,
+    posture,
+    profile,
+    proof,
+    proofScore,
+    staleDays,
+    tone
+  };
+}
+
+function renderSourceDriftMonitor(event) {
+  if (event) event.preventDefault();
+  if (!els.sourceDriftOutput || !els.sourceDriftSummary) return;
+  const config = sourceDriftConfig();
+  els.sourceDriftSummary.textContent = `${config.driftScore}/100 | ${config.posture}`;
+  els.sourceDriftOutput.innerHTML = `
+    <div class="source-drift-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(config.profile.label)}</span>
+        <h3>${escapeHtml(config.posture)}</h3>
+        <p>${escapeHtml(config.nextStep)} Source: ${escapeHtml(config.pipeline.title)} for ${escapeHtml(config.fund.name)}.</p>
+      </div>
+      <div class="source-drift-score" style="--score:${config.driftScore}">
+        <b>${config.driftScore}</b>
+        <span>Drift</span>
+      </div>
+    </div>
+    <div class="source-drift-metric-grid">
+      <article><span>Impact</span><strong>${config.impact}/100</strong><p>${escapeHtml(sourceDriftMagnitudeLabel(config.magnitude))}</p></article>
+      <article><span>Freshness</span><strong>${config.freshnessScore}/100</strong><p>${config.age} day${config.age === 1 ? "" : "s"} old; max ${config.maxAge} day rule.</p></article>
+      <article><span>Proof</span><strong>${config.proofScore}/100</strong><p>${escapeHtml(sourceDriftProofLabel(config.proof))}</p></article>
+      <article><span>Action</span><strong>${escapeHtml(sourceDriftActionLabel(config.action))}</strong><p>${escapeHtml(config.pipeline.owner)} owns the first handoff.</p></article>
+    </div>
+    <div class="source-drift-grid">
+      <article class="source-drift-card">
+        <h3>Affected fields</h3>
+        <div class="field-chip-list">
+          ${config.affectedFields.map((field) => `<span>${escapeHtml(field)}</span>`).join("")}
+        </div>
+      </article>
+      <article class="source-drift-card">
+        <h3>Research question</h3>
+        <p>${escapeHtml(config.profile.question)}</p>
+        <p>${escapeHtml(config.citation.launchGate)}</p>
+      </article>
+      <article class="source-drift-card ${escapeHtml(config.tone)}">
+        <h3>Flags</h3>
+        <ul class="data-check-list">
+          ${config.flags.slice(0, 7).map((flag) => `<li>${escapeHtml(flag)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="source-drift-card">
+        <h3>Refresh boundary</h3>
+        <p>Do not refresh Nadi score, cost lens, X-Ray, risk labels, document explanations, receipts, or decision packs until the drift note is resolved.</p>
+      </article>
+    </div>
+    <div class="source-drift-panel-grid">
+      <article class="source-drift-panel">
+        <h3>Source-diff receipt</h3>
+        <p>Capture previous source date, new source date, changed fields, parser version, validation result, reviewer, citation path, and rollback note.</p>
+      </article>
+      <article class="source-drift-panel source-drift-guardrail">
+        <h3>Privacy boundary</h3>
+        <p>Drift monitoring compares official or licensed source records only. It must not inspect PAN, folio, CAS, bank data, credentials, or distributor client records.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeSourceDriftNote() {
+  const config = sourceDriftConfig();
+  return [
+    "# NiveshNadi Source Drift Monitor",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Source family: ${config.pipeline.title}`,
+    `Change type: ${config.profile.label}`,
+    `Drift size: ${sourceDriftMagnitudeLabel(config.magnitude)}`,
+    `Proof status: ${sourceDriftProofLabel(config.proof)}`,
+    `Release action: ${sourceDriftActionLabel(config.action)}`,
+    `New source age: ${config.age} days`,
+    `Drift score: ${config.driftScore}/100`,
+    `Impact: ${config.impact}/100`,
+    `Posture: ${config.posture}`,
+    `Next step: ${config.nextStep}`,
+    "",
+    "## Affected fields",
+    ...config.affectedFields.map((field) => `- ${field}`),
+    "",
+    "## Flags",
+    ...config.flags.map((flag) => `- ${flag}`),
+    "",
+    "## Source-diff receipt",
+    "- previous source date",
+    "- new source date",
+    "- changed fields",
+    "- parser or extraction version",
+    "- validation result",
+    "- reviewer and rollback note",
+    "- visible citation path",
+    "",
+    "## Privacy boundary",
+    "Compare only official public or licensed source records. Exclude PAN, folio, CAS, bank data, credentials, distributor client records, and private investor notes."
+  ].join("\n");
+}
+
+function selectedClaimReleasePipeline() {
+  const id = els.claimReleaseSource?.value || els.sourceDriftSource?.value || els.sourceIntakeSource?.value || DATA_PIPELINES[0].id;
+  return DATA_PIPELINES.find((pipeline) => pipeline.id === id) || DATA_PIPELINES[0];
+}
+
+function claimReleaseSurfaceProfile(surface) {
+  return {
+    "screener-score": {
+      label: "Screener score and fund card",
+      baseRisk: 38,
+      surfaces: ["fund card score", "signal bars", "score anatomy", "compare score"],
+      question: "Can the selected fund card and score move from old source evidence to the refreshed source without misleading an investor?"
+    },
+    "cost-risk": {
+      label: "Cost, TER, and risk labels",
+      baseRisk: 52,
+      surfaces: ["Cost Reality Lab", "TER label", "risk badge", "readiness gate"],
+      question: "Are TER, riskometer, cost drag, and stress labels current enough for public research display?"
+    },
+    "portfolio-xray": {
+      label: "Portfolio X-Ray and holdings",
+      baseRisk: 58,
+      surfaces: ["Portfolio X-Ray", "Blueprint", "Rebalance", "Review Room"],
+      question: "Do holdings, sector, issuer, and overlap claims have a fresh disclosure date and extraction confidence?"
+    },
+    "doc-summary": {
+      label: "Doc Decoder and source explanations",
+      baseRisk: 62,
+      surfaces: ["Doc Decoder", "Citation Binder", "Evidence Ledger", "Claim Checker"],
+      question: "Are document summaries tied to the latest SID, KIM, factsheet, or disclosure version?"
+    },
+    "receipt-pack": {
+      label: "Receipts, Pack, and Dossier",
+      baseRisk: 46,
+      surfaces: ["Research Receipt", "Decision Pack", "Dossier", "Review Vault"],
+      question: "Will saved research artifacts clearly show the source date, data mode, and review boundary?"
+    },
+    "alerts-watchlist": {
+      label: "Watchlist and alert triggers",
+      baseRisk: 42,
+      surfaces: ["Watchlist triggers", "Review Rhythm", "Behavior Guard", "Research Pulse"],
+      question: "Can alerts and review prompts refresh without creating transaction pressure or hidden advice?"
+    }
+  }[surface] || claimReleaseSurfaceProfile("screener-score");
+}
+
+function claimReleaseEvidenceLabel(value) {
+  return {
+    verified: "Verified source date, citation, and extraction",
+    reviewed: "Reviewed but not fully automated",
+    partial: "Partial proof or confidence gap",
+    missing: "Missing release proof"
+  }[value] || "Verified source date, citation, and extraction";
+}
+
+function claimReleaseReviewerLabel(value) {
+  return {
+    "self-check": "Self-check preview only",
+    "research-approved": "Research reviewer approved",
+    "compliance-review": "Compliance review needed",
+    blocked: "Reviewer blocked release"
+  }[value] || "Self-check preview only";
+}
+
+function claimReleaseScopeLabel(value) {
+  return {
+    preview: "Preview only",
+    "selected-fund": "Selected fund only",
+    category: "Category lane",
+    "all-demo": "All mapped demo claims"
+  }[value] || "Preview only";
+}
+
+function claimReleaseRollbackLabel(value) {
+  return {
+    ready: "Rollback note ready",
+    draft: "Rollback note draft",
+    missing: "Rollback missing"
+  }[value] || "Rollback note ready";
+}
+
+function claimReleaseConfig() {
+  const pipeline = selectedClaimReleasePipeline();
+  const citation = CITATION_SOURCES.find((source) => source.id === pipeline.id) || CITATION_SOURCES[0];
+  const fund = selectedFund();
+  const drift = typeof sourceDriftConfig === "function" ? sourceDriftConfig() : null;
+  const surface = els.claimReleaseSurface?.value || "screener-score";
+  const evidence = els.claimReleaseEvidence?.value || "verified";
+  const reviewer = els.claimReleaseReviewer?.value || "self-check";
+  const scope = els.claimReleaseScope?.value || "preview";
+  const rollback = els.claimReleaseRollback?.value || "ready";
+  const profile = claimReleaseSurfaceProfile(surface);
+  const evidenceScore = {
+    verified: 94,
+    reviewed: 78,
+    partial: 48,
+    missing: 16
+  }[evidence] || 48;
+  const reviewerScore = {
+    "research-approved": 92,
+    "self-check": 72,
+    "compliance-review": 46,
+    blocked: 10
+  }[reviewer] || 72;
+  const scopeScore = {
+    preview: 88,
+    "selected-fund": 78,
+    category: 62,
+    "all-demo": 48
+  }[scope] || 88;
+  const rollbackScore = {
+    ready: 90,
+    draft: 64,
+    missing: 24
+  }[rollback] || 64;
+  const sourceScore = clampNumber(Math.round((pipeline.readiness + citation.maxAge) / 2), 24, 92);
+  const driftGuardScore = drift?.posture === "Routine refresh"
+    ? 88
+    : drift?.posture === "Review before publish"
+      ? 64
+      : drift?.posture === "Hold live claims" || drift?.posture === "Block refresh"
+        ? 18
+        : 50;
+  const riskLoad = profile.baseRisk + (scope === "all-demo" ? 18 : scope === "category" ? 10 : 0) + (surface === "doc-summary" ? 7 : 0);
+  const releaseScore = Math.round(clampNumber(
+    pipeline.readiness * 0.16 +
+      evidenceScore * 0.26 +
+      reviewerScore * 0.2 +
+      rollbackScore * 0.14 +
+      scopeScore * 0.1 +
+      driftGuardScore * 0.09 +
+      sourceScore * 0.05 -
+      riskLoad * 0.05,
+    18,
+    96
+  ));
+  const hardFlags = [
+    ...(evidence === "missing" ? ["missing release proof"] : []),
+    ...(reviewer === "blocked" ? ["reviewer blocked release"] : []),
+    ...(rollback === "missing" ? ["rollback note missing"] : []),
+    ...(drift?.posture === "Hold live claims" || drift?.posture === "Block refresh" ? [`source drift says ${drift.posture.toLowerCase()}`] : []),
+    ...(scope === "all-demo" && reviewer !== "research-approved" ? ["broad rollout needs research reviewer approval"] : [])
+  ];
+  const flags = [
+    ...hardFlags,
+    ...(reviewer === "compliance-review" ? ["compliance review needed"] : []),
+    ...(evidence === "partial" ? ["partial proof must stay in preview"] : []),
+    ...(rollback === "draft" ? ["rollback note is still draft"] : []),
+    ...(profile.baseRisk >= 58 ? ["higher-risk claim surface needs citation lock"] : []),
+    ...pipeline.blockers.slice(0, 2)
+  ];
+  const decision = hardFlags.length
+    ? "Keep claims frozen"
+    : releaseScore >= 84 && reviewer === "research-approved"
+      ? "Release selected claim"
+      : releaseScore >= 74
+        ? "Preview release"
+        : releaseScore >= 58
+          ? "Reviewer queue"
+          : "Do not release";
+  const tone = decision === "Release selected claim"
+    ? "ready"
+    : decision === "Keep claims frozen" || decision === "Do not release"
+      ? "caution"
+      : "watch";
+  const nextStep = decision === "Release selected claim"
+    ? `Publish the ${profile.label.toLowerCase()} refresh for ${fund.name}, retain citation date, and save a release receipt.`
+    : decision === "Preview release"
+      ? `Keep ${profile.label.toLowerCase()} in preview and ask a reviewer to confirm source evidence before public display.`
+      : decision === "Reviewer queue"
+        ? `Route ${profile.label.toLowerCase()} to the research queue with source proof, changed fields, and rollback note.`
+        : `Keep ${profile.label.toLowerCase()} frozen until ${hardFlags[0] || "release evidence"} is resolved.`;
+  const affectedClaims = Array.from(new Set([
+    ...profile.surfaces,
+    `${fund.name} Nadi score ${nadiScore(fund)}/100`,
+    `${fund.category} evidence ${evidenceReadinessScore(fund)}/100`,
+    `${pipeline.title} readiness ${pipeline.readiness}/100`
+  ]));
+  return {
+    affectedClaims,
+    citation,
+    decision,
+    drift,
+    driftGuardScore,
+    evidence,
+    evidenceScore,
+    flags,
+    fund,
+    nextStep,
+    pipeline,
+    profile,
+    releaseScore,
+    reviewer,
+    reviewerScore,
+    rollback,
+    rollbackScore,
+    scope,
+    scopeScore,
+    sourceScore,
+    surface,
+    tone
+  };
+}
+
+function renderClaimReleaseGate(event) {
+  if (event) event.preventDefault();
+  if (!els.claimReleaseOutput || !els.claimReleaseSummary) return;
+  const config = claimReleaseConfig();
+  els.claimReleaseSummary.textContent = `${config.releaseScore}/100 | ${config.decision}`;
+  els.claimReleaseOutput.innerHTML = `
+    <div class="claim-release-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(config.profile.label)}</span>
+        <h3>${escapeHtml(config.decision)}</h3>
+        <p>${escapeHtml(config.nextStep)} Source: ${escapeHtml(config.pipeline.title)} for ${escapeHtml(config.fund.name)}.</p>
+      </div>
+      <div class="claim-release-score" style="--score:${config.releaseScore}">
+        <b>${config.releaseScore}</b>
+        <span>Release</span>
+      </div>
+    </div>
+    <div class="claim-release-metric-grid">
+      <article><span>Evidence</span><strong>${config.evidenceScore}/100</strong><p>${escapeHtml(claimReleaseEvidenceLabel(config.evidence))}</p></article>
+      <article><span>Reviewer</span><strong>${config.reviewerScore}/100</strong><p>${escapeHtml(claimReleaseReviewerLabel(config.reviewer))}</p></article>
+      <article><span>Scope</span><strong>${config.scopeScore}/100</strong><p>${escapeHtml(claimReleaseScopeLabel(config.scope))}</p></article>
+      <article><span>Rollback</span><strong>${config.rollbackScore}/100</strong><p>${escapeHtml(claimReleaseRollbackLabel(config.rollback))}</p></article>
+    </div>
+    <div class="claim-release-grid">
+      <article class="claim-release-card">
+        <h3>Affected public claims</h3>
+        <div class="field-chip-list">
+          ${config.affectedClaims.map((claim) => `<span>${escapeHtml(claim)}</span>`).join("")}
+        </div>
+      </article>
+      <article class="claim-release-card">
+        <h3>Release question</h3>
+        <p>${escapeHtml(config.profile.question)}</p>
+        <p>${escapeHtml(config.citation.launchGate)}</p>
+      </article>
+      <article class="claim-release-card ${escapeHtml(config.tone)}">
+        <h3>Gate flags</h3>
+        <ul class="data-check-list">
+          ${config.flags.slice(0, 8).map((flag) => `<li>${escapeHtml(flag)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="claim-release-card">
+        <h3>Release receipt</h3>
+        <p>Store old claim, new claim, source date, citation path, reviewer, rollout scope, rollback note, and user-visible data mode before release.</p>
+      </article>
+    </div>
+    <div class="claim-release-panel-grid">
+      <article class="claim-release-panel">
+        <h3>Launch rule</h3>
+        <p>Public claims move only when source proof, reviewer posture, rollback discipline, and drift guard are all strong enough for the selected surface.</p>
+      </article>
+      <article class="claim-release-panel claim-release-guardrail">
+        <h3>Privacy boundary</h3>
+        <p>The release gate handles product claims and source evidence only. It must not require PAN, folio, CAS, account credentials, bank data, distributor client records, or private investor notes.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeClaimReleaseNote() {
+  const config = claimReleaseConfig();
+  return [
+    "# NiveshNadi Claim Release Gate",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${config.fund.name}`,
+    `Source family: ${config.pipeline.title}`,
+    `Release surface: ${config.profile.label}`,
+    `Decision: ${config.decision}`,
+    `Release score: ${config.releaseScore}/100`,
+    `Evidence status: ${claimReleaseEvidenceLabel(config.evidence)}`,
+    `Reviewer status: ${claimReleaseReviewerLabel(config.reviewer)}`,
+    `Rollout scope: ${claimReleaseScopeLabel(config.scope)}`,
+    `Rollback: ${claimReleaseRollbackLabel(config.rollback)}`,
+    `Source drift guard: ${config.drift?.posture || "Not run"}`,
+    `Next step: ${config.nextStep}`,
+    "",
+    "## Affected public claims",
+    ...config.affectedClaims.map((claim) => `- ${claim}`),
+    "",
+    "## Gate flags",
+    ...config.flags.map((flag) => `- ${flag}`),
+    "",
+    "## Privacy boundary",
+    "This gate evaluates product claims and source evidence only. It excludes PAN, folio, CAS, account credentials, bank data, distributor client records, contact data, and private investor notes.",
+    "",
+    "Research support only. It does not approve an investment, transaction, recommendation, or personalized advice."
+  ].join("\n");
+}
+
+function claimReleaseSnapshotFromConfig(config = claimReleaseConfig()) {
+  return {
+    id: `claim-release-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    createdAt: new Date().toISOString(),
+    release: RELEASE_LABEL,
+    dataVersion: DATA_VERSION,
+    fund: {
+      id: config.fund.id,
+      name: config.fund.name,
+      category: config.fund.category,
+      risk: config.fund.risk
+    },
+    source: {
+      id: config.pipeline.id,
+      title: config.pipeline.title,
+      owner: config.pipeline.owner,
+      readiness: config.pipeline.readiness
+    },
+    surface: config.surface,
+    surfaceLabel: config.profile.label,
+    decision: config.decision,
+    score: config.releaseScore,
+    tone: config.tone,
+    nextStep: config.nextStep,
+    metrics: {
+      evidence: config.evidenceScore,
+      reviewer: config.reviewerScore,
+      scope: config.scopeScore,
+      rollback: config.rollbackScore,
+      driftGuard: config.driftGuardScore,
+      source: config.sourceScore
+    },
+    labels: {
+      evidence: claimReleaseEvidenceLabel(config.evidence),
+      reviewer: claimReleaseReviewerLabel(config.reviewer),
+      scope: claimReleaseScopeLabel(config.scope),
+      rollback: claimReleaseRollbackLabel(config.rollback),
+      drift: config.drift?.posture || "Not run"
+    },
+    flags: config.flags.slice(0, 8),
+    affectedClaims: config.affectedClaims.slice(0, 8),
+    privacyStatus: "Identity-light product claim record"
+  };
+}
+
+function saveCurrentClaimReleaseSnapshot() {
+  const snapshot = claimReleaseSnapshotFromConfig();
+  const entries = [snapshot, ...loadClaimReleaseLedger()].slice(0, 24);
+  saveClaimReleaseLedger(entries);
+  renderClaimReleaseLedger();
+  renderClaimRollbackConsole();
+  toast("Claim release saved locally.");
+}
+
+function clearClaimReleaseLedger() {
+  saveClaimReleaseLedger([]);
+  renderClaimReleaseLedger();
+  renderClaimRollbackConsole();
+  toast("Claim release ledger cleared.");
+}
+
+function claimLedgerDecisionCounts(entries) {
+  return entries.reduce((counts, entry) => {
+    counts[entry.decision] = (counts[entry.decision] || 0) + 1;
+    return counts;
+  }, {});
+}
+
+function claimLedgerPosture(entry) {
+  if (!entry) return "No saved release decisions yet";
+  if (entry.decision === "Release selected claim") return "Released with evidence trail";
+  if (entry.decision === "Preview release") return "Preview kept out of public claims";
+  if (entry.decision === "Reviewer queue") return "Reviewer queue active";
+  return "Claims frozen until proof improves";
+}
+
+function renderClaimReleaseLedger() {
+  if (!els.claimLedgerOutput || !els.claimLedgerSummary) return;
+  const entries = loadClaimReleaseLedger();
+  const current = claimReleaseSnapshotFromConfig();
+  const latest = entries[0] || null;
+  const prior = entries[1] || null;
+  const counts = claimLedgerDecisionCounts(entries);
+  const releaseCount = counts["Release selected claim"] || 0;
+  const previewCount = counts["Preview release"] || 0;
+  const queueCount = counts["Reviewer queue"] || 0;
+  const frozenCount = (counts["Keep claims frozen"] || 0) + (counts["Do not release"] || 0);
+  const scoreDelta = latest ? reviewVaultDelta(latest.score, prior?.score) : "New";
+  const evidenceDelta = latest ? reviewVaultDelta(latest.metrics.evidence, prior?.metrics.evidence) : "New";
+
+  els.claimLedgerSummary.textContent = `${entries.length} entr${entries.length === 1 ? "y" : "ies"}`;
+
+  if (!entries.length) {
+    els.claimLedgerOutput.innerHTML = `
+      <div class="claim-ledger-empty">
+        <div>
+          <span class="metric-label">Current release preview</span>
+          <h3>${current.score}/100 ${escapeHtml(current.decision)}</h3>
+          <p>Save the current Claim Release Gate result to start a browser-local audit trail. The ledger stores product claim metadata, source family, decision posture, and flags only.</p>
+        </div>
+        <div class="claim-ledger-score" style="--score:${current.score}">
+          <b>${current.score}</b>
+          <span>Now</span>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  els.claimLedgerOutput.innerHTML = `
+    <div class="claim-ledger-hero ${escapeHtml(latest.tone)}">
+      <div>
+        <span class="metric-label">Latest saved release decision</span>
+        <h3>${escapeHtml(latest.decision)}</h3>
+        <p>${escapeHtml(claimLedgerPosture(latest))} | ${escapeHtml(latest.surfaceLabel)} | Saved ${new Date(latest.createdAt).toLocaleString("en-IN")}.</p>
+      </div>
+      <div class="claim-ledger-score" style="--score:${latest.score}">
+        <b>${latest.score}</b>
+        <span>Ledger</span>
+      </div>
+    </div>
+    <div class="claim-ledger-metric-grid">
+      <div><span>Entries</span><strong>${entries.length}</strong></div>
+      <div><span>Score delta</span><strong>${escapeHtml(scoreDelta)}</strong></div>
+      <div><span>Evidence delta</span><strong>${escapeHtml(evidenceDelta)}</strong></div>
+      <div><span>Released</span><strong>${releaseCount}</strong></div>
+      <div><span>Preview</span><strong>${previewCount}</strong></div>
+      <div><span>Frozen</span><strong>${frozenCount}</strong></div>
+    </div>
+    <div class="claim-ledger-grid">
+      ${entries.slice(0, 6).map((entry, index) => {
+        const previous = entries[index + 1] || null;
+        return `
+          <article class="claim-ledger-card ${escapeHtml(entry.tone)}">
+            <div class="claim-ledger-card-head">
+              <span>${escapeHtml(entry.surfaceLabel)}</span>
+              <strong>${entry.score}/100</strong>
+            </div>
+            <p>${escapeHtml(entry.decision)} | ${escapeHtml(entry.fund.name)} | ${escapeHtml(entry.source.title)}</p>
+            <div class="claim-ledger-mini-grid">
+              <div><span>Evidence</span><b>${entry.metrics.evidence}/100</b></div>
+              <div><span>Reviewer</span><b>${entry.metrics.reviewer}/100</b></div>
+              <div><span>Scope</span><b>${entry.metrics.scope}/100</b></div>
+            </div>
+            <small>Score ${escapeHtml(reviewVaultDelta(entry.score, previous?.score))} from prior release | ${escapeHtml(entry.labels.drift)}</small>
+          </article>
+        `;
+      }).join("")}
+    </div>
+    <div class="claim-ledger-card-grid">
+      <article class="claim-ledger-panel">
+        <h3>Latest flags</h3>
+        <ul class="claim-ledger-list">
+          ${latest.flags.map((flag) => `<li>${escapeHtml(flag)}</li>`).join("") || "<li>No gate flags saved on latest entry.</li>"}
+        </ul>
+      </article>
+      <article class="claim-ledger-panel">
+        <h3>Claim surfaces</h3>
+        <div class="claim-ledger-funds">
+          ${latest.affectedClaims.map((claim) => `<span>${escapeHtml(claim)}</span>`).join("")}
+        </div>
+      </article>
+      <article class="claim-ledger-panel claim-ledger-guardrail">
+        <h3>Privacy rule</h3>
+        <p>The ledger is browser-local and identity-light. It must not store PAN, folio, CAS text, account credentials, bank data, client identifiers, contact data, or private investor notes.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeClaimReleaseLedgerBrief() {
+  const entries = loadClaimReleaseLedger();
+  const current = claimReleaseSnapshotFromConfig();
+  const latest = entries[0] || current;
+  const prior = entries[1] || null;
+  const counts = claimLedgerDecisionCounts(entries);
+  return [
+    "# NiveshNadi Claim Release Ledger",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Saved entries: ${entries.length}`,
+    `Latest decision: ${latest.decision}`,
+    `Latest release score: ${latest.score}/100`,
+    `Latest surface: ${latest.surfaceLabel}`,
+    `Latest fund: ${latest.fund.name}`,
+    `Latest source: ${latest.source.title}`,
+    `Score delta: ${reviewVaultDelta(latest.score, prior?.score)}`,
+    `Evidence delta: ${reviewVaultDelta(latest.metrics.evidence, prior?.metrics.evidence)}`,
+    "",
+    "## Decision Mix",
+    `- Released: ${counts["Release selected claim"] || 0}`,
+    `- Preview: ${counts["Preview release"] || 0}`,
+    `- Reviewer queue: ${counts["Reviewer queue"] || 0}`,
+    `- Frozen or not released: ${(counts["Keep claims frozen"] || 0) + (counts["Do not release"] || 0)}`,
+    "",
+    "## Latest Gate Metrics",
+    `- Evidence: ${latest.metrics.evidence}/100 (${latest.labels.evidence})`,
+    `- Reviewer: ${latest.metrics.reviewer}/100 (${latest.labels.reviewer})`,
+    `- Scope: ${latest.metrics.scope}/100 (${latest.labels.scope})`,
+    `- Rollback: ${latest.metrics.rollback}/100 (${latest.labels.rollback})`,
+    `- Drift guard: ${latest.metrics.driftGuard}/100 (${latest.labels.drift})`,
+    "",
+    "## Latest Flags",
+    ...(latest.flags.length ? latest.flags.map((flag) => `- ${flag}`) : ["- No saved gate flags."]),
+    "",
+    "## Recent Entries",
+    ...(entries.length ? entries.slice(0, 8).map((entry) => `- ${new Date(entry.createdAt).toLocaleString("en-IN")}: ${entry.decision}, ${entry.surfaceLabel}, ${entry.score}/100, ${entry.fund.name}`) : ["- No saved entries yet. This brief uses the current release preview."]),
+    "",
+    "## Privacy boundary",
+    "Claim Release Ledger stores browser-local product-claim metadata only. Exclude PAN, folio, CAS, account credentials, bank data, client identifiers, contact data, and private investor notes.",
+    "",
+    "Research support only. The ledger is not advice, execution approval, distributor workflow approval, or a return guarantee."
+  ].join("\n");
+}
+
+function claimRollbackTriggerProfile(value) {
+  return {
+    "stale-source": {
+      label: "Source became stale",
+      baseRisk: 42,
+      immediateStep: "Freeze the public claim until source date and citation are refreshed.",
+      checks: ["source date", "citation URL", "freshness rule", "affected saved artifacts"]
+    },
+    "wrong-value": {
+      label: "Wrong value or label displayed",
+      baseRisk: 78,
+      immediateStep: "Remove or revert the displayed claim and prepare a correction note.",
+      checks: ["old value", "correct value", "screens affected", "release ledger entry"]
+    },
+    "parser-break": {
+      label: "Parser or extraction break",
+      baseRisk: 68,
+      immediateStep: "Stop extracted-field display and route parser output to source QA.",
+      checks: ["parser version", "field mapping", "sample source", "validation result"]
+    },
+    "compliance-language": {
+      label: "Compliance language concern",
+      baseRisk: 74,
+      immediateStep: "Hold public copy and send the affected wording to compliance review.",
+      checks: ["claim wording", "advice boundary", "risk disclaimer", "reviewer sign-off"]
+    },
+    "user-confusion": {
+      label: "User confusion risk",
+      baseRisk: 50,
+      immediateStep: "Clarify the claim surface and add research-only context before release.",
+      checks: ["screen label", "plain-English copy", "decision boundary", "help text"]
+    }
+  }[value] || claimRollbackTriggerProfile("stale-source");
+}
+
+function claimRollbackSeverityLabel(value) {
+  return {
+    low: "Low",
+    medium: "Medium",
+    high: "High",
+    critical: "Critical"
+  }[value] || "Low";
+}
+
+function claimRollbackExposureLabel(value) {
+  return {
+    preview: "Preview only",
+    "single-fund": "Single fund public surface",
+    category: "Category lane",
+    "all-public": "All public mapped claims"
+  }[value] || "Preview only";
+}
+
+function claimRollbackActionLabel(value) {
+  return {
+    "hide-claim": "Hide affected claim",
+    "revert-prior": "Revert to prior approved value",
+    "correction-note": "Publish correction note",
+    "reviewer-hold": "Hold for reviewer approval"
+  }[value] || "Hide affected claim";
+}
+
+function claimRollbackNoticeLabel(value) {
+  return {
+    "internal-note": "Internal release note only",
+    "user-visible": "User-visible correction note",
+    "admin-log": "Admin log and reviewer sign-off"
+  }[value] || "Internal release note only";
+}
+
+function claimRollbackOwnerLabel(value) {
+  return {
+    research: "Research owner",
+    data: "Data operations",
+    compliance: "Compliance reviewer",
+    product: "Product release owner"
+  }[value] || "Research owner";
+}
+
+function claimRollbackConfig() {
+  const entries = loadClaimReleaseLedger();
+  const latest = entries[0] || claimReleaseSnapshotFromConfig();
+  const currentGate = claimReleaseConfig();
+  const trigger = els.claimRollbackTrigger?.value || "stale-source";
+  const severity = els.claimRollbackSeverity?.value || "low";
+  const exposure = els.claimRollbackExposure?.value || "preview";
+  const action = els.claimRollbackAction?.value || "hide-claim";
+  const notice = els.claimRollbackNotice?.value || "internal-note";
+  const owner = els.claimRollbackOwner?.value || "research";
+  const profile = claimRollbackTriggerProfile(trigger);
+  const severityScore = {
+    low: 24,
+    medium: 52,
+    high: 76,
+    critical: 94
+  }[severity] || 24;
+  const exposureScore = {
+    preview: 22,
+    "single-fund": 48,
+    category: 70,
+    "all-public": 92
+  }[exposure] || 22;
+  const actionScore = {
+    "hide-claim": 86,
+    "revert-prior": 78,
+    "correction-note": 66,
+    "reviewer-hold": 58
+  }[action] || 86;
+  const noticeScore = {
+    "internal-note": 54,
+    "user-visible": 86,
+    "admin-log": 72
+  }[notice] || 54;
+  const ledgerPressure = latest.decision === "Release selected claim"
+    ? 82
+    : latest.decision === "Preview release"
+      ? 48
+      : latest.decision === "Reviewer queue"
+        ? 62
+        : 36;
+  const urgency = Math.round(clampNumber(
+    profile.baseRisk * 0.22 +
+      severityScore * 0.28 +
+      exposureScore * 0.22 +
+      ledgerPressure * 0.14 +
+      (100 - actionScore) * 0.08 +
+      (notice === "user-visible" ? 8 : 0),
+    18,
+    98
+  ));
+  const recoveryScore = Math.round(clampNumber(
+    actionScore * 0.34 +
+      noticeScore * 0.22 +
+      currentGate.rollbackScore * 0.18 +
+      currentGate.evidenceScore * 0.16 +
+      (owner === "compliance" || owner === "product" ? 8 : 4),
+    18,
+    96
+  ));
+  const hardFlags = [
+    ...(severity === "critical" ? ["critical severity requires immediate rollback control"] : []),
+    ...(exposure === "all-public" ? ["all public mapped claims are exposed"] : []),
+    ...(trigger === "wrong-value" ? ["wrong value may mislead investor research"] : []),
+    ...(trigger === "compliance-language" ? ["compliance language needs reviewer sign-off"] : []),
+    ...(latest.decision === "Release selected claim" ? ["latest saved ledger entry was released"] : [])
+  ];
+  const flags = [
+    ...hardFlags,
+    ...(action === "correction-note" && notice !== "user-visible" ? ["correction note should match the selected notice mode"] : []),
+    ...(action === "reviewer-hold" ? ["public claim should remain frozen until reviewer approval"] : []),
+    ...(currentGate.decision === "Keep claims frozen" || currentGate.decision === "Do not release" ? ["current release gate already blocks the claim"] : []),
+    ...profile.checks.slice(0, 4)
+  ];
+  const posture = severity === "critical" || (exposure === "all-public" && hardFlags.length)
+    ? "Immediate rollback"
+    : urgency >= 78
+      ? "Freeze and correct"
+      : urgency >= 58
+        ? "Correction note"
+        : "Monitor only";
+  const tone = posture === "Monitor only" ? "ready" : posture === "Immediate rollback" ? "caution" : "watch";
+  const affectedClaims = Array.from(new Set([
+    ...(latest.affectedClaims || []),
+    ...(currentGate.affectedClaims || [])
+  ])).slice(0, 10);
+  const firstAction = posture === "Immediate rollback"
+    ? "Hide the affected public surface now, then document the old value, replacement value, reviewer, and visible correction path."
+    : posture === "Freeze and correct"
+      ? "Freeze claim refresh, repair evidence or wording, and keep the release gate blocked until sign-off."
+      : posture === "Correction note"
+        ? "Publish or store the correction note with source date, claim surface, and rollback owner."
+        : "Monitor the claim, keep source evidence visible, and schedule a reviewer check before broader rollout.";
+  return {
+    action,
+    actionScore,
+    affectedClaims,
+    currentGate,
+    entries,
+    exposure,
+    exposureScore,
+    firstAction,
+    flags,
+    hardFlags,
+    latest,
+    ledgerPressure,
+    notice,
+    noticeScore,
+    owner,
+    posture,
+    profile,
+    recoveryScore,
+    severity,
+    severityScore,
+    tone,
+    trigger,
+    urgency
+  };
+}
+
+function renderClaimRollbackConsole(event) {
+  if (event) event.preventDefault();
+  if (!els.claimRollbackOutput || !els.claimRollbackSummary) return;
+  const config = claimRollbackConfig();
+  els.claimRollbackSummary.textContent = `${config.urgency}/100 | ${config.posture}`;
+  els.claimRollbackOutput.innerHTML = `
+    <div class="claim-rollback-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(config.profile.label)}</span>
+        <h3>${escapeHtml(config.posture)}</h3>
+        <p>${escapeHtml(config.firstAction)} Owner: ${escapeHtml(claimRollbackOwnerLabel(config.owner))}.</p>
+      </div>
+      <div class="claim-rollback-score" style="--score:${config.urgency}">
+        <b>${config.urgency}</b>
+        <span>Urgency</span>
+      </div>
+    </div>
+    <div class="claim-rollback-metric-grid">
+      <article><span>Severity</span><strong>${config.severityScore}/100</strong><p>${escapeHtml(claimRollbackSeverityLabel(config.severity))}</p></article>
+      <article><span>Exposure</span><strong>${config.exposureScore}/100</strong><p>${escapeHtml(claimRollbackExposureLabel(config.exposure))}</p></article>
+      <article><span>Recovery</span><strong>${config.recoveryScore}/100</strong><p>${escapeHtml(claimRollbackActionLabel(config.action))}</p></article>
+      <article><span>Notice</span><strong>${config.noticeScore}/100</strong><p>${escapeHtml(claimRollbackNoticeLabel(config.notice))}</p></article>
+    </div>
+    <div class="claim-rollback-grid">
+      <article class="claim-rollback-card">
+        <h3>Affected claim surfaces</h3>
+        <div class="field-chip-list">
+          ${config.affectedClaims.map((claim) => `<span>${escapeHtml(claim)}</span>`).join("") || "<span>No saved claim surfaces yet</span>"}
+        </div>
+      </article>
+      <article class="claim-rollback-card">
+        <h3>Latest ledger context</h3>
+        <p>${escapeHtml(config.latest.decision)} | ${escapeHtml(config.latest.surfaceLabel)} | ${escapeHtml(config.latest.fund.name)}.</p>
+        <p>Latest release score ${config.latest.score}/100 and current gate ${escapeHtml(config.currentGate.decision)}.</p>
+      </article>
+      <article class="claim-rollback-card ${escapeHtml(config.tone)}">
+        <h3>Rollback flags</h3>
+        <ul class="data-check-list">
+          ${config.flags.slice(0, 9).map((flag) => `<li>${escapeHtml(flag)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="claim-rollback-card">
+        <h3>Recovery receipt</h3>
+        <p>Capture issue trigger, old claim, replacement claim, source date, reviewer, correction notice, rollback action, and release ledger link.</p>
+      </article>
+    </div>
+    <div class="claim-rollback-panel-grid">
+      <article class="claim-rollback-panel">
+        <h3>Sequence</h3>
+        <ol class="claim-rollback-list">
+          <li>Freeze or hide the affected surface based on exposure.</li>
+          <li>Verify source evidence, citation path, and prior approved value.</li>
+          <li>Publish correction note only when notice mode and reviewer status match.</li>
+          <li>Save the new release decision in the ledger after repair.</li>
+        </ol>
+      </article>
+      <article class="claim-rollback-panel claim-rollback-guardrail">
+        <h3>Privacy boundary</h3>
+        <p>Rollback records are product-control notes only. They must not store PAN, folio, CAS, account credentials, bank data, client identifiers, contact data, or private investor notes.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeClaimRollbackNote() {
+  const config = claimRollbackConfig();
+  return [
+    "# NiveshNadi Claim Rollback Console",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Issue trigger: ${config.profile.label}`,
+    `Posture: ${config.posture}`,
+    `Urgency: ${config.urgency}/100`,
+    `Recovery score: ${config.recoveryScore}/100`,
+    `Severity: ${claimRollbackSeverityLabel(config.severity)}`,
+    `Exposure: ${claimRollbackExposureLabel(config.exposure)}`,
+    `Rollback action: ${claimRollbackActionLabel(config.action)}`,
+    `Notice mode: ${claimRollbackNoticeLabel(config.notice)}`,
+    `Owner: ${claimRollbackOwnerLabel(config.owner)}`,
+    `Latest ledger decision: ${config.latest.decision}`,
+    `Latest ledger surface: ${config.latest.surfaceLabel}`,
+    `Current release gate: ${config.currentGate.decision}`,
+    "",
+    "## First Action",
+    config.firstAction,
+    "",
+    "## Affected Claim Surfaces",
+    ...(config.affectedClaims.length ? config.affectedClaims.map((claim) => `- ${claim}`) : ["- No saved claim surfaces yet."]),
+    "",
+    "## Rollback Flags",
+    ...config.flags.map((flag) => `- ${flag}`),
+    "",
+    "## Recovery Receipt",
+    "- issue trigger",
+    "- old claim and replacement claim",
+    "- source date and citation path",
+    "- reviewer and owner",
+    "- correction notice mode",
+    "- rollback action",
+    "- linked release ledger entry",
+    "",
+    "## Privacy boundary",
+    "Rollback records are product-control notes only. Exclude PAN, folio, CAS, account credentials, bank data, client identifiers, contact data, and private investor notes.",
+    "",
+    "Research support only. This is not investment advice, execution approval, distributor approval, tax guidance, or a return guarantee."
   ].join("\n");
 }
 
@@ -10241,6 +11768,18 @@ function saveReceiptVault(entries) {
   localStorage.setItem("niveshnadi-receipt-vault", JSON.stringify(entries));
 }
 
+function loadClaimReleaseLedger() {
+  try {
+    return JSON.parse(localStorage.getItem("niveshnadi-claim-release-ledger") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveClaimReleaseLedger(entries) {
+  localStorage.setItem("niveshnadi-claim-release-ledger", JSON.stringify(entries));
+}
+
 function loadInvestorRecords() {
   try {
     return JSON.parse(localStorage.getItem("niveshnadi-investor-records") || "[]");
@@ -10560,11 +12099,83 @@ function bindEvents() {
   els.copyCitationBinder?.addEventListener("click", () => copyText(makeCitationBinderNote()));
   els.copyHouseLens?.addEventListener("click", () => copyText(makeFundHouseLensNote()));
   els.watchHouseReview?.addEventListener("click", addFundHouseReviewTrigger);
-  els.dataForm?.addEventListener("submit", renderDataReadinessRoom);
+  els.dataForm?.addEventListener("submit", (event) => {
+    renderDataReadinessRoom(event);
+    renderSourceQaQueue();
+    renderSourceIntakeConsole();
+    renderSourceDriftMonitor();
+    renderClaimReleaseGate();
+    renderClaimReleaseLedger();
+    renderClaimRollbackConsole();
+  });
   [els.dataSource, els.dataMode, els.dataAge, els.dataCitation].forEach((input) => {
-    input?.addEventListener("change", () => renderDataReadinessRoom());
+    input?.addEventListener("change", () => {
+      renderDataReadinessRoom();
+      renderSourceQaQueue();
+      renderSourceIntakeConsole();
+      renderSourceDriftMonitor();
+      renderClaimReleaseGate();
+      renderClaimReleaseLedger();
+      renderClaimRollbackConsole();
+    });
   });
   els.copyDataSpec?.addEventListener("click", () => copyText(makeDataSpec()));
+  els.sourceQueueForm?.addEventListener("submit", renderSourceQaQueue);
+  [els.sourceQueueMode, els.sourceQueuePriority, els.sourceQueueOwner].forEach((input) => {
+    input?.addEventListener("change", () => renderSourceQaQueue());
+  });
+  els.copySourceQueue?.addEventListener("click", () => copyText(makeSourceQaNote()));
+  els.sourceIntakeForm?.addEventListener("submit", (event) => {
+    renderSourceIntakeConsole(event);
+    renderClaimReleaseGate();
+    renderClaimReleaseLedger();
+    renderClaimRollbackConsole();
+  });
+  [els.sourceIntakeSource, els.sourceIntakeChannel, els.sourceIntakeFormat, els.sourceIntakeEvidence, els.sourceIntakeAge, els.sourceIntakeScope].forEach((input) => {
+    input?.addEventListener(input === els.sourceIntakeAge ? "input" : "change", () => {
+      renderSourceIntakeConsole();
+      renderClaimReleaseGate();
+      renderClaimReleaseLedger();
+      renderClaimRollbackConsole();
+    });
+  });
+  els.copySourceIntake?.addEventListener("click", () => copyText(makeSourceIntakeNote()));
+  els.sourceDriftForm?.addEventListener("submit", (event) => {
+    renderSourceDriftMonitor(event);
+    renderClaimReleaseGate();
+    renderClaimReleaseLedger();
+    renderClaimRollbackConsole();
+  });
+  [els.sourceDriftSource, els.sourceDriftChange, els.sourceDriftMagnitude, els.sourceDriftAge, els.sourceDriftProof, els.sourceDriftAction].forEach((input) => {
+    input?.addEventListener(input === els.sourceDriftAge ? "input" : "change", () => {
+      renderSourceDriftMonitor();
+      renderClaimReleaseGate();
+      renderClaimReleaseLedger();
+      renderClaimRollbackConsole();
+    });
+  });
+  els.copySourceDrift?.addEventListener("click", () => copyText(makeSourceDriftNote()));
+  els.claimReleaseForm?.addEventListener("submit", (event) => {
+    renderClaimReleaseGate(event);
+    renderClaimReleaseLedger();
+    renderClaimRollbackConsole();
+  });
+  [els.claimReleaseSource, els.claimReleaseSurface, els.claimReleaseEvidence, els.claimReleaseReviewer, els.claimReleaseScope, els.claimReleaseRollback].forEach((input) => {
+    input?.addEventListener("change", () => {
+      renderClaimReleaseGate();
+      renderClaimReleaseLedger();
+      renderClaimRollbackConsole();
+    });
+  });
+  els.copyClaimRelease?.addEventListener("click", () => copyText(makeClaimReleaseNote()));
+  els.saveClaimLedger?.addEventListener("click", saveCurrentClaimReleaseSnapshot);
+  els.copyClaimLedger?.addEventListener("click", () => copyText(makeClaimReleaseLedgerBrief()));
+  els.clearClaimLedger?.addEventListener("click", clearClaimReleaseLedger);
+  els.claimRollbackForm?.addEventListener("submit", renderClaimRollbackConsole);
+  [els.claimRollbackTrigger, els.claimRollbackSeverity, els.claimRollbackExposure, els.claimRollbackAction, els.claimRollbackNotice, els.claimRollbackOwner].forEach((input) => {
+    input?.addEventListener("change", () => renderClaimRollbackConsole());
+  });
+  els.copyClaimRollback?.addEventListener("click", () => copyText(makeClaimRollbackNote()));
   els.docForm?.addEventListener("submit", renderDocDecoder);
   [els.docFocus, els.docQuestion, els.docDepth].forEach((input) => {
     input?.addEventListener("change", () => renderDocDecoder());
@@ -10765,6 +12376,9 @@ function bindEvents() {
     renderResearchDossier();
     renderEvidenceLedger();
     renderCitationBinder();
+    renderSourceQaQueue();
+    renderSourceIntakeConsole();
+    renderSourceDriftMonitor();
     renderFundHouseLens();
     renderDocDecoder();
     renderGlossary();
@@ -10855,6 +12469,9 @@ function bindEvents() {
     renderResearchDossier();
     renderInvestorReadinessGate();
     renderCitationBinder();
+    renderSourceQaQueue();
+    renderSourceIntakeConsole();
+    renderSourceDriftMonitor();
     renderFundHouseLens();
     renderDocDecoder();
     renderGlossary();
@@ -11209,6 +12826,58 @@ function cacheElements() {
     dataSummary: qs("#dataSummary"),
     dataOutput: qs("#dataOutput"),
     copyDataSpec: qs("#copyDataSpec"),
+    sourceQueueForm: qs("#sourceQueueForm"),
+    sourceQueueMode: qs("#sourceQueueMode"),
+    sourceQueuePriority: qs("#sourceQueuePriority"),
+    sourceQueueOwner: qs("#sourceQueueOwner"),
+    sourceQueueSummary: qs("#sourceQueueSummary"),
+    sourceQueueOutput: qs("#sourceQueueOutput"),
+    copySourceQueue: qs("#copySourceQueue"),
+    sourceIntakeForm: qs("#sourceIntakeForm"),
+    sourceIntakeSource: qs("#sourceIntakeSource"),
+    sourceIntakeChannel: qs("#sourceIntakeChannel"),
+    sourceIntakeFormat: qs("#sourceIntakeFormat"),
+    sourceIntakeEvidence: qs("#sourceIntakeEvidence"),
+    sourceIntakeAge: qs("#sourceIntakeAge"),
+    sourceIntakeScope: qs("#sourceIntakeScope"),
+    sourceIntakeSummary: qs("#sourceIntakeSummary"),
+    sourceIntakeOutput: qs("#sourceIntakeOutput"),
+    copySourceIntake: qs("#copySourceIntake"),
+    sourceDriftForm: qs("#sourceDriftForm"),
+    sourceDriftSource: qs("#sourceDriftSource"),
+    sourceDriftChange: qs("#sourceDriftChange"),
+    sourceDriftMagnitude: qs("#sourceDriftMagnitude"),
+    sourceDriftAge: qs("#sourceDriftAge"),
+    sourceDriftProof: qs("#sourceDriftProof"),
+    sourceDriftAction: qs("#sourceDriftAction"),
+    sourceDriftSummary: qs("#sourceDriftSummary"),
+    sourceDriftOutput: qs("#sourceDriftOutput"),
+    copySourceDrift: qs("#copySourceDrift"),
+    claimReleaseForm: qs("#claimReleaseForm"),
+    claimReleaseSource: qs("#claimReleaseSource"),
+    claimReleaseSurface: qs("#claimReleaseSurface"),
+    claimReleaseEvidence: qs("#claimReleaseEvidence"),
+    claimReleaseReviewer: qs("#claimReleaseReviewer"),
+    claimReleaseScope: qs("#claimReleaseScope"),
+    claimReleaseRollback: qs("#claimReleaseRollback"),
+    claimReleaseSummary: qs("#claimReleaseSummary"),
+    claimReleaseOutput: qs("#claimReleaseOutput"),
+    copyClaimRelease: qs("#copyClaimRelease"),
+    claimLedgerSummary: qs("#claimLedgerSummary"),
+    claimLedgerOutput: qs("#claimLedgerOutput"),
+    saveClaimLedger: qs("#saveClaimLedger"),
+    copyClaimLedger: qs("#copyClaimLedger"),
+    clearClaimLedger: qs("#clearClaimLedger"),
+    claimRollbackForm: qs("#claimRollbackForm"),
+    claimRollbackTrigger: qs("#claimRollbackTrigger"),
+    claimRollbackSeverity: qs("#claimRollbackSeverity"),
+    claimRollbackExposure: qs("#claimRollbackExposure"),
+    claimRollbackAction: qs("#claimRollbackAction"),
+    claimRollbackNotice: qs("#claimRollbackNotice"),
+    claimRollbackOwner: qs("#claimRollbackOwner"),
+    claimRollbackSummary: qs("#claimRollbackSummary"),
+    claimRollbackOutput: qs("#claimRollbackOutput"),
+    copyClaimRollback: qs("#copyClaimRollback"),
     docForm: qs("#docForm"),
     docFocus: qs("#docFocus"),
     docQuestion: qs("#docQuestion"),
@@ -11310,6 +12979,12 @@ function init() {
   renderInvestorReadinessGate();
   renderCitationBinder();
   renderDataReadinessRoom();
+  renderSourceQaQueue();
+  renderSourceIntakeConsole();
+  renderSourceDriftMonitor();
+  renderClaimReleaseGate();
+  renderClaimReleaseLedger();
+  renderClaimRollbackConsole();
   renderDocDecoder();
   renderGlossary();
   renderBehaviorGuard();

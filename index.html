@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260512-02">
+    <link rel="stylesheet" href="styles.css?v=20260512-10">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -81,6 +81,12 @@
                 <option value="#citation-binder">Citation Binder</option>
                 <option value="#fund-house-lens">House Lens</option>
                 <option value="#data-readiness">Data Readiness</option>
+                <option value="#source-qa">Source QA Queue</option>
+                <option value="#source-intake">Source Intake Console</option>
+                <option value="#source-drift">Source Drift Monitor</option>
+                <option value="#claim-release">Claim Release Gate</option>
+                <option value="#claim-ledger">Claim Release Ledger</option>
+                <option value="#claim-rollback">Claim Rollback Console</option>
                 <option value="#doc-decoder">Doc Decoder</option>
                 <option value="#glossary">Retail Glossary</option>
                 <option value="#behavior-guard">Behavior Guard</option>
@@ -104,7 +110,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-              <p class="release-pill">Phase 1 v46</p>
+              <p class="release-pill">Phase 1 v52</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -1399,6 +1405,376 @@
         </div>
       </section>
 
+      <section id="source-qa" class="workspace-band source-queue-band" aria-labelledby="source-queue-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Launch operations</p>
+            <h2 id="source-queue-title">Nadi Source QA Queue</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Source QA actions">
+            <span id="sourceQueueSummary" class="status-chip">Source queue</span>
+            <button class="text-button" id="copySourceQueue" type="button">Copy queue</button>
+          </div>
+        </div>
+        <div class="source-queue-layout">
+          <form id="sourceQueueForm" class="tool-panel source-queue-form">
+            <h3>Shape the QA queue</h3>
+            <label>
+              Queue mode
+              <select id="sourceQueueMode">
+                <option value="current">Current demo queue</option>
+                <option value="dry">Live dry-run queue</option>
+                <option value="launch">Launch candidate queue</option>
+                <option value="stale">Stale-source stress queue</option>
+              </select>
+            </label>
+            <label>
+              Priority lens
+              <select id="sourceQueuePriority">
+                <option value="blockers">Blockers first</option>
+                <option value="freshness">Freshness first</option>
+                <option value="citation">Citation first</option>
+                <option value="score">Lowest score first</option>
+              </select>
+            </label>
+            <label>
+              Owner
+              <select id="sourceQueueOwner">
+                <option value="all">All owners</option>
+                <option value="Data operations">Data operations</option>
+                <option value="Research operations">Research operations</option>
+                <option value="Compliance research">Compliance research</option>
+                <option value="Portfolio evidence">Portfolio evidence</option>
+                <option value="Market data">Market data</option>
+                <option value="Risk controls">Risk controls</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Run queue</button>
+          </form>
+          <div id="sourceQueueOutput" class="source-queue-output" aria-live="polite">
+            Run the source QA queue to see launch readiness, blockers, owner handoffs, freshness gaps, and citation gaps across all data sources.
+          </div>
+        </div>
+      </section>
+
+      <section id="source-intake" class="workspace-band source-intake-band" aria-labelledby="source-intake-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Live source onboarding</p>
+            <h2 id="source-intake-title">Nadi Source Intake Console</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Source intake actions">
+            <span id="sourceIntakeSummary" class="status-chip">Intake gate</span>
+            <button class="text-button" id="copySourceIntake" type="button">Copy intake note</button>
+          </div>
+        </div>
+        <div class="source-intake-layout">
+          <form id="sourceIntakeForm" class="tool-panel source-intake-form">
+            <h3>Prepare a live source</h3>
+            <label>
+              Source family
+              <select id="sourceIntakeSource">
+                <option value="amfi-nav">AMFI scheme and NAV master</option>
+                <option value="amc-factsheet">AMC monthly factsheet</option>
+                <option value="sid-kim">SID and KIM documents</option>
+                <option value="portfolio-disclosure">Portfolio disclosure file</option>
+                <option value="benchmark-feed">Benchmark and index data</option>
+                <option value="risk-ter">Riskometer and TER history</option>
+              </select>
+            </label>
+            <label>
+              Intake path
+              <select id="sourceIntakeChannel">
+                <option value="official-url">Official URL or file source</option>
+                <option value="upload-batch">Batch file upload</option>
+                <option value="api-partner">API or licensed data partner</option>
+                <option value="manual-review">Manual research review</option>
+              </select>
+            </label>
+            <label>
+              File/API format
+              <select id="sourceIntakeFormat">
+                <option value="csv-json">CSV or normalized JSON</option>
+                <option value="api-json">API JSON response</option>
+                <option value="pdf">PDF factsheet/document</option>
+                <option value="xlsx">Spreadsheet file</option>
+                <option value="html">HTML page/table</option>
+              </select>
+            </label>
+            <label>
+              Evidence visibility
+              <select id="sourceIntakeEvidence">
+                <option value="citation-bound">Source date and citation visible</option>
+                <option value="source-only">Source date visible, citation pending</option>
+                <option value="citation-missing">Citation missing</option>
+              </select>
+            </label>
+            <label>
+              Source age in days
+              <input id="sourceIntakeAge" type="number" min="0" max="365" step="1" value="1">
+            </label>
+            <label>
+              Launch scope
+              <select id="sourceIntakeScope">
+                <option value="single-fund">Single fund dry run</option>
+                <option value="category-set">Category test set</option>
+                <option value="full-amc">Full AMC source family</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Run intake gate</button>
+          </form>
+          <div id="sourceIntakeOutput" class="source-intake-output" aria-live="polite">
+            Prepare one live source at a time, map fields, test citations, and keep private investor identifiers out of the intake workflow.
+          </div>
+        </div>
+      </section>
+
+      <section id="source-drift" class="workspace-band source-drift-band" aria-labelledby="source-drift-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Change safety layer</p>
+            <h2 id="source-drift-title">Nadi Source Drift Monitor</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Source drift actions">
+            <span id="sourceDriftSummary" class="status-chip">Drift gate</span>
+            <button class="text-button" id="copySourceDrift" type="button">Copy drift note</button>
+          </div>
+        </div>
+        <div class="source-drift-layout">
+          <form id="sourceDriftForm" class="tool-panel source-drift-form">
+            <h3>Review a source change</h3>
+            <label>
+              Source family
+              <select id="sourceDriftSource">
+                <option value="amfi-nav">AMFI scheme and NAV master</option>
+                <option value="amc-factsheet">AMC monthly factsheet</option>
+                <option value="sid-kim">SID and KIM documents</option>
+                <option value="portfolio-disclosure">Portfolio disclosure file</option>
+                <option value="benchmark-feed">Benchmark and index data</option>
+                <option value="risk-ter">Riskometer and TER history</option>
+              </select>
+            </label>
+            <label>
+              Change type
+              <select id="sourceDriftChange">
+                <option value="routine-refresh">Routine data refresh</option>
+                <option value="expense-change">Expense or TER change</option>
+                <option value="holdings-change">Holding or sector change</option>
+                <option value="document-change">SID/KIM or factsheet revision</option>
+                <option value="risk-change">Riskometer or drawdown change</option>
+                <option value="schema-change">Format or schema change</option>
+              </select>
+            </label>
+            <label>
+              Drift size
+              <select id="sourceDriftMagnitude">
+                <option value="small">Small drift</option>
+                <option value="medium">Medium drift</option>
+                <option value="high">High drift</option>
+                <option value="structural">Structural change</option>
+              </select>
+            </label>
+            <label>
+              New source age in days
+              <input id="sourceDriftAge" type="number" min="0" max="365" step="1" value="1">
+            </label>
+            <label>
+              Proof status
+              <select id="sourceDriftProof">
+                <option value="verified">Source date and citation verified</option>
+                <option value="partial">Source date visible, extraction pending</option>
+                <option value="missing">Proof missing</option>
+              </select>
+            </label>
+            <label>
+              Release action
+              <select id="sourceDriftAction">
+                <option value="preview">Preview refresh only</option>
+                <option value="queue">Queue research refresh</option>
+                <option value="block">Block live display</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Run drift gate</button>
+          </form>
+          <div id="sourceDriftOutput" class="source-drift-output" aria-live="polite">
+            Review a source change before it refreshes any investor-facing claim, score, holding, cost, risk, or document summary.
+          </div>
+        </div>
+      </section>
+
+      <section id="claim-release" class="workspace-band claim-release-band" aria-labelledby="claim-release-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Investor-facing release control</p>
+            <h2 id="claim-release-title">Nadi Claim Release Gate</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Claim release actions">
+            <span id="claimReleaseSummary" class="status-chip">Release gate</span>
+            <button class="text-button" id="copyClaimRelease" type="button">Copy release note</button>
+          </div>
+        </div>
+        <div class="claim-release-layout">
+          <form id="claimReleaseForm" class="tool-panel claim-release-form">
+            <h3>Approve a claim refresh</h3>
+            <label>
+              Source family
+              <select id="claimReleaseSource">
+                <option value="amfi-nav">AMFI scheme and NAV master</option>
+                <option value="amc-factsheet">AMC monthly factsheet</option>
+                <option value="sid-kim">SID and KIM documents</option>
+                <option value="portfolio-disclosure">Portfolio disclosure file</option>
+                <option value="benchmark-feed">Benchmark and index data</option>
+                <option value="risk-ter">Riskometer and TER history</option>
+              </select>
+            </label>
+            <label>
+              Release surface
+              <select id="claimReleaseSurface">
+                <option value="screener-score">Screener score and fund card</option>
+                <option value="cost-risk">Cost, TER, and risk labels</option>
+                <option value="portfolio-xray">Portfolio X-Ray and holdings</option>
+                <option value="doc-summary">Doc Decoder and source explanations</option>
+                <option value="receipt-pack">Receipts, Pack, and Dossier</option>
+                <option value="alerts-watchlist">Watchlist and alert triggers</option>
+              </select>
+            </label>
+            <label>
+              Evidence status
+              <select id="claimReleaseEvidence">
+                <option value="verified">Verified source date, citation, and extraction</option>
+                <option value="reviewed">Reviewed but not fully automated</option>
+                <option value="partial">Partial proof or confidence gap</option>
+                <option value="missing">Missing release proof</option>
+              </select>
+            </label>
+            <label>
+              Reviewer status
+              <select id="claimReleaseReviewer">
+                <option value="self-check">Self-check preview only</option>
+                <option value="research-approved">Research reviewer approved</option>
+                <option value="compliance-review">Compliance review needed</option>
+                <option value="blocked">Reviewer blocked release</option>
+              </select>
+            </label>
+            <label>
+              Rollout scope
+              <select id="claimReleaseScope">
+                <option value="preview">Preview only</option>
+                <option value="selected-fund">Selected fund only</option>
+                <option value="category">Category lane</option>
+                <option value="all-demo">All mapped demo claims</option>
+              </select>
+            </label>
+            <label>
+              Rollback note
+              <select id="claimReleaseRollback">
+                <option value="ready">Rollback note ready</option>
+                <option value="draft">Rollback note draft</option>
+                <option value="missing">Rollback missing</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Run release gate</button>
+          </form>
+          <div id="claimReleaseOutput" class="claim-release-output" aria-live="polite">
+            Decide whether updated source evidence can refresh an investor-facing claim or must remain frozen.
+          </div>
+        </div>
+      </section>
+
+      <section id="claim-ledger" class="workspace-band claim-ledger-band" aria-labelledby="claim-ledger-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Release audit trail</p>
+            <h2 id="claim-ledger-title">Nadi Claim Release Ledger</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Claim release ledger actions">
+            <span id="claimLedgerSummary" class="status-chip">0 entries</span>
+            <button class="text-button" id="saveClaimLedger" type="button">Save release</button>
+            <button class="text-button" id="copyClaimLedger" type="button">Copy ledger</button>
+            <button class="text-button" id="clearClaimLedger" type="button">Clear ledger</button>
+          </div>
+        </div>
+        <div id="claimLedgerOutput" class="claim-ledger-output" aria-live="polite">
+          Save release-gate decisions to build a browser-local audit trail for public claim changes.
+        </div>
+      </section>
+
+      <section id="claim-rollback" class="workspace-band claim-rollback-band" aria-labelledby="claim-rollback-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Correction and rollback control</p>
+            <h2 id="claim-rollback-title">Nadi Claim Rollback Console</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Claim rollback actions">
+            <span id="claimRollbackSummary" class="status-chip">Rollback plan</span>
+            <button class="text-button" id="copyClaimRollback" type="button">Copy rollback note</button>
+          </div>
+        </div>
+        <div class="claim-rollback-layout">
+          <form id="claimRollbackForm" class="tool-panel claim-rollback-form">
+            <h3>Plan a public claim correction</h3>
+            <label>
+              Issue trigger
+              <select id="claimRollbackTrigger">
+                <option value="stale-source">Source became stale</option>
+                <option value="wrong-value">Wrong value or label displayed</option>
+                <option value="parser-break">Parser or extraction break</option>
+                <option value="compliance-language">Compliance language concern</option>
+                <option value="user-confusion">User confusion risk</option>
+              </select>
+            </label>
+            <label>
+              Severity
+              <select id="claimRollbackSeverity">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="critical">Critical</option>
+              </select>
+            </label>
+            <label>
+              Exposure
+              <select id="claimRollbackExposure">
+                <option value="preview">Preview only</option>
+                <option value="single-fund">Single fund public surface</option>
+                <option value="category">Category lane</option>
+                <option value="all-public">All public mapped claims</option>
+              </select>
+            </label>
+            <label>
+              Rollback action
+              <select id="claimRollbackAction">
+                <option value="hide-claim">Hide affected claim</option>
+                <option value="revert-prior">Revert to prior approved value</option>
+                <option value="correction-note">Publish correction note</option>
+                <option value="reviewer-hold">Hold for reviewer approval</option>
+              </select>
+            </label>
+            <label>
+              Notice mode
+              <select id="claimRollbackNotice">
+                <option value="internal-note">Internal release note only</option>
+                <option value="user-visible">User-visible correction note</option>
+                <option value="admin-log">Admin log and reviewer sign-off</option>
+              </select>
+            </label>
+            <label>
+              Owner
+              <select id="claimRollbackOwner">
+                <option value="research">Research owner</option>
+                <option value="data">Data operations</option>
+                <option value="compliance">Compliance reviewer</option>
+                <option value="product">Product release owner</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build rollback plan</button>
+          </form>
+          <div id="claimRollbackOutput" class="claim-rollback-output" aria-live="polite">
+            Convert a release concern into a clear rollback, freeze, correction, or monitoring plan.
+          </div>
+        </div>
+      </section>
+
       <section id="doc-decoder" class="workspace-band doc-band" aria-labelledby="doc-title">
         <div class="section-heading">
           <div>
@@ -2038,6 +2414,12 @@
             <a href="#citation-binder">Citation</a>
             <a href="#fund-house-lens">House Lens</a>
             <a href="#data-readiness">Data</a>
+            <a href="#source-qa">QA</a>
+            <a href="#source-intake">Intake</a>
+            <a href="#source-drift">Drift</a>
+            <a href="#claim-release">Release</a>
+            <a href="#claim-ledger">Ledger</a>
+            <a href="#claim-rollback">Rollback</a>
             <a href="#doc-decoder">Docs</a>
             <a href="#glossary">Glossary</a>
             <a href="#behavior-guard">Guard</a>
@@ -2061,6 +2443,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260512-02"></script>
+    <script src="app.js?v=20260512-10"></script>
   </body>
 </html>

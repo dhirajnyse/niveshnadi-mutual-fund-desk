@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260511-26";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v44 Research Receipt";
+const DATA_VERSION = "20260512-02";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v46 Citation Binder";
 
 const FUNDS = [
   {
@@ -316,6 +316,69 @@ const EVIDENCE_SOURCES = [
     cadence: "Monthly and event-driven",
     fields: ["risk band", "expense drift", "drawdown watch", "review trigger"],
     launchGate: "Keep historical changes and alert users when posture changes."
+  }
+];
+
+const CITATION_SOURCES = [
+  {
+    id: "amfi-nav",
+    title: "AMFI scheme and NAV master",
+    sourceType: "Official scheme/NAV feed",
+    maxAge: 2,
+    citationPath: "AMFI source file, source date, scheme code, and ingestion run id",
+    fields: ["scheme identity", "category", "NAV date", "AUM reference"],
+    proofFor: "Scheme identity, category, active status, and NAV freshness.",
+    launchGate: "Source date must be visible and not older than the daily freshness rule."
+  },
+  {
+    id: "amc-factsheet",
+    title: "AMC monthly factsheet",
+    sourceType: "AMC PDF or structured monthly file",
+    maxAge: 45,
+    citationPath: "AMC factsheet URL/file, factsheet month, page/table reference, extraction confidence",
+    fields: ["returns", "expense ratio", "manager", "style", "factsheet holdings"],
+    proofFor: "Expense, returns, manager, AUM, portfolio style, and holdings context.",
+    launchGate: "Factsheet month and extraction confidence must be shown before fund-level facts look current."
+  },
+  {
+    id: "sid-kim",
+    title: "SID and KIM documents",
+    sourceType: "Offer document and key information memorandum",
+    maxAge: 180,
+    citationPath: "Latest SID/KIM URL, version date, change date, and clause/page reference",
+    fields: ["investment objective", "risk factors", "loads", "minimum SIP", "suitability language"],
+    proofFor: "Objective, risk factors, loads, minimum SIP, suitability language, and scheme boundaries.",
+    launchGate: "Latest version and change date must be attached before document language is summarized."
+  },
+  {
+    id: "portfolio-disclosure",
+    title: "Portfolio disclosure file",
+    sourceType: "AMC portfolio disclosure",
+    maxAge: 45,
+    citationPath: "Portfolio file URL, holdings date, table reference, and reconciliation check",
+    fields: ["top holdings", "sector map", "issuer concentration", "debt quality"],
+    proofFor: "Holdings, sector exposure, issuer concentration, and portfolio overlap checks.",
+    launchGate: "Holdings date must be explicit so stale portfolios are never presented as live."
+  },
+  {
+    id: "benchmark-feed",
+    title: "Benchmark and index data",
+    sourceType: "Licensed benchmark/index source",
+    maxAge: 35,
+    citationPath: "Benchmark provider/source, data date, allowed display field, and license note",
+    fields: ["benchmark name", "relative return", "tracking context", "category peer map"],
+    proofFor: "Benchmark name, relative return context, passive tracking, and peer comparison.",
+    launchGate: "Licensed source and allowed display fields must be approved before benchmark claims launch."
+  },
+  {
+    id: "risk-ter",
+    title: "Riskometer and TER history",
+    sourceType: "AMC factsheet, TER disclosure, and riskometer update",
+    maxAge: 35,
+    citationPath: "Riskometer/TER file, disclosure date, prior value, and change flag",
+    fields: ["risk band", "expense drift", "drawdown watch", "review trigger"],
+    proofFor: "Risk band, expense drift, riskometer changes, and review triggers.",
+    launchGate: "Current and prior values must be retained so changes can trigger review."
   }
 ];
 
@@ -1348,6 +1411,7 @@ function handleStarterGuideAction(action) {
 
   if (action === "evidence") {
     renderEvidenceLedger();
+    renderCitationBinder();
     setStarterStepProgress("evidence", true);
     scrollToHash("#evidence", "smooth", true);
     return;
@@ -2124,6 +2188,7 @@ function handlePulseAction(action) {
   }
   if (resolved === "evidence") {
     renderEvidenceLedger();
+    renderCitationBinder();
     scrollToHash("#evidence", "smooth", true);
     return;
   }
@@ -2466,6 +2531,7 @@ function handleCoachAction(route) {
     analyzePortfolio();
   } else if (target === "#evidence") {
     renderEvidenceLedger();
+    renderCitationBinder();
   } else if (target === "#red-flag-radar") {
     renderRedFlagRadar();
   } else if (target === "#switch-lab") {
@@ -4631,6 +4697,7 @@ function renderAll() {
   renderInvestorRecordDesk();
   renderResearchDossier();
   renderEvidenceLedger();
+  renderCitationBinder();
   renderFundHouseLens();
   renderDataReadinessRoom();
   renderDocDecoder();
@@ -4638,6 +4705,7 @@ function renderAll() {
   renderBehaviorGuard();
   renderClaimChecker();
   renderResearchReceipt();
+  renderReceiptVault();
   renderReviewRhythmBoard();
   renderWatchlistRoom();
   renderDecisionPack();
@@ -5834,6 +5902,7 @@ function savePortfolioReviewTrigger() {
   renderResearchDossier();
   renderWatchlistRoom();
   renderResearchReceipt();
+  renderReceiptVault();
   renderReviewRhythmBoard();
   toast("Portfolio review trigger saved.");
 }
@@ -6666,6 +6735,201 @@ function makeEvidenceLog() {
   ].join("\n");
 }
 
+function selectedCitationSource() {
+  const id = els.citationSource?.value || CITATION_SOURCES[0].id;
+  return CITATION_SOURCES.find((source) => source.id === id) || CITATION_SOURCES[0];
+}
+
+function citationModeLabel(mode) {
+  return {
+    demo: "Demo citation record",
+    dry: "Live dry-run citation",
+    launch: "Launch candidate citation"
+  }[mode] || "Demo citation record";
+}
+
+function citationVisibilityLabel(value) {
+  return {
+    visible: "Visible to investor",
+    internal: "Internal only",
+    missing: "Missing citation"
+  }[value] || "Visible to investor";
+}
+
+function citationConfidenceLabel(value) {
+  return {
+    high: "High extraction confidence",
+    medium: "Medium extraction confidence",
+    low: "Low extraction confidence"
+  }[value] || "Medium extraction confidence";
+}
+
+function citationBinderConfig() {
+  const fund = selectedFund();
+  const source = selectedCitationSource();
+  const mode = els.citationMode?.value || "demo";
+  const age = Math.round(clampNumber(Number(els.citationAge?.value) || 7, 0, 365));
+  const visibility = els.citationVisibility?.value || "visible";
+  const confidence = els.citationConfidence?.value || "medium";
+  const freshnessScore = Math.round(clampNumber(100 - Math.max(0, age - source.maxAge) * 4 - Math.min(age / source.maxAge, 1) * 18, 22, 100));
+  const visibilityScore = visibility === "visible" ? 96 : visibility === "internal" ? 62 : 24;
+  const confidenceScore = confidence === "high" ? 94 : confidence === "medium" ? 72 : 38;
+  const evidence = evidenceReadinessScore(fund);
+  const fieldMatchCount = sourceFieldMatches(fund, source).length;
+  const fieldScore = Math.round(clampNumber(48 + fieldMatchCount * 9 + source.fields.length * 3, 45, 94));
+  const launchPenalty = mode === "launch" && (visibility !== "visible" || age > source.maxAge || confidence === "low") ? 12 : 0;
+  const binderScore = Math.round(clampNumber(
+    freshnessScore * 0.25 +
+      visibilityScore * 0.24 +
+      confidenceScore * 0.18 +
+      evidence * 0.18 +
+      fieldScore * 0.15 -
+      launchPenalty,
+    20,
+    96
+  ));
+  let tone = "watch";
+  let posture = "Citation binder needs review";
+  if (binderScore >= 78 && visibility === "visible" && age <= source.maxAge && confidence !== "low") {
+    tone = "ready";
+    posture = "Citation trail is launch-shaped";
+  } else if (binderScore < 58 || visibility === "missing" || confidence === "low") {
+    tone = "caution";
+    posture = "Citation trail is not investor-ready";
+  }
+
+  const gaps = [];
+  if (age > source.maxAge) gaps.push(`Source is ${age - source.maxAge} day${age - source.maxAge === 1 ? "" : "s"} beyond the freshness rule.`);
+  if (visibility !== "visible") gaps.push("Citation is not visible to the investor.");
+  if (confidence === "low") gaps.push("Extraction confidence is too low for launch use.");
+  if (mode === "launch" && evidence < 75) gaps.push("Evidence readiness should be refreshed before launch candidate use.");
+  if (!gaps.length) gaps.push("No blocking citation gap in this demo binder view.");
+
+  const checks = [
+    "Source URL or official file path captured.",
+    "Source date and extraction run date captured.",
+    "Fund identity mapped by scheme code or controlled identifier.",
+    "Visible citation path attached near the claim.",
+    "Stale-source rule tested before the fact is displayed.",
+    "No PAN, folio, CAS, credentials, or client data required."
+  ];
+
+  return {
+    age,
+    binderScore,
+    checks,
+    confidence,
+    confidenceScore,
+    evidence,
+    fieldScore,
+    freshnessScore,
+    fund,
+    gaps,
+    mode,
+    posture,
+    source,
+    tone,
+    visibility,
+    visibilityScore
+  };
+}
+
+function renderCitationBinder(event) {
+  if (event) event.preventDefault();
+  if (!els.citationOutput || !els.citationSummary) return;
+  const config = citationBinderConfig();
+  els.citationSummary.textContent = `${config.binderScore}/100 citation`;
+  const matches = sourceFieldMatches(config.fund, config.source);
+  els.citationOutput.innerHTML = `
+    <div class="citation-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(citationModeLabel(config.mode))}</span>
+        <h3>${escapeHtml(config.posture)}</h3>
+        <p>${escapeHtml(config.source.title)} for ${escapeHtml(config.fund.name)}. Source age ${config.age} day${config.age === 1 ? "" : "s"}; max rule ${config.source.maxAge} day${config.source.maxAge === 1 ? "" : "s"}.</p>
+      </div>
+      <div class="citation-score" style="--score:${config.binderScore}">
+        <b>${config.binderScore}</b>
+        <span>Citation</span>
+      </div>
+    </div>
+    <div class="citation-metric-grid">
+      <article><span>Freshness</span><strong>${config.freshnessScore}/100</strong><p>${config.age <= config.source.maxAge ? "Inside freshness rule." : "Past freshness rule."}</p></article>
+      <article><span>Visibility</span><strong>${config.visibilityScore}/100</strong><p>${escapeHtml(citationVisibilityLabel(config.visibility))}</p></article>
+      <article><span>Extraction</span><strong>${config.confidenceScore}/100</strong><p>${escapeHtml(citationConfidenceLabel(config.confidence))}</p></article>
+      <article><span>Evidence</span><strong>${config.evidence}/100</strong><p>Selected fund evidence posture.</p></article>
+    </div>
+    <div class="citation-source-card">
+      <div>
+        <span>${escapeHtml(config.source.sourceType)}</span>
+        <strong>${escapeHtml(config.source.title)}</strong>
+        <p>${escapeHtml(config.source.proofFor)}</p>
+      </div>
+      <div class="citation-source-path">
+        <span>Citation path</span>
+        <p>${escapeHtml(config.source.citationPath)}</p>
+      </div>
+    </div>
+    <div class="citation-grid-output">
+      <article class="citation-panel">
+        <h3>Mapped proof fields</h3>
+        <div class="citation-pill-list">
+          ${config.source.fields.map((field) => `<span>${escapeHtml(field)}</span>`).join("")}
+        </div>
+        <p>${escapeHtml(matches.join(" | "))}</p>
+      </article>
+      <article class="citation-panel">
+        <h3>Blocking gaps</h3>
+        <ul class="review-vault-list">
+          ${config.gaps.map((gap) => `<li>${escapeHtml(gap)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="citation-panel">
+        <h3>Binder checklist</h3>
+        <ul class="review-vault-list">
+          ${config.checks.map((check) => `<li>${escapeHtml(check)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+    <div class="citation-guardrail">
+      <strong>Launch boundary</strong>
+      <p>${escapeHtml(config.source.launchGate)} This binder is a citation workflow record only; it does not approve a fund, personalize advice, execute a transaction, or guarantee returns.</p>
+    </div>
+  `;
+}
+
+function makeCitationBinderNote() {
+  const config = citationBinderConfig();
+  return [
+    `# NiveshNadi Citation Binder - ${config.source.title}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Fund: ${config.fund.name}`,
+    `Category: ${config.fund.category}`,
+    `Risk: ${config.fund.risk}`,
+    `Mode: ${citationModeLabel(config.mode)}`,
+    `Binder score: ${config.binderScore}/100`,
+    `Posture: ${config.posture}`,
+    `Source age: ${config.age} days`,
+    `Freshness rule: ${config.source.maxAge} days`,
+    `Citation visibility: ${citationVisibilityLabel(config.visibility)}`,
+    `Extraction confidence: ${citationConfidenceLabel(config.confidence)}`,
+    "",
+    "## Citation Path",
+    config.source.citationPath,
+    "",
+    "## Proof Fields",
+    ...config.source.fields.map((field) => `- ${field}`),
+    "",
+    "## Blocking Gaps",
+    ...config.gaps.map((gap) => `- ${gap}`),
+    "",
+    "## Binder Checklist",
+    ...config.checks.map((check) => `- ${check}`),
+    "",
+    "## Guardrail",
+    "Research support only. Live launch must show visible source date, citation path, extraction confidence, and stale-source status. This binder excludes PAN, folio, CAS, account data, advice, approval, execution, and return guarantees."
+  ].join("\n");
+}
+
 function fundHouseTone(score) {
   if (score >= 82) return "strong";
   if (score >= 68) return "watch";
@@ -6887,6 +7151,7 @@ function addFundHouseReviewTrigger() {
   }
   renderWatchlistRoom();
   renderResearchReceipt();
+  renderReceiptVault();
   renderReviewRhythmBoard();
   renderFundHouseLens();
   toast("Fund house review added to Watchlist.");
@@ -7973,6 +8238,187 @@ function makeResearchReceiptNote() {
   ].filter(Boolean).join("\n");
 }
 
+function receiptSnapshotFromConfig(config = receiptConfig()) {
+  return {
+    id: `receipt-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    createdAt: new Date().toISOString(),
+    release: RELEASE_LABEL,
+    dataVersion: DATA_VERSION,
+    mode: config.mode,
+    modeLabel: receiptModeLabel(config.mode),
+    decision: config.decision,
+    decisionLabel: receiptDecisionLabel(config.decision),
+    reviewDate: config.reviewDate,
+    receiptScore: config.receiptScore,
+    posture: config.posture,
+    tone: config.tone,
+    fund: {
+      id: config.fund.id,
+      name: config.fund.name,
+      category: config.fund.category,
+      risk: config.fund.risk,
+      expense: Number(config.fund.expense.toFixed(2))
+    },
+    metrics: {
+      nadiScore: config.score,
+      evidence: config.evidence,
+      claimFlags: config.claim.flags.length,
+      behavior: config.behavior.guardScore,
+      compareCount: config.compareFunds.length,
+      watchCount: config.watchCount,
+      alertCount: config.alertCount
+    },
+    compareFunds: config.compareFunds.map((fund) => ({
+      id: fund.id,
+      name: fund.name,
+      category: fund.category,
+      risk: fund.risk
+    })).slice(0, 6),
+    nextChecks: config.nextChecks.slice(0, 4),
+    noteStatus: config.note ? "Written note present; note body not saved in vault" : "No optional note",
+    boundary: "Research workflow record only; excludes PAN, folio, CAS, credentials, account data, advice, approval, and guarantees."
+  };
+}
+
+function saveCurrentReceiptSnapshot() {
+  const snapshot = receiptSnapshotFromConfig();
+  const entries = [snapshot, ...loadReceiptVault()].slice(0, 24);
+  saveReceiptVault(entries);
+  renderReceiptVault();
+  toast("Research receipt saved locally.");
+}
+
+function clearReceiptVault() {
+  saveReceiptVault([]);
+  renderReceiptVault();
+  toast("Receipt vault cleared.");
+}
+
+function renderReceiptVault() {
+  if (!els.receiptVaultOutput || !els.receiptVaultSummary) return;
+  const entries = loadReceiptVault();
+  const current = receiptSnapshotFromConfig();
+  const latest = entries[0] || null;
+  const prior = entries[1] || null;
+  const scoreDelta = latest ? reviewVaultDelta(latest.receiptScore, prior?.receiptScore) : "New";
+  const evidenceDelta = latest ? reviewVaultDelta(latest.metrics.evidence, prior?.metrics.evidence) : "New";
+  const claimDelta = latest ? reviewVaultDelta(latest.metrics.claimFlags, prior?.metrics.claimFlags) : "New";
+  els.receiptVaultSummary.textContent = `${entries.length} receipt${entries.length === 1 ? "" : "s"}`;
+
+  if (!entries.length) {
+    els.receiptVaultOutput.innerHTML = `
+      <div class="receipt-vault-empty">
+        <div>
+          <span class="metric-label">Current receipt preview</span>
+          <h3>${current.receiptScore}/100 ${escapeHtml(current.decisionLabel)}</h3>
+          <p>Save the current Research Receipt to begin a browser-local proof trail. The vault stores research posture, scores, fund names, and check status only; it does not store PAN, folio, CAS, credentials, or the optional receipt note body.</p>
+        </div>
+        <div class="receipt-vault-score" style="--score:${current.receiptScore}">
+          <b>${current.receiptScore}</b>
+          <span>Now</span>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  els.receiptVaultOutput.innerHTML = `
+    <div class="receipt-vault-hero ${escapeHtml(latest.tone)}">
+      <div>
+        <span class="metric-label">Latest saved receipt</span>
+        <h3>${latest.receiptScore}/100 ${escapeHtml(latest.decisionLabel)}</h3>
+        <p>${escapeHtml(latest.fund.name)} | ${escapeHtml(latest.modeLabel)} | Saved ${new Date(latest.createdAt).toLocaleString("en-IN")} | Review ${escapeHtml(latest.reviewDate)}.</p>
+      </div>
+      <div class="receipt-vault-score" style="--score:${latest.receiptScore}">
+        <b>${latest.receiptScore}</b>
+        <span>Vault</span>
+      </div>
+    </div>
+    <div class="receipt-vault-metric-grid">
+      <div><span>Receipt delta</span><strong>${escapeHtml(scoreDelta)}</strong></div>
+      <div><span>Evidence delta</span><strong>${escapeHtml(evidenceDelta)}</strong></div>
+      <div><span>Claim flags delta</span><strong>${escapeHtml(claimDelta)}</strong></div>
+      <div><span>Latest evidence</span><strong>${latest.metrics.evidence}/100</strong></div>
+      <div><span>Compare set</span><strong>${latest.metrics.compareCount}</strong></div>
+      <div><span>Alerts</span><strong>${latest.metrics.alertCount}</strong></div>
+    </div>
+    <div class="receipt-vault-grid">
+      ${entries.slice(0, 8).map((entry, index) => {
+        const previous = entries[index + 1] || null;
+        return `
+          <article class="receipt-vault-card">
+            <div class="receipt-vault-card-head">
+              <span>${escapeHtml(entry.decisionLabel)}</span>
+              <strong>${entry.receiptScore}/100</strong>
+            </div>
+            <p>${escapeHtml(entry.fund.name)} | ${escapeHtml(entry.fund.category)} | ${escapeHtml(entry.fund.risk)} risk</p>
+            <div class="receipt-vault-mini-grid">
+              <div><span>Evidence</span><b>${entry.metrics.evidence}/100</b></div>
+              <div><span>Claims</span><b>${entry.metrics.claimFlags}</b></div>
+              <div><span>Behavior</span><b>${entry.metrics.behavior}/100</b></div>
+            </div>
+            <small>Score ${escapeHtml(reviewVaultDelta(entry.receiptScore, previous?.receiptScore))} from prior receipt | ${escapeHtml(entry.noteStatus)}</small>
+          </article>
+        `;
+      }).join("")}
+    </div>
+    <div class="receipt-vault-card-grid">
+      <article class="receipt-vault-panel">
+        <h3>Latest proof checks</h3>
+        <ul class="review-vault-list">
+          ${latest.nextChecks.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="receipt-vault-panel">
+        <h3>Compare context</h3>
+        <div class="receipt-vault-funds">
+          ${latest.compareFunds.length ? latest.compareFunds.map((fund) => `<span>${escapeHtml(fund.name)} | ${escapeHtml(fund.risk)} risk</span>`).join("") : "<span>No compare fund captured.</span>"}
+        </div>
+      </article>
+      <article class="receipt-vault-panel receipt-vault-guardrail">
+        <h3>Vault boundary</h3>
+        <p>${escapeHtml(latest.boundary)}</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeReceiptVaultBrief() {
+  const entries = loadReceiptVault();
+  const current = receiptSnapshotFromConfig();
+  const latest = entries[0] || current;
+  const prior = entries[1] || null;
+  return [
+    "# NiveshNadi Receipt Vault",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Saved receipts: ${entries.length}`,
+    `Latest fund: ${latest.fund.name}`,
+    `Latest decision stance: ${latest.decisionLabel}`,
+    `Latest receipt score: ${latest.receiptScore}/100`,
+    `Receipt delta: ${reviewVaultDelta(latest.receiptScore, prior?.receiptScore)}`,
+    `Evidence delta: ${reviewVaultDelta(latest.metrics.evidence, prior?.metrics.evidence)}`,
+    `Claim flags delta: ${reviewVaultDelta(latest.metrics.claimFlags, prior?.metrics.claimFlags)}`,
+    "",
+    "## Latest Metrics",
+    `- Nadi score: ${latest.metrics.nadiScore}/100`,
+    `- Evidence readiness: ${latest.metrics.evidence}/100`,
+    `- Claim flags: ${latest.metrics.claimFlags}`,
+    `- Behavior guard: ${latest.metrics.behavior}/100`,
+    `- Compare set: ${latest.metrics.compareCount}`,
+    `- Watch entries: ${latest.metrics.watchCount}`,
+    `- Alert triggers: ${latest.metrics.alertCount}`,
+    "",
+    "## Latest Proof Checks",
+    ...latest.nextChecks.map((item) => `- ${item}`),
+    "",
+    "## Recent Receipts",
+    ...(entries.length ? entries.slice(0, 8).map((entry) => `- ${new Date(entry.createdAt).toLocaleString("en-IN")}: ${entry.receiptScore}/100, ${entry.fund.name}, ${entry.decisionLabel}, evidence ${entry.metrics.evidence}/100, claims ${entry.metrics.claimFlags}`) : ["- No saved receipts yet. This brief uses the current receipt preview."]),
+    "",
+    "## Guardrail",
+    "Receipt Vault stores browser-local proof-of-research metadata only. It is not advice, suitability approval, execution instruction, tax guidance, or a return guarantee. Do not store PAN, folio, CAS, credentials, account data, client identifiers, or private financial notes."
+  ].join("\n");
+}
+
 function renderWatchlistRoom() {
   if (!els.watchList || !els.watchStats) return;
   const watchlist = loadWatchlist();
@@ -8068,6 +8514,7 @@ function addToWatchlist(fundId, shouldRender = true) {
     renderResearchDossier();
     renderWatchlistRoom();
     renderResearchReceipt();
+    renderReceiptVault();
     renderReviewRhythmBoard();
   }
 }
@@ -8086,6 +8533,7 @@ function removeFromWatchlist(fundId) {
   renderResearchDossier();
   renderWatchlistRoom();
   renderResearchReceipt();
+  renderReceiptVault();
   renderReviewRhythmBoard();
 }
 
@@ -8114,6 +8562,7 @@ function handleAlertForm(event) {
   renderResearchDossier();
   renderWatchlistRoom();
   renderResearchReceipt();
+  renderReceiptVault();
   renderReviewRhythmBoard();
 }
 
@@ -9780,6 +10229,18 @@ function saveReviewVault(entries) {
   localStorage.setItem("niveshnadi-review-vault", JSON.stringify(entries));
 }
 
+function loadReceiptVault() {
+  try {
+    return JSON.parse(localStorage.getItem("niveshnadi-receipt-vault") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveReceiptVault(entries) {
+  localStorage.setItem("niveshnadi-receipt-vault", JSON.stringify(entries));
+}
+
 function loadInvestorRecords() {
   try {
     return JSON.parse(localStorage.getItem("niveshnadi-investor-records") || "[]");
@@ -10092,6 +10553,11 @@ function bindEvents() {
   els.clearDossiers?.addEventListener("click", clearResearchDossiers);
   els.copyCompare?.addEventListener("click", () => copyText(makeCompareNote()));
   els.copyEvidence?.addEventListener("click", () => copyText(makeEvidenceLog()));
+  els.citationForm?.addEventListener("submit", renderCitationBinder);
+  [els.citationSource, els.citationMode, els.citationAge, els.citationVisibility, els.citationConfidence].forEach((input) => {
+    input?.addEventListener(input === els.citationAge ? "input" : "change", () => renderCitationBinder());
+  });
+  els.copyCitationBinder?.addEventListener("click", () => copyText(makeCitationBinderNote()));
   els.copyHouseLens?.addEventListener("click", () => copyText(makeFundHouseLensNote()));
   els.watchHouseReview?.addEventListener("click", addFundHouseReviewTrigger);
   els.dataForm?.addEventListener("submit", renderDataReadinessRoom);
@@ -10113,36 +10579,53 @@ function bindEvents() {
   els.behaviorForm?.addEventListener("submit", (event) => {
     renderBehaviorGuard(event);
     renderResearchReceipt();
+    renderReceiptVault();
   });
   [els.behaviorTrigger, els.behaviorAction, els.behaviorAmount, els.behaviorMood, els.behaviorWait].forEach((input) => {
     input?.addEventListener(input === els.behaviorAmount ? "input" : "change", () => {
       renderBehaviorGuard();
       renderResearchReceipt();
+      renderReceiptVault();
     });
   });
   els.copyBehaviorGuard?.addEventListener("click", () => copyText(makeBehaviorGuardNote()));
   els.claimForm?.addEventListener("submit", (event) => {
     renderClaimChecker(event);
     renderResearchReceipt();
+    renderReceiptVault();
   });
   els.claimPreset?.addEventListener("change", () => {
     if (els.claimText) els.claimText.value = CLAIM_PRESETS[els.claimPreset.value] || "";
     renderClaimChecker();
     renderResearchReceipt();
+    renderReceiptVault();
   });
   [els.claimText, els.claimSource, els.claimIntent].forEach((input) => {
     input?.addEventListener(input === els.claimText ? "input" : "change", () => {
       renderClaimChecker();
       renderResearchReceipt();
+      renderReceiptVault();
     });
   });
   els.copyClaimNote?.addEventListener("click", () => copyText(makeClaimCheckerNote()));
-  els.receiptForm?.addEventListener("submit", renderResearchReceipt);
-  [els.receiptMode, els.receiptDecision, els.receiptReviewDate].forEach((input) => {
-    input?.addEventListener("change", () => renderResearchReceipt());
+  els.receiptForm?.addEventListener("submit", (event) => {
+    renderResearchReceipt(event);
+    renderReceiptVault();
   });
-  els.receiptNote?.addEventListener("input", () => renderResearchReceipt());
+  [els.receiptMode, els.receiptDecision, els.receiptReviewDate].forEach((input) => {
+    input?.addEventListener("change", () => {
+      renderResearchReceipt();
+      renderReceiptVault();
+    });
+  });
+  els.receiptNote?.addEventListener("input", () => {
+    renderResearchReceipt();
+    renderReceiptVault();
+  });
   els.copyReceiptNote?.addEventListener("click", () => copyText(makeResearchReceiptNote()));
+  els.saveReceiptSnapshot?.addEventListener("click", saveCurrentReceiptSnapshot);
+  els.copyReceiptVault?.addEventListener("click", () => copyText(makeReceiptVaultBrief()));
+  els.clearReceiptVault?.addEventListener("click", clearReceiptVault);
   els.rhythmForm?.addEventListener("submit", renderReviewRhythmBoard);
   [els.rhythmFocus, els.rhythmDate, els.rhythmCadence, els.rhythmNote].forEach((input) => {
     input?.addEventListener("change", () => renderReviewRhythmBoard());
@@ -10171,6 +10654,7 @@ function bindEvents() {
     renderResearchDossier();
     renderWatchlistRoom();
     renderResearchReceipt();
+    renderReceiptVault();
     renderReviewRhythmBoard();
   });
   els.clearAlerts?.addEventListener("click", () => {
@@ -10184,6 +10668,7 @@ function bindEvents() {
     renderResearchDossier();
     renderWatchlistRoom();
     renderResearchReceipt();
+    renderReceiptVault();
     renderReviewRhythmBoard();
   });
   els.packForm?.addEventListener("submit", renderDecisionPack);
@@ -10279,12 +10764,14 @@ function bindEvents() {
     renderInvestorRecordDesk();
     renderResearchDossier();
     renderEvidenceLedger();
+    renderCitationBinder();
     renderFundHouseLens();
     renderDocDecoder();
     renderGlossary();
     renderBehaviorGuard();
     renderClaimChecker();
     renderResearchReceipt();
+    renderReceiptVault();
     renderReviewRhythmBoard();
     renderDecisionPack();
     scrollToElement(document.querySelector(".detail-band"));
@@ -10325,6 +10812,8 @@ function bindEvents() {
       renderInvestorRecordDesk();
       renderResearchDossier();
       renderWatchlistRoom();
+      renderResearchReceipt();
+      renderReceiptVault();
       renderReviewRhythmBoard();
     }
   });
@@ -10365,12 +10854,14 @@ function bindEvents() {
     renderInvestorRecordDesk();
     renderResearchDossier();
     renderInvestorReadinessGate();
+    renderCitationBinder();
     renderFundHouseLens();
     renderDocDecoder();
     renderGlossary();
     renderBehaviorGuard();
     renderClaimChecker();
     renderResearchReceipt();
+    renderReceiptVault();
     renderReviewRhythmBoard();
     renderDecisionPack();
   });
@@ -10697,6 +11188,15 @@ function cacheElements() {
     evidenceFundSummary: qs("#evidenceFundSummary"),
     evidenceOutput: qs("#evidenceOutput"),
     copyEvidence: qs("#copyEvidence"),
+    citationForm: qs("#citationForm"),
+    citationSource: qs("#citationSource"),
+    citationMode: qs("#citationMode"),
+    citationAge: qs("#citationAge"),
+    citationVisibility: qs("#citationVisibility"),
+    citationConfidence: qs("#citationConfidence"),
+    citationSummary: qs("#citationSummary"),
+    citationOutput: qs("#citationOutput"),
+    copyCitationBinder: qs("#copyCitationBinder"),
     houseSummary: qs("#houseSummary"),
     houseOutput: qs("#houseOutput"),
     copyHouseLens: qs("#copyHouseLens"),
@@ -10748,6 +11248,11 @@ function cacheElements() {
     receiptSummary: qs("#receiptSummary"),
     receiptOutput: qs("#receiptOutput"),
     copyReceiptNote: qs("#copyReceiptNote"),
+    receiptVaultSummary: qs("#receiptVaultSummary"),
+    receiptVaultOutput: qs("#receiptVaultOutput"),
+    saveReceiptSnapshot: qs("#saveReceiptSnapshot"),
+    copyReceiptVault: qs("#copyReceiptVault"),
+    clearReceiptVault: qs("#clearReceiptVault"),
     rhythmForm: qs("#rhythmForm"),
     rhythmFocus: qs("#rhythmFocus"),
     rhythmDate: qs("#rhythmDate"),
@@ -10803,12 +11308,14 @@ function init() {
   renderStressLab();
   renderCostRealityLab();
   renderInvestorReadinessGate();
+  renderCitationBinder();
   renderDataReadinessRoom();
   renderDocDecoder();
   renderGlossary();
   renderBehaviorGuard();
   renderClaimChecker();
   renderResearchReceipt();
+  renderReceiptVault();
   renderDecisionPack();
   renderJournal();
   analyzePortfolio();

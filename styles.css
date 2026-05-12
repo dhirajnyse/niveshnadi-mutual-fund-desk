@@ -5201,6 +5201,187 @@ a:focus-visible {
   margin: 5px 0 0;
 }
 
+.citation-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.44fr) minmax(0, 1.56fr);
+  gap: 12px;
+}
+
+.citation-form {
+  align-content: start;
+}
+
+.citation-output {
+  display: grid;
+  gap: 12px;
+  min-height: 100%;
+}
+
+.citation-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(234, 242, 251, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.citation-hero.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.citation-hero.watch {
+  border-color: rgba(225, 160, 55, 0.42);
+}
+
+.citation-hero.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.citation-hero h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.citation-hero p,
+.citation-metric-grid p,
+.citation-source-card p,
+.citation-panel p,
+.citation-guardrail p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.citation-score {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  display: grid;
+  grid-template-rows: 1fr auto auto 1fr;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  text-align: center;
+}
+
+.citation-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.citation-score b,
+.citation-score span {
+  position: relative;
+}
+
+.citation-score b {
+  grid-row: 2;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.citation-score span {
+  grid-row: 3;
+  margin-top: 3px;
+  color: #dce7ed;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.citation-metric-grid,
+.citation-grid-output {
+  display: grid;
+  gap: 10px;
+}
+
+.citation-metric-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.citation-grid-output {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.citation-metric-grid article,
+.citation-source-card,
+.citation-panel,
+.citation-guardrail {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.citation-metric-grid span,
+.citation-source-card span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.citation-metric-grid strong,
+.citation-source-card strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.18;
+}
+
+.citation-source-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.72fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.citation-source-path {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ffffff;
+}
+
+.citation-panel h3 {
+  margin: 0 0 8px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.citation-pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.citation-pill-list span {
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: rgba(234, 242, 251, 0.95);
+  color: var(--slate);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.citation-guardrail {
+  background: var(--mint-soft);
+  border-color: rgba(15, 124, 107, 0.24);
+}
+
 .house-output {
   display: grid;
   gap: 12px;
@@ -6385,6 +6566,176 @@ a:focus-visible {
   border-color: rgba(15, 124, 107, 0.24);
 }
 
+.receipt-vault-output {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  min-height: 180px;
+}
+
+.receipt-vault-empty,
+.receipt-vault-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(245, 249, 252, 0.96), rgba(234, 242, 251, 0.94));
+}
+
+.receipt-vault-hero.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.receipt-vault-hero.watch {
+  border-color: rgba(225, 160, 55, 0.42);
+}
+
+.receipt-vault-hero.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.receipt-vault-empty h3,
+.receipt-vault-hero h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.receipt-vault-empty p,
+.receipt-vault-hero p,
+.receipt-vault-card p,
+.receipt-vault-card small,
+.receipt-vault-panel p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.receipt-vault-score {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  display: grid;
+  grid-template-rows: 1fr auto auto 1fr;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--gold) calc(var(--score) * 1%), #dce7ed 0);
+  text-align: center;
+}
+
+.receipt-vault-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.receipt-vault-score b,
+.receipt-vault-score span {
+  position: relative;
+}
+
+.receipt-vault-score b {
+  grid-row: 2;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.receipt-vault-score span {
+  grid-row: 3;
+  margin-top: 3px;
+  color: #dce7ed;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.receipt-vault-metric-grid,
+.receipt-vault-grid,
+.receipt-vault-card-grid,
+.receipt-vault-mini-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.receipt-vault-metric-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.receipt-vault-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.receipt-vault-card-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.receipt-vault-mini-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.receipt-vault-metric-grid div,
+.receipt-vault-card,
+.receipt-vault-panel {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.receipt-vault-metric-grid span,
+.receipt-vault-card-head span,
+.receipt-vault-mini-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.receipt-vault-metric-grid strong,
+.receipt-vault-card-head strong,
+.receipt-vault-mini-grid b {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.receipt-vault-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.receipt-vault-funds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.receipt-vault-funds span {
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: rgba(234, 242, 251, 0.95);
+  color: var(--slate);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.receipt-vault-guardrail {
+  background: var(--mint-soft);
+  border-color: rgba(15, 124, 107, 0.24);
+}
+
 .rhythm-grid {
   display: grid;
   grid-template-columns: minmax(300px, 0.5fr) minmax(0, 1.5fr);
@@ -7255,6 +7606,7 @@ a:focus-visible {
   .investor-record-grid,
   .dossier-grid,
   .evidence-grid,
+  .citation-layout,
   .data-grid,
   .doc-grid,
   .glossary-grid,
@@ -7365,6 +7717,12 @@ a:focus-visible {
   .claim-flag-grid,
   .receipt-metric-grid,
   .receipt-ledger-grid,
+  .receipt-vault-metric-grid,
+  .receipt-vault-grid,
+  .receipt-vault-card-grid,
+  .receipt-vault-mini-grid,
+  .citation-metric-grid,
+  .citation-grid-output,
   .rhythm-stat-grid,
   .rhythm-bucket-grid,
   .house-signal-grid,
@@ -7497,6 +7855,12 @@ a:focus-visible {
   .claim-flag-grid,
   .receipt-metric-grid,
   .receipt-ledger-grid,
+  .receipt-vault-metric-grid,
+  .receipt-vault-grid,
+  .receipt-vault-card-grid,
+  .receipt-vault-mini-grid,
+  .citation-metric-grid,
+  .citation-grid-output,
   .rhythm-stat-grid,
   .rhythm-bucket-grid,
   .house-signal-grid,
@@ -7608,7 +7972,11 @@ a:focus-visible {
   .claim-hero,
   .claim-route-card,
   .receipt-hero,
-  .receipt-route-card {
+  .receipt-route-card,
+  .receipt-vault-empty,
+  .receipt-vault-hero,
+  .citation-hero,
+  .citation-source-card {
     grid-template-columns: 1fr;
   }
 
@@ -7616,7 +7984,9 @@ a:focus-visible {
   .glossary-score,
   .behavior-score,
   .claim-score,
-  .receipt-score {
+  .receipt-score,
+  .receipt-vault-score,
+  .citation-score {
     justify-self: start;
   }
 

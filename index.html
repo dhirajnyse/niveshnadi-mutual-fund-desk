@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260511-26">
+    <link rel="stylesheet" href="styles.css?v=20260512-02">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -78,6 +78,7 @@
               </optgroup>
               <optgroup label="Trust and Follow-up">
                 <option value="#evidence">Evidence</option>
+                <option value="#citation-binder">Citation Binder</option>
                 <option value="#fund-house-lens">House Lens</option>
                 <option value="#data-readiness">Data Readiness</option>
                 <option value="#doc-decoder">Doc Decoder</option>
@@ -85,6 +86,7 @@
                 <option value="#behavior-guard">Behavior Guard</option>
                 <option value="#claim-checker">Claim Checker</option>
                 <option value="#research-receipt">Research Receipt</option>
+                <option value="#receipt-vault">Receipt Vault</option>
                 <option value="#review-rhythm">Rhythm</option>
                 <option value="#watchlist">Watchlist</option>
                 <option value="#decision-pack">Decision Pack</option>
@@ -102,7 +104,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-              <p class="release-pill">Phase 1 v44</p>
+              <p class="release-pill">Phase 1 v46</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -1266,6 +1268,67 @@
         </div>
       </section>
 
+      <section id="citation-binder" class="workspace-band citation-band" aria-labelledby="citation-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Source proof</p>
+            <h2 id="citation-title">Nadi Citation Binder</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Citation binder actions">
+            <span id="citationSummary" class="status-chip">Citation gate</span>
+            <button class="text-button" id="copyCitationBinder" type="button">Copy binder</button>
+          </div>
+        </div>
+        <div class="citation-layout">
+          <form id="citationForm" class="tool-panel citation-form">
+            <h3>Bind source proof</h3>
+            <label>
+              Source
+              <select id="citationSource">
+                <option value="amfi-nav">AMFI scheme and NAV master</option>
+                <option value="amc-factsheet">AMC monthly factsheet</option>
+                <option value="sid-kim">SID and KIM documents</option>
+                <option value="portfolio-disclosure">Portfolio disclosure file</option>
+                <option value="benchmark-feed">Benchmark and index data</option>
+                <option value="risk-ter">Riskometer and TER history</option>
+              </select>
+            </label>
+            <label>
+              Binder mode
+              <select id="citationMode">
+                <option value="demo">Demo citation record</option>
+                <option value="dry">Live dry run</option>
+                <option value="launch">Launch candidate</option>
+              </select>
+            </label>
+            <label>
+              Days since source date
+              <input id="citationAge" type="number" min="0" max="365" step="1" value="7">
+            </label>
+            <label>
+              Citation visibility
+              <select id="citationVisibility">
+                <option value="visible">Visible to investor</option>
+                <option value="internal">Internal only</option>
+                <option value="missing">Missing citation</option>
+              </select>
+            </label>
+            <label>
+              Extraction confidence
+              <select id="citationConfidence">
+                <option value="medium">Medium confidence</option>
+                <option value="high">High confidence</option>
+                <option value="low">Low confidence</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Bind citation</button>
+          </form>
+          <div id="citationOutput" class="citation-output" aria-live="polite">
+            Select a source to bind source date, citation path, extraction confidence, freshness rule, and launch boundary.
+          </div>
+        </div>
+      </section>
+
       <section id="fund-house-lens" class="workspace-band house-band" aria-labelledby="house-title">
         <div class="section-heading">
           <div>
@@ -1608,6 +1671,24 @@
           <div id="receiptOutput" class="receipt-output" aria-live="polite">
             Build a research receipt from score, evidence, claims, behavior, compare set, watchlist, and decision boundaries.
           </div>
+        </div>
+      </section>
+
+      <section id="receipt-vault" class="workspace-band receipt-vault-band" aria-labelledby="receipt-vault-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Proof memory</p>
+            <h2 id="receipt-vault-title">Nadi Receipt Vault</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Receipt vault actions">
+            <span id="receiptVaultSummary" class="status-chip">0 receipts</span>
+            <button class="text-button" id="saveReceiptSnapshot" type="button">Save receipt</button>
+            <button class="text-button" id="copyReceiptVault" type="button">Copy vault</button>
+            <button class="text-button" id="clearReceiptVault" type="button">Clear vault</button>
+          </div>
+        </div>
+        <div id="receiptVaultOutput" class="receipt-vault-output" aria-live="polite">
+          Save the current Research Receipt to create a browser-local proof trail without storing PAN, folio, CAS, credentials, or account data.
         </div>
       </section>
 
@@ -1954,6 +2035,7 @@
             <a href="#investor-record">Record</a>
             <a href="#research-dossier">Dossier</a>
             <a href="#evidence">Evidence</a>
+            <a href="#citation-binder">Citation</a>
             <a href="#fund-house-lens">House Lens</a>
             <a href="#data-readiness">Data</a>
             <a href="#doc-decoder">Docs</a>
@@ -1961,6 +2043,7 @@
             <a href="#behavior-guard">Guard</a>
             <a href="#claim-checker">Claims</a>
             <a href="#research-receipt">Receipt</a>
+            <a href="#receipt-vault">R Vault</a>
             <a href="#review-rhythm">Rhythm</a>
             <a href="#watchlist">Watchlist</a>
             <a href="#decision-pack">Pack</a>
@@ -1978,6 +2061,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260511-26"></script>
+    <script src="app.js?v=20260512-02"></script>
   </body>
 </html>

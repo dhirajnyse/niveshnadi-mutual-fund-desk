@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v44 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v46 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 ## What is included
 
@@ -41,6 +41,7 @@ This Phase 1 v44 prototype is a compact static web app with no build step. Open 
 - Research Lanes that route a retail investor through first SIP, comparison, portfolio review, switch study, or decision memo workflows without giving advice.
 - Research Pulse that sits near the first screen and converts selected fund, compare set, evidence readiness, watch triggers, stress needs, and decision memo readiness into direct next-check actions.
 - Evidence Ledger that maps selected fund signals to AMFI, AMC factsheet, SID, KIM, portfolio disclosure, benchmark, riskometer, and TER source readiness.
+- Nadi Citation Binder that binds source date, citation path, extraction confidence, freshness rule, and launch boundary before live-looking research claims are trusted.
 - Fund House Lens that reviews process clarity, evidence depth, cost discipline, AUM/capacity comfort, manager visibility, style stability, and house-level launch gates.
 - Data Readiness Room that scores AMFI, AMC, SID/KIM, portfolio disclosure, benchmark, and TER pipelines before any live claim is allowed.
 - Nadi Doc Decoder that turns SID, KIM, factsheet, portfolio disclosure, riskometer, and TER language into plain research questions and document guardrails.
@@ -48,6 +49,7 @@ This Phase 1 v44 prototype is a compact static web app with no build step. Open 
 - Nadi Behavior Guard that checks panic, return chasing, peer noise, SIP fatigue, switch urge, lump-sum pressure, tax-rush decisions, and low-conviction actions before a user writes a memo or acts.
 - Nadi Claim Checker that challenges guaranteed-return, best-fund, recent-winner, low-NAV, NFO, IDCW-income, tax-rush, expense-only, and influencer claims before the investor trusts them.
 - Nadi Research Receipt that assembles selected fund, score, evidence, claim flags, behavior guard, compare set, watchlist, alert, review date, and decision boundary into one copyable proof-of-research artifact.
+- Nadi Receipt Vault that saves browser-local receipt metadata over time so a retail investor can review proof discipline without storing PAN, folio, CAS, credentials, or private account data.
 - Review Rhythm Board that converts selected funds, watchlist triggers, compare-set funds, and review dates into a 30/60/90-day research calendar.
 - Watchlist and Alerts Room for saved funds, review dates, expense triggers, drawdown triggers, score floors, and style checks.
 - Nadi Decision Pack that converts selected fund research into an explainable pre-investment memo.
@@ -55,7 +57,7 @@ This Phase 1 v44 prototype is a compact static web app with no build step. Open 
 - Pricing and monetization preview with Free, Nadi Plus, Founder Circle, and Phase 2 Distributor Desk plans.
 - Phase 2 distributor roadmap for ARN/EUIN/PAN-based client management.
 - Security foundation with `SECURITY.md`, threat model, data classification, release checklist, and automated security audit.
-- Compact v44 product layout with Research Receipt, Claim Checker, Behavior Guard, Retail Glossary, first-screen Signal Strip, denser screener, signal bars, mobile checks, Workspace Command, Why This Fund Lens, Nadi Score Anatomy, First 5-Minute Start, Retail Investor Passport, Nadi Coach Q&A, Research Lanes, Research Pulse, polished floating search/top dock, tuned sticky-header anchor landing, Category Playbook, Suitability Passport, Goal-Fund Fit Heatmap, Red Flag Radar, Switch Decision Lab, Peer Benchmark Board, Fund Compare Matrix, goal-fit research mapping, First SIP Coach, Risk Stress Lab, Cost Reality Lab, Investor Readiness Gate, Portfolio Intelligence X-Ray, Portfolio Blueprint Lab, Rebalance Guard, Portfolio Review Room, Review Vault, Investor Record Desk, Research Dossier Builder, Evidence Ledger, Fund House Lens, Data Readiness Room, Nadi Doc Decoder, Review Rhythm Board, Watchlist and Alerts Room, Nadi Decision Pack, and a trust-first retail membership model.
+- Compact v46 product layout with Citation Binder, Receipt Vault, Research Receipt, Claim Checker, Behavior Guard, Retail Glossary, first-screen Signal Strip, denser screener, signal bars, mobile checks, Workspace Command, Why This Fund Lens, Nadi Score Anatomy, First 5-Minute Start, Retail Investor Passport, Nadi Coach Q&A, Research Lanes, Research Pulse, polished floating search/top dock, tuned sticky-header anchor landing, Category Playbook, Suitability Passport, Goal-Fund Fit Heatmap, Red Flag Radar, Switch Decision Lab, Peer Benchmark Board, Fund Compare Matrix, goal-fit research mapping, First SIP Coach, Risk Stress Lab, Cost Reality Lab, Investor Readiness Gate, Portfolio Intelligence X-Ray, Portfolio Blueprint Lab, Rebalance Guard, Portfolio Review Room, Review Vault, Investor Record Desk, Research Dossier Builder, Evidence Ledger, Fund House Lens, Data Readiness Room, Nadi Doc Decoder, Review Rhythm Board, Watchlist and Alerts Room, Nadi Decision Pack, and a trust-first retail membership model.
 
 ## Important compliance posture
 

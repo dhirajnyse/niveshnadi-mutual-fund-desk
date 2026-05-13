@@ -1,5 +1,11 @@
-const DATA_VERSION = "20260513-13";
+const DATA_VERSION = "20260513-15";
 const RELEASE_LABEL = "NiveshNadi Phase 1 v91 Reviewer Release Binder";
+const HASH_SETTLE_DELAYS = [0, 80, 180, 360, 720, 1200, 1900, 2800, 4000, 5600];
+const HASH_SETTLE_WINDOW = 6400;
+
+if ("scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
 
 const FUNDS = [
   {
@@ -8907,24 +8913,27 @@ function scrollToHash(hash, behavior = "smooth", updateHash = false) {
 function settleHashNavigation() {
   const hash = window.location.hash;
   if (!targetFromHash(hash)) return;
-  state.hashSettleUntil = Date.now() + 1600;
+  state.hashSettleUntil = Date.now() + HASH_SETTLE_WINDOW;
   updateWorkspaceNavigator(hash);
-  requestAnimationFrame(() => scrollToHash(hash, "auto"));
-  window.setTimeout(() => {
+  requestAnimationFrame(() => {
     updateWorkspaceNavigator(hash);
     scrollToHash(hash, "auto");
-  }, 120);
+    requestAnimationFrame(() => {
+      if (window.location.hash !== hash) return;
+      updateWorkspaceNavigator(hash);
+      scrollToHash(hash, "auto");
+    });
+  });
+  HASH_SETTLE_DELAYS.forEach((delay) => {
+    window.setTimeout(() => {
+      if (window.location.hash !== hash) return;
+      updateWorkspaceNavigator(hash);
+      scrollToHash(hash, "auto");
+    }, delay);
+  });
   window.setTimeout(() => {
     updateWorkspaceNavigator(hash);
-    scrollToHash(hash, "auto");
-  }, 360);
-  window.setTimeout(() => {
-    updateWorkspaceNavigator(hash);
-    scrollToHash(hash, "auto");
-  }, 820);
-  window.setTimeout(() => {
-    updateWorkspaceNavigator(hash);
-  }, 1500);
+  }, HASH_SETTLE_WINDOW + 100);
 }
 
 function workspaceOption(hash) {
@@ -8969,7 +8978,13 @@ function updateWorkspaceNavigator(hash = "") {
   }
 }
 
+window.addEventListener("DOMContentLoaded", settleHashNavigation);
 window.addEventListener("load", settleHashNavigation);
+window.addEventListener("pageshow", settleHashNavigation);
+window.addEventListener("focus", settleHashNavigation);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) settleHashNavigation();
+});
 
 function syncSearchInputs(value) {
   state.filters.search = value;
@@ -21857,8 +21872,7 @@ function bindSectionNavigation() {
 
   window.addEventListener("hashchange", () => {
     if (targetFromHash(window.location.hash)) {
-      state.hashSettleUntil = Date.now() + 900;
-      scrollToHash(window.location.hash, "smooth");
+      settleHashNavigation();
     }
   });
 }
@@ -21945,7 +21959,8 @@ function bindWorkspaceJump() {
   });
   window.addEventListener("hashchange", () => {
     if (targetFromHash(window.location.hash)) {
-      state.hashSettleUntil = Date.now() + 900;
+      settleHashNavigation();
+      return;
     }
     updateWorkspaceNavigator(window.location.hash);
   });

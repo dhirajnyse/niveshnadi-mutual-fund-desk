@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260512-38">
+    <link rel="stylesheet" href="styles.css?v=20260513-13">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -27,6 +27,17 @@
         <div class="nav-stack">
           <div class="nav-cluster nav-primary" aria-label="Primary research shortcuts">
             <a href="#build-tracker">Build</a>
+            <a href="#launch-readiness">Launch</a>
+            <a href="#account-readiness">Account</a>
+            <a href="#account-vault">Vault</a>
+            <a href="#live-data-contracts">Data</a>
+            <a href="#source-dry-run">Dry Run</a>
+            <a href="#source-receipts">Receipts</a>
+            <a href="#claim-surface-map">Surface</a>
+            <a href="#surface-release-queue">Queue</a>
+            <a href="#reviewer-workbench">Workbench</a>
+            <a href="#reviewer-decision-ledger">Decisions</a>
+            <a href="#reviewer-release-binder">Binder</a>
             <a href="#daily-brief">Today</a>
             <a href="#screener">Screener</a>
             <a href="#profile-room">Profile</a>
@@ -51,6 +62,10 @@
               <option value="">Jump to tool</option>
               <optgroup label="Discover">
                 <option value="#build-tracker">Build Tracker</option>
+                <option value="#launch-readiness">Launch Readiness</option>
+                <option value="#payment-readiness">Payment Readiness</option>
+                <option value="#account-readiness">Account Readiness</option>
+                <option value="#account-vault">Account Vault Blueprint</option>
                 <option value="#daily-brief">Daily Command Brief</option>
                 <option value="#decision-radar">Decision Radar</option>
                 <option value="#question-stack">Question Stack</option>
@@ -107,6 +122,14 @@
                 <option value="#citation-binder">Citation Binder</option>
                 <option value="#fund-house-lens">House Lens</option>
                 <option value="#data-readiness">Data Readiness</option>
+                <option value="#live-data-contracts">Live Data Contracts</option>
+                <option value="#source-dry-run">Source Dry-Run Board</option>
+                <option value="#source-receipts">Source Receipt Vault</option>
+                <option value="#claim-surface-map">Claim Surface Map</option>
+                <option value="#surface-release-queue">Surface Release Queue</option>
+                <option value="#reviewer-workbench">Reviewer Workbench</option>
+                <option value="#reviewer-decision-ledger">Reviewer Decision Ledger</option>
+                <option value="#reviewer-release-binder">Reviewer Release Binder</option>
                 <option value="#source-qa">Source QA Queue</option>
                 <option value="#source-intake">Source Intake Console</option>
                 <option value="#source-drift">Source Drift Monitor</option>
@@ -140,7 +163,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-            <p class="release-pill">Phase 1 v79</p>
+            <p class="release-pill">Phase 1 v91</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -219,6 +242,74 @@
         </div>
         <div id="buildTrackerOutput" class="build-tracker-output" aria-live="polite">
           Build Tracker will show current phase, completion pace, completed modules, and planned implementation lanes.
+        </div>
+      </section>
+
+      <section id="launch-readiness" class="workspace-band launch-readiness-band" aria-labelledby="launch-readiness-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Production gate</p>
+            <h2 id="launch-readiness-title">Nadi Launch Readiness Board</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Launch Readiness actions">
+            <span id="launchReadinessSummary" class="status-chip">Launch readiness</span>
+            <button class="text-button" id="openLaunchBlocker" type="button">Open top blocker</button>
+            <button class="text-button" id="copyLaunchReadiness" type="button">Copy launch board</button>
+          </div>
+        </div>
+        <div id="launchReadinessOutput" class="launch-readiness-output" aria-live="polite">
+          Launch Readiness Board will show the production gates blocking retail launch.
+        </div>
+      </section>
+
+      <section id="payment-readiness" class="workspace-band payment-readiness-band" aria-labelledby="payment-readiness-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Payment gate</p>
+            <h2 id="payment-readiness-title">Nadi Payment Readiness Lab</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Payment Readiness actions">
+            <span id="paymentReadinessSummary" class="status-chip">Payment readiness</span>
+            <button class="text-button" id="openPaymentBlocker" type="button">Open payment blocker</button>
+            <button class="text-button" id="copyPaymentReadiness" type="button">Copy payment brief</button>
+          </div>
+        </div>
+        <div id="paymentReadinessOutput" class="payment-readiness-output" aria-live="polite">
+          Payment Readiness Lab will show plan, checkout, entitlement, invoice, refund, and support gates.
+        </div>
+      </section>
+
+      <section id="account-readiness" class="workspace-band account-readiness-band" aria-labelledby="account-readiness-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Account gate</p>
+            <h2 id="account-readiness-title">Nadi Account Readiness Lab</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Account Readiness actions">
+            <span id="accountReadinessSummary" class="status-chip">Account readiness</span>
+            <button class="text-button" id="openAccountBlocker" type="button">Open account blocker</button>
+            <button class="text-button" id="copyAccountReadiness" type="button">Copy account brief</button>
+          </div>
+        </div>
+        <div id="accountReadinessOutput" class="account-readiness-output" aria-live="polite">
+          Account Readiness Lab will show login, saved research, entitlement, deletion, audit, and Phase 2 boundary gates.
+        </div>
+      </section>
+
+      <section id="account-vault" class="workspace-band account-vault-band" aria-labelledby="account-vault-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Saved research architecture</p>
+            <h2 id="account-vault-title">Nadi Account Vault Blueprint</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Account Vault actions">
+            <span id="accountVaultSummary" class="status-chip">Account vault</span>
+            <button class="text-button" id="openAccountVaultBlocker" type="button">Open vault blocker</button>
+            <button class="text-button" id="copyAccountVault" type="button">Copy vault brief</button>
+          </div>
+        </div>
+        <div id="accountVaultOutput" class="account-vault-output" aria-live="polite">
+          Account Vault Blueprint will show saved research collections, entitlement guards, audit trail, export/delete, and Phase 2 exclusions.
         </div>
       </section>
 
@@ -1968,6 +2059,301 @@
         </div>
       </section>
 
+      <section id="live-data-contracts" class="workspace-band live-contract-band" aria-labelledby="live-contract-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Source contract gate</p>
+            <h2 id="live-contract-title">Nadi Live Data Contract Lab</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Live Data Contract actions">
+            <span id="liveContractSummary" class="status-chip">Live contracts</span>
+            <button class="text-button" id="openLiveContractBlocker" type="button">Open source blocker</button>
+            <button class="text-button" id="copyLiveContract" type="button">Copy contract brief</button>
+          </div>
+        </div>
+        <div class="live-contract-layout">
+          <form id="liveContractForm" class="tool-panel live-contract-form">
+            <h3>Select a source contract</h3>
+            <label>
+              Source family
+              <select id="liveContractSource">
+                <option value="amfi-nav">AMFI scheme and NAV master</option>
+                <option value="amc-factsheet">AMC monthly factsheet</option>
+                <option value="sid-kim">SID and KIM documents</option>
+                <option value="portfolio-disclosure">Portfolio disclosure file</option>
+                <option value="benchmark-feed">Benchmark and index data</option>
+                <option value="risk-ter">Riskometer and TER history</option>
+              </select>
+            </label>
+          </form>
+          <div id="liveContractOutput" class="live-contract-output" aria-live="polite">
+            Live Data Contract Lab will map official source, field contract, source date, validation, freshness, citation, and failure behavior before any live claim launches.
+          </div>
+        </div>
+      </section>
+
+      <section id="source-dry-run" class="workspace-band source-dry-band" aria-labelledby="source-dry-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Live source rehearsal</p>
+            <h2 id="source-dry-title">Nadi Source Dry-Run Board</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Source dry-run actions">
+            <span id="sourceDryRunSummary" class="status-chip">Dry-run board</span>
+            <button class="text-button" id="saveSourceDryReceipt" type="button">Save source receipt</button>
+            <button class="text-button" id="openSourceDryRunBlocker" type="button">Open release gate</button>
+            <button class="text-button" id="copySourceDryRun" type="button">Copy dry-run brief</button>
+          </div>
+        </div>
+        <div class="source-dry-layout">
+          <form id="sourceDryRunForm" class="tool-panel source-dry-form">
+            <h3>Run a source rehearsal</h3>
+            <label>
+              Source family
+              <select id="sourceDryRunSource">
+                <option value="amfi-nav">AMFI scheme and NAV master</option>
+                <option value="amc-factsheet">AMC monthly factsheet</option>
+                <option value="sid-kim">SID and KIM documents</option>
+                <option value="portfolio-disclosure">Portfolio disclosure file</option>
+                <option value="benchmark-feed">Benchmark and index data</option>
+                <option value="risk-ter">Riskometer and TER history</option>
+              </select>
+            </label>
+            <label>
+              Dry-run mode
+              <select id="sourceDryRunMode">
+                <option value="contract">Contract dry run</option>
+                <option value="launch">Launch candidate</option>
+                <option value="stale">Stale source stress</option>
+                <option value="parser">Parser confidence stress</option>
+              </select>
+            </label>
+            <label>
+              Release surface
+              <select id="sourceDryRunSurface">
+                <option value="selected">Selected fund surfaces</option>
+                <option value="score">Score and comparison surfaces</option>
+                <option value="xray">Portfolio and X-Ray surfaces</option>
+                <option value="pack">Decision pack and dossier surfaces</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Run dry run</button>
+          </form>
+          <div id="sourceDryRunOutput" class="source-dry-output" aria-live="polite">
+            Source Dry-Run Board will test freshness, parser confidence, citation visibility, release surface, freeze rule, reviewer handoff, and rollback readiness before public claims move forward.
+          </div>
+        </div>
+      </section>
+
+      <section id="source-receipts" class="workspace-band source-receipt-band" aria-labelledby="source-receipt-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Live source audit trail</p>
+            <h2 id="source-receipt-title">Nadi Source Receipt Vault</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Source receipt vault actions">
+            <span id="sourceReceiptSummary" class="status-chip">0 source receipts</span>
+            <button class="text-button" id="saveSourceReceiptVault" type="button">Save receipt</button>
+            <button class="text-button" id="copySourceReceiptVault" type="button">Copy source vault</button>
+            <button class="text-button" id="clearSourceReceiptVault" type="button">Clear source receipts</button>
+          </div>
+        </div>
+        <div id="sourceReceiptOutput" class="source-receipt-output" aria-live="polite">
+          Save a Source Dry-Run receipt to keep a browser-local audit trail for source family, source age, parser confidence, citation visibility, release surface, freeze rule, reviewer handoff, and blockers.
+        </div>
+      </section>
+
+      <section id="claim-surface-map" class="workspace-band claim-surface-band" aria-labelledby="claim-surface-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Claim surface control</p>
+            <h2 id="claim-surface-title">Nadi Claim Surface Map</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Claim surface map actions">
+            <span id="claimSurfaceSummary" class="status-chip">Surface map</span>
+            <button class="text-button" id="openClaimSurfaceGate" type="button">Open release gate</button>
+            <button class="text-button" id="copyClaimSurfaceMap" type="button">Copy surface map</button>
+          </div>
+        </div>
+        <div class="claim-surface-layout">
+          <form id="claimSurfaceForm" class="tool-panel claim-surface-form">
+            <h3>Map claim surfaces</h3>
+            <label>
+              Source receipt lens
+              <select id="claimSurfaceSource">
+                <option value="auto">Use latest source receipt or dry-run</option>
+                <option value="amfi-nav">AMFI scheme and NAV master</option>
+                <option value="amc-factsheet">AMC monthly factsheet</option>
+                <option value="sid-kim">SID and KIM documents</option>
+                <option value="portfolio-disclosure">Portfolio disclosure file</option>
+                <option value="benchmark-feed">Benchmark and index data</option>
+                <option value="risk-ter">Riskometer and TER history</option>
+              </select>
+            </label>
+            <label>
+              Release posture
+              <select id="claimSurfacePosture">
+                <option value="auto">Use receipt posture</option>
+                <option value="release">Release candidate</option>
+                <option value="preview">Preview only</option>
+                <option value="frozen">Freeze affected surfaces</option>
+              </select>
+            </label>
+            <label>
+              Surface scope
+              <select id="claimSurfaceScope">
+                <option value="core">Core investor surfaces</option>
+                <option value="all">All public research surfaces</option>
+                <option value="memo">Memo and dossier surfaces</option>
+                <option value="portfolio">Portfolio surfaces</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Map surfaces</button>
+          </form>
+          <div id="claimSurfaceOutput" class="claim-surface-output" aria-live="polite">
+            Claim Surface Map will show which public product surfaces can release, remain in preview, or stay frozen from the selected source receipt.
+          </div>
+        </div>
+      </section>
+
+      <section id="surface-release-queue" class="workspace-band surface-queue-band" aria-labelledby="surface-queue-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Reviewer handoff lane</p>
+            <h2 id="surface-queue-title">Nadi Surface Release Queue</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Surface release queue actions">
+            <span id="surfaceReleaseSummary" class="status-chip">Release queue</span>
+            <button class="text-button" id="openSurfaceReleaseGate" type="button">Open release gate</button>
+            <button class="text-button" id="copySurfaceReleaseQueue" type="button">Copy queue</button>
+          </div>
+        </div>
+        <div class="surface-queue-layout">
+          <form id="surfaceReleaseForm" class="tool-panel surface-queue-form">
+            <h3>Shape reviewer queue</h3>
+            <label>
+              Queue lens
+              <select id="surfaceReleaseLens">
+                <option value="actionable">Actionable surfaces</option>
+                <option value="release">Release candidates</option>
+                <option value="preview">Preview proof work</option>
+                <option value="freeze">Freeze and correction work</option>
+                <option value="all">All mapped surfaces</option>
+              </select>
+            </label>
+            <label>
+              Owner
+              <select id="surfaceReleaseOwner">
+                <option value="all">All owners</option>
+                <option value="Research review">Research review</option>
+                <option value="Data operations">Data operations</option>
+                <option value="Compliance research">Compliance research</option>
+                <option value="Product release">Product release</option>
+              </select>
+            </label>
+            <label>
+              Handoff depth
+              <select id="surfaceReleaseDepth">
+                <option value="review">Reviewer pack</option>
+                <option value="triage">Fast triage</option>
+                <option value="launch-log">Launch log</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build queue</button>
+          </form>
+          <div id="surfaceReleaseOutput" class="surface-queue-output" aria-live="polite">
+            Surface Release Queue will turn the Claim Surface Map into owner-routed release, preview, freeze, and monitor work before public claims move.
+          </div>
+        </div>
+      </section>
+
+      <section id="reviewer-workbench" class="workspace-band reviewer-workbench-band" aria-labelledby="reviewer-workbench-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Reviewer action desk</p>
+            <h2 id="reviewer-workbench-title">Nadi Reviewer Workbench</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Reviewer workbench actions">
+            <span id="reviewerWorkbenchSummary" class="status-chip">Reviewer desk</span>
+            <button class="text-button" id="saveReviewerWorkbenchDecision" type="button">Save review</button>
+            <button class="text-button" id="openReviewerReleaseGate" type="button">Open decision route</button>
+            <button class="text-button" id="copyReviewerWorkbench" type="button">Copy reviewer handoff</button>
+          </div>
+        </div>
+        <div class="reviewer-workbench-layout">
+          <form id="reviewerWorkbenchForm" class="tool-panel reviewer-workbench-form">
+            <h3>Review queue item</h3>
+            <label>
+              Queue item
+              <select id="reviewerWorkbenchItem">
+                <option value="top">Highest priority item</option>
+                <option value="release">Top release candidate</option>
+                <option value="preview">Top preview proof item</option>
+                <option value="freeze">Top freeze fix item</option>
+              </select>
+            </label>
+            <label>
+              Reviewer posture
+              <select id="reviewerWorkbenchPosture">
+                <option value="auto">Use queue posture</option>
+                <option value="approve">Approve for release gate</option>
+                <option value="hold">Hold in preview</option>
+                <option value="freeze">Freeze and fix</option>
+                <option value="correction">Correction review</option>
+              </select>
+            </label>
+            <label>
+              Evidence lock
+              <select id="reviewerWorkbenchEvidence">
+                <option value="standard">Standard evidence pack</option>
+                <option value="strict">Strict citation lock</option>
+                <option value="fast">Fast triage</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Review item</button>
+          </form>
+          <div id="reviewerWorkbenchOutput" class="reviewer-workbench-output" aria-live="polite">
+            Reviewer Workbench will open the next surface queue item, check the evidence lock, and produce a release, hold, freeze, or correction handoff.
+          </div>
+        </div>
+      </section>
+
+      <section id="reviewer-decision-ledger" class="workspace-band reviewer-decision-band" aria-labelledby="reviewer-decision-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Reviewer memory trail</p>
+            <h2 id="reviewer-decision-title">Nadi Reviewer Decision Ledger</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Reviewer decision ledger actions">
+            <span id="reviewerDecisionSummary" class="status-chip">0 decisions</span>
+            <button class="text-button" id="saveReviewerDecision" type="button">Save review</button>
+            <button class="text-button" id="copyReviewerDecisionLedger" type="button">Copy decisions</button>
+            <button class="text-button" id="clearReviewerDecisionLedger" type="button">Clear decisions</button>
+          </div>
+        </div>
+        <div id="reviewerDecisionOutput" class="reviewer-decision-output" aria-live="polite">
+          Save Reviewer Workbench outcomes to create a browser-local trail of release, hold, freeze, and correction decisions.
+        </div>
+      </section>
+
+      <section id="reviewer-release-binder" class="workspace-band reviewer-release-band" aria-labelledby="reviewer-release-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Reviewer to release bridge</p>
+            <h2 id="reviewer-release-title">Nadi Reviewer Release Binder</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Reviewer release binder actions">
+            <span id="reviewerReleaseBinderSummary" class="status-chip">Release binder</span>
+            <button class="text-button" id="bindReviewerReleaseGate" type="button">Bind release gate</button>
+            <button class="text-button" id="openReviewerBinderRoute" type="button">Open route</button>
+            <button class="text-button" id="copyReviewerReleaseBinder" type="button">Copy binder</button>
+          </div>
+        </div>
+        <div id="reviewerReleaseBinderOutput" class="reviewer-release-output" aria-live="polite">
+          Bind the latest reviewer decision into a source, surface, evidence, reviewer, scope, and rollback packet for the Claim Release Gate.
+        </div>
+      </section>
+
       <section id="source-qa" class="workspace-band source-queue-band" aria-labelledby="source-queue-title">
         <div class="section-heading">
           <div>
@@ -3066,8 +3452,8 @@
           <article class="pricing-card is-featured">
             <span class="plan-kicker">Recommended</span>
             <h3>Nadi Plus</h3>
-            <p class="plan-price"><strong>Rs. 99</strong><span>per month</span></p>
-            <p class="annual-price">or Rs. 999 per year</p>
+            <p class="plan-price"><strong>Rs. 100</strong><span>per month</span></p>
+            <p class="annual-price">or Rs. 1,000 per year</p>
             <p class="price-note">The main retail plan: low enough for trust, useful enough for daily research.</p>
             <ul class="pricing-feature-list">
               <li>Unlimited journal and watchlist</li>
@@ -3217,6 +3603,14 @@
             <a href="#citation-binder">Citation</a>
             <a href="#fund-house-lens">House Lens</a>
             <a href="#data-readiness">Data</a>
+            <a href="#live-data-contracts">Contracts</a>
+            <a href="#source-dry-run">Dry Run</a>
+            <a href="#source-receipts">S Receipts</a>
+            <a href="#claim-surface-map">Surface</a>
+            <a href="#surface-release-queue">Queue</a>
+            <a href="#reviewer-workbench">Workbench</a>
+            <a href="#reviewer-decision-ledger">Decisions</a>
+            <a href="#reviewer-release-binder">Binder</a>
             <a href="#source-qa">QA</a>
             <a href="#source-intake">Intake</a>
             <a href="#source-drift">Drift</a>
@@ -3250,6 +3644,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260512-38"></script>
+    <script src="app.js?v=20260513-13"></script>
   </body>
 </html>

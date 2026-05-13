@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260512-38";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v79 Anchor Landing Polish";
+const DATA_VERSION = "20260513-13";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v91 Reviewer Release Binder";
 
 const FUNDS = [
   {
@@ -457,6 +457,162 @@ const DATA_PIPELINES = [
   }
 ];
 
+const LIVE_DATA_CONTRACTS = [
+  {
+    id: "amfi-nav",
+    contractScore: 64,
+    ingestion: "Daily official file pull",
+    primaryKey: "scheme code + NAV date",
+    dateField: "NAV date",
+    sourceProof: "Official AMFI file date, source URL, import timestamp, and row count.",
+    validation: ["scheme code dedupe", "NAV date not future", "NAV numeric and positive", "active/inactive scheme flag"],
+    failureMode: "Freeze NAV-derived claims and show stale source status until fresh AMFI data passes validation.",
+    acceptance: "Every scheme shown in screener maps to one active source identity and visible NAV date.",
+    privacyBlock: "No PAN, folio, account, or investor transaction data is needed."
+  },
+  {
+    id: "amc-factsheet",
+    contractScore: 48,
+    ingestion: "Monthly PDF or structured AMC file",
+    primaryKey: "AMC + scheme + factsheet month",
+    dateField: "factsheet month",
+    sourceProof: "AMC factsheet URL/file, document month, parser version, and extraction confidence.",
+    validation: ["factsheet month parsed", "expense and AUM numeric", "holdings total check", "manager and benchmark mapped"],
+    failureMode: "Hold return, expense, manager, style, and holding claims in preview if extraction confidence is low.",
+    acceptance: "Factsheet fields show source month, citation path, and extraction confidence beside live-looking claims.",
+    privacyBlock: "No user holdings, PAN, folio, CAS, or distributor client data is processed."
+  },
+  {
+    id: "sid-kim",
+    contractScore: 42,
+    ingestion: "Event-driven document version capture",
+    primaryKey: "scheme + document type + version date",
+    dateField: "document version date",
+    sourceProof: "SID/KIM URL, version date, addendum history, and clause-level citation pointer.",
+    validation: ["latest version attached", "objective and benchmark parsed", "loads captured", "risk language review"],
+    failureMode: "Freeze suitability language, document summary, and risk-factor explanations until version proof is current.",
+    acceptance: "Every document explanation links to version date, source path, and reviewed clause group.",
+    privacyBlock: "No personalized suitability record or investor identity is derived from SID/KIM text."
+  },
+  {
+    id: "portfolio-disclosure",
+    contractScore: 56,
+    ingestion: "Monthly portfolio disclosure import",
+    primaryKey: "scheme + disclosure date + holding identifier",
+    dateField: "portfolio disclosure date",
+    sourceProof: "Disclosure file, date, normalized holding count, sector map, and parser version.",
+    validation: ["weights reconcile", "holding names normalized", "issuer mapped", "stale disclosure blocked"],
+    failureMode: "Disable X-Ray overlap, sector concentration, and issuer warnings when disclosure is stale or unmapped.",
+    acceptance: "Portfolio X-Ray always shows holdings date and stale status before overlap looks current.",
+    privacyBlock: "Only scheme holdings are processed; user portfolio holdings remain optional and local until account consent."
+  },
+  {
+    id: "benchmark-feed",
+    contractScore: 36,
+    ingestion: "Licensed benchmark or approved index source",
+    primaryKey: "benchmark id + return period + data date",
+    dateField: "benchmark data date",
+    sourceProof: "Provider, license note, display permission, benchmark methodology, and data date.",
+    validation: ["TRI flag checked", "return period aligned", "category benchmark mapped", "display rights reviewed"],
+    failureMode: "Hide benchmark-relative return claims until license, field permission, and date alignment are approved.",
+    acceptance: "Every benchmark claim carries provider, date, TRI context, methodology note, and allowed display scope.",
+    privacyBlock: "No investor account or transaction data is needed for benchmark comparison."
+  },
+  {
+    id: "risk-ter",
+    contractScore: 60,
+    ingestion: "Monthly riskometer and TER history update",
+    primaryKey: "scheme + plan type + month",
+    dateField: "risk or TER month",
+    sourceProof: "Riskometer/TER file, disclosure date, prior value, current value, and change flag.",
+    validation: ["plan type mapped", "TER numeric", "risk band valid", "history retained"],
+    failureMode: "Freeze risk badge, cost lab, and watchlist review triggers if TER or riskometer history is incomplete.",
+    acceptance: "Risk and cost claims show current month, prior value, change flag, and source file.",
+    privacyBlock: "Plan-level source data only; no user investment account values are required."
+  }
+];
+
+const LIVE_SOURCE_DRY_RUNS = [
+  {
+    id: "amfi-nav",
+    batch: "AMFI daily scheme and NAV import",
+    baseAge: 1,
+    confidence: 94,
+    citationReady: true,
+    releaseSurface: "scheme identity, NAV reference, category mapping",
+    claimSurface: "Screener, score support, and fund profile metadata",
+    freezeRule: "Freeze NAV-derived return helper fields when source date or row validation fails.",
+    reviewer: "Data operations",
+    receipt: "AMFI source URL, file date, row count, import timestamp, and rejected-row count.",
+    checks: ["scheme code joins fund universe", "NAV date is not future dated", "row count variance is within tolerance", "stale file keeps live-looking claims frozen"]
+  },
+  {
+    id: "amc-factsheet",
+    batch: "AMC monthly factsheet extraction",
+    baseAge: 18,
+    confidence: 72,
+    citationReady: false,
+    releaseSurface: "expense, AUM, manager, style, returns, and holdings summary",
+    claimSurface: "Fund card, Fund DNA, Compare, X-Ray, and Dossier",
+    freezeRule: "Keep extracted claims in preview until factsheet month, parser confidence, and citation path are visible.",
+    reviewer: "Research operations",
+    receipt: "Factsheet file path, document month, parser version, extracted fields, and confidence score.",
+    checks: ["factsheet month parsed", "expense and AUM are numeric", "top holdings reconcile to disclosure", "manager and benchmark names normalize"]
+  },
+  {
+    id: "sid-kim",
+    batch: "SID/KIM version and clause capture",
+    baseAge: 45,
+    confidence: 68,
+    citationReady: false,
+    releaseSurface: "objective, risk language, suitability text, loads, minimum SIP, and benchmark note",
+    claimSurface: "Doc Decoder, fund profile, decision memo, and guardrail text",
+    freezeRule: "Freeze document explanations if latest version date, source URL, or clause pointer is missing.",
+    reviewer: "Compliance research",
+    receipt: "Document URL, version date, document type, parsed clause group, and reviewer note.",
+    checks: ["latest version attached", "objective and benchmark parsed", "loads and risk factors captured", "addendum history noted"]
+  },
+  {
+    id: "portfolio-disclosure",
+    batch: "Monthly portfolio disclosure normalization",
+    baseAge: 22,
+    confidence: 82,
+    citationReady: true,
+    releaseSurface: "holdings, sector mix, issuer concentration, overlap, and sleeve warnings",
+    claimSurface: "Portfolio X-Ray, Blueprint, Compare, and Review Room",
+    freezeRule: "Disable overlap and concentration claims when disclosure date is stale or identifiers are unmapped.",
+    reviewer: "Portfolio evidence",
+    receipt: "Disclosure file, disclosure date, holding count, sector map, issuer map, and parser version.",
+    checks: ["weights reconcile", "holding names normalize", "issuer map resolves duplicates", "debt quality labels are source-backed"]
+  },
+  {
+    id: "benchmark-feed",
+    batch: "Benchmark and index return source test",
+    baseAge: 9,
+    confidence: 64,
+    citationReady: false,
+    releaseSurface: "benchmark return, TRI flag, tracking context, and category comparison",
+    claimSurface: "Compare, score explanation, fund profile, and research brief",
+    freezeRule: "Hide benchmark-relative claims until license, methodology, date alignment, and display scope are approved.",
+    reviewer: "Market data",
+    receipt: "Provider, license posture, data date, benchmark id, methodology note, and display-rights flag.",
+    checks: ["TRI flag checked", "return period aligns with fund data", "category benchmark mapped", "display rights approved"]
+  },
+  {
+    id: "risk-ter",
+    batch: "Riskometer and TER monthly history test",
+    baseAge: 12,
+    confidence: 88,
+    citationReady: true,
+    releaseSurface: "risk band, expense drift, TER history, and watchlist triggers",
+    claimSurface: "Risk badges, Cost Lab, Watchlist, Review Room, and Decision Pack",
+    freezeRule: "Freeze risk badge, TER drift, and alert triggers if plan type, month, or prior value is incomplete.",
+    reviewer: "Risk controls",
+    receipt: "Source month, plan type, current value, prior value, change flag, and source file.",
+    checks: ["plan type maps correctly", "TER is numeric", "risk band is valid", "history keeps prior value"]
+  }
+];
+
 const DOC_DECODER_GUIDES = {
   kim: {
     title: "KIM snapshot",
@@ -805,12 +961,12 @@ const BUILD_TRACKER_PHASES = [
   {
     phase: "Phase 1C",
     label: "Trust, evidence, and safety layer",
-    progress: 82,
-    launch: 46,
+    progress: 94,
+    launch: 66,
     status: "In progress",
-    route: "#evidence",
-    done: ["evidence ledger", "citation binder", "source QA", "claim gates", "privacy controls"],
-    next: "Connect live source-date and citation status."
+    route: "#reviewer-release-binder",
+    done: ["evidence ledger", "citation binder", "data readiness", "live data contract lab", "source dry-run board", "source receipt vault", "claim surface map", "surface release queue", "reviewer workbench", "reviewer decision ledger", "reviewer release binder", "source QA", "claim gates", "privacy controls"],
+    next: "Connect reviewer-bound releases to backend audit receipts, rollback notes, and correction history."
   },
   {
     phase: "Phase 1D",
@@ -825,11 +981,11 @@ const BUILD_TRACKER_PHASES = [
   {
     phase: "Phase 1E",
     label: "Launch, monetization, and account layer",
-    progress: 42,
-    launch: 22,
+    progress: 54,
+    launch: 32,
     status: "Next",
-    route: "#pricing",
-    done: ["pricing posture", "share-safe export", "consent gate", "security model"],
+    route: "#account-vault",
+    done: ["pricing posture", "payment lab", "account readiness plan", "account vault blueprint", "share-safe export", "consent gate", "security model"],
     next: "Add auth, subscriptions, backend storage, live feeds, and payment rails."
   },
   {
@@ -846,28 +1002,351 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Tracker polish",
+    label: "Reviewer release binder",
     status: "Shipping now",
-    route: "#build-tracker",
-    detail: "Separate build progress from launch readiness and make the roadmap easier to scan."
+    route: "#reviewer-release-binder",
+    detail: "Bind saved reviewer decisions into the claim release gate with source, surface, evidence, reviewer, scope, and rollback posture."
   },
   {
-    label: "Live data gate",
+    label: "Backend audit receipts",
     status: "Next",
-    route: "#data-readiness",
-    detail: "Turn AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, and benchmark feeds into source-dated checks."
+    route: "#claim-ledger",
+    detail: "Persist reviewer-bound release receipts, rollback notes, correction notices, and audit workflows outside the browser."
   },
   {
-    label: "Retail account launch",
+    label: "Payment wiring",
     status: "Next",
-    route: "#pricing",
-    detail: "Prepare login, saved research packs, low-cost pricing, payments, limits, and privacy controls."
+    route: "#payment-readiness",
+    detail: "Choose gateway, checkout states, entitlement activation, invoices, refunds, and reconciliation."
   },
   {
     label: "MFD preview",
     status: "Later",
     route: "#consent-gate",
     detail: "Keep ARN/EUIN, PAN-consent, client book, and distributor dashboard visible as Phase 2."
+  }
+];
+
+const LAUNCH_READINESS_GATES = [
+  {
+    id: "live-data",
+    label: "Live data and citations",
+    score: 58,
+    status: "Critical",
+    owner: "Data",
+    route: "#reviewer-workbench",
+    blocker: "Live data source contracts, dry-run behavior, source receipts, claim surface mapping, queue handoff, reviewer workbench, decision memory, and reviewer release binding are drafted, but production ingestion, approvals, and release automation still need implementation.",
+    next: "Attach each live receipt to AMFI, AMC factsheet, SID/KIM, portfolio disclosure, benchmark, TER, and riskometer reviewer decisions before any public claim looks live."
+  },
+  {
+    id: "source-qa",
+    label: "Source QA and claim release",
+    score: 52,
+    status: "Critical",
+    owner: "Trust",
+    route: "#reviewer-workbench",
+    blocker: "Claim release, rollback, correction notices, reviewer approval, claim surface mapping, queue handoff, reviewer workbench, saved reviewer decision trail, and release binder are drafted but not connected to production data events.",
+    next: "Create reviewer gates for every public metric refresh and persist mapped surfaces that miss citation or freshness checks into the decision and release ledgers."
+  },
+  {
+    id: "accounts",
+    label: "Account and saved research",
+    score: 44,
+    status: "Critical",
+    owner: "Product",
+    route: "#account-vault",
+    blocker: "Account boundaries and storage blueprint are drafted, but production still needs auth provider selection, database ownership rules, deletion controls, audit logs, and migration tests.",
+    next: "Choose auth and backend storage, then test saved research, entitlement, export, deletion, and support-redaction flows end to end."
+  },
+  {
+    id: "payments",
+    label: "Payments and subscriptions",
+    score: 34,
+    status: "Critical",
+    owner: "Commercial",
+    route: "#payment-readiness",
+    blocker: "Retail pricing is positioned and the readiness workflow is drafted, but real gateway wiring, invoices, refunds, and subscription lifecycle are still pending.",
+    next: "Choose gateway, define checkout states, connect entitlement rules, and test Rs. 100 monthly plus Rs. 1,000 yearly lifecycle."
+  },
+  {
+    id: "compliance",
+    label: "Compliance and disclosures",
+    score: 44,
+    status: "Critical",
+    owner: "Compliance",
+    route: "#trust-center",
+    blocker: "Research-only language is strong, but final legal review, public disclosures, no-advice copy, and user consent screens remain launch blockers.",
+    next: "Prepare a compliance review pack covering research-only boundaries, no execution, risk warnings, conflicts, and data-source disclaimers."
+  },
+  {
+    id: "security",
+    label: "Security release gate",
+    score: 58,
+    status: "Watch",
+    owner: "Security",
+    route: "#trust-center",
+    blocker: "Static prototype has CSP and audit checks, but backend launch will introduce auth, payments, personal data, API secrets, and monitoring.",
+    next: "Add dependency scanning, secret scanning, auth threat model, payment webhook validation, rate limits, backups, and incident response checklist."
+  },
+  {
+    id: "support",
+    label: "Support and operations",
+    score: 38,
+    status: "Planned",
+    owner: "Ops",
+    route: "#review-rhythm",
+    blocker: "User support, content-update cadence, failed payment handling, correction workflow, and release notes are not yet operationalized.",
+    next: "Define support inbox, launch runbook, monthly data refresh rhythm, public correction path, and uptime monitoring."
+  },
+  {
+    id: "phase-2-boundary",
+    label: "Phase 2 distributor boundary",
+    score: 22,
+    status: "Later",
+    owner: "Phase 2",
+    route: "#consent-gate",
+    blocker: "MFD workflows need ARN/EUIN, PAN-consent, client book, permissions, and distributor audit trail after retail Phase 1.",
+    next: "Keep the distributor roadmap visible, but do not mix client-management data into the retail self-research launch."
+  }
+];
+
+const PAYMENT_READINESS_STEPS = [
+  {
+    label: "Plan catalog",
+    score: 76,
+    status: "Ready draft",
+    route: "#pricing",
+    detail: "Free Starter, Nadi Plus monthly, Nadi Plus annual, Founder beta, and Phase 2 distributor placeholder are defined."
+  },
+  {
+    label: "Gateway selection",
+    score: 28,
+    status: "Blocked",
+    route: "#payment-readiness",
+    detail: "Choose payment gateway, settlement account, supported UPI/cards/netbanking, webhook model, and reconciliation reports."
+  },
+  {
+    label: "Checkout flow",
+    score: 24,
+    status: "Blocked",
+    route: "#payment-readiness",
+    detail: "Need start checkout, success, failed payment, retry, invoice, and entitlement activation states."
+  },
+  {
+    label: "Subscription lifecycle",
+    score: 26,
+    status: "Blocked",
+    route: "#payment-readiness",
+    detail: "Need renewal, cancellation, expiry, grace period, upgrade, downgrade, and annual-to-monthly transitions."
+  },
+  {
+    label: "Invoice and refund policy",
+    score: 22,
+    status: "Blocked",
+    route: "#pricing",
+    detail: "Need tax invoice decision, GST treatment, refund window, failed renewal handling, and clear user-facing policy."
+  },
+  {
+    label: "Entitlement rules",
+    score: 38,
+    status: "Draft",
+    route: "#account-readiness",
+    detail: "Need paid limits for watchlist, dossiers, saved packs, exports, alerts, and future live-data refreshes."
+  },
+  {
+    label: "Webhook and security",
+    score: 20,
+    status: "Blocked",
+    route: "#trust-center",
+    detail: "Need signature verification, replay protection, idempotency keys, secret rotation, rate limits, and incident handling."
+  },
+  {
+    label: "Support and reconciliation",
+    score: 30,
+    status: "Draft",
+    route: "#review-rhythm",
+    detail: "Need support inbox, payment lookup, refund workflow, dispute handling, and monthly settlement review."
+  }
+];
+
+const ACCOUNT_READINESS_STEPS = [
+  {
+    label: "Identity boundary",
+    score: 58,
+    status: "Ready draft",
+    route: "#privacy-control",
+    detail: "Phase 1 account should not require PAN, folio, CAS, bank, nominee, address, or distributor identifiers."
+  },
+  {
+    label: "Auth provider",
+    score: 24,
+    status: "Blocked",
+    route: "#account-readiness",
+    detail: "Choose email/passwordless or social login, session lifetime, MFA posture, account recovery, and abuse limits."
+  },
+  {
+    label: "User profile storage",
+    score: 42,
+    status: "Draft",
+    route: "#profile-room",
+    detail: "Store intent, horizon, SIP comfort, drawdown tolerance, and research level as editable research context only."
+  },
+  {
+    label: "Saved research packs",
+    score: 50,
+    status: "Draft",
+    route: "#account-vault",
+    detail: "Move browser-local packs, watchlist, review snapshots, dossiers, and memos into account storage with version history."
+  },
+  {
+    label: "Entitlement link",
+    score: 42,
+    status: "Draft",
+    route: "#account-vault",
+    detail: "Connect paid status to saved packs, exports, alerts, dossier count, X-Ray history, and future live-data refresh limits."
+  },
+  {
+    label: "Export and delete",
+    score: 34,
+    status: "Blocked",
+    route: "#account-vault",
+    detail: "Need one-click export, delete account, delete saved packs, retention windows, and clear user confirmation screens."
+  },
+  {
+    label: "Audit and support trail",
+    score: 36,
+    status: "Draft",
+    route: "#account-vault",
+    detail: "Log account, payment, entitlement, export, deletion, and support events without leaking private notes."
+  },
+  {
+    label: "Phase 2 boundary",
+    score: 32,
+    status: "Later",
+    route: "#consent-gate",
+    detail: "Keep ARN/EUIN, PAN consent, distributor client book, and family or advisor handoff out of Phase 1 account launch."
+  }
+];
+
+const ACCOUNT_VAULT_COLLECTIONS = [
+  {
+    label: "User profile context",
+    score: 62,
+    status: "Draft schema",
+    sensitivity: "Low personal context",
+    retention: "Until account deletion",
+    route: "#profile-room",
+    fields: ["intent", "horizon", "SIP comfort", "drawdown comfort", "research level"],
+    guardrail: "Editable research context only; no suitability certificate or advice profile."
+  },
+  {
+    label: "Saved research packs",
+    score: 54,
+    status: "Draft schema",
+    sensitivity: "Research history",
+    retention: "Until user deletes pack",
+    route: "#research-dossier",
+    fields: ["fund ids", "compare set", "memo reason", "evidence score", "pack version"],
+    guardrail: "Save research decisions and sources, not private free-form family or tax details."
+  },
+  {
+    label: "Watchlist and alerts",
+    score: 48,
+    status: "Draft schema",
+    sensitivity: "Research habit",
+    retention: "User managed",
+    route: "#watchlist",
+    fields: ["fund id", "trigger type", "review date", "threshold", "status"],
+    guardrail: "Alerts are reminders to research, not buy/sell instructions."
+  },
+  {
+    label: "Review snapshots",
+    score: 46,
+    status: "Draft schema",
+    sensitivity: "Portfolio research",
+    retention: "User managed",
+    route: "#review-vault",
+    fields: ["review date", "drift", "evidence score", "cost score", "next check"],
+    guardrail: "Snapshots record research posture; holdings amounts stay optional and identity-light."
+  },
+  {
+    label: "Entitlements",
+    score: 40,
+    status: "Needs payment link",
+    sensitivity: "Billing state",
+    retention: "Legal retention policy",
+    route: "#payment-readiness",
+    fields: ["plan", "status", "renewal date", "gateway reference", "feature limits"],
+    guardrail: "NiveshNadi stores entitlement state only; payment credentials remain with gateway."
+  },
+  {
+    label: "Audit events",
+    score: 38,
+    status: "Needs backend",
+    sensitivity: "Operational log",
+    retention: "Limited policy window",
+    route: "#trust-center",
+    fields: ["event type", "timestamp", "actor", "object id", "redacted detail"],
+    guardrail: "Audit trail proves actions without exposing private notes or financial identifiers."
+  },
+  {
+    label: "Export and delete queue",
+    score: 34,
+    status: "Blocked",
+    sensitivity: "Privacy workflow",
+    retention: "Short operational window",
+    route: "#privacy-control",
+    fields: ["request type", "requested at", "status", "completed at", "confirmation hash"],
+    guardrail: "User must be able to export or delete profile, packs, alerts, reviews, dossiers, and metadata."
+  },
+  {
+    label: "Phase 2 consent vault",
+    score: 22,
+    status: "Later",
+    sensitivity: "Distributor consent",
+    retention: "Separate consent policy",
+    route: "#consent-gate",
+    fields: ["ARN/EUIN", "PAN consent", "client link", "scope", "expiry"],
+    guardrail: "Distributor and PAN-linked records stay out of Phase 1 retail account launch."
+  }
+];
+
+const ACCOUNT_VAULT_CONTROLS = [
+  {
+    label: "Row ownership",
+    score: 44,
+    owner: "Backend",
+    check: "Every saved object must belong to exactly one account and reject cross-account reads."
+  },
+  {
+    label: "Entitlement guard",
+    score: 42,
+    owner: "Product",
+    check: "Paid limits unlock only from verified gateway status, never from browser flags."
+  },
+  {
+    label: "Redacted support",
+    score: 38,
+    owner: "Ops",
+    check: "Support view shows account state and object ids without private note bodies."
+  },
+  {
+    label: "Export bundle",
+    score: 34,
+    owner: "Privacy",
+    check: "Export creates a readable account bundle and lists excluded sensitive identifiers."
+  },
+  {
+    label: "Deletion job",
+    score: 30,
+    owner: "Privacy",
+    check: "Deletion removes account data and writes a minimal non-sensitive completion record."
+  },
+  {
+    label: "Phase 2 firewall",
+    score: 36,
+    owner: "Compliance",
+    check: "PAN, ARN/EUIN, CAS, folio, and client-book fields cannot be saved in Phase 1 schemas."
   }
 ];
 
@@ -1179,15 +1658,15 @@ function buildTrackerConfig() {
   const launchGates = [
     {
       label: "Live data",
-      score: 36,
-      route: "#data-readiness",
-      detail: "AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, benchmark, and citation dates."
+      score: 50,
+      route: "#source-receipts",
+      detail: "AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, benchmark, source contracts, dry-run receipts, vault receipts, and citation dates."
     },
     {
       label: "Account and storage",
-      score: 24,
-      route: "#privacy-control",
-      detail: "Login, saved research packs, browser-to-backend migration, privacy controls, and data deletion."
+      score: 38,
+      route: "#account-readiness",
+      detail: "Login, saved research packs, browser-to-backend migration, privacy controls, account deletion, and audit trail."
     },
     {
       label: "Payments",
@@ -1216,7 +1695,7 @@ function buildTrackerConfig() {
     detail: "MFD dashboard, ARN/EUIN, PAN-consent, registered clients, review packs, and handoff audit trail stay planned after Phase 1 retail launch.",
     blockers: ["Phase 1 account model", "consent workflow", "privacy review", "role-based distributor access"]
   };
-  const pace = `v79 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
+  const pace = `v91 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
   const guardrails = [
     "Build Tracker is a project roadmap for this prototype; it is not an investor-facing recommendation or launch promise.",
     "Product build progress and launch readiness are intentionally separate because a prototype can be polished before live data, auth, payments, and legal gates are complete.",
@@ -1270,7 +1749,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-      <article><span>Prototype version</span><strong>Phase 1 v79</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+      <article><span>Prototype version</span><strong>Phase 1 v91</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -1388,6 +1867,716 @@ function makeBuildTrackerBrief() {
 
 function openBuildNextLane() {
   scrollToHash(buildTrackerConfig().nextLane.route, "smooth", true);
+}
+
+function launchReadinessBoardConfig() {
+  const tracker = buildTrackerConfig();
+  const gates = LAUNCH_READINESS_GATES.map((gate) => ({
+    ...gate,
+    tone: gate.score >= 70 ? "ready" : gate.score >= 50 ? "watch" : gate.score >= 35 ? "critical" : "blocked"
+  }));
+  const critical = gates.filter((gate) => gate.score < 45);
+  const ready = gates.filter((gate) => gate.score >= 70);
+  const launchBlockers = gates.filter((gate) => gate.status !== "Later");
+  const topBlocker = [...launchBlockers].sort((a, b) => a.score - b.score)[0];
+  const nextThree = [...launchBlockers].sort((a, b) => a.score - b.score).slice(0, 3);
+  const releaseLadder = [
+    {
+      label: "Prototype hardening",
+      status: "Active",
+      threshold: 40,
+      detail: "Keep demo research useful while blockers are visible."
+    },
+    {
+      label: "Private beta",
+      status: tracker.launchReadiness >= 60 ? "Near" : "Blocked",
+      threshold: 60,
+      detail: "Needs live data dry run, account plan, security checklist, and compliance review pack."
+    },
+    {
+      label: "Paid retail beta",
+      status: tracker.launchReadiness >= 75 ? "Near" : "Blocked",
+      threshold: 75,
+      detail: "Needs payments, invoices, refunds, support runbook, and account storage."
+    },
+    {
+      label: "Public retail launch",
+      status: tracker.launchReadiness >= 88 ? "Near" : "Blocked",
+      threshold: 88,
+      detail: "Needs production data, legal sign-off, monitoring, incident response, and final disclosures."
+    },
+    {
+      label: "Phase 2 MFD preview",
+      status: "Later",
+      threshold: 92,
+      detail: "Keep ARN/EUIN, PAN consent, client book, and role-based access after retail launch."
+    }
+  ];
+  const founderMoves = [
+    {
+      label: "Choose source order",
+      route: "#source-intake",
+      detail: "Start with AMFI scheme/NAV, AMC factsheet, portfolio disclosure, TER, SID/KIM, riskometer, then benchmark."
+    },
+    {
+      label: "Design account boundary",
+      route: "#privacy-control",
+      detail: "Decide what is stored server-side, what remains local, and what is never collected in Phase 1."
+    },
+    {
+      label: "Wire low-fee payment plan",
+      route: "#payment-readiness",
+      detail: "Keep retail pricing light while testing invoices, renewals, cancellation, and refund behavior."
+    },
+    {
+      label: "Prepare legal review pack",
+      route: "#trust-center",
+      detail: "Bundle no-advice guardrails, data-source disclaimers, correction workflow, and user consent screens."
+    }
+  ];
+  const noLaunchUntil = [
+    "Every live-looking field has source date, citation path, freshness rule, and reviewer status.",
+    "Accounts, payments, refunds, deletion, export, and audit logs are tested with non-demo data.",
+    "Security scans, secret handling, auth rules, rate limits, backups, and incident response are documented.",
+    "Legal and compliance review confirms research-only language, no personalized advice, and clear risk warnings."
+  ];
+
+  return {
+    critical,
+    founderMoves,
+    gates,
+    launchReadiness: tracker.launchReadiness,
+    noLaunchUntil,
+    ready,
+    releaseLadder,
+    topBlocker,
+    nextThree
+  };
+}
+
+function renderLaunchReadinessBoard() {
+  if (!els.launchReadinessOutput) return;
+  const board = launchReadinessBoardConfig();
+  if (els.launchReadinessSummary) {
+    els.launchReadinessSummary.textContent = `${board.launchReadiness}/100 | ${board.critical.length} blockers`;
+  }
+  els.launchReadinessOutput.innerHTML = `
+    <div class="launch-readiness-hero">
+      <div>
+        <span class="metric-label">Production gate view</span>
+        <h3>Launch readiness ${board.launchReadiness}/100</h3>
+        <p>Prototype is strong, but retail launch stays blocked until live data, account storage, payments, compliance, security, and support are production-ready.</p>
+      </div>
+      <div class="launch-readiness-score" style="--score:${board.launchReadiness}">
+        <b>${board.launchReadiness}</b>
+        <span>Launch</span>
+      </div>
+    </div>
+    <div class="launch-readiness-metrics">
+      <article><span>Top blocker</span><strong>${escapeHtml(board.topBlocker.label)}</strong><p>${board.topBlocker.score}/100 | ${escapeHtml(board.topBlocker.next)}</p></article>
+      <article><span>Critical gates</span><strong>${board.critical.length}</strong><p>Anything below 45/100 blocks production launch.</p></article>
+      <article><span>Ready gates</span><strong>${board.ready.length}</strong><p>Ready means production-grade, not only visually complete.</p></article>
+      <article><span>Founder mode</span><strong>Go/no-go board</strong><p>Use this before deciding what can enter paid retail beta.</p></article>
+    </div>
+    <div class="launch-gate-grid">
+      ${board.gates.map((gate) => `
+        <article class="${escapeHtml(gate.tone)}">
+          <div>
+            <span>${escapeHtml(gate.status)} | ${escapeHtml(gate.owner)}</span>
+            <strong>${escapeHtml(gate.label)}</strong>
+          </div>
+          <div class="launch-progress-row">
+            <div class="build-progress-bar launch"><span style="width:${gate.score}%"></span></div>
+            <b>${gate.score}/100</b>
+          </div>
+          <p>${escapeHtml(gate.blocker)}</p>
+          <small>${escapeHtml(gate.next)}</small>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(gate.route)}">Open gate</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="launch-ladder-grid">
+      ${board.releaseLadder.map((step) => `
+        <article class="${step.threshold <= board.launchReadiness ? "active" : "blocked"}">
+          <span>${escapeHtml(step.status)} | ${step.threshold}/100</span>
+          <strong>${escapeHtml(step.label)}</strong>
+          <p>${escapeHtml(step.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="launch-next-grid">
+      <article>
+        <span>Next three blockers</span>
+        <strong>Clear these before paid beta</strong>
+        <ul>
+          ${board.nextThree.map((gate) => `<li>${escapeHtml(gate.label)}: ${escapeHtml(gate.next)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>Founder moves</span>
+        <strong>Practical build actions</strong>
+        <div class="launch-move-list">
+          ${board.founderMoves.map((move) => `
+            <button class="text-button" type="button" data-build-route="${escapeHtml(move.route)}">
+              <b>${escapeHtml(move.label)}</b>
+              <small>${escapeHtml(move.detail)}</small>
+            </button>
+          `).join("")}
+        </div>
+      </article>
+      <article>
+        <span>No launch until</span>
+        <strong>Production guardrails</strong>
+        <ul>
+          ${board.noLaunchUntil.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+  `;
+}
+
+function makeLaunchReadinessBrief() {
+  const board = launchReadinessBoardConfig();
+  return [
+    "# NiveshNadi Launch Readiness Board",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Launch readiness: ${board.launchReadiness}/100`,
+    `Top blocker: ${board.topBlocker.label} (${board.topBlocker.score}/100)`,
+    `Critical gates: ${board.critical.length}`,
+    "",
+    "## Gates",
+    ...board.gates.map((gate) => `- ${gate.label}: ${gate.score}/100 | ${gate.status} | Owner: ${gate.owner} | Next: ${gate.next}`),
+    "",
+    "## Founder Moves",
+    ...board.founderMoves.map((move) => `- ${move.label}: ${move.detail}`),
+    "",
+    "## No Launch Until",
+    ...board.noLaunchUntil.map((item) => `- ${item}`),
+    "",
+    "Project launch planning only. This board is not investment advice, a regulatory certification, or a production security attestation."
+  ].join("\n");
+}
+
+function openTopLaunchBlocker() {
+  scrollToHash(launchReadinessBoardConfig().topBlocker.route, "smooth", true);
+}
+
+function paymentReadinessLabConfig() {
+  const plans = [
+    {
+      label: "Research Starter",
+      price: "Rs. 0",
+      cadence: "forever",
+      role: "Discovery and trust-building",
+      entitlement: "Screener, basic SIP/STP, goal map, limited journal"
+    },
+    {
+      label: "Nadi Plus Monthly",
+      price: "Rs. 100",
+      cadence: "per month",
+      role: "Main B2C habit plan",
+      entitlement: "Saved packs, watchlist, X-Ray history, exports, and alerts after live data"
+    },
+    {
+      label: "Nadi Plus Annual",
+      price: "Rs. 1,000",
+      cadence: "per year",
+      role: "Simple value anchor",
+      entitlement: "Same as monthly with lower annual friction and renewal reminders"
+    },
+    {
+      label: "Founder Beta",
+      price: "Rs. 499",
+      cadence: "first year",
+      role: "Early believer cohort",
+      entitlement: "Early rooms, feedback priority, beta disclaimers, and manual support"
+    }
+  ];
+  const steps = PAYMENT_READINESS_STEPS.map((step) => ({
+    ...step,
+    tone: step.score >= 70 ? "ready" : step.score >= 40 ? "draft" : "blocked"
+  }));
+  const paymentScore = Math.round(steps.reduce((sum, step) => sum + step.score, 0) / steps.length);
+  const blocked = steps.filter((step) => step.score < 40);
+  const nextBlocker = [...blocked].sort((a, b) => a.score - b.score)[0] || steps[0];
+  const checkoutFlow = [
+    "Select plan",
+    "Create checkout session",
+    "Pay by UPI/card/netbanking",
+    "Verify webhook signature",
+    "Activate entitlement",
+    "Issue receipt or invoice",
+    "Renew, cancel, or refund"
+  ];
+  const paymentRules = [
+    "Do not collect card, UPI, bank, PAN, or payment credentials inside NiveshNadi pages.",
+    "Use a regulated payment gateway checkout page with signed webhooks and idempotent activation.",
+    "Keep retail price low: Rs. 100 monthly or Rs. 1,000 yearly, with clear cancellation and refund wording.",
+    "No paid feature should imply advice, recommendation, return guarantee, or transaction execution."
+  ];
+  const launchTests = [
+    "Successful monthly checkout activates Nadi Plus once.",
+    "Failed checkout leaves the account free and shows retry path.",
+    "Duplicate webhook does not double-activate or double-invoice.",
+    "Cancellation stops renewal but preserves research history according to privacy policy.",
+    "Refund removes paid entitlement and records support reason without private note leakage."
+  ];
+
+  return {
+    blocked,
+    checkoutFlow,
+    launchTests,
+    nextBlocker,
+    paymentRules,
+    paymentScore,
+    plans,
+    steps
+  };
+}
+
+function renderPaymentReadinessLab() {
+  if (!els.paymentReadinessOutput) return;
+  const lab = paymentReadinessLabConfig();
+  if (els.paymentReadinessSummary) {
+    els.paymentReadinessSummary.textContent = `${lab.paymentScore}/100 | ${lab.blocked.length} blockers`;
+  }
+  els.paymentReadinessOutput.innerHTML = `
+    <div class="payment-readiness-hero">
+      <div>
+        <span class="metric-label">Retail monetization gate</span>
+        <h3>Payment readiness ${lab.paymentScore}/100</h3>
+        <p>Keep retail pricing light, but do not launch paid plans until checkout, entitlement, invoice, refund, webhook, and support workflows are tested.</p>
+      </div>
+      <div class="payment-readiness-score" style="--score:${lab.paymentScore}">
+        <b>${lab.paymentScore}</b>
+        <span>Pay</span>
+      </div>
+    </div>
+    <div class="payment-metric-grid">
+      <article><span>Retail anchor</span><strong>Rs. 100/month</strong><p>Simple enough for individual investors to try without pressure.</p></article>
+      <article><span>Annual anchor</span><strong>Rs. 1,000/year</strong><p>Low-friction yearly plan for serious self-research habits.</p></article>
+      <article><span>Top blocker</span><strong>${escapeHtml(lab.nextBlocker.label)}</strong><p>${lab.nextBlocker.score}/100 | ${escapeHtml(lab.nextBlocker.detail)}</p></article>
+      <article><span>Boundary</span><strong>No in-app credentials</strong><p>Payment credentials stay with the gateway, not inside NiveshNadi.</p></article>
+    </div>
+    <div class="payment-plan-grid">
+      ${lab.plans.map((plan) => `
+        <article>
+          <span>${escapeHtml(plan.role)}</span>
+          <strong>${escapeHtml(plan.label)}</strong>
+          <div class="payment-price"><b>${escapeHtml(plan.price)}</b><small>${escapeHtml(plan.cadence)}</small></div>
+          <p>${escapeHtml(plan.entitlement)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="payment-step-grid">
+      ${lab.steps.map((step) => `
+        <article class="${escapeHtml(step.tone)}">
+          <div>
+            <span>${escapeHtml(step.status)}</span>
+            <strong>${escapeHtml(step.label)}</strong>
+          </div>
+          <div class="launch-progress-row">
+            <div class="build-progress-bar launch"><span style="width:${step.score}%"></span></div>
+            <b>${step.score}/100</b>
+          </div>
+          <p>${escapeHtml(step.detail)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(step.route)}">Open</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="payment-flow-grid">
+      <article>
+        <span>Checkout flow</span>
+        <strong>Paid plan lifecycle</strong>
+        <ol>
+          ${lab.checkoutFlow.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+        </ol>
+      </article>
+      <article>
+        <span>Payment rules</span>
+        <strong>Guardrails before launch</strong>
+        <ul>
+          ${lab.paymentRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>Launch tests</span>
+        <strong>Must pass before paid beta</strong>
+        <ul>
+          ${lab.launchTests.map((test) => `<li>${escapeHtml(test)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+  `;
+}
+
+function makePaymentReadinessBrief() {
+  const lab = paymentReadinessLabConfig();
+  return [
+    "# NiveshNadi Payment Readiness Lab",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Payment readiness: ${lab.paymentScore}/100`,
+    `Retail anchor: Rs. 100/month`,
+    `Annual anchor: Rs. 1,000/year`,
+    `Top blocker: ${lab.nextBlocker.label} (${lab.nextBlocker.score}/100)`,
+    "",
+    "## Plans",
+    ...lab.plans.map((plan) => `- ${plan.label}: ${plan.price} ${plan.cadence} | ${plan.entitlement}`),
+    "",
+    "## Readiness Steps",
+    ...lab.steps.map((step) => `- ${step.label}: ${step.score}/100 | ${step.status} | ${step.detail}`),
+    "",
+    "## Payment Rules",
+    ...lab.paymentRules.map((rule) => `- ${rule}`),
+    "",
+    "## Launch Tests",
+    ...lab.launchTests.map((test) => `- ${test}`),
+    "",
+    "Payment planning only. No payment credentials, bank data, PAN, or transaction execution are collected by this static prototype."
+  ].join("\n");
+}
+
+function openPaymentBlocker() {
+  scrollToHash(paymentReadinessLabConfig().nextBlocker.route, "smooth", true);
+}
+
+function accountReadinessLabConfig() {
+  const steps = ACCOUNT_READINESS_STEPS.map((step) => ({
+    ...step,
+    tone: step.status === "Later" ? "later" : step.score >= 55 ? "ready" : step.score >= 35 ? "draft" : "blocked"
+  }));
+  const accountScore = Math.round(steps.reduce((sum, step) => sum + step.score, 0) / steps.length);
+  const blocked = steps.filter((step) => step.score < 40 && step.status !== "Later");
+  const nextBlocker = [...blocked].sort((a, b) => a.score - b.score)[0] || steps.find((step) => step.status !== "Later") || steps[0];
+  const dataBuckets = [
+    {
+      label: "Allowed Phase 1",
+      title: "Research state only",
+      tone: "ready",
+      items: ["email or login id", "profile context", "saved packs", "watchlist and review metadata"]
+    },
+    {
+      label: "Never in Phase 1",
+      title: "Private investor IDs",
+      tone: "blocked",
+      items: ["PAN", "folio or CAS", "bank or card data", "nominee, address, tax documents"]
+    },
+    {
+      label: "Paid entitlement",
+      title: "Plan status only",
+      tone: "draft",
+      items: ["free or paid plan", "billing period", "gateway receipt id", "feature limits and renewal state"]
+    },
+    {
+      label: "Phase 2 later",
+      title: "Distributor layer",
+      tone: "later",
+      items: ["ARN or EUIN", "client book", "PAN consent", "role-based MFD permissions"]
+    }
+  ];
+  const accountFlow = [
+    "Create minimal account",
+    "Set research profile",
+    "Save pack, memo, watchlist, or review",
+    "Connect paid entitlement after gateway confirmation",
+    "Export or delete account data anytime",
+    "Keep distributor handoff behind separate consent"
+  ];
+  const accountRules = [
+    "Collect the least data needed to restore a research workspace.",
+    "Keep PAN, folio, CAS, banking, card, UPI, and distributor identifiers out of Phase 1.",
+    "Encrypt account storage and never expose API secrets, payment secrets, or source credentials in the browser.",
+    "Separate research history from free-form private notes when support or audit logs are generated.",
+    "Deletion and export must cover profile, saved packs, watchlist, review snapshots, dossiers, and journal metadata."
+  ];
+  const launchTests = [
+    "New account can save and reopen a research pack without losing selected fund context.",
+    "Free account limits are enforced before payment and unlocked only after verified entitlement.",
+    "Account export contains research data but no PAN, folio, CAS, payment credential, or private identifier.",
+    "Delete account clears saved packs and entitlement state according to the retention policy.",
+    "Phase 2 distributor data cannot be added without a separate consent gate."
+  ];
+
+  return {
+    accountFlow,
+    accountRules,
+    accountScore,
+    blocked,
+    dataBuckets,
+    launchTests,
+    nextBlocker,
+    steps
+  };
+}
+
+function renderAccountReadinessLab() {
+  if (!els.accountReadinessOutput) return;
+  const lab = accountReadinessLabConfig();
+  if (els.accountReadinessSummary) {
+    els.accountReadinessSummary.textContent = `${lab.accountScore}/100 | ${lab.blocked.length} blockers`;
+  }
+  els.accountReadinessOutput.innerHTML = `
+    <div class="account-readiness-hero">
+      <div>
+        <span class="metric-label">Retail account gate</span>
+        <h3>Account readiness ${lab.accountScore}/100</h3>
+        <p>Prepare paid retail accounts without pulling sensitive investment identifiers into Phase 1. The account should remember research, not become a transaction or distributor system.</p>
+      </div>
+      <div class="account-readiness-score" style="--score:${lab.accountScore}">
+        <b>${lab.accountScore}</b>
+        <span>Acct</span>
+      </div>
+    </div>
+    <div class="account-metric-grid">
+      <article><span>Top blocker</span><strong>${escapeHtml(lab.nextBlocker.label)}</strong><p>${lab.nextBlocker.score}/100 | ${escapeHtml(lab.nextBlocker.detail)}</p></article>
+      <article><span>Storage posture</span><strong>Research state only</strong><p>Profile context, saved packs, watchlist, dossiers, reviews, and entitlement status.</p></article>
+      <article><span>Privacy boundary</span><strong>No PAN or folio</strong><p>Phase 1 avoids personal investment identifiers until a future consented handoff layer exists.</p></article>
+      <article><span>Launch condition</span><strong>Export and delete</strong><p>Paid beta should not open before account data can be exported and deleted cleanly.</p></article>
+    </div>
+    <div class="account-data-grid">
+      ${lab.dataBuckets.map((bucket) => `
+        <article class="${escapeHtml(bucket.tone)}">
+          <span>${escapeHtml(bucket.label)}</span>
+          <strong>${escapeHtml(bucket.title)}</strong>
+          <ul>
+            ${bucket.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-step-grid">
+      ${lab.steps.map((step) => `
+        <article class="${escapeHtml(step.tone)}">
+          <div>
+            <span>${escapeHtml(step.status)}</span>
+            <strong>${escapeHtml(step.label)}</strong>
+          </div>
+          <div class="launch-progress-row">
+            <div class="build-progress-bar launch"><span style="width:${step.score}%"></span></div>
+            <b>${step.score}/100</b>
+          </div>
+          <p>${escapeHtml(step.detail)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(step.route)}">Open</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-flow-grid">
+      <article>
+        <span>Account flow</span>
+        <strong>Minimum viable account path</strong>
+        <ol>
+          ${lab.accountFlow.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+        </ol>
+      </article>
+      <article>
+        <span>Account rules</span>
+        <strong>Data discipline before launch</strong>
+        <ul>
+          ${lab.accountRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>Launch tests</span>
+        <strong>Must pass before paid beta</strong>
+        <ul>
+          ${lab.launchTests.map((test) => `<li>${escapeHtml(test)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+  `;
+}
+
+function makeAccountReadinessBrief() {
+  const lab = accountReadinessLabConfig();
+  return [
+    "# NiveshNadi Account Readiness Lab",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Account readiness: ${lab.accountScore}/100`,
+    `Top blocker: ${lab.nextBlocker.label} (${lab.nextBlocker.score}/100)`,
+    "",
+    "## Data Boundary",
+    ...lab.dataBuckets.map((bucket) => `- ${bucket.label}: ${bucket.title} | ${bucket.items.join(", ")}`),
+    "",
+    "## Readiness Steps",
+    ...lab.steps.map((step) => `- ${step.label}: ${step.score}/100 | ${step.status} | ${step.detail}`),
+    "",
+    "## Account Rules",
+    ...lab.accountRules.map((rule) => `- ${rule}`),
+    "",
+    "## Launch Tests",
+    ...lab.launchTests.map((test) => `- ${test}`),
+    "",
+    "Phase 1 account planning only. No PAN, folio, CAS, bank, card, UPI, nominee, or distributor client data should be collected in the retail account launch."
+  ].join("\n");
+}
+
+function openAccountBlocker() {
+  scrollToHash(accountReadinessLabConfig().nextBlocker.route, "smooth", true);
+}
+
+function accountVaultBlueprintConfig() {
+  const collections = ACCOUNT_VAULT_COLLECTIONS.map((item) => ({
+    ...item,
+    tone: item.status === "Later" ? "later" : item.score >= 50 ? "ready" : item.score >= 38 ? "draft" : "blocked"
+  }));
+  const controls = ACCOUNT_VAULT_CONTROLS.map((item) => ({
+    ...item,
+    tone: item.score >= 42 ? "draft" : item.score >= 35 ? "watch" : "blocked"
+  }));
+  const collectionScore = Math.round(collections.reduce((sum, item) => sum + item.score, 0) / collections.length);
+  const controlScore = Math.round(controls.reduce((sum, item) => sum + item.score, 0) / controls.length);
+  const vaultScore = Math.round((collectionScore + controlScore) / 2);
+  const blockers = [...collections, ...controls].filter((item) => item.score < 38 && item.status !== "Later");
+  const nextBlocker = [...blockers].sort((a, b) => a.score - b.score)[0] || controls[0];
+  const saveFlow = [
+    "User signs in",
+    "Research profile loads",
+    "Pack, watchlist, review, or dossier is saved",
+    "Entitlement guard checks plan limits",
+    "Audit event stores a redacted action",
+    "User can export or delete saved research"
+  ];
+  const exportFlow = [
+    "Show records included in export",
+    "Exclude PAN, folio, CAS, bank, card, and distributor fields",
+    "Create readable JSON or PDF-ready account bundle",
+    "Confirm delete with clear irreversible warning",
+    "Run deletion job and keep minimal completion receipt"
+  ];
+  const launchBlockers = [
+    "Auth provider and session rules are not selected.",
+    "Database row ownership and backup policy are not implemented.",
+    "Export and deletion jobs need real backend workflow.",
+    "Entitlement guard must be driven by verified payment state.",
+    "Support and audit views need redaction before paid launch."
+  ];
+
+  return {
+    blockers,
+    collectionScore,
+    collections,
+    controlScore,
+    controls,
+    exportFlow,
+    launchBlockers,
+    nextBlocker,
+    saveFlow,
+    vaultScore
+  };
+}
+
+function renderAccountVaultBlueprint() {
+  if (!els.accountVaultOutput) return;
+  const vault = accountVaultBlueprintConfig();
+  if (els.accountVaultSummary) {
+    els.accountVaultSummary.textContent = `${vault.vaultScore}/100 | ${vault.collections.length} vault sets`;
+  }
+  els.accountVaultOutput.innerHTML = `
+    <div class="account-vault-hero">
+      <div>
+        <span class="metric-label">Saved research architecture</span>
+        <h3>Account vault blueprint ${vault.vaultScore}/100</h3>
+        <p>Define exactly what moves from browser-local prototype into paid account storage, what stays excluded, and which controls must pass before launch.</p>
+      </div>
+      <div class="account-vault-score" style="--score:${vault.vaultScore}">
+        <b>${vault.vaultScore}</b>
+        <span>Vault</span>
+      </div>
+    </div>
+    <div class="account-vault-metrics">
+      <article><span>Collection readiness</span><strong>${vault.collectionScore}/100</strong><p>Research profile, saved packs, watchlist, reviews, entitlement, audit, export/delete, and Phase 2 consent boundaries.</p></article>
+      <article><span>Control readiness</span><strong>${vault.controlScore}/100</strong><p>Row ownership, entitlement guard, support redaction, export bundle, deletion job, and Phase 2 firewall.</p></article>
+      <article><span>Next blocker</span><strong>${escapeHtml(vault.nextBlocker.label)}</strong><p>${vault.nextBlocker.score}/100 | ${escapeHtml(vault.nextBlocker.check || vault.nextBlocker.guardrail)}</p></article>
+      <article><span>Never stored</span><strong>PAN, folio, CAS</strong><p>Private investor identifiers stay outside Phase 1 account storage.</p></article>
+    </div>
+    <div class="account-vault-collection-grid">
+      ${vault.collections.map((collection) => `
+        <article class="${escapeHtml(collection.tone)}">
+          <div>
+            <span>${escapeHtml(collection.status)}</span>
+            <strong>${escapeHtml(collection.label)}</strong>
+          </div>
+          <div class="launch-progress-row">
+            <div class="build-progress-bar launch"><span style="width:${collection.score}%"></span></div>
+            <b>${collection.score}/100</b>
+          </div>
+          <p><b>Sensitivity:</b> ${escapeHtml(collection.sensitivity)}</p>
+          <p><b>Retention:</b> ${escapeHtml(collection.retention)}</p>
+          <ul>
+            ${collection.fields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+          <p>${escapeHtml(collection.guardrail)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(collection.route)}">Open source</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-vault-control-grid">
+      ${vault.controls.map((control) => `
+        <article class="${escapeHtml(control.tone)}">
+          <span>${escapeHtml(control.owner)}</span>
+          <strong>${escapeHtml(control.label)}</strong>
+          <div class="build-progress-bar launch"><span style="width:${control.score}%"></span></div>
+          <p>${control.score}/100 | ${escapeHtml(control.check)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-vault-flow-grid">
+      <article>
+        <span>Save flow</span>
+        <strong>Research object lifecycle</strong>
+        <ol>
+          ${vault.saveFlow.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+        </ol>
+      </article>
+      <article>
+        <span>Export and delete</span>
+        <strong>User control path</strong>
+        <ol>
+          ${vault.exportFlow.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+        </ol>
+      </article>
+      <article>
+        <span>Launch blockers</span>
+        <strong>Before paid accounts</strong>
+        <ul>
+          ${vault.launchBlockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+  `;
+}
+
+function makeAccountVaultBrief() {
+  const vault = accountVaultBlueprintConfig();
+  return [
+    "# NiveshNadi Account Vault Blueprint",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Vault readiness: ${vault.vaultScore}/100`,
+    `Collection readiness: ${vault.collectionScore}/100`,
+    `Control readiness: ${vault.controlScore}/100`,
+    `Next blocker: ${vault.nextBlocker.label} (${vault.nextBlocker.score}/100)`,
+    "",
+    "## Vault Collections",
+    ...vault.collections.map((item) => [
+      `- ${item.label}: ${item.score}/100 | ${item.status}`,
+      `  Fields: ${item.fields.join(", ")}`,
+      `  Sensitivity: ${item.sensitivity}`,
+      `  Retention: ${item.retention}`,
+      `  Guardrail: ${item.guardrail}`
+    ].join("\n")),
+    "",
+    "## Controls",
+    ...vault.controls.map((item) => `- ${item.label}: ${item.score}/100 | ${item.owner} | ${item.check}`),
+    "",
+    "## Launch Blockers",
+    ...vault.launchBlockers.map((item) => `- ${item}`),
+    "",
+    "Phase 1 account vault excludes PAN, folio, CAS, bank, card, UPI, nominee, tax, address, ARN/EUIN, and distributor client-book records."
+  ].join("\n");
+}
+
+function openAccountVaultBlocker() {
+  scrollToHash(accountVaultBlueprintConfig().nextBlocker.route || "#account-vault", "smooth", true);
 }
 
 function riskClass(risk) {
@@ -7603,6 +8792,10 @@ function makeCompareNote() {
 function renderAll() {
   renderSignalStrip();
   renderBuildTracker();
+  renderLaunchReadinessBoard();
+  renderPaymentReadinessLab();
+  renderAccountReadinessLab();
+  renderAccountVaultBlueprint();
   renderProfileRoom();
   renderSelectionFunnel();
   renderShortlistReasonBoard();
@@ -7643,6 +8836,14 @@ function renderAll() {
   renderCitationBinder();
   renderFundHouseLens();
   renderDataReadinessRoom();
+  renderLiveDataContractLab();
+  renderSourceDryRunBoard();
+  renderSourceReceiptVault();
+  renderClaimSurfaceMap();
+  renderSurfaceReleaseQueue();
+  renderReviewerWorkbench();
+  renderReviewerDecisionLedger();
+  renderReviewerReleaseBinder();
   renderSourceQaQueue();
   renderSourceIntakeConsole();
   renderSourceDriftMonitor();
@@ -10275,6 +11476,2027 @@ function makeDataSpec() {
     "",
     "## Guardrail",
     "No live fund claim should appear without source date, extraction status, field validation, and citation path."
+  ].join("\n");
+}
+
+function liveDataContractItems() {
+  return LIVE_DATA_CONTRACTS.map((contract) => {
+    const pipeline = DATA_PIPELINES.find((item) => item.id === contract.id) || DATA_PIPELINES[0];
+    const blendedScore = Math.round(clampNumber(pipeline.readiness * 0.46 + contract.contractScore * 0.54, 18, 96));
+    const blockers = [
+      ...pipeline.blockers.slice(0, 2),
+      ...(contract.contractScore < 45 ? ["contract proof below launch threshold"] : []),
+      ...(pipeline.readiness < 60 ? ["pipeline readiness below dry-run threshold"] : [])
+    ];
+    const posture = blendedScore >= 72
+      ? "Dry-run shaped"
+      : blendedScore >= 58
+        ? "Contract draft"
+        : blendedScore >= 44
+          ? "Needs source QA"
+          : "Blocked";
+    const tone = posture === "Dry-run shaped" ? "ready" : posture === "Blocked" ? "caution" : "watch";
+    return {
+      ...contract,
+      blockers,
+      blendedScore,
+      pipeline,
+      posture,
+      tone
+    };
+  });
+}
+
+function selectedLiveDataContract() {
+  const id = els.liveContractSource?.value || els.dataSource?.value || DATA_PIPELINES[0].id;
+  return liveDataContractItems().find((item) => item.id === id) || liveDataContractItems()[0];
+}
+
+function liveDataContractLabConfig() {
+  const items = liveDataContractItems();
+  const selected = selectedLiveDataContract();
+  const averageScore = Math.round(items.reduce((sum, item) => sum + item.blendedScore, 0) / items.length);
+  const dryRunReady = items.filter((item) => item.posture === "Dry-run shaped").length;
+  const blocked = items.filter((item) => item.posture === "Blocked" || item.posture === "Needs source QA");
+  const topBlocker = [...items].sort((a, b) => a.blendedScore - b.blendedScore)[0] || selected;
+  const sourceFlow = [
+    "Locate official or licensed source",
+    "Capture source date and citation path",
+    "Normalize fields into contract schema",
+    "Run validation and extraction confidence checks",
+    "Create source receipt and stale-source rule",
+    "Release to preview, then claim gate after review"
+  ];
+  const launchTests = [
+    "Stale source date blocks live-looking claims.",
+    "Missing citation keeps data in preview only.",
+    "Parser mismatch freezes affected fields and writes a source-diff receipt.",
+    "Benchmark claims remain hidden until display rights are approved.",
+    "No contract accepts PAN, folio, CAS, bank, credential, or distributor client data."
+  ];
+  const failureRules = [
+    "Freeze the narrowest affected surface instead of hiding the whole product.",
+    "Show demo or stale status clearly when fresh source proof is missing.",
+    "Keep last-good source receipts for rollback and correction notices.",
+    "Never silently refresh a user-visible claim without source date and release receipt."
+  ];
+  return {
+    averageScore,
+    blocked,
+    dryRunReady,
+    failureRules,
+    items,
+    launchTests,
+    selected,
+    sourceFlow,
+    topBlocker
+  };
+}
+
+function renderLiveDataContractLab() {
+  if (!els.liveContractOutput) return;
+  const config = liveDataContractLabConfig();
+  if (els.liveContractSummary) {
+    els.liveContractSummary.textContent = `${config.averageScore}/100 | ${config.dryRunReady} dry-run shaped`;
+  }
+  els.liveContractOutput.innerHTML = `
+    <div class="live-contract-hero">
+      <div>
+        <span class="metric-label">Live data source contract</span>
+        <h3>${escapeHtml(config.selected.pipeline.title)}</h3>
+        <p>${escapeHtml(config.selected.pipeline.purpose)} Contract score ${config.selected.blendedScore}/100 with ${config.selected.blockers.length} blocker${config.selected.blockers.length === 1 ? "" : "s"}.</p>
+      </div>
+      <div class="live-contract-score" style="--score:${config.averageScore}">
+        <b>${config.averageScore}</b>
+        <span>Data</span>
+      </div>
+    </div>
+    <div class="live-contract-metric-grid">
+      <article><span>Average contract</span><strong>${config.averageScore}/100</strong><p>Across ${config.items.length} official source families.</p></article>
+      <article><span>Dry-run shaped</span><strong>${config.dryRunReady}</strong><p>Source contracts closest to live dry-run.</p></article>
+      <article><span>Top blocker</span><strong>${escapeHtml(config.topBlocker.pipeline.title)}</strong><p>${config.topBlocker.blendedScore}/100 | ${escapeHtml(config.topBlocker.blockers[0] || config.topBlocker.failureMode)}</p></article>
+      <article><span>Privacy boundary</span><strong>No investor IDs</strong><p>No PAN, folio, CAS, bank, credentials, or distributor client records.</p></article>
+    </div>
+    <div class="live-contract-focus">
+      <article>
+        <span>${escapeHtml(config.selected.posture)}</span>
+        <strong>${escapeHtml(config.selected.pipeline.title)}</strong>
+        <p><b>Ingestion:</b> ${escapeHtml(config.selected.ingestion)}</p>
+        <p><b>Primary key:</b> ${escapeHtml(config.selected.primaryKey)}</p>
+        <p><b>Date field:</b> ${escapeHtml(config.selected.dateField)}</p>
+        <p><b>Source proof:</b> ${escapeHtml(config.selected.sourceProof)}</p>
+      </article>
+      <article>
+        <span>Validation contract</span>
+        <strong>Fields and checks</strong>
+        <div class="field-chip-list">
+          ${config.selected.pipeline.fields.map((field) => `<span>${escapeHtml(field)}</span>`).join("")}
+        </div>
+        <ul class="data-check-list">
+          ${config.selected.validation.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>Failure behavior</span>
+        <strong>What happens if source breaks</strong>
+        <p>${escapeHtml(config.selected.failureMode)}</p>
+        <p>${escapeHtml(config.selected.acceptance)}</p>
+        <p>${escapeHtml(config.selected.privacyBlock)}</p>
+      </article>
+    </div>
+    <div class="live-contract-grid">
+      ${config.items.map((item) => `
+        <article class="${escapeHtml(item.tone)}">
+          <div>
+            <span>${escapeHtml(item.posture)}</span>
+            <strong>${escapeHtml(item.pipeline.title)}</strong>
+          </div>
+          <div class="launch-progress-row">
+            <div class="build-progress-bar launch"><span style="width:${item.blendedScore}%"></span></div>
+            <b>${item.blendedScore}/100</b>
+          </div>
+          <p>${escapeHtml(item.ingestion)} | ${escapeHtml(item.primaryKey)}</p>
+          <ul>
+            ${item.validation.slice(0, 3).map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+          <button class="text-button" type="button" data-build-route="#source-intake">Open intake</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="live-contract-flow-grid">
+      <article>
+        <span>Source flow</span>
+        <strong>Contract to claim path</strong>
+        <ol>
+          ${config.sourceFlow.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+        </ol>
+      </article>
+      <article>
+        <span>Failure rules</span>
+        <strong>When source proof breaks</strong>
+        <ul>
+          ${config.failureRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>Launch tests</span>
+        <strong>Must pass before live display</strong>
+        <ul>
+          ${config.launchTests.map((test) => `<li>${escapeHtml(test)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+  `;
+}
+
+function makeLiveDataContractBrief() {
+  const config = liveDataContractLabConfig();
+  return [
+    "# NiveshNadi Live Data Contract Lab",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Average contract score: ${config.averageScore}/100`,
+    `Dry-run shaped contracts: ${config.dryRunReady}/${config.items.length}`,
+    `Top blocker: ${config.topBlocker.pipeline.title} (${config.topBlocker.blendedScore}/100)`,
+    "",
+    "## Selected Contract",
+    `Source: ${config.selected.pipeline.title}`,
+    `Ingestion: ${config.selected.ingestion}`,
+    `Primary key: ${config.selected.primaryKey}`,
+    `Date field: ${config.selected.dateField}`,
+    `Source proof: ${config.selected.sourceProof}`,
+    `Failure mode: ${config.selected.failureMode}`,
+    "",
+    "## All Source Contracts",
+    ...config.items.map((item) => [
+      `- ${item.pipeline.title}: ${item.blendedScore}/100 | ${item.posture}`,
+      `  Key: ${item.primaryKey}`,
+      `  Date: ${item.dateField}`,
+      `  Validation: ${item.validation.join(", ")}`,
+      `  Failure: ${item.failureMode}`
+    ].join("\n")),
+    "",
+    "## Launch Tests",
+    ...config.launchTests.map((test) => `- ${test}`),
+    "",
+    "Live data planning only. No source contract accepts PAN, folio, CAS, bank, credential, contact, or distributor client data."
+  ].join("\n");
+}
+
+function openLiveContractBlocker() {
+  scrollToHash("#source-intake", "smooth", true);
+}
+
+const CLAIM_SURFACE_MAP = [
+  {
+    id: "screener",
+    label: "Screener and fund cards",
+    group: "Discovery",
+    sourceIds: ["amfi-nav", "amc-factsheet", "risk-ter"],
+    route: "#screener",
+    strictness: 68,
+    impact: "score labels, category, risk, expense, and return helper text",
+    fallback: "Keep demo badge visible and hide live-looking metric deltas."
+  },
+  {
+    id: "fund-detail",
+    label: "Fund DNA and detail view",
+    group: "Discovery",
+    sourceIds: ["amc-factsheet", "sid-kim", "portfolio-disclosure", "risk-ter"],
+    route: "#fund-detail",
+    strictness: 72,
+    impact: "fund objective, riskometer, holdings, manager, and evidence cards",
+    fallback: "Show research-only detail with source date missing warnings."
+  },
+  {
+    id: "compare",
+    label: "Compare matrix",
+    group: "Compare",
+    sourceIds: ["amc-factsheet", "benchmark-feed", "risk-ter"],
+    route: "#compare",
+    strictness: 74,
+    impact: "peer ranking, benchmark return context, TER drag, and drawdown comparison",
+    fallback: "Allow comparison in preview with stale or demo labels."
+  },
+  {
+    id: "xray",
+    label: "Portfolio X-Ray and Blueprint",
+    group: "Portfolio",
+    sourceIds: ["portfolio-disclosure", "amc-factsheet", "risk-ter"],
+    route: "#portfolio",
+    strictness: 78,
+    impact: "overlap, sector mix, sleeve exposure, issuer concentration, and blended risk",
+    fallback: "Freeze live overlap claims and keep sample holdings clearly marked."
+  },
+  {
+    id: "dossier",
+    label: "Dossier and research packet",
+    group: "Memo",
+    sourceIds: ["sid-kim", "amc-factsheet", "portfolio-disclosure", "risk-ter"],
+    route: "#research-dossier",
+    strictness: 76,
+    impact: "research packet evidence, source bibliography, risk notes, and review queue",
+    fallback: "Export as draft research packet with verification tasks open."
+  },
+  {
+    id: "pack",
+    label: "Decision Pack and memo",
+    group: "Memo",
+    sourceIds: ["sid-kim", "amc-factsheet", "benchmark-feed", "risk-ter"],
+    route: "#decision-pack",
+    strictness: 80,
+    impact: "decision memo, SIP assumption, review date, guardrails, and rationale text",
+    fallback: "Require user-written reason and visible proof gap before copying."
+  },
+  {
+    id: "review",
+    label: "Review room and watchlist",
+    group: "Habit",
+    sourceIds: ["portfolio-disclosure", "amc-factsheet", "risk-ter"],
+    route: "#portfolio-review",
+    strictness: 70,
+    impact: "review triggers, watch alerts, risk changes, and saved review snapshots",
+    fallback: "Keep trigger as habit reminder, not as live risk alert."
+  },
+  {
+    id: "trust",
+    label: "Trust, evidence, and pricing confidence",
+    group: "Trust",
+    sourceIds: ["amfi-nav", "benchmark-feed", "risk-ter", "sid-kim"],
+    route: "#trust-center",
+    strictness: 82,
+    impact: "public trust posture, source citations, release receipts, and pricing confidence",
+    fallback: "Keep launch readiness low until source date and citation chain are visible."
+  }
+];
+
+function sourceDryRunModeLabel(mode) {
+  return {
+    contract: "Contract dry run",
+    launch: "Launch candidate",
+    stale: "Stale source stress",
+    parser: "Parser confidence stress"
+  }[mode] || "Contract dry run";
+}
+
+function sourceDryRunSurfaceLabel(surface) {
+  return {
+    selected: "Selected fund surfaces",
+    score: "Score and comparison surfaces",
+    xray: "Portfolio and X-Ray surfaces",
+    pack: "Decision pack and dossier surfaces"
+  }[surface] || "Selected fund surfaces";
+}
+
+function sourceDryRunItems() {
+  const mode = els.sourceDryRunMode?.value || "contract";
+  const surface = els.sourceDryRunSurface?.value || "selected";
+  return LIVE_SOURCE_DRY_RUNS.map((run, index) => {
+    const pipeline = DATA_PIPELINES.find((item) => item.id === run.id) || DATA_PIPELINES[0];
+    const contract = LIVE_DATA_CONTRACTS.find((item) => item.id === run.id) || LIVE_DATA_CONTRACTS[0];
+    const age = mode === "stale"
+      ? pipeline.freshnessDays + run.baseAge + index
+      : mode === "launch"
+        ? Math.max(1, Math.round(run.baseAge * 0.35))
+        : mode === "parser"
+          ? run.baseAge + Math.round(index / 2)
+          : run.baseAge;
+    const confidence = mode === "parser"
+      ? Math.max(32, run.confidence - 28 - index)
+      : mode === "launch"
+        ? Math.min(98, run.confidence + 8)
+        : mode === "stale"
+          ? Math.max(42, run.confidence - 6)
+          : run.confidence;
+    const citationVisible = mode === "launch" ? true : mode === "parser" ? run.citationReady : run.citationReady && mode !== "stale";
+    const staleDays = Math.max(0, age - pipeline.freshnessDays);
+    const freshnessScore = Math.round(clampNumber(100 - staleDays * 5 - Math.max(0, age - pipeline.freshnessDays * 0.7), 18, 100));
+    const citationScore = citationVisible ? 94 : 36;
+    const confidenceScore = Math.round(clampNumber(confidence, 22, 98));
+    const surfacePenalty = surface === "pack" && pipeline.readiness < 68 ? 7 : surface === "score" && contract.contractScore < 50 ? 8 : surface === "xray" && run.id !== "portfolio-disclosure" ? 2 : 0;
+    const dryRunScore = Math.round(clampNumber(
+      pipeline.readiness * 0.25 +
+        contract.contractScore * 0.24 +
+        freshnessScore * 0.18 +
+        citationScore * 0.16 +
+        confidenceScore * 0.17 -
+        surfacePenalty,
+      14,
+      96
+    ));
+    const blockers = [
+      ...(staleDays ? [`source date is stale by ${staleDays} day${staleDays === 1 ? "" : "s"}`] : []),
+      ...(citationVisible ? [] : ["citation path is not investor visible"]),
+      ...(confidenceScore < 70 ? ["parser confidence below dry-run threshold"] : []),
+      ...(contract.contractScore < 50 ? ["field contract still below launch threshold"] : []),
+      ...(surfacePenalty ? [`${sourceDryRunSurfaceLabel(surface).toLowerCase()} need stricter proof`] : [])
+    ];
+    const status = dryRunScore >= 80 && blockers.length === 0
+      ? "Release candidate"
+      : dryRunScore >= 64 && blockers.length <= 2
+        ? "Preview only"
+        : "Frozen";
+    const tone = status === "Release candidate" ? "ready" : status === "Frozen" ? "caution" : "watch";
+    const nextAction = status === "Release candidate"
+      ? "Send dry-run receipt to claim release gate for reviewer approval."
+      : blockers.includes("citation path is not investor visible")
+        ? "Attach visible citation path and source date before claim release."
+        : blockers.some((blocker) => blocker.includes("parser"))
+          ? "Re-run parser QA and compare extracted fields with source document."
+          : staleDays
+            ? "Refresh source file and create a new dry-run receipt."
+            : "Keep surface in preview until field contract and reviewer gate pass.";
+
+    return {
+      ...run,
+      age,
+      blockers,
+      citationVisible,
+      confidenceScore,
+      contract,
+      dryRunScore,
+      freshnessScore,
+      nextAction,
+      pipeline,
+      status,
+      staleDays,
+      surface,
+      tone
+    };
+  });
+}
+
+function selectedSourceDryRun() {
+  const id = els.sourceDryRunSource?.value || els.liveContractSource?.value || DATA_PIPELINES[0].id;
+  return sourceDryRunItems().find((item) => item.id === id) || sourceDryRunItems()[0];
+}
+
+function sourceDryRunBoardConfig() {
+  const items = sourceDryRunItems();
+  const selected = selectedSourceDryRun();
+  const averageScore = items.length ? Math.round(items.reduce((sum, item) => sum + item.dryRunScore, 0) / items.length) : 0;
+  const release = items.filter((item) => item.status === "Release candidate").length;
+  const preview = items.filter((item) => item.status === "Preview only").length;
+  const frozen = items.filter((item) => item.status === "Frozen").length;
+  const topBlocker = [...items].sort((a, b) => b.blockers.length - a.blockers.length || a.dryRunScore - b.dryRunScore)[0] || selected;
+  const releaseSteps = [
+    "Create dry-run receipt with source date, parser version, and citation path.",
+    "Compare extracted fields with contract validation rules.",
+    "Freeze narrow surfaces when freshness, citation, or parser confidence fails.",
+    "Send release candidates into Claim Release Gate for reviewer approval.",
+    "Write rollback and correction path before public launch."
+  ];
+  return {
+    averageScore,
+    frozen,
+    items,
+    mode: els.sourceDryRunMode?.value || "contract",
+    preview,
+    release,
+    releaseSteps,
+    selected,
+    surface: els.sourceDryRunSurface?.value || "selected",
+    topBlocker
+  };
+}
+
+function renderSourceDryRunBoard(event) {
+  if (event) event.preventDefault();
+  if (!els.sourceDryRunOutput || !els.sourceDryRunSummary) return;
+  const config = sourceDryRunBoardConfig();
+  const posture = config.release
+    ? "Dry-run receipts are forming"
+    : config.frozen
+      ? "Live source claims stay frozen"
+      : "Preview dry run in progress";
+  const tone = config.frozen ? "caution" : config.release ? "ready" : "watch";
+  els.sourceDryRunSummary.textContent = `${config.release} release | ${config.frozen} frozen`;
+  els.sourceDryRunOutput.innerHTML = `
+    <div class="source-dry-hero ${escapeHtml(tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(sourceDryRunModeLabel(config.mode))}</span>
+        <h3>${escapeHtml(posture)}</h3>
+        <p>${escapeHtml(sourceDryRunSurfaceLabel(config.surface))} are tested against freshness, parser confidence, citations, freeze rules, and reviewer release gates.</p>
+      </div>
+      <div class="source-dry-score" style="--score:${config.averageScore}">
+        <b>${config.averageScore}</b>
+        <span>Dry run</span>
+      </div>
+    </div>
+    <div class="source-dry-metric-grid">
+      <article><span>Average dry run</span><strong>${config.averageScore}/100</strong><p>Blended source, contract, freshness, citation, and parser readiness.</p></article>
+      <article><span>Release candidates</span><strong>${config.release}</strong><p>Ready to enter reviewer claim release.</p></article>
+      <article><span>Preview only</span><strong>${config.preview}</strong><p>Usable internally but not live-looking.</p></article>
+      <article><span>Frozen</span><strong>${config.frozen}</strong><p>Claims stay blocked until proof improves.</p></article>
+    </div>
+    <div class="source-dry-focus">
+      <article>
+        <span>${escapeHtml(config.selected.status)}</span>
+        <strong>${escapeHtml(config.selected.pipeline.title)}</strong>
+        <p>${escapeHtml(config.selected.batch)}</p>
+        <p><b>Receipt:</b> ${escapeHtml(config.selected.receipt)}</p>
+        <p><b>Freeze rule:</b> ${escapeHtml(config.selected.freezeRule)}</p>
+      </article>
+      <article>
+        <span>Claim surface</span>
+        <strong>${escapeHtml(config.selected.releaseSurface)}</strong>
+        <p>${escapeHtml(config.selected.claimSurface)}</p>
+        <p><b>Reviewer:</b> ${escapeHtml(config.selected.reviewer)}</p>
+        <p><b>Next:</b> ${escapeHtml(config.selected.nextAction)}</p>
+      </article>
+      <article>
+        <span>Selected proof scores</span>
+        <strong>${config.selected.dryRunScore}/100</strong>
+        <div class="source-dry-proof-grid">
+          <div><span>Fresh</span><b>${config.selected.freshnessScore}</b></div>
+          <div><span>Parser</span><b>${config.selected.confidenceScore}</b></div>
+          <div><span>Cite</span><b>${config.selected.citationVisible ? 94 : 36}</b></div>
+        </div>
+      </article>
+    </div>
+    <div class="source-dry-card-grid">
+      ${config.items.map((item) => `
+        <article class="${escapeHtml(item.tone)}">
+          <div class="source-dry-card-head">
+            <div>
+              <span>${escapeHtml(item.status)}</span>
+              <strong>${escapeHtml(item.pipeline.title)}</strong>
+            </div>
+            <b>${item.dryRunScore}/100</b>
+          </div>
+          <div class="launch-progress-row">
+            <div class="build-progress-bar launch"><span style="width:${item.dryRunScore}%"></span></div>
+            <b>${item.age}d</b>
+          </div>
+          <p>${escapeHtml(item.releaseSurface)}</p>
+          <ul>
+            ${item.checks.slice(0, 3).map((check) => `<li>${escapeHtml(check)}</li>`).join("")}
+          </ul>
+          <div class="source-dry-action">
+            <span>Next action</span>
+            <p>${escapeHtml(item.nextAction)}</p>
+          </div>
+        </article>
+      `).join("")}
+    </div>
+    <div class="source-dry-flow-grid">
+      <article>
+        <span>Release path</span>
+        <strong>Dry run to claim gate</strong>
+        <ol>
+          ${config.releaseSteps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+        </ol>
+      </article>
+      <article>
+        <span>Top blocker</span>
+        <strong>${escapeHtml(config.topBlocker.pipeline.title)}</strong>
+        <ul>
+          ${config.topBlocker.blockers.slice(0, 5).map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="source-dry-guardrail">
+        <span>Privacy boundary</span>
+        <strong>No investor identity needed</strong>
+        <p>Dry-run receipts use source metadata, parser evidence, reviewer status, and claim surfaces only. They exclude PAN, folio, CAS, bank, credentials, contact data, and distributor client records.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeSourceDryRunBrief() {
+  const config = sourceDryRunBoardConfig();
+  return [
+    "# NiveshNadi Source Dry-Run Board",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Mode: ${sourceDryRunModeLabel(config.mode)}`,
+    `Surface: ${sourceDryRunSurfaceLabel(config.surface)}`,
+    `Average dry-run score: ${config.averageScore}/100`,
+    `Release candidates: ${config.release}`,
+    `Preview only: ${config.preview}`,
+    `Frozen: ${config.frozen}`,
+    "",
+    "## Selected Source",
+    `Source: ${config.selected.pipeline.title}`,
+    `Status: ${config.selected.status}`,
+    `Score: ${config.selected.dryRunScore}/100`,
+    `Receipt: ${config.selected.receipt}`,
+    `Freeze rule: ${config.selected.freezeRule}`,
+    `Reviewer: ${config.selected.reviewer}`,
+    `Next action: ${config.selected.nextAction}`,
+    "",
+    "## Source Dry Runs",
+    ...config.items.map((item) => [
+      `- ${item.pipeline.title}: ${item.dryRunScore}/100 | ${item.status}`,
+      `  Surface: ${item.releaseSurface}`,
+      `  Source age: ${item.age} days | Parser: ${item.confidenceScore}/100 | Citation visible: ${item.citationVisible ? "yes" : "no"}`,
+      `  Freeze rule: ${item.freezeRule}`,
+      `  Blockers: ${item.blockers.length ? item.blockers.join(", ") : "none"}`
+    ].join("\n")),
+    "",
+    "## Guardrail",
+    "Dry-run approval is not investment advice or execution. It only decides whether source-backed claims can move toward reviewer release."
+  ].join("\n");
+}
+
+function openSourceDryRunBlocker() {
+  scrollToHash("#claim-release", "smooth", true);
+}
+
+function sourceReceiptSnapshotFromConfig(config = sourceDryRunBoardConfig()) {
+  return sourceReceiptSnapshotFromDryRunItem(config.selected, config);
+}
+
+function sourceReceiptSnapshotFromDryRunItem(item, config = sourceDryRunBoardConfig()) {
+  return {
+    id: `source-receipt-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    createdAt: new Date().toISOString(),
+    release: RELEASE_LABEL,
+    dataVersion: DATA_VERSION,
+    mode: config.mode,
+    modeLabel: sourceDryRunModeLabel(config.mode),
+    surface: config.surface,
+    surfaceLabel: sourceDryRunSurfaceLabel(config.surface),
+    source: {
+      id: item.id,
+      title: item.pipeline.title,
+      owner: item.pipeline.owner,
+      cadence: item.pipeline.cadence,
+      freshnessDays: item.pipeline.freshnessDays
+    },
+    status: item.status,
+    tone: item.tone,
+    score: item.dryRunScore,
+    metrics: {
+      age: item.age,
+      staleDays: item.staleDays,
+      freshness: item.freshnessScore,
+      parser: item.confidenceScore,
+      citation: item.citationVisible ? 94 : 36,
+      citationVisible: item.citationVisible
+    },
+    receipt: item.receipt,
+    batch: item.batch,
+    releaseSurface: item.releaseSurface,
+    claimSurface: item.claimSurface,
+    freezeRule: item.freezeRule,
+    reviewer: item.reviewer,
+    nextAction: item.nextAction,
+    blockers: item.blockers.slice(0, 6),
+    checks: item.checks.slice(0, 6),
+    boundary: "Source receipt metadata only; excludes PAN, folio, CAS, bank, credentials, contact data, private notes, and distributor client records."
+  };
+}
+
+function saveCurrentSourceReceipt() {
+  const snapshot = sourceReceiptSnapshotFromConfig();
+  const entries = [snapshot, ...loadSourceReceipts()].slice(0, 30);
+  saveSourceReceipts(entries);
+  renderSourceReceiptVault();
+  renderClaimSurfaceMap();
+  renderSurfaceReleaseQueue();
+  renderReviewerWorkbench();
+  renderReviewerDecisionLedger();
+  renderReviewerReleaseBinder();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
+  toast("Source receipt saved locally.");
+}
+
+function clearSourceReceipts() {
+  saveSourceReceipts([]);
+  renderSourceReceiptVault();
+  renderClaimSurfaceMap();
+  renderSurfaceReleaseQueue();
+  renderReviewerWorkbench();
+  renderReviewerDecisionLedger();
+  renderReviewerReleaseBinder();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
+  toast("Source receipt vault cleared.");
+}
+
+function renderSourceReceiptVault() {
+  if (!els.sourceReceiptOutput || !els.sourceReceiptSummary) return;
+  const entries = loadSourceReceipts();
+  const preview = sourceReceiptSnapshotFromConfig();
+  const latest = entries[0] || null;
+  const prior = entries[1] || null;
+  const releaseCount = entries.filter((entry) => entry.status === "Release candidate").length;
+  const previewCount = entries.filter((entry) => entry.status === "Preview only").length;
+  const frozenCount = entries.filter((entry) => entry.status === "Frozen").length;
+  const citationGaps = entries.filter((entry) => !entry.metrics.citationVisible).length;
+  const avgScore = entries.length ? Math.round(entries.reduce((sum, entry) => sum + entry.score, 0) / entries.length) : preview.score;
+  const latestScoreDelta = latest ? reviewVaultDelta(latest.score, prior?.score) : "New";
+  els.sourceReceiptSummary.textContent = `${entries.length} source receipt${entries.length === 1 ? "" : "s"}`;
+
+  if (!entries.length) {
+    els.sourceReceiptOutput.innerHTML = `
+      <div class="source-receipt-empty">
+        <div>
+          <span class="metric-label">Current dry-run receipt preview</span>
+          <h3>${preview.score}/100 ${escapeHtml(preview.source.title)}</h3>
+          <p>Save the current Source Dry-Run receipt to create a browser-local proof trail for source date, parser confidence, citation visibility, freeze rule, reviewer handoff, and affected claim surface.</p>
+        </div>
+        <div class="source-receipt-score" style="--score:${preview.score}">
+          <b>${preview.score}</b>
+          <span>Preview</span>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  els.sourceReceiptOutput.innerHTML = `
+    <div class="source-receipt-hero ${escapeHtml(latest.tone)}">
+      <div>
+        <span class="metric-label">Latest source receipt</span>
+        <h3>${latest.score}/100 ${escapeHtml(latest.source.title)}</h3>
+        <p>${escapeHtml(latest.status)} | ${escapeHtml(latest.surfaceLabel)} | Saved ${new Date(latest.createdAt).toLocaleString("en-IN")} | ${escapeHtml(latest.source.owner)}.</p>
+      </div>
+      <div class="source-receipt-score" style="--score:${latest.score}">
+        <b>${latest.score}</b>
+        <span>Vault</span>
+      </div>
+    </div>
+    <div class="source-receipt-metric-grid">
+      <div><span>Average score</span><strong>${avgScore}/100</strong></div>
+      <div><span>Score delta</span><strong>${escapeHtml(latestScoreDelta)}</strong></div>
+      <div><span>Release candidates</span><strong>${releaseCount}</strong></div>
+      <div><span>Preview only</span><strong>${previewCount}</strong></div>
+      <div><span>Frozen</span><strong>${frozenCount}</strong></div>
+      <div><span>Citation gaps</span><strong>${citationGaps}</strong></div>
+    </div>
+    <div class="source-receipt-grid">
+      ${entries.slice(0, 9).map((entry) => `
+        <article class="${escapeHtml(entry.tone)}">
+          <div class="source-receipt-card-head">
+            <div>
+              <span>${escapeHtml(entry.status)}</span>
+              <strong>${escapeHtml(entry.source.title)}</strong>
+            </div>
+            <b>${entry.score}/100</b>
+          </div>
+          <p>${escapeHtml(entry.releaseSurface)}</p>
+          <div class="source-receipt-mini-grid">
+            <div><span>Fresh</span><b>${entry.metrics.freshness}</b></div>
+            <div><span>Parser</span><b>${entry.metrics.parser}</b></div>
+            <div><span>Cite</span><b>${entry.metrics.citation}</b></div>
+          </div>
+          <small>${escapeHtml(entry.modeLabel)} | age ${entry.metrics.age}d | ${new Date(entry.createdAt).toLocaleString("en-IN")}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="source-receipt-panel-grid">
+      <article>
+        <span>Latest receipt payload</span>
+        <strong>${escapeHtml(latest.receipt)}</strong>
+        <p><b>Freeze rule:</b> ${escapeHtml(latest.freezeRule)}</p>
+        <p><b>Next:</b> ${escapeHtml(latest.nextAction)}</p>
+      </article>
+      <article>
+        <span>Latest blockers</span>
+        <strong>${latest.blockers.length ? `${latest.blockers.length} blocker${latest.blockers.length === 1 ? "" : "s"}` : "No blockers"}</strong>
+        <ul class="review-vault-list">
+          ${(latest.blockers.length ? latest.blockers : ["No active blocker captured for this receipt."]).map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="source-receipt-guardrail">
+        <span>Vault boundary</span>
+        <strong>No investor identity</strong>
+        <p>${escapeHtml(latest.boundary)}</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeSourceReceiptVaultBrief() {
+  const entries = loadSourceReceipts();
+  const preview = sourceReceiptSnapshotFromConfig();
+  const latest = entries[0] || preview;
+  const prior = entries[1] || null;
+  return [
+    "# NiveshNadi Source Receipt Vault",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Saved source receipts: ${entries.length}`,
+    `Latest source: ${latest.source.title}`,
+    `Latest status: ${latest.status}`,
+    `Latest score: ${latest.score}/100`,
+    `Score delta: ${reviewVaultDelta(latest.score, prior?.score)}`,
+    `Surface: ${latest.surfaceLabel}`,
+    `Reviewer: ${latest.reviewer}`,
+    "",
+    "## Latest Receipt",
+    `Receipt: ${latest.receipt}`,
+    `Batch: ${latest.batch}`,
+    `Source age: ${latest.metrics.age} days`,
+    `Freshness: ${latest.metrics.freshness}/100`,
+    `Parser: ${latest.metrics.parser}/100`,
+    `Citation visible: ${latest.metrics.citationVisible ? "yes" : "no"}`,
+    `Freeze rule: ${latest.freezeRule}`,
+    `Next action: ${latest.nextAction}`,
+    "",
+    "## Latest Blockers",
+    ...(latest.blockers.length ? latest.blockers.map((blocker) => `- ${blocker}`) : ["- No active blocker captured."]),
+    "",
+    "## Recent Source Receipts",
+    ...(entries.length ? entries.slice(0, 10).map((entry) => `- ${new Date(entry.createdAt).toLocaleString("en-IN")}: ${entry.score}/100, ${entry.source.title}, ${entry.status}, ${entry.surfaceLabel}`) : ["- No saved source receipts yet. This brief uses the current dry-run preview."]),
+    "",
+    "## Guardrail",
+    "Source Receipt Vault stores source metadata only. It is not investment advice, suitability approval, execution approval, or a return guarantee. It excludes PAN, folio, CAS, bank data, credentials, contact data, private notes, and distributor client records."
+  ].join("\n");
+}
+
+function claimSurfacePostureLabel(posture) {
+  return {
+    auto: "Use receipt posture",
+    release: "Release candidate",
+    preview: "Preview only",
+    frozen: "Freeze affected surfaces"
+  }[posture] || "Use receipt posture";
+}
+
+function claimSurfaceScopeLabel(scope) {
+  return {
+    core: "Core investor surfaces",
+    all: "All public research surfaces",
+    memo: "Memo and dossier surfaces",
+    portfolio: "Portfolio surfaces"
+  }[scope] || "Core investor surfaces";
+}
+
+function claimSurfaceSelectedReceipt() {
+  const selectedSourceId = els.claimSurfaceSource?.value || "auto";
+  const receipts = loadSourceReceipts();
+  if (selectedSourceId === "auto") return receipts[0] || sourceReceiptSnapshotFromConfig();
+  const saved = receipts.find((receipt) => receipt.source.id === selectedSourceId);
+  if (saved) return saved;
+  const dryRun = sourceDryRunItems().find((item) => item.id === selectedSourceId) || selectedSourceDryRun();
+  return sourceReceiptSnapshotFromDryRunItem(dryRun, sourceDryRunBoardConfig());
+}
+
+function claimSurfaceScopeItems(scope) {
+  if (scope === "all") return CLAIM_SURFACE_MAP;
+  if (scope === "memo") return CLAIM_SURFACE_MAP.filter((surface) => ["Memo", "Trust"].includes(surface.group));
+  if (scope === "portfolio") return CLAIM_SURFACE_MAP.filter((surface) => ["Portfolio", "Habit", "Compare"].includes(surface.group));
+  return CLAIM_SURFACE_MAP.filter((surface) => ["Discovery", "Compare", "Portfolio", "Habit"].includes(surface.group));
+}
+
+function claimSurfaceEffectiveStatus(receipt, posture) {
+  if (posture === "release") return "Release candidate";
+  if (posture === "preview") return "Preview only";
+  if (posture === "frozen") return "Frozen";
+  return receipt.status || "Preview only";
+}
+
+function claimSurfaceCard(receipt, surface, posture) {
+  const directlyAffected = surface.sourceIds.includes(receipt.source.id);
+  const effectiveStatus = claimSurfaceEffectiveStatus(receipt, posture);
+  const citationPenalty = receipt.metrics?.citationVisible ? 0 : 10;
+  const blockerPenalty = Math.min(18, (receipt.blockers?.length || 0) * 4);
+  const posturePenalty = effectiveStatus === "Frozen" ? 28 : effectiveStatus === "Preview only" ? 10 : 0;
+  const indirectPenalty = directlyAffected ? 0 : 16;
+  const score = Math.round(clampNumber(
+    receipt.score - citationPenalty - blockerPenalty - posturePenalty - indirectPenalty,
+    12,
+    96
+  ));
+  let status = "No direct change";
+  if (directlyAffected) {
+    if (effectiveStatus === "Frozen" || score < surface.strictness || (receipt.blockers?.length || 0) >= 4) {
+      status = "Frozen";
+    } else if (effectiveStatus === "Preview only" || score < surface.strictness + 10 || !receipt.metrics?.citationVisible) {
+      status = "Preview only";
+    } else {
+      status = "Release candidate";
+    }
+  }
+  const tone = status === "Release candidate"
+    ? "ready"
+    : status === "Frozen"
+      ? "caution"
+      : status === "Preview only"
+        ? "watch"
+        : "neutral";
+  const nextAction = status === "Release candidate"
+    ? `Send ${surface.label.toLowerCase()} to the Claim Release Gate with receipt ${receipt.receipt}.`
+    : status === "Preview only"
+      ? `Keep ${surface.label.toLowerCase()} preview-only until citation and reviewer checks pass.`
+      : status === "Frozen"
+        ? `Freeze ${surface.label.toLowerCase()} and use fallback: ${surface.fallback}`
+        : `No immediate release change. Watch this surface when ${receipt.source.title} is refreshed.`;
+  return {
+    ...surface,
+    directlyAffected,
+    nextAction,
+    score,
+    status,
+    tone
+  };
+}
+
+function claimSurfaceMapConfig() {
+  const receipt = claimSurfaceSelectedReceipt();
+  const posture = els.claimSurfacePosture?.value || "auto";
+  const scope = els.claimSurfaceScope?.value || "core";
+  const surfaces = claimSurfaceScopeItems(scope).map((surface) => claimSurfaceCard(receipt, surface, posture));
+  const affected = surfaces.filter((surface) => surface.directlyAffected);
+  const release = surfaces.filter((surface) => surface.status === "Release candidate").length;
+  const preview = surfaces.filter((surface) => surface.status === "Preview only").length;
+  const frozen = surfaces.filter((surface) => surface.status === "Frozen").length;
+  const unchanged = surfaces.filter((surface) => surface.status === "No direct change").length;
+  const averageScore = surfaces.length ? Math.round(surfaces.reduce((sum, surface) => sum + surface.score, 0) / surfaces.length) : 0;
+  const topRisk = [...surfaces].sort((a, b) => {
+    const rank = { Frozen: 3, "Preview only": 2, "No direct change": 1, "Release candidate": 0 };
+    return (rank[b.status] || 0) - (rank[a.status] || 0) || a.score - b.score;
+  })[0] || surfaces[0];
+  const directSummary = affected.length ? `${affected.length} affected` : "No direct surface hit";
+  return {
+    affected,
+    averageScore,
+    directSummary,
+    effectiveStatus: claimSurfaceEffectiveStatus(receipt, posture),
+    frozen,
+    posture,
+    preview,
+    receipt,
+    release,
+    scope,
+    surfaces,
+    topRisk,
+    unchanged
+  };
+}
+
+function renderClaimSurfaceMap(event) {
+  if (event) event.preventDefault();
+  if (!els.claimSurfaceOutput || !els.claimSurfaceSummary) return;
+  const config = claimSurfaceMapConfig();
+  const heroTone = config.frozen ? "caution" : config.preview ? "watch" : "ready";
+  const posture = config.frozen
+    ? "Some product surfaces stay frozen"
+    : config.preview
+      ? "Preview guardrails remain active"
+      : "Mapped surfaces can enter release review";
+  els.claimSurfaceSummary.textContent = `${config.release} release | ${config.preview} preview | ${config.frozen} frozen`;
+  els.claimSurfaceOutput.innerHTML = `
+    <div class="claim-surface-hero ${escapeHtml(heroTone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(config.receipt.source.title)}</span>
+        <h3>${escapeHtml(posture)}</h3>
+        <p>${escapeHtml(config.directSummary)} from a ${escapeHtml(config.effectiveStatus.toLowerCase())} receipt. Scope: ${escapeHtml(claimSurfaceScopeLabel(config.scope))}.</p>
+      </div>
+      <div class="claim-surface-score" style="--score:${config.averageScore}">
+        <b>${config.averageScore}</b>
+        <span>Surface</span>
+      </div>
+    </div>
+    <div class="claim-surface-metric-grid">
+      <article><span>Average surface score</span><strong>${config.averageScore}/100</strong><p>Blended source receipt quality against surface strictness.</p></article>
+      <article><span>Affected surfaces</span><strong>${config.affected.length}</strong><p>Directly dependent on ${escapeHtml(config.receipt.source.title)}.</p></article>
+      <article><span>Release candidates</span><strong>${config.release}</strong><p>Can enter reviewer release gate.</p></article>
+      <article><span>Preview or frozen</span><strong>${config.preview + config.frozen}</strong><p>Still need citation, parser, freshness, or reviewer proof.</p></article>
+    </div>
+    <div class="claim-surface-focus">
+      <article>
+        <span>Receipt lens</span>
+        <strong>${escapeHtml(config.receipt.status)} | ${config.receipt.score}/100</strong>
+        <p>${escapeHtml(config.receipt.receipt)}</p>
+        <p><b>Freeze rule:</b> ${escapeHtml(config.receipt.freezeRule)}</p>
+      </article>
+      <article>
+        <span>Surface rule</span>
+        <strong>${escapeHtml(config.topRisk.label)}</strong>
+        <p>${escapeHtml(config.topRisk.impact)}</p>
+        <p><b>Strictness:</b> ${config.topRisk.strictness}/100 | <b>Status:</b> ${escapeHtml(config.topRisk.status)}</p>
+      </article>
+      <article class="${escapeHtml(config.topRisk.tone)}">
+        <span>Next move</span>
+        <strong>${escapeHtml(config.topRisk.status)}</strong>
+        <p>${escapeHtml(config.topRisk.nextAction)}</p>
+      </article>
+    </div>
+    <div class="claim-surface-grid">
+      ${config.surfaces.map((surface) => `
+        <article class="${escapeHtml(surface.tone)}">
+          <div class="claim-surface-card-head">
+            <div>
+              <span>${escapeHtml(surface.group)} | ${escapeHtml(surface.status)}</span>
+              <strong>${escapeHtml(surface.label)}</strong>
+            </div>
+            <b>${surface.score}/100</b>
+          </div>
+          <div class="launch-progress-row">
+            <div class="build-progress-bar launch"><span style="width:${surface.score}%"></span></div>
+            <b>${surface.strictness}</b>
+          </div>
+          <p>${escapeHtml(surface.impact)}</p>
+          <div class="claim-surface-action">
+            <span>${surface.directlyAffected ? "Direct source match" : "Indirect monitor"}</span>
+            <p>${escapeHtml(surface.nextAction)}</p>
+          </div>
+        </article>
+      `).join("")}
+    </div>
+    <div class="claim-surface-flow-grid">
+      <article>
+        <span>Release rule</span>
+        <strong>Receipt plus surface strictness</strong>
+        <p>A source receipt may be healthy overall, but each investor-facing surface still needs its own source dependency, citation visibility, strictness threshold, and reviewer route.</p>
+      </article>
+      <article>
+        <span>Freeze rule</span>
+        <strong>Narrowest affected surface</strong>
+        <p>If one source fails, only the mapped surfaces are frozen. Unrelated product areas can remain in demo, preview, or release review without hiding the issue.</p>
+      </article>
+      <article class="claim-surface-guardrail">
+        <span>Privacy boundary</span>
+        <strong>No investor identifiers</strong>
+        <p>The map uses source receipt metadata, source family, surface dependency, and release posture only. It excludes PAN, folio, CAS, bank data, account credentials, contact data, and distributor client records.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeClaimSurfaceMapBrief() {
+  const config = claimSurfaceMapConfig();
+  return [
+    "# NiveshNadi Claim Surface Map",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Source receipt: ${config.receipt.source.title}`,
+    `Receipt status: ${config.receipt.status}`,
+    `Receipt score: ${config.receipt.score}/100`,
+    `Release posture: ${claimSurfacePostureLabel(config.posture)}`,
+    `Surface scope: ${claimSurfaceScopeLabel(config.scope)}`,
+    `Average surface score: ${config.averageScore}/100`,
+    `Release candidates: ${config.release}`,
+    `Preview only: ${config.preview}`,
+    `Frozen: ${config.frozen}`,
+    `No direct change: ${config.unchanged}`,
+    "",
+    "## Surface Outcomes",
+    ...config.surfaces.map((surface) => [
+      `- ${surface.label}: ${surface.status} | ${surface.score}/100`,
+      `  Source match: ${surface.directlyAffected ? "yes" : "no"}`,
+      `  Impact: ${surface.impact}`,
+      `  Next: ${surface.nextAction}`
+    ].join("\n")),
+    "",
+    "## Guardrail",
+    "This map decides product-surface release posture only. It is not investment advice, suitability approval, transaction approval, or a return guarantee."
+  ].join("\n");
+}
+
+function openClaimSurfaceGate() {
+  scrollToHash("#claim-release", "smooth", true);
+}
+
+function surfaceReleaseLensLabel(lens) {
+  return {
+    actionable: "Actionable surfaces",
+    release: "Release candidates",
+    preview: "Preview proof work",
+    freeze: "Freeze and correction work",
+    all: "All mapped surfaces"
+  }[lens] || "Actionable surfaces";
+}
+
+function surfaceReleaseOwnerLabel(owner) {
+  return {
+    all: "All owners",
+    "Research review": "Research review",
+    "Data operations": "Data operations",
+    "Compliance research": "Compliance research",
+    "Product release": "Product release"
+  }[owner] || "All owners";
+}
+
+function surfaceReleaseDepthLabel(depth) {
+  return {
+    review: "Reviewer pack",
+    triage: "Fast triage",
+    "launch-log": "Launch log"
+  }[depth] || "Reviewer pack";
+}
+
+function surfaceReleaseOwnerFor(surface) {
+  if (surface.status === "Release candidate") return "Product release";
+  if (surface.status === "Frozen") {
+    return ["Trust", "Memo"].includes(surface.group) ? "Compliance research" : "Data operations";
+  }
+  if (surface.status === "Preview only") return "Research review";
+  return "Research review";
+}
+
+function surfaceReleaseStage(surface) {
+  if (surface.status === "Release candidate") return "Release review";
+  if (surface.status === "Frozen") return "Freeze fix";
+  if (surface.status === "Preview only") return "Preview proof";
+  return "Monitor";
+}
+
+function surfaceReleasePriority(surface) {
+  const statusWeight = {
+    Frozen: 100,
+    "Preview only": 74,
+    "Release candidate": 58,
+    "No direct change": 22
+  }[surface.status] || 22;
+  const groupWeight = surface.group === "Trust" ? 16 : surface.group === "Memo" ? 12 : surface.group === "Portfolio" ? 8 : 4;
+  const matchWeight = surface.directlyAffected ? 12 : 0;
+  return Math.round(clampNumber(statusWeight + groupWeight + matchWeight - surface.score * 0.16, 10, 100));
+}
+
+function surfaceReleaseDueLabel(priority) {
+  if (priority >= 88) return "Same day";
+  if (priority >= 70) return "Next review";
+  if (priority >= 48) return "This sprint";
+  return "Monitor";
+}
+
+function surfaceReleaseAction(surface, receipt, depth) {
+  if (surface.status === "Release candidate") {
+    return depth === "launch-log"
+      ? `Prepare launch-log entry for ${surface.label} with ${receipt.source.title}, receipt ${receipt.receipt}, old state, new state, reviewer, and rollback path.`
+      : `Prepare Claim Release Gate handoff for ${surface.label} using receipt ${receipt.receipt}.`;
+  }
+  if (surface.status === "Preview only") {
+    return depth === "triage"
+      ? `Attach missing citation or reviewer proof before ${surface.label} leaves preview.`
+      : `Keep ${surface.label} in preview and collect citation path, parser confidence, reviewer sign-off, and source date evidence.`;
+  }
+  if (surface.status === "Frozen") {
+    return depth === "launch-log"
+      ? `Log freeze for ${surface.label}, publish fallback wording, and prepare rollback or correction note if users could see stale claims.`
+      : `Freeze ${surface.label}, use fallback wording, and open source proof fix before any public release.`;
+  }
+  return `Monitor ${surface.label}; no release work until ${receipt.source.title} changes this surface.`;
+}
+
+function surfaceReleaseTaskFromSurface(surface, receipt, depth) {
+  const priority = surfaceReleasePriority(surface);
+  const taskOwner = surfaceReleaseOwnerFor(surface);
+  return {
+    ...surface,
+    action: surfaceReleaseAction(surface, receipt, depth),
+    due: surfaceReleaseDueLabel(priority),
+    owner: taskOwner,
+    priority,
+    stage: surfaceReleaseStage(surface)
+  };
+}
+
+function surfaceReleaseQueueConfig() {
+  const map = claimSurfaceMapConfig();
+  const lens = els.surfaceReleaseLens?.value || "actionable";
+  const owner = els.surfaceReleaseOwner?.value || "all";
+  const depth = els.surfaceReleaseDepth?.value || "review";
+  const tasks = map.surfaces.map((surface) => surfaceReleaseTaskFromSurface(surface, map.receipt, depth)).filter((task) => {
+    const lensMatch = lens === "all"
+      || (lens === "actionable" && task.status !== "No direct change")
+      || (lens === "release" && task.status === "Release candidate")
+      || (lens === "preview" && task.status === "Preview only")
+      || (lens === "freeze" && task.status === "Frozen");
+    const ownerMatch = owner === "all" || task.owner === owner;
+    return lensMatch && ownerMatch;
+  }).sort((a, b) => b.priority - a.priority || a.score - b.score);
+  const counts = {
+    release: tasks.filter((task) => task.status === "Release candidate").length,
+    preview: tasks.filter((task) => task.status === "Preview only").length,
+    frozen: tasks.filter((task) => task.status === "Frozen").length,
+    monitor: tasks.filter((task) => task.status === "No direct change").length
+  };
+  const ownerCounts = tasks.reduce((acc, task) => {
+    acc[task.owner] = (acc[task.owner] || 0) + 1;
+    return acc;
+  }, {});
+  const priorityAverage = tasks.length ? Math.round(tasks.reduce((sum, task) => sum + task.priority, 0) / tasks.length) : 0;
+  const nextTask = tasks[0] || null;
+  return {
+    counts,
+    depth,
+    lens,
+    map,
+    nextTask,
+    owner,
+    ownerCounts,
+    priorityAverage,
+    tasks
+  };
+}
+
+function renderSurfaceReleaseQueue(event) {
+  if (event) event.preventDefault();
+  if (!els.surfaceReleaseOutput || !els.surfaceReleaseSummary) return;
+  const config = surfaceReleaseQueueConfig();
+  const tone = config.counts.frozen ? "caution" : config.counts.preview ? "watch" : "ready";
+  const posture = config.tasks.length
+    ? `${config.tasks.length} surface task${config.tasks.length === 1 ? "" : "s"} ready for handoff`
+    : "No queue items in this lens";
+  els.surfaceReleaseSummary.textContent = `${config.tasks.length} tasks | ${config.priorityAverage}/100 priority`;
+  els.surfaceReleaseOutput.innerHTML = `
+    <div class="surface-queue-hero ${escapeHtml(tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(surfaceReleaseLensLabel(config.lens))}</span>
+        <h3>${escapeHtml(posture)}</h3>
+        <p>${escapeHtml(config.map.receipt.source.title)} receipt feeds ${escapeHtml(surfaceReleaseDepthLabel(config.depth).toLowerCase())}. Owner lens: ${escapeHtml(surfaceReleaseOwnerLabel(config.owner))}.</p>
+      </div>
+      <div class="surface-queue-score" style="--score:${config.priorityAverage}">
+        <b>${config.priorityAverage}</b>
+        <span>Queue</span>
+      </div>
+    </div>
+    <div class="surface-queue-metric-grid">
+      <article><span>Total tasks</span><strong>${config.tasks.length}</strong><p>Filtered from ${config.map.surfaces.length} mapped surfaces.</p></article>
+      <article><span>Freeze work</span><strong>${config.counts.frozen}</strong><p>Requires fallback, source fix, or correction path.</p></article>
+      <article><span>Preview proof</span><strong>${config.counts.preview}</strong><p>Needs citation, parser, or reviewer evidence.</p></article>
+      <article><span>Release review</span><strong>${config.counts.release}</strong><p>Ready to enter Claim Release Gate.</p></article>
+    </div>
+    <div class="surface-queue-focus">
+      <article>
+        <span>Next queue item</span>
+        <strong>${escapeHtml(config.nextTask?.label || "No active item")}</strong>
+        <p>${escapeHtml(config.nextTask?.action || "Change the lens or surface posture to create queue work.")}</p>
+      </article>
+      <article>
+        <span>Owner load</span>
+        <strong>${escapeHtml(Object.keys(config.ownerCounts)[0] || "No owner")}</strong>
+        <p>${escapeHtml(Object.entries(config.ownerCounts).map(([name, count]) => `${name}: ${count}`).join(" | ") || "No queue owner after filters.")}</p>
+      </article>
+      <article class="${escapeHtml(tone)}">
+        <span>Receipt boundary</span>
+        <strong>${escapeHtml(config.map.effectiveStatus)} | ${config.map.receipt.score}/100</strong>
+        <p>${escapeHtml(config.map.receipt.boundary)}</p>
+      </article>
+    </div>
+    <div class="surface-queue-grid">
+      ${config.tasks.length ? config.tasks.map((task) => `
+        <article class="${escapeHtml(task.tone)}">
+          <div class="surface-queue-card-head">
+            <div>
+              <span>${escapeHtml(task.stage)} | ${escapeHtml(task.owner)}</span>
+              <strong>${escapeHtml(task.label)}</strong>
+            </div>
+            <b>${task.priority}/100</b>
+          </div>
+          <div class="launch-progress-row">
+            <div class="build-progress-bar launch"><span style="width:${task.priority}%"></span></div>
+            <b>${escapeHtml(task.due)}</b>
+          </div>
+          <p>${escapeHtml(task.action)}</p>
+          <div class="surface-queue-action">
+            <span>${escapeHtml(task.status)} | surface ${task.score}/100</span>
+            <p>${escapeHtml(task.impact)}</p>
+          </div>
+        </article>
+      `).join("") : `
+        <article class="neutral">
+          <div class="surface-queue-card-head">
+            <div>
+              <span>No match</span>
+              <strong>No queue items in this lens</strong>
+            </div>
+            <b>0/100</b>
+          </div>
+          <p>Change queue lens, owner, or Claim Surface Map posture to create release work.</p>
+        </article>
+      `}
+    </div>
+    <div class="surface-queue-flow-grid">
+      <article>
+        <span>Handoff rule</span>
+        <strong>Surface outcome becomes work</strong>
+        <p>Release candidates go to Claim Release Gate, preview items collect proof, frozen items get fallback and source fixes, and no-change surfaces remain monitored.</p>
+      </article>
+      <article>
+        <span>Reviewer packet</span>
+        <strong>Evidence before publish</strong>
+        <p>Each task carries source receipt, surface strictness, owner, due posture, action, public impact, and privacy boundary before a reviewer releases anything.</p>
+      </article>
+      <article class="surface-queue-guardrail">
+        <span>Privacy boundary</span>
+        <strong>No investor identity</strong>
+        <p>This queue is product operations only. It excludes PAN, folio, CAS, bank data, contact data, private notes, credentials, and distributor client records.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeSurfaceReleaseQueueBrief() {
+  const config = surfaceReleaseQueueConfig();
+  return [
+    "# NiveshNadi Surface Release Queue",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Queue lens: ${surfaceReleaseLensLabel(config.lens)}`,
+    `Owner lens: ${surfaceReleaseOwnerLabel(config.owner)}`,
+    `Handoff depth: ${surfaceReleaseDepthLabel(config.depth)}`,
+    `Source receipt: ${config.map.receipt.source.title}`,
+    `Receipt status: ${config.map.receipt.status}`,
+    `Queue tasks: ${config.tasks.length}`,
+    `Average priority: ${config.priorityAverage}/100`,
+    "",
+    "## Queue Items",
+    ...(config.tasks.length ? config.tasks.map((task) => [
+      `- ${task.label}: ${task.stage} | ${task.owner} | priority ${task.priority}/100 | due ${task.due}`,
+      `  Status: ${task.status} | Surface score: ${task.score}/100`,
+      `  Action: ${task.action}`,
+      `  Impact: ${task.impact}`
+    ].join("\n")) : ["- No queue items matched the current lens."]),
+    "",
+    "## Guardrail",
+    "The Surface Release Queue manages product claim operations only. It is not investment advice, suitability approval, personalized recommendation, transaction approval, or a return guarantee."
+  ].join("\n");
+}
+
+function openSurfaceReleaseGate() {
+  scrollToHash("#claim-release", "smooth", true);
+}
+
+function reviewerWorkbenchItemLabel(item) {
+  return {
+    top: "Highest priority item",
+    release: "Top release candidate",
+    preview: "Top preview proof item",
+    freeze: "Top freeze fix item"
+  }[item] || "Highest priority item";
+}
+
+function reviewerWorkbenchPostureLabel(posture) {
+  return {
+    auto: "Use queue posture",
+    approve: "Approve for release gate",
+    hold: "Hold in preview",
+    freeze: "Freeze and fix",
+    correction: "Correction review"
+  }[posture] || "Use queue posture";
+}
+
+function reviewerWorkbenchEvidenceLabel(evidence) {
+  return {
+    standard: "Standard evidence pack",
+    strict: "Strict citation lock",
+    fast: "Fast triage"
+  }[evidence] || "Standard evidence pack";
+}
+
+function reviewerWorkbenchEvidenceScore(evidence) {
+  return {
+    standard: 76,
+    strict: 92,
+    fast: 62
+  }[evidence] || 76;
+}
+
+function reviewerWorkbenchAllTasks(depth = "review") {
+  const map = claimSurfaceMapConfig();
+  const tasks = map.surfaces
+    .map((surface) => surfaceReleaseTaskFromSurface(surface, map.receipt, depth))
+    .sort((a, b) => b.priority - a.priority || a.score - b.score);
+  return { map, tasks };
+}
+
+function reviewerWorkbenchPickTask(tasks, item) {
+  if (!tasks.length) return null;
+  if (item === "release") return tasks.find((task) => task.status === "Release candidate") || tasks[0];
+  if (item === "preview") return tasks.find((task) => task.status === "Preview only") || tasks[0];
+  if (item === "freeze") return tasks.find((task) => task.status === "Frozen") || tasks[0];
+  return tasks[0];
+}
+
+function reviewerWorkbenchDecision(task, map, posture, evidence) {
+  if (!task) {
+    return {
+      action: "No reviewer item",
+      checklist: ["Change the release queue lens or claim surface posture to create a reviewer item."],
+      handoff: "No release, hold, freeze, or correction handoff is available yet.",
+      route: "#surface-release-queue",
+      score: 0,
+      tone: "neutral"
+    };
+  }
+
+  const autoAction = task.status === "Release candidate"
+    ? "Approve for release gate"
+    : task.status === "Frozen"
+      ? task.priority >= 88
+        ? "Correction review"
+        : "Freeze and fix"
+      : task.status === "Preview only"
+        ? "Hold in preview"
+        : "Monitor";
+  const action = posture === "auto" ? autoAction : reviewerWorkbenchPostureLabel(posture);
+  const evidenceScore = reviewerWorkbenchEvidenceScore(evidence);
+  const statusScore = action === "Approve for release gate"
+    ? 86
+    : action === "Hold in preview"
+      ? 70
+      : action === "Freeze and fix"
+        ? 58
+        : action === "Correction review"
+          ? 52
+          : 46;
+  const score = Math.round(clampNumber(task.score * 0.34 + evidenceScore * 0.28 + statusScore * 0.28 + (100 - task.priority) * 0.1, 20, 96));
+  const tone = action === "Approve for release gate"
+    ? "ready"
+    : action === "Freeze and fix" || action === "Correction review"
+      ? "caution"
+      : action === "Hold in preview"
+        ? "watch"
+        : "neutral";
+  const route = action === "Correction review"
+    ? "#correction-notice"
+    : action === "Freeze and fix"
+      ? "#claim-rollback"
+      : action === "Hold in preview"
+        ? "#surface-release-queue"
+        : "#claim-release";
+  const checklist = [
+    `${map.receipt.source.title} receipt ${map.receipt.receipt}`,
+    `${task.label} status ${task.status} with surface score ${task.score}/100`,
+    `Strictness ${task.strictness}/100 and reviewer priority ${task.priority}/100`,
+    `${reviewerWorkbenchEvidenceLabel(evidence)} selected before handoff`
+  ];
+  const handoff = action === "Approve for release gate"
+    ? `Move ${task.label} into Claim Release Gate with receipt ${map.receipt.receipt}, reviewer note, rollback path, and visible source date.`
+    : action === "Hold in preview"
+      ? `Keep ${task.label} preview-only until citation path, parser confidence, reviewer sign-off, and source date are complete.`
+      : action === "Freeze and fix"
+        ? `Freeze ${task.label}, show fallback wording, fix source proof, and do not let the surface look live.`
+        : action === "Correction review"
+          ? `Prepare correction review for ${task.label} if stale or unsupported claims could have been visible.`
+          : `Monitor ${task.label}; no public movement until the mapped source changes this surface.`;
+
+  return { action, checklist, handoff, route, score, tone };
+}
+
+function reviewerWorkbenchConfig() {
+  const item = els.reviewerWorkbenchItem?.value || "top";
+  const posture = els.reviewerWorkbenchPosture?.value || "auto";
+  const evidence = els.reviewerWorkbenchEvidence?.value || "standard";
+  const queueDepth = evidence === "fast" ? "triage" : "review";
+  const { map, tasks } = reviewerWorkbenchAllTasks(queueDepth);
+  const task = reviewerWorkbenchPickTask(tasks, item);
+  const decision = reviewerWorkbenchDecision(task, map, posture, evidence);
+  const releaseCount = tasks.filter((entry) => entry.status === "Release candidate").length;
+  const previewCount = tasks.filter((entry) => entry.status === "Preview only").length;
+  const frozenCount = tasks.filter((entry) => entry.status === "Frozen").length;
+  const queueRank = task ? tasks.findIndex((entry) => entry.id === task.id) + 1 : 0;
+  return {
+    decision,
+    evidence,
+    frozenCount,
+    item,
+    map,
+    posture,
+    previewCount,
+    queueRank,
+    releaseCount,
+    task,
+    tasks
+  };
+}
+
+function renderReviewerWorkbench(event) {
+  if (event) event.preventDefault();
+  if (!els.reviewerWorkbenchOutput || !els.reviewerWorkbenchSummary) return;
+  const config = reviewerWorkbenchConfig();
+  const task = config.task;
+  const decision = config.decision;
+  els.reviewerWorkbenchSummary.textContent = `${decision.score}/100 | ${decision.action}`;
+  els.reviewerWorkbenchOutput.innerHTML = `
+    <div class="reviewer-workbench-hero ${escapeHtml(decision.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(reviewerWorkbenchItemLabel(config.item))}</span>
+        <h3>${escapeHtml(task ? `${task.label} reviewer handoff` : "No reviewer item")}</h3>
+        <p>${escapeHtml(decision.handoff)}</p>
+      </div>
+      <div class="reviewer-workbench-score" style="--score:${decision.score}">
+        <b>${decision.score}</b>
+        <span>Review</span>
+      </div>
+    </div>
+    <div class="reviewer-workbench-metric-grid">
+      <article><span>Queue rank</span><strong>${config.queueRank || "None"}</strong><p>${escapeHtml(task ? `${task.stage} | ${task.owner}` : "No queue item selected.")}</p></article>
+      <article><span>Reviewer action</span><strong>${escapeHtml(decision.action)}</strong><p>${escapeHtml(reviewerWorkbenchPostureLabel(config.posture))}</p></article>
+      <article><span>Evidence lock</span><strong>${reviewerWorkbenchEvidenceScore(config.evidence)}/100</strong><p>${escapeHtml(reviewerWorkbenchEvidenceLabel(config.evidence))}</p></article>
+      <article><span>Surface mix</span><strong>${config.releaseCount}/${config.previewCount}/${config.frozenCount}</strong><p>Release, preview, and freeze items in the mapped set.</p></article>
+    </div>
+    <div class="reviewer-workbench-focus">
+      <article>
+        <span>Source receipt</span>
+        <strong>${escapeHtml(config.map.receipt.source.title)}</strong>
+        <p>${escapeHtml(config.map.receipt.status)} | ${config.map.receipt.score}/100 | ${escapeHtml(config.map.receipt.receipt)}</p>
+      </article>
+      <article class="${escapeHtml(task?.tone || "neutral")}">
+        <span>Surface claim</span>
+        <strong>${escapeHtml(task?.label || "No active surface")}</strong>
+        <p>${escapeHtml(task ? `${task.status} | strictness ${task.strictness}/100 | ${task.impact}` : "Choose a queue item to review.")}</p>
+      </article>
+      <article class="${escapeHtml(decision.tone)}">
+        <span>Reviewer decision</span>
+        <strong>${escapeHtml(decision.action)}</strong>
+        <p>${escapeHtml(decision.handoff)}</p>
+      </article>
+    </div>
+    <div class="reviewer-workbench-grid">
+      <article>
+        <h3>Evidence checklist</h3>
+        <ul class="reviewer-workbench-list">
+          ${decision.checklist.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <h3>Release packet</h3>
+        <p>${escapeHtml(task?.action || "No release packet can be built until a task is selected.")}</p>
+        <p><b>Due:</b> ${escapeHtml(task?.due || "Not set")} | <b>Owner:</b> ${escapeHtml(task?.owner || "No owner")}</p>
+      </article>
+      <article>
+        <h3>Public fallback</h3>
+        <p>${escapeHtml(task?.fallback || "Use demo or preview labels until evidence is reviewer-cleared.")}</p>
+        <p><b>Route:</b> ${escapeHtml(decision.route)}</p>
+      </article>
+      <article class="reviewer-workbench-guardrail">
+        <h3>Reviewer boundary</h3>
+        <p>This desk reviews product claims and release posture only. It excludes PAN, folio, CAS, bank data, contact data, account credentials, private notes, and distributor client records.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeReviewerWorkbenchBrief() {
+  const config = reviewerWorkbenchConfig();
+  const task = config.task;
+  return [
+    "# NiveshNadi Reviewer Workbench",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Queue item: ${reviewerWorkbenchItemLabel(config.item)}`,
+    `Reviewer posture: ${reviewerWorkbenchPostureLabel(config.posture)}`,
+    `Evidence lock: ${reviewerWorkbenchEvidenceLabel(config.evidence)}`,
+    `Reviewer score: ${config.decision.score}/100`,
+    `Reviewer action: ${config.decision.action}`,
+    "",
+    "## Selected Surface",
+    task ? [
+      `Surface: ${task.label}`,
+      `Status: ${task.status}`,
+      `Stage: ${task.stage}`,
+      `Owner: ${task.owner}`,
+      `Priority: ${task.priority}/100`,
+      `Surface score: ${task.score}/100`,
+      `Impact: ${task.impact}`,
+      `Action: ${task.action}`
+    ].join("\n") : "No queue item selected.",
+    "",
+    "## Evidence Checklist",
+    ...config.decision.checklist.map((item) => `- ${item}`),
+    "",
+    "## Reviewer Handoff",
+    config.decision.handoff,
+    "",
+    "## Guardrail",
+    "Reviewer Workbench is a product release control. It is not personalized investment advice, suitability approval, transaction approval, or a return guarantee."
+  ].join("\n");
+}
+
+function openReviewerReleaseGate() {
+  const config = reviewerWorkbenchConfig();
+  scrollToHash(config.decision.route, "smooth", true);
+}
+
+function reviewerDecisionSnapshotFromConfig(config = reviewerWorkbenchConfig()) {
+  const task = config.task;
+  return {
+    id: `reviewer-decision-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    createdAt: new Date().toISOString(),
+    release: RELEASE_LABEL,
+    dataVersion: DATA_VERSION,
+    item: config.item,
+    itemLabel: reviewerWorkbenchItemLabel(config.item),
+    posture: config.posture,
+    postureLabel: reviewerWorkbenchPostureLabel(config.posture),
+    evidence: config.evidence,
+    evidenceLabel: reviewerWorkbenchEvidenceLabel(config.evidence),
+    evidenceScore: reviewerWorkbenchEvidenceScore(config.evidence),
+    action: config.decision.action,
+    route: config.decision.route,
+    score: config.decision.score,
+    tone: config.decision.tone,
+    handoff: config.decision.handoff,
+    queueRank: config.queueRank,
+    source: {
+      id: config.map.receipt.source.id,
+      title: config.map.receipt.source.title,
+      receipt: config.map.receipt.receipt,
+      status: config.map.receipt.status,
+      score: config.map.receipt.score
+    },
+    surface: task ? {
+      id: task.id,
+      label: task.label,
+      group: task.group,
+      status: task.status,
+      stage: task.stage,
+      owner: task.owner,
+      priority: task.priority,
+      score: task.score,
+      strictness: task.strictness,
+      due: task.due,
+      impact: task.impact,
+      fallback: task.fallback,
+      action: task.action
+    } : null,
+    checklist: config.decision.checklist.slice(0, 8),
+    counts: {
+      release: config.releaseCount,
+      preview: config.previewCount,
+      frozen: config.frozenCount
+    },
+    privacyStatus: "Browser-local reviewer decision metadata"
+  };
+}
+
+function reviewerDecisionCounts(entries) {
+  return entries.reduce((counts, entry) => {
+    counts[entry.action] = (counts[entry.action] || 0) + 1;
+    return counts;
+  }, {});
+}
+
+function reviewerDecisionPosture(entry) {
+  if (!entry) return "No saved reviewer decisions yet";
+  if (entry.action === "Approve for release gate") return "Ready for claim release gate";
+  if (entry.action === "Hold in preview") return "Preview proof still needed";
+  if (entry.action === "Freeze and fix") return "Frozen until source proof improves";
+  if (entry.action === "Correction review") return "Correction review route active";
+  return "Monitoring mapped surface";
+}
+
+function saveCurrentReviewerDecision() {
+  const snapshot = reviewerDecisionSnapshotFromConfig();
+  const entries = [snapshot, ...loadReviewerDecisionLedger()].slice(0, 30);
+  saveReviewerDecisionLedger(entries);
+  renderReviewerDecisionLedger();
+  renderReviewerReleaseBinder();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
+  toast("Reviewer decision saved locally.");
+}
+
+function clearReviewerDecisionLedger() {
+  saveReviewerDecisionLedger([]);
+  renderReviewerDecisionLedger();
+  renderReviewerReleaseBinder();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
+  toast("Reviewer decision ledger cleared.");
+}
+
+function renderReviewerDecisionLedger() {
+  if (!els.reviewerDecisionOutput || !els.reviewerDecisionSummary) return;
+  const entries = loadReviewerDecisionLedger();
+  const current = reviewerDecisionSnapshotFromConfig();
+  const latest = entries[0] || null;
+  const prior = entries[1] || null;
+  const counts = reviewerDecisionCounts(entries);
+  const approveCount = counts["Approve for release gate"] || 0;
+  const holdCount = counts["Hold in preview"] || 0;
+  const freezeCount = counts["Freeze and fix"] || 0;
+  const correctionCount = counts["Correction review"] || 0;
+  const averageScore = entries.length ? Math.round(entries.reduce((sum, entry) => sum + entry.score, 0) / entries.length) : current.score;
+  const scoreDelta = latest ? reviewVaultDelta(latest.score, prior?.score) : "New";
+
+  els.reviewerDecisionSummary.textContent = `${entries.length} decision${entries.length === 1 ? "" : "s"} | ${averageScore}/100 avg`;
+
+  if (!entries.length) {
+    els.reviewerDecisionOutput.innerHTML = `
+      <div class="reviewer-decision-empty ${escapeHtml(current.tone)}">
+        <div>
+          <span class="metric-label">Current reviewer preview</span>
+          <h3>${current.score}/100 ${escapeHtml(current.action)}</h3>
+          <p>Save the current Reviewer Workbench output to start a browser-local trail of release, hold, freeze, and correction decisions.</p>
+        </div>
+        <div class="reviewer-decision-score" style="--score:${current.score}">
+          <b>${current.score}</b>
+          <span>Now</span>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  els.reviewerDecisionOutput.innerHTML = `
+    <div class="reviewer-decision-hero ${escapeHtml(latest.tone)}">
+      <div>
+        <span class="metric-label">Latest saved reviewer decision</span>
+        <h3>${escapeHtml(latest.action)}</h3>
+        <p>${escapeHtml(reviewerDecisionPosture(latest))} | ${escapeHtml(latest.surface?.label || "No surface")} | Saved ${new Date(latest.createdAt).toLocaleString("en-IN")}.</p>
+      </div>
+      <div class="reviewer-decision-score" style="--score:${latest.score}">
+        <b>${latest.score}</b>
+        <span>Ledger</span>
+      </div>
+    </div>
+    <div class="reviewer-decision-metric-grid">
+      <article><span>Decisions</span><strong>${entries.length}</strong><p>Saved on this browser only.</p></article>
+      <article><span>Average score</span><strong>${averageScore}/100</strong><p>Score delta ${escapeHtml(scoreDelta)} from prior save.</p></article>
+      <article><span>Approved</span><strong>${approveCount}</strong><p>Ready for claim release gate review.</p></article>
+      <article><span>Hold/freeze</span><strong>${holdCount + freezeCount}</strong><p>Preview or source-proof work remains.</p></article>
+      <article><span>Correction</span><strong>${correctionCount}</strong><p>Potential correction route active.</p></article>
+      <article><span>Latest evidence</span><strong>${latest.evidenceScore}/100</strong><p>${escapeHtml(latest.evidenceLabel)}</p></article>
+    </div>
+    <div class="reviewer-decision-grid">
+      ${entries.slice(0, 8).map((entry, index) => {
+        const previous = entries[index + 1] || null;
+        return `
+          <article class="reviewer-decision-card ${escapeHtml(entry.tone)}">
+            <div class="reviewer-decision-card-head">
+              <div>
+                <span>${escapeHtml(entry.postureLabel)}</span>
+                <strong>${escapeHtml(entry.surface?.label || "No mapped surface")}</strong>
+              </div>
+              <b>${entry.score}/100</b>
+            </div>
+            <p>${escapeHtml(entry.action)} | ${escapeHtml(entry.source.title)} | rank ${entry.queueRank || "None"}</p>
+            <div class="reviewer-decision-mini-grid">
+              <div><span>Priority</span><b>${entry.surface?.priority || 0}</b></div>
+              <div><span>Evidence</span><b>${entry.evidenceScore}</b></div>
+              <div><span>Surface</span><b>${entry.surface?.score || 0}</b></div>
+            </div>
+            <small>Score ${escapeHtml(reviewVaultDelta(entry.score, previous?.score))} from prior reviewer save | ${new Date(entry.createdAt).toLocaleString("en-IN")}</small>
+          </article>
+        `;
+      }).join("")}
+    </div>
+    <div class="reviewer-decision-panel-grid">
+      <article class="reviewer-decision-panel">
+        <h3>Latest handoff</h3>
+        <p>${escapeHtml(latest.handoff)}</p>
+      </article>
+      <article class="reviewer-decision-panel">
+        <h3>Latest checklist</h3>
+        <ul class="reviewer-decision-list">
+          ${latest.checklist.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="reviewer-decision-panel reviewer-decision-guardrail">
+        <h3>Privacy rule</h3>
+        <p>Reviewer decisions are browser-local product-release metadata only. They exclude PAN, folio, CAS, bank data, contact data, account credentials, private notes, and distributor client records.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeReviewerDecisionLedgerBrief() {
+  const entries = loadReviewerDecisionLedger();
+  const current = reviewerDecisionSnapshotFromConfig();
+  const latest = entries[0] || current;
+  const counts = reviewerDecisionCounts(entries);
+  return [
+    "# NiveshNadi Reviewer Decision Ledger",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Saved decisions: ${entries.length}`,
+    `Latest action: ${latest.action}`,
+    `Latest score: ${latest.score}/100`,
+    `Latest surface: ${latest.surface?.label || "No mapped surface"}`,
+    `Latest evidence lock: ${latest.evidenceLabel}`,
+    `Latest source receipt: ${latest.source.title} | ${latest.source.receipt}`,
+    "",
+    "## Decision Mix",
+    `- Approve for release gate: ${counts["Approve for release gate"] || 0}`,
+    `- Hold in preview: ${counts["Hold in preview"] || 0}`,
+    `- Freeze and fix: ${counts["Freeze and fix"] || 0}`,
+    `- Correction review: ${counts["Correction review"] || 0}`,
+    "",
+    "## Latest Handoff",
+    latest.handoff,
+    "",
+    "## Latest Checklist",
+    ...latest.checklist.map((item) => `- ${item}`),
+    "",
+    "## Recent Reviewer Decisions",
+    ...(entries.length ? entries.slice(0, 10).map((entry) => `- ${new Date(entry.createdAt).toLocaleString("en-IN")}: ${entry.action}, ${entry.surface?.label || "No surface"}, ${entry.score}/100, ${entry.evidenceLabel}`) : ["- No saved reviewer decisions yet. This brief uses the current workbench preview."]),
+    "",
+    "## Guardrail",
+    "Reviewer Decision Ledger is a product-release memory trail only. It is not personalized advice, suitability approval, transaction approval, distributor approval, or a return guarantee."
+  ].join("\n");
+}
+
+function reviewerBinderDecisionPath(entry, saved) {
+  if (!saved) {
+    return {
+      status: "Workbench preview only",
+      route: "#reviewer-workbench",
+      routeLabel: "Open Workbench",
+      tone: "watch",
+      next: "Save a reviewer decision before treating this release binder as an audit-ready handoff."
+    };
+  }
+  if (entry.action === "Approve for release gate") {
+    return {
+      status: "Release gate ready",
+      route: "#claim-release",
+      routeLabel: "Open Release Gate",
+      tone: "ready",
+      next: "Apply the reviewer-approved source and surface into Claim Release Gate, then save a release receipt."
+    };
+  }
+  if (entry.action === "Hold in preview") {
+    return {
+      status: "Preview proof lane",
+      route: "#source-qa",
+      routeLabel: "Open Source QA",
+      tone: "watch",
+      next: "Keep the surface in preview and clear proof, freshness, citation, or owner blockers before release."
+    };
+  }
+  if (entry.action === "Freeze and fix") {
+    return {
+      status: "Freeze route",
+      route: "#source-drift",
+      routeLabel: "Open Drift Monitor",
+      tone: "caution",
+      next: "Keep public claims frozen, review source drift, and prepare rollback wording if the claim is already visible."
+    };
+  }
+  if (entry.action === "Correction review") {
+    return {
+      status: "Correction route",
+      route: "#correction-notice",
+      routeLabel: "Open Correction",
+      tone: "caution",
+      next: "Draft correction wording, affected surfaces, internal controls, and public visibility before any release."
+    };
+  }
+  return {
+    status: "Monitor route",
+    route: "#surface-release-queue",
+    routeLabel: "Open Queue",
+    tone: entry.tone || "watch",
+    next: "Keep monitoring the mapped surface until the reviewer posture becomes explicit."
+  };
+}
+
+function reviewerBinderSurfaceValue(entry) {
+  const surfaceText = [
+    entry.surface?.label,
+    entry.surface?.group,
+    entry.surface?.impact
+  ].filter(Boolean).join(" ").toLowerCase();
+  if (/(screener|fund card|score|signal|compare)/.test(surfaceText)) return "screener-score";
+  if (/(holding|sector|issuer|portfolio|x-ray|xray|overlap|blueprint|rebalance)/.test(surfaceText)) return "portfolio-xray";
+  if (/(ter|expense|cost|risk|riskometer|drawdown)/.test(surfaceText)) return "cost-risk";
+  if (/(sid|kim|doc|document|factsheet|decoder|citation|evidence)/.test(surfaceText)) return "doc-summary";
+  if (/(receipt|pack|dossier|memo|vault)/.test(surfaceText)) return "receipt-pack";
+  if (/(watch|alert|review rhythm|trigger)/.test(surfaceText)) return "alerts-watchlist";
+  const handoffText = (entry.handoff || "").toLowerCase();
+  if (/(holding|sector|issuer|portfolio|x-ray|xray|overlap|blueprint|rebalance)/.test(handoffText)) return "portfolio-xray";
+  if (/(ter|expense|cost|risk|riskometer|drawdown)/.test(handoffText)) return "cost-risk";
+  if (/(sid|kim|doc|document|factsheet|decoder|citation|evidence)/.test(handoffText)) return "doc-summary";
+  if (/(receipt|pack|dossier|memo|vault)/.test(handoffText)) return "receipt-pack";
+  if (/(watch|alert|review rhythm|trigger)/.test(handoffText)) return "alerts-watchlist";
+  return "screener-score";
+}
+
+function reviewerBinderEvidenceValue(entry) {
+  if (entry.evidence === "strict" || entry.evidenceScore >= 82) return "verified";
+  if (entry.evidence === "standard" || entry.evidenceScore >= 70) return "reviewed";
+  if (entry.evidence === "fast" || entry.evidenceScore >= 48) return "partial";
+  return "missing";
+}
+
+function reviewerBinderReviewerValue(entry) {
+  if (entry.action === "Approve for release gate") return "research-approved";
+  if (entry.action === "Correction review") return "compliance-review";
+  if (entry.action === "Freeze and fix") return "blocked";
+  return "self-check";
+}
+
+function reviewerBinderConfig() {
+  const entries = loadReviewerDecisionLedger();
+  const saved = entries.length > 0;
+  const latest = entries[0] || reviewerDecisionSnapshotFromConfig();
+  const path = reviewerBinderDecisionPath(latest, saved);
+  const surfaceValue = reviewerBinderSurfaceValue(latest);
+  const surfaceProfile = claimReleaseSurfaceProfile(surfaceValue);
+  const evidenceValue = reviewerBinderEvidenceValue(latest);
+  const reviewerValue = reviewerBinderReviewerValue(latest);
+  const scopeValue = latest.action === "Approve for release gate" ? "selected-fund" : "preview";
+  const rollbackValue = latest.action === "Approve for release gate" ? "ready" : latest.action === "Hold in preview" ? "draft" : "missing";
+  const actionScore = {
+    "Approve for release gate": 94,
+    "Hold in preview": 62,
+    "Freeze and fix": 28,
+    "Correction review": 42
+  }[latest.action] || 54;
+  const sourceScore = latest.source?.score || DATA_PIPELINES.find((pipeline) => pipeline.id === latest.source?.id)?.readiness || 70;
+  const surfaceScore = latest.surface?.score || 70;
+  const binderScore = Math.round(clampNumber(
+    latest.score * 0.32 +
+      latest.evidenceScore * 0.24 +
+      surfaceScore * 0.16 +
+      sourceScore * 0.16 +
+      actionScore * 0.12,
+    18,
+    96
+  ));
+  const blockers = [
+    ...(!saved ? ["save reviewer decision before release binding"] : []),
+    ...(latest.action === "Hold in preview" ? ["preview hold must clear Source QA blockers"] : []),
+    ...(latest.action === "Freeze and fix" ? ["public claim must remain frozen until source drift is resolved"] : []),
+    ...(latest.action === "Correction review" ? ["correction wording and affected surfaces must be drafted first"] : []),
+    ...(latest.evidenceScore < 70 ? ["evidence lock below release comfort"] : []),
+    ...(sourceScore < 70 ? ["source receipt score below release comfort"] : []),
+    ...(rollbackValue !== "ready" ? ["rollback note is not ready"] : [])
+  ];
+  const receiptFields = [
+    "reviewer decision ID",
+    "source receipt ID and source date",
+    "mapped public surface",
+    "old claim and proposed claim",
+    "visible citation path",
+    "reviewer posture and evidence lock",
+    "rollout scope",
+    "rollback note and correction route"
+  ];
+  return {
+    actionScore,
+    binderScore,
+    blockers,
+    entries,
+    evidenceValue,
+    latest,
+    path,
+    receiptFields,
+    reviewerValue,
+    rollbackValue,
+    saved,
+    scopeValue,
+    sourceScore,
+    surfaceProfile,
+    surfaceScore,
+    surfaceValue,
+    tone: blockers.length && latest.action !== "Approve for release gate" ? "caution" : path.tone
+  };
+}
+
+function renderReviewerReleaseBinder() {
+  if (!els.reviewerReleaseBinderOutput || !els.reviewerReleaseBinderSummary) return;
+  const config = reviewerBinderConfig();
+  const latest = config.latest;
+  els.reviewerReleaseBinderSummary.textContent = `${config.binderScore}/100 | ${config.path.status}`;
+  els.reviewerReleaseBinderOutput.innerHTML = `
+    <div class="reviewer-release-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${config.saved ? "Latest saved reviewer route" : "Current reviewer preview"}</span>
+        <h3>${escapeHtml(config.path.status)}</h3>
+        <p>${escapeHtml(config.path.next)} Surface: ${escapeHtml(config.surfaceProfile.label)}. Source: ${escapeHtml(latest.source.title)}.</p>
+      </div>
+      <div class="reviewer-release-score" style="--score:${config.binderScore}">
+        <b>${config.binderScore}</b>
+        <span>Binder</span>
+      </div>
+    </div>
+    <div class="reviewer-release-metric-grid">
+      <article><span>Reviewer action</span><strong>${escapeHtml(latest.action)}</strong><p>${escapeHtml(reviewerDecisionPosture(latest))}</p></article>
+      <article><span>Mapped surface</span><strong>${escapeHtml(config.surfaceProfile.label)}</strong><p>${escapeHtml(latest.surface?.label || "Current surface preview")}</p></article>
+      <article><span>Evidence lock</span><strong>${latest.evidenceScore}/100</strong><p>${escapeHtml(latest.evidenceLabel)}</p></article>
+      <article><span>Source receipt</span><strong>${config.sourceScore}/100</strong><p>${escapeHtml(latest.source.receipt)}</p></article>
+      <article><span>Release form</span><strong>${escapeHtml(claimReleaseReviewerLabel(config.reviewerValue))}</strong><p>${escapeHtml(claimReleaseRollbackLabel(config.rollbackValue))}</p></article>
+    </div>
+    <div class="reviewer-release-grid">
+      <article class="reviewer-release-card ${escapeHtml(config.tone)}">
+        <h3>Gate binding</h3>
+        <p>Source family: ${escapeHtml(latest.source.title)}</p>
+        <p>Release surface: ${escapeHtml(config.surfaceProfile.label)}</p>
+        <p>Rollout: ${escapeHtml(claimReleaseScopeLabel(config.scopeValue))}</p>
+      </article>
+      <article class="reviewer-release-card">
+        <h3>Claim question</h3>
+        <p>${escapeHtml(config.surfaceProfile.question)}</p>
+      </article>
+      <article class="reviewer-release-card">
+        <h3>Required receipt fields</h3>
+        <ul class="reviewer-release-list">
+          ${config.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="reviewer-release-card ${config.blockers.length ? "caution" : "ready"}">
+        <h3>${config.blockers.length ? "Blockers before release" : "Release binder clear"}</h3>
+        <ul class="reviewer-release-list">
+          ${(config.blockers.length ? config.blockers : ["reviewer decision saved", "source and surface mapped", "release gate fields ready"]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+    <div class="reviewer-release-panel-grid">
+      <article class="reviewer-release-panel">
+        <h3>Reviewer handoff</h3>
+        <p>${escapeHtml(latest.handoff)}</p>
+      </article>
+      <article class="reviewer-release-panel reviewer-release-guardrail">
+        <h3>Boundary</h3>
+        <p>The Binder moves product-release metadata into the release gate. It excludes PAN, folio, CAS, bank data, credentials, private notes, and distributor client records.</p>
+      </article>
+    </div>
+  `;
+}
+
+function bindReviewerDecisionToClaimReleaseGate() {
+  const config = reviewerBinderConfig();
+  if (els.claimReleaseSource) els.claimReleaseSource.value = config.latest.source.id;
+  if (els.claimReleaseSurface) els.claimReleaseSurface.value = config.surfaceValue;
+  if (els.claimReleaseEvidence) els.claimReleaseEvidence.value = config.evidenceValue;
+  if (els.claimReleaseReviewer) els.claimReleaseReviewer.value = config.reviewerValue;
+  if (els.claimReleaseScope) els.claimReleaseScope.value = config.scopeValue;
+  if (els.claimReleaseRollback) els.claimReleaseRollback.value = config.rollbackValue;
+  renderClaimReleaseGate();
+  renderClaimReleaseLedger();
+  renderClaimRollbackConsole();
+  renderCorrectionNoticeBuilder();
+  renderCorrectionNoticeLedger();
+  renderTrustCenter();
+  renderActionPlanner();
+  scrollToHash("#claim-release", "smooth", true);
+  toast("Reviewer decision bound to Claim Release Gate.");
+}
+
+function openReviewerBinderRoute() {
+  const config = reviewerBinderConfig();
+  scrollToHash(config.path.route, "smooth", true);
+}
+
+function makeReviewerReleaseBinderBrief() {
+  const config = reviewerBinderConfig();
+  const latest = config.latest;
+  return [
+    "# NiveshNadi Reviewer Release Binder",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Binder score: ${config.binderScore}/100`,
+    `Status: ${config.path.status}`,
+    `Reviewer action: ${latest.action}`,
+    `Reviewer decision source: ${config.saved ? "saved ledger decision" : "current workbench preview"}`,
+    `Mapped release surface: ${config.surfaceProfile.label}`,
+    `Source receipt: ${latest.source.title} | ${latest.source.receipt}`,
+    `Evidence lock: ${latest.evidenceLabel} (${latest.evidenceScore}/100)`,
+    `Claim Release Gate source: ${latest.source.id}`,
+    `Claim Release Gate surface: ${config.surfaceValue}`,
+    `Claim Release Gate evidence: ${claimReleaseEvidenceLabel(config.evidenceValue)}`,
+    `Claim Release Gate reviewer: ${claimReleaseReviewerLabel(config.reviewerValue)}`,
+    `Claim Release Gate scope: ${claimReleaseScopeLabel(config.scopeValue)}`,
+    `Claim Release Gate rollback: ${claimReleaseRollbackLabel(config.rollbackValue)}`,
+    "",
+    "## Next Route",
+    `${config.path.routeLabel}: ${config.path.route}`,
+    config.path.next,
+    "",
+    "## Required Receipt Fields",
+    ...config.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## Blockers",
+    ...(config.blockers.length ? config.blockers.map((item) => `- ${item}`) : ["- No binder blockers. Apply into Claim Release Gate and save a release receipt."]),
+    "",
+    "## Reviewer Handoff",
+    latest.handoff,
+    "",
+    "## Guardrail",
+    "Reviewer Release Binder is launch workflow metadata. It is not personalized investment advice, suitability approval, transaction approval, distributor approval, or a return guarantee."
   ].join("\n");
 }
 
@@ -13331,6 +16553,17 @@ function researchMemoryTimeline() {
     next: entry.nextStep || "Keep public claims behind source and rollback gates."
   }));
 
+  loadReviewerDecisionLedger().forEach((entry) => add({
+    type: "Reviewer decision",
+    tone: entry.tone || researchMemoryTone(entry.score),
+    createdAt: entry.createdAt,
+    title: entry.surface?.label || "Reviewer decision",
+    meta: `${entry.action || "Reviewer action"} | ${entry.score || 0}/100`,
+    detail: `${entry.evidenceLabel || "Evidence lock"} | ${entry.source?.title || "Source receipt"} | Route ${entry.route || "#reviewer-workbench"}`,
+    score: entry.score,
+    next: entry.handoff || "Keep reviewer decisions behind release, rollback, and correction gates."
+  }));
+
   loadWatchlist().forEach((entry) => {
     const fund = FUNDS.find((item) => item.id === entry.fundId) || selectedFund();
     add({
@@ -13385,11 +16618,12 @@ function researchMemoryConfig() {
   const dossiers = loadResearchDossiers();
   const investorRecords = loadInvestorRecords();
   const claimLedger = loadClaimReleaseLedger();
+  const reviewerDecisions = loadReviewerDecisionLedger();
   const watchlist = loadWatchlist();
   const alerts = loadAlerts();
   const journal = loadJournal();
   const timeline = researchMemoryTimeline();
-  const artifactCount = briefingVault.length + reviewVault.length + receiptVault.length + dossiers.length + investorRecords.length + claimLedger.length + journal.length;
+  const artifactCount = briefingVault.length + reviewVault.length + receiptVault.length + dossiers.length + investorRecords.length + claimLedger.length + reviewerDecisions.length + journal.length;
   const evidence = evidenceReadinessScore(fund);
   const memoryScore = clampNumber(Math.round(
     28 +
@@ -13414,7 +16648,8 @@ function researchMemoryConfig() {
     { label: "Receipts", count: receiptVault.length },
     { label: "Dossiers", count: dossiers.length },
     { label: "Records", count: investorRecords.length },
-    { label: "Claim gates", count: claimLedger.length }
+    { label: "Claim gates", count: claimLedger.length },
+    { label: "Reviewer decisions", count: reviewerDecisions.length }
   ];
   return {
     fund,
@@ -13589,6 +16824,14 @@ const PRIVACY_STORES = [
     sensitivity: "Metadata"
   },
   {
+    id: "source-receipts",
+    key: "niveshnadi-source-receipts",
+    label: "Source Receipt Vault",
+    purpose: "Live-source dry-run receipt metadata.",
+    fields: "Source family, score, parser confidence, citation state, freeze rule",
+    sensitivity: "Metadata"
+  },
+  {
     id: "journal",
     key: "niveshnadi-journal",
     label: "Decision Journal",
@@ -13620,6 +16863,14 @@ const PRIVACY_STORES = [
     label: "Claim Release Ledger",
     purpose: "Saved product-claim release gate decisions.",
     fields: "Claim surface, source family, flags, score",
+    sensitivity: "Metadata"
+  },
+  {
+    id: "reviewer-decisions",
+    key: "niveshnadi-reviewer-decisions",
+    label: "Reviewer Decisions",
+    purpose: "Saved reviewer decisions from surface queue handoffs.",
+    fields: "Reviewer action, surface, source receipt, evidence lock",
     sensitivity: "Metadata"
   },
   {
@@ -17327,6 +20578,18 @@ function saveReceiptVault(entries) {
   localStorage.setItem("niveshnadi-receipt-vault", JSON.stringify(entries));
 }
 
+function loadSourceReceipts() {
+  try {
+    return JSON.parse(localStorage.getItem("niveshnadi-source-receipts") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveSourceReceipts(entries) {
+  localStorage.setItem("niveshnadi-source-receipts", JSON.stringify(entries));
+}
+
 function loadClaimReleaseLedger() {
   try {
     return JSON.parse(localStorage.getItem("niveshnadi-claim-release-ledger") || "[]");
@@ -17337,6 +20600,18 @@ function loadClaimReleaseLedger() {
 
 function saveClaimReleaseLedger(entries) {
   localStorage.setItem("niveshnadi-claim-release-ledger", JSON.stringify(entries));
+}
+
+function loadReviewerDecisionLedger() {
+  try {
+    return JSON.parse(localStorage.getItem("niveshnadi-reviewer-decisions") || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveReviewerDecisionLedger(entries) {
+  localStorage.setItem("niveshnadi-reviewer-decisions", JSON.stringify(entries));
 }
 
 function loadInvestorRecords() {
@@ -17463,6 +20738,14 @@ function bindEvents() {
   els.copyProfileRoom?.addEventListener("click", () => copyText(makeProfileRoomBrief()));
   els.openBuildNext?.addEventListener("click", openBuildNextLane);
   els.copyBuildTracker?.addEventListener("click", () => copyText(makeBuildTrackerBrief()));
+  els.openLaunchBlocker?.addEventListener("click", openTopLaunchBlocker);
+  els.copyLaunchReadiness?.addEventListener("click", () => copyText(makeLaunchReadinessBrief()));
+  els.openPaymentBlocker?.addEventListener("click", openPaymentBlocker);
+  els.copyPaymentReadiness?.addEventListener("click", () => copyText(makePaymentReadinessBrief()));
+  els.openAccountBlocker?.addEventListener("click", openAccountBlocker);
+  els.copyAccountReadiness?.addEventListener("click", () => copyText(makeAccountReadinessBrief()));
+  els.openAccountVaultBlocker?.addEventListener("click", openAccountVaultBlocker);
+  els.copyAccountVault?.addEventListener("click", () => copyText(makeAccountVaultBrief()));
   els.openDailyPriority?.addEventListener("click", openDailyPriority);
   els.copyDailyCommand?.addEventListener("click", () => copyText(makeDailyCommandBrief()));
   els.openDecisionRadarFocus?.addEventListener("click", openDecisionRadarFocus);
@@ -17834,6 +21117,14 @@ function bindEvents() {
   els.watchHouseReview?.addEventListener("click", addFundHouseReviewTrigger);
   els.dataForm?.addEventListener("submit", (event) => {
     renderDataReadinessRoom(event);
+    renderLiveDataContractLab();
+    renderSourceDryRunBoard();
+    renderSourceReceiptVault();
+    renderClaimSurfaceMap();
+    renderSurfaceReleaseQueue();
+    renderReviewerWorkbench();
+    renderReviewerDecisionLedger();
+    renderReviewerReleaseBinder();
     renderSourceQaQueue();
     renderSourceIntakeConsole();
     renderSourceDriftMonitor();
@@ -17847,6 +21138,14 @@ function bindEvents() {
   [els.dataSource, els.dataMode, els.dataAge, els.dataCitation].forEach((input) => {
     input?.addEventListener("change", () => {
       renderDataReadinessRoom();
+      renderLiveDataContractLab();
+      renderSourceDryRunBoard();
+      renderSourceReceiptVault();
+      renderClaimSurfaceMap();
+      renderSurfaceReleaseQueue();
+      renderReviewerWorkbench();
+      renderReviewerDecisionLedger();
+      renderReviewerReleaseBinder();
       renderSourceQaQueue();
       renderSourceIntakeConsole();
       renderSourceDriftMonitor();
@@ -17859,6 +21158,99 @@ function bindEvents() {
     });
   });
   els.copyDataSpec?.addEventListener("click", () => copyText(makeDataSpec()));
+  els.liveContractSource?.addEventListener("change", () => {
+    renderLiveDataContractLab();
+    renderSourceDryRunBoard();
+    renderSourceReceiptVault();
+    renderClaimSurfaceMap();
+    renderSurfaceReleaseQueue();
+    renderReviewerWorkbench();
+    renderReviewerDecisionLedger();
+    renderReviewerReleaseBinder();
+  });
+  els.openLiveContractBlocker?.addEventListener("click", openLiveContractBlocker);
+  els.copyLiveContract?.addEventListener("click", () => copyText(makeLiveDataContractBrief()));
+  els.sourceDryRunForm?.addEventListener("submit", (event) => {
+    renderSourceDryRunBoard(event);
+    renderSourceReceiptVault();
+    renderClaimSurfaceMap();
+    renderSurfaceReleaseQueue();
+    renderReviewerWorkbench();
+    renderReviewerDecisionLedger();
+    renderReviewerReleaseBinder();
+  });
+  [els.sourceDryRunSource, els.sourceDryRunMode, els.sourceDryRunSurface].forEach((input) => {
+    input?.addEventListener("change", () => {
+      renderSourceDryRunBoard();
+      renderSourceReceiptVault();
+      renderClaimSurfaceMap();
+      renderSurfaceReleaseQueue();
+      renderReviewerWorkbench();
+      renderReviewerDecisionLedger();
+      renderReviewerReleaseBinder();
+    });
+  });
+  els.saveSourceDryReceipt?.addEventListener("click", saveCurrentSourceReceipt);
+  els.openSourceDryRunBlocker?.addEventListener("click", openSourceDryRunBlocker);
+  els.copySourceDryRun?.addEventListener("click", () => copyText(makeSourceDryRunBrief()));
+  els.saveSourceReceiptVault?.addEventListener("click", saveCurrentSourceReceipt);
+  els.copySourceReceiptVault?.addEventListener("click", () => copyText(makeSourceReceiptVaultBrief()));
+  els.clearSourceReceiptVault?.addEventListener("click", clearSourceReceipts);
+  els.claimSurfaceForm?.addEventListener("submit", (event) => {
+    renderClaimSurfaceMap(event);
+    renderSurfaceReleaseQueue();
+    renderReviewerWorkbench();
+    renderReviewerDecisionLedger();
+    renderReviewerReleaseBinder();
+  });
+  [els.claimSurfaceSource, els.claimSurfacePosture, els.claimSurfaceScope].forEach((input) => {
+    input?.addEventListener("change", () => {
+      renderClaimSurfaceMap();
+      renderSurfaceReleaseQueue();
+      renderReviewerWorkbench();
+      renderReviewerDecisionLedger();
+      renderReviewerReleaseBinder();
+    });
+  });
+  els.openClaimSurfaceGate?.addEventListener("click", openClaimSurfaceGate);
+  els.copyClaimSurfaceMap?.addEventListener("click", () => copyText(makeClaimSurfaceMapBrief()));
+  els.surfaceReleaseForm?.addEventListener("submit", (event) => {
+    renderSurfaceReleaseQueue(event);
+    renderReviewerWorkbench();
+    renderReviewerDecisionLedger();
+    renderReviewerReleaseBinder();
+  });
+  [els.surfaceReleaseLens, els.surfaceReleaseOwner, els.surfaceReleaseDepth].forEach((input) => {
+    input?.addEventListener("change", () => {
+      renderSurfaceReleaseQueue();
+      renderReviewerWorkbench();
+      renderReviewerDecisionLedger();
+      renderReviewerReleaseBinder();
+    });
+  });
+  els.openSurfaceReleaseGate?.addEventListener("click", openSurfaceReleaseGate);
+  els.copySurfaceReleaseQueue?.addEventListener("click", () => copyText(makeSurfaceReleaseQueueBrief()));
+  els.reviewerWorkbenchForm?.addEventListener("submit", (event) => {
+    renderReviewerWorkbench(event);
+    renderReviewerDecisionLedger();
+    renderReviewerReleaseBinder();
+  });
+  [els.reviewerWorkbenchItem, els.reviewerWorkbenchPosture, els.reviewerWorkbenchEvidence].forEach((input) => {
+    input?.addEventListener("change", () => {
+      renderReviewerWorkbench();
+      renderReviewerDecisionLedger();
+      renderReviewerReleaseBinder();
+    });
+  });
+  els.saveReviewerWorkbenchDecision?.addEventListener("click", saveCurrentReviewerDecision);
+  els.saveReviewerDecision?.addEventListener("click", saveCurrentReviewerDecision);
+  els.openReviewerReleaseGate?.addEventListener("click", openReviewerReleaseGate);
+  els.copyReviewerWorkbench?.addEventListener("click", () => copyText(makeReviewerWorkbenchBrief()));
+  els.copyReviewerDecisionLedger?.addEventListener("click", () => copyText(makeReviewerDecisionLedgerBrief()));
+  els.clearReviewerDecisionLedger?.addEventListener("click", clearReviewerDecisionLedger);
+  els.bindReviewerReleaseGate?.addEventListener("click", bindReviewerDecisionToClaimReleaseGate);
+  els.openReviewerBinderRoute?.addEventListener("click", openReviewerBinderRoute);
+  els.copyReviewerReleaseBinder?.addEventListener("click", () => copyText(makeReviewerReleaseBinderBrief()));
   els.sourceQueueForm?.addEventListener("submit", renderSourceQaQueue);
   [els.sourceQueueMode, els.sourceQueuePriority, els.sourceQueueOwner].forEach((input) => {
     input?.addEventListener("change", () => renderSourceQaQueue());
@@ -18578,6 +21970,22 @@ function cacheElements() {
     buildTrackerOutput: qs("#buildTrackerOutput"),
     openBuildNext: qs("#openBuildNext"),
     copyBuildTracker: qs("#copyBuildTracker"),
+    launchReadinessSummary: qs("#launchReadinessSummary"),
+    launchReadinessOutput: qs("#launchReadinessOutput"),
+    openLaunchBlocker: qs("#openLaunchBlocker"),
+    copyLaunchReadiness: qs("#copyLaunchReadiness"),
+    paymentReadinessSummary: qs("#paymentReadinessSummary"),
+    paymentReadinessOutput: qs("#paymentReadinessOutput"),
+    openPaymentBlocker: qs("#openPaymentBlocker"),
+    copyPaymentReadiness: qs("#copyPaymentReadiness"),
+    accountReadinessSummary: qs("#accountReadinessSummary"),
+    accountReadinessOutput: qs("#accountReadinessOutput"),
+    openAccountBlocker: qs("#openAccountBlocker"),
+    copyAccountReadiness: qs("#copyAccountReadiness"),
+    accountVaultSummary: qs("#accountVaultSummary"),
+    accountVaultOutput: qs("#accountVaultOutput"),
+    openAccountVaultBlocker: qs("#openAccountVaultBlocker"),
+    copyAccountVault: qs("#copyAccountVault"),
     profileRoomForm: qs("#profileRoomForm"),
     profileIntent: qs("#profileIntent"),
     profileHorizon: qs("#profileHorizon"),
@@ -18909,6 +22317,60 @@ function cacheElements() {
     dataSummary: qs("#dataSummary"),
     dataOutput: qs("#dataOutput"),
     copyDataSpec: qs("#copyDataSpec"),
+    liveContractSummary: qs("#liveContractSummary"),
+    liveContractSource: qs("#liveContractSource"),
+    liveContractOutput: qs("#liveContractOutput"),
+    openLiveContractBlocker: qs("#openLiveContractBlocker"),
+    copyLiveContract: qs("#copyLiveContract"),
+    sourceDryRunForm: qs("#sourceDryRunForm"),
+    sourceDryRunSource: qs("#sourceDryRunSource"),
+    sourceDryRunMode: qs("#sourceDryRunMode"),
+    sourceDryRunSurface: qs("#sourceDryRunSurface"),
+    sourceDryRunSummary: qs("#sourceDryRunSummary"),
+    sourceDryRunOutput: qs("#sourceDryRunOutput"),
+    saveSourceDryReceipt: qs("#saveSourceDryReceipt"),
+    openSourceDryRunBlocker: qs("#openSourceDryRunBlocker"),
+    copySourceDryRun: qs("#copySourceDryRun"),
+    sourceReceiptSummary: qs("#sourceReceiptSummary"),
+    sourceReceiptOutput: qs("#sourceReceiptOutput"),
+    saveSourceReceiptVault: qs("#saveSourceReceiptVault"),
+    copySourceReceiptVault: qs("#copySourceReceiptVault"),
+    clearSourceReceiptVault: qs("#clearSourceReceiptVault"),
+    claimSurfaceForm: qs("#claimSurfaceForm"),
+    claimSurfaceSource: qs("#claimSurfaceSource"),
+    claimSurfacePosture: qs("#claimSurfacePosture"),
+    claimSurfaceScope: qs("#claimSurfaceScope"),
+    claimSurfaceSummary: qs("#claimSurfaceSummary"),
+    claimSurfaceOutput: qs("#claimSurfaceOutput"),
+    openClaimSurfaceGate: qs("#openClaimSurfaceGate"),
+    copyClaimSurfaceMap: qs("#copyClaimSurfaceMap"),
+    surfaceReleaseForm: qs("#surfaceReleaseForm"),
+    surfaceReleaseLens: qs("#surfaceReleaseLens"),
+    surfaceReleaseOwner: qs("#surfaceReleaseOwner"),
+    surfaceReleaseDepth: qs("#surfaceReleaseDepth"),
+    surfaceReleaseSummary: qs("#surfaceReleaseSummary"),
+    surfaceReleaseOutput: qs("#surfaceReleaseOutput"),
+    openSurfaceReleaseGate: qs("#openSurfaceReleaseGate"),
+    copySurfaceReleaseQueue: qs("#copySurfaceReleaseQueue"),
+    reviewerWorkbenchForm: qs("#reviewerWorkbenchForm"),
+    reviewerWorkbenchItem: qs("#reviewerWorkbenchItem"),
+    reviewerWorkbenchPosture: qs("#reviewerWorkbenchPosture"),
+    reviewerWorkbenchEvidence: qs("#reviewerWorkbenchEvidence"),
+    reviewerWorkbenchSummary: qs("#reviewerWorkbenchSummary"),
+    reviewerWorkbenchOutput: qs("#reviewerWorkbenchOutput"),
+    saveReviewerWorkbenchDecision: qs("#saveReviewerWorkbenchDecision"),
+    openReviewerReleaseGate: qs("#openReviewerReleaseGate"),
+    copyReviewerWorkbench: qs("#copyReviewerWorkbench"),
+    reviewerDecisionSummary: qs("#reviewerDecisionSummary"),
+    reviewerDecisionOutput: qs("#reviewerDecisionOutput"),
+    saveReviewerDecision: qs("#saveReviewerDecision"),
+    copyReviewerDecisionLedger: qs("#copyReviewerDecisionLedger"),
+    clearReviewerDecisionLedger: qs("#clearReviewerDecisionLedger"),
+    reviewerReleaseBinderSummary: qs("#reviewerReleaseBinderSummary"),
+    reviewerReleaseBinderOutput: qs("#reviewerReleaseBinderOutput"),
+    bindReviewerReleaseGate: qs("#bindReviewerReleaseGate"),
+    openReviewerBinderRoute: qs("#openReviewerBinderRoute"),
+    copyReviewerReleaseBinder: qs("#copyReviewerReleaseBinder"),
     sourceQueueForm: qs("#sourceQueueForm"),
     sourceQueueMode: qs("#sourceQueueMode"),
     sourceQueuePriority: qs("#sourceQueuePriority"),
@@ -19096,6 +22558,13 @@ function init() {
   renderInvestorReadinessGate();
   renderCitationBinder();
   renderDataReadinessRoom();
+  renderSourceDryRunBoard();
+  renderSourceReceiptVault();
+  renderClaimSurfaceMap();
+  renderSurfaceReleaseQueue();
+  renderReviewerWorkbench();
+  renderReviewerDecisionLedger();
+  renderReviewerReleaseBinder();
   renderSourceQaQueue();
   renderSourceIntakeConsole();
   renderSourceDriftMonitor();

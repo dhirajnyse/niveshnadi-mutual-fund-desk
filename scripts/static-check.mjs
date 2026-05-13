@@ -59,6 +59,14 @@ assert(index.includes("id=\"evidence\""), "index.html is missing the Evidence Le
 assert(index.includes("id=\"citation-binder\""), "index.html is missing the Citation Binder.");
 assert(index.includes("id=\"fund-house-lens\""), "index.html is missing the Fund House Lens.");
 assert(index.includes("id=\"data-readiness\""), "index.html is missing the Data Readiness Room.");
+assert(index.includes("id=\"live-data-contracts\""), "index.html is missing the Live Data Contract Lab.");
+assert(index.includes("id=\"source-dry-run\""), "index.html is missing the Source Dry-Run Board.");
+assert(index.includes("id=\"source-receipts\""), "index.html is missing the Source Receipt Vault.");
+assert(index.includes("id=\"claim-surface-map\""), "index.html is missing the Claim Surface Map.");
+assert(index.includes("id=\"surface-release-queue\""), "index.html is missing the Surface Release Queue.");
+assert(index.includes("id=\"reviewer-workbench\""), "index.html is missing the Reviewer Workbench.");
+assert(index.includes("id=\"reviewer-decision-ledger\""), "index.html is missing the Reviewer Decision Ledger.");
+assert(index.includes("id=\"reviewer-release-binder\""), "index.html is missing the Reviewer Release Binder.");
 assert(index.includes("id=\"source-qa\""), "index.html is missing the Source QA Queue.");
 assert(index.includes("id=\"source-intake\""), "index.html is missing the Source Intake Console.");
 assert(index.includes("id=\"source-drift\""), "index.html is missing the Source Drift Monitor.");
@@ -85,6 +93,10 @@ assert(index.includes("id=\"workspaceStatus\""), "index.html is missing the Work
 assert(index.includes("nav-mode-strip"), "index.html is missing the Smart Navigation phase rail.");
 assert(index.includes("id=\"nadiSignalStrip\""), "index.html is missing the Nadi Signal Strip.");
 assert(index.includes("id=\"build-tracker\""), "index.html is missing the Nadi Build Tracker.");
+assert(index.includes("id=\"launch-readiness\""), "index.html is missing the Nadi Launch Readiness Board.");
+assert(index.includes("id=\"payment-readiness\""), "index.html is missing the Nadi Payment Readiness Lab.");
+assert(index.includes("id=\"account-readiness\""), "index.html is missing the Nadi Account Readiness Lab.");
+assert(index.includes("id=\"account-vault\""), "index.html is missing the Nadi Account Vault Blueprint.");
 assert(index.includes("id=\"daily-brief\""), "index.html is missing the Nadi Daily Command Brief.");
 assert(index.includes("id=\"decision-radar\""), "index.html is missing the Nadi Research Decision Radar.");
 assert(index.includes("id=\"question-stack\""), "index.html is missing the Nadi Research Question Stack.");
@@ -114,6 +126,10 @@ assert(app.includes("function whyFundLens") && app.includes("function makeWhyFun
 assert(app.includes("function renderSignalStrip") && app.includes("function makeSignalStripNote"), "app.js is missing Nadi Signal Strip behavior.");
 assert(app.includes("function renderBuildTracker") && app.includes("function makeBuildTrackerBrief"), "app.js is missing Nadi Build Tracker behavior.");
 assert(app.includes("BUILD_TRACKER_CURRENT_SPRINT") && app.includes("launchReadiness") && app.includes("distributorPreview"), "app.js is missing V78 executive Build Tracker behavior.");
+assert(app.includes("function renderLaunchReadinessBoard") && app.includes("function makeLaunchReadinessBrief") && app.includes("LAUNCH_READINESS_GATES"), "app.js is missing Launch Readiness Board behavior.");
+assert(app.includes("function renderPaymentReadinessLab") && app.includes("function makePaymentReadinessBrief") && app.includes("PAYMENT_READINESS_STEPS"), "app.js is missing Payment Readiness Lab behavior.");
+assert(app.includes("function renderAccountReadinessLab") && app.includes("function makeAccountReadinessBrief") && app.includes("ACCOUNT_READINESS_STEPS"), "app.js is missing Account Readiness Lab behavior.");
+assert(app.includes("function renderAccountVaultBlueprint") && app.includes("function makeAccountVaultBrief") && app.includes("ACCOUNT_VAULT_COLLECTIONS"), "app.js is missing Account Vault Blueprint behavior.");
 assert(app.includes("function renderDailyCommandBrief") && app.includes("function makeDailyCommandBrief"), "app.js is missing Nadi Daily Command Brief behavior.");
 assert(app.includes("function renderDecisionRadar") && app.includes("function makeDecisionRadarBrief"), "app.js is missing Nadi Research Decision Radar behavior.");
 assert(app.includes("function renderQuestionStack") && app.includes("function makeQuestionStackBrief"), "app.js is missing Nadi Research Question Stack behavior.");
@@ -166,6 +182,14 @@ assert(app.includes("function renderEvidenceLedger") && app.includes("EVIDENCE_S
 assert(app.includes("function renderCitationBinder") && app.includes("CITATION_SOURCES"), "app.js is missing Citation Binder behavior.");
 assert(app.includes("function renderFundHouseLens") && app.includes("function makeFundHouseLensNote"), "app.js is missing Fund House Lens behavior.");
 assert(app.includes("function renderDataReadinessRoom") && app.includes("DATA_PIPELINES"), "app.js is missing Data Readiness Room behavior.");
+assert(app.includes("function renderLiveDataContractLab") && app.includes("function makeLiveDataContractBrief") && app.includes("LIVE_DATA_CONTRACTS"), "app.js is missing Live Data Contract Lab behavior.");
+assert(app.includes("function renderSourceDryRunBoard") && app.includes("function makeSourceDryRunBrief") && app.includes("LIVE_SOURCE_DRY_RUNS"), "app.js is missing Source Dry-Run Board behavior.");
+assert(app.includes("function renderSourceReceiptVault") && app.includes("function makeSourceReceiptVaultBrief") && app.includes("niveshnadi-source-receipts"), "app.js is missing Source Receipt Vault behavior.");
+assert(app.includes("function renderClaimSurfaceMap") && app.includes("function makeClaimSurfaceMapBrief") && app.includes("CLAIM_SURFACE_MAP"), "app.js is missing Claim Surface Map behavior.");
+assert(app.includes("function renderSurfaceReleaseQueue") && app.includes("function makeSurfaceReleaseQueueBrief"), "app.js is missing Surface Release Queue behavior.");
+assert(app.includes("function renderReviewerWorkbench") && app.includes("function makeReviewerWorkbenchBrief"), "app.js is missing Reviewer Workbench behavior.");
+assert(app.includes("function renderReviewerDecisionLedger") && app.includes("function makeReviewerDecisionLedgerBrief"), "app.js is missing Reviewer Decision Ledger behavior.");
+assert(app.includes("function renderReviewerReleaseBinder") && app.includes("function bindReviewerDecisionToClaimReleaseGate") && app.includes("function makeReviewerReleaseBinderBrief"), "app.js is missing Reviewer Release Binder behavior.");
 assert(app.includes("function renderSourceQaQueue") && app.includes("function makeSourceQaNote"), "app.js is missing Source QA Queue behavior.");
 assert(app.includes("function renderSourceIntakeConsole") && app.includes("function makeSourceIntakeNote"), "app.js is missing Source Intake Console behavior.");
 assert(app.includes("function renderSourceDriftMonitor") && app.includes("function makeSourceDriftNote"), "app.js is missing Source Drift Monitor behavior.");
@@ -193,11 +217,15 @@ assert(packageJson.scripts?.check?.includes("security-audit.mjs"), "package.json
 
 assert(styles.includes("--mint") && styles.includes("--gold") && styles.includes("--blue"), "styles.css is missing brand color tokens.");
 assert(styles.includes("scroll-padding-top") && styles.includes("scroll-margin-top"), "styles.css is missing sticky-header anchor offset rules.");
-assert(styles.includes(".workspace-band[id]") && styles.includes("--anchor-offset: 132px"), "styles.css is missing V79 stronger section anchor landing rules.");
+assert(styles.includes(".workspace-band[id]") && styles.includes("--anchor-offset: 132px"), "styles.css is missing stronger section anchor landing rules.");
 assert(styles.includes(".workspace-jump") && styles.includes(".nav-mode-strip") && styles.includes(".nav-stack"), "styles.css is missing Smart Navigation Shell styles.");
 assert(styles.includes(".nadi-signal-strip") && styles.includes(".signal-score"), "styles.css is missing Nadi Signal Strip styles.");
 assert(styles.includes(".build-tracker-output") && styles.includes(".build-tracker-hero"), "styles.css is missing Nadi Build Tracker styles.");
 assert(styles.includes(".build-sprint-strip") && styles.includes(".build-readiness-grid") && styles.includes(".build-phase2-card"), "styles.css is missing V78 executive Build Tracker styles.");
+assert(styles.includes(".launch-readiness-output") && styles.includes(".launch-gate-grid") && styles.includes(".launch-ladder-grid"), "styles.css is missing Launch Readiness Board styles.");
+assert(styles.includes(".payment-readiness-output") && styles.includes(".payment-step-grid") && styles.includes(".payment-flow-grid"), "styles.css is missing Payment Readiness Lab styles.");
+assert(styles.includes(".account-readiness-output") && styles.includes(".account-step-grid") && styles.includes(".account-flow-grid"), "styles.css is missing Account Readiness Lab styles.");
+assert(styles.includes(".account-vault-output") && styles.includes(".account-vault-collection-grid") && styles.includes(".account-vault-flow-grid"), "styles.css is missing Account Vault Blueprint styles.");
 assert(styles.includes(".daily-command-output") && styles.includes(".daily-command-hero"), "styles.css is missing Nadi Daily Command Brief styles.");
 assert(styles.includes(".decision-radar-output") && styles.includes(".decision-radar-hero"), "styles.css is missing Nadi Research Decision Radar styles.");
 assert(styles.includes(".question-stack-output") && styles.includes(".question-stack-hero"), "styles.css is missing Nadi Research Question Stack styles.");
@@ -248,6 +276,14 @@ assert(styles.includes(".evidence-grid") && styles.includes(".source-card"), "st
 assert(styles.includes(".citation-layout") && styles.includes(".citation-hero"), "styles.css is missing Citation Binder styles.");
 assert(styles.includes(".house-output") && styles.includes(".house-hero"), "styles.css is missing Fund House Lens styles.");
 assert(styles.includes(".data-grid") && styles.includes(".data-hero"), "styles.css is missing Data Readiness Room styles.");
+assert(styles.includes(".live-contract-output") && styles.includes(".live-contract-grid") && styles.includes(".live-contract-flow-grid"), "styles.css is missing Live Data Contract Lab styles.");
+assert(styles.includes(".source-dry-output") && styles.includes(".source-dry-card-grid") && styles.includes(".source-dry-flow-grid"), "styles.css is missing Source Dry-Run Board styles.");
+assert(styles.includes(".source-receipt-output") && styles.includes(".source-receipt-grid") && styles.includes(".source-receipt-panel-grid"), "styles.css is missing Source Receipt Vault styles.");
+assert(styles.includes(".claim-surface-output") && styles.includes(".claim-surface-grid") && styles.includes(".claim-surface-flow-grid"), "styles.css is missing Claim Surface Map styles.");
+assert(styles.includes(".surface-queue-output") && styles.includes(".surface-queue-grid") && styles.includes(".surface-queue-flow-grid"), "styles.css is missing Surface Release Queue styles.");
+assert(styles.includes(".reviewer-workbench-output") && styles.includes(".reviewer-workbench-grid"), "styles.css is missing Reviewer Workbench styles.");
+assert(styles.includes(".reviewer-decision-output") && styles.includes(".reviewer-decision-card"), "styles.css is missing Reviewer Decision Ledger styles.");
+assert(styles.includes(".reviewer-release-output") && styles.includes(".reviewer-release-card"), "styles.css is missing Reviewer Release Binder styles.");
 assert(styles.includes(".source-queue-layout") && styles.includes(".source-queue-card"), "styles.css is missing Source QA Queue styles.");
 assert(styles.includes(".source-intake-layout") && styles.includes(".source-intake-card"), "styles.css is missing Source Intake Console styles.");
 assert(styles.includes(".source-drift-layout") && styles.includes(".source-drift-card"), "styles.css is missing Source Drift Monitor styles.");
@@ -323,6 +359,10 @@ for (const file of [
   "docs/WHY_THIS_FUND_LENS.md",
   "docs/NADI_SIGNAL_STRIP.md",
   "docs/BUILD_TRACKER.md",
+  "docs/LAUNCH_READINESS_BOARD.md",
+  "docs/PAYMENT_READINESS_LAB.md",
+  "docs/ACCOUNT_READINESS_LAB.md",
+  "docs/ACCOUNT_VAULT_BLUEPRINT.md",
   "docs/DAILY_COMMAND_BRIEF.md",
   "docs/DECISION_RADAR.md",
   "docs/RESEARCH_QUESTION_STACK.md",
@@ -351,6 +391,14 @@ for (const file of [
   "docs/PEER_BENCHMARK_BOARD.md",
   "docs/JOURNEY_COACH.md",
   "docs/LIVE_DATA_READINESS.md",
+  "docs/LIVE_DATA_CONTRACT_LAB.md",
+  "docs/SOURCE_DRY_RUN_BOARD.md",
+  "docs/SOURCE_RECEIPT_VAULT.md",
+  "docs/CLAIM_SURFACE_MAP.md",
+  "docs/SURFACE_RELEASE_QUEUE.md",
+  "docs/REVIEWER_WORKBENCH.md",
+  "docs/REVIEWER_DECISION_LEDGER.md",
+  "docs/REVIEWER_RELEASE_BINDER.md",
   "docs/MONETIZATION.md",
   "docs/PORTFOLIO_INTELLIGENCE.md",
   "docs/REPO_HANDOFF.md",

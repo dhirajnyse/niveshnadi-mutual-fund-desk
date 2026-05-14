@@ -1,0 +1,11 @@
+# Nadi Retail Account Launch Route
+
+The Retail Account Launch Route is the Phase 1 v100 milestone layer for moving NiveshNadi from a static self-research prototype toward a controlled retail account beta. It does not implement production login or database storage. Instead, it shows the founder and product team what must be true before real users can sign in, save research, attach paid entitlement, recover access, export data, delete data, and receive support.
+
+The route keeps the first account launch deliberately small. A founder account pilot or paid beta cohort is safer than a broad public release because account recovery, saved research migration, entitlement repair, and support redaction can be tested with limited blast radius. The public beta cutover should stay blocked until auth provider selection, account database ownership, backups, export/delete jobs, payment entitlement, audit receipts, rate limits, monitoring, support workflows, and legal/compliance copy are ready.
+
+The key product promise is simple: Phase 1 accounts remember self-research, not investment identity. Allowed data should be limited to email or login identifier, research profile context, saved packs, watchlist, review metadata, dossiers, entitlement state, export receipts, deletion receipts, and redacted support receipts. PAN, folio, CAS, bank data, card data, UPI credentials, nominees, ARN/EUIN, distributor client books, and personalized advisory records stay outside the retail account route.
+
+Every launch route dry run should produce account audit receipts. Important receipts include auth provider selection, session policy, account shell creation, research vault migration, entitlement join, export request, delete request, support redacted view, recovery request, and Phase 2 firewall validation. These receipts should be backend-owned in a future implementation and should not rely on browser-local state as the source of truth.
+
+The route also protects the Phase 2 roadmap. Mutual fund distributor workflows can come later, but they require separate consent, role-based access, ARN/EUIN handling, PAN-consent boundaries, client-book permissions, distributor audit trails, and regulatory review. The retail self-research launch should not accidentally become a distributor or advisory system.

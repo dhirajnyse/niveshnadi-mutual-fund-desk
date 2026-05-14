@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260513-15";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v91 Reviewer Release Binder";
+const DATA_VERSION = "20260514-06";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v100 Retail Account Launch Route";
 const HASH_SETTLE_DELAYS = [0, 80, 180, 360, 720, 1200, 1900, 2800, 4000, 5600];
 const HASH_SETTLE_WINDOW = 6400;
 
@@ -967,12 +967,12 @@ const BUILD_TRACKER_PHASES = [
   {
     phase: "Phase 1C",
     label: "Trust, evidence, and safety layer",
-    progress: 94,
-    launch: 66,
+    progress: 98,
+    launch: 73,
     status: "In progress",
-    route: "#reviewer-release-binder",
-    done: ["evidence ledger", "citation binder", "data readiness", "live data contract lab", "source dry-run board", "source receipt vault", "claim surface map", "surface release queue", "reviewer workbench", "reviewer decision ledger", "reviewer release binder", "source QA", "claim gates", "privacy controls"],
-    next: "Connect reviewer-bound releases to backend audit receipts, rollback notes, and correction history."
+    route: "#backend-audit-receipts",
+    done: ["evidence ledger", "citation binder", "data readiness", "live data contract lab", "source dry-run board", "source receipt vault", "claim surface map", "surface release queue", "reviewer workbench", "reviewer decision ledger", "reviewer release binder", "backend audit receipts", "source QA", "claim gates", "privacy controls"],
+    next: "Connect source and payment audit receipts to production replay, retention, monitoring, and release operations."
   },
   {
     phase: "Phase 1D",
@@ -987,12 +987,12 @@ const BUILD_TRACKER_PHASES = [
   {
     phase: "Phase 1E",
     label: "Launch, monetization, and account layer",
-    progress: 54,
-    launch: 32,
-    status: "Next",
-    route: "#account-vault",
-    done: ["pricing posture", "payment lab", "account readiness plan", "account vault blueprint", "share-safe export", "consent gate", "security model"],
-    next: "Add auth, subscriptions, backend storage, live feeds, and payment rails."
+    progress: 86,
+    launch: 66,
+    status: "In progress",
+    route: "#account-launch-route",
+    done: ["pricing posture", "payment lab", "payment wiring console", "payment gateway sandbox route", "retail account launch route", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Choose production auth, database storage, gateway, live feeds, and support operations."
   },
   {
     phase: "Phase 2",
@@ -1008,22 +1008,16 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Reviewer release binder",
+    label: "Retail account launch route",
     status: "Shipping now",
-    route: "#reviewer-release-binder",
-    detail: "Bind saved reviewer decisions into the claim release gate with source, surface, evidence, reviewer, scope, and rollback posture."
+    route: "#account-launch-route",
+    detail: "Turn auth, saved research migration, entitlement join, export/delete, support redaction, and Phase 2 firewall into one launch route."
   },
   {
-    label: "Backend audit receipts",
+    label: "Backend account storage",
     status: "Next",
-    route: "#claim-ledger",
-    detail: "Persist reviewer-bound release receipts, rollback notes, correction notices, and audit workflows outside the browser."
-  },
-  {
-    label: "Payment wiring",
-    status: "Next",
-    route: "#payment-readiness",
-    detail: "Choose gateway, checkout states, entitlement activation, invoices, refunds, and reconciliation."
+    route: "#account-vault",
+    detail: "Choose production account database, row ownership, backups, deletion jobs, and audit receipt storage."
   },
   {
     label: "MFD preview",
@@ -1057,22 +1051,22 @@ const LAUNCH_READINESS_GATES = [
   {
     id: "accounts",
     label: "Account and saved research",
-    score: 44,
+    score: 62,
     status: "Critical",
     owner: "Product",
-    route: "#account-vault",
-    blocker: "Account boundaries and storage blueprint are drafted, but production still needs auth provider selection, database ownership rules, deletion controls, audit logs, and migration tests.",
-    next: "Choose auth and backend storage, then test saved research, entitlement, export, deletion, and support-redaction flows end to end."
+    route: "#account-launch-route",
+    blocker: "Account boundaries, launch route, entitlement bridge, and storage blueprint are drafted, but production still needs auth provider selection, database ownership rules, deletion controls, audit logs, and migration tests.",
+    next: "Choose auth and backend storage, then test saved research migration, entitlement, export, deletion, and support-redaction flows end to end."
   },
   {
     id: "payments",
     label: "Payments and subscriptions",
-    score: 34,
+    score: 65,
     status: "Critical",
     owner: "Commercial",
-    route: "#payment-readiness",
-    blocker: "Retail pricing is positioned and the readiness workflow is drafted, but real gateway wiring, invoices, refunds, and subscription lifecycle are still pending.",
-    next: "Choose gateway, define checkout states, connect entitlement rules, and test Rs. 100 monthly plus Rs. 1,000 yearly lifecycle."
+    route: "#payment-sandbox",
+    blocker: "Retail pricing, readiness, wiring contracts, sandbox route, entitlement bridge, ops console, and backend blueprint are drafted, but real gateway onboarding, signed webhooks, GST invoice handling, refunds, and lifecycle persistence are still pending.",
+    next: "Choose gateway, run checkout and webhook sandbox dry-runs, persist backend event contracts, and test Rs. 100 monthly plus Rs. 1,000 yearly lifecycle through support and reconciliation."
   },
   {
     id: "compliance",
@@ -1087,22 +1081,22 @@ const LAUNCH_READINESS_GATES = [
   {
     id: "security",
     label: "Security release gate",
-    score: 58,
+    score: 64,
     status: "Watch",
     owner: "Security",
-    route: "#trust-center",
-    blocker: "Static prototype has CSP and audit checks, but backend launch will introduce auth, payments, personal data, API secrets, and monitoring.",
-    next: "Add dependency scanning, secret scanning, auth threat model, payment webhook validation, rate limits, backups, and incident response checklist."
+    route: "#account-launch-route",
+    blocker: "Static prototype has CSP, audit checks, sandbox payment route, account launch route, and no credential collection, but backend launch will introduce auth, payments, personal data, API secrets, and monitoring.",
+    next: "Add dependency scanning, secret scanning, auth threat model, payment webhook validation, idempotency replay tests, rate limits, backups, and incident response checklist."
   },
   {
     id: "support",
     label: "Support and operations",
-    score: 38,
-    status: "Planned",
+    score: 54,
+    status: "Draft",
     owner: "Ops",
-    route: "#review-rhythm",
-    blocker: "User support, content-update cadence, failed payment handling, correction workflow, and release notes are not yet operationalized.",
-    next: "Define support inbox, launch runbook, monthly data refresh rhythm, public correction path, and uptime monitoring."
+    route: "#account-launch-route",
+    blocker: "Subscription support, account recovery, failed payment handling, refund workflow, sandbox reconciliation, content-update cadence, correction workflow, and release notes are drafted but not operationalized in a backend queue.",
+    next: "Define support inbox, launch runbook, failed-payment scripts, refund path, entitlement repair events, settlement review, public correction path, and uptime monitoring."
   },
   {
     id: "phase-2-boundary",
@@ -1126,52 +1120,178 @@ const PAYMENT_READINESS_STEPS = [
   },
   {
     label: "Gateway selection",
-    score: 28,
-    status: "Blocked",
-    route: "#payment-readiness",
-    detail: "Choose payment gateway, settlement account, supported UPI/cards/netbanking, webhook model, and reconciliation reports."
+    score: 52,
+    status: "Draft",
+    route: "#payment-sandbox",
+    detail: "Gateway selection criteria, settlement account, UPI/cards/netbanking posture, webhook model, sandbox route, and reconciliation reports are mapped."
   },
   {
     label: "Checkout flow",
-    score: 24,
-    status: "Blocked",
-    route: "#payment-readiness",
-    detail: "Need start checkout, success, failed payment, retry, invoice, and entitlement activation states."
+    score: 52,
+    status: "Draft",
+    route: "#payment-sandbox",
+    detail: "Start checkout, success, failed payment, retry, invoice, and entitlement activation states are wired as sandbox launch contracts."
   },
   {
     label: "Subscription lifecycle",
-    score: 26,
-    status: "Blocked",
-    route: "#payment-readiness",
-    detail: "Need renewal, cancellation, expiry, grace period, upgrade, downgrade, and annual-to-monthly transitions."
+    score: 40,
+    status: "Draft",
+    route: "#entitlement-bridge",
+    detail: "Renewal, cancellation, expiry, grace period, refund, upgrade, downgrade, and annual-to-monthly states are now mapped as entitlement scenarios."
   },
   {
     label: "Invoice and refund policy",
-    score: 22,
-    status: "Blocked",
-    route: "#pricing",
-    detail: "Need tax invoice decision, GST treatment, refund window, failed renewal handling, and clear user-facing policy."
+    score: 46,
+    status: "Draft",
+    route: "#payment-sandbox",
+    detail: "GST review, tax invoice posture, refund window, failed renewal handling, and user-facing policy are now visible as sandbox blockers."
   },
   {
     label: "Entitlement rules",
-    score: 38,
+    score: 54,
     status: "Draft",
-    route: "#account-readiness",
-    detail: "Need paid limits for watchlist, dossiers, saved packs, exports, alerts, and future live-data refreshes."
+    route: "#entitlement-bridge",
+    detail: "Paid limits for watchlist, dossiers, saved packs, exports, alerts, and future live-data refreshes are mapped before backend persistence."
   },
   {
     label: "Webhook and security",
-    score: 20,
+    score: 48,
     status: "Blocked",
-    route: "#trust-center",
-    detail: "Need signature verification, replay protection, idempotency keys, secret rotation, rate limits, and incident handling."
+    route: "#payment-sandbox",
+    detail: "Need production signature verification, replay protection, idempotency keys, secret rotation, rate limits, event replay, and incident handling."
   },
   {
     label: "Support and reconciliation",
-    score: 30,
+    score: 58,
     status: "Draft",
-    route: "#review-rhythm",
-    detail: "Need support inbox, payment lookup, refund workflow, dispute handling, and monthly settlement review."
+    route: "#payment-sandbox",
+    detail: "Support lookup, failed payment triage, refund workflow, dispute handling, invoice check, monthly settlement review, and entitlement repair events are mapped as sandbox and backend ops states."
+  }
+];
+
+const PAYMENT_WIRING_STATES = [
+  {
+    label: "Checkout created",
+    event: "checkout.created",
+    score: 72,
+    owner: "Product",
+    receipt: "plan_id, amount, currency, user_hash, request_id",
+    guardrail: "Create the checkout session on the server and never collect payment credentials in NiveshNadi."
+  },
+  {
+    label: "Gateway redirect",
+    event: "checkout.redirected",
+    score: 66,
+    owner: "Gateway",
+    receipt: "checkout_id, return_url, cancel_url, session_expiry",
+    guardrail: "Hosted checkout keeps card, UPI, and bank credentials outside the product surface."
+  },
+  {
+    label: "Webhook verified",
+    event: "webhook.verified",
+    score: 42,
+    owner: "Backend",
+    receipt: "gateway_event_id, signature_hash, idempotency_key, received_at",
+    guardrail: "Launch requires signed webhook verification, replay protection, and duplicate-event handling."
+  },
+  {
+    label: "Entitlement activated",
+    event: "entitlement.activated",
+    score: 54,
+    owner: "Account",
+    receipt: "plan_id, entitlement_state, starts_at, expires_at, activation_reason",
+    guardrail: "Unlock paid features only after the server accepts a verified payment event."
+  },
+  {
+    label: "Invoice issued",
+    event: "invoice.issued",
+    score: 38,
+    owner: "Finance",
+    receipt: "invoice_id, tax_mode, amount, currency, receipt_url",
+    guardrail: "GST and tax invoice posture must be settled before a public paid launch."
+  },
+  {
+    label: "Refund or cancellation",
+    event: "refund.created",
+    score: 44,
+    owner: "Support",
+    receipt: "refund_id, gateway_refund_id, reason_code, entitlement_action",
+    guardrail: "Refund handling should revoke or adjust entitlement without exposing support notes."
+  },
+  {
+    label: "Reconciliation closed",
+    event: "settlement.reconciled",
+    score: 36,
+    owner: "Finance",
+    receipt: "settlement_id, gateway_total, app_total, variance_state",
+    guardrail: "Monthly reconciliation should prove payments, refunds, invoices, and entitlements agree."
+  }
+];
+
+const PAYMENT_SANDBOX_TESTS = [
+  {
+    label: "Hosted checkout session",
+    event: "checkout.session_created",
+    score: 62,
+    owner: "Product",
+    proof: "session_id, plan_id, amount, currency, expires_at",
+    guardrail: "Session is created server-side and expires quickly; no card, UPI, or bank credential touches NiveshNadi."
+  },
+  {
+    label: "Success webhook signed",
+    event: "payment.succeeded",
+    score: 48,
+    owner: "Backend",
+    proof: "gateway_event_id, signature_hash, idempotency_key",
+    guardrail: "Signature verification, timestamp tolerance, and event schema validation must pass before entitlement changes."
+  },
+  {
+    label: "Duplicate webhook ignored",
+    event: "webhook.duplicate_ignored",
+    score: 52,
+    owner: "Platform",
+    proof: "dedupe_key, first_seen_at, replay_count",
+    guardrail: "Duplicate gateway events should not double-activate access, invoices, refunds, or receipts."
+  },
+  {
+    label: "Failed renewal and grace",
+    event: "payment.failed",
+    score: 50,
+    owner: "Support",
+    proof: "failure_code, retry_count, grace_until",
+    guardrail: "Failed renewals should enter grace with clear user messaging and no silent access break."
+  },
+  {
+    label: "Refund and entitlement revoke",
+    event: "refund.succeeded",
+    score: 46,
+    owner: "Finance",
+    proof: "refund_id, invoice_id, entitlement_action",
+    guardrail: "Refunds should adjust entitlement and invoice records through one auditable event trail."
+  },
+  {
+    label: "Invoice receipt generated",
+    event: "invoice.issued",
+    score: 42,
+    owner: "Finance",
+    proof: "invoice_id, tax_mode, receipt_url",
+    guardrail: "Invoice posture must be reviewed before public paid launch, especially GST and refund language."
+  },
+  {
+    label: "Settlement reconciliation",
+    event: "settlement.reconciled",
+    score: 40,
+    owner: "Finance Ops",
+    proof: "settlement_id, gateway_total, app_total, variance",
+    guardrail: "Gateway reports, app receipts, refunds, and entitlement states should reconcile monthly."
+  },
+  {
+    label: "Incident rollback replay",
+    event: "payment.incident_replayed",
+    score: 44,
+    owner: "Ops Lead",
+    proof: "incident_id, affected_receipts, rollback_state",
+    guardrail: "Payment incidents need replay, user notice, rollback, and correction paths before live money flows."
   }
 ];
 
@@ -1185,10 +1305,10 @@ const ACCOUNT_READINESS_STEPS = [
   },
   {
     label: "Auth provider",
-    score: 24,
-    status: "Blocked",
-    route: "#account-readiness",
-    detail: "Choose email/passwordless or social login, session lifetime, MFA posture, account recovery, and abuse limits."
+    score: 50,
+    status: "Draft",
+    route: "#account-launch-route",
+    detail: "Passwordless email, OTP, social login, session lifetime, account recovery, and abuse limits are now mapped in the launch route."
   },
   {
     label: "User profile storage",
@@ -1199,31 +1319,31 @@ const ACCOUNT_READINESS_STEPS = [
   },
   {
     label: "Saved research packs",
-    score: 50,
+    score: 54,
     status: "Draft",
-    route: "#account-vault",
-    detail: "Move browser-local packs, watchlist, review snapshots, dossiers, and memos into account storage with version history."
+    route: "#account-launch-route",
+    detail: "Move browser-local packs, watchlist, review snapshots, dossiers, and memos into account storage with version history and migration consent."
   },
   {
     label: "Entitlement link",
-    score: 42,
+    score: 54,
     status: "Draft",
-    route: "#account-vault",
-    detail: "Connect paid status to saved packs, exports, alerts, dossier count, X-Ray history, and future live-data refresh limits."
+    route: "#entitlement-bridge",
+    detail: "Connect paid status to saved packs, exports, alerts, dossier count, X-Ray history, and future live-data refresh limits through the entitlement bridge."
   },
   {
     label: "Export and delete",
-    score: 34,
-    status: "Blocked",
-    route: "#account-vault",
-    detail: "Need one-click export, delete account, delete saved packs, retention windows, and clear user confirmation screens."
+    score: 50,
+    status: "Draft",
+    route: "#account-launch-route",
+    detail: "Export, delete account, delete saved packs, retention windows, and clear confirmation screens are visible launch states."
   },
   {
     label: "Audit and support trail",
-    score: 36,
+    score: 54,
     status: "Draft",
-    route: "#account-vault",
-    detail: "Log account, payment, entitlement, export, deletion, and support events without leaking private notes."
+    route: "#account-launch-route",
+    detail: "Log account, payment, entitlement, export, deletion, and support events through redacted account launch receipts."
   },
   {
     label: "Phase 2 boundary",
@@ -1231,6 +1351,384 @@ const ACCOUNT_READINESS_STEPS = [
     status: "Later",
     route: "#consent-gate",
     detail: "Keep ARN/EUIN, PAN consent, distributor client book, and family or advisor handoff out of Phase 1 account launch."
+  }
+];
+
+const ACCOUNT_LAUNCH_STATES = [
+  {
+    label: "Account shell created",
+    event: "account.shell_created",
+    score: 68,
+    owner: "Product",
+    receipt: "user_id_hash, auth_provider, data_region, created_at",
+    guardrail: "Create a minimal account without PAN, folio, CAS, bank, nominee, or distributor identifiers."
+  },
+  {
+    label: "Session issued",
+    event: "session.issued",
+    score: 54,
+    owner: "Security",
+    receipt: "session_id_hash, auth_factor, device_hint, expires_at",
+    guardrail: "Session lifetime, recovery, abuse limits, and optional stronger login checks need production policy."
+  },
+  {
+    label: "Research profile synced",
+    event: "profile.synced",
+    score: 62,
+    owner: "Product",
+    receipt: "profile_version, intent, horizon_band, risk_context, updated_at",
+    guardrail: "Profile context remains research-only and never becomes suitability certification or personalized advice."
+  },
+  {
+    label: "Saved research migrated",
+    event: "research.migrated",
+    score: 50,
+    owner: "Account",
+    receipt: "artifact_count, artifact_types, migration_batch_id, version",
+    guardrail: "Migrate browser-local packs, watchlist, reviews, and dossiers with version history and no private notes."
+  },
+  {
+    label: "Entitlement linked",
+    event: "entitlement.linked",
+    score: 46,
+    owner: "Commercial",
+    receipt: "plan_id, entitlement_state, payment_receipt_id, limits",
+    guardrail: "Paid features unlock only from verified payment wiring and backend audit receipts."
+  },
+  {
+    label: "Export and delete ready",
+    event: "privacy.export_delete_ready",
+    score: 42,
+    owner: "Privacy",
+    receipt: "export_job_id, delete_job_id, retention_policy, confirmation_hash",
+    guardrail: "Every saved research bucket needs export, delete, retention, and confirmation behavior before launch."
+  },
+  {
+    label: "Support view redacted",
+    event: "support.redacted_view_opened",
+    score: 48,
+    owner: "Support",
+    receipt: "case_id, support_role, redaction_policy, viewed_at",
+    guardrail: "Support can resolve account issues without seeing PAN, folio, CAS, contact data, or free-form private notes."
+  }
+];
+
+const ACCOUNT_LAUNCH_ROUTE_GATES = [
+  {
+    label: "Auth provider decision",
+    event: "account.auth_provider_selected",
+    score: 56,
+    owner: "Product Security",
+    proof: "provider, login method, recovery policy, abuse limit",
+    guardrail: "Choose a provider before paid beta; do not build custom password storage in the first launch."
+  },
+  {
+    label: "Session and recovery policy",
+    event: "account.session_policy_ready",
+    score: 52,
+    owner: "Security",
+    proof: "session ttl, refresh rule, recovery event, device hint",
+    guardrail: "Sessions need clear expiry, recovery, suspicious-login handling, and support-safe reset flow."
+  },
+  {
+    label: "Research vault migration",
+    event: "research.vault_migration_dry_run",
+    score: 50,
+    owner: "Product",
+    proof: "artifact count, artifact type, version, consent state",
+    guardrail: "Migrate selected research artifacts only; do not silently copy private notes or identifiers."
+  },
+  {
+    label: "Entitlement join",
+    event: "entitlement.account_joined",
+    score: 54,
+    owner: "Commercial",
+    proof: "user hash, plan id, payment receipt, feature policy",
+    guardrail: "Paid feature access must join to verified payment receipts and not browser-local state."
+  },
+  {
+    label: "Export and delete route",
+    event: "privacy.export_delete_dry_run",
+    score: 48,
+    owner: "Privacy",
+    proof: "export job, delete job, retention rule, completion receipt",
+    guardrail: "The user must be able to export and delete saved research before paid accounts launch."
+  },
+  {
+    label: "Support redaction view",
+    event: "support.redacted_view_ready",
+    score: 56,
+    owner: "Support",
+    proof: "case id, role, redaction policy, visible fields",
+    guardrail: "Support sees account posture and receipts, not PAN, folio, CAS, credentials, or private free text."
+  },
+  {
+    label: "Security telemetry",
+    event: "security.telemetry_wired",
+    score: 46,
+    owner: "Security Ops",
+    proof: "auth event, rate limit event, error event, alert owner",
+    guardrail: "Launch needs monitoring for login failures, abuse, payment event failures, and account recovery issues."
+  },
+  {
+    label: "Phase 2 firewall",
+    event: "phase2.data_firewall_locked",
+    score: 70,
+    owner: "Compliance",
+    proof: "blocked field list, consent route, MFD boundary",
+    guardrail: "ARN, EUIN, PAN consent, distributor client books, and advisory workflows stay outside retail Phase 1."
+  }
+];
+
+const ENTITLEMENT_BRIDGE_STATES = [
+  {
+    label: "Plan selected",
+    event: "entitlement.plan_selected",
+    score: 76,
+    owner: "Product",
+    receipt: "plan_id, price, cadence, feature_policy",
+    guardrail: "Plan copy, pricing, refund language, and research-only boundaries must match the public pricing surface."
+  },
+  {
+    label: "Payment verified",
+    event: "entitlement.payment_verified",
+    score: 52,
+    owner: "Backend",
+    receipt: "gateway_event_id, signature_hash, idempotency_key",
+    guardrail: "Paid access should unlock only from a signed, idempotent, server-verified gateway event."
+  },
+  {
+    label: "Access granted",
+    event: "entitlement.granted",
+    score: 58,
+    owner: "Account",
+    receipt: "user_id_hash, plan_id, starts_at, expires_at",
+    guardrail: "Feature access must be bound to account state, not editable browser-local state."
+  },
+  {
+    label: "Feature limit checked",
+    event: "entitlement.feature_checked",
+    score: 62,
+    owner: "Product",
+    receipt: "feature_key, usage_count, limit, decision",
+    guardrail: "Limits should protect paid features without blocking research-only compliance disclosures."
+  },
+  {
+    label: "Grace state applied",
+    event: "entitlement.grace_applied",
+    score: 44,
+    owner: "Support",
+    receipt: "failure_reason, grace_until, retry_count",
+    guardrail: "Failed renewal should reduce access gracefully and tell the user exactly what still works."
+  },
+  {
+    label: "Refund synced",
+    event: "entitlement.refund_synced",
+    score: 42,
+    owner: "Finance",
+    receipt: "refund_id, invoice_id, entitlement_action",
+    guardrail: "Refunds, cancellations, and chargebacks must revoke or downgrade access through a receipt trail."
+  },
+  {
+    label: "Reconciled",
+    event: "entitlement.reconciled",
+    score: 38,
+    owner: "Finance",
+    receipt: "settlement_id, entitlement_count, variance_state",
+    guardrail: "Finance reconciliation should prove checkout, invoice, entitlement, refund, and support states agree."
+  }
+];
+
+const SUBSCRIPTION_OPS_STATES = [
+  {
+    label: "Renewal queued",
+    event: "subscription.renewal_queued",
+    score: 62,
+    owner: "Commercial Ops",
+    receipt: "subscription_id, next_renewal_at, plan_id, retry_policy",
+    guardrail: "Renewal jobs need clear retry rules and no surprise billing language."
+  },
+  {
+    label: "Payment failure triaged",
+    event: "subscription.payment_failed_triaged",
+    score: 54,
+    owner: "Support",
+    receipt: "failure_code, retry_count, user_notice_id, grace_until",
+    guardrail: "Failed payment should reduce access gracefully and never hide what remains available."
+  },
+  {
+    label: "Invoice checked",
+    event: "invoice.checked",
+    score: 46,
+    owner: "Finance",
+    receipt: "invoice_id, tax_mode, amount, status, issue_date",
+    guardrail: "GST and invoice policy need finance review before public paid launch."
+  },
+  {
+    label: "Refund handled",
+    event: "refund.handled",
+    score: 48,
+    owner: "Support",
+    receipt: "refund_id, reason_code, entitlement_action, support_case_id",
+    guardrail: "Refunds should adjust entitlement through backend receipts without exposing support notes."
+  },
+  {
+    label: "Entitlement repaired",
+    event: "entitlement.repaired",
+    score: 52,
+    owner: "Account Ops",
+    receipt: "user_id_hash, prior_state, repaired_state, reviewer_role",
+    guardrail: "Manual repairs must be rare, logged, reversible, and support-redacted."
+  },
+  {
+    label: "Settlement reconciled",
+    event: "settlement.reconciled",
+    score: 42,
+    owner: "Finance",
+    receipt: "settlement_id, gateway_total, app_total, variance_state",
+    guardrail: "Monthly reconciliation should match checkout, invoice, refund, entitlement, and support records."
+  },
+  {
+    label: "Launch incident closed",
+    event: "subscription.incident_closed",
+    score: 44,
+    owner: "Ops Lead",
+    receipt: "incident_id, severity, affected_users, resolution_state",
+    guardrail: "Payment incidents need owner, rollback posture, user notice, and post-incident learning."
+  }
+];
+
+const SUBSCRIPTION_BACKEND_CONTRACTS = [
+  {
+    label: "Gateway webhook verified",
+    event: "gateway.webhook_verified",
+    score: 48,
+    owner: "Backend",
+    fields: ["gateway_event_id", "signature_hash", "received_at", "gateway_name"],
+    guardrail: "Only server-verified gateway events can mutate subscription, invoice, refund, or entitlement state."
+  },
+  {
+    label: "Idempotency locked",
+    event: "subscription.idempotency_locked",
+    score: 54,
+    owner: "Platform",
+    fields: ["idempotency_key", "request_id", "event_hash", "dedupe_status"],
+    guardrail: "Duplicate webhooks, retries, and support repairs must be safe to replay without double access or double refund."
+  },
+  {
+    label: "Entitlement projection synced",
+    event: "entitlement.projection_synced",
+    score: 60,
+    owner: "Account",
+    fields: ["user_id_hash", "plan_id", "feature_policy", "expires_at"],
+    guardrail: "The user-facing access view must be a projection from backend receipts, not editable browser state."
+  },
+  {
+    label: "Invoice and refund ledger",
+    event: "finance.ledger_written",
+    score: 46,
+    owner: "Finance",
+    fields: ["invoice_id", "refund_id", "tax_mode", "settlement_ref"],
+    guardrail: "Invoices, refunds, chargebacks, and plan changes need a finance trail before paid public launch."
+  },
+  {
+    label: "Support repair event",
+    event: "support.entitlement_repair_logged",
+    score: 50,
+    owner: "Support",
+    fields: ["case_id", "prior_state", "new_state", "reviewer_role"],
+    guardrail: "Manual repairs must be redacted, reversible, rare, and visible to audit without private user notes."
+  },
+  {
+    label: "Reconciliation job closed",
+    event: "settlement.reconciliation_closed",
+    score: 44,
+    owner: "Finance Ops",
+    fields: ["settlement_id", "gateway_total", "app_total", "variance_state"],
+    guardrail: "Subscription revenue, refunds, invoices, and entitlements must reconcile before reporting launch readiness."
+  },
+  {
+    label: "Incident replay pack",
+    event: "subscription.incident_replay_ready",
+    score: 42,
+    owner: "Ops Lead",
+    fields: ["incident_id", "affected_receipts", "rollback_state", "notice_id"],
+    guardrail: "A payment incident needs replayable receipts, affected-user scope, rollback posture, and notice history."
+  }
+];
+
+const BACKEND_AUDIT_STREAMS = [
+  {
+    id: "reviewer-release",
+    label: "Reviewer release receipts",
+    owner: "Trust operations",
+    route: "#reviewer-release-binder",
+    baseScore: 74,
+    eventTypes: ["reviewer_decision.saved", "release_binder.bound", "claim_release.saved"],
+    fields: ["receipt_id", "actor_role", "source_receipt_id", "surface_id", "evidence_score", "reviewer_posture", "rollback_note", "created_at"],
+    risk: "High",
+    retention: "7 years product-release audit",
+    launchGate: "Reviewer-bound release cannot publish unless receipt id, source id, public surface, evidence lock, and rollback note are persisted."
+  },
+  {
+    id: "source-ingestion",
+    label: "Source ingestion receipts",
+    owner: "Data operations",
+    route: "#source-receipts",
+    baseScore: 68,
+    eventTypes: ["source_file.imported", "parser_run.completed", "source_receipt.saved"],
+    fields: ["receipt_id", "source_family", "source_url_hash", "source_date", "row_count", "parser_version", "rejected_rows", "citation_path"],
+    risk: "High",
+    retention: "7 years source evidence audit",
+    launchGate: "Every live-looking claim needs source date, import timestamp, parser version, and citation path before release."
+  },
+  {
+    id: "account-research",
+    label: "Saved research receipts",
+    owner: "Product account",
+    route: "#account-vault",
+    baseScore: 56,
+    eventTypes: ["research_pack.saved", "watch_trigger.saved", "dossier.exported"],
+    fields: ["receipt_id", "user_id_hash", "artifact_type", "artifact_id", "version", "data_class", "created_at", "export_scope"],
+    risk: "Medium",
+    retention: "User controlled with export/delete trail",
+    launchGate: "Saved packs must version research metadata without storing PAN, folio, CAS, credentials, or free-form private notes."
+  },
+  {
+    id: "payment-entitlement",
+    label: "Payment and entitlement receipts",
+    owner: "Commercial operations",
+    route: "#subscription-backend",
+    baseScore: 60,
+    eventTypes: ["checkout.started", "payment.succeeded", "entitlement.activated", "refund.created"],
+    fields: ["receipt_id", "gateway_event_id", "plan_id", "amount", "currency", "invoice_id", "entitlement_state", "idempotency_key"],
+    risk: "Very High",
+    retention: "Statutory finance and dispute window",
+    launchGate: "Gateway webhook signatures, idempotency, invoice references, refund state, and reconciliation status must be server-verified."
+  },
+  {
+    id: "privacy-consent",
+    label: "Privacy and consent receipts",
+    owner: "Privacy operations",
+    route: "#consent-gate",
+    baseScore: 52,
+    eventTypes: ["consent.granted", "export.requested", "delete.requested", "retention.expired"],
+    fields: ["receipt_id", "user_id_hash", "scope", "recipient_type", "expiry_date", "request_status", "processor", "completed_at"],
+    risk: "Very High",
+    retention: "Consent life plus deletion proof",
+    launchGate: "Consent, export, and deletion workflows need immutable request receipts and reversible preview before data leaves the workspace."
+  },
+  {
+    id: "support-ops",
+    label: "Support and correction receipts",
+    owner: "Support operations",
+    route: "#correction-ledger",
+    baseScore: 48,
+    eventTypes: ["support_case.created", "correction_notice.saved", "claim_rollback.saved"],
+    fields: ["receipt_id", "case_id", "surface_id", "severity", "public_visibility", "owner", "resolution_state", "closed_at"],
+    risk: "High",
+    retention: "Support case plus correction audit",
+    launchGate: "Support, rollback, and correction notes need public-surface mapping without copying investor identifiers into support logs."
   }
 ];
 
@@ -1755,7 +2253,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-      <article><span>Prototype version</span><strong>Phase 1 v91</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+      <article><span>Prototype version</span><strong>Phase 1 v100</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -2246,6 +2744,1279 @@ function openPaymentBlocker() {
   scrollToHash(paymentReadinessLabConfig().nextBlocker.route, "smooth", true);
 }
 
+function paymentWiringGatewayLabel(gateway) {
+  return {
+    hosted: "Hosted gateway checkout",
+    manual: "Manual founder cohort",
+    deferred: "No paid launch yet",
+    direct: "Direct in-app payment entry"
+  }[gateway] || "Hosted gateway checkout";
+}
+
+function paymentWiringPlanLabel(plan) {
+  return {
+    monthly: "Nadi Plus Monthly",
+    annual: "Nadi Plus Annual",
+    founder: "Founder Beta",
+    distributor: "Phase 2 Distributor Preview"
+  }[plan] || "Nadi Plus Monthly";
+}
+
+function paymentWiringScenarioLabel(scenario) {
+  return {
+    happy: "Successful checkout",
+    failed: "Failed renewal",
+    duplicate: "Duplicate webhook",
+    refund: "Refund and revoke",
+    cancel: "Cancel renewal"
+  }[scenario] || "Successful checkout";
+}
+
+function paymentWiringInvoiceLabel(invoice) {
+  return {
+    gstReview: "GST and invoice review pending",
+    invoiceReady: "Tax invoice policy ready",
+    betaReceipt: "Beta receipt only",
+    noInvoice: "No invoice posture"
+  }[invoice] || "GST and invoice review pending";
+}
+
+function paymentWiringConfig() {
+  const gateway = els.paymentWiringGateway?.value || "hosted";
+  const plan = els.paymentWiringPlan?.value || "monthly";
+  const scenario = els.paymentWiringScenario?.value || "happy";
+  const invoice = els.paymentWiringInvoice?.value || "gstReview";
+  const planMeta = {
+    monthly: { price: "Rs. 100", cadence: "monthly", entitlement: "Nadi Plus monthly feature limits" },
+    annual: { price: "Rs. 1,000", cadence: "yearly", entitlement: "Nadi Plus annual feature limits" },
+    founder: { price: "Rs. 499", cadence: "year one", entitlement: "Founder beta entitlement with manual support" },
+    distributor: { price: "Phase 2", cadence: "annual B2B", entitlement: "MFD client dashboard preview only" }
+  }[plan] || { price: "Rs. 100", cadence: "monthly", entitlement: "Nadi Plus monthly feature limits" };
+  const scenarioStates = {
+    happy: ["checkout.created", "webhook.verified", "payment.succeeded", "entitlement.activated", "invoice.issued"],
+    failed: ["renewal.started", "payment.failed", "retry.scheduled", "grace.started", "entitlement.limited"],
+    duplicate: ["webhook.received", "idempotency.checked", "duplicate.ignored", "audit_receipt.linked"],
+    refund: ["refund.created", "refund.succeeded", "entitlement.revoked", "invoice.adjusted"],
+    cancel: ["subscription.cancelled", "renewal.stopped", "entitlement.expires", "receipt.saved"]
+  }[scenario] || ["checkout.created", "webhook.verified", "payment.succeeded", "entitlement.activated", "invoice.issued"];
+  const base = Math.round(PAYMENT_WIRING_STATES.reduce((sum, state) => sum + state.score, 0) / PAYMENT_WIRING_STATES.length);
+  const gatewayDelta = gateway === "hosted" ? 10 : gateway === "manual" ? -4 : gateway === "deferred" ? 2 : -24;
+  const scenarioDelta = scenario === "happy" ? 4 : scenario === "duplicate" ? 2 : scenario === "refund" ? 0 : -3;
+  const invoiceDelta = invoice === "invoiceReady" ? 8 : invoice === "gstReview" ? 0 : invoice === "betaReceipt" ? -6 : -16;
+  const planDelta = plan === "distributor" ? -10 : plan === "founder" ? -2 : 0;
+  const score = clampNumber(base + gatewayDelta + scenarioDelta + invoiceDelta + planDelta, 20, 92);
+  const blockers = [
+    ...(gateway === "direct" ? ["direct in-app payment entry is not allowed; use a hosted gateway checkout"] : []),
+    ...(gateway === "manual" ? ["manual founder cohort needs human reconciliation and cannot scale as public checkout"] : []),
+    ...(gateway === "deferred" ? ["paid launch remains off until gateway onboarding is complete"] : []),
+    ...(invoice !== "invoiceReady" ? ["GST, invoice, and refund wording need finance/legal signoff"] : []),
+    ...(["failed", "refund", "cancel"].includes(scenario) ? ["negative lifecycle state needs support and entitlement reversal dry-run"] : []),
+    ...(scenario === "duplicate" ? ["duplicate webhook path needs idempotency proof before launch"] : [])
+  ];
+  const status = score >= 78 && !blockers.length
+    ? "Payment dry-run ready"
+    : score >= 55
+      ? "Gateway dry-run"
+      : "Launch blocker";
+  const tone = status === "Payment dry-run ready" ? "ready" : status === "Launch blocker" ? "blocked" : "draft";
+  const controls = [
+    {
+      label: "Checkout",
+      score: gateway === "hosted" ? 76 : gateway === "manual" ? 44 : gateway === "deferred" ? 30 : 18,
+      detail: "Hosted checkout should be created server-side with a short-lived session."
+    },
+    {
+      label: "Webhook",
+      score: scenario === "duplicate" ? 58 : 42,
+      detail: "Signed gateway events must be idempotent and replay-protected before entitlement changes."
+    },
+    {
+      label: "Entitlement",
+      score: plan === "distributor" ? 38 : 62,
+      detail: "Paid features unlock from verified server events, not browser state."
+    },
+    {
+      label: "Finance",
+      score: invoice === "invoiceReady" ? 78 : invoice === "gstReview" ? 46 : invoice === "betaReceipt" ? 34 : 18,
+      detail: paymentWiringInvoiceLabel(invoice)
+    }
+  ];
+  return {
+    blockers,
+    controls,
+    gateway,
+    invoice,
+    plan,
+    planMeta,
+    scenario,
+    scenarioStates,
+    score,
+    status,
+    tone
+  };
+}
+
+function renderPaymentWiringConsole(event) {
+  if (event) event.preventDefault();
+  if (!els.paymentWiringOutput) return;
+  const wiring = paymentWiringConfig();
+  if (els.paymentWiringSummary) {
+    els.paymentWiringSummary.textContent = `${wiring.score}/100 | ${wiring.status}`;
+  }
+  els.paymentWiringOutput.innerHTML = `
+    <div class="payment-wiring-hero ${escapeHtml(wiring.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(paymentWiringScenarioLabel(wiring.scenario))}</span>
+        <h3>${escapeHtml(paymentWiringPlanLabel(wiring.plan))} wiring</h3>
+        <p>${escapeHtml(paymentWiringGatewayLabel(wiring.gateway))} for ${escapeHtml(wiring.planMeta.price)} ${escapeHtml(wiring.planMeta.cadence)} with ${escapeHtml(paymentWiringInvoiceLabel(wiring.invoice)).toLowerCase()}.</p>
+      </div>
+      <div class="payment-wiring-score" style="--score:${wiring.score}">
+        <b>${wiring.score}</b>
+        <span>Wire</span>
+      </div>
+    </div>
+    <div class="payment-wiring-metric-grid">
+      <article><span>Gateway posture</span><strong>${escapeHtml(paymentWiringGatewayLabel(wiring.gateway))}</strong><p>Payment credentials remain outside NiveshNadi.</p></article>
+      <article><span>Plan</span><strong>${escapeHtml(wiring.planMeta.price)}</strong><p>${escapeHtml(wiring.planMeta.entitlement)}</p></article>
+      <article><span>Scenario</span><strong>${escapeHtml(paymentWiringScenarioLabel(wiring.scenario))}</strong><p>${wiring.scenarioStates.length} event states mapped.</p></article>
+      <article><span>Blockers</span><strong>${wiring.blockers.length}</strong><p>${wiring.blockers[0] ? escapeHtml(wiring.blockers[0]) : "No active wiring blocker in this preview."}</p></article>
+    </div>
+    <div class="payment-wiring-state-grid">
+      ${PAYMENT_WIRING_STATES.map((state) => `
+        <article>
+          <div class="payment-wiring-card-head">
+            <div>
+              <span>${escapeHtml(state.owner)}</span>
+              <strong>${escapeHtml(state.label)}</strong>
+            </div>
+            <b>${state.score}</b>
+          </div>
+          <p>${escapeHtml(state.event)} | ${escapeHtml(state.receipt)}</p>
+          <div class="build-progress-bar"><span style="width:${state.score}%"></span></div>
+          <small>${escapeHtml(state.guardrail)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="payment-wiring-flow-grid">
+      <article>
+        <h3>Selected event route</h3>
+        <ol>
+          ${wiring.scenarioStates.map((state) => `<li>${escapeHtml(state)}</li>`).join("")}
+        </ol>
+      </article>
+      <article class="${wiring.blockers.length ? "blocked" : "ready"}">
+        <h3>${wiring.blockers.length ? "Before paid launch" : "Dry-run clear"}</h3>
+        <ul>
+          ${(wiring.blockers.length ? wiring.blockers : ["gateway checkout is hosted", "invoice posture is ready", "entitlement is server-confirmed", "audit receipt route is mapped"]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <h3>Audit receipt bridge</h3>
+        <p>Every payment mutation should write a Backend Audit Receipt with gateway event ID, idempotency key, plan ID, entitlement state, invoice or refund reference, and reconciliation status.</p>
+      </article>
+    </div>
+    <div class="payment-wiring-control-grid">
+      ${wiring.controls.map((control) => `
+        <article>
+          <span>${escapeHtml(control.label)}</span>
+          <strong>${control.score}/100</strong>
+          <div class="build-progress-bar"><span style="width:${control.score}%"></span></div>
+          <p>${escapeHtml(control.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function makePaymentWiringBrief() {
+  const wiring = paymentWiringConfig();
+  return [
+    "# NiveshNadi Payment Wiring Console",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Score: ${wiring.score}/100`,
+    `Status: ${wiring.status}`,
+    `Gateway: ${paymentWiringGatewayLabel(wiring.gateway)}`,
+    `Plan: ${paymentWiringPlanLabel(wiring.plan)} | ${wiring.planMeta.price} ${wiring.planMeta.cadence}`,
+    `Scenario: ${paymentWiringScenarioLabel(wiring.scenario)}`,
+    `Invoice posture: ${paymentWiringInvoiceLabel(wiring.invoice)}`,
+    "",
+    "## Selected Event Route",
+    ...wiring.scenarioStates.map((state) => `- ${state}`),
+    "",
+    "## Wiring States",
+    ...PAYMENT_WIRING_STATES.map((state) => `- ${state.label}: ${state.score}/100 | ${state.event} | ${state.guardrail}`),
+    "",
+    "## Controls",
+    ...wiring.controls.map((control) => `- ${control.label}: ${control.score}/100 | ${control.detail}`),
+    "",
+    "## Blockers",
+    ...(wiring.blockers.length ? wiring.blockers.map((item) => `- ${item}`) : ["- No active wiring blocker in this preview."]),
+    "",
+    "## Guardrail",
+    "Payment Wiring Console is launch planning only. NiveshNadi should not collect card, UPI, bank, PAN, or payment credentials in the app. Paid entitlements should unlock only from verified backend gateway events and backend audit receipts."
+  ].join("\n");
+}
+
+function openPaymentWiringBlocker() {
+  const wiring = paymentWiringConfig();
+  scrollToHash(wiring.blockers.length ? "#backend-audit-receipts" : "#payment-sandbox", "smooth", true);
+}
+
+function paymentSandboxProviderLabel(provider) {
+  return {
+    razorpay: "Razorpay-style hosted checkout",
+    cashfree: "Cashfree-style hosted checkout",
+    stripe: "Stripe-style hosted checkout",
+    manual: "Manual sandbox ledger"
+  }[provider] || "Razorpay-style hosted checkout";
+}
+
+function paymentSandboxScenarioLabel(scenario) {
+  return {
+    checkout: "Checkout session",
+    success: "Successful payment webhook",
+    duplicate: "Duplicate webhook replay",
+    failed: "Failed renewal",
+    refund: "Refund and entitlement reversal",
+    invoice: "Invoice and receipt",
+    reconcile: "Settlement reconciliation",
+    incident: "Incident rollback replay"
+  }[scenario] || "Successful payment webhook";
+}
+
+function paymentSandboxEvidenceLabel(evidence) {
+  return {
+    signed: "Signed event receipt",
+    idempotent: "Idempotency proof",
+    replay: "Replayable audit trail",
+    manual: "Manual support receipt",
+    missing: "Missing receipt trail"
+  }[evidence] || "Replayable audit trail";
+}
+
+function paymentSandboxModeLabel(mode) {
+  return {
+    dry: "Dry-run route",
+    stress: "Stress and replay run",
+    finance: "Finance reconciliation run",
+    support: "Support repair run"
+  }[mode] || "Dry-run route";
+}
+
+function paymentSandboxConfig() {
+  const provider = els.paymentSandboxProvider?.value || "razorpay";
+  const scenario = els.paymentSandboxScenario?.value || "success";
+  const evidence = els.paymentSandboxEvidence?.value || "replay";
+  const mode = els.paymentSandboxMode?.value || "dry";
+  const scenarioEvents = {
+    checkout: ["plan.selected", "checkout.session_created", "hosted_checkout.opened", "checkout.expired_or_returned"],
+    success: ["checkout.session_created", "payment.succeeded", "webhook.signature_verified", "entitlement.activated", "invoice.issued"],
+    duplicate: ["webhook.received", "idempotency.checked", "duplicate.ignored", "audit_receipt.linked"],
+    failed: ["renewal.started", "payment.failed", "retry.scheduled", "grace.started", "support.queue_opened"],
+    refund: ["refund.created", "refund.succeeded", "entitlement.revoked", "invoice.adjusted", "support.note_redacted"],
+    invoice: ["payment.succeeded", "invoice.issued", "receipt.url_saved", "tax_mode.checked"],
+    reconcile: ["settlement.report_imported", "gateway_total.matched", "app_receipts.matched", "variance.reviewed"],
+    incident: ["incident.flagged", "payment.events_replayed", "affected_receipts.locked", "rollback_or_notice.ready"]
+  }[scenario] || ["checkout.session_created", "payment.succeeded", "webhook.signature_verified", "entitlement.activated", "invoice.issued"];
+  const base = Math.round(PAYMENT_SANDBOX_TESTS.reduce((sum, test) => sum + test.score, 0) / PAYMENT_SANDBOX_TESTS.length);
+  const providerDelta = provider === "razorpay" ? 8 : provider === "cashfree" ? 7 : provider === "stripe" ? 5 : -14;
+  const scenarioDelta = scenario === "success" ? 7 : scenario === "checkout" ? 5 : scenario === "duplicate" ? 4 : scenario === "invoice" ? 1 : scenario === "reconcile" ? -2 : scenario === "failed" ? -3 : scenario === "refund" ? -4 : -6;
+  const evidenceDelta = evidence === "replay" ? 10 : evidence === "signed" ? 8 : evidence === "idempotent" ? 7 : evidence === "manual" ? -8 : -20;
+  const modeDelta = mode === "dry" ? 5 : mode === "stress" ? 2 : mode === "finance" ? 1 : 0;
+  const score = clampNumber(base + providerDelta + scenarioDelta + evidenceDelta + modeDelta, 20, 92);
+  const blockers = [
+    ...(provider === "manual" ? ["manual ledger is useful for founder beta but cannot prove a public gateway launch"] : []),
+    ...(evidence === "missing" ? ["missing receipt trail blocks checkout, entitlement, refund, and reconciliation release"] : []),
+    ...(evidence === "manual" ? ["manual support receipt cannot unlock paid access without backend verification"] : []),
+    ...(scenario === "refund" ? ["refund route needs finance, legal, invoice, and entitlement reversal signoff"] : []),
+    ...(scenario === "incident" ? ["incident replay requires rollback, correction, and user notice workflow"] : []),
+    ...(mode === "stress" ? ["stress run must prove duplicate, replay, rate-limit, and timeout behavior before launch"] : []),
+    ...(scenario === "reconcile" ? ["settlement reconciliation needs gateway report import and variance owner"] : [])
+  ];
+  const status = score >= 78 && !blockers.length
+    ? "Sandbox route ready"
+    : score >= 58
+      ? "Sandbox dry-run"
+      : "Launch blocker";
+  const tone = status === "Sandbox route ready" ? "ready" : status === "Launch blocker" ? "blocked" : "draft";
+  const lanes = [
+    {
+      label: "Gateway",
+      score: provider === "manual" ? 34 : 68,
+      detail: `${paymentSandboxProviderLabel(provider)} stays hosted and outside NiveshNadi credential surfaces.`
+    },
+    {
+      label: "Signature",
+      score: ["signed", "replay", "idempotent"].includes(evidence) ? 64 : 28,
+      detail: "Webhook signature, timestamp tolerance, and schema validation are the first launch gate."
+    },
+    {
+      label: "Idempotency",
+      score: evidence === "idempotent" || scenario === "duplicate" ? 72 : evidence === "missing" ? 22 : 56,
+      detail: "Duplicate events must be ignored without double invoices, double refunds, or double access."
+    },
+    {
+      label: "Entitlement",
+      score: ["success", "refund", "failed"].includes(scenario) ? 58 : 50,
+      detail: "Access changes come only from accepted backend events, never browser-only state."
+    },
+    {
+      label: "Finance",
+      score: ["invoice", "reconcile", "refund"].includes(scenario) ? 62 : 46,
+      detail: "Invoice, refund, settlement, variance, and export receipts need finance ownership."
+    },
+    {
+      label: "Support",
+      score: ["failed", "refund", "incident"].includes(scenario) ? 60 : 48,
+      detail: "Support can see redacted event posture and repair status without private notes."
+    }
+  ];
+  return {
+    blockers,
+    evidence,
+    lanes,
+    mode,
+    provider,
+    scenario,
+    scenarioEvents,
+    score,
+    status,
+    tone
+  };
+}
+
+function renderPaymentGatewaySandbox(event) {
+  if (event) event.preventDefault();
+  if (!els.paymentSandboxOutput) return;
+  const sandbox = paymentSandboxConfig();
+  if (els.paymentSandboxSummary) {
+    els.paymentSandboxSummary.textContent = `${sandbox.score}/100 | ${sandbox.status}`;
+  }
+  els.paymentSandboxOutput.innerHTML = `
+    <div class="payment-sandbox-hero ${escapeHtml(sandbox.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(paymentSandboxModeLabel(sandbox.mode))}</span>
+        <h3>${escapeHtml(paymentSandboxScenarioLabel(sandbox.scenario))}</h3>
+        <p>${escapeHtml(paymentSandboxProviderLabel(sandbox.provider))} with ${escapeHtml(paymentSandboxEvidenceLabel(sandbox.evidence)).toLowerCase()} before production payment rails are switched on.</p>
+      </div>
+      <div class="payment-sandbox-score" style="--score:${sandbox.score}">
+        <b>${sandbox.score}</b>
+        <span>Pay</span>
+      </div>
+    </div>
+    <div class="payment-sandbox-metric-grid">
+      <article><span>Provider posture</span><strong>${escapeHtml(paymentSandboxProviderLabel(sandbox.provider))}</strong><p>Hosted checkout keeps payment credentials away from the product.</p></article>
+      <article><span>Scenario</span><strong>${escapeHtml(paymentSandboxScenarioLabel(sandbox.scenario))}</strong><p>${sandbox.scenarioEvents.length} sandbox events mapped.</p></article>
+      <article><span>Evidence</span><strong>${escapeHtml(paymentSandboxEvidenceLabel(sandbox.evidence))}</strong><p>Release depends on receipts that can be replayed and audited.</p></article>
+      <article><span>Blockers</span><strong>${sandbox.blockers.length}</strong><p>${sandbox.blockers[0] ? escapeHtml(sandbox.blockers[0]) : "No active sandbox blocker in this preview."}</p></article>
+    </div>
+    <div class="payment-sandbox-route-grid">
+      <article>
+        <h3>Selected sandbox route</h3>
+        <ol>
+          ${sandbox.scenarioEvents.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ol>
+      </article>
+      <article class="${sandbox.blockers.length ? "blocked" : "ready"}">
+        <h3>${sandbox.blockers.length ? "Before real payments" : "Route ready to dry-run"}</h3>
+        <ul>
+          ${(sandbox.blockers.length ? sandbox.blockers : ["hosted checkout session created", "webhook receipt is signed or replayable", "entitlement mutation is backend-owned", "finance and support receipt paths are mapped"]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <h3>Backend receipt bridge</h3>
+        <p>Every sandbox run should produce a backend audit receipt with gateway event ID, idempotency key, plan, entitlement state, invoice or refund reference, and reconciliation posture.</p>
+      </article>
+    </div>
+    <div class="payment-sandbox-test-grid">
+      ${PAYMENT_SANDBOX_TESTS.map((test) => `
+        <article>
+          <div class="payment-sandbox-card-head">
+            <div>
+              <span>${escapeHtml(test.owner)}</span>
+              <strong>${escapeHtml(test.label)}</strong>
+            </div>
+            <b>${test.score}</b>
+          </div>
+          <p>${escapeHtml(test.event)} | ${escapeHtml(test.proof)}</p>
+          <div class="build-progress-bar"><span style="width:${test.score}%"></span></div>
+          <small>${escapeHtml(test.guardrail)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="payment-sandbox-flow-grid">
+      ${sandbox.lanes.map((lane) => `
+        <article>
+          <span>${escapeHtml(lane.label)}</span>
+          <strong>${lane.score}/100</strong>
+          <div class="build-progress-bar"><span style="width:${lane.score}%"></span></div>
+          <p>${escapeHtml(lane.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="payment-sandbox-control-grid">
+      <article><span>Checkout control</span><strong>Hosted only</strong><p>No direct card, UPI, netbanking, PAN, or bank entry inside NiveshNadi.</p></article>
+      <article><span>Webhook control</span><strong>Signed and replayable</strong><p>Reject unsigned, stale, duplicate, malformed, and unexpected event sequences.</p></article>
+      <article><span>Entitlement control</span><strong>Server-confirmed</strong><p>Paid access changes only after a verified event and audit receipt.</p></article>
+      <article><span>Finance control</span><strong>Reconciled</strong><p>Invoice, refund, settlement, variance, and support repair paths stay visible before launch.</p></article>
+    </div>
+  `;
+}
+
+function makePaymentSandboxBrief() {
+  const sandbox = paymentSandboxConfig();
+  return [
+    "# NiveshNadi Payment Gateway Sandbox Route",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Score: ${sandbox.score}/100`,
+    `Status: ${sandbox.status}`,
+    `Provider posture: ${paymentSandboxProviderLabel(sandbox.provider)}`,
+    `Scenario: ${paymentSandboxScenarioLabel(sandbox.scenario)}`,
+    `Evidence posture: ${paymentSandboxEvidenceLabel(sandbox.evidence)}`,
+    `Mode: ${paymentSandboxModeLabel(sandbox.mode)}`,
+    "",
+    "## Selected Sandbox Route",
+    ...sandbox.scenarioEvents.map((item) => `- ${item}`),
+    "",
+    "## Sandbox Tests",
+    ...PAYMENT_SANDBOX_TESTS.map((test) => `- ${test.label}: ${test.score}/100 | ${test.event} | ${test.proof} | ${test.guardrail}`),
+    "",
+    "## Control Lanes",
+    ...sandbox.lanes.map((lane) => `- ${lane.label}: ${lane.score}/100 | ${lane.detail}`),
+    "",
+    "## Blockers",
+    ...(sandbox.blockers.length ? sandbox.blockers.map((item) => `- ${item}`) : ["- No active sandbox blocker in this preview."]),
+    "",
+    "## Guardrail",
+    "This sandbox route is a pre-launch dry run only. NiveshNadi should not collect card, UPI, bank, PAN, or payment credentials. Public paid access should unlock only from verified backend gateway events, idempotency checks, and backend audit receipts."
+  ].join("\n");
+}
+
+function openPaymentSandboxBlocker() {
+  const sandbox = paymentSandboxConfig();
+  scrollToHash(sandbox.blockers.length ? "#backend-audit-receipts" : "#account-launch", "smooth", true);
+}
+
+function entitlementBridgePlanLabel(plan) {
+  return {
+    free: "Free Starter",
+    monthly: "Nadi Plus Monthly",
+    annual: "Nadi Plus Annual",
+    founder: "Founder Beta",
+    phase2: "Phase 2 Distributor Preview"
+  }[plan] || "Nadi Plus Monthly";
+}
+
+function entitlementBridgeLifecycleLabel(lifecycle) {
+  return {
+    trial: "Starter trial",
+    active: "Paid active",
+    grace: "Renewal grace",
+    refund: "Refund and revoke",
+    expired: "Expired access",
+    manual: "Manual founder review"
+  }[lifecycle] || "Paid active";
+}
+
+function entitlementBridgePolicyLabel(policy) {
+  return {
+    hard: "Server-enforced feature limits",
+    soft: "Soft launch limits",
+    evidence: "Evidence-first paid unlock",
+    unlimited: "Unlimited access"
+  }[policy] || "Server-enforced feature limits";
+}
+
+function entitlementBridgeReceiptLabel(receipt) {
+  return {
+    auditReady: "Backend audit receipt ready",
+    webhook: "Verified payment webhook",
+    manual: "Manual support confirmation",
+    missing: "No entitlement receipt"
+  }[receipt] || "Verified payment webhook";
+}
+
+function entitlementBridgeConfig() {
+  const plan = els.entitlementPlan?.value || "monthly";
+  const lifecycle = els.entitlementLifecycle?.value || "active";
+  const policy = els.entitlementPolicy?.value || "hard";
+  const receipt = els.entitlementReceipt?.value || "webhook";
+  const planMeta = {
+    free: {
+      price: "Rs. 0",
+      cadence: "starter",
+      limits: ["core screener", "2 saved research packs", "1 watchlist", "share-safe export preview"],
+      guardrail: "Good for trust-building without making the free tier feel broken."
+    },
+    monthly: {
+      price: "Rs. 100",
+      cadence: "monthly",
+      limits: ["saved research packs", "watchlist alerts", "decision pack history", "dossier previews"],
+      guardrail: "Low-friction retail entry with clear renewal and grace rules."
+    },
+    annual: {
+      price: "Rs. 1,000",
+      cadence: "yearly",
+      limits: ["monthly features", "larger vault", "review history", "priority source refresh notes"],
+      guardrail: "Best-value consumer plan without pushing unsuitable urgency."
+    },
+    founder: {
+      price: "Rs. 499",
+      cadence: "beta year",
+      limits: ["early access", "manual support", "feedback channel", "beta feature preview"],
+      guardrail: "Manual cohort must not bypass audit, refund, or deletion controls."
+    },
+    phase2: {
+      price: "B2B later",
+      cadence: "annual",
+      limits: ["ARN/EUIN preview", "client dashboard placeholder", "consent handoff design"],
+      guardrail: "Distributor access remains outside Phase 1 retail entitlement."
+    }
+  }[plan] || {
+    price: "Rs. 100",
+    cadence: "monthly",
+    limits: ["saved research packs", "watchlist alerts", "decision pack history"],
+    guardrail: "Low-friction retail entry with clear renewal and grace rules."
+  };
+  const lifecycleRoute = {
+    trial: ["account.created", "starter.entitlement.granted", "usage.limit.checked", "upgrade.prompt.shown"],
+    active: ["checkout.created", "webhook.verified", "entitlement.granted", "feature.limit.checked", "renewal.scheduled"],
+    grace: ["renewal.failed", "grace.started", "feature.access.limited", "retry.scheduled", "support.receipt.created"],
+    refund: ["refund.created", "entitlement.revoked", "invoice.adjusted", "support.note.redacted", "settlement.reconciled"],
+    expired: ["subscription.expired", "entitlement.downgraded", "vault.readonly", "renewal.route.shown"],
+    manual: ["founder.requested", "support.approved", "entitlement.provisional", "audit.receipt.required"]
+  }[lifecycle] || ["checkout.created", "webhook.verified", "entitlement.granted", "feature.limit.checked", "renewal.scheduled"];
+  const base = Math.round(ENTITLEMENT_BRIDGE_STATES.reduce((sum, state) => sum + state.score, 0) / ENTITLEMENT_BRIDGE_STATES.length);
+  const planDelta = plan === "annual" ? 10 : plan === "monthly" ? 8 : plan === "free" ? 4 : plan === "founder" ? -2 : -14;
+  const lifecycleDelta = lifecycle === "active" ? 10 : lifecycle === "trial" ? 4 : lifecycle === "grace" ? -2 : lifecycle === "refund" ? -6 : lifecycle === "expired" ? -12 : -8;
+  const policyDelta = policy === "hard" ? 12 : policy === "evidence" ? 8 : policy === "soft" ? 2 : -24;
+  const receiptDelta = receipt === "auditReady" ? 14 : receipt === "webhook" ? 8 : receipt === "manual" ? -8 : -26;
+  const score = clampNumber(base + planDelta + lifecycleDelta + policyDelta + receiptDelta, 18, 94);
+  const blockers = [
+    ...(plan === "phase2" ? ["Phase 2 distributor entitlement cannot mix with Phase 1 retail accounts"] : []),
+    ...(policy === "unlimited" ? ["unlimited access removes consumer limits and weakens pricing discipline"] : []),
+    ...(receipt === "missing" ? ["entitlement receipt is missing, so paid access cannot be trusted"] : []),
+    ...(receipt === "manual" ? ["manual entitlement confirmation needs support review and reconciliation"] : []),
+    ...(lifecycle === "refund" ? ["refund path must revoke or downgrade access through backend audit receipts"] : []),
+    ...(lifecycle === "expired" ? ["expired access needs a clear downgrade and renewal route"] : []),
+    ...(lifecycle === "manual" ? ["manual founder review cannot become the default public launch path"] : [])
+  ];
+  const status = score >= 82 && !blockers.length
+    ? "Entitlement beta ready"
+    : score >= 58
+      ? "Entitlement dry-run"
+      : "Launch blocker";
+  const tone = status === "Entitlement beta ready" ? "ready" : status === "Launch blocker" ? "blocked" : "draft";
+  const featureAccess = [
+    {
+      label: "Research screener",
+      access: plan === "free" ? "Open starter" : "Paid enhanced",
+      detail: plan === "free" ? "Core demo research remains open." : "Saved filters, history, and watch context can persist."
+    },
+    {
+      label: "Saved packs",
+      access: plan === "free" ? "2 pack limit" : plan === "annual" ? "Expanded vault" : "Plus vault",
+      detail: "Decision packs, review snapshots, and dossiers respect account export and deletion rules."
+    },
+    {
+      label: "Watchlist alerts",
+      access: ["monthly", "annual", "founder"].includes(plan) ? "Enabled" : "Preview only",
+      detail: "Alerts remain research reminders, not transaction nudges."
+    },
+    {
+      label: "Dossier builder",
+      access: plan === "annual" ? "Priority history" : plan === "free" ? "Preview" : "Plus limit",
+      detail: "Research packets never include PAN, folio, CAS, bank, or distributor client data."
+    },
+    {
+      label: "Support lookup",
+      access: receipt === "auditReady" ? "Receipt bound" : "Limited",
+      detail: "Support sees redacted entitlement and account state, not private investor identifiers."
+    }
+  ];
+  const controls = [
+    {
+      label: "Plan",
+      score: plan === "phase2" ? 34 : plan === "free" ? 70 : plan === "founder" ? 58 : 78,
+      detail: `${entitlementBridgePlanLabel(plan)} | ${planMeta.price} ${planMeta.cadence}`
+    },
+    {
+      label: "Lifecycle",
+      score: lifecycle === "active" ? 78 : lifecycle === "trial" ? 68 : lifecycle === "grace" ? 54 : lifecycle === "manual" ? 42 : 46,
+      detail: entitlementBridgeLifecycleLabel(lifecycle)
+    },
+    {
+      label: "Policy",
+      score: policy === "hard" ? 82 : policy === "evidence" ? 76 : policy === "soft" ? 58 : 22,
+      detail: entitlementBridgePolicyLabel(policy)
+    },
+    {
+      label: "Receipt",
+      score: receipt === "auditReady" ? 84 : receipt === "webhook" ? 72 : receipt === "manual" ? 44 : 18,
+      detail: entitlementBridgeReceiptLabel(receipt)
+    }
+  ];
+  return {
+    blockers,
+    controls,
+    featureAccess,
+    lifecycle,
+    lifecycleRoute,
+    plan,
+    planMeta,
+    policy,
+    receipt,
+    score,
+    status,
+    tone
+  };
+}
+
+function renderEntitlementBridge(event) {
+  if (event) event.preventDefault();
+  if (!els.entitlementOutput) return;
+  const bridge = entitlementBridgeConfig();
+  if (els.entitlementSummary) {
+    els.entitlementSummary.textContent = `${bridge.score}/100 | ${bridge.status}`;
+  }
+  els.entitlementOutput.innerHTML = `
+    <div class="entitlement-hero ${escapeHtml(bridge.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(entitlementBridgeLifecycleLabel(bridge.lifecycle))}</span>
+        <h3>${escapeHtml(entitlementBridgePlanLabel(bridge.plan))} entitlement</h3>
+        <p>${escapeHtml(bridge.planMeta.price)} ${escapeHtml(bridge.planMeta.cadence)} with ${escapeHtml(entitlementBridgePolicyLabel(bridge.policy)).toLowerCase()} and ${escapeHtml(entitlementBridgeReceiptLabel(bridge.receipt)).toLowerCase()}.</p>
+      </div>
+      <div class="entitlement-score" style="--score:${bridge.score}">
+        <b>${bridge.score}</b>
+        <span>Access</span>
+      </div>
+    </div>
+    <div class="entitlement-metric-grid">
+      <article><span>Status</span><strong>${escapeHtml(bridge.status)}</strong><p>${bridge.blockers.length} active entitlement blockers.</p></article>
+      <article><span>Plan</span><strong>${escapeHtml(bridge.planMeta.price)}</strong><p>${escapeHtml(entitlementBridgePlanLabel(bridge.plan))} | ${escapeHtml(bridge.planMeta.guardrail)}</p></article>
+      <article><span>Lifecycle</span><strong>${escapeHtml(entitlementBridgeLifecycleLabel(bridge.lifecycle))}</strong><p>${bridge.lifecycleRoute.length} event states mapped.</p></article>
+      <article><span>Receipt</span><strong>${escapeHtml(entitlementBridgeReceiptLabel(bridge.receipt))}</strong><p>Access changes need a durable backend receipt.</p></article>
+    </div>
+    <div class="entitlement-feature-grid">
+      ${bridge.featureAccess.map((feature) => `
+        <article>
+          <span>${escapeHtml(feature.label)}</span>
+          <strong>${escapeHtml(feature.access)}</strong>
+          <p>${escapeHtml(feature.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="entitlement-state-grid">
+      ${ENTITLEMENT_BRIDGE_STATES.map((state) => `
+        <article>
+          <div class="entitlement-card-head">
+            <div>
+              <span>${escapeHtml(state.owner)}</span>
+              <strong>${escapeHtml(state.label)}</strong>
+            </div>
+            <b>${state.score}</b>
+          </div>
+          <p>${escapeHtml(state.event)} | ${escapeHtml(state.receipt)}</p>
+          <div class="build-progress-bar"><span style="width:${state.score}%"></span></div>
+          <small>${escapeHtml(state.guardrail)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="entitlement-flow-grid">
+      <article>
+        <h3>Selected entitlement route</h3>
+        <ol>
+          ${bridge.lifecycleRoute.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ol>
+      </article>
+      <article class="${bridge.blockers.length ? "blocked" : "ready"}">
+        <h3>${bridge.blockers.length ? "Before paid beta" : "Beta route clear"}</h3>
+        <ul>
+          ${(bridge.blockers.length ? bridge.blockers : ["plan is mapped", "server receipt is selected", "feature limits are visible", "support lookup is redacted"]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <h3>Launch contract</h3>
+        <p>Every paid feature should check account entitlement, feature policy, expiry, refund state, and receipt posture before unlocking saved research, dossier, alert, export, or future live-data features.</p>
+      </article>
+    </div>
+    <div class="entitlement-control-grid">
+      ${bridge.controls.map((control) => `
+        <article>
+          <span>${escapeHtml(control.label)}</span>
+          <strong>${control.score}/100</strong>
+          <div class="build-progress-bar"><span style="width:${control.score}%"></span></div>
+          <p>${escapeHtml(control.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function makeEntitlementBridgeBrief() {
+  const bridge = entitlementBridgeConfig();
+  return [
+    "# NiveshNadi Entitlement Bridge",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Score: ${bridge.score}/100`,
+    `Status: ${bridge.status}`,
+    `Plan: ${entitlementBridgePlanLabel(bridge.plan)} | ${bridge.planMeta.price} ${bridge.planMeta.cadence}`,
+    `Lifecycle: ${entitlementBridgeLifecycleLabel(bridge.lifecycle)}`,
+    `Policy: ${entitlementBridgePolicyLabel(bridge.policy)}`,
+    `Receipt: ${entitlementBridgeReceiptLabel(bridge.receipt)}`,
+    "",
+    "## Feature Access",
+    ...bridge.featureAccess.map((feature) => `- ${feature.label}: ${feature.access} | ${feature.detail}`),
+    "",
+    "## Entitlement Route",
+    ...bridge.lifecycleRoute.map((item) => `- ${item}`),
+    "",
+    "## Entitlement States",
+    ...ENTITLEMENT_BRIDGE_STATES.map((state) => `- ${state.label}: ${state.score}/100 | ${state.event} | ${state.guardrail}`),
+    "",
+    "## Blockers",
+    ...(bridge.blockers.length ? bridge.blockers.map((item) => `- ${item}`) : ["- No active entitlement blocker in this preview."]),
+    "",
+    "## Guardrail",
+    "Entitlement Bridge is launch planning only. Real paid access must be driven by backend-verified payment events, account ownership, export/delete controls, and redacted support receipts. It must not store card, UPI, bank, PAN, folio, CAS, ARN, EUIN, or distributor client data."
+  ].join("\n");
+}
+
+function openEntitlementBlocker() {
+  const bridge = entitlementBridgeConfig();
+  scrollToHash(bridge.blockers.length ? "#backend-audit-receipts" : "#account-launch", "smooth", true);
+}
+
+function subscriptionOpsQueueLabel(queue) {
+  return {
+    renewal: "Renewal operations",
+    failed: "Failed payment triage",
+    refund: "Refund and cancellation desk",
+    invoice: "Invoice and tax review",
+    reconcile: "Settlement reconciliation",
+    support: "Support repair queue"
+  }[queue] || "Renewal operations";
+}
+
+function subscriptionOpsRiskLabel(risk) {
+  return {
+    normal: "Normal beta traffic",
+    attention: "Attention needed",
+    critical: "Critical launch risk",
+    freeze: "Launch freeze"
+  }[risk] || "Normal beta traffic";
+}
+
+function subscriptionOpsRunbookLabel(runbook) {
+  return {
+    auto: "Automated ops runbook",
+    review: "Ops review required",
+    manual: "Manual founder support",
+    missing: "No runbook"
+  }[runbook] || "Ops review required";
+}
+
+function subscriptionOpsReceiptLabel(receipt) {
+  return {
+    eventStream: "Event stream receipts",
+    auditReady: "Backend audit receipts",
+    spreadsheet: "Manual spreadsheet tracker",
+    missing: "No receipt trail"
+  }[receipt] || "Backend audit receipts";
+}
+
+function subscriptionOpsConfig() {
+  const queue = els.subscriptionOpsQueue?.value || "renewal";
+  const risk = els.subscriptionOpsRisk?.value || "attention";
+  const runbook = els.subscriptionOpsRunbook?.value || "review";
+  const receipt = els.subscriptionOpsReceipt?.value || "auditReady";
+  const base = Math.round(SUBSCRIPTION_OPS_STATES.reduce((sum, state) => sum + state.score, 0) / SUBSCRIPTION_OPS_STATES.length);
+  const queueDelta = {
+    renewal: 8,
+    failed: 2,
+    refund: 0,
+    invoice: -2,
+    reconcile: 4,
+    support: 0
+  }[queue] || 0;
+  const riskDelta = risk === "normal" ? 12 : risk === "attention" ? 4 : risk === "critical" ? -10 : -24;
+  const runbookDelta = runbook === "auto" ? 12 : runbook === "review" ? 6 : runbook === "manual" ? -8 : -26;
+  const receiptDelta = receipt === "auditReady" ? 14 : receipt === "eventStream" ? 10 : receipt === "spreadsheet" ? -14 : -28;
+  const score = clampNumber(base + queueDelta + riskDelta + runbookDelta + receiptDelta, 16, 94);
+  const opsRoute = {
+    renewal: ["renewal job queued", "gateway attempt checked", "entitlement refreshed", "invoice status verified", "next renewal scheduled"],
+    failed: ["payment failure received", "user notice issued", "grace applied", "retry scheduled", "support route opened"],
+    refund: ["refund request checked", "gateway refund submitted", "entitlement downgraded", "invoice adjusted", "support receipt closed"],
+    invoice: ["invoice status pulled", "tax posture checked", "receipt URL verified", "user copy prepared", "finance exception routed"],
+    reconcile: ["settlement file imported", "gateway total compared", "app entitlement count checked", "variance routed", "month closed"],
+    support: ["support case opened", "redacted account state checked", "entitlement repair reviewed", "user notice drafted", "case closed"]
+  }[queue] || ["renewal job queued", "gateway attempt checked", "entitlement refreshed", "invoice status verified", "next renewal scheduled"];
+  const blockers = [
+    ...(risk === "critical" ? ["critical launch risk needs owner, rollback path, and user notice before continuing"] : []),
+    ...(risk === "freeze" ? ["launch freeze should stop paid rollout until incident and entitlement state are repaired"] : []),
+    ...(runbook === "missing" ? ["ops runbook is missing, so support cannot safely handle subscription events"] : []),
+    ...(runbook === "manual" ? ["manual founder support cannot scale to public paid launch"] : []),
+    ...(receipt === "spreadsheet" ? ["manual spreadsheet tracker is not enough for subscription audit and reconciliation"] : []),
+    ...(receipt === "missing" ? ["missing receipt trail makes entitlement, refund, and invoice state untrustworthy"] : []),
+    ...(queue === "invoice" ? ["invoice and GST posture need finance/legal signoff before paid launch"] : []),
+    ...(queue === "refund" ? ["refund path needs clear entitlement downgrade and user-visible policy"] : [])
+  ];
+  const status = score >= 82 && !blockers.length
+    ? "Ops beta ready"
+    : score >= 58
+      ? "Ops dry-run"
+      : "Launch blocker";
+  const tone = status === "Ops beta ready" ? "ready" : status === "Launch blocker" ? "blocked" : "draft";
+  const metrics = [
+    {
+      label: "Queue",
+      score: queue === "renewal" ? 74 : queue === "reconcile" ? 70 : queue === "failed" ? 62 : queue === "support" ? 58 : 54,
+      detail: subscriptionOpsQueueLabel(queue)
+    },
+    {
+      label: "Risk",
+      score: risk === "normal" ? 82 : risk === "attention" ? 66 : risk === "critical" ? 34 : 18,
+      detail: subscriptionOpsRiskLabel(risk)
+    },
+    {
+      label: "Runbook",
+      score: runbook === "auto" ? 84 : runbook === "review" ? 72 : runbook === "manual" ? 44 : 16,
+      detail: subscriptionOpsRunbookLabel(runbook)
+    },
+    {
+      label: "Receipt",
+      score: receipt === "auditReady" ? 86 : receipt === "eventStream" ? 78 : receipt === "spreadsheet" ? 36 : 12,
+      detail: subscriptionOpsReceiptLabel(receipt)
+    }
+  ];
+  const opsLanes = [
+    {
+      label: "User notice",
+      state: risk === "normal" ? "Standard copy" : "Clear intervention copy",
+      detail: "Explain renewal, grace, refund, or expiry without nudging transactions."
+    },
+    {
+      label: "Support view",
+      state: runbook === "manual" ? "Reviewer required" : "Redacted lookup",
+      detail: "Support sees plan, state, receipt, and limits, not PAN, folio, CAS, bank, or private notes."
+    },
+    {
+      label: "Finance check",
+      state: queue === "reconcile" || queue === "invoice" ? "Primary lane" : "Linked receipt",
+      detail: "Invoice, refund, and settlement state should agree with entitlement state."
+    },
+    {
+      label: "Rollback",
+      state: risk === "freeze" ? "Immediate freeze" : "Prepared",
+      detail: "Ops can pause paid feature changes and preserve a clean audit trail."
+    }
+  ];
+  return {
+    blockers,
+    metrics,
+    opsLanes,
+    opsRoute,
+    queue,
+    receipt,
+    risk,
+    runbook,
+    score,
+    status,
+    tone
+  };
+}
+
+function renderSubscriptionOpsConsole(event) {
+  if (event) event.preventDefault();
+  if (!els.subscriptionOpsOutput) return;
+  const ops = subscriptionOpsConfig();
+  if (els.subscriptionOpsSummary) {
+    els.subscriptionOpsSummary.textContent = `${ops.score}/100 | ${ops.status}`;
+  }
+  els.subscriptionOpsOutput.innerHTML = `
+    <div class="subscription-ops-hero ${escapeHtml(ops.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(subscriptionOpsRiskLabel(ops.risk))}</span>
+        <h3>${escapeHtml(subscriptionOpsQueueLabel(ops.queue))}</h3>
+        <p>${escapeHtml(subscriptionOpsRunbookLabel(ops.runbook))} with ${escapeHtml(subscriptionOpsReceiptLabel(ops.receipt)).toLowerCase()} before paid retail launch.</p>
+      </div>
+      <div class="subscription-ops-score" style="--score:${ops.score}">
+        <b>${ops.score}</b>
+        <span>Ops</span>
+      </div>
+    </div>
+    <div class="subscription-ops-metric-grid">
+      <article><span>Status</span><strong>${escapeHtml(ops.status)}</strong><p>${ops.blockers.length} active ops blockers.</p></article>
+      <article><span>Queue</span><strong>${escapeHtml(subscriptionOpsQueueLabel(ops.queue))}</strong><p>${ops.opsRoute.length} operations steps mapped.</p></article>
+      <article><span>Runbook</span><strong>${escapeHtml(subscriptionOpsRunbookLabel(ops.runbook))}</strong><p>Every support move should map to a redacted receipt.</p></article>
+      <article><span>Receipt posture</span><strong>${escapeHtml(subscriptionOpsReceiptLabel(ops.receipt))}</strong><p>Subscription state needs durable backend evidence.</p></article>
+    </div>
+    <div class="subscription-ops-lane-grid">
+      ${ops.opsLanes.map((lane) => `
+        <article>
+          <span>${escapeHtml(lane.label)}</span>
+          <strong>${escapeHtml(lane.state)}</strong>
+          <p>${escapeHtml(lane.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="subscription-ops-state-grid">
+      ${SUBSCRIPTION_OPS_STATES.map((state) => `
+        <article>
+          <div class="subscription-ops-card-head">
+            <div>
+              <span>${escapeHtml(state.owner)}</span>
+              <strong>${escapeHtml(state.label)}</strong>
+            </div>
+            <b>${state.score}</b>
+          </div>
+          <p>${escapeHtml(state.event)} | ${escapeHtml(state.receipt)}</p>
+          <div class="build-progress-bar"><span style="width:${state.score}%"></span></div>
+          <small>${escapeHtml(state.guardrail)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="subscription-ops-flow-grid">
+      <article>
+        <h3>Selected ops route</h3>
+        <ol>
+          ${ops.opsRoute.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ol>
+      </article>
+      <article class="${ops.blockers.length ? "blocked" : "ready"}">
+        <h3>${ops.blockers.length ? "Before paid launch" : "Ops route clear"}</h3>
+        <ul>
+          ${(ops.blockers.length ? ops.blockers : ["runbook is selected", "receipt trail is selected", "support view is redacted", "finance check is mapped"]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <h3>Retail launch guardrail</h3>
+        <p>Subscription operations should resolve billing and access issues without exposing PAN, folio, CAS, card, bank, UPI, ARN, EUIN, or private research notes to support or finance users.</p>
+      </article>
+    </div>
+    <div class="subscription-ops-control-grid">
+      ${ops.metrics.map((metric) => `
+        <article>
+          <span>${escapeHtml(metric.label)}</span>
+          <strong>${metric.score}/100</strong>
+          <div class="build-progress-bar"><span style="width:${metric.score}%"></span></div>
+          <p>${escapeHtml(metric.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function makeSubscriptionOpsBrief() {
+  const ops = subscriptionOpsConfig();
+  return [
+    "# NiveshNadi Subscription Ops Console",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Score: ${ops.score}/100`,
+    `Status: ${ops.status}`,
+    `Queue: ${subscriptionOpsQueueLabel(ops.queue)}`,
+    `Risk: ${subscriptionOpsRiskLabel(ops.risk)}`,
+    `Runbook: ${subscriptionOpsRunbookLabel(ops.runbook)}`,
+    `Receipt: ${subscriptionOpsReceiptLabel(ops.receipt)}`,
+    "",
+    "## Ops Route",
+    ...ops.opsRoute.map((item) => `- ${item}`),
+    "",
+    "## Ops Lanes",
+    ...ops.opsLanes.map((lane) => `- ${lane.label}: ${lane.state} | ${lane.detail}`),
+    "",
+    "## Subscription States",
+    ...SUBSCRIPTION_OPS_STATES.map((state) => `- ${state.label}: ${state.score}/100 | ${state.event} | ${state.guardrail}`),
+    "",
+    "## Blockers",
+    ...(ops.blockers.length ? ops.blockers.map((item) => `- ${item}`) : ["- No active subscription ops blocker in this preview."]),
+    "",
+    "## Guardrail",
+    "Subscription Ops Console is launch planning only. Real subscription operations must be backed by verified payment events, backend audit receipts, redacted support views, finance reconciliation, and clear refund or renewal policy."
+  ].join("\n");
+}
+
+function openSubscriptionOpsBlocker() {
+  const ops = subscriptionOpsConfig();
+  scrollToHash(ops.blockers.length ? "#backend-audit-receipts" : "#entitlement-bridge", "smooth", true);
+}
+
+function subscriptionBackendGatewayLabel(gateway) {
+  return {
+    hosted: "Hosted gateway adapter",
+    adapter: "Gateway-neutral adapter",
+    manual: "Manual beta ledger",
+    none: "No gateway selected"
+  }[gateway] || "Hosted gateway adapter";
+}
+
+function subscriptionBackendSourceLabel(source) {
+  return {
+    webhook: "Webhook ingestion",
+    entitlement: "Entitlement sync",
+    finance: "Invoice and refund ledger",
+    support: "Support repair queue",
+    reconciliation: "Settlement reconciliation"
+  }[source] || "Webhook ingestion";
+}
+
+function subscriptionBackendSyncLabel(sync) {
+  return {
+    realtime: "Near-real-time projection",
+    queued: "Queued worker projection",
+    replay: "Replayable event log",
+    manual: "Manual admin update",
+    browser: "Browser-local state"
+  }[sync] || "Queued worker projection";
+}
+
+function subscriptionBackendFailureLabel(failure) {
+  return {
+    retry: "Retry and grace path",
+    downgrade: "Downgrade access safely",
+    freeze: "Freeze paid mutations",
+    repair: "Support repair workflow"
+  }[failure] || "Retry and grace path";
+}
+
+function subscriptionBackendConfig() {
+  const gateway = els.subscriptionBackendGateway?.value || "hosted";
+  const source = els.subscriptionBackendSource?.value || "webhook";
+  const sync = els.subscriptionBackendSync?.value || "replay";
+  const failure = els.subscriptionBackendFailure?.value || "retry";
+  const base = Math.round(SUBSCRIPTION_BACKEND_CONTRACTS.reduce((sum, contract) => sum + contract.score, 0) / SUBSCRIPTION_BACKEND_CONTRACTS.length);
+  const gatewayDelta = { hosted: 12, adapter: 8, manual: -10, none: -30 }[gateway] || 0;
+  const sourceDelta = { webhook: 6, entitlement: 8, finance: 4, support: 2, reconciliation: 4 }[source] || 0;
+  const syncDelta = { realtime: 8, queued: 6, replay: 14, manual: -12, browser: -30 }[sync] || 0;
+  const failureDelta = { retry: 6, downgrade: 8, freeze: 4, repair: 2 }[failure] || 0;
+  const score = clampNumber(base + gatewayDelta + sourceDelta + syncDelta + failureDelta, 16, 94);
+  const route = {
+    webhook: ["gateway.webhook_received", "signature.verified", "idempotency.locked", "payment.event.accepted", "audit_receipt.written"],
+    entitlement: ["payment.receipt.accepted", "plan.policy.loaded", "entitlement.projection_synced", "feature.limit.updated", "support_view.refreshed"],
+    finance: ["invoice.event_received", "tax_mode.checked", "refund_or_chargeback_mapped", "finance_ledger.written", "settlement.pending"],
+    support: ["support.case_opened", "redacted_state.loaded", "repair_request_reviewed", "entitlement.patch_written", "case_receipt.closed"],
+    reconciliation: ["settlement_file.imported", "gateway_total.compared", "app_ledger.compared", "variance.routed", "month.closed"]
+  }[source] || ["gateway.webhook_received", "signature.verified", "idempotency.locked", "payment.event.accepted", "audit_receipt.written"];
+  const blockers = [
+    ...(gateway === "none" ? ["no production gateway adapter means paid launch cannot start"] : []),
+    ...(gateway === "manual" ? ["manual beta ledger can support founder tests but cannot scale to public retail launch"] : []),
+    ...(sync === "browser" ? ["browser-local state cannot be the source of truth for paid entitlement"] : []),
+    ...(sync === "manual" ? ["manual admin update needs dual review, receipts, and reconciliation before public launch"] : []),
+    ...(source === "finance" ? ["invoice, GST, refund, and chargeback policy need finance/legal signoff"] : []),
+    ...(source === "support" ? ["support repair workflow needs redaction, reviewer role, and rollback proof"] : []),
+    ...(failure === "repair" ? ["support repair must remain rare, reversible, and audit visible"] : []),
+    ...(score < 58 ? ["backend contract score is below paid-launch dry-run threshold"] : [])
+  ];
+  const status = score >= 82 && !blockers.length
+    ? "Backend beta ready"
+    : score >= 60
+      ? "Backend dry-run"
+      : "Launch blocker";
+  const tone = status === "Backend beta ready" ? "ready" : status === "Launch blocker" ? "blocked" : "draft";
+  const layers = [
+    {
+      label: "Gateway ingress",
+      state: gateway === "none" ? "Missing" : subscriptionBackendGatewayLabel(gateway),
+      detail: "Accept only hosted-checkout server events with signature and source timestamp."
+    },
+    {
+      label: "State machine",
+      state: subscriptionBackendSourceLabel(source),
+      detail: "Map payment, subscription, invoice, refund, support, and settlement events into one lifecycle."
+    },
+    {
+      label: "Idempotency",
+      state: sync === "replay" ? "Replay safe" : "Dedupe required",
+      detail: "Every event has a request id, gateway event id, event hash, and duplicate handling rule."
+    },
+    {
+      label: "Entitlement projection",
+      state: sync === "browser" ? "Blocked" : subscriptionBackendSyncLabel(sync),
+      detail: "The UI reads access from backend projection, not from editable client-side state."
+    },
+    {
+      label: "Recovery",
+      state: subscriptionBackendFailureLabel(failure),
+      detail: "Failures route to grace, downgrade, freeze, or support repair without exposing private data."
+    },
+    {
+      label: "Audit boundary",
+      state: "Redacted receipts",
+      detail: "Receipts store hashes, ids, states, and timestamps, not PAN, folio, CAS, bank, UPI, or card data."
+    }
+  ];
+  const controls = [
+    {
+      label: "Signature",
+      score: gateway === "hosted" || gateway === "adapter" ? 74 : gateway === "manual" ? 38 : 12,
+      detail: "Verify gateway signature server-side before writing any paid-state mutation."
+    },
+    {
+      label: "Replay",
+      score: sync === "replay" ? 86 : sync === "queued" ? 72 : sync === "realtime" ? 68 : sync === "manual" ? 36 : 10,
+      detail: "Event replay must preserve idempotency, entitlement state, invoice state, and support repair history."
+    },
+    {
+      label: "Projection",
+      score: sync === "browser" ? 12 : source === "entitlement" ? 78 : 64,
+      detail: "Feature access should be a read model from payment, refund, expiry, and support receipts."
+    },
+    {
+      label: "Recovery",
+      score: failure === "downgrade" ? 76 : failure === "retry" ? 72 : failure === "freeze" ? 68 : 58,
+      detail: subscriptionBackendFailureLabel(failure)
+    }
+  ];
+  const dataBoundary = [
+    {
+      label: "Allowed receipt fields",
+      detail: "gateway event id, plan id, invoice id, entitlement state, user hash, request id, timestamps"
+    },
+    {
+      label: "Never store here",
+      detail: "PAN, folio, CAS, raw card, UPI, bank details, credentials, ARN/EUIN, private notes"
+    },
+    {
+      label: "Support-safe view",
+      detail: "case id, redacted account state, plan status, receipt refs, repair reason code, reviewer role"
+    }
+  ];
+  return {
+    blockers,
+    controls,
+    dataBoundary,
+    failure,
+    gateway,
+    layers,
+    route,
+    score,
+    source,
+    status,
+    sync,
+    tone
+  };
+}
+
+function renderSubscriptionBackendBlueprint(event) {
+  if (event) event.preventDefault();
+  if (!els.subscriptionBackendOutput) return;
+  const backend = subscriptionBackendConfig();
+  if (els.subscriptionBackendSummary) {
+    els.subscriptionBackendSummary.textContent = `${backend.score}/100 | ${backend.status}`;
+  }
+  els.subscriptionBackendOutput.innerHTML = `
+    <div class="subscription-backend-hero ${escapeHtml(backend.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(subscriptionBackendSourceLabel(backend.source))}</span>
+        <h3>Subscription backend contract</h3>
+        <p>${escapeHtml(subscriptionBackendGatewayLabel(backend.gateway))} with ${escapeHtml(subscriptionBackendSyncLabel(backend.sync)).toLowerCase()} and ${escapeHtml(subscriptionBackendFailureLabel(backend.failure)).toLowerCase()} before paid retail launch.</p>
+      </div>
+      <div class="subscription-backend-score" style="--score:${backend.score}">
+        <b>${backend.score}</b>
+        <span>Back</span>
+      </div>
+    </div>
+    <div class="subscription-backend-metric-grid">
+      <article><span>Status</span><strong>${escapeHtml(backend.status)}</strong><p>${backend.blockers.length} backend blockers.</p></article>
+      <article><span>Gateway</span><strong>${escapeHtml(subscriptionBackendGatewayLabel(backend.gateway))}</strong><p>Payment credentials stay outside NiveshNadi.</p></article>
+      <article><span>Sync</span><strong>${escapeHtml(subscriptionBackendSyncLabel(backend.sync))}</strong><p>${backend.route.length} event steps mapped.</p></article>
+      <article><span>Recovery</span><strong>${escapeHtml(subscriptionBackendFailureLabel(backend.failure))}</strong><p>Access changes remain receipt-bound.</p></article>
+    </div>
+    <div class="subscription-backend-layer-grid">
+      ${backend.layers.map((layer) => `
+        <article>
+          <span>${escapeHtml(layer.label)}</span>
+          <strong>${escapeHtml(layer.state)}</strong>
+          <p>${escapeHtml(layer.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="subscription-backend-contract-grid">
+      ${SUBSCRIPTION_BACKEND_CONTRACTS.map((contract) => `
+        <article>
+          <div class="subscription-backend-card-head">
+            <div>
+              <span>${escapeHtml(contract.owner)}</span>
+              <strong>${escapeHtml(contract.label)}</strong>
+            </div>
+            <b>${contract.score}</b>
+          </div>
+          <p>${escapeHtml(contract.event)} | ${contract.fields.map((field) => escapeHtml(field)).join(", ")}</p>
+          <div class="build-progress-bar"><span style="width:${contract.score}%"></span></div>
+          <small>${escapeHtml(contract.guardrail)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="subscription-backend-flow-grid">
+      <article>
+        <h3>Selected backend route</h3>
+        <ol>
+          ${backend.route.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+        </ol>
+      </article>
+      <article class="${backend.blockers.length ? "blocked" : "ready"}">
+        <h3>${backend.blockers.length ? "Before gateway launch" : "Backend route clear"}</h3>
+        <ul>
+          ${(backend.blockers.length ? backend.blockers : ["gateway contract selected", "event replay is mapped", "entitlement projection is backend-owned", "support view is redacted"]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <h3>Data boundary</h3>
+        <ul>
+          ${backend.dataBoundary.map((item) => `<li><strong>${escapeHtml(item.label)}:</strong> ${escapeHtml(item.detail)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+    <div class="subscription-backend-control-grid">
+      ${backend.controls.map((control) => `
+        <article>
+          <span>${escapeHtml(control.label)}</span>
+          <strong>${control.score}/100</strong>
+          <div class="build-progress-bar"><span style="width:${control.score}%"></span></div>
+          <p>${escapeHtml(control.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function makeSubscriptionBackendBrief() {
+  const backend = subscriptionBackendConfig();
+  return [
+    "# NiveshNadi Subscription Backend Blueprint",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Score: ${backend.score}/100`,
+    `Status: ${backend.status}`,
+    `Gateway: ${subscriptionBackendGatewayLabel(backend.gateway)}`,
+    `Source lane: ${subscriptionBackendSourceLabel(backend.source)}`,
+    `Sync: ${subscriptionBackendSyncLabel(backend.sync)}`,
+    `Failure path: ${subscriptionBackendFailureLabel(backend.failure)}`,
+    "",
+    "## Selected Backend Route",
+    ...backend.route.map((step) => `- ${step}`),
+    "",
+    "## Backend Layers",
+    ...backend.layers.map((layer) => `- ${layer.label}: ${layer.state} | ${layer.detail}`),
+    "",
+    "## Contract Events",
+    ...SUBSCRIPTION_BACKEND_CONTRACTS.map((contract) => `- ${contract.label}: ${contract.score}/100 | ${contract.event} | ${contract.guardrail}`),
+    "",
+    "## Controls",
+    ...backend.controls.map((control) => `- ${control.label}: ${control.score}/100 | ${control.detail}`),
+    "",
+    "## Blockers",
+    ...(backend.blockers.length ? backend.blockers.map((item) => `- ${item}`) : ["- No active subscription backend blocker in this preview."]),
+    "",
+    "## Guardrail",
+    "Subscription Backend Blueprint is launch planning only. Real paid access requires server-side webhook verification, idempotency, event replay, entitlement projection, finance reconciliation, support redaction, incident rollback, and exclusion of PAN, folio, CAS, bank, UPI, card, credential, ARN/EUIN, and private note data."
+  ].join("\n");
+}
+
+function openSubscriptionBackendBlocker() {
+  const backend = subscriptionBackendConfig();
+  scrollToHash(backend.blockers.length ? "#backend-audit-receipts" : "#payment-sandbox", "smooth", true);
+}
+
 function accountReadinessLabConfig() {
   const steps = ACCOUNT_READINESS_STEPS.map((step) => ({
     ...step,
@@ -2418,6 +4189,473 @@ function makeAccountReadinessBrief() {
 
 function openAccountBlocker() {
   scrollToHash(accountReadinessLabConfig().nextBlocker.route, "smooth", true);
+}
+
+function accountRouteCohortLabel(cohort) {
+  return {
+    founder: "Founder account pilot",
+    paidBeta: "Paid beta cohort",
+    publicWaitlist: "Public waitlist launch",
+    distributorPreview: "Phase 2 distributor preview"
+  }[cohort] || "Founder account pilot";
+}
+
+function accountRouteAuthLabel(auth) {
+  return {
+    passwordless: "Passwordless email",
+    otp: "Email OTP and recovery",
+    social: "Social login plus email",
+    undecided: "Auth provider undecided"
+  }[auth] || "Passwordless email";
+}
+
+function accountRouteDataLabel(data) {
+  return {
+    encrypted: "Encrypted account store",
+    managed: "Managed backend database",
+    browser: "Browser-local only",
+    manual: "Manual spreadsheet ledger"
+  }[data] || "Encrypted account store";
+}
+
+function accountRouteCutoverLabel(cutover) {
+  return {
+    dry: "Dry-run launch route",
+    migration: "Saved research migration",
+    entitlement: "Paid entitlement join",
+    support: "Support recovery drill",
+    public: "Public beta cutover"
+  }[cutover] || "Dry-run launch route";
+}
+
+function accountLaunchRouteConfig() {
+  const cohort = els.accountRouteCohort?.value || "founder";
+  const auth = els.accountRouteAuth?.value || "passwordless";
+  const data = els.accountRouteData?.value || "encrypted";
+  const cutover = els.accountRouteCutover?.value || "dry";
+  const routeEvents = {
+    dry: ["account.route_planned", "auth.provider_selected", "vault.schema_mapped", "privacy.export_delete_checked"],
+    migration: ["browser_artifacts.scanned", "migration.scope_confirmed", "account_vault.dry_run", "delete_export.map_checked"],
+    entitlement: ["payment_receipt.verified", "entitlement.account_joined", "feature_limits.projected", "support_repair.route_checked"],
+    support: ["case.created", "support.redacted_view_opened", "recovery.requested", "audit_receipt.linked"],
+    public: ["public_beta.window_opened", "auth.rate_limits_active", "payment_entitlement_live", "support_and_deletion_ready"]
+  }[cutover] || ["account.route_planned", "auth.provider_selected", "vault.schema_mapped", "privacy.export_delete_checked"];
+  const base = Math.round(ACCOUNT_LAUNCH_ROUTE_GATES.reduce((sum, gate) => sum + gate.score, 0) / ACCOUNT_LAUNCH_ROUTE_GATES.length);
+  const cohortDelta = cohort === "founder" ? 8 : cohort === "paidBeta" ? 5 : cohort === "publicWaitlist" ? 2 : -18;
+  const authDelta = auth === "passwordless" ? 10 : auth === "otp" ? 7 : auth === "social" ? 3 : -18;
+  const dataDelta = data === "encrypted" ? 12 : data === "managed" ? 9 : data === "browser" ? -18 : -24;
+  const cutoverDelta = cutover === "dry" ? 8 : cutover === "migration" ? 5 : cutover === "entitlement" ? 4 : cutover === "support" ? 2 : -6;
+  const score = clampNumber(base + cohortDelta + authDelta + dataDelta + cutoverDelta, 18, 94);
+  const blockers = [
+    ...(cohort === "distributorPreview" ? ["Phase 2 distributor preview cannot ride on the retail Phase 1 account route"] : []),
+    ...(auth === "undecided" ? ["auth provider is still undecided; paid account beta needs a chosen login and recovery model"] : []),
+    ...(data === "browser" ? ["browser-local storage cannot be the production paid account database"] : []),
+    ...(data === "manual" ? ["manual spreadsheet ledger is not acceptable for retail account storage"] : []),
+    ...(cutover === "public" ? ["public beta cutover needs legal, source, account, payment, support, export, and deletion gates complete"] : []),
+    ...(cutover === "entitlement" && cohort === "publicWaitlist" ? ["public waitlist users should not receive paid entitlement until payment gateway and account storage are live"] : []),
+    ...(score < 58 ? ["account launch route remains below beta threshold"] : [])
+  ];
+  const status = score >= 80 && !blockers.length
+    ? "Pilot route ready"
+    : score >= 60
+      ? "Account route dry-run"
+      : "Launch blocker";
+  const tone = status === "Pilot route ready" ? "ready" : status === "Launch blocker" ? "blocked" : "draft";
+  const lanes = [
+    {
+      label: "Identity",
+      score: auth === "passwordless" ? 78 : auth === "otp" ? 72 : auth === "social" ? 64 : 28,
+      detail: accountRouteAuthLabel(auth)
+    },
+    {
+      label: "Vault",
+      score: data === "encrypted" ? 82 : data === "managed" ? 76 : data === "browser" ? 32 : 18,
+      detail: accountRouteDataLabel(data)
+    },
+    {
+      label: "Entitlement",
+      score: cutover === "entitlement" ? 66 : cohort === "founder" ? 58 : 52,
+      detail: "Link account access to verified payment and backend audit receipts."
+    },
+    {
+      label: "Privacy",
+      score: data === "manual" ? 30 : cutover === "migration" ? 64 : 58,
+      detail: "Export, delete, consent, and retention are visible before the pilot opens."
+    },
+    {
+      label: "Support",
+      score: cutover === "support" ? 70 : 56,
+      detail: "Recovery and redacted support views are tested before launch."
+    },
+    {
+      label: "Phase 2 wall",
+      score: cohort === "distributorPreview" ? 24 : 78,
+      detail: "Distributor identifiers and client records stay outside retail Phase 1."
+    }
+  ];
+  const controlCards = [
+    {
+      label: "Minimum account",
+      title: "Email plus research state",
+      detail: "No PAN, folio, CAS, bank, nominee, ARN, EUIN, or client-book fields in Phase 1."
+    },
+    {
+      label: "Saved research",
+      title: "User-controlled vault",
+      detail: "Profile, packs, watchlist, reviews, dossiers, and receipts need export/delete coverage."
+    },
+    {
+      label: "Paid access",
+      title: "Backend entitlement",
+      detail: "Plan state is projected from verified payment events, not editable browser storage."
+    },
+    {
+      label: "Support safety",
+      title: "Redacted by default",
+      detail: "Support should see issue posture and receipts without private investor notes."
+    }
+  ];
+  return {
+    auth,
+    blockers,
+    cohort,
+    controlCards,
+    cutover,
+    data,
+    lanes,
+    routeEvents,
+    score,
+    status,
+    tone
+  };
+}
+
+function renderAccountLaunchRoute(event) {
+  if (event) event.preventDefault();
+  if (!els.accountRouteOutput) return;
+  const route = accountLaunchRouteConfig();
+  if (els.accountRouteSummary) {
+    els.accountRouteSummary.textContent = `${route.score}/100 | ${route.status}`;
+  }
+  els.accountRouteOutput.innerHTML = `
+    <div class="account-route-hero ${escapeHtml(route.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(accountRouteCohortLabel(route.cohort))}</span>
+        <h3>Retail account launch route</h3>
+        <p>${escapeHtml(accountRouteAuthLabel(route.auth))}, ${escapeHtml(accountRouteDataLabel(route.data)).toLowerCase()}, and ${escapeHtml(accountRouteCutoverLabel(route.cutover)).toLowerCase()} before retail accounts move beyond prototype.</p>
+      </div>
+      <div class="account-route-score" style="--score:${route.score}">
+        <b>${route.score}</b>
+        <span>Acct</span>
+      </div>
+    </div>
+    <div class="account-route-metric-grid">
+      <article><span>Cohort</span><strong>${escapeHtml(accountRouteCohortLabel(route.cohort))}</strong><p>Keep the first account wave narrow enough to support carefully.</p></article>
+      <article><span>Auth</span><strong>${escapeHtml(accountRouteAuthLabel(route.auth))}</strong><p>Login, recovery, and abuse controls must be selected before beta.</p></article>
+      <article><span>Data store</span><strong>${escapeHtml(accountRouteDataLabel(route.data))}</strong><p>Research state needs row ownership, backups, deletion, and audit receipts.</p></article>
+      <article><span>Blockers</span><strong>${route.blockers.length}</strong><p>${route.blockers[0] ? escapeHtml(route.blockers[0]) : "No active account-route blocker in this preview."}</p></article>
+    </div>
+    <div class="account-route-map-grid">
+      <article>
+        <h3>Selected launch route</h3>
+        <ol>
+          ${route.routeEvents.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ol>
+      </article>
+      <article class="${route.blockers.length ? "blocked" : "ready"}">
+        <h3>${route.blockers.length ? "Before account beta" : "Pilot route clear"}</h3>
+        <ul>
+          ${(route.blockers.length ? route.blockers : ["auth provider selected", "account vault storage scoped", "paid entitlement join mapped", "export/delete and support safety visible"]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <h3>Launch boundary</h3>
+        <p>This route turns saved self-research into an account product. It still avoids transaction execution, personalized advice, PAN, folio, CAS, bank details, and distributor client records.</p>
+      </article>
+    </div>
+    <div class="account-route-gate-grid">
+      ${ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `
+        <article>
+          <div class="account-route-card-head">
+            <div>
+              <span>${escapeHtml(gate.owner)}</span>
+              <strong>${escapeHtml(gate.label)}</strong>
+            </div>
+            <b>${gate.score}</b>
+          </div>
+          <p>${escapeHtml(gate.event)} | ${escapeHtml(gate.proof)}</p>
+          <div class="build-progress-bar"><span style="width:${gate.score}%"></span></div>
+          <small>${escapeHtml(gate.guardrail)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-route-lane-grid">
+      ${route.lanes.map((lane) => `
+        <article>
+          <span>${escapeHtml(lane.label)}</span>
+          <strong>${lane.score}/100</strong>
+          <div class="build-progress-bar"><span style="width:${lane.score}%"></span></div>
+          <p>${escapeHtml(lane.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-route-control-grid">
+      ${route.controlCards.map((card) => `
+        <article>
+          <span>${escapeHtml(card.label)}</span>
+          <strong>${escapeHtml(card.title)}</strong>
+          <p>${escapeHtml(card.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function makeAccountLaunchRouteBrief() {
+  const route = accountLaunchRouteConfig();
+  return [
+    "# NiveshNadi Retail Account Launch Route",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Score: ${route.score}/100`,
+    `Status: ${route.status}`,
+    `Cohort: ${accountRouteCohortLabel(route.cohort)}`,
+    `Auth: ${accountRouteAuthLabel(route.auth)}`,
+    `Data store: ${accountRouteDataLabel(route.data)}`,
+    `Cutover: ${accountRouteCutoverLabel(route.cutover)}`,
+    "",
+    "## Selected Launch Route",
+    ...route.routeEvents.map((item) => `- ${item}`),
+    "",
+    "## Launch Gates",
+    ...ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `- ${gate.label}: ${gate.score}/100 | ${gate.event} | ${gate.proof} | ${gate.guardrail}`),
+    "",
+    "## Control Lanes",
+    ...route.lanes.map((lane) => `- ${lane.label}: ${lane.score}/100 | ${lane.detail}`),
+    "",
+    "## Blockers",
+    ...(route.blockers.length ? route.blockers.map((item) => `- ${item}`) : ["- No active account-route blocker in this preview."]),
+    "",
+    "## Guardrail",
+    "Retail Account Launch Route is pre-launch planning only. Phase 1 retail accounts should store minimal research state, entitlement references, privacy receipts, and support-safe audit posture. They should not collect PAN, folio, CAS, bank, card, UPI, ARN/EUIN, distributor client records, or personalized advisory records."
+  ].join("\n");
+}
+
+function openAccountRouteBlocker() {
+  const route = accountLaunchRouteConfig();
+  scrollToHash(route.blockers.length ? "#privacy-control" : "#account-launch", "smooth", true);
+}
+
+function accountLaunchAuthLabel(auth) {
+  return {
+    passwordless: "Passwordless email login",
+    emailOtp: "Email OTP with recovery",
+    social: "Social login plus email",
+    guest: "Guest-only browser workspace"
+  }[auth] || "Passwordless email login";
+}
+
+function accountLaunchStorageLabel(storage) {
+  return {
+    managedDb: "Managed backend database",
+    encryptedDb: "Encrypted account data store",
+    browser: "Browser-local only",
+    spreadsheet: "Manual spreadsheet storage"
+  }[storage] || "Managed backend database";
+}
+
+function accountLaunchMigrationLabel(migration) {
+  return {
+    starter: "Starter profile and watchlist",
+    full: "Full research vault migration",
+    dossier: "Dossier and review history",
+    none: "No browser migration"
+  }[migration] || "Starter profile and watchlist";
+}
+
+function accountLaunchSupportLabel(support) {
+  return {
+    redacted: "Redacted support view",
+    limited: "Ticket metadata only",
+    raw: "Raw user record view",
+    none: "No support workflow"
+  }[support] || "Redacted support view";
+}
+
+function accountLaunchConfig() {
+  const auth = els.accountLaunchAuth?.value || "passwordless";
+  const storage = els.accountLaunchStorage?.value || "managedDb";
+  const migration = els.accountLaunchMigration?.value || "starter";
+  const support = els.accountLaunchSupport?.value || "redacted";
+  const base = Math.round(ACCOUNT_LAUNCH_STATES.reduce((sum, state) => sum + state.score, 0) / ACCOUNT_LAUNCH_STATES.length);
+  const authDelta = auth === "passwordless" ? 10 : auth === "emailOtp" ? 6 : auth === "social" ? 2 : -22;
+  const storageDelta = storage === "managedDb" ? 10 : storage === "encryptedDb" ? 14 : storage === "browser" ? -18 : -28;
+  const migrationDelta = migration === "starter" ? 6 : migration === "dossier" ? 2 : migration === "full" ? -4 : 0;
+  const supportDelta = support === "redacted" ? 10 : support === "limited" ? 4 : support === "raw" ? -24 : -10;
+  const score = clampNumber(base + authDelta + storageDelta + migrationDelta + supportDelta, 18, 94);
+  const blockers = [
+    ...(auth === "guest" ? ["guest-only workspace cannot support paid accounts, saved research sync, or support recovery"] : []),
+    ...(storage === "browser" ? ["browser-local storage is not launch-ready for paid account persistence"] : []),
+    ...(storage === "spreadsheet" ? ["manual spreadsheet storage is not acceptable for user account data"] : []),
+    ...(support === "raw" ? ["raw user record support view violates privacy minimization"] : []),
+    ...(support === "none" ? ["paid accounts need a support and recovery workflow"] : []),
+    ...(migration === "full" ? ["full migration needs field-level consent and deletion mapping before launch"] : []),
+    ...(score < 55 ? ["account launch shell is below beta threshold"] : [])
+  ];
+  const status = score >= 80 && !blockers.length
+    ? "Account beta shell ready"
+    : score >= 58
+      ? "Account dry-run"
+      : "Launch blocker";
+  const tone = status === "Account beta shell ready" ? "ready" : status === "Launch blocker" ? "blocked" : "draft";
+  const metrics = [
+    {
+      label: "Auth",
+      score: auth === "passwordless" ? 78 : auth === "emailOtp" ? 72 : auth === "social" ? 62 : 24,
+      detail: accountLaunchAuthLabel(auth)
+    },
+    {
+      label: "Storage",
+      score: storage === "encryptedDb" ? 82 : storage === "managedDb" ? 76 : storage === "browser" ? 32 : 18,
+      detail: accountLaunchStorageLabel(storage)
+    },
+    {
+      label: "Migration",
+      score: migration === "starter" ? 70 : migration === "dossier" ? 62 : migration === "full" ? 48 : 54,
+      detail: accountLaunchMigrationLabel(migration)
+    },
+    {
+      label: "Support",
+      score: support === "redacted" ? 78 : support === "limited" ? 62 : support === "raw" ? 18 : 34,
+      detail: accountLaunchSupportLabel(support)
+    }
+  ];
+  const flow = [
+    "Create minimal account shell",
+    "Issue session and recovery route",
+    "Sync research profile context",
+    "Migrate selected browser-local research",
+    "Link entitlement from payment receipt",
+    "Expose export/delete controls",
+    "Open support-safe redacted view"
+  ];
+  return {
+    auth,
+    blockers,
+    flow,
+    metrics,
+    migration,
+    score,
+    status,
+    storage,
+    support,
+    tone
+  };
+}
+
+function renderAccountLaunchShell(event) {
+  if (event) event.preventDefault();
+  if (!els.accountLaunchOutput) return;
+  const shell = accountLaunchConfig();
+  if (els.accountLaunchSummary) {
+    els.accountLaunchSummary.textContent = `${shell.score}/100 | ${shell.status}`;
+  }
+  els.accountLaunchOutput.innerHTML = `
+    <div class="account-launch-hero ${escapeHtml(shell.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(accountLaunchAuthLabel(shell.auth))}</span>
+        <h3>Account launch shell</h3>
+        <p>${escapeHtml(accountLaunchStorageLabel(shell.storage))} with ${escapeHtml(accountLaunchMigrationLabel(shell.migration)).toLowerCase()} and ${escapeHtml(accountLaunchSupportLabel(shell.support)).toLowerCase()}.</p>
+      </div>
+      <div class="account-launch-score" style="--score:${shell.score}">
+        <b>${shell.score}</b>
+        <span>Acct</span>
+      </div>
+    </div>
+    <div class="account-launch-metric-grid">
+      <article><span>Status</span><strong>${escapeHtml(shell.status)}</strong><p>${shell.blockers.length} active launch blockers.</p></article>
+      <article><span>Auth posture</span><strong>${escapeHtml(accountLaunchAuthLabel(shell.auth))}</strong><p>Minimal identity, recovery, and abuse controls.</p></article>
+      <article><span>Storage posture</span><strong>${escapeHtml(accountLaunchStorageLabel(shell.storage))}</strong><p>Research state only, no Phase 2 identifiers.</p></article>
+      <article><span>Support posture</span><strong>${escapeHtml(accountLaunchSupportLabel(shell.support))}</strong><p>Resolve issues without private investor data exposure.</p></article>
+    </div>
+    <div class="account-launch-state-grid">
+      ${ACCOUNT_LAUNCH_STATES.map((state) => `
+        <article>
+          <div class="account-launch-card-head">
+            <div>
+              <span>${escapeHtml(state.owner)}</span>
+              <strong>${escapeHtml(state.label)}</strong>
+            </div>
+            <b>${state.score}</b>
+          </div>
+          <p>${escapeHtml(state.event)} | ${escapeHtml(state.receipt)}</p>
+          <div class="build-progress-bar"><span style="width:${state.score}%"></span></div>
+          <small>${escapeHtml(state.guardrail)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-launch-flow-grid">
+      <article>
+        <h3>Launch state route</h3>
+        <ol>
+          ${shell.flow.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ol>
+      </article>
+      <article class="${shell.blockers.length ? "blocked" : "ready"}">
+        <h3>${shell.blockers.length ? "Before account beta" : "Beta shell clear"}</h3>
+        <ul>
+          ${(shell.blockers.length ? shell.blockers : ["auth route selected", "storage posture selected", "research migration scoped", "support view redacted"]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <h3>Phase 2 firewall</h3>
+        <p>Phase 1 account shell stores self-research state only. ARN, EUIN, PAN consent, distributor client books, family account mapping, and personalized advisory records stay outside this launch shell.</p>
+      </article>
+    </div>
+    <div class="account-launch-control-grid">
+      ${shell.metrics.map((metric) => `
+        <article>
+          <span>${escapeHtml(metric.label)}</span>
+          <strong>${metric.score}/100</strong>
+          <div class="build-progress-bar"><span style="width:${metric.score}%"></span></div>
+          <p>${escapeHtml(metric.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function makeAccountLaunchBrief() {
+  const shell = accountLaunchConfig();
+  return [
+    "# NiveshNadi Account Launch Shell",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Score: ${shell.score}/100`,
+    `Status: ${shell.status}`,
+    `Auth: ${accountLaunchAuthLabel(shell.auth)}`,
+    `Storage: ${accountLaunchStorageLabel(shell.storage)}`,
+    `Migration: ${accountLaunchMigrationLabel(shell.migration)}`,
+    `Support: ${accountLaunchSupportLabel(shell.support)}`,
+    "",
+    "## Launch State Route",
+    ...shell.flow.map((item) => `- ${item}`),
+    "",
+    "## Account States",
+    ...ACCOUNT_LAUNCH_STATES.map((state) => `- ${state.label}: ${state.score}/100 | ${state.event} | ${state.guardrail}`),
+    "",
+    "## Controls",
+    ...shell.metrics.map((metric) => `- ${metric.label}: ${metric.score}/100 | ${metric.detail}`),
+    "",
+    "## Blockers",
+    ...(shell.blockers.length ? shell.blockers.map((item) => `- ${item}`) : ["- No active account launch blocker in this preview."]),
+    "",
+    "## Guardrail",
+    "Account Launch Shell is launch planning only. Phase 1 accounts should store research state, entitlement references, and privacy receipts only. They should not collect PAN, folio, CAS, bank details, distributor identifiers, or personalized advice records."
+  ].join("\n");
+}
+
+function openAccountLaunchBlocker() {
+  const shell = accountLaunchConfig();
+  scrollToHash(shell.blockers.length ? "#privacy-control" : "#account-vault", "smooth", true);
 }
 
 function accountVaultBlueprintConfig() {
@@ -8800,7 +11038,14 @@ function renderAll() {
   renderBuildTracker();
   renderLaunchReadinessBoard();
   renderPaymentReadinessLab();
+  renderPaymentWiringConsole();
+  renderPaymentGatewaySandbox();
+  renderEntitlementBridge();
+  renderSubscriptionOpsConsole();
+  renderSubscriptionBackendBlueprint();
   renderAccountReadinessLab();
+  renderAccountLaunchRoute();
+  renderAccountLaunchShell();
   renderAccountVaultBlueprint();
   renderProfileRoom();
   renderSelectionFunnel();
@@ -8850,6 +11095,7 @@ function renderAll() {
   renderReviewerWorkbench();
   renderReviewerDecisionLedger();
   renderReviewerReleaseBinder();
+  renderBackendAuditReceipts();
   renderSourceQaQueue();
   renderSourceIntakeConsole();
   renderSourceDriftMonitor();
@@ -13513,6 +15759,220 @@ function makeReviewerReleaseBinderBrief() {
     "## Guardrail",
     "Reviewer Release Binder is launch workflow metadata. It is not personalized investment advice, suitability approval, transaction approval, distributor approval, or a return guarantee."
   ].join("\n");
+}
+
+function backendAuditModeLabel(mode) {
+  return {
+    launch: "Launch audit contract",
+    dry: "Backend dry run",
+    stress: "Failure and rollback stress",
+    privacy: "Privacy minimization review"
+  }[mode] || "Backend dry run";
+}
+
+function backendAuditStorageLabel(storage) {
+  return {
+    append: "Append-only audit table",
+    event: "Event stream and audit table",
+    database: "Transactional database trail",
+    browser: "Browser-local prototype only"
+  }[storage] || "Append-only audit table";
+}
+
+function backendAuditRetentionLabel(retention) {
+  return {
+    strict: "Strict launch retention",
+    user: "User-controlled retention",
+    finance: "Finance and dispute retention",
+    minimal: "Minimal metadata retention"
+  }[retention] || "Strict launch retention";
+}
+
+function backendAuditSelectedStream() {
+  const id = els.backendAuditStream?.value || "reviewer-release";
+  return BACKEND_AUDIT_STREAMS.find((stream) => stream.id === id) || BACKEND_AUDIT_STREAMS[0];
+}
+
+function backendAuditConfig() {
+  const stream = backendAuditSelectedStream();
+  const mode = els.backendAuditMode?.value || "launch";
+  const storage = els.backendAuditStorage?.value || "append";
+  const retention = els.backendAuditRetention?.value || "strict";
+  const modeScore = { launch: 84, dry: 68, stress: 58, privacy: 78 }[mode] || 68;
+  const storageScore = { append: 86, event: 82, database: 66, browser: 34 }[storage] || 70;
+  const retentionScore = { strict: 84, user: 72, finance: 78, minimal: 62 }[retention] || 74;
+  const paymentPenalty = stream.id === "payment-entitlement" && storage !== "event" ? 8 : 0;
+  const privacyPenalty = stream.id === "privacy-consent" && retention === "minimal" ? 10 : 0;
+  const browserPenalty = storage === "browser" ? 22 : 0;
+  const score = Math.round(clampNumber(
+    stream.baseScore * 0.34 + modeScore * 0.22 + storageScore * 0.24 + retentionScore * 0.2 - paymentPenalty - privacyPenalty - browserPenalty,
+    18,
+    96
+  ));
+  const blockers = [
+    ...(storage === "browser" ? ["browser-local storage is not acceptable for launch audit receipts"] : []),
+    ...(stream.id === "payment-entitlement" && storage !== "event" ? ["payment webhooks need event-stream replay and idempotency proof"] : []),
+    ...(stream.id === "privacy-consent" && retention === "minimal" ? ["privacy requests still need deletion/export proof receipts"] : []),
+    ...(score < 64 ? ["audit receipt contract is below launch threshold"] : []),
+    ...(mode === "stress" ? ["rollback and failed-write scenarios must be tested before launch"] : [])
+  ];
+  const status = score >= 82 && !blockers.length
+    ? "Backend receipt ready"
+    : score >= 64
+      ? "Dry-run required"
+      : "Launch blocker";
+  const tone = status === "Backend receipt ready" ? "ready" : status === "Launch blocker" ? "caution" : "watch";
+  const standardFields = ["receipt_id", "event_name", "actor_role", "actor_id_hash", "request_id", "idempotency_key", "created_at", "data_class", "retention_policy"];
+  const receiptFields = Array.from(new Set([...standardFields, ...stream.fields]));
+  const controls = [
+    {
+      label: "Idempotency",
+      score: storage === "event" ? 88 : storage === "append" ? 78 : storage === "database" ? 64 : 28,
+      detail: "Every mutation should be safely repeatable and traceable by request id."
+    },
+    {
+      label: "Redaction",
+      score: stream.risk === "Very High" ? 82 : 74,
+      detail: "Receipts store hashes and metadata, never raw PAN, folio, CAS, credentials, or private notes."
+    },
+    {
+      label: "Retention",
+      score: retentionScore,
+      detail: backendAuditRetentionLabel(retention)
+    },
+    {
+      label: "Replay and support",
+      score: storage === "event" ? 84 : 64,
+      detail: "Support can reconstruct what happened without seeing sensitive investor content."
+    }
+  ];
+  return {
+    blockers,
+    controls,
+    mode,
+    receiptFields,
+    retention,
+    score,
+    status,
+    storage,
+    stream,
+    tone
+  };
+}
+
+function renderBackendAuditReceipts(event) {
+  if (event) event.preventDefault();
+  if (!els.backendAuditOutput || !els.backendAuditSummary) return;
+  const config = backendAuditConfig();
+  const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
+  const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
+  els.backendAuditSummary.textContent = `${config.score}/100 | ${config.status}`;
+  els.backendAuditOutput.innerHTML = `
+    <div class="backend-audit-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span class="metric-label">${escapeHtml(backendAuditModeLabel(config.mode))}</span>
+        <h3>${escapeHtml(config.stream.label)}</h3>
+        <p>${escapeHtml(config.stream.launchGate)}</p>
+      </div>
+      <div class="backend-audit-score" style="--score:${config.score}">
+        <b>${config.score}</b>
+        <span>Audit</span>
+      </div>
+    </div>
+    <div class="backend-audit-metric-grid">
+      <article><span>Status</span><strong>${escapeHtml(config.status)}</strong><p>${escapeHtml(config.stream.owner)}</p></article>
+      <article><span>Storage</span><strong>${escapeHtml(backendAuditStorageLabel(config.storage))}</strong><p>${escapeHtml(config.stream.retention)}</p></article>
+      <article><span>Risk band</span><strong>${escapeHtml(config.stream.risk)}</strong><p>${escapeHtml(backendAuditRetentionLabel(config.retention))}</p></article>
+      <article><span>Ready streams</span><strong>${readyCount}/${BACKEND_AUDIT_STREAMS.length}</strong><p>${veryHighCount} very-high-risk streams need stricter audit.</p></article>
+    </div>
+    <div class="backend-audit-grid">
+      <article class="backend-audit-card ${escapeHtml(config.tone)}">
+        <h3>Receipt event contract</h3>
+        <ul class="backend-audit-list">
+          ${config.stream.eventTypes.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="backend-audit-card">
+        <h3>Required payload fields</h3>
+        <ul class="backend-audit-list">
+          ${config.receiptFields.slice(0, 12).map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="backend-audit-card ${config.blockers.length ? "caution" : "ready"}">
+        <h3>${config.blockers.length ? "Launch blockers" : "Launch guardrails clear"}</h3>
+        <ul class="backend-audit-list">
+          ${(config.blockers.length ? config.blockers : ["receipt id and event name defined", "sensitive data excluded", "retention rule selected", "route to source workspace available"]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article class="backend-audit-card">
+        <h3>Source workspace route</h3>
+        <p>${escapeHtml(config.stream.route)} | ${escapeHtml(config.stream.owner)}</p>
+        <p>${escapeHtml(config.stream.launchGate)}</p>
+      </article>
+    </div>
+    <div class="backend-audit-control-grid">
+      ${config.controls.map((control) => `
+        <article>
+          <div class="backend-audit-card-head">
+            <div>
+              <span>${escapeHtml(control.label)}</span>
+              <strong>${control.score}/100</strong>
+            </div>
+          </div>
+          <div class="build-progress-bar"><span style="width:${control.score}%"></span></div>
+          <p>${escapeHtml(control.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="backend-audit-panel-grid">
+      <article>
+        <h3>Server-side receipt pattern</h3>
+        <p>Write mutation receipt first, process state change with idempotency, attach evidence hash, expose user-safe receipt reference, and keep a redacted support view.</p>
+      </article>
+      <article class="backend-audit-guardrail">
+        <h3>Privacy boundary</h3>
+        <p>Backend audit receipts must store metadata, hashes, event names, states, and source references. They must not store PAN, folio, CAS, bank details, credentials, contact data, raw payment instrument data, or private free-form notes.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeBackendAuditReceiptBrief() {
+  const config = backendAuditConfig();
+  return [
+    "# NiveshNadi Backend Audit Receipts",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Stream: ${config.stream.label}`,
+    `Status: ${config.status}`,
+    `Score: ${config.score}/100`,
+    `Owner: ${config.stream.owner}`,
+    `Risk: ${config.stream.risk}`,
+    `Mode: ${backendAuditModeLabel(config.mode)}`,
+    `Storage: ${backendAuditStorageLabel(config.storage)}`,
+    `Retention: ${backendAuditRetentionLabel(config.retention)}`,
+    "",
+    "## Event Contract",
+    ...config.stream.eventTypes.map((item) => `- ${item}`),
+    "",
+    "## Required Receipt Fields",
+    ...config.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## Controls",
+    ...config.controls.map((control) => `- ${control.label}: ${control.score}/100 | ${control.detail}`),
+    "",
+    "## Blockers",
+    ...(config.blockers.length ? config.blockers.map((item) => `- ${item}`) : ["- No active blockers in this audit receipt preview."]),
+    "",
+    "## Launch Gate",
+    config.stream.launchGate,
+    "",
+    "## Guardrail",
+    "Backend audit receipts are product and account operations metadata. They are not advice, suitability approval, transaction approval, distributor approval, or a return guarantee. They exclude PAN, folio, CAS, credentials, bank details, raw payment instrument data, private notes, and distributor client records."
+  ].join("\n");
+}
+
+function openBackendAuditRoute() {
+  scrollToHash(backendAuditConfig().stream.route, "smooth", true);
 }
 
 function sourceQueueModeLabel(mode) {
@@ -20757,8 +23217,50 @@ function bindEvents() {
   els.copyLaunchReadiness?.addEventListener("click", () => copyText(makeLaunchReadinessBrief()));
   els.openPaymentBlocker?.addEventListener("click", openPaymentBlocker);
   els.copyPaymentReadiness?.addEventListener("click", () => copyText(makePaymentReadinessBrief()));
+  els.paymentWiringForm?.addEventListener("submit", renderPaymentWiringConsole);
+  [els.paymentWiringGateway, els.paymentWiringPlan, els.paymentWiringScenario, els.paymentWiringInvoice].forEach((input) => {
+    input?.addEventListener("change", () => renderPaymentWiringConsole());
+  });
+  els.openPaymentWiringBlocker?.addEventListener("click", openPaymentWiringBlocker);
+  els.copyPaymentWiring?.addEventListener("click", () => copyText(makePaymentWiringBrief()));
+  els.paymentSandboxForm?.addEventListener("submit", renderPaymentGatewaySandbox);
+  [els.paymentSandboxProvider, els.paymentSandboxScenario, els.paymentSandboxEvidence, els.paymentSandboxMode].forEach((input) => {
+    input?.addEventListener("change", () => renderPaymentGatewaySandbox());
+  });
+  els.openPaymentSandboxBlocker?.addEventListener("click", openPaymentSandboxBlocker);
+  els.copyPaymentSandbox?.addEventListener("click", () => copyText(makePaymentSandboxBrief()));
+  els.entitlementForm?.addEventListener("submit", renderEntitlementBridge);
+  [els.entitlementPlan, els.entitlementLifecycle, els.entitlementPolicy, els.entitlementReceipt].forEach((input) => {
+    input?.addEventListener("change", () => renderEntitlementBridge());
+  });
+  els.openEntitlementBlocker?.addEventListener("click", openEntitlementBlocker);
+  els.copyEntitlement?.addEventListener("click", () => copyText(makeEntitlementBridgeBrief()));
+  els.subscriptionOpsForm?.addEventListener("submit", renderSubscriptionOpsConsole);
+  [els.subscriptionOpsQueue, els.subscriptionOpsRisk, els.subscriptionOpsRunbook, els.subscriptionOpsReceipt].forEach((input) => {
+    input?.addEventListener("change", () => renderSubscriptionOpsConsole());
+  });
+  els.openSubscriptionOpsBlocker?.addEventListener("click", openSubscriptionOpsBlocker);
+  els.copySubscriptionOps?.addEventListener("click", () => copyText(makeSubscriptionOpsBrief()));
+  els.subscriptionBackendForm?.addEventListener("submit", renderSubscriptionBackendBlueprint);
+  [els.subscriptionBackendGateway, els.subscriptionBackendSource, els.subscriptionBackendSync, els.subscriptionBackendFailure].forEach((input) => {
+    input?.addEventListener("change", () => renderSubscriptionBackendBlueprint());
+  });
+  els.openSubscriptionBackendBlocker?.addEventListener("click", openSubscriptionBackendBlocker);
+  els.copySubscriptionBackend?.addEventListener("click", () => copyText(makeSubscriptionBackendBrief()));
   els.openAccountBlocker?.addEventListener("click", openAccountBlocker);
   els.copyAccountReadiness?.addEventListener("click", () => copyText(makeAccountReadinessBrief()));
+  els.accountRouteForm?.addEventListener("submit", renderAccountLaunchRoute);
+  [els.accountRouteCohort, els.accountRouteAuth, els.accountRouteData, els.accountRouteCutover].forEach((input) => {
+    input?.addEventListener("change", () => renderAccountLaunchRoute());
+  });
+  els.openAccountRouteBlocker?.addEventListener("click", openAccountRouteBlocker);
+  els.copyAccountRoute?.addEventListener("click", () => copyText(makeAccountLaunchRouteBrief()));
+  els.accountLaunchForm?.addEventListener("submit", renderAccountLaunchShell);
+  [els.accountLaunchAuth, els.accountLaunchStorage, els.accountLaunchMigration, els.accountLaunchSupport].forEach((input) => {
+    input?.addEventListener("change", () => renderAccountLaunchShell());
+  });
+  els.openAccountLaunchBlocker?.addEventListener("click", openAccountLaunchBlocker);
+  els.copyAccountLaunch?.addEventListener("click", () => copyText(makeAccountLaunchBrief()));
   els.openAccountVaultBlocker?.addEventListener("click", openAccountVaultBlocker);
   els.copyAccountVault?.addEventListener("click", () => copyText(makeAccountVaultBrief()));
   els.openDailyPriority?.addEventListener("click", openDailyPriority);
@@ -21266,6 +23768,12 @@ function bindEvents() {
   els.bindReviewerReleaseGate?.addEventListener("click", bindReviewerDecisionToClaimReleaseGate);
   els.openReviewerBinderRoute?.addEventListener("click", openReviewerBinderRoute);
   els.copyReviewerReleaseBinder?.addEventListener("click", () => copyText(makeReviewerReleaseBinderBrief()));
+  els.backendAuditForm?.addEventListener("submit", renderBackendAuditReceipts);
+  [els.backendAuditStream, els.backendAuditMode, els.backendAuditStorage, els.backendAuditRetention].forEach((input) => {
+    input?.addEventListener("change", () => renderBackendAuditReceipts());
+  });
+  els.openBackendAuditRoute?.addEventListener("click", openBackendAuditRoute);
+  els.copyBackendAudit?.addEventListener("click", () => copyText(makeBackendAuditReceiptBrief()));
   els.sourceQueueForm?.addEventListener("submit", renderSourceQaQueue);
   [els.sourceQueueMode, els.sourceQueuePriority, els.sourceQueueOwner].forEach((input) => {
     input?.addEventListener("change", () => renderSourceQaQueue());
@@ -21993,10 +24501,73 @@ function cacheElements() {
     paymentReadinessOutput: qs("#paymentReadinessOutput"),
     openPaymentBlocker: qs("#openPaymentBlocker"),
     copyPaymentReadiness: qs("#copyPaymentReadiness"),
+    paymentWiringForm: qs("#paymentWiringForm"),
+    paymentWiringGateway: qs("#paymentWiringGateway"),
+    paymentWiringPlan: qs("#paymentWiringPlan"),
+    paymentWiringScenario: qs("#paymentWiringScenario"),
+    paymentWiringInvoice: qs("#paymentWiringInvoice"),
+    paymentWiringSummary: qs("#paymentWiringSummary"),
+    paymentWiringOutput: qs("#paymentWiringOutput"),
+    openPaymentWiringBlocker: qs("#openPaymentWiringBlocker"),
+    copyPaymentWiring: qs("#copyPaymentWiring"),
+    paymentSandboxForm: qs("#paymentSandboxForm"),
+    paymentSandboxProvider: qs("#paymentSandboxProvider"),
+    paymentSandboxScenario: qs("#paymentSandboxScenario"),
+    paymentSandboxEvidence: qs("#paymentSandboxEvidence"),
+    paymentSandboxMode: qs("#paymentSandboxMode"),
+    paymentSandboxSummary: qs("#paymentSandboxSummary"),
+    paymentSandboxOutput: qs("#paymentSandboxOutput"),
+    openPaymentSandboxBlocker: qs("#openPaymentSandboxBlocker"),
+    copyPaymentSandbox: qs("#copyPaymentSandbox"),
+    entitlementForm: qs("#entitlementForm"),
+    entitlementPlan: qs("#entitlementPlan"),
+    entitlementLifecycle: qs("#entitlementLifecycle"),
+    entitlementPolicy: qs("#entitlementPolicy"),
+    entitlementReceipt: qs("#entitlementReceipt"),
+    entitlementSummary: qs("#entitlementSummary"),
+    entitlementOutput: qs("#entitlementOutput"),
+    openEntitlementBlocker: qs("#openEntitlementBlocker"),
+    copyEntitlement: qs("#copyEntitlement"),
+    subscriptionOpsForm: qs("#subscriptionOpsForm"),
+    subscriptionOpsQueue: qs("#subscriptionOpsQueue"),
+    subscriptionOpsRisk: qs("#subscriptionOpsRisk"),
+    subscriptionOpsRunbook: qs("#subscriptionOpsRunbook"),
+    subscriptionOpsReceipt: qs("#subscriptionOpsReceipt"),
+    subscriptionOpsSummary: qs("#subscriptionOpsSummary"),
+    subscriptionOpsOutput: qs("#subscriptionOpsOutput"),
+    openSubscriptionOpsBlocker: qs("#openSubscriptionOpsBlocker"),
+    copySubscriptionOps: qs("#copySubscriptionOps"),
+    subscriptionBackendForm: qs("#subscriptionBackendForm"),
+    subscriptionBackendGateway: qs("#subscriptionBackendGateway"),
+    subscriptionBackendSource: qs("#subscriptionBackendSource"),
+    subscriptionBackendSync: qs("#subscriptionBackendSync"),
+    subscriptionBackendFailure: qs("#subscriptionBackendFailure"),
+    subscriptionBackendSummary: qs("#subscriptionBackendSummary"),
+    subscriptionBackendOutput: qs("#subscriptionBackendOutput"),
+    openSubscriptionBackendBlocker: qs("#openSubscriptionBackendBlocker"),
+    copySubscriptionBackend: qs("#copySubscriptionBackend"),
     accountReadinessSummary: qs("#accountReadinessSummary"),
     accountReadinessOutput: qs("#accountReadinessOutput"),
     openAccountBlocker: qs("#openAccountBlocker"),
     copyAccountReadiness: qs("#copyAccountReadiness"),
+    accountRouteForm: qs("#accountRouteForm"),
+    accountRouteCohort: qs("#accountRouteCohort"),
+    accountRouteAuth: qs("#accountRouteAuth"),
+    accountRouteData: qs("#accountRouteData"),
+    accountRouteCutover: qs("#accountRouteCutover"),
+    accountRouteSummary: qs("#accountRouteSummary"),
+    accountRouteOutput: qs("#accountRouteOutput"),
+    openAccountRouteBlocker: qs("#openAccountRouteBlocker"),
+    copyAccountRoute: qs("#copyAccountRoute"),
+    accountLaunchForm: qs("#accountLaunchForm"),
+    accountLaunchAuth: qs("#accountLaunchAuth"),
+    accountLaunchStorage: qs("#accountLaunchStorage"),
+    accountLaunchMigration: qs("#accountLaunchMigration"),
+    accountLaunchSupport: qs("#accountLaunchSupport"),
+    accountLaunchSummary: qs("#accountLaunchSummary"),
+    accountLaunchOutput: qs("#accountLaunchOutput"),
+    openAccountLaunchBlocker: qs("#openAccountLaunchBlocker"),
+    copyAccountLaunch: qs("#copyAccountLaunch"),
     accountVaultSummary: qs("#accountVaultSummary"),
     accountVaultOutput: qs("#accountVaultOutput"),
     openAccountVaultBlocker: qs("#openAccountVaultBlocker"),
@@ -22386,6 +24957,15 @@ function cacheElements() {
     bindReviewerReleaseGate: qs("#bindReviewerReleaseGate"),
     openReviewerBinderRoute: qs("#openReviewerBinderRoute"),
     copyReviewerReleaseBinder: qs("#copyReviewerReleaseBinder"),
+    backendAuditForm: qs("#backendAuditForm"),
+    backendAuditStream: qs("#backendAuditStream"),
+    backendAuditMode: qs("#backendAuditMode"),
+    backendAuditStorage: qs("#backendAuditStorage"),
+    backendAuditRetention: qs("#backendAuditRetention"),
+    backendAuditSummary: qs("#backendAuditSummary"),
+    backendAuditOutput: qs("#backendAuditOutput"),
+    openBackendAuditRoute: qs("#openBackendAuditRoute"),
+    copyBackendAudit: qs("#copyBackendAudit"),
     sourceQueueForm: qs("#sourceQueueForm"),
     sourceQueueMode: qs("#sourceQueueMode"),
     sourceQueuePriority: qs("#sourceQueuePriority"),
@@ -22580,6 +25160,7 @@ function init() {
   renderReviewerWorkbench();
   renderReviewerDecisionLedger();
   renderReviewerReleaseBinder();
+  renderBackendAuditReceipts();
   renderSourceQaQueue();
   renderSourceIntakeConsole();
   renderSourceDriftMonitor();

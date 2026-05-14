@@ -1,9 +1,10 @@
 {
   "name": "niveshnadi-mutual-fund-desk",
-  "version": "0.91.0",
+  "version": "0.100.0",
   "private": true,
   "type": "module",
   "scripts": {
+    "preview": "node scripts/local-preview.mjs",
     "static:check": "node scripts/static-check.mjs",
     "security:audit": "node scripts/security-audit.mjs",
     "check": "node scripts/static-check.mjs && node scripts/security-audit.mjs"

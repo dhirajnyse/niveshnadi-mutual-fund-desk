@@ -91,12 +91,17 @@ a {
   display: flex;
   align-items: center;
   gap: 16px;
+  flex: 0 1 334px;
+  min-width: 0;
+}
+
+.brand-lockup > div {
   min-width: 0;
 }
 
 .brand-logo {
-  width: 156px;
-  min-width: 132px;
+  width: 138px;
+  min-width: 116px;
 }
 
 .brand-lockup h1,
@@ -107,6 +112,7 @@ a {
 }
 
 .brand-lockup h1 {
+  max-width: 250px;
   font-size: 20px;
 }
 
@@ -123,16 +129,20 @@ a {
 .top-nav {
   display: flex;
   align-items: center;
+  flex: 1 1 auto;
   gap: 12px;
   flex-wrap: nowrap;
   justify-content: flex-end;
   min-width: 0;
+  overflow: hidden;
 }
 
 .nav-stack {
   display: grid;
+  flex: 1 1 auto;
   gap: 6px;
   min-width: 0;
+  overflow: hidden;
 }
 
 .nav-cluster,
@@ -143,9 +153,24 @@ a {
 }
 
 .nav-cluster {
-  gap: 4px;
+  gap: 6px;
   justify-content: flex-end;
   flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.nav-primary a[href="#launch-readiness"],
+.nav-primary a[href="#account-readiness"],
+.nav-primary a[href="#account-launch-route"],
+.nav-primary a[href="#account-vault"],
+.nav-primary a[href="#live-data-contracts"],
+.nav-primary a[href="#source-dry-run"],
+.nav-primary a[href="#source-receipts"],
+.nav-primary a[href="#claim-surface-map"],
+.nav-primary a[href="#surface-release-queue"],
+.nav-primary a[href="#reviewer-workbench"],
+.nav-primary a[href="#reviewer-decision-ledger"] {
+  display: none;
 }
 
 .nav-mode-strip {
@@ -188,6 +213,7 @@ a {
 
 .workspace-command {
   gap: 8px;
+  flex: 0 0 auto;
   padding-left: 6px;
   border-left: 1px solid rgba(81, 103, 125, 0.18);
 }
@@ -327,8 +353,16 @@ main {
 .build-tracker-output,
 .launch-readiness-output,
 .payment-readiness-output,
+.payment-wiring-output,
+.payment-sandbox-output,
+.entitlement-output,
+.subscription-ops-output,
+.subscription-backend-output,
 .account-readiness-output,
+.account-route-output,
+.account-launch-output,
 .account-vault-output,
+.backend-audit-output,
 .daily-command-output,
 .decision-radar-output,
 .question-stack-output,
@@ -574,10 +608,59 @@ main {
   padding: 14px;
 }
 
+.payment-wiring-output {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  min-height: 340px;
+}
+
+.payment-sandbox-output {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  min-height: 360px;
+}
+
+.entitlement-output {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  min-height: 340px;
+}
+
+.subscription-ops-output {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  min-height: 340px;
+}
+
+.subscription-backend-output {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  min-height: 340px;
+}
+
 .account-readiness-output {
   display: grid;
   gap: 12px;
   padding: 14px;
+}
+
+.account-route-output {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  min-height: 360px;
+}
+
+.account-launch-output {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  min-height: 340px;
 }
 
 .account-vault-output {
@@ -1210,6 +1293,929 @@ main {
   margin-top: auto;
 }
 
+.payment-wiring-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
+  gap: 12px;
+}
+
+.payment-wiring-form {
+  display: grid;
+  gap: 11px;
+  padding: 14px;
+}
+
+.payment-wiring-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid rgba(31, 78, 121, 0.3);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(234, 242, 251, 0.95), rgba(255, 250, 240, 0.9));
+}
+
+.payment-wiring-hero.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.96), rgba(245, 249, 252, 0.94));
+}
+
+.payment-wiring-hero.draft {
+  border-color: rgba(225, 160, 55, 0.38);
+}
+
+.payment-wiring-hero.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.payment-wiring-hero h3 {
+  margin: 3px 0 0;
+  font-size: 25px;
+  line-height: 1.12;
+}
+
+.payment-wiring-hero p,
+.payment-wiring-state-grid p,
+.payment-wiring-state-grid small,
+.payment-wiring-flow-grid p,
+.payment-wiring-flow-grid li,
+.payment-wiring-control-grid p {
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.payment-wiring-score {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--gold) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.payment-wiring-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.payment-wiring-score b,
+.payment-wiring-score span {
+  position: relative;
+}
+
+.payment-wiring-score b {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.payment-wiring-score span {
+  color: #dbe7ef;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.payment-wiring-metric-grid,
+.payment-wiring-state-grid,
+.payment-wiring-flow-grid,
+.payment-wiring-control-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.payment-wiring-metric-grid,
+.payment-wiring-control-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.payment-wiring-state-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.payment-wiring-flow-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.payment-wiring-metric-grid article,
+.payment-wiring-state-grid article,
+.payment-wiring-flow-grid article,
+.payment-wiring-control-grid article {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.payment-wiring-flow-grid article.ready {
+  border-color: rgba(15, 124, 107, 0.3);
+  background: var(--mint-soft);
+}
+
+.payment-wiring-flow-grid article.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: var(--rose-soft);
+}
+
+.payment-wiring-metric-grid span,
+.payment-wiring-card-head span,
+.payment-wiring-flow-grid h3 + span,
+.payment-wiring-control-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.payment-wiring-metric-grid strong,
+.payment-wiring-card-head strong,
+.payment-wiring-control-grid strong {
+  display: block;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.18;
+}
+
+.payment-wiring-metric-grid p,
+.payment-wiring-state-grid p,
+.payment-wiring-flow-grid p,
+.payment-wiring-control-grid p {
+  margin: 0;
+}
+
+.payment-wiring-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.payment-wiring-card-head b {
+  color: var(--blue);
+}
+
+.payment-wiring-flow-grid h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.payment-wiring-flow-grid ul,
+.payment-wiring-flow-grid ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.payment-sandbox-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
+  gap: 12px;
+}
+
+.payment-sandbox-form {
+  display: grid;
+  gap: 11px;
+  padding: 14px;
+}
+
+.payment-sandbox-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid rgba(31, 78, 121, 0.3);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(245, 249, 252, 0.98), rgba(255, 250, 240, 0.92));
+}
+
+.payment-sandbox-hero.ready {
+  border-color: rgba(15, 124, 107, 0.36);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.96), rgba(245, 249, 252, 0.94));
+}
+
+.payment-sandbox-hero.draft {
+  border-color: rgba(225, 160, 55, 0.38);
+}
+
+.payment-sandbox-hero.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.payment-sandbox-hero h3 {
+  margin: 3px 0 0;
+  font-size: 25px;
+  line-height: 1.12;
+}
+
+.payment-sandbox-hero p,
+.payment-sandbox-route-grid p,
+.payment-sandbox-route-grid li,
+.payment-sandbox-test-grid p,
+.payment-sandbox-test-grid small,
+.payment-sandbox-flow-grid p,
+.payment-sandbox-control-grid p {
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.payment-sandbox-score {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.payment-sandbox-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.payment-sandbox-score b,
+.payment-sandbox-score span {
+  position: relative;
+}
+
+.payment-sandbox-score b {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.payment-sandbox-score span {
+  color: #dbe7ef;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.payment-sandbox-metric-grid,
+.payment-sandbox-route-grid,
+.payment-sandbox-test-grid,
+.payment-sandbox-flow-grid,
+.payment-sandbox-control-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.payment-sandbox-metric-grid,
+.payment-sandbox-flow-grid,
+.payment-sandbox-control-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.payment-sandbox-route-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.payment-sandbox-test-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.payment-sandbox-metric-grid article,
+.payment-sandbox-route-grid article,
+.payment-sandbox-test-grid article,
+.payment-sandbox-flow-grid article,
+.payment-sandbox-control-grid article {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.payment-sandbox-route-grid article.ready {
+  border-color: rgba(15, 124, 107, 0.3);
+  background: var(--mint-soft);
+}
+
+.payment-sandbox-route-grid article.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: var(--rose-soft);
+}
+
+.payment-sandbox-metric-grid span,
+.payment-sandbox-card-head span,
+.payment-sandbox-flow-grid span,
+.payment-sandbox-control-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.payment-sandbox-metric-grid strong,
+.payment-sandbox-card-head strong,
+.payment-sandbox-flow-grid strong,
+.payment-sandbox-control-grid strong {
+  display: block;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.18;
+}
+
+.payment-sandbox-metric-grid p,
+.payment-sandbox-route-grid p,
+.payment-sandbox-test-grid p,
+.payment-sandbox-flow-grid p,
+.payment-sandbox-control-grid p {
+  margin: 0;
+}
+
+.payment-sandbox-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.payment-sandbox-card-head b {
+  color: var(--blue);
+}
+
+.payment-sandbox-route-grid h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.payment-sandbox-route-grid ul,
+.payment-sandbox-route-grid ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.entitlement-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
+  gap: 12px;
+}
+
+.entitlement-form {
+  display: grid;
+  gap: 11px;
+  padding: 14px;
+}
+
+.entitlement-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid rgba(31, 78, 121, 0.3);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(234, 242, 251, 0.95), rgba(229, 247, 241, 0.88));
+}
+
+.entitlement-hero.ready {
+  border-color: rgba(15, 124, 107, 0.36);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.96), rgba(245, 249, 252, 0.94));
+}
+
+.entitlement-hero.draft {
+  border-color: rgba(225, 160, 55, 0.38);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(234, 242, 251, 0.92));
+}
+
+.entitlement-hero.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.entitlement-hero h3 {
+  margin: 3px 0 0;
+  font-size: 25px;
+  line-height: 1.12;
+}
+
+.entitlement-hero p,
+.entitlement-feature-grid p,
+.entitlement-state-grid p,
+.entitlement-state-grid small,
+.entitlement-flow-grid p,
+.entitlement-flow-grid li,
+.entitlement-control-grid p {
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.entitlement-score {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.entitlement-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.entitlement-score b,
+.entitlement-score span {
+  position: relative;
+}
+
+.entitlement-score b {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.entitlement-score span {
+  color: #dbe7ef;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.entitlement-metric-grid,
+.entitlement-feature-grid,
+.entitlement-state-grid,
+.entitlement-flow-grid,
+.entitlement-control-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.entitlement-metric-grid,
+.entitlement-control-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.entitlement-feature-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.entitlement-state-grid,
+.entitlement-flow-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.entitlement-metric-grid article,
+.entitlement-feature-grid article,
+.entitlement-state-grid article,
+.entitlement-flow-grid article,
+.entitlement-control-grid article {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.entitlement-flow-grid article.ready {
+  border-color: rgba(15, 124, 107, 0.3);
+  background: var(--mint-soft);
+}
+
+.entitlement-flow-grid article.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: var(--rose-soft);
+}
+
+.entitlement-metric-grid span,
+.entitlement-feature-grid span,
+.entitlement-card-head span,
+.entitlement-control-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.entitlement-metric-grid strong,
+.entitlement-feature-grid strong,
+.entitlement-card-head strong,
+.entitlement-control-grid strong {
+  display: block;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.18;
+}
+
+.entitlement-metric-grid p,
+.entitlement-feature-grid p,
+.entitlement-state-grid p,
+.entitlement-flow-grid p,
+.entitlement-control-grid p {
+  margin: 0;
+}
+
+.entitlement-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.entitlement-card-head b {
+  color: var(--blue);
+}
+
+.entitlement-flow-grid h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.entitlement-flow-grid ul,
+.entitlement-flow-grid ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.subscription-ops-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
+  gap: 12px;
+}
+
+.subscription-ops-form {
+  display: grid;
+  gap: 11px;
+  padding: 14px;
+}
+
+.subscription-ops-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid rgba(31, 78, 121, 0.3);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(234, 242, 251, 0.95), rgba(255, 250, 240, 0.9));
+}
+
+.subscription-ops-hero.ready {
+  border-color: rgba(15, 124, 107, 0.36);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.96), rgba(245, 249, 252, 0.94));
+}
+
+.subscription-ops-hero.draft {
+  border-color: rgba(225, 160, 55, 0.38);
+}
+
+.subscription-ops-hero.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.subscription-ops-hero h3 {
+  margin: 3px 0 0;
+  font-size: 25px;
+  line-height: 1.12;
+}
+
+.subscription-ops-hero p,
+.subscription-ops-lane-grid p,
+.subscription-ops-state-grid p,
+.subscription-ops-state-grid small,
+.subscription-ops-flow-grid p,
+.subscription-ops-flow-grid li,
+.subscription-ops-control-grid p {
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.subscription-ops-score {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--gold) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.subscription-ops-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.subscription-ops-score b,
+.subscription-ops-score span {
+  position: relative;
+}
+
+.subscription-ops-score b {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.subscription-ops-score span {
+  color: #dbe7ef;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.subscription-ops-metric-grid,
+.subscription-ops-lane-grid,
+.subscription-ops-state-grid,
+.subscription-ops-flow-grid,
+.subscription-ops-control-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.subscription-ops-metric-grid,
+.subscription-ops-lane-grid,
+.subscription-ops-control-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.subscription-ops-state-grid,
+.subscription-ops-flow-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.subscription-ops-metric-grid article,
+.subscription-ops-lane-grid article,
+.subscription-ops-state-grid article,
+.subscription-ops-flow-grid article,
+.subscription-ops-control-grid article {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.subscription-ops-flow-grid article.ready {
+  border-color: rgba(15, 124, 107, 0.3);
+  background: var(--mint-soft);
+}
+
+.subscription-ops-flow-grid article.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: var(--rose-soft);
+}
+
+.subscription-ops-metric-grid span,
+.subscription-ops-lane-grid span,
+.subscription-ops-card-head span,
+.subscription-ops-control-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.subscription-ops-metric-grid strong,
+.subscription-ops-lane-grid strong,
+.subscription-ops-card-head strong,
+.subscription-ops-control-grid strong {
+  display: block;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.18;
+}
+
+.subscription-ops-metric-grid p,
+.subscription-ops-lane-grid p,
+.subscription-ops-state-grid p,
+.subscription-ops-flow-grid p,
+.subscription-ops-control-grid p {
+  margin: 0;
+}
+
+.subscription-ops-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.subscription-ops-card-head b {
+  color: var(--blue);
+}
+
+.subscription-ops-flow-grid h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.subscription-ops-flow-grid ul,
+.subscription-ops-flow-grid ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.subscription-backend-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
+  gap: 12px;
+}
+
+.subscription-backend-form {
+  display: grid;
+  gap: 11px;
+  padding: 14px;
+}
+
+.subscription-backend-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid rgba(31, 78, 121, 0.3);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(245, 249, 252, 0.98), rgba(234, 242, 251, 0.9));
+}
+
+.subscription-backend-hero.ready {
+  border-color: rgba(15, 124, 107, 0.36);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.96), rgba(245, 249, 252, 0.94));
+}
+
+.subscription-backend-hero.draft {
+  border-color: rgba(225, 160, 55, 0.38);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.96), rgba(245, 249, 252, 0.94));
+}
+
+.subscription-backend-hero.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.subscription-backend-hero h3 {
+  margin: 3px 0 0;
+  font-size: 25px;
+  line-height: 1.12;
+}
+
+.subscription-backend-hero p,
+.subscription-backend-layer-grid p,
+.subscription-backend-contract-grid p,
+.subscription-backend-contract-grid small,
+.subscription-backend-flow-grid p,
+.subscription-backend-flow-grid li,
+.subscription-backend-control-grid p {
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.subscription-backend-score {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--blue) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.subscription-backend-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.subscription-backend-score b,
+.subscription-backend-score span {
+  position: relative;
+}
+
+.subscription-backend-score b {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.subscription-backend-score span {
+  color: #dbe7ef;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.subscription-backend-metric-grid,
+.subscription-backend-layer-grid,
+.subscription-backend-contract-grid,
+.subscription-backend-flow-grid,
+.subscription-backend-control-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.subscription-backend-metric-grid,
+.subscription-backend-control-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.subscription-backend-layer-grid,
+.subscription-backend-contract-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.subscription-backend-flow-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.subscription-backend-metric-grid article,
+.subscription-backend-layer-grid article,
+.subscription-backend-contract-grid article,
+.subscription-backend-flow-grid article,
+.subscription-backend-control-grid article {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.subscription-backend-flow-grid article.ready {
+  border-color: rgba(15, 124, 107, 0.3);
+  background: var(--mint-soft);
+}
+
+.subscription-backend-flow-grid article.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: var(--rose-soft);
+}
+
+.subscription-backend-metric-grid span,
+.subscription-backend-layer-grid span,
+.subscription-backend-card-head span,
+.subscription-backend-control-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.subscription-backend-metric-grid strong,
+.subscription-backend-layer-grid strong,
+.subscription-backend-card-head strong,
+.subscription-backend-control-grid strong {
+  display: block;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.18;
+}
+
+.subscription-backend-metric-grid p,
+.subscription-backend-layer-grid p,
+.subscription-backend-contract-grid p,
+.subscription-backend-flow-grid p,
+.subscription-backend-control-grid p {
+  margin: 0;
+}
+
+.subscription-backend-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.subscription-backend-card-head b {
+  color: var(--blue);
+}
+
+.subscription-backend-flow-grid h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.subscription-backend-flow-grid ul,
+.subscription-backend-flow-grid ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
 .account-readiness-hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 96px;
@@ -1373,6 +2379,372 @@ main {
 .account-step-grid .text-button {
   width: 100%;
   margin-top: auto;
+}
+
+.account-route-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
+  gap: 12px;
+}
+
+.account-route-form {
+  display: grid;
+  gap: 11px;
+  padding: 14px;
+}
+
+.account-route-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid rgba(31, 78, 121, 0.3);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.92), rgba(245, 249, 252, 0.96));
+}
+
+.account-route-hero.ready {
+  border-color: rgba(15, 124, 107, 0.36);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.96), rgba(245, 249, 252, 0.94));
+}
+
+.account-route-hero.draft {
+  border-color: rgba(225, 160, 55, 0.38);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.96), rgba(245, 249, 252, 0.94));
+}
+
+.account-route-hero.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.account-route-hero h3 {
+  margin: 3px 0 0;
+  font-size: 25px;
+  line-height: 1.12;
+}
+
+.account-route-hero p,
+.account-route-map-grid p,
+.account-route-map-grid li,
+.account-route-gate-grid p,
+.account-route-gate-grid small,
+.account-route-lane-grid p,
+.account-route-control-grid p {
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.account-route-score {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--blue) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.account-route-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.account-route-score b,
+.account-route-score span {
+  position: relative;
+}
+
+.account-route-score b {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.account-route-score span {
+  color: #dbe7ef;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.account-route-metric-grid,
+.account-route-map-grid,
+.account-route-gate-grid,
+.account-route-lane-grid,
+.account-route-control-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.account-route-metric-grid,
+.account-route-lane-grid,
+.account-route-control-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.account-route-map-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.account-route-gate-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.account-route-metric-grid article,
+.account-route-map-grid article,
+.account-route-gate-grid article,
+.account-route-lane-grid article,
+.account-route-control-grid article {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.account-route-map-grid article.ready {
+  border-color: rgba(15, 124, 107, 0.3);
+  background: var(--mint-soft);
+}
+
+.account-route-map-grid article.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: var(--rose-soft);
+}
+
+.account-route-metric-grid span,
+.account-route-card-head span,
+.account-route-lane-grid span,
+.account-route-control-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.account-route-metric-grid strong,
+.account-route-card-head strong,
+.account-route-lane-grid strong,
+.account-route-control-grid strong {
+  display: block;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.18;
+}
+
+.account-route-metric-grid p,
+.account-route-map-grid p,
+.account-route-gate-grid p,
+.account-route-lane-grid p,
+.account-route-control-grid p {
+  margin: 0;
+}
+
+.account-route-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.account-route-card-head b {
+  color: var(--blue);
+}
+
+.account-route-map-grid h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.account-route-map-grid ul,
+.account-route-map-grid ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.account-launch-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
+  gap: 12px;
+}
+
+.account-launch-form {
+  display: grid;
+  gap: 11px;
+  padding: 14px;
+}
+
+.account-launch-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid rgba(15, 124, 107, 0.28);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.92), rgba(234, 242, 251, 0.95));
+}
+
+.account-launch-hero.ready {
+  border-color: rgba(15, 124, 107, 0.36);
+}
+
+.account-launch-hero.draft {
+  border-color: rgba(225, 160, 55, 0.4);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(234, 242, 251, 0.92));
+}
+
+.account-launch-hero.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.account-launch-hero h3 {
+  margin: 3px 0 0;
+  font-size: 25px;
+  line-height: 1.12;
+}
+
+.account-launch-hero p,
+.account-launch-state-grid p,
+.account-launch-state-grid small,
+.account-launch-flow-grid p,
+.account-launch-flow-grid li,
+.account-launch-control-grid p {
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.account-launch-score {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.account-launch-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.account-launch-score b,
+.account-launch-score span {
+  position: relative;
+}
+
+.account-launch-score b {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.account-launch-score span {
+  color: #dbe7ef;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.account-launch-metric-grid,
+.account-launch-state-grid,
+.account-launch-flow-grid,
+.account-launch-control-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.account-launch-metric-grid,
+.account-launch-control-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.account-launch-state-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.account-launch-flow-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.account-launch-metric-grid article,
+.account-launch-state-grid article,
+.account-launch-flow-grid article,
+.account-launch-control-grid article {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.account-launch-flow-grid article.ready {
+  border-color: rgba(15, 124, 107, 0.3);
+  background: var(--mint-soft);
+}
+
+.account-launch-flow-grid article.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: var(--rose-soft);
+}
+
+.account-launch-metric-grid span,
+.account-launch-card-head span,
+.account-launch-control-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.account-launch-metric-grid strong,
+.account-launch-card-head strong,
+.account-launch-control-grid strong {
+  display: block;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.18;
+}
+
+.account-launch-metric-grid p,
+.account-launch-state-grid p,
+.account-launch-flow-grid p,
+.account-launch-control-grid p {
+  margin: 0;
+}
+
+.account-launch-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.account-launch-card-head b {
+  color: var(--blue);
+}
+
+.account-launch-flow-grid h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.account-launch-flow-grid ul,
+.account-launch-flow-grid ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
 }
 
 .account-vault-hero {
@@ -10897,6 +12269,192 @@ a:focus-visible {
   border-color: rgba(15, 124, 107, 0.24);
 }
 
+.backend-audit-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
+  gap: 12px;
+}
+
+.backend-audit-form {
+  display: grid;
+  gap: 11px;
+  padding: 14px;
+}
+
+.backend-audit-output {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  min-height: 320px;
+  color: var(--muted);
+}
+
+.backend-audit-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(245, 249, 252, 0.98), rgba(255, 250, 240, 0.92));
+}
+
+.backend-audit-hero.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.96), rgba(245, 249, 252, 0.96));
+}
+
+.backend-audit-hero.watch {
+  border-color: rgba(225, 160, 55, 0.42);
+}
+
+.backend-audit-hero.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.92), rgba(245, 249, 252, 0.94));
+}
+
+.backend-audit-hero h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.backend-audit-hero p,
+.backend-audit-card p,
+.backend-audit-card li,
+.backend-audit-control-grid p,
+.backend-audit-panel-grid p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.backend-audit-score {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  display: grid;
+  grid-template-rows: 1fr auto auto 1fr;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  text-align: center;
+}
+
+.backend-audit-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.backend-audit-score b,
+.backend-audit-score span {
+  position: relative;
+}
+
+.backend-audit-score b {
+  grid-row: 2;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.backend-audit-score span {
+  grid-row: 3;
+  margin-top: 3px;
+  color: #dce7ed;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.backend-audit-metric-grid,
+.backend-audit-grid,
+.backend-audit-control-grid,
+.backend-audit-panel-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.backend-audit-metric-grid,
+.backend-audit-control-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.backend-audit-grid,
+.backend-audit-panel-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.backend-audit-metric-grid article,
+.backend-audit-card,
+.backend-audit-control-grid article,
+.backend-audit-panel-grid article {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.backend-audit-card.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+}
+
+.backend-audit-card.watch {
+  border-color: rgba(225, 160, 55, 0.36);
+}
+
+.backend-audit-card.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+}
+
+.backend-audit-metric-grid span,
+.backend-audit-card-head span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.backend-audit-metric-grid strong,
+.backend-audit-card-head strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+}
+
+.backend-audit-card h3,
+.backend-audit-panel-grid h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.backend-audit-list {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.backend-audit-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.backend-audit-guardrail {
+  background: var(--mint-soft);
+  border-color: rgba(15, 124, 107, 0.24);
+}
+
 .claim-release-layout {
   display: grid;
   grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
@@ -15073,12 +16631,16 @@ a:focus-visible {
 
 @media (max-width: 1380px) {
   .brand-lockup {
-    flex: 0 0 360px;
+    flex: 0 1 306px;
   }
 
   .brand-logo {
-    width: 132px;
-    min-width: 112px;
+    width: 124px;
+    min-width: 104px;
+  }
+
+  .brand-lockup h1 {
+    font-size: 19px;
   }
 
   .nav-mode-strip {
@@ -15086,7 +16648,14 @@ a:focus-visible {
   }
 
   .nav-primary a[href="#launch-readiness"],
+  .nav-primary a[href="#payment-wiring"],
+  .nav-primary a[href="#payment-sandbox"],
+  .nav-primary a[href="#entitlement-bridge"],
+  .nav-primary a[href="#subscription-ops"],
+  .nav-primary a[href="#subscription-backend"],
   .nav-primary a[href="#account-readiness"],
+  .nav-primary a[href="#account-launch-route"],
+  .nav-primary a[href="#account-launch"],
   .nav-primary a[href="#account-vault"],
   .nav-primary a[href="#live-data-contracts"],
   .nav-primary a[href="#daily-brief"],
@@ -15109,6 +16678,7 @@ a:focus-visible {
     padding-inline: 8px;
   }
 
+  .nav-primary a[href="#daily-brief"],
   .nav-primary a[href="#research-dossier"],
   .nav-primary a[href="#pricing"] {
     display: none;
@@ -15127,6 +16697,13 @@ a:focus-visible {
   .app-header,
   .nadi-signal-strip,
   .workspace-grid,
+  .payment-wiring-layout,
+  .payment-sandbox-layout,
+  .entitlement-layout,
+  .subscription-ops-layout,
+  .subscription-backend-layout,
+  .account-route-layout,
+  .account-launch-layout,
   .profile-room-grid,
   .starter-grid,
   .investor-passport-grid,
@@ -15156,6 +16733,7 @@ a:focus-visible {
   .reviewer-workbench-layout,
   .reviewer-decision-band,
   .reviewer-release-band,
+  .backend-audit-layout,
   .source-queue-layout,
   .source-intake-layout,
   .source-drift-layout,
@@ -15263,6 +16841,39 @@ a:focus-visible {
   .payment-plan-grid,
   .payment-step-grid,
   .payment-flow-grid,
+  .payment-wiring-metric-grid,
+  .payment-wiring-state-grid,
+  .payment-wiring-flow-grid,
+  .payment-wiring-control-grid,
+  .payment-sandbox-metric-grid,
+  .payment-sandbox-route-grid,
+  .payment-sandbox-test-grid,
+  .payment-sandbox-flow-grid,
+  .payment-sandbox-control-grid,
+  .entitlement-metric-grid,
+  .entitlement-feature-grid,
+  .entitlement-state-grid,
+  .entitlement-flow-grid,
+  .entitlement-control-grid,
+  .subscription-ops-metric-grid,
+  .subscription-ops-lane-grid,
+  .subscription-ops-state-grid,
+  .subscription-ops-flow-grid,
+  .subscription-ops-control-grid,
+  .subscription-backend-metric-grid,
+  .subscription-backend-layer-grid,
+  .subscription-backend-contract-grid,
+  .subscription-backend-flow-grid,
+  .subscription-backend-control-grid,
+  .account-route-metric-grid,
+  .account-route-map-grid,
+  .account-route-gate-grid,
+  .account-route-lane-grid,
+  .account-route-control-grid,
+  .account-launch-metric-grid,
+  .account-launch-state-grid,
+  .account-launch-flow-grid,
+  .account-launch-control-grid,
   .account-metric-grid,
   .account-data-grid,
   .account-step-grid,
@@ -15364,6 +16975,10 @@ a:focus-visible {
   .reviewer-release-metric-grid,
   .reviewer-release-grid,
   .reviewer-release-panel-grid,
+  .backend-audit-metric-grid,
+  .backend-audit-grid,
+  .backend-audit-control-grid,
+  .backend-audit-panel-grid,
   .source-queue-metric-grid,
   .source-queue-grid,
   .source-queue-mini-grid,
@@ -15534,6 +17149,39 @@ a:focus-visible {
   .payment-plan-grid,
   .payment-step-grid,
   .payment-flow-grid,
+  .payment-wiring-metric-grid,
+  .payment-wiring-state-grid,
+  .payment-wiring-flow-grid,
+  .payment-wiring-control-grid,
+  .payment-sandbox-metric-grid,
+  .payment-sandbox-route-grid,
+  .payment-sandbox-test-grid,
+  .payment-sandbox-flow-grid,
+  .payment-sandbox-control-grid,
+  .entitlement-metric-grid,
+  .entitlement-feature-grid,
+  .entitlement-state-grid,
+  .entitlement-flow-grid,
+  .entitlement-control-grid,
+  .subscription-ops-metric-grid,
+  .subscription-ops-lane-grid,
+  .subscription-ops-state-grid,
+  .subscription-ops-flow-grid,
+  .subscription-ops-control-grid,
+  .subscription-backend-metric-grid,
+  .subscription-backend-layer-grid,
+  .subscription-backend-contract-grid,
+  .subscription-backend-flow-grid,
+  .subscription-backend-control-grid,
+  .account-route-metric-grid,
+  .account-route-map-grid,
+  .account-route-gate-grid,
+  .account-route-lane-grid,
+  .account-route-control-grid,
+  .account-launch-metric-grid,
+  .account-launch-state-grid,
+  .account-launch-flow-grid,
+  .account-launch-control-grid,
   .account-metric-grid,
   .account-data-grid,
   .account-step-grid,
@@ -15640,6 +17288,10 @@ a:focus-visible {
   .reviewer-release-metric-grid,
   .reviewer-release-grid,
   .reviewer-release-panel-grid,
+  .backend-audit-metric-grid,
+  .backend-audit-grid,
+  .backend-audit-control-grid,
+  .backend-audit-panel-grid,
   .source-queue-metric-grid,
   .source-queue-grid,
   .source-queue-mini-grid,
@@ -15747,7 +17399,14 @@ a:focus-visible {
   .build-tracker-hero,
   .launch-readiness-hero,
   .payment-readiness-hero,
+  .payment-wiring-hero,
+  .payment-sandbox-hero,
+  .entitlement-hero,
+  .subscription-ops-hero,
+  .subscription-backend-hero,
   .account-readiness-hero,
+  .account-route-hero,
+  .account-launch-hero,
   .account-vault-hero,
   .starter-hero,
   .profile-room-hero,
@@ -15775,7 +17434,14 @@ a:focus-visible {
   .build-tracker-score,
   .launch-readiness-score,
   .payment-readiness-score,
+  .payment-wiring-score,
+  .payment-sandbox-score,
+  .entitlement-score,
+  .subscription-ops-score,
+  .subscription-backend-score,
   .account-readiness-score,
+  .account-route-score,
+  .account-launch-score,
   .account-vault-score,
   .starter-score,
   .profile-room-score,
@@ -15851,6 +17517,7 @@ a:focus-visible {
   .reviewer-decision-empty,
   .reviewer-decision-hero,
   .reviewer-release-hero,
+  .backend-audit-hero,
   .source-queue-hero,
   .source-intake-hero,
   .source-drift-hero,
@@ -15900,6 +17567,7 @@ a:focus-visible {
   .reviewer-workbench-score,
   .reviewer-decision-score,
   .reviewer-release-score,
+  .backend-audit-score,
   .source-queue-score,
   .source-intake-score,
   .source-drift-score,

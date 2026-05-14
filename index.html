@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260513-15">
+    <link rel="stylesheet" href="styles.css?v=20260514-06">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -28,7 +28,14 @@
           <div class="nav-cluster nav-primary" aria-label="Primary research shortcuts">
             <a href="#build-tracker">Build</a>
             <a href="#launch-readiness">Launch</a>
+            <a href="#payment-wiring">Wiring</a>
+            <a href="#payment-sandbox">Sandbox</a>
+            <a href="#entitlement-bridge">Access</a>
+            <a href="#subscription-ops">Ops</a>
+            <a href="#subscription-backend">Contract</a>
             <a href="#account-readiness">Account</a>
+            <a href="#account-launch-route">Route</a>
+            <a href="#account-launch">Shell</a>
             <a href="#account-vault">Vault</a>
             <a href="#live-data-contracts">Data</a>
             <a href="#source-dry-run">Dry Run</a>
@@ -38,6 +45,7 @@
             <a href="#reviewer-workbench">Workbench</a>
             <a href="#reviewer-decision-ledger">Decisions</a>
             <a href="#reviewer-release-binder">Binder</a>
+            <a href="#backend-audit-receipts">Backend</a>
             <a href="#daily-brief">Today</a>
             <a href="#screener">Screener</a>
             <a href="#profile-room">Profile</a>
@@ -64,7 +72,14 @@
                 <option value="#build-tracker">Build Tracker</option>
                 <option value="#launch-readiness">Launch Readiness</option>
                 <option value="#payment-readiness">Payment Readiness</option>
+                <option value="#payment-wiring">Payment Wiring Console</option>
+                <option value="#payment-sandbox">Payment Gateway Sandbox</option>
+                <option value="#entitlement-bridge">Entitlement Bridge</option>
+                <option value="#subscription-ops">Subscription Ops Console</option>
+                <option value="#subscription-backend">Subscription Backend Blueprint</option>
                 <option value="#account-readiness">Account Readiness</option>
+                <option value="#account-launch-route">Retail Account Launch Route</option>
+                <option value="#account-launch">Account Launch Shell</option>
                 <option value="#account-vault">Account Vault Blueprint</option>
                 <option value="#daily-brief">Daily Command Brief</option>
                 <option value="#decision-radar">Decision Radar</option>
@@ -130,6 +145,7 @@
                 <option value="#reviewer-workbench">Reviewer Workbench</option>
                 <option value="#reviewer-decision-ledger">Reviewer Decision Ledger</option>
                 <option value="#reviewer-release-binder">Reviewer Release Binder</option>
+                <option value="#backend-audit-receipts">Backend Audit Receipts</option>
                 <option value="#source-qa">Source QA Queue</option>
                 <option value="#source-intake">Source Intake Console</option>
                 <option value="#source-drift">Source Drift Monitor</option>
@@ -163,7 +179,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-            <p class="release-pill">Phase 1 v91</p>
+            <p class="release-pill">Phase 1 v100</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -279,6 +295,314 @@
         </div>
       </section>
 
+      <section id="payment-wiring" class="workspace-band payment-wiring-band" aria-labelledby="payment-wiring-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Retail payment wiring</p>
+            <h2 id="payment-wiring-title">Nadi Payment Wiring Console</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Payment Wiring actions">
+            <span id="paymentWiringSummary" class="status-chip">Payment wiring</span>
+            <button class="text-button" id="openPaymentWiringBlocker" type="button">Open wiring blocker</button>
+            <button class="text-button" id="copyPaymentWiring" type="button">Copy wiring contract</button>
+          </div>
+        </div>
+        <div class="payment-wiring-layout">
+          <form id="paymentWiringForm" class="tool-panel payment-wiring-form">
+            <h3>Shape payment route</h3>
+            <label>
+              Gateway posture
+              <select id="paymentWiringGateway">
+                <option value="hosted">Hosted gateway checkout</option>
+                <option value="manual">Manual founder cohort</option>
+                <option value="deferred">No paid launch yet</option>
+                <option value="direct">Direct in-app payment entry</option>
+              </select>
+            </label>
+            <label>
+              Plan
+              <select id="paymentWiringPlan">
+                <option value="monthly">Nadi Plus Monthly</option>
+                <option value="annual">Nadi Plus Annual</option>
+                <option value="founder">Founder Beta</option>
+                <option value="distributor">Phase 2 Distributor Preview</option>
+              </select>
+            </label>
+            <label>
+              Scenario
+              <select id="paymentWiringScenario">
+                <option value="happy">Successful checkout</option>
+                <option value="failed">Failed renewal</option>
+                <option value="duplicate">Duplicate webhook</option>
+                <option value="refund">Refund and revoke</option>
+                <option value="cancel">Cancel renewal</option>
+              </select>
+            </label>
+            <label>
+              Invoice posture
+              <select id="paymentWiringInvoice">
+                <option value="gstReview">GST and invoice review pending</option>
+                <option value="invoiceReady">Tax invoice policy ready</option>
+                <option value="betaReceipt">Beta receipt only</option>
+                <option value="noInvoice">No invoice posture</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build payment route</button>
+          </form>
+          <div id="paymentWiringOutput" class="payment-wiring-output" aria-live="polite">
+            Payment Wiring Console will map checkout states, webhooks, entitlement activation, invoices, refunds, reconciliation, and backend audit receipts before Nadi Plus can launch.
+          </div>
+        </div>
+      </section>
+
+      <section id="payment-sandbox" class="workspace-band payment-sandbox-band" aria-labelledby="payment-sandbox-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Gateway dry run</p>
+            <h2 id="payment-sandbox-title">Nadi Payment Gateway Sandbox Route</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Payment Sandbox actions">
+            <span id="paymentSandboxSummary" class="status-chip">Payment sandbox</span>
+            <button class="text-button" id="openPaymentSandboxBlocker" type="button">Open sandbox blocker</button>
+            <button class="text-button" id="copyPaymentSandbox" type="button">Copy sandbox route</button>
+          </div>
+        </div>
+        <div class="payment-sandbox-layout">
+          <form id="paymentSandboxForm" class="tool-panel payment-sandbox-form">
+            <h3>Shape sandbox run</h3>
+            <label>
+              Provider posture
+              <select id="paymentSandboxProvider">
+                <option value="razorpay">Razorpay-style hosted checkout</option>
+                <option value="cashfree">Cashfree-style hosted checkout</option>
+                <option value="stripe">Stripe-style hosted checkout</option>
+                <option value="manual">Manual sandbox ledger</option>
+              </select>
+            </label>
+            <label>
+              Sandbox scenario
+              <select id="paymentSandboxScenario">
+                <option value="success">Successful payment webhook</option>
+                <option value="checkout">Checkout session</option>
+                <option value="duplicate">Duplicate webhook replay</option>
+                <option value="failed">Failed renewal</option>
+                <option value="refund">Refund and entitlement reversal</option>
+                <option value="invoice">Invoice and receipt</option>
+                <option value="reconcile">Settlement reconciliation</option>
+                <option value="incident">Incident rollback replay</option>
+              </select>
+            </label>
+            <label>
+              Evidence posture
+              <select id="paymentSandboxEvidence">
+                <option value="replay">Replayable audit trail</option>
+                <option value="signed">Signed event receipt</option>
+                <option value="idempotent">Idempotency proof</option>
+                <option value="manual">Manual support receipt</option>
+                <option value="missing">Missing receipt trail</option>
+              </select>
+            </label>
+            <label>
+              Run mode
+              <select id="paymentSandboxMode">
+                <option value="dry">Dry-run route</option>
+                <option value="stress">Stress and replay run</option>
+                <option value="finance">Finance reconciliation run</option>
+                <option value="support">Support repair run</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build sandbox route</button>
+          </form>
+          <div id="paymentSandboxOutput" class="payment-sandbox-output" aria-live="polite">
+            Payment Gateway Sandbox Route will rehearse hosted checkout, signed webhooks, duplicate events, failed renewals, refunds, invoices, entitlement activation, support repair, and settlement reconciliation before any real payment rail goes live.
+          </div>
+        </div>
+      </section>
+
+      <section id="entitlement-bridge" class="workspace-band entitlement-band" aria-labelledby="entitlement-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Retail access gate</p>
+            <h2 id="entitlement-title">Nadi Entitlement Bridge</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Entitlement Bridge actions">
+            <span id="entitlementSummary" class="status-chip">Entitlement bridge</span>
+            <button class="text-button" id="openEntitlementBlocker" type="button">Open access blocker</button>
+            <button class="text-button" id="copyEntitlement" type="button">Copy entitlement brief</button>
+          </div>
+        </div>
+        <div class="entitlement-layout">
+          <form id="entitlementForm" class="tool-panel entitlement-form">
+            <h3>Shape access state</h3>
+            <label>
+              Plan state
+              <select id="entitlementPlan">
+                <option value="monthly">Nadi Plus Monthly</option>
+                <option value="annual">Nadi Plus Annual</option>
+                <option value="free">Free Starter</option>
+                <option value="founder">Founder Beta</option>
+                <option value="phase2">Phase 2 Distributor Preview</option>
+              </select>
+            </label>
+            <label>
+              Lifecycle
+              <select id="entitlementLifecycle">
+                <option value="active">Paid active</option>
+                <option value="trial">Starter trial</option>
+                <option value="grace">Renewal grace</option>
+                <option value="refund">Refund and revoke</option>
+                <option value="expired">Expired access</option>
+                <option value="manual">Manual founder review</option>
+              </select>
+            </label>
+            <label>
+              Feature policy
+              <select id="entitlementPolicy">
+                <option value="hard">Server-enforced feature limits</option>
+                <option value="evidence">Evidence-first paid unlock</option>
+                <option value="soft">Soft launch limits</option>
+                <option value="unlimited">Unlimited access</option>
+              </select>
+            </label>
+            <label>
+              Receipt posture
+              <select id="entitlementReceipt">
+                <option value="webhook">Verified payment webhook</option>
+                <option value="auditReady">Backend audit receipt ready</option>
+                <option value="manual">Manual support confirmation</option>
+                <option value="missing">No entitlement receipt</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build access bridge</button>
+          </form>
+          <div id="entitlementOutput" class="entitlement-output" aria-live="polite">
+            Entitlement Bridge will connect free, monthly, annual, grace, refund, expired, support, and receipt states to the research features each retail account can access.
+          </div>
+        </div>
+      </section>
+
+      <section id="subscription-ops" class="workspace-band subscription-ops-band" aria-labelledby="subscription-ops-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Subscription operations</p>
+            <h2 id="subscription-ops-title">Nadi Subscription Ops Console</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Subscription Ops actions">
+            <span id="subscriptionOpsSummary" class="status-chip">Subscription ops</span>
+            <button class="text-button" id="openSubscriptionOpsBlocker" type="button">Open ops blocker</button>
+            <button class="text-button" id="copySubscriptionOps" type="button">Copy ops runbook</button>
+          </div>
+        </div>
+        <div class="subscription-ops-layout">
+          <form id="subscriptionOpsForm" class="tool-panel subscription-ops-form">
+            <h3>Shape ops queue</h3>
+            <label>
+              Ops queue
+              <select id="subscriptionOpsQueue">
+                <option value="renewal">Renewal operations</option>
+                <option value="failed">Failed payment triage</option>
+                <option value="refund">Refund and cancellation desk</option>
+                <option value="invoice">Invoice and tax review</option>
+                <option value="reconcile">Settlement reconciliation</option>
+                <option value="support">Support repair queue</option>
+              </select>
+            </label>
+            <label>
+              Risk posture
+              <select id="subscriptionOpsRisk">
+                <option value="attention">Attention needed</option>
+                <option value="normal">Normal beta traffic</option>
+                <option value="critical">Critical launch risk</option>
+                <option value="freeze">Launch freeze</option>
+              </select>
+            </label>
+            <label>
+              Runbook posture
+              <select id="subscriptionOpsRunbook">
+                <option value="review">Ops review required</option>
+                <option value="auto">Automated ops runbook</option>
+                <option value="manual">Manual founder support</option>
+                <option value="missing">No runbook</option>
+              </select>
+            </label>
+            <label>
+              Receipt trail
+              <select id="subscriptionOpsReceipt">
+                <option value="auditReady">Backend audit receipts</option>
+                <option value="eventStream">Event stream receipts</option>
+                <option value="spreadsheet">Manual spreadsheet tracker</option>
+                <option value="missing">No receipt trail</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build ops route</button>
+          </form>
+          <div id="subscriptionOpsOutput" class="subscription-ops-output" aria-live="polite">
+            Subscription Ops Console will map renewal, failed payment, refund, invoice, support, entitlement repair, reconciliation, and incident handling before paid retail launch.
+          </div>
+        </div>
+      </section>
+
+      <section id="subscription-backend" class="workspace-band subscription-backend-band" aria-labelledby="subscription-backend-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Subscription backend</p>
+            <h2 id="subscription-backend-title">Nadi Subscription Backend Blueprint</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Subscription Backend actions">
+            <span id="subscriptionBackendSummary" class="status-chip">Backend contract</span>
+            <button class="text-button" id="openSubscriptionBackendBlocker" type="button">Open backend blocker</button>
+            <button class="text-button" id="copySubscriptionBackend" type="button">Copy backend blueprint</button>
+          </div>
+        </div>
+        <div class="subscription-backend-layout">
+          <form id="subscriptionBackendForm" class="tool-panel subscription-backend-form">
+            <h3>Shape backend contract</h3>
+            <label>
+              Gateway posture
+              <select id="subscriptionBackendGateway">
+                <option value="hosted">Hosted gateway adapter</option>
+                <option value="adapter">Gateway-neutral adapter</option>
+                <option value="manual">Manual beta ledger</option>
+                <option value="none">No gateway selected</option>
+              </select>
+            </label>
+            <label>
+              Source lane
+              <select id="subscriptionBackendSource">
+                <option value="webhook">Webhook ingestion</option>
+                <option value="entitlement">Entitlement sync</option>
+                <option value="finance">Invoice and refund ledger</option>
+                <option value="support">Support repair queue</option>
+                <option value="reconciliation">Settlement reconciliation</option>
+              </select>
+            </label>
+            <label>
+              Sync posture
+              <select id="subscriptionBackendSync">
+                <option value="replay">Replayable event log</option>
+                <option value="queued">Queued worker projection</option>
+                <option value="realtime">Near-real-time projection</option>
+                <option value="manual">Manual admin update</option>
+                <option value="browser">Browser-local state</option>
+              </select>
+            </label>
+            <label>
+              Failure path
+              <select id="subscriptionBackendFailure">
+                <option value="retry">Retry and grace path</option>
+                <option value="downgrade">Downgrade access safely</option>
+                <option value="freeze">Freeze paid mutations</option>
+                <option value="repair">Support repair workflow</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build backend route</button>
+          </form>
+          <div id="subscriptionBackendOutput" class="subscription-backend-output" aria-live="polite">
+            Subscription Backend Blueprint will map hosted checkout events, webhook verification, idempotency, entitlement projection, invoice and refund ledger, support repair, reconciliation, and incident replay before paid launch.
+          </div>
+        </div>
+      </section>
+
       <section id="account-readiness" class="workspace-band account-readiness-band" aria-labelledby="account-readiness-title">
         <div class="section-heading">
           <div>
@@ -293,6 +617,125 @@
         </div>
         <div id="accountReadinessOutput" class="account-readiness-output" aria-live="polite">
           Account Readiness Lab will show login, saved research, entitlement, deletion, audit, and Phase 2 boundary gates.
+        </div>
+      </section>
+
+      <section id="account-launch-route" class="workspace-band account-route-band" aria-labelledby="account-route-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Retail account route</p>
+            <h2 id="account-route-title">Nadi Retail Account Launch Route</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Retail Account Launch Route actions">
+            <span id="accountRouteSummary" class="status-chip">Account route</span>
+            <button class="text-button" id="openAccountRouteBlocker" type="button">Open route blocker</button>
+            <button class="text-button" id="copyAccountRoute" type="button">Copy account route</button>
+          </div>
+        </div>
+        <div class="account-route-layout">
+          <form id="accountRouteForm" class="tool-panel account-route-form">
+            <h3>Shape launch route</h3>
+            <label>
+              First cohort
+              <select id="accountRouteCohort">
+                <option value="founder">Founder account pilot</option>
+                <option value="paidBeta">Paid beta cohort</option>
+                <option value="publicWaitlist">Public waitlist launch</option>
+                <option value="distributorPreview">Phase 2 distributor preview</option>
+              </select>
+            </label>
+            <label>
+              Auth route
+              <select id="accountRouteAuth">
+                <option value="passwordless">Passwordless email</option>
+                <option value="otp">Email OTP and recovery</option>
+                <option value="social">Social login plus email</option>
+                <option value="undecided">Auth provider undecided</option>
+              </select>
+            </label>
+            <label>
+              Data store
+              <select id="accountRouteData">
+                <option value="encrypted">Encrypted account store</option>
+                <option value="managed">Managed backend database</option>
+                <option value="browser">Browser-local only</option>
+                <option value="manual">Manual spreadsheet ledger</option>
+              </select>
+            </label>
+            <label>
+              Cutover focus
+              <select id="accountRouteCutover">
+                <option value="dry">Dry-run launch route</option>
+                <option value="migration">Saved research migration</option>
+                <option value="entitlement">Paid entitlement join</option>
+                <option value="support">Support recovery drill</option>
+                <option value="public">Public beta cutover</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build launch route</button>
+          </form>
+          <div id="accountRouteOutput" class="account-route-output" aria-live="polite">
+            Retail Account Launch Route will connect auth provider choice, account vault storage, saved research migration, paid entitlement, export/delete, support redaction, monitoring, and the Phase 2 data firewall before retail accounts move beyond prototype.
+          </div>
+        </div>
+      </section>
+
+      <section id="account-launch" class="workspace-band account-launch-band" aria-labelledby="account-launch-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Account beta shell</p>
+            <h2 id="account-launch-title">Nadi Account Launch Shell</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Account Launch actions">
+            <span id="accountLaunchSummary" class="status-chip">Account launch</span>
+            <button class="text-button" id="openAccountLaunchBlocker" type="button">Open account blocker</button>
+            <button class="text-button" id="copyAccountLaunch" type="button">Copy account shell</button>
+          </div>
+        </div>
+        <div class="account-launch-layout">
+          <form id="accountLaunchForm" class="tool-panel account-launch-form">
+            <h3>Shape account shell</h3>
+            <label>
+              Auth posture
+              <select id="accountLaunchAuth">
+                <option value="passwordless">Passwordless email login</option>
+                <option value="emailOtp">Email OTP with recovery</option>
+                <option value="social">Social login plus email</option>
+                <option value="guest">Guest-only browser workspace</option>
+              </select>
+            </label>
+            <label>
+              Storage posture
+              <select id="accountLaunchStorage">
+                <option value="managedDb">Managed backend database</option>
+                <option value="encryptedDb">Encrypted account data store</option>
+                <option value="browser">Browser-local only</option>
+                <option value="spreadsheet">Manual spreadsheet storage</option>
+              </select>
+            </label>
+            <label>
+              Migration scope
+              <select id="accountLaunchMigration">
+                <option value="starter">Starter profile and watchlist</option>
+                <option value="dossier">Dossier and review history</option>
+                <option value="full">Full research vault migration</option>
+                <option value="none">No browser migration</option>
+              </select>
+            </label>
+            <label>
+              Support posture
+              <select id="accountLaunchSupport">
+                <option value="redacted">Redacted support view</option>
+                <option value="limited">Ticket metadata only</option>
+                <option value="raw">Raw user record view</option>
+                <option value="none">No support workflow</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build account shell</button>
+          </form>
+          <div id="accountLaunchOutput" class="account-launch-output" aria-live="polite">
+            Account Launch Shell will map login, research profile sync, saved research migration, entitlement link, export/delete, support redaction, and Phase 2 data boundaries before paid accounts launch.
+          </div>
         </div>
       </section>
 
@@ -2354,6 +2797,67 @@
         </div>
       </section>
 
+      <section id="backend-audit-receipts" class="workspace-band backend-audit-band" aria-labelledby="backend-audit-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Backend launch trail</p>
+            <h2 id="backend-audit-title">Nadi Backend Audit Receipts</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Backend audit receipt actions">
+            <span id="backendAuditSummary" class="status-chip">Audit receipts</span>
+            <button class="text-button" id="openBackendAuditRoute" type="button">Open source route</button>
+            <button class="text-button" id="copyBackendAudit" type="button">Copy audit contract</button>
+          </div>
+        </div>
+        <div class="backend-audit-layout">
+          <form id="backendAuditForm" class="tool-panel backend-audit-form">
+            <h3>Shape backend receipt</h3>
+            <label>
+              Receipt stream
+              <select id="backendAuditStream">
+                <option value="reviewer-release">Reviewer release receipts</option>
+                <option value="source-ingestion">Source ingestion receipts</option>
+                <option value="account-research">Saved research receipts</option>
+                <option value="payment-entitlement">Payment and entitlement receipts</option>
+                <option value="privacy-consent">Privacy and consent receipts</option>
+                <option value="support-ops">Support and correction receipts</option>
+              </select>
+            </label>
+            <label>
+              Audit mode
+              <select id="backendAuditMode">
+                <option value="launch">Launch audit contract</option>
+                <option value="dry">Backend dry run</option>
+                <option value="stress">Failure and rollback stress</option>
+                <option value="privacy">Privacy minimization review</option>
+              </select>
+            </label>
+            <label>
+              Storage pattern
+              <select id="backendAuditStorage">
+                <option value="append">Append-only audit table</option>
+                <option value="event">Event stream and audit table</option>
+                <option value="database">Transactional database trail</option>
+                <option value="browser">Browser-local prototype only</option>
+              </select>
+            </label>
+            <label>
+              Retention rule
+              <select id="backendAuditRetention">
+                <option value="strict">Strict launch retention</option>
+                <option value="user">User-controlled retention</option>
+                <option value="finance">Finance and dispute retention</option>
+                <option value="minimal">Minimal metadata retention</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Build audit receipt</button>
+          </form>
+          <div id="backendAuditOutput" class="backend-audit-output" aria-live="polite">
+            Backend Audit Receipts will define event names, required fields, idempotency, redaction, retention, and support-safe proof before real account, payment, source, or reviewer data moves outside the browser.
+          </div>
+        </div>
+      </section>
+
       <section id="source-qa" class="workspace-band source-queue-band" aria-labelledby="source-queue-title">
         <div class="section-heading">
           <div>
@@ -3644,6 +4148,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260513-15"></script>
+    <script src="app.js?v=20260514-06"></script>
   </body>
 </html>

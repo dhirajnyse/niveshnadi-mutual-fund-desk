@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260514-06">
+    <link rel="stylesheet" href="styles.css?v=20260515-15">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -27,6 +27,7 @@
         <div class="nav-stack">
           <div class="nav-cluster nav-primary" aria-label="Primary research shortcuts">
             <a href="#build-tracker">Build</a>
+            <a href="#build-phases">Phases</a>
             <a href="#launch-readiness">Launch</a>
             <a href="#payment-wiring">Wiring</a>
             <a href="#payment-sandbox">Sandbox</a>
@@ -70,6 +71,7 @@
               <option value="">Jump to tool</option>
               <optgroup label="Discover">
                 <option value="#build-tracker">Build Tracker</option>
+                <option value="#build-phases">Build Phases Room</option>
                 <option value="#launch-readiness">Launch Readiness</option>
                 <option value="#payment-readiness">Payment Readiness</option>
                 <option value="#payment-wiring">Payment Wiring Console</option>
@@ -179,7 +181,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-            <p class="release-pill">Phase 1 v100</p>
+            <p class="release-pill">Phase 1 v130</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -258,6 +260,23 @@
         </div>
         <div id="buildTrackerOutput" class="build-tracker-output" aria-live="polite">
           Build Tracker will show current phase, completion pace, completed modules, and planned implementation lanes.
+        </div>
+      </section>
+
+      <section id="build-phases" class="workspace-band build-phases-band" aria-labelledby="build-phases-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Build roadmap</p>
+            <h2 id="build-phases-title">Nadi Build Phases Room</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Build Phases Room actions">
+            <span id="buildPhasesSummary" class="status-chip">Build phases</span>
+            <button class="text-button" id="openBuildPhaseCurrent" type="button">Open current lane</button>
+            <button class="text-button" id="copyBuildPhases" type="button">Copy phases room</button>
+          </div>
+        </div>
+        <div id="buildPhasesOutput" class="build-phases-output" aria-live="polite">
+          Build Phases Room will show phase cards, launch gates, roadmap detail, and Phase 2 boundaries.
         </div>
       </section>
 
@@ -2816,7 +2835,7 @@
               Receipt stream
               <select id="backendAuditStream">
                 <option value="reviewer-release">Reviewer release receipts</option>
-                <option value="source-ingestion">Source ingestion receipts</option>
+                <option value="source-ingestion" selected>Source ingestion receipts</option>
                 <option value="account-research">Saved research receipts</option>
                 <option value="payment-entitlement">Payment and entitlement receipts</option>
                 <option value="privacy-consent">Privacy and consent receipts</option>
@@ -2836,7 +2855,7 @@
               Storage pattern
               <select id="backendAuditStorage">
                 <option value="append">Append-only audit table</option>
-                <option value="event">Event stream and audit table</option>
+                <option value="event" selected>Event stream and audit table</option>
                 <option value="database">Transactional database trail</option>
                 <option value="browser">Browser-local prototype only</option>
               </select>
@@ -2846,7 +2865,7 @@
               <select id="backendAuditRetention">
                 <option value="strict">Strict launch retention</option>
                 <option value="user">User-controlled retention</option>
-                <option value="finance">Finance and dispute retention</option>
+                <option value="finance" selected>Finance and dispute retention</option>
                 <option value="minimal">Minimal metadata retention</option>
               </select>
             </label>
@@ -4057,6 +4076,7 @@
           </label>
           <div class="floating-section-links" aria-label="Quick sections">
             <a href="#build-tracker">Build</a>
+            <a href="#build-phases">Phases</a>
             <a href="#daily-brief">Today</a>
             <a href="#decision-radar">Radar</a>
             <a href="#question-stack">Questions</a>
@@ -4148,6 +4168,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260514-06"></script>
+    <script src="app.js?v=20260515-15"></script>
   </body>
 </html>

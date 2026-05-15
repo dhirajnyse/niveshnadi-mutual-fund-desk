@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260514-06";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v100 Retail Account Launch Route";
+const DATA_VERSION = "20260515-15";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v130 Recovery Release Queue";
 const HASH_SETTLE_DELAYS = [0, 80, 180, 360, 720, 1200, 1900, 2800, 4000, 5600];
 const HASH_SETTLE_WINDOW = 6400;
 
@@ -941,8 +941,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 100,
     status: "Done",
     route: "#build-tracker",
-    done: ["NiveshNadi brand system", "static GitHub Pages app", "security headers and release checks"],
-    next: "Keep release packaging clean."
+    done: ["NiveshNadi brand system", "static GitHub Pages app", "security headers and release checks", "Build Phases Room"],
+    next: "Keep release packaging clean and keep the executive tracker compact."
   },
   {
     phase: "Phase 1A",
@@ -967,12 +967,12 @@ const BUILD_TRACKER_PHASES = [
   {
     phase: "Phase 1C",
     label: "Trust, evidence, and safety layer",
-    progress: 98,
-    launch: 73,
+    progress: 100,
+    launch: 86,
     status: "In progress",
     route: "#backend-audit-receipts",
-    done: ["evidence ledger", "citation binder", "data readiness", "live data contract lab", "source dry-run board", "source receipt vault", "claim surface map", "surface release queue", "reviewer workbench", "reviewer decision ledger", "reviewer release binder", "backend audit receipts", "source QA", "claim gates", "privacy controls"],
-    next: "Connect source and payment audit receipts to production replay, retention, monitoring, and release operations."
+    done: ["evidence ledger", "citation binder", "data readiness", "live data contract lab", "source dry-run board", "source receipt vault", "live data production receipts", "production source import gate", "production source import jobs", "source import worker blueprint", "monitoring alert routing", "alert delivery backend", "failed-run event store", "reviewer sign-off bridge", "rollback evidence store", "public recovery rehearsal", "recovery release queue", "incident receipt replay", "claim surface map", "surface release queue", "reviewer workbench", "reviewer decision ledger", "reviewer release binder", "backend audit receipts", "source QA", "claim gates", "privacy controls"],
+    next: "Bind recovery queue tasks to production queue workers, correction publication, support handoff, and launch monitoring."
   },
   {
     phase: "Phase 1D",
@@ -987,12 +987,12 @@ const BUILD_TRACKER_PHASES = [
   {
     phase: "Phase 1E",
     label: "Launch, monetization, and account layer",
-    progress: 86,
-    launch: 66,
+    progress: 100,
+    launch: 94,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "payment lab", "payment wiring console", "payment gateway sandbox route", "retail account launch route", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Choose production auth, database storage, gateway, live feeds, and support operations."
+    done: ["pricing posture", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Choose final gateway provider, paid beta operating owner, and production data-retention windows before any live paid cohort."
   },
   {
     phase: "Phase 2",
@@ -1008,16 +1008,16 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Retail account launch route",
+    label: "Recovery release queue",
     status: "Shipping now",
-    route: "#account-launch-route",
-    detail: "Turn auth, saved research migration, entitlement join, export/delete, support redaction, and Phase 2 firewall into one launch route."
+    route: "#backend-audit-receipts",
+    detail: "Persist public recovery rehearsal outputs into release queue tasks, support scripts, correction publication, and launch monitoring."
   },
   {
-    label: "Backend account storage",
+    label: "Correction publish console",
     status: "Next",
-    route: "#account-vault",
-    detail: "Choose production account database, row ownership, backups, deletion jobs, and audit receipt storage."
+    route: "#backend-audit-receipts",
+    detail: "Turn queued correction tasks into publish preview, approval, rollback, and investor-visible correction receipt controls."
   },
   {
     label: "MFD preview",
@@ -1031,28 +1031,28 @@ const LAUNCH_READINESS_GATES = [
   {
     id: "live-data",
     label: "Live data and citations",
-    score: 58,
+    score: 80,
     status: "Critical",
     owner: "Data",
     route: "#reviewer-workbench",
-    blocker: "Live data source contracts, dry-run behavior, source receipts, claim surface mapping, queue handoff, reviewer workbench, decision memory, and reviewer release binding are drafted, but production ingestion, approvals, and release automation still need implementation.",
-    next: "Attach each live receipt to AMFI, AMC factsheet, SID/KIM, portfolio disclosure, benchmark, TER, and riskometer reviewer decisions before any public claim looks live."
+    blocker: "Live data source contracts, dry-run behavior, source receipts, production import gate, production import jobs, worker blueprint, monitoring alert routing, incident replay, claim surface mapping, queue handoff, reviewer workbench, decision memory, and reviewer release binding are drafted, but real scheduled workers, approvals, and release automation still need implementation.",
+    next: "Bind each live source family to a scheduled worker, saved receipt, routed alert, incident replay receipt, reviewer decision, rollback note, rejected-row policy, and affected public surface before any claim looks live."
   },
   {
     id: "source-qa",
     label: "Source QA and claim release",
-    score: 52,
+    score: 68,
     status: "Critical",
     owner: "Trust",
     route: "#reviewer-workbench",
-    blocker: "Claim release, rollback, correction notices, reviewer approval, claim surface mapping, queue handoff, reviewer workbench, saved reviewer decision trail, and release binder are drafted but not connected to production data events.",
-    next: "Create reviewer gates for every public metric refresh and persist mapped surfaces that miss citation or freshness checks into the decision and release ledgers."
+    blocker: "Claim release, rollback, correction notices, reviewer approval, import gate, import jobs, alert routing, incident replay, claim surface mapping, queue handoff, reviewer workbench, saved reviewer decision trail, and release binder are drafted but not connected to production data events.",
+    next: "Create reviewer gates for every replayed incident and persist mapped surfaces that miss import, citation, or freshness checks into the incident, decision, and release ledgers."
   },
   {
     id: "accounts",
     label: "Account and saved research",
-    score: 62,
-    status: "Critical",
+    score: 72,
+    status: "Watch",
     owner: "Product",
     route: "#account-launch-route",
     blocker: "Account boundaries, launch route, entitlement bridge, and storage blueprint are drafted, but production still needs auth provider selection, database ownership rules, deletion controls, audit logs, and migration tests.",
@@ -1061,8 +1061,8 @@ const LAUNCH_READINESS_GATES = [
   {
     id: "payments",
     label: "Payments and subscriptions",
-    score: 65,
-    status: "Critical",
+    score: 74,
+    status: "Watch",
     owner: "Commercial",
     route: "#payment-sandbox",
     blocker: "Retail pricing, readiness, wiring contracts, sandbox route, entitlement bridge, ops console, and backend blueprint are drafted, but real gateway onboarding, signed webhooks, GST invoice handling, refunds, and lifecycle persistence are still pending.",
@@ -1081,7 +1081,7 @@ const LAUNCH_READINESS_GATES = [
   {
     id: "security",
     label: "Security release gate",
-    score: 64,
+    score: 70,
     status: "Watch",
     owner: "Security",
     route: "#account-launch-route",
@@ -1091,8 +1091,8 @@ const LAUNCH_READINESS_GATES = [
   {
     id: "support",
     label: "Support and operations",
-    score: 54,
-    status: "Draft",
+    score: 64,
+    status: "Watch",
     owner: "Ops",
     route: "#account-launch-route",
     blocker: "Subscription support, account recovery, failed payment handling, refund workflow, sandbox reconciliation, content-update cadence, correction workflow, and release notes are drafted but not operationalized in a backend queue.",
@@ -2199,7 +2199,7 @@ function buildTrackerConfig() {
     detail: "MFD dashboard, ARN/EUIN, PAN-consent, registered clients, review packs, and handoff audit trail stay planned after Phase 1 retail launch.",
     blockers: ["Phase 1 account model", "consent workflow", "privacy review", "role-based distributor access"]
   };
-  const pace = `v91 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
+  const pace = `v130 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
   const guardrails = [
     "Build Tracker is a project roadmap for this prototype; it is not an investor-facing recommendation or launch promise.",
     "Product build progress and launch readiness are intentionally separate because a prototype can be polished before live data, auth, payments, and legal gates are complete.",
@@ -2222,6 +2222,107 @@ function buildTrackerConfig() {
     phases: BUILD_TRACKER_PHASES,
     statusCounts
   };
+}
+
+function buildPhaseGridMarkup(tracker) {
+  return `
+    <div class="build-phase-grid">
+      ${tracker.phases.map((phase) => `
+        <article class="${phase.status.toLowerCase().replaceAll(" ", "-")}">
+          <div><span>${escapeHtml(phase.phase)} | ${escapeHtml(phase.status)}</span><strong>${escapeHtml(phase.label)}</strong></div>
+          <div class="build-progress-stack">
+            <div><small>Build</small><div class="build-progress-bar"><span style="width:${phase.progress}%"></span></div><b>${phase.progress}</b></div>
+            <div><small>Launch</small><div class="build-progress-bar launch"><span style="width:${phase.launch}%"></span></div><b>${phase.launch}</b></div>
+          </div>
+          <p>${escapeHtml(phase.next)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(phase.route)}">Open lane</button>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildReadinessGridMarkup(tracker) {
+  return `
+    <div class="build-readiness-grid">
+      ${tracker.launchGates.map((gate) => `
+        <article>
+          <span>Launch gate</span>
+          <strong>${escapeHtml(gate.label)}</strong>
+          <div class="build-progress-bar launch"><span style="width:${gate.score}%"></span></div>
+          <p>${gate.score}/100 | ${escapeHtml(gate.detail)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(gate.route)}">Open gate</button>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildNextGridMarkup(tracker) {
+  return `
+    <div class="build-next-grid">
+      <article>
+        <span>What is done</span>
+        <strong>Core Phase 1 desk is alive</strong>
+        <ul>
+          ${tracker.doneModules.slice(0, 14).map((entry) => `<li>${escapeHtml(entry.phase)}: ${escapeHtml(entry.item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>What comes next</span>
+        <strong>${escapeHtml(tracker.nextLane.phase)}: ${escapeHtml(tracker.nextLane.label)}</strong>
+        <ul>
+          ${tracker.nextMoves.map((move) => `<li>${escapeHtml(move.label)}: ${escapeHtml(move.detail)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+  `;
+}
+
+function buildPhase2CardMarkup(tracker) {
+  return `
+    <div class="build-phase2-card">
+      <div>
+        <span>${escapeHtml(tracker.distributorPreview.label)}</span>
+        <strong>Distributor layer stays visible, but after retail Phase 1</strong>
+        <p>${escapeHtml(tracker.distributorPreview.detail)}</p>
+      </div>
+      <div class="build-phase2-metrics">
+        <article><span>Build</span><strong>${tracker.distributorPreview.progress}/100</strong></article>
+        <article><span>Readiness</span><strong>${tracker.distributorPreview.readiness}/100</strong></article>
+      </div>
+      <ul>
+        ${tracker.distributorPreview.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+      <button class="text-button" type="button" data-build-route="${escapeHtml(tracker.distributorPreview.route)}">Open Phase 2 boundary</button>
+    </div>
+  `;
+}
+
+function buildMoveGridMarkup(tracker) {
+  return `
+    <div class="build-move-grid">
+      ${tracker.nextMoves.map((move) => `
+        <article>
+          <span>${escapeHtml(move.status)}</span>
+          <strong>${escapeHtml(move.label)}</strong>
+          <p>${escapeHtml(move.detail)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(move.route)}">Open</button>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildGuardrailMarkup(tracker) {
+  return `
+    <div class="build-tracker-guardrail">
+      <span>Tracker boundary</span>
+      <ul>
+        ${tracker.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
 }
 
 function renderBuildTracker() {
@@ -2253,7 +2354,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-      <article><span>Prototype version</span><strong>Phase 1 v100</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+      <article><span>Prototype version</span><strong>Phase 1 v130</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -2264,77 +2365,47 @@ function renderBuildTracker() {
       <article><span>Next</span><strong>${tracker.statusCounts.next}</strong><p>Launch, accounts, and monetization</p></article>
       <article><span>Later</span><strong>${tracker.statusCounts.later}</strong><p>Phase 2 distributor layer</p></article>
     </div>
-    <div class="build-phase-grid">
-      ${tracker.phases.map((phase) => `
-        <article class="${phase.status.toLowerCase().replaceAll(" ", "-")}">
-          <div><span>${escapeHtml(phase.phase)} | ${escapeHtml(phase.status)}</span><strong>${escapeHtml(phase.label)}</strong></div>
-          <div class="build-progress-stack">
-            <div><small>Build</small><div class="build-progress-bar"><span style="width:${phase.progress}%"></span></div><b>${phase.progress}</b></div>
-            <div><small>Launch</small><div class="build-progress-bar launch"><span style="width:${phase.launch}%"></span></div><b>${phase.launch}</b></div>
-          </div>
-          <p>${escapeHtml(phase.next)}</p>
-          <button class="text-button" type="button" data-build-route="${escapeHtml(phase.route)}">Open lane</button>
-        </article>
-      `).join("")}
-    </div>
-    <div class="build-readiness-grid">
-      ${tracker.launchGates.map((gate) => `
-        <article>
-          <span>Launch gate</span>
-          <strong>${escapeHtml(gate.label)}</strong>
-          <div class="build-progress-bar launch"><span style="width:${gate.score}%"></span></div>
-          <p>${gate.score}/100 | ${escapeHtml(gate.detail)}</p>
-          <button class="text-button" type="button" data-build-route="${escapeHtml(gate.route)}">Open gate</button>
-        </article>
-      `).join("")}
-    </div>
-    <div class="build-next-grid">
+    <div class="build-room-bridge">
       <article>
-        <span>What is done</span>
-        <strong>Core Phase 1 desk is alive</strong>
-        <ul>
-          ${tracker.doneModules.slice(0, 10).map((entry) => `<li>${escapeHtml(entry.phase)}: ${escapeHtml(entry.item)}</li>`).join("")}
-        </ul>
+        <span>Roadmap moved</span>
+        <strong>Build Phases Room now carries the long roadmap</strong>
+        <p>Phase cards, launch gates, done lists, next moves, Phase 2 boundary, and guardrails now live in a dedicated room after Build.</p>
+        <button class="text-button" type="button" data-build-route="#build-phases">Open Build Phases Room</button>
       </article>
       <article>
-        <span>What comes next</span>
+        <span>Current lane</span>
         <strong>${escapeHtml(tracker.nextLane.phase)}: ${escapeHtml(tracker.nextLane.label)}</strong>
-        <ul>
-          ${tracker.nextMoves.map((move) => `<li>${escapeHtml(move.label)}: ${escapeHtml(move.detail)}</li>`).join("")}
-        </ul>
+        <p>${escapeHtml(tracker.nextLane.next)}</p>
+        <button class="text-button" type="button" data-build-route="${escapeHtml(tracker.nextLane.route)}">Open current lane</button>
       </article>
     </div>
-    <div class="build-phase2-card">
+  `;
+}
+
+function renderBuildPhasesRoom() {
+  if (!els.buildPhasesOutput) return;
+  const tracker = buildTrackerConfig();
+  if (els.buildPhasesSummary) {
+    els.buildPhasesSummary.textContent = `${tracker.phases.length} phases | ${tracker.doneModules.length} modules`;
+  }
+  els.buildPhasesOutput.innerHTML = `
+    <div class="build-tracker-hero build-phases-hero">
       <div>
-        <span>${escapeHtml(tracker.distributorPreview.label)}</span>
-        <strong>Distributor layer stays visible, but after retail Phase 1</strong>
-        <p>${escapeHtml(tracker.distributorPreview.detail)}</p>
+        <span class="metric-label">Deep roadmap room</span>
+        <h3>Phase detail, launch gates, and Phase 2 boundary</h3>
+        <p>The executive tracker stays compact; this room keeps the full build story, phase status, completed modules, and next implementation lanes.</p>
       </div>
-      <div class="build-phase2-metrics">
-        <article><span>Build</span><strong>${tracker.distributorPreview.progress}/100</strong></article>
-        <article><span>Readiness</span><strong>${tracker.distributorPreview.readiness}/100</strong></article>
+      <div class="build-tracker-score" style="--score:${tracker.launchReadiness}">
+        <b>${tracker.launchReadiness}</b>
+        <span>Launch</span>
       </div>
-      <ul>
-        ${tracker.distributorPreview.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ul>
-      <button class="text-button" type="button" data-build-route="${escapeHtml(tracker.distributorPreview.route)}">Open Phase 2 boundary</button>
     </div>
-    <div class="build-move-grid">
-      ${tracker.nextMoves.map((move) => `
-        <article>
-          <span>${escapeHtml(move.status)}</span>
-          <strong>${escapeHtml(move.label)}</strong>
-          <p>${escapeHtml(move.detail)}</p>
-          <button class="text-button" type="button" data-build-route="${escapeHtml(move.route)}">Open</button>
-        </article>
-      `).join("")}
-    </div>
-    <div class="build-tracker-guardrail">
-      <span>Tracker boundary</span>
-      <ul>
-        ${tracker.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ul>
-    </div>
+    ${buildPhaseGridMarkup(tracker)}
+    ${buildReadinessGridMarkup(tracker)}
+    ${buildNextGridMarkup(tracker)}
+    ${buildPhase2CardMarkup(tracker)}
+    ${buildMoveGridMarkup(tracker)}
+    ${buildGuardrailMarkup(tracker)}
   `;
 }
 
@@ -2342,6 +2413,25 @@ function makeBuildTrackerBrief() {
   const tracker = buildTrackerConfig();
   return [
     "# NiveshNadi Build Tracker",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Product build progress: ${tracker.buildProgress}/100`,
+    `Launch readiness: ${tracker.launchReadiness}/100`,
+    `Current phase: ${tracker.current.phase} - ${tracker.current.label}`,
+    `Active lanes: ${tracker.active.length}`,
+    `Next lane: ${tracker.nextLane.phase} - ${tracker.nextLane.label}`,
+    `Build Phases Room: #build-phases`,
+    "",
+    "## Current Sprint",
+    ...tracker.nextMoves.map((move) => `- ${move.label}: ${move.detail}`),
+    "",
+    "The detailed phase cards, launch gates, completed-module list, Phase 2 preview, and roadmap guardrails now live in the Build Phases Room."
+  ].join("\n");
+}
+
+function makeBuildPhasesBrief() {
+  const tracker = buildTrackerConfig();
+  return [
+    "# NiveshNadi Build Phases Room",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
     `Product build progress: ${tracker.buildProgress}/100`,
     `Launch readiness: ${tracker.launchReadiness}/100`,
@@ -2371,6 +2461,10 @@ function makeBuildTrackerBrief() {
 
 function openBuildNextLane() {
   scrollToHash(buildTrackerConfig().nextLane.route, "smooth", true);
+}
+
+function openBuildCurrentLane() {
+  scrollToHash(buildTrackerConfig().current.route, "smooth", true);
 }
 
 function launchReadinessBoardConfig() {
@@ -2451,6 +2545,7 @@ function launchReadinessBoardConfig() {
     gates,
     launchReadiness: tracker.launchReadiness,
     noLaunchUntil,
+    paidBetaGate: paidBetaProductionGate(gates, tracker.launchReadiness),
     ready,
     releaseLadder,
     topBlocker,
@@ -2458,11 +2553,124 @@ function launchReadinessBoardConfig() {
   };
 }
 
+function paidBetaProductionGate(gates, launchReadiness) {
+  const gateById = (id) => gates.find((gate) => gate.id === id) || { score: 0, label: id, status: "Missing", next: "Define this launch gate.", route: "#launch-readiness" };
+  const liveData = gateById("live-data");
+  const sourceQa = gateById("source-qa");
+  const accounts = gateById("accounts");
+  const payments = gateById("payments");
+  const compliance = gateById("compliance");
+  const security = gateById("security");
+  const support = gateById("support");
+  const sourceScore = Math.round((liveData.score + sourceQa.score) / 2);
+  const supportSecurityScore = Math.round((security.score + support.score) / 2);
+  const receiptScore = Math.round((payments.score + support.score + accounts.score) / 3);
+  const readiness = Math.round(
+    sourceScore * 0.18 +
+    accounts.score * 0.16 +
+    payments.score * 0.18 +
+    compliance.score * 0.16 +
+    supportSecurityScore * 0.18 +
+    receiptScore * 0.14
+  );
+  const hardBlockers = [
+    ...(compliance.score < 60 ? [`${compliance.label}: ${compliance.next}`] : []),
+    ...(sourceScore < 65 ? [`Live source proof: ${sourceQa.next}`] : []),
+    ...(payments.score < 75 ? [`Payment rail: ${payments.next}`] : []),
+    ...(supportSecurityScore < 70 ? [`Support and security: ${support.next}`] : [])
+  ];
+  const status = hardBlockers.length
+    ? "Paid beta rehearsal only"
+    : readiness >= 75
+      ? "First paid cohort ready"
+      : "Founder approval required";
+  const tone = hardBlockers.length ? "blocked" : readiness >= 75 ? "ready" : "watch";
+  const gateId = ["NN", "PAID", "BETA", "GATE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const components = [
+    {
+      label: "Source evidence",
+      score: sourceScore,
+      route: "#source-receipts",
+      detail: "Live-looking research must carry source date, citation path, and reviewer release status."
+    },
+    {
+      label: "Account boundary",
+      score: accounts.score,
+      route: "#account-launch-route",
+      detail: "Saved research, export, delete, support redaction, and Phase 2 firewall must stay identity-light."
+    },
+    {
+      label: "Payment proof",
+      score: payments.score,
+      route: "#payment-sandbox",
+      detail: "Hosted checkout, signed webhook, invoice, refund, entitlement, and reconciliation events must match."
+    },
+    {
+      label: "Compliance posture",
+      score: compliance.score,
+      route: "#trust-center",
+      detail: "Research-only, no-advice, risk warning, source disclaimer, and consent wording need final review."
+    },
+    {
+      label: "Security and support",
+      score: supportSecurityScore,
+      route: "#account-launch-route",
+      detail: "Abuse controls, rate limits, incident response, redacted support, and repair receipts must be operational."
+    },
+    {
+      label: "Receipt replay",
+      score: receiptScore,
+      route: "#backend-audit-receipts",
+      detail: "Gateway, invoice, entitlement, refund, support, and settlement events need a replayable audit trail."
+    }
+  ];
+  const metrics = [
+    { label: "Gate ID", value: gateId, detail: "Copy this with launch notes." },
+    { label: "Verdict", value: status, detail: `Launch board ${launchReadiness}/100, paid beta gate ${readiness}/100.` },
+    { label: "Cohort cap", value: hardBlockers.length ? "0 paid users" : "25 users", detail: "Keep the first wave founder-reviewed." },
+    { label: "Hard blockers", value: String(hardBlockers.length), detail: hardBlockers[0] || "No hard blocker in this preview." }
+  ];
+  const requiredReceipts = [
+    "source_receipt_id, source_date, citation_path, reviewer_status",
+    "account_id_hash, saved_artifact_id, export_delete_status, support_redaction",
+    "gateway_event_id, signature_hash, idempotency_key, invoice_id, refund_id",
+    "entitlement_state, plan_id, feature_policy, support_repair_id",
+    "settlement_id, gateway_total, app_total, variance_state, closeout_owner"
+  ];
+  const releaseSequence = [
+    "Freeze launch claims until source receipt and reviewer release pass.",
+    "Run hosted checkout and webhook sandbox without storing card, UPI, bank, OTP, PAN, folio, or CAS data.",
+    "Create invoice, entitlement, support, refund, and settlement receipts for the same test user hash.",
+    "Founder reviews blockers, support queue, finance variance, correction path, and rollback note before invite.",
+    "Invite only after the gate is copied, dated, and attached to release notes."
+  ];
+  const betaLimits = [
+    "No personalized recommendation, execution, distributor workflow, or client-account handling.",
+    "First paid wave stays small, manual, refund-ready, and reversible.",
+    "Any source citation gap, payment variance, unresolved support issue, or compliance concern pauses invites.",
+    "Phase 2 ARN/EUIN, PAN-consent, and distributor client-book data remain outside this gate."
+  ];
+
+  return {
+    betaLimits,
+    components,
+    gateId,
+    hardBlockers: hardBlockers.length ? hardBlockers : ["No hard blocker in this preview. Keep the gate founder-approved until real providers and legal review are complete."],
+    metrics,
+    readiness,
+    releaseSequence,
+    requiredReceipts,
+    status,
+    tone
+  };
+}
+
 function renderLaunchReadinessBoard() {
   if (!els.launchReadinessOutput) return;
   const board = launchReadinessBoardConfig();
+  const betaGate = board.paidBetaGate;
   if (els.launchReadinessSummary) {
-    els.launchReadinessSummary.textContent = `${board.launchReadiness}/100 | ${board.critical.length} blockers`;
+    els.launchReadinessSummary.textContent = `${board.launchReadiness}/100 | ${betaGate.readiness}/100 paid gate`;
   }
   els.launchReadinessOutput.innerHTML = `
     <div class="launch-readiness-hero">
@@ -2481,6 +2689,71 @@ function renderLaunchReadinessBoard() {
       <article><span>Critical gates</span><strong>${board.critical.length}</strong><p>Anything below 45/100 blocks production launch.</p></article>
       <article><span>Ready gates</span><strong>${board.ready.length}</strong><p>Ready means production-grade, not only visually complete.</p></article>
       <article><span>Founder mode</span><strong>Go/no-go board</strong><p>Use this before deciding what can enter paid retail beta.</p></article>
+    </div>
+    <div class="paid-beta-gate ${escapeHtml(betaGate.tone)}">
+      <div class="paid-beta-gate-head">
+        <div>
+          <span>Paid beta production gate</span>
+          <h3>${escapeHtml(betaGate.status)}</h3>
+          <p>Convert launch readiness into a founder go/no-go control before the first low-fee retail paid cohort is invited.</p>
+        </div>
+        <div class="paid-beta-gate-score" style="--score:${betaGate.readiness}">
+          <strong>${betaGate.readiness}</strong>
+          <span>Beta</span>
+        </div>
+      </div>
+      <div class="paid-beta-gate-metrics">
+        ${betaGate.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="paid-beta-gate-components">
+        ${betaGate.components.map((component) => `
+          <article>
+            <div>
+              <span>${escapeHtml(component.label)}</span>
+              <strong>${component.score}/100</strong>
+            </div>
+            <div class="build-progress-bar launch"><span style="width:${component.score}%"></span></div>
+            <p>${escapeHtml(component.detail)}</p>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(component.route)}">Open proof</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="paid-beta-gate-two">
+        <article class="${escapeHtml(betaGate.tone)}">
+          <span>Hard blockers</span>
+          <strong>Do not charge until clear</strong>
+          <ul>
+            ${betaGate.hardBlockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Required receipts</span>
+          <strong>Audit trail checklist</strong>
+          <ul>
+            ${betaGate.requiredReceipts.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Release sequence</span>
+          <strong>Founder invite path</strong>
+          <ol>
+            ${betaGate.releaseSequence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <span>Beta limits</span>
+          <strong>Keep the promise tight</strong>
+          <ul>
+            ${betaGate.betaLimits.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="launch-gate-grid">
       ${board.gates.map((gate) => `
@@ -2547,6 +2820,21 @@ function makeLaunchReadinessBrief() {
     `Launch readiness: ${board.launchReadiness}/100`,
     `Top blocker: ${board.topBlocker.label} (${board.topBlocker.score}/100)`,
     `Critical gates: ${board.critical.length}`,
+    "",
+    "## Paid Beta Production Gate",
+    `Gate ID: ${board.paidBetaGate.gateId}`,
+    `Verdict: ${board.paidBetaGate.status}`,
+    `Paid beta gate readiness: ${board.paidBetaGate.readiness}/100`,
+    "Components:",
+    ...board.paidBetaGate.components.map((component) => `- ${component.label}: ${component.score}/100 | ${component.detail}`),
+    "Hard blockers:",
+    ...board.paidBetaGate.hardBlockers.map((item) => `- ${item}`),
+    "Required receipts:",
+    ...board.paidBetaGate.requiredReceipts.map((item) => `- ${item}`),
+    "Release sequence:",
+    ...board.paidBetaGate.releaseSequence.map((item, index) => `${index + 1}. ${item}`),
+    "Beta limits:",
+    ...board.paidBetaGate.betaLimits.map((item) => `- ${item}`),
     "",
     "## Gates",
     ...board.gates.map((gate) => `- ${gate.label}: ${gate.score}/100 | ${gate.status} | Owner: ${gate.owner} | Next: ${gate.next}`),
@@ -2856,10 +3144,190 @@ function paymentWiringConfig() {
   };
 }
 
+function paymentGatewayRetentionPolicy(wiring) {
+  const gatewayScore = wiring.gateway === "hosted"
+    ? 78
+    : wiring.gateway === "manual"
+      ? 48
+      : wiring.gateway === "deferred"
+        ? 42
+        : 18;
+  const invoiceScore = wiring.invoice === "invoiceReady"
+    ? 78
+    : wiring.invoice === "gstReview"
+      ? 50
+      : wiring.invoice === "betaReceipt"
+        ? 38
+        : 18;
+  const refundScore = ["refund", "cancel", "failed"].includes(wiring.scenario)
+    ? 56
+    : 66;
+  const reconciliationScore = wiring.gateway === "hosted"
+    ? 64
+    : wiring.gateway === "manual"
+      ? 42
+      : wiring.gateway === "deferred"
+        ? 36
+        : 20;
+  const retentionScore = wiring.invoice === "invoiceReady" && wiring.gateway === "hosted"
+    ? 72
+    : wiring.invoice === "noInvoice" || wiring.gateway === "direct"
+      ? 24
+      : 54;
+  const supportScore = ["failed", "refund", "cancel"].includes(wiring.scenario)
+    ? 58
+    : 66;
+  const blockers = [
+    ...(wiring.gateway === "direct" ? ["direct in-app payment entry must be removed before any paid beta"] : []),
+    ...(wiring.gateway === "manual" ? ["manual founder cohort needs reconciliation limits and cannot become public checkout"] : []),
+    ...(wiring.gateway === "deferred" ? ["paid beta stays off until a hosted gateway provider is selected"] : []),
+    ...(wiring.invoice !== "invoiceReady" ? ["invoice, GST, refund, and cancellation wording need finance/legal signoff"] : []),
+    ...(wiring.plan === "distributor" ? ["Phase 2 distributor pricing needs separate ARN/EUIN, consent, and client-data policy"] : []),
+    ...(wiring.scenario === "duplicate" ? ["duplicate webhook retention needs idempotency proof and replay log"] : []),
+    ...(["failed", "refund", "cancel"].includes(wiring.scenario) ? ["negative lifecycle events need entitlement repair, support receipt, and rollback proof"] : [])
+  ];
+  const readiness = clampNumber(Math.round((
+    gatewayScore +
+    invoiceScore +
+    refundScore +
+    reconciliationScore +
+    retentionScore +
+    supportScore
+  ) / 6) - blockers.length * 3, 18, 92);
+  const status = blockers.length
+    ? "Policy blockers open"
+    : readiness >= 72
+      ? "Policy route ready"
+      : "Policy dry-run";
+  const tone = blockers.length
+    ? "blocked"
+    : readiness >= 72
+      ? "ready"
+      : "draft";
+  const receiptId = [
+    "NN",
+    "PAYMENT",
+    "RETENTION",
+    DATA_VERSION.replace(/-/g, ""),
+    wiring.gateway,
+    wiring.plan
+  ].join("-").toUpperCase();
+  const metrics = [
+    {
+      label: "Provider posture",
+      value: paymentWiringGatewayLabel(wiring.gateway),
+      detail: "Payment credentials must stay with a regulated hosted checkout provider."
+    },
+    {
+      label: "Policy receipt",
+      value: receiptId,
+      detail: "One receipt family should bind checkout, webhook, invoice, refund, reconciliation, retention, and support repair."
+    },
+    {
+      label: "Retention posture",
+      value: wiring.invoice === "invoiceReady" ? "Finance ready" : "Finance pending",
+      detail: "Separate payment receipts, invoices, refund references, support cases, and export/delete completion proof."
+    },
+    {
+      label: "Launch decision",
+      value: status,
+      detail: blockers[0] || "Gateway, invoice, retention, reconciliation, and support ownership can enter a paid beta rehearsal."
+    }
+  ];
+  const policyLanes = [
+    {
+      label: "Gateway provider",
+      owner: "Founder",
+      score: gatewayScore,
+      proof: "provider selected, hosted checkout route, settlement account, webhook model",
+      action: "Keep card, UPI, bank, OTP, and payment password entry outside NiveshNadi."
+    },
+    {
+      label: "Invoice and refund",
+      owner: "Finance",
+      score: invoiceScore,
+      proof: "invoice mode, GST posture, refund window, cancellation wording",
+      action: "User-facing billing copy should match finance/legal approval before collecting money."
+    },
+    {
+      label: "Entitlement repair",
+      owner: "Support",
+      score: refundScore,
+      proof: "failed payment, refund, cancellation, grace, downgrade, repair event",
+      action: "Negative events must alter access through receipts, not manual browser flags."
+    },
+    {
+      label: "Settlement match",
+      owner: "Finance Ops",
+      score: reconciliationScore,
+      proof: "gateway report, app receipt total, invoice total, refund total, variance state",
+      action: "Close monthly reconciliation before treating revenue and entitlement as final."
+    },
+    {
+      label: "Retention rule",
+      owner: "Privacy",
+      score: retentionScore,
+      proof: "receipt class, retention window, export scope, delete scope, legal hold exception",
+      action: "Never keep payment metadata forever by default; keep only the least data needed for audit and disputes."
+    },
+    {
+      label: "Support ownership",
+      owner: "Ops Lead",
+      score: supportScore,
+      proof: "support route, redacted lookup, repair receipt, escalation owner",
+      action: "Support can see payment posture and receipt IDs, not payment instruments or private investment notes."
+    }
+  ];
+  const retentionWindows = [
+    {
+      label: "Gateway events",
+      detail: "Keep gateway event ID, signed receipt hash, status, amount, currency, plan, and idempotency key for finance and dispute windows."
+    },
+    {
+      label: "Invoices and refunds",
+      detail: "Keep invoice and refund references according to statutory finance policy; do not store raw card, UPI, bank, or gateway secret data."
+    },
+    {
+      label: "Entitlements",
+      detail: "Keep plan state while the account exists, plus a minimal audit trail for activation, expiry, downgrade, refund, or support repair."
+    },
+    {
+      label: "Export and delete",
+      detail: "Export should include paid account metadata visible to the user; deletion should leave only non-sensitive completion proof when required."
+    }
+  ];
+  const sequence = [
+    "Select hosted gateway and settlement ownership before switching on checkout.",
+    "Freeze invoice, refund, cancellation, failed-renewal, and support wording before paid beta.",
+    "Map every webhook to idempotency key, audit receipt, entitlement effect, invoice or refund reference, and reconciliation status.",
+    "Define retention windows for payment receipts, invoices, refunds, entitlement history, support repair, export proof, and deletion proof.",
+    "Open paid beta only when support can repair billing and entitlement issues through redacted receipts."
+  ];
+  const guardrails = [
+    "NiveshNadi must not collect card, UPI, bank, OTP, payment password, PAN, folio, CAS, or raw gateway secret data.",
+    "Browser success URLs are not proof of payment; only verified backend gateway events can unlock paid access.",
+    "Payment support is operational help only, not investment advice, transaction execution, or fund distribution.",
+    "Phase 2 distributor billing and client management need separate consent, roles, ARN/EUIN policy, and audit design."
+  ];
+  return {
+    blockers: blockers.length ? blockers : ["No active gateway-retention blocker in this preview. Keep the route in paid-beta rehearsal until real provider and finance signoff exist."],
+    guardrails,
+    metrics,
+    policyLanes,
+    readiness,
+    receiptId,
+    retentionWindows,
+    sequence,
+    status,
+    tone
+  };
+}
+
 function renderPaymentWiringConsole(event) {
   if (event) event.preventDefault();
   if (!els.paymentWiringOutput) return;
   const wiring = paymentWiringConfig();
+  const retentionPolicy = paymentGatewayRetentionPolicy(wiring);
   if (els.paymentWiringSummary) {
     els.paymentWiringSummary.textContent = `${wiring.score}/100 | ${wiring.status}`;
   }
@@ -2880,6 +3348,65 @@ function renderPaymentWiringConsole(event) {
       <article><span>Plan</span><strong>${escapeHtml(wiring.planMeta.price)}</strong><p>${escapeHtml(wiring.planMeta.entitlement)}</p></article>
       <article><span>Scenario</span><strong>${escapeHtml(paymentWiringScenarioLabel(wiring.scenario))}</strong><p>${wiring.scenarioStates.length} event states mapped.</p></article>
       <article><span>Blockers</span><strong>${wiring.blockers.length}</strong><p>${wiring.blockers[0] ? escapeHtml(wiring.blockers[0]) : "No active wiring blocker in this preview."}</p></article>
+    </div>
+    <div class="payment-retention-board ${escapeHtml(retentionPolicy.tone)}">
+      <div class="payment-retention-head">
+        <div>
+          <span>Gateway and retention policy</span>
+          <h3>${escapeHtml(retentionPolicy.status)}</h3>
+          <p>Bind provider choice, invoice and refund policy, retention windows, settlement reconciliation, and support ownership before paid beta.</p>
+        </div>
+        <div class="payment-retention-score" style="--score:${retentionPolicy.readiness}">
+          <strong>${retentionPolicy.readiness}</strong>
+          <span>Policy</span>
+        </div>
+      </div>
+      <div class="payment-retention-metric-grid">
+        ${retentionPolicy.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="payment-retention-lane-grid">
+        ${retentionPolicy.policyLanes.map((lane) => `
+          <article class="${lane.score >= 70 ? "ready" : lane.score < 45 ? "blocked" : "draft"}">
+            <span>${escapeHtml(lane.owner)}</span>
+            <strong>${escapeHtml(lane.label)}</strong>
+            <div class="build-progress-bar"><span style="width:${lane.score}%"></span></div>
+            <p>${escapeHtml(lane.action)}</p>
+            <small>${escapeHtml(lane.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="payment-retention-two">
+        <article>
+          <span>Retention windows</span>
+          ${retentionPolicy.retentionWindows.map((item) => `
+            <p><b>${escapeHtml(item.label)}:</b> ${escapeHtml(item.detail)}</p>
+          `).join("")}
+        </article>
+        <article>
+          <span>Launch sequence</span>
+          <ol>
+            ${retentionPolicy.sequence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${retentionPolicy.tone}">
+          <span>Blockers</span>
+          <ul>
+            ${retentionPolicy.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Guardrails</span>
+          <ul>
+            ${retentionPolicy.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="payment-wiring-state-grid">
       ${PAYMENT_WIRING_STATES.map((state) => `
@@ -2930,6 +3457,7 @@ function renderPaymentWiringConsole(event) {
 
 function makePaymentWiringBrief() {
   const wiring = paymentWiringConfig();
+  const retentionPolicy = paymentGatewayRetentionPolicy(wiring);
   return [
     "# NiveshNadi Payment Wiring Console",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -2945,6 +3473,17 @@ function makePaymentWiringBrief() {
     "",
     "## Wiring States",
     ...PAYMENT_WIRING_STATES.map((state) => `- ${state.label}: ${state.score}/100 | ${state.event} | ${state.guardrail}`),
+    "",
+    "## Gateway and Retention Policy",
+    `- Status: ${retentionPolicy.status}`,
+    `- Readiness: ${retentionPolicy.readiness}/100`,
+    `- Receipt family: ${retentionPolicy.receiptId}`,
+    ...retentionPolicy.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...retentionPolicy.policyLanes.map((lane) => `- Lane: ${lane.label}: ${lane.score}/100 | Owner: ${lane.owner} | Proof: ${lane.proof} | Action: ${lane.action}`),
+    ...retentionPolicy.retentionWindows.map((item) => `- Retention: ${item.label}: ${item.detail}`),
+    ...retentionPolicy.sequence.map((item) => `- Sequence: ${item}`),
+    ...retentionPolicy.blockers.map((item) => `- Blocker: ${item}`),
+    ...retentionPolicy.guardrails.map((item) => `- Guardrail: ${item}`),
     "",
     "## Controls",
     ...wiring.controls.map((control) => `- ${control.label}: ${control.score}/100 | ${control.detail}`),
@@ -3085,10 +3624,151 @@ function paymentSandboxConfig() {
   };
 }
 
+function paidBetaRunbook(sandbox) {
+  const checkoutScore = sandbox.provider === "manual" ? 38 : 74;
+  const webhookScore = ["signed", "replay", "idempotent"].includes(sandbox.evidence) ? 68 : 28;
+  const entitlementScore = ["success", "refund", "failed"].includes(sandbox.scenario) ? 66 : 54;
+  const financeScore = ["invoice", "reconcile", "refund"].includes(sandbox.scenario) || sandbox.mode === "finance" ? 68 : 52;
+  const supportScore = ["failed", "refund", "incident"].includes(sandbox.scenario) || sandbox.mode === "support" ? 66 : 54;
+  const incidentScore = sandbox.scenario === "incident" || sandbox.mode === "stress" ? 58 : 64;
+  const blockerPenalty = sandbox.blockers.length * 4;
+  const readiness = clampNumber(Math.round((
+    checkoutScore +
+    webhookScore +
+    entitlementScore +
+    financeScore +
+    supportScore +
+    incidentScore
+  ) / 6) - blockerPenalty, 18, 92);
+  const blockers = [
+    ...sandbox.blockers,
+    ...(sandbox.provider === "manual" ? ["founder manual ledger can run a private cohort only; do not open public paid checkout"] : []),
+    ...(sandbox.evidence === "missing" ? ["paid beta cannot start without replayable payment evidence"] : []),
+    ...(sandbox.mode === "stress" ? ["stress run must close duplicate, replay, timeout, and rate-limit findings before launch"] : []),
+    ...(sandbox.scenario === "incident" ? ["incident path needs user notice and rollback owner before any wider beta"] : [])
+  ];
+  const status = blockers.length
+    ? "Paid beta blocked"
+    : readiness >= 72
+      ? "Founder paid beta ready"
+      : "Paid beta rehearsal";
+  const tone = blockers.length
+    ? "blocked"
+    : readiness >= 72
+      ? "ready"
+      : "draft";
+  const receiptId = [
+    "NN",
+    "PAID",
+    "BETA",
+    DATA_VERSION.replace(/-/g, ""),
+    sandbox.provider,
+    sandbox.scenario
+  ].join("-").toUpperCase();
+  const metrics = [
+    {
+      label: "Beta posture",
+      value: status,
+      detail: blockers[0] || "The selected payment route can move into a small, founder-observed paid beta rehearsal."
+    },
+    {
+      label: "Beta receipt",
+      value: receiptId,
+      detail: "Use one receipt family for checkout, webhook, entitlement, invoice, refund, support repair, and incident closeout."
+    },
+    {
+      label: "First cohort",
+      value: sandbox.provider === "manual" ? "Manual founder pilot" : "10 to 25 users",
+      detail: "Keep blast radius small until payment, access, refund, invoice, and support paths are proven."
+    },
+    {
+      label: "Run mode",
+      value: paymentSandboxModeLabel(sandbox.mode),
+      detail: "Paid beta should rehearse the exact failure mode before a public launch."
+    }
+  ];
+  const lanes = [
+    {
+      label: "Checkout rehearsal",
+      owner: "Product",
+      score: checkoutScore,
+      proof: "plan id, amount, currency, hosted session, expiry, return path",
+      action: "Founder verifies checkout entry and exit without collecting payment credentials."
+    },
+    {
+      label: "Webhook replay",
+      owner: "Backend",
+      score: webhookScore,
+      proof: "gateway event id, signature hash, idempotency key, replay count",
+      action: "Every paid access change must be replay-safe and duplicate-safe."
+    },
+    {
+      label: "Entitlement repair",
+      owner: "Account",
+      score: entitlementScore,
+      proof: "plan state, starts at, expires at, grace, revoke, support repair id",
+      action: "A user can be restored, downgraded, revoked, or extended through a receipt."
+    },
+    {
+      label: "Billing support",
+      owner: "Finance",
+      score: financeScore,
+      proof: "invoice id, refund id, cancellation state, settlement variance",
+      action: "Billing questions resolve through invoice and refund references, not private notes."
+    },
+    {
+      label: "Incident closeout",
+      owner: "Ops Lead",
+      score: incidentScore,
+      proof: "incident id, affected receipt list, rollback status, correction note",
+      action: "Any payment incident must have pause, notice, replay, rollback, and closeout."
+    },
+    {
+      label: "Founder decision",
+      owner: "Founder",
+      score: supportScore,
+      proof: "go/no-go decision, cohort cap, unresolved cases, next run date",
+      action: "Widen only when support, finance, and entitlement repair are quiet."
+    }
+  ];
+  const dayPlan = [
+    "Day 0: freeze pricing, refund wording, invoice posture, support script, and hosted checkout route.",
+    "Day 1: run one founder checkout, webhook replay, entitlement activation, invoice receipt, and export check.",
+    "Day 2: run duplicate webhook, failed renewal, refund reversal, support repair, and settlement variance scenarios.",
+    "Day 3: review beta receipts, unresolved support cases, finance variance, incident notes, and decision memo.",
+    "Day 4: either keep the beta closed, invite the next small cohort, or roll back paid access."
+  ];
+  const goNoGo = [
+    "No-go if any user can get paid access from browser state or success URL alone.",
+    "No-go if a refund, cancellation, or failed renewal cannot repair entitlement cleanly.",
+    "No-go if finance cannot match gateway report, app receipt, invoice, refund, and entitlement state.",
+    "No-go if support needs PAN, folio, CAS, card, UPI, bank, OTP, or private investment notes to solve a case."
+  ];
+  const guardrails = [
+    "Paid beta is product access testing only, not investment advice, fund distribution, or transaction execution.",
+    "Keep the first cohort small and founder-observed until every payment mutation has a backend receipt.",
+    "Never store raw card, UPI, bank, gateway secret, OTP, PAN, folio, CAS, or private support-note data.",
+    "Phase 2 distributor billing and client management stay outside this retail beta runbook."
+  ];
+  return {
+    blockers: blockers.length ? blockers : ["No active paid-beta blocker in this preview. Keep the first cohort small and receipt-bound."],
+    dayPlan,
+    goNoGo,
+    guardrails,
+    lanes,
+    metrics,
+    readiness,
+    receiptId,
+    status,
+    tone
+  };
+}
+
 function renderPaymentGatewaySandbox(event) {
   if (event) event.preventDefault();
   if (!els.paymentSandboxOutput) return;
   const sandbox = paymentSandboxConfig();
+  const betaRunbook = paidBetaRunbook(sandbox);
   if (els.paymentSandboxSummary) {
     els.paymentSandboxSummary.textContent = `${sandbox.score}/100 | ${sandbox.status}`;
   }
@@ -3109,6 +3789,65 @@ function renderPaymentGatewaySandbox(event) {
       <article><span>Scenario</span><strong>${escapeHtml(paymentSandboxScenarioLabel(sandbox.scenario))}</strong><p>${sandbox.scenarioEvents.length} sandbox events mapped.</p></article>
       <article><span>Evidence</span><strong>${escapeHtml(paymentSandboxEvidenceLabel(sandbox.evidence))}</strong><p>Release depends on receipts that can be replayed and audited.</p></article>
       <article><span>Blockers</span><strong>${sandbox.blockers.length}</strong><p>${sandbox.blockers[0] ? escapeHtml(sandbox.blockers[0]) : "No active sandbox blocker in this preview."}</p></article>
+    </div>
+    <div class="payment-beta-runbook ${escapeHtml(betaRunbook.tone)}">
+      <div class="payment-beta-head">
+        <div>
+          <span>Founder paid beta runbook</span>
+          <h3>${escapeHtml(betaRunbook.status)}</h3>
+          <p>Turn sandbox proof into a small-cohort operating plan for checkout, entitlement repair, billing support, incidents, and go/no-go decisions.</p>
+        </div>
+        <div class="payment-beta-score" style="--score:${betaRunbook.readiness}">
+          <strong>${betaRunbook.readiness}</strong>
+          <span>Beta</span>
+        </div>
+      </div>
+      <div class="payment-beta-metric-grid">
+        ${betaRunbook.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="payment-beta-lane-grid">
+        ${betaRunbook.lanes.map((lane) => `
+          <article class="${lane.score >= 70 ? "ready" : lane.score < 45 ? "blocked" : "draft"}">
+            <span>${escapeHtml(lane.owner)}</span>
+            <strong>${escapeHtml(lane.label)}</strong>
+            <div class="build-progress-bar"><span style="width:${lane.score}%"></span></div>
+            <p>${escapeHtml(lane.action)}</p>
+            <small>${escapeHtml(lane.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="payment-beta-two">
+        <article>
+          <span>Day-by-day runbook</span>
+          <ol>
+            ${betaRunbook.dayPlan.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${betaRunbook.tone}">
+          <span>Go / no-go rules</span>
+          <ul>
+            ${betaRunbook.goNoGo.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Blockers</span>
+          <ul>
+            ${betaRunbook.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Guardrails</span>
+          <ul>
+            ${betaRunbook.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="payment-sandbox-route-grid">
       <article>
@@ -3165,6 +3904,7 @@ function renderPaymentGatewaySandbox(event) {
 
 function makePaymentSandboxBrief() {
   const sandbox = paymentSandboxConfig();
+  const betaRunbook = paidBetaRunbook(sandbox);
   return [
     "# NiveshNadi Payment Gateway Sandbox Route",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -3180,6 +3920,17 @@ function makePaymentSandboxBrief() {
     "",
     "## Sandbox Tests",
     ...PAYMENT_SANDBOX_TESTS.map((test) => `- ${test.label}: ${test.score}/100 | ${test.event} | ${test.proof} | ${test.guardrail}`),
+    "",
+    "## Founder Paid Beta Runbook",
+    `- Status: ${betaRunbook.status}`,
+    `- Readiness: ${betaRunbook.readiness}/100`,
+    `- Receipt family: ${betaRunbook.receiptId}`,
+    ...betaRunbook.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...betaRunbook.lanes.map((lane) => `- Lane: ${lane.label}: ${lane.score}/100 | Owner: ${lane.owner} | Proof: ${lane.proof} | Action: ${lane.action}`),
+    ...betaRunbook.dayPlan.map((item) => `- Runbook: ${item}`),
+    ...betaRunbook.goNoGo.map((item) => `- Go/no-go: ${item}`),
+    ...betaRunbook.blockers.map((item) => `- Blocker: ${item}`),
+    ...betaRunbook.guardrails.map((item) => `- Guardrail: ${item}`),
     "",
     "## Control Lanes",
     ...sandbox.lanes.map((lane) => `- ${lane.label}: ${lane.score}/100 | ${lane.detail}`),
@@ -3626,10 +4377,144 @@ function subscriptionOpsConfig() {
   };
 }
 
+function productionSupportTooling(ops) {
+  const redactedLookupScore = ops.receipt === "missing" ? 24 : ops.receipt === "spreadsheet" ? 38 : 74;
+  const caseRouterScore = ops.runbook === "missing" ? 18 : ops.runbook === "manual" ? 42 : ops.runbook === "auto" ? 82 : 70;
+  const entitlementRepairScore = ops.queue === "support" || ops.queue === "failed" || ops.queue === "refund" ? 68 : 58;
+  const billingEvidenceScore = ops.queue === "invoice" || ops.queue === "reconcile" || ops.queue === "refund" ? 70 : 56;
+  const incidentDeskScore = ops.risk === "freeze" ? 34 : ops.risk === "critical" ? 48 : ops.risk === "attention" ? 62 : 78;
+  const ownerScore = ops.risk === "normal" && ops.runbook !== "missing" ? 76 : ops.runbook === "missing" ? 26 : 60;
+  const blockers = [
+    ...ops.blockers,
+    ...(ops.receipt === "missing" ? ["support tooling cannot open without receipt-backed case history"] : []),
+    ...(ops.receipt === "spreadsheet" ? ["spreadsheet tracker cannot be the production support source of truth"] : []),
+    ...(ops.runbook === "missing" ? ["support team needs selected runbook, owner, escalation path, and closeout rules"] : []),
+    ...(ops.runbook === "manual" ? ["manual founder support must be replaced by a controlled support view before public launch"] : []),
+    ...(ops.risk === "freeze" ? ["launch freeze requires support queue pause, user notice, rollback owner, and incident closeout"] : [])
+  ];
+  const readiness = clampNumber(Math.round((
+    redactedLookupScore +
+    caseRouterScore +
+    entitlementRepairScore +
+    billingEvidenceScore +
+    incidentDeskScore +
+    ownerScore
+  ) / 6) - blockers.length * 3, 16, 92);
+  const status = blockers.length
+    ? "Support tooling blocked"
+    : readiness >= 72
+      ? "Support tooling ready"
+      : "Support tooling dry-run";
+  const tone = blockers.length
+    ? "blocked"
+    : readiness >= 72
+      ? "ready"
+      : "draft";
+  const receiptId = [
+    "NN",
+    "SUPPORT",
+    "TOOLING",
+    DATA_VERSION.replace(/-/g, ""),
+    ops.queue,
+    ops.receipt
+  ].join("-").toUpperCase();
+  const metrics = [
+    {
+      label: "Tooling posture",
+      value: status,
+      detail: blockers[0] || "Renewal, billing, entitlement repair, and incident support can move into a controlled support dry-run."
+    },
+    {
+      label: "Support receipt",
+      value: receiptId,
+      detail: "One receipt family should bind case open, redacted lookup, action, escalation, user notice, and closeout."
+    },
+    {
+      label: "Support surface",
+      value: subscriptionOpsQueueLabel(ops.queue),
+      detail: "The active queue determines the first support script and evidence checklist."
+    },
+    {
+      label: "Exposure rule",
+      value: "Redacted only",
+      detail: "Support can see subscription state, receipts, and action history, not payment instruments or private research notes."
+    }
+  ];
+  const tools = [
+    {
+      label: "Redacted lookup",
+      owner: "Support",
+      score: redactedLookupScore,
+      proof: "user hash, plan state, receipt ids, support-safe event history",
+      action: "Open only the minimum fields needed to solve billing or access cases."
+    },
+    {
+      label: "Case router",
+      owner: "Ops Lead",
+      score: caseRouterScore,
+      proof: "case category, severity, owner, due time, escalation path",
+      action: "Route failed payment, refund, invoice, entitlement, reconciliation, and incident cases to the correct owner."
+    },
+    {
+      label: "Entitlement repair",
+      owner: "Account Ops",
+      score: entitlementRepairScore,
+      proof: "prior state, proposed state, source receipt, reviewer role",
+      action: "Repair access through a reversible backend event, not direct browser edits."
+    },
+    {
+      label: "Billing evidence",
+      owner: "Finance",
+      score: billingEvidenceScore,
+      proof: "invoice id, refund id, settlement id, variance state",
+      action: "Finance answers billing questions from receipt references and settlement evidence."
+    },
+    {
+      label: "Incident desk",
+      owner: "Ops Lead",
+      score: incidentDeskScore,
+      proof: "incident id, affected receipts, user notice, rollback state",
+      action: "Freeze, replay, repair, notify, and close incidents before the cohort widens."
+    },
+    {
+      label: "Closeout owner",
+      owner: "Founder",
+      score: ownerScore,
+      proof: "case result, user notice, audit note, next prevention step",
+      action: "Every support case needs a closeout reason and product-learning route."
+    }
+  ];
+  const scripts = [
+    "Open case with category, severity, receipt family, and no private investment identifiers.",
+    "Check redacted subscription state, payment event posture, entitlement state, and prior support actions.",
+    "Choose action: user notice, entitlement repair, refund route, invoice check, reconciliation route, or incident freeze.",
+    "Record support receipt with actor role, source receipt, user-safe notice, status, and closeout owner.",
+    "Escalate repeated cases into product, finance, backend, privacy, or compliance fixes before widening beta."
+  ];
+  const guardrails = [
+    "Support must not see PAN, folio, CAS, bank, UPI, card, OTP, gateway secrets, ARN/EUIN, or private research notes.",
+    "Support can explain account access and billing state, not provide investment advice or transaction guidance.",
+    "Manual repairs must be rare, reversible, receipt-bound, and reviewed before production launch.",
+    "Phase 2 distributor support needs separate consent, roles, client-data separation, and regulatory review."
+  ];
+  return {
+    blockers: blockers.length ? blockers : ["No active support tooling blocker in this preview. Keep tooling in dry-run until backend receipt contracts are implemented."],
+    guardrails,
+    metrics,
+    readiness,
+    receiptId,
+    scripts,
+    status,
+    tone,
+    tools
+  };
+}
+
 function renderSubscriptionOpsConsole(event) {
   if (event) event.preventDefault();
   if (!els.subscriptionOpsOutput) return;
   const ops = subscriptionOpsConfig();
+  const supportTooling = productionSupportTooling(ops);
   if (els.subscriptionOpsSummary) {
     els.subscriptionOpsSummary.textContent = `${ops.score}/100 | ${ops.status}`;
   }
@@ -3659,6 +4544,63 @@ function renderSubscriptionOpsConsole(event) {
           <p>${escapeHtml(lane.detail)}</p>
         </article>
       `).join("")}
+    </div>
+    <div class="subscription-support-tooling ${escapeHtml(supportTooling.tone)}">
+      <div class="subscription-support-head">
+        <div>
+          <span>Production support tooling</span>
+          <h3>${escapeHtml(supportTooling.status)}</h3>
+          <p>Make billing, renewal, failed-payment, refund, entitlement repair, and incident handling repeatable with redacted support views.</p>
+        </div>
+        <div class="subscription-support-score" style="--score:${supportTooling.readiness}">
+          <strong>${supportTooling.readiness}</strong>
+          <span>Tool</span>
+        </div>
+      </div>
+      <div class="subscription-support-metric-grid">
+        ${supportTooling.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="subscription-support-tool-grid">
+        ${supportTooling.tools.map((tool) => `
+          <article class="${tool.score >= 70 ? "ready" : tool.score < 45 ? "blocked" : "draft"}">
+            <span>${escapeHtml(tool.owner)}</span>
+            <strong>${escapeHtml(tool.label)}</strong>
+            <div class="build-progress-bar"><span style="width:${tool.score}%"></span></div>
+            <p>${escapeHtml(tool.action)}</p>
+            <small>${escapeHtml(tool.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="subscription-support-two">
+        <article>
+          <span>Support script</span>
+          <ol>
+            ${supportTooling.scripts.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${supportTooling.tone}">
+          <span>Blockers</span>
+          <ul>
+            ${supportTooling.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Guardrails</span>
+          <ul>
+            ${supportTooling.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Backend bridge</span>
+          <p>Move this support view into backend event contracts next: case open, redacted lookup, action, entitlement repair, finance check, incident freeze, user notice, and closeout.</p>
+        </article>
+      </div>
     </div>
     <div class="subscription-ops-state-grid">
       ${SUBSCRIPTION_OPS_STATES.map((state) => `
@@ -3709,6 +4651,7 @@ function renderSubscriptionOpsConsole(event) {
 
 function makeSubscriptionOpsBrief() {
   const ops = subscriptionOpsConfig();
+  const supportTooling = productionSupportTooling(ops);
   return [
     "# NiveshNadi Subscription Ops Console",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -3724,6 +4667,16 @@ function makeSubscriptionOpsBrief() {
     "",
     "## Ops Lanes",
     ...ops.opsLanes.map((lane) => `- ${lane.label}: ${lane.state} | ${lane.detail}`),
+    "",
+    "## Production Support Tooling",
+    `- Status: ${supportTooling.status}`,
+    `- Readiness: ${supportTooling.readiness}/100`,
+    `- Receipt family: ${supportTooling.receiptId}`,
+    ...supportTooling.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...supportTooling.tools.map((tool) => `- Tool: ${tool.label}: ${tool.score}/100 | Owner: ${tool.owner} | Proof: ${tool.proof} | Action: ${tool.action}`),
+    ...supportTooling.scripts.map((item) => `- Script: ${item}`),
+    ...supportTooling.blockers.map((item) => `- Blocker: ${item}`),
+    ...supportTooling.guardrails.map((item) => `- Guardrail: ${item}`),
     "",
     "## Subscription States",
     ...SUBSCRIPTION_OPS_STATES.map((state) => `- ${state.label}: ${state.score}/100 | ${state.event} | ${state.guardrail}`),
@@ -3897,10 +4850,150 @@ function subscriptionBackendConfig() {
   };
 }
 
+function backendSupportReceipts(backend) {
+  const gatewayScore = backend.gateway === "hosted" ? 78 : backend.gateway === "adapter" ? 72 : backend.gateway === "manual" ? 42 : 14;
+  const redactionScore = backend.source === "support" || backend.failure === "repair" ? 74 : 66;
+  const repairScore = backend.failure === "repair" ? 68 : backend.source === "support" ? 72 : 58;
+  const replayScore = backend.sync === "replay" ? 86 : backend.sync === "queued" ? 72 : backend.sync === "realtime" ? 66 : backend.sync === "manual" ? 38 : 12;
+  const reconciliationScore = backend.source === "reconciliation" ? 74 : backend.source === "finance" ? 70 : 58;
+  const incidentScore = backend.failure === "freeze" ? 76 : backend.failure === "downgrade" ? 68 : backend.failure === "repair" ? 64 : 60;
+  const blockers = [
+    ...backend.blockers,
+    ...(backend.gateway === "none" ? ["support receipts need a gateway adapter before payment cases can be trusted"] : []),
+    ...(backend.gateway === "manual" ? ["manual beta ledger support receipts cannot become production support evidence"] : []),
+    ...(backend.sync === "browser" ? ["browser-local support state cannot generate backend support receipts"] : []),
+    ...(backend.sync === "manual" ? ["manual support changes need dual review, repair receipt, replay note, and reconciliation proof"] : []),
+    ...(backend.failure === "repair" ? ["support repair route needs reviewer approval, rollback event, and closeout reason"] : [])
+  ];
+  const readiness = clampNumber(Math.round((
+    gatewayScore +
+    redactionScore +
+    repairScore +
+    replayScore +
+    reconciliationScore +
+    incidentScore
+  ) / 6) - blockers.length * 2, 14, 92);
+  const status = blockers.length
+    ? "Support receipt blocked"
+    : readiness >= 76
+      ? "Support receipts replay-ready"
+      : "Support receipt dry-run";
+  const tone = blockers.length
+    ? "blocked"
+    : readiness >= 76
+      ? "ready"
+      : "draft";
+  const receiptFamily = [
+    "NN",
+    "BACKEND",
+    "SUPPORT",
+    DATA_VERSION.replace(/-/g, ""),
+    backend.source,
+    backend.sync
+  ].join("-").toUpperCase();
+  const metrics = [
+    {
+      label: "Receipt family",
+      value: receiptFamily,
+      detail: "One support receipt family binds case open, redacted lookup, action, entitlement repair, finance check, incident state, and closeout."
+    },
+    {
+      label: "Replay posture",
+      value: backend.sync === "replay" ? "Replay safe" : subscriptionBackendSyncLabel(backend.sync),
+      detail: "Support actions must be replayable without double refund, double access, or stale entitlement state."
+    },
+    {
+      label: "Repair boundary",
+      value: subscriptionBackendFailureLabel(backend.failure),
+      detail: "Every access repair needs prior state, proposed state, reviewer role, source receipt, rollback rule, and reason code."
+    },
+    {
+      label: "Redaction rule",
+      value: "Evidence only",
+      detail: "Receipts carry ids, hashes, states, source refs, and timestamps, never private investment or payment identifiers."
+    }
+  ];
+  const receiptEvents = [
+    {
+      label: "Case opened",
+      event: "support.case_opened",
+      owner: "Support",
+      score: redactionScore,
+      fields: "case_id, user_id_hash, case_type, severity, opened_at"
+    },
+    {
+      label: "Redacted lookup",
+      event: "support.redacted_lookup_loaded",
+      owner: "Support",
+      score: redactionScore,
+      fields: "plan_id, entitlement_state, receipt_refs, masked_status"
+    },
+    {
+      label: "Repair requested",
+      event: "support.repair_requested",
+      owner: "Account Ops",
+      score: repairScore,
+      fields: "prior_state, requested_state, reason_code, reviewer_role"
+    },
+    {
+      label: "Action written",
+      event: "support.action_written",
+      owner: "Backend",
+      score: replayScore,
+      fields: "idempotency_key, action_hash, source_receipt_id, rollback_ref"
+    },
+    {
+      label: "Finance linked",
+      event: "support.finance_linked",
+      owner: "Finance",
+      score: reconciliationScore,
+      fields: "invoice_id, refund_id, settlement_id, variance_state"
+    },
+    {
+      label: "Case closed",
+      event: "support.case_closed",
+      owner: "Ops Lead",
+      score: incidentScore,
+      fields: "closeout_reason, user_notice_id, prevention_route, closed_at"
+    }
+  ];
+  const replaySteps = [
+    "Load support receipt family and validate source receipt ids.",
+    "Replay case open, redacted lookup, requested repair, written action, finance link, and closeout in order.",
+    "Compare entitlement projection before and after support action.",
+    "Confirm invoice, refund, settlement, and support notes agree without private identifiers.",
+    "Freeze the route if replay changes access, billing, or refund state unexpectedly."
+  ];
+  const allowedFields = [
+    "case_id, user_id_hash, receipt_family, source_receipt_id",
+    "plan_id, invoice_id, refund_id, settlement_id, entitlement_state",
+    "prior_state, proposed_state, reason_code, reviewer_role, rollback_ref",
+    "opened_at, action_at, closed_at, user_notice_id, prevention_route"
+  ];
+  const blockedFields = [
+    "PAN, folio, CAS, bank details, UPI, raw card data, OTP, credentials",
+    "ARN/EUIN, distributor client ids, private research notes, free-form personal notes",
+    "gateway secrets, webhook signing keys, unredacted support messages"
+  ];
+  return {
+    allowedFields,
+    blockedFields,
+    blockers: blockers.length ? blockers : ["No active backend support receipt blocker in this preview. Keep dry-run until server storage and replay jobs exist."],
+    metrics,
+    readiness,
+    receiptEvents,
+    receiptFamily,
+    replaySteps,
+    status,
+    tone
+  };
+}
+
 function renderSubscriptionBackendBlueprint(event) {
   if (event) event.preventDefault();
   if (!els.subscriptionBackendOutput) return;
   const backend = subscriptionBackendConfig();
+  const supportReceipts = backendSupportReceipts(backend);
   if (els.subscriptionBackendSummary) {
     els.subscriptionBackendSummary.textContent = `${backend.score}/100 | ${backend.status}`;
   }
@@ -3930,6 +5023,70 @@ function renderSubscriptionBackendBlueprint(event) {
           <p>${escapeHtml(layer.detail)}</p>
         </article>
       `).join("")}
+    </div>
+    <div class="subscription-support-receipts ${escapeHtml(supportReceipts.tone)}">
+      <div class="subscription-support-receipts-head">
+        <div>
+          <span>Backend support receipts</span>
+          <h3>${escapeHtml(supportReceipts.status)}</h3>
+          <p>Convert production support tooling into durable backend evidence for redacted lookup, repair, finance link, incident handling, replay, and closeout.</p>
+        </div>
+        <div class="subscription-support-receipts-score" style="--score:${supportReceipts.readiness}">
+          <strong>${supportReceipts.readiness}</strong>
+          <span>Rec</span>
+        </div>
+      </div>
+      <div class="subscription-support-receipts-metrics">
+        ${supportReceipts.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="subscription-support-receipts-grid">
+        ${supportReceipts.receiptEvents.map((receipt) => `
+          <article class="${receipt.score >= 72 ? "ready" : receipt.score < 45 ? "blocked" : "draft"}">
+            <div class="subscription-backend-card-head">
+              <div>
+                <span>${escapeHtml(receipt.owner)}</span>
+                <strong>${escapeHtml(receipt.label)}</strong>
+              </div>
+              <b>${receipt.score}</b>
+            </div>
+            <p>${escapeHtml(receipt.event)}</p>
+            <div class="build-progress-bar"><span style="width:${receipt.score}%"></span></div>
+            <small>${escapeHtml(receipt.fields)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="subscription-support-receipts-two">
+        <article>
+          <span>Replay script</span>
+          <ol>
+            ${supportReceipts.replaySteps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${escapeHtml(supportReceipts.tone)}">
+          <span>Receipt blockers</span>
+          <ul>
+            ${supportReceipts.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Allowed fields</span>
+          <ul>
+            ${supportReceipts.allowedFields.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="blocked">
+          <span>Never store</span>
+          <ul>
+            ${supportReceipts.blockedFields.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="subscription-backend-contract-grid">
       ${SUBSCRIPTION_BACKEND_CONTRACTS.map((contract) => `
@@ -3982,6 +5139,7 @@ function renderSubscriptionBackendBlueprint(event) {
 
 function makeSubscriptionBackendBrief() {
   const backend = subscriptionBackendConfig();
+  const supportReceipts = backendSupportReceipts(backend);
   return [
     "# NiveshNadi Subscription Backend Blueprint",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -3997,6 +5155,17 @@ function makeSubscriptionBackendBrief() {
     "",
     "## Backend Layers",
     ...backend.layers.map((layer) => `- ${layer.label}: ${layer.state} | ${layer.detail}`),
+    "",
+    "## Backend Support Receipts",
+    `- Status: ${supportReceipts.status}`,
+    `- Readiness: ${supportReceipts.readiness}/100`,
+    `- Receipt family: ${supportReceipts.receiptFamily}`,
+    ...supportReceipts.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...supportReceipts.receiptEvents.map((receipt) => `- Receipt event: ${receipt.label}: ${receipt.score}/100 | ${receipt.event} | ${receipt.fields}`),
+    ...supportReceipts.replaySteps.map((step) => `- Replay: ${step}`),
+    ...supportReceipts.allowedFields.map((field) => `- Allowed field: ${field}`),
+    ...supportReceipts.blockedFields.map((field) => `- Blocked field: ${field}`),
+    ...supportReceipts.blockers.map((item) => `- Blocker: ${item}`),
     "",
     "## Contract Events",
     ...SUBSCRIPTION_BACKEND_CONTRACTS.map((contract) => `- ${contract.label}: ${contract.score}/100 | ${contract.event} | ${contract.guardrail}`),
@@ -4330,12 +5499,886 @@ function accountLaunchRouteConfig() {
   };
 }
 
+function founderBetaChecklist(route) {
+  const laneScore = (label) => route.lanes.find((lane) => lane.label === label)?.score || 0;
+  const items = [
+    {
+      label: "Invite boundary",
+      owner: "Founder",
+      score: route.cohort === "founder" ? 86 : route.cohort === "paidBeta" ? 74 : route.cohort === "publicWaitlist" ? 52 : 18,
+      proof: "Named invite cohort, capacity limit, rollback owner, and no public waitlist promise.",
+      action: route.cohort === "distributorPreview"
+        ? "Keep distributor preview outside Phase 1 retail accounts."
+        : "Keep the first wave narrow enough for manual support review."
+    },
+    {
+      label: "Auth and recovery",
+      owner: "Security",
+      score: laneScore("Identity"),
+      proof: "Provider, login method, recovery flow, session expiry, rate limit, and abuse handling.",
+      action: route.auth === "undecided"
+        ? "Choose auth provider before any paid beta invite."
+        : "Dry-run sign-in, logout, recovery, and suspicious-login behavior."
+    },
+    {
+      label: "Account vault",
+      owner: "Product",
+      score: laneScore("Vault"),
+      proof: "User-owned research records, backup posture, migration batch, row ownership, and delete job.",
+      action: route.data === "manual" || route.data === "browser"
+        ? "Move beyond browser/manual state before paid account launch."
+        : "Run migration rehearsal with sample research packs and deletion receipt."
+    },
+    {
+      label: "Export and delete",
+      owner: "Privacy",
+      score: route.data === "encrypted" ? 68 : route.data === "managed" ? 66 : route.data === "browser" ? 44 : 26,
+      proof: "Export job, delete job, retention rule, completion receipt, and support-safe confirmation.",
+      action: "Make export/delete visible before any saved research becomes account-backed."
+    },
+    {
+      label: "Paid entitlement",
+      owner: "Commercial",
+      score: route.cutover === "entitlement" ? 70 : route.cutover === "public" ? 58 : 54,
+      proof: "Plan ID, payment receipt, entitlement state, feature limit, refund path, and support repair.",
+      action: "Unlock paid capability from backend receipts, not browser-local flags."
+    },
+    {
+      label: "Support recovery",
+      owner: "Support",
+      score: route.cutover === "support" ? 76 : route.auth === "undecided" ? 34 : 58,
+      proof: "Support role, redacted fields, recovery request, case note, and rollback note.",
+      action: "Support should resolve access issues without seeing private investor identifiers."
+    },
+    {
+      label: "Monitoring",
+      owner: "Ops",
+      score: route.cutover === "public" ? 50 : 46,
+      proof: "Login failures, webhook failures, recovery requests, account errors, and alert owner.",
+      action: "Wire early telemetry before the beta can scale beyond founder-supervised invites."
+    },
+    {
+      label: "Phase 2 firewall",
+      owner: "Compliance",
+      score: laneScore("Phase 2 wall"),
+      proof: "Blocked ARN/EUIN/PAN/client-book fields, consent route, and distributor boundary.",
+      action: route.cohort === "distributorPreview"
+        ? "Do not mix distributor workflow with retail Phase 1 accounts."
+        : "Keep MFD fields and client management out of the retail account schema."
+    }
+  ];
+  return items.map((item) => {
+    const status = item.score >= 70 ? "Ready" : item.score >= 50 ? "Dry-run" : "Blocked";
+    return {
+      ...item,
+      status,
+      tone: status === "Ready" ? "ready" : status === "Blocked" ? "blocked" : "draft"
+    };
+  });
+}
+
+function founderAuthDecisionBoard(route, betaChecklist) {
+  const checklistItem = (label) => betaChecklist.find((item) => item.label === label) || { score: 0, status: "Blocked" };
+  const authItem = checklistItem("Auth and recovery");
+  const supportItem = checklistItem("Support recovery");
+  const monitoringItem = checklistItem("Monitoring");
+  const providerScore = route.auth === "passwordless"
+    ? 84
+    : route.auth === "otp"
+      ? 78
+      : route.auth === "social"
+        ? 64
+        : 18;
+  const recoveryScore = route.auth === "passwordless"
+    ? 80
+    : route.auth === "otp"
+      ? 76
+      : route.auth === "social"
+        ? 58
+        : 18;
+  const sessionScore = route.auth === "undecided"
+    ? 20
+    : route.auth === "social"
+      ? 58
+      : route.auth === "otp"
+        ? 74
+        : 76;
+  const abuseScore = route.auth === "undecided"
+    ? 18
+    : route.cutover === "public"
+      ? 52
+      : route.auth === "social"
+        ? 58
+        : 72;
+  const authBlocks = [
+    ...(route.auth === "undecided" ? ["Auth provider is undecided; no retail account invite can be sent."] : []),
+    ...(route.cutover === "public" ? ["Public beta needs rate limits, alerting, recovery proof, and support escalation before opening."] : []),
+    ...(route.cohort === "distributorPreview" ? ["Distributor preview identities must stay outside Phase 1 retail auth."] : [])
+  ];
+  const readiness = clampNumber(
+    Math.round((providerScore + recoveryScore + sessionScore + abuseScore + authItem.score + supportItem.score + monitoringItem.score) / 7) - (authBlocks.length * 7),
+    18,
+    92
+  );
+  const status = authBlocks.length
+    ? "Auth launch blocked"
+    : readiness >= 70
+      ? "Auth pilot ready"
+      : "Auth dry-run only";
+  const tone = authBlocks.length
+    ? "blocked"
+    : readiness >= 70
+      ? "ready"
+      : "draft";
+  const receiptId = [
+    "NN",
+    "AUTH",
+    DATA_VERSION.replace(/-/g, ""),
+    route.auth,
+    route.cutover
+  ].join("-").toUpperCase();
+  const recommendedProvider = route.auth === "passwordless"
+    ? "Passwordless email provider"
+    : route.auth === "otp"
+      ? "Email OTP with recovery"
+      : route.auth === "social"
+        ? "Social login plus email fallback"
+        : "Provider first";
+  const recoveryRoute = route.auth === "passwordless"
+    ? "Magic-link recovery"
+    : route.auth === "otp"
+      ? "OTP plus backup email"
+      : route.auth === "social"
+        ? "Email fallback required"
+        : "Provider first";
+  const metrics = [
+    {
+      label: "Auth decision",
+      value: status,
+      detail: authBlocks[0] || "Identity, recovery, session, rate-limit, and support handoff can enter a founder dry run."
+    },
+    {
+      label: "Recommended provider",
+      value: recommendedProvider,
+      detail: "Keep Phase 1 login minimal and separate from PAN, folio, CAS, bank, payment, and distributor fields."
+    },
+    {
+      label: "Recovery route",
+      value: recoveryRoute,
+      detail: "Recovery should prove account ownership without collecting investment identity."
+    },
+    {
+      label: "Auth receipt",
+      value: receiptId,
+      detail: "Attach this receipt before auth posture is used for beta invites."
+    }
+  ];
+  const controls = [
+    {
+      label: "Provider selection",
+      score: providerScore,
+      detail: "Select production auth provider, allowed login method, domain policy, and founder owner.",
+      action: route.auth === "undecided" ? "Choose provider before any paid beta invite." : "Record provider decision and rollback owner."
+    },
+    {
+      label: "Recovery proof",
+      score: recoveryScore,
+      detail: "Test expired link, failed OTP, account recovery, and support-safe identity proof.",
+      action: "Recovery must not ask for PAN, folio, CAS, bank, payment credentials, ARN/EUIN, or client records."
+    },
+    {
+      label: "Session policy",
+      score: sessionScore,
+      detail: "Define session expiry, refresh behavior, device handling, logout, and suspicious-login response.",
+      action: "Sessions need expiry, recovery, and reset flows before beta."
+    },
+    {
+      label: "Rate limits",
+      score: abuseScore,
+      detail: "Protect sign-in, OTP, magic-link, recovery, and invite endpoints from repeated abuse.",
+      action: route.cutover === "public" ? "Add monitoring and rate limits before public beta." : "Dry-run abuse limits before invite widening."
+    },
+    {
+      label: "Support handoff",
+      score: supportItem.score,
+      detail: "Support should see auth receipt, recovery status, and case posture without private investment details.",
+      action: "Bind auth failures to the support casebook before accounts move beyond prototype."
+    }
+  ];
+  const dryRunSteps = [
+    "Create a test account with no PAN, folio, CAS, bank, card, UPI, ARN/EUIN, or client-book fields.",
+    "Run sign-in, sign-out, expired link, failed OTP, recovery, and suspicious-login scenarios.",
+    "Attach auth receipt to account vault, support casebook, invite receipt, and backend audit receipt before widening.",
+    "Pause beta if recovery needs private investment identifiers or manual founder identity checks."
+  ];
+  const blockers = authBlocks.length
+    ? authBlocks
+    : ["No auth blocker in this preview. Still run recovery, session expiry, rate-limit, support, and audit receipt proof before paid beta."];
+  return {
+    blockers,
+    controls,
+    dryRunSteps,
+    metrics,
+    readiness,
+    receiptId,
+    recommendedProvider,
+    recoveryRoute,
+    status,
+    tone
+  };
+}
+
+function founderStorageDecisionBoard(route, betaChecklist) {
+  const checklistItem = (label) => betaChecklist.find((item) => item.label === label) || { score: 0, status: "Blocked" };
+  const vaultItem = checklistItem("Account vault");
+  const privacyItem = checklistItem("Export and delete");
+  const storageScore = route.data === "encrypted"
+    ? 84
+    : route.data === "managed"
+      ? 78
+      : route.data === "browser"
+        ? 34
+        : 18;
+  const migrationScore = route.cutover === "migration"
+    ? 76
+    : route.cutover === "dry"
+      ? 66
+      : route.cutover === "entitlement"
+        ? 62
+        : route.cutover === "support"
+          ? 58
+          : 38;
+  const storageBlocks = [
+    ...(route.data === "browser" ? ["Browser-local storage cannot become the paid account vault."] : []),
+    ...(route.data === "manual" ? ["Manual spreadsheet storage is blocked for retail account data."] : []),
+    ...(route.cutover === "public" ? ["Public beta cannot open until storage, export/delete, support, and audit receipts are backend-owned."] : []),
+    ...(route.cohort === "distributorPreview" ? ["Distributor preview data must stay outside the retail account vault."] : [])
+  ];
+  const readiness = clampNumber(Math.round((storageScore + migrationScore + vaultItem.score + privacyItem.score) / 4) - (storageBlocks.length * 8), 18, 92);
+  const status = storageBlocks.length
+    ? "Storage launch blocked"
+    : readiness >= 76
+      ? "Vault route ready"
+      : "Vault dry-run only";
+  const tone = storageBlocks.length
+    ? "blocked"
+    : readiness >= 76
+      ? "ready"
+      : "draft";
+  const receiptId = [
+    "NN",
+    "VAULT",
+    DATA_VERSION.replace(/-/g, ""),
+    route.data,
+    route.cutover
+  ].join("-").toUpperCase();
+  const recommendedVault = route.data === "managed"
+    ? "Managed backend database"
+    : route.data === "encrypted"
+      ? "Encrypted account store"
+      : "Do not migrate";
+  const metrics = [
+    {
+      label: "Storage decision",
+      value: status,
+      detail: storageBlocks[0] || "Saved research can enter a controlled account-vault rehearsal."
+    },
+    {
+      label: "Recommended vault",
+      value: recommendedVault,
+      detail: "Production state must be backend-owned, exportable, deletable, and auditable."
+    },
+    {
+      label: "Migration scope",
+      value: route.cutover === "migration" ? "Browser sample batch" : "Dry-run sample",
+      detail: "Move only profile, packs, watchlist, reviews, dossiers, and receipt references."
+    },
+    {
+      label: "Storage receipt",
+      value: receiptId,
+      detail: "Attach this receipt before saved research becomes account-backed."
+    }
+  ];
+  const contracts = [
+    {
+      label: "Schema",
+      score: storageScore,
+      detail: "Profile, packs, watchlist, reviews, dossiers, entitlement state, and audit receipts only.",
+      action: "Keep PAN, folio, CAS, bank, card, UPI, ARN/EUIN, and client-book fields out."
+    },
+    {
+      label: "Row ownership",
+      score: route.data === "encrypted" || route.data === "managed" ? 78 : 24,
+      detail: "Every research record needs account owner, created time, updated time, and deletion state.",
+      action: "Do not rely on editable browser flags as ownership proof."
+    },
+    {
+      label: "Migration rehearsal",
+      score: migrationScore,
+      detail: "Sample browser artifacts should map to account rows with duplicate and rollback checks.",
+      action: route.cutover === "migration" ? "Run rehearsal before invite widening." : "Schedule rehearsal before paid beta."
+    },
+    {
+      label: "Export and delete",
+      score: privacyItem.score,
+      detail: "Every saved research collection needs export package, delete job, and completion receipt.",
+      action: "Make export/delete visible before accounts become paid."
+    },
+    {
+      label: "Backup restore",
+      score: route.data === "manual" ? 22 : route.data === "browser" ? 34 : 64,
+      detail: "Backups must restore research state without restoring deleted records or private notes.",
+      action: "Create a rollback proof before a public beta route."
+    }
+  ];
+  const migrationSteps = [
+    "Scan browser-local profile, packs, watchlist, reviews, dossiers, and receipts.",
+    "Reject free-form private notes and any PAN, folio, CAS, bank, card, UPI, ARN/EUIN, or distributor client-book fields.",
+    "Create account-owned research rows with source browser artifact, migration batch ID, and rollback marker.",
+    "Issue export/delete receipts after migration rehearsal and before invite widening."
+  ];
+  const blockers = storageBlocks.length
+    ? storageBlocks
+    : ["No storage blocker in this preview. Still run migration rehearsal, backup restore, and export/delete proof before paid beta."];
+  return {
+    blockers,
+    contracts,
+    metrics,
+    migrationSteps,
+    readiness,
+    receiptId,
+    recommendedVault,
+    status,
+    tone
+  };
+}
+
+function founderInviteGate(route, betaChecklist) {
+  const betaScore = Math.round(betaChecklist.reduce((sum, item) => sum + item.score, 0) / betaChecklist.length);
+  const blocked = betaChecklist.filter((item) => item.status === "Blocked");
+  const dryRun = betaChecklist.filter((item) => item.status === "Dry-run");
+  const ready = betaChecklist.filter((item) => item.status === "Ready");
+  const hardBlocks = [
+    ...(route.cohort === "distributorPreview" ? ["Phase 2 distributor preview must stay outside retail beta"] : []),
+    ...(route.auth === "undecided" ? ["Auth provider and recovery policy are not selected"] : []),
+    ...(route.data === "manual" ? ["Manual spreadsheet storage cannot hold retail accounts"] : []),
+    ...(route.data === "browser" ? ["Browser-local storage cannot be the paid-account database"] : []),
+    ...(route.cutover === "public" ? ["Public beta cutover needs legal, source, payment, support, export, and deletion gates complete"] : [])
+  ];
+  const cap = hardBlocks.length || route.score < 55
+    ? 0
+    : betaScore >= 78 && !blocked.length
+      ? 25
+      : route.score >= 80 && blocked.length <= 1
+        ? 10
+        : 3;
+  const posture = cap >= 25
+    ? "Expand founder beta"
+    : cap >= 10
+      ? "Founder invite pilot"
+      : cap > 0
+        ? "Internal dry run"
+        : "Do not invite";
+  const cadence = cap >= 25
+    ? "Weekly release review"
+    : cap >= 10
+      ? "Every 48 hours"
+      : cap > 0
+        ? "Daily internal review"
+        : "Fix blockers first";
+  const nextProof = hardBlocks[0]
+    || blocked[0]?.action
+    || dryRun[0]?.action
+    || "Record beta receipt, support note, and export/delete proof after each invite batch.";
+  const noGo = [
+    ...hardBlocks,
+    ...(blocked.length ? blocked.map((item) => `${item.label}: ${item.action}`) : []),
+    ...(route.cohort !== "founder" && cap > 0 ? ["Keep founder owner approval before widening beyond named invites"] : [])
+  ];
+  const cards = [
+    {
+      label: "Invite cap",
+      value: cap ? `${cap} users` : "0 users",
+      detail: cap >= 10 ? "Founder-controlled retail beta batch." : "Do not widen until blockers clear."
+    },
+    {
+      label: "Beta posture",
+      value: posture,
+      detail: cap >= 10 ? "Invite only named retail users with support follow-up." : "Keep route in dry-run mode."
+    },
+    {
+      label: "Review rhythm",
+      value: cadence,
+      detail: "Recheck auth, vault, entitlement, privacy, support, and telemetry before every widening."
+    },
+    {
+      label: "Next proof",
+      value: nextProof,
+      detail: "This is the next receipt or blocker to clear before increasing invite count."
+    }
+  ];
+  return {
+    betaScore,
+    blockedCount: blocked.length,
+    cap,
+    cards,
+    dryRunCount: dryRun.length,
+    noGo: noGo.length ? noGo : ["No hard no-go active. Keep the pilot founder-supervised and research-only."],
+    posture,
+    readyCount: ready.length,
+    tone: cap >= 10 ? "ready" : cap > 0 ? "draft" : "blocked"
+  };
+}
+
+function founderInviteReceipt(route, betaChecklist, inviteGate) {
+  const nextProof = inviteGate.cards.find((card) => card.label === "Next proof")?.value || "Record beta proof";
+  const receiptId = [
+    "NN",
+    "BETA",
+    DATA_VERSION.replace(/-/g, ""),
+    route.cohort,
+    route.auth,
+    route.data,
+    inviteGate.cap
+  ].join("-").toUpperCase();
+  const rollbackTrigger = inviteGate.cap === 0
+    ? "No invite can be released until hard blockers clear."
+    : inviteGate.blockedCount
+      ? "Pause next batch if any blocked checklist item remains after first support review."
+      : "Pause widening if login, export/delete, support, payment, or telemetry receipt is missing.";
+  const fields = [
+    {
+      label: "Receipt ID",
+      value: receiptId,
+      detail: "Deterministic preview ID for this route state."
+    },
+    {
+      label: "Invite batch",
+      value: inviteGate.cap ? `${inviteGate.cap} named users` : "Blocked",
+      detail: inviteGate.posture
+    },
+    {
+      label: "Owner",
+      value: "Founder + Product",
+      detail: "One accountable owner before any invite leaves the workspace."
+    },
+    {
+      label: "Review rhythm",
+      value: inviteGate.cards.find((card) => card.label === "Review rhythm")?.value || "Fix blockers first",
+      detail: "Frequency for checking account, support, privacy, and source posture."
+    }
+  ];
+  const proofTrail = [
+    `Route score ${route.score}/100 with ${route.status}.`,
+    `Beta checklist ${inviteGate.readyCount}/${inviteGate.dryRunCount}/${inviteGate.blockedCount} ready/dry-run/blocked.`,
+    `Next proof: ${nextProof}`,
+    `Rollback trigger: ${rollbackTrigger}`
+  ];
+  const blockedFields = ["PAN", "folio", "CAS", "bank", "card", "UPI", "ARN/EUIN", "distributor client book", "free-form private notes"];
+  const operatingRules = [
+    inviteGate.cap ? "Invite only named retail users and keep founder approval visible." : "Do not invite external users from this route state.",
+    "Save only research posture, receipt references, entitlement state, and support-safe audit metadata.",
+    "Keep public launch language, personalized advice, transaction execution, and distributor workflow out of this beta receipt."
+  ];
+  return {
+    blockedFields,
+    fields,
+    id: receiptId,
+    operatingRules,
+    proofTrail,
+    rollbackTrigger
+  };
+}
+
+function founderSupportDrill(route, betaChecklist, inviteGate, inviteReceipt) {
+  const checklistItem = (label) => betaChecklist.find((item) => item.label === label) || { score: 0, status: "Blocked" };
+  const supportItem = checklistItem("Support recovery");
+  const monitoringItem = checklistItem("Monitoring");
+  const authItem = checklistItem("Auth and recovery");
+  const vaultItem = checklistItem("Account vault");
+  const privacyItem = checklistItem("Export and delete");
+  const pilotScore = inviteGate.cap >= 25
+    ? 82
+    : inviteGate.cap >= 10
+      ? 70
+      : inviteGate.cap > 0
+        ? 54
+        : 24;
+  const score = clampNumber(Math.round((supportItem.score + monitoringItem.score + authItem.score + vaultItem.score + pilotScore) / 5), 18, 92);
+  const status = inviteGate.cap === 0
+    ? "Support blocked"
+    : score >= 72 && !inviteGate.blockedCount
+      ? "Support pilot ready"
+      : score >= 56
+        ? "Manual support watch"
+        : "Support dry run";
+  const tone = inviteGate.cap === 0 || score < 50
+    ? "blocked"
+    : status === "Support pilot ready"
+      ? "ready"
+      : "draft";
+  const responseCadence = inviteGate.cap >= 25
+    ? "Same-day founder response"
+    : inviteGate.cap >= 10
+      ? "Daily support check"
+      : inviteGate.cap > 0
+        ? "Internal case rehearsal"
+        : "No external support promise";
+  const pauseTrigger = inviteGate.cap === 0
+    ? "No invite batch can open until hard blockers clear."
+    : supportItem.status === "Blocked" || monitoringItem.status === "Blocked"
+      ? "Pause invites if support recovery or telemetry remains blocked after the first beta issue."
+      : "Pause widening if two unresolved account issues appear in one review window.";
+  const queueTone = (severity) => severity === "Blocked" ? "blocked" : severity === "Medium" ? "ready" : "draft";
+  const queue = [
+    {
+      label: "Sign-in or recovery",
+      owner: "Security",
+      severity: route.auth === "undecided" ? "Blocked" : "High",
+      detail: route.auth === "undecided"
+        ? "No user should be invited until the login and recovery model is selected."
+        : "Resolve login, logout, recovery, rate-limit, and suspicious-access issues before a wider batch.",
+      receipt: `${inviteReceipt.id}:AUTH`
+    },
+    {
+      label: "Saved research missing",
+      owner: "Product",
+      severity: route.data === "manual" || route.data === "browser" ? "Blocked" : "Medium",
+      detail: route.data === "manual" || route.data === "browser"
+        ? "Browser or spreadsheet state cannot become the paid account vault."
+        : "Trace any missing pack, watchlist, review, or dossier to a vault receipt and restore path.",
+      receipt: `${inviteReceipt.id}:VAULT`
+    },
+    {
+      label: "Export or delete",
+      owner: "Privacy",
+      severity: privacyItem.score < 50 ? "Blocked" : "High",
+      detail: "Handle export and delete requests with a receipt-only support view and no investor identifiers.",
+      receipt: `${inviteReceipt.id}:PRIVACY`
+    },
+    {
+      label: "Entitlement mismatch",
+      owner: "Commercial",
+      severity: route.cutover === "entitlement" ? "High" : "Watch",
+      detail: "Paid access should be repaired from payment and backend receipts, not editable browser flags.",
+      receipt: `${inviteReceipt.id}:ENTITLEMENT`
+    },
+    {
+      label: "Advice expectation",
+      owner: "Compliance",
+      severity: "High",
+      detail: "Re-state the research-only boundary whenever a user expects personalized advice or execution.",
+      receipt: `${inviteReceipt.id}:BOUNDARY`
+    }
+  ].map((item) => ({ ...item, tone: queueTone(item.severity) }));
+  const metrics = [
+    {
+      label: "Response cadence",
+      value: responseCadence,
+      detail: "Founder-visible support timing before the beta widens."
+    },
+    {
+      label: "Support owner",
+      value: "Founder + Support",
+      detail: "One owner triages every account issue until the support lane is proven."
+    },
+    {
+      label: "Pause trigger",
+      value: inviteGate.cap ? "Two open issues" : "Blocker-first",
+      detail: pauseTrigger
+    },
+    {
+      label: "Redaction rule",
+      value: "Receipt-only view",
+      detail: "Support can see route state, issue type, receipt ID, and timestamps only."
+    }
+  ];
+  const escalation = [
+    "Attach the invite receipt to every support note before changing account state.",
+    "Escalate login, recovery, vault loss, export, delete, and entitlement issues before a new invite batch.",
+    "Turn repeated support cases into product fixes instead of manual founder workarounds.",
+    "Keep the Phase 2 distributor boundary visible when any user asks for ARN, EUIN, PAN, or client-book handling."
+  ];
+  const redactionRules = [
+    `Never request or store ${inviteReceipt.blockedFields.join(", ")} in a support case.`,
+    "Use issue categories, receipt references, and account posture instead of private notes.",
+    "Close the beta route if support needs investor identifiers to resolve a routine issue."
+  ];
+  return {
+    escalation,
+    metrics,
+    pauseTrigger,
+    queue,
+    redactionRules,
+    responseCadence,
+    score,
+    status,
+    tone
+  };
+}
+
+function founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill) {
+  const primaryCase = supportDrill.queue.find((item) => item.tone === "blocked")
+    || supportDrill.queue.find((item) => item.severity === "High")
+    || supportDrill.queue[0];
+  const caseSlug = primaryCase.label.toUpperCase().replace(/[^A-Z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const caseId = [
+    "NN",
+    "CASE",
+    DATA_VERSION.replace(/-/g, ""),
+    route.cohort,
+    caseSlug
+  ].join("-").toUpperCase();
+  const responseScore = primaryCase.tone === "blocked"
+    ? 28
+    : primaryCase.severity === "High"
+      ? 62
+      : 76;
+  const readiness = clampNumber(Math.round((supportDrill.score + responseScore + (inviteGate.cap ? 68 : 18)) / 3), 18, 92);
+  const status = inviteGate.cap === 0
+    ? "Case blocked before invite"
+    : readiness >= 72
+      ? "Case rehearsal ready"
+      : "Founder response required";
+  const tone = inviteGate.cap === 0
+    ? "blocked"
+    : readiness >= 72
+      ? "ready"
+      : "draft";
+  const firstResponse = inviteGate.cap === 0
+    ? "Do not respond as an active beta support flow. First clear route blockers, then reopen the casebook for a named founder invite."
+    : `Thanks for reporting this ${primaryCase.label.toLowerCase()} issue. We are checking the ${primaryCase.receipt} support receipt and will respond inside the ${supportDrill.responseCadence.toLowerCase()} window. We will not ask for PAN, folio, CAS, bank, card, UPI, ARN/EUIN, or private investment notes.`;
+  const fields = [
+    {
+      label: "Case ID",
+      value: caseId,
+      detail: "Deterministic support case reference for the current route state."
+    },
+    {
+      label: "Issue surface",
+      value: primaryCase.label,
+      detail: `${primaryCase.owner} owns first triage with ${primaryCase.severity.toLowerCase()} severity.`
+    },
+    {
+      label: "Linked receipt",
+      value: primaryCase.receipt,
+      detail: "Support action stays attached to the invite receipt trail."
+    },
+    {
+      label: "Beta decision",
+      value: status,
+      detail: supportDrill.pauseTrigger
+    }
+  ];
+  const workflow = [
+    {
+      step: "01 intake",
+      title: "Capture issue category",
+      detail: "Use case type, receipt ID, route state, and browser-safe timestamp only."
+    },
+    {
+      step: "02 receipt",
+      title: "Attach support receipt",
+      detail: `Link ${primaryCase.receipt} before changing account, entitlement, or vault state.`
+    },
+    {
+      step: "03 resolve",
+      title: "Fix or rollback",
+      detail: primaryCase.tone === "blocked"
+        ? "Do not invite until blocker is cleared and the receipt is refreshed."
+        : "Resolve the issue, or rollback the next invite batch if the support path is unclear."
+    },
+    {
+      step: "04 close",
+      title: "Close with guardrail",
+      detail: "Close with research-only language and record whether the beta can widen, pause, or stay internal."
+    }
+  ];
+  const redactionChecks = [
+    `Allowed: case type, receipt ID, route state, ${primaryCase.owner} owner, and support status.`,
+    `Blocked: ${inviteReceipt.blockedFields.join(", ")}.`,
+    "Support reply must not include personalized advice, execution guidance, or distributor workflow.",
+    "If support cannot resolve without private identifiers, pause the beta route and redesign the account flow."
+  ];
+  const pauseDecision = inviteGate.cap === 0
+    ? "Pause. No beta invite or support promise should leave the founder workspace."
+    : primaryCase.tone === "blocked"
+      ? "Pause after this case. Clear the blocker before inviting the next user."
+      : supportDrill.status === "Support pilot ready"
+        ? "Proceed with named invites only. Keep every case attached to a receipt."
+        : "Proceed only with founder-supervised users and review all cases daily.";
+  return {
+    caseId,
+    fields,
+    firstResponse,
+    pauseDecision,
+    primaryCase,
+    readiness,
+    redactionChecks,
+    status,
+    tone,
+    workflow
+  };
+}
+
+function supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook) {
+  const blockedCases = supportDrill.queue.filter((item) => item.tone === "blocked");
+  const highCases = supportDrill.queue.filter((item) => item.severity === "High");
+  const intakeScore = supportCasebook.tone === "blocked"
+    ? 38
+    : supportDrill.status === "Support pilot ready"
+      ? 78
+      : 64;
+  const redactionScore = route.cohort === "distributorPreview" ? 34 : 82;
+  const receiptScore = inviteReceipt.id ? 72 : 42;
+  const escalationScore = supportDrill.escalation.length >= 4 ? 70 : 54;
+  const pauseScore = supportDrill.pauseTrigger ? 66 : 38;
+  const toolingScore = route.cutover === "support"
+    ? 68
+    : route.cutover === "public"
+      ? 46
+      : 58;
+  const readiness = clampNumber(Math.round((
+    intakeScore +
+    redactionScore +
+    receiptScore +
+    escalationScore +
+    pauseScore +
+    toolingScore
+  ) / 6) - blockedCases.length * 5, 22, 92);
+  const receiptId = [
+    "NN",
+    "SUPPORT",
+    "OPS",
+    DATA_VERSION.replace(/-/g, ""),
+    route.cohort,
+    route.cutover
+  ].join("-").toUpperCase();
+  const blockers = [
+    ...blockedCases.map((item) => `${item.label}: ${item.detail}`),
+    ...(route.cohort === "distributorPreview" ? ["Distributor support must stay out of the Phase 1 retail account route."] : []),
+    ...(route.cutover === "public" ? ["Public beta needs support tooling, response ownership, audit receipts, and incident playbooks before opening."] : []),
+    ...(route.data === "browser" || route.data === "manual" ? ["Support cannot repair paid accounts while account state is browser-local or manual."] : [])
+  ];
+  const status = blockers.length
+    ? "Support ops blocked"
+    : readiness >= 72
+      ? "Ops handoff ready"
+      : "Ops dry-run";
+  const tone = blockers.length
+    ? "blocked"
+    : readiness >= 72
+      ? "ready"
+      : "draft";
+  const metrics = [
+    {
+      label: "Ops status",
+      value: status,
+      detail: blockers[0] || "Support intake, redaction, receipts, pause rule, and escalation can move into a founder dry run."
+    },
+    {
+      label: "Ops receipt",
+      value: receiptId,
+      detail: "Use one receipt family for support intake, redaction check, action, escalation, and closeout."
+    },
+    {
+      label: "Case coverage",
+      value: `${supportDrill.queue.length} categories`,
+      detail: `${highCases.length} high attention surfaces; ${blockedCases.length} blocked surfaces in this route state.`
+    },
+    {
+      label: "Blocked fields",
+      value: "Private IDs excluded",
+      detail: inviteReceipt.blockedFields.join(", ")
+    }
+  ];
+  const lanes = [
+    {
+      label: "Support intake",
+      owner: "Support",
+      score: intakeScore,
+      proof: "case type, route state, receipt id, timestamp, user-visible status",
+      action: "Capture the issue without private notes or investment identity."
+    },
+    {
+      label: "Redaction gate",
+      owner: "Privacy",
+      score: redactionScore,
+      proof: "allowed fields, blocked fields, support role, viewed-at receipt",
+      action: "Support sees account posture and receipts, not PAN, folio, CAS, bank, payment, or free-form private notes."
+    },
+    {
+      label: "Support receipt",
+      owner: "Backend",
+      score: receiptScore,
+      proof: "support case id, action id, actor role, object family, status",
+      action: "Every account repair, recovery, export, delete, or entitlement touch needs a receipt."
+    },
+    {
+      label: "Escalation ladder",
+      owner: "Ops Lead",
+      score: escalationScore,
+      proof: "owner, severity, escalation route, rollback state",
+      action: "Move repeated issues into product fixes, not manual founder workarounds."
+    },
+    {
+      label: "Pause rule",
+      owner: "Founder",
+      score: pauseScore,
+      proof: "pause trigger, invite cap, unresolved cases, rollback note",
+      action: "Widen no beta batch while support blockers remain unresolved."
+    },
+    {
+      label: "Support tooling",
+      owner: "Product Ops",
+      score: toolingScore,
+      proof: "ticket view, receipt view, knowledge script, incident owner",
+      action: "Before public beta, replace manual founder review with controlled support tooling."
+    }
+  ];
+  const sequence = [
+    "Open support intake with case category, route state, receipt ID, and no private investment identifiers.",
+    "Run redaction gate before support views any account, vault, payment, export, or deletion posture.",
+    "Bind action to support receipt and route owner before changing account state.",
+    "Escalate repeated or blocked cases into product, security, privacy, commercial, or compliance fixes.",
+    "Close with a user-safe response, receipt status, and beta pause or proceed decision."
+  ];
+  const guardrails = [
+    "Support is account operations only; it must not provide personalized investment advice or execution guidance.",
+    `Blocked fields stay blocked: ${inviteReceipt.blockedFields.join(", ")}.`,
+    "If a routine support case requires private identifiers, the account route is not ready for paid launch.",
+    "Phase 2 distributor support needs separate consent, roles, audit trails, and client-data separation."
+  ];
+  return {
+    blockers: blockers.length ? blockers : ["No support operations blocker in this preview. Keep the founder handoff receipt-bound and redacted."],
+    guardrails,
+    lanes,
+    metrics,
+    readiness,
+    receiptId,
+    sequence,
+    status,
+    tone
+  };
+}
+
 function renderAccountLaunchRoute(event) {
   if (event) event.preventDefault();
   if (!els.accountRouteOutput) return;
   const route = accountLaunchRouteConfig();
+  const betaChecklist = founderBetaChecklist(route);
+  const authDecision = founderAuthDecisionBoard(route, betaChecklist);
+  const storageDecision = founderStorageDecisionBoard(route, betaChecklist);
+  const betaScore = Math.round(betaChecklist.reduce((sum, item) => sum + item.score, 0) / betaChecklist.length);
+  const betaReady = betaChecklist.filter((item) => item.status === "Ready").length;
+  const betaBlocked = betaChecklist.filter((item) => item.status === "Blocked").length;
+  const inviteGate = founderInviteGate(route, betaChecklist);
+  const inviteReceipt = founderInviteReceipt(route, betaChecklist, inviteGate);
+  const supportDrill = founderSupportDrill(route, betaChecklist, inviteGate, inviteReceipt);
+  const supportCasebook = founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill);
+  const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
   if (els.accountRouteSummary) {
-    els.accountRouteSummary.textContent = `${route.score}/100 | ${route.status}`;
+    els.accountRouteSummary.textContent = `${route.score}/100 | ${authDecision.status}`;
   }
   els.accountRouteOutput.innerHTML = `
     <div class="account-route-hero ${escapeHtml(route.tone)}">
@@ -4372,6 +6415,353 @@ function renderAccountLaunchRoute(event) {
         <h3>Launch boundary</h3>
         <p>This route turns saved self-research into an account product. It still avoids transaction execution, personalized advice, PAN, folio, CAS, bank details, and distributor client records.</p>
       </article>
+    </div>
+    <div class="account-route-auth ${escapeHtml(authDecision.tone)}">
+      <div class="account-route-auth-head">
+        <div>
+          <span>Founder auth decision board</span>
+          <h3>${escapeHtml(authDecision.status)}</h3>
+          <p>Decide login, recovery, session, rate-limit, abuse-control, and support handoff before any retail account invite. Auth must stay minimal and separate from investment identity.</p>
+        </div>
+        <div class="account-route-auth-score" style="--score:${authDecision.readiness}">
+          <strong>${authDecision.readiness}</strong>
+          <span>auth</span>
+        </div>
+      </div>
+      <div class="account-route-auth-grid">
+        ${authDecision.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-auth-control-grid">
+        ${authDecision.controls.map((control) => `
+          <article>
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(control.label)}</span>
+                <strong>${control.score}/100</strong>
+              </div>
+              <b>${control.score >= 70 ? "Ready" : control.score >= 50 ? "Dry-run" : "Blocked"}</b>
+            </div>
+            <div class="build-progress-bar"><span style="width:${control.score}%"></span></div>
+            <p>${escapeHtml(control.detail)}</p>
+            <small>${escapeHtml(control.action)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-auth-two">
+        <article>
+          <span>Auth dry run</span>
+          <ul>
+            ${authDecision.dryRunSteps.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Auth blockers</span>
+          <ul>
+            ${authDecision.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="account-route-storage ${escapeHtml(storageDecision.tone)}">
+      <div class="account-route-storage-head">
+        <div>
+          <span>Founder storage decision board</span>
+          <h3>${escapeHtml(storageDecision.status)}</h3>
+          <p>Decide whether saved research can move from browser prototype into an account vault. The board keeps schema, row ownership, migration, backup, export, delete, and blocked data rules visible before beta.</p>
+        </div>
+        <div class="account-route-storage-score" style="--score:${storageDecision.readiness}">
+          <strong>${storageDecision.readiness}</strong>
+          <span>vault</span>
+        </div>
+      </div>
+      <div class="account-route-storage-grid">
+        ${storageDecision.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-storage-contract-grid">
+        ${storageDecision.contracts.map((contract) => `
+          <article>
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(contract.label)}</span>
+                <strong>${contract.score}/100</strong>
+              </div>
+              <b>${contract.score >= 70 ? "Ready" : contract.score >= 50 ? "Dry-run" : "Blocked"}</b>
+            </div>
+            <div class="build-progress-bar"><span style="width:${contract.score}%"></span></div>
+            <p>${escapeHtml(contract.detail)}</p>
+            <small>${escapeHtml(contract.action)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-storage-two">
+        <article>
+          <span>Migration rehearsal</span>
+          <ul>
+            ${storageDecision.migrationSteps.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Storage blockers</span>
+          <ul>
+            ${storageDecision.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="account-route-beta">
+      <div class="account-route-beta-head">
+        <div>
+          <span>Founder beta checklist</span>
+          <h3>${betaReady} of ${betaChecklist.length} proofs ready</h3>
+          <p>Invite real retail users only when the account route has proof for identity, vault, entitlement, privacy, support, monitoring, and Phase 2 separation.</p>
+        </div>
+        <div class="account-route-beta-score">
+          <strong>${betaScore}</strong>
+          <span>${betaBlocked ? `${betaBlocked} blocked` : "beta watch"}</span>
+        </div>
+      </div>
+      <div class="account-route-check-grid">
+        ${betaChecklist.map((item) => `
+          <article class="${escapeHtml(item.tone)}">
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(item.owner)}</span>
+                <strong>${escapeHtml(item.label)}</strong>
+              </div>
+              <b>${escapeHtml(item.status)}</b>
+            </div>
+            <div class="build-progress-bar"><span style="width:${item.score}%"></span></div>
+            <p>${escapeHtml(item.proof)}</p>
+            <small>${escapeHtml(item.action)}</small>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="account-route-invite ${escapeHtml(inviteGate.tone)}">
+      <div class="account-route-invite-head">
+        <div>
+          <span>Founder invite gate</span>
+          <h3>${escapeHtml(inviteGate.posture)}</h3>
+          <p>Current cap: <strong>${inviteGate.cap ? `${inviteGate.cap} named retail users` : "no external users"}</strong>. The gate protects the beta from public launch pressure, manual storage, weak recovery, missing telemetry, and Phase 2 distributor leakage.</p>
+        </div>
+        <div class="account-route-invite-meter">
+          <strong>${inviteGate.cap}</strong>
+          <span>invite cap</span>
+        </div>
+      </div>
+      <div class="account-route-invite-grid">
+        ${inviteGate.cards.map((card) => `
+          <article>
+            <span>${escapeHtml(card.label)}</span>
+            <strong>${escapeHtml(card.value)}</strong>
+            <p>${escapeHtml(card.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-nogo">
+        <span>No-go conditions</span>
+        <ul>
+          ${inviteGate.noGo.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </div>
+    </div>
+    <div class="account-route-receipt">
+      <div class="account-route-receipt-head">
+        <div>
+          <span>Founder invite receipt</span>
+          <h3>${escapeHtml(inviteReceipt.id)}</h3>
+          <p>A clean audit trail for the next invite batch. It records operating proof without storing PAN, folio, CAS, payment credentials, contact data, or distributor client records.</p>
+        </div>
+        <div class="account-route-receipt-badge">
+          <strong>${inviteGate.cap}</strong>
+          <span>batch cap</span>
+        </div>
+      </div>
+      <div class="account-route-receipt-grid">
+        ${inviteReceipt.fields.map((field) => `
+          <article>
+            <span>${escapeHtml(field.label)}</span>
+            <strong>${escapeHtml(field.value)}</strong>
+            <p>${escapeHtml(field.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-receipt-two">
+        <article>
+          <span>Proof trail</span>
+          <ul>
+            ${inviteReceipt.proofTrail.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Blocked data fields</span>
+          <p>${inviteReceipt.blockedFields.map((item) => escapeHtml(item)).join(", ")}</p>
+          <ul>
+            ${inviteReceipt.operatingRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="account-route-support ${escapeHtml(supportDrill.tone)}">
+      <div class="account-route-support-head">
+        <div>
+          <span>Founder support drill</span>
+          <h3>${escapeHtml(supportDrill.status)}</h3>
+          <p>Turn invite receipts into a support queue before the beta widens. The drill keeps response cadence, escalation, pause rules, and redacted support handling visible.</p>
+        </div>
+        <div class="account-route-support-score" style="--score:${supportDrill.score}">
+          <strong>${supportDrill.score}</strong>
+          <span>support</span>
+        </div>
+      </div>
+      <div class="account-route-support-grid">
+        ${supportDrill.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-support-queue">
+        ${supportDrill.queue.map((item) => `
+          <article class="${escapeHtml(item.tone)}">
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(item.owner)}</span>
+                <strong>${escapeHtml(item.label)}</strong>
+              </div>
+              <b>${escapeHtml(item.severity)}</b>
+            </div>
+            <p>${escapeHtml(item.detail)}</p>
+            <small>${escapeHtml(item.receipt)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-support-two">
+        <article>
+          <span>Escalation path</span>
+          <ul>
+            ${supportDrill.escalation.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Pause and redaction rule</span>
+          <p>${escapeHtml(supportDrill.pauseTrigger)}</p>
+          <ul>
+            ${supportDrill.redactionRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="account-route-casebook ${escapeHtml(supportCasebook.tone)}">
+      <div class="account-route-case-head">
+        <div>
+          <span>Founder support casebook</span>
+          <h3>${escapeHtml(supportCasebook.status)}</h3>
+          <p>Preview the first support case before beta support goes live. The casebook binds the issue, receipt, response script, redaction checks, and pause decision into one founder-operating artifact.</p>
+        </div>
+        <div class="account-route-case-score" style="--score:${supportCasebook.readiness}">
+          <strong>${supportCasebook.readiness}</strong>
+          <span>case</span>
+        </div>
+      </div>
+      <div class="account-route-case-grid">
+        ${supportCasebook.fields.map((field) => `
+          <article>
+            <span>${escapeHtml(field.label)}</span>
+            <strong>${escapeHtml(field.value)}</strong>
+            <p>${escapeHtml(field.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-case-flow">
+        ${supportCasebook.workflow.map((item) => `
+          <article>
+            <span>${escapeHtml(item.step)}</span>
+            <strong>${escapeHtml(item.title)}</strong>
+            <p>${escapeHtml(item.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-case-two">
+        <article>
+          <span>Founder response script</span>
+          <p>${escapeHtml(supportCasebook.firstResponse)}</p>
+        </article>
+        <article>
+          <span>Pause decision and redaction checks</span>
+          <strong>${escapeHtml(supportCasebook.pauseDecision)}</strong>
+          <ul>
+            ${supportCasebook.redactionChecks.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="account-route-ops ${escapeHtml(supportOps.tone)}">
+      <div class="account-route-ops-head">
+        <div>
+          <span>Support operations handoff</span>
+          <h3>${escapeHtml(supportOps.status)}</h3>
+          <p>Convert founder support into a controlled launch operation: intake, redaction gate, support receipt, escalation ladder, pause rule, and tooling handoff.</p>
+        </div>
+        <div class="account-route-ops-score" style="--score:${supportOps.readiness}">
+          <strong>${supportOps.readiness}</strong>
+          <span>ops</span>
+        </div>
+      </div>
+      <div class="account-route-ops-grid">
+        ${supportOps.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-ops-lane-grid">
+        ${supportOps.lanes.map((lane) => `
+          <article>
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(lane.owner)}</span>
+                <strong>${escapeHtml(lane.label)}</strong>
+              </div>
+              <b>${lane.score}/100</b>
+            </div>
+            <div class="build-progress-bar"><span style="width:${lane.score}%"></span></div>
+            <p>${escapeHtml(lane.proof)}</p>
+            <small>${escapeHtml(lane.action)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-ops-two">
+        <article>
+          <span>Operating sequence</span>
+          <ol>
+            ${supportOps.sequence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <span>Blockers and guardrails</span>
+          <ul>
+            ${supportOps.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+            ${supportOps.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="account-route-gate-grid">
       ${ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `
@@ -4413,6 +6803,15 @@ function renderAccountLaunchRoute(event) {
 
 function makeAccountLaunchRouteBrief() {
   const route = accountLaunchRouteConfig();
+  const betaChecklist = founderBetaChecklist(route);
+  const authDecision = founderAuthDecisionBoard(route, betaChecklist);
+  const storageDecision = founderStorageDecisionBoard(route, betaChecklist);
+  const inviteGate = founderInviteGate(route, betaChecklist);
+  const inviteReceipt = founderInviteReceipt(route, betaChecklist, inviteGate);
+  const supportDrill = founderSupportDrill(route, betaChecklist, inviteGate, inviteReceipt);
+  const supportCasebook = founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill);
+  const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
+  const betaScore = Math.round(betaChecklist.reduce((sum, item) => sum + item.score, 0) / betaChecklist.length);
   return [
     "# NiveshNadi Retail Account Launch Route",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -4425,6 +6824,76 @@ function makeAccountLaunchRouteBrief() {
     "",
     "## Selected Launch Route",
     ...route.routeEvents.map((item) => `- ${item}`),
+    "",
+    "## Founder Auth Decision Board",
+    `- Status: ${authDecision.status}`,
+    `- Readiness: ${authDecision.readiness}/100`,
+    `- Recommended provider: ${authDecision.recommendedProvider}`,
+    `- Recovery route: ${authDecision.recoveryRoute}`,
+    `- Auth receipt: ${authDecision.receiptId}`,
+    ...authDecision.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...authDecision.controls.map((control) => `- Control: ${control.label}: ${control.score}/100 | ${control.detail} | ${control.action}`),
+    ...authDecision.dryRunSteps.map((item) => `- Dry run: ${item}`),
+    ...authDecision.blockers.map((item) => `- Blocker: ${item}`),
+    "",
+    "## Founder Storage Decision Board",
+    `- Status: ${storageDecision.status}`,
+    `- Readiness: ${storageDecision.readiness}/100`,
+    `- Recommended vault: ${storageDecision.recommendedVault}`,
+    `- Storage receipt: ${storageDecision.receiptId}`,
+    ...storageDecision.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...storageDecision.contracts.map((contract) => `- Contract: ${contract.label}: ${contract.score}/100 | ${contract.detail} | ${contract.action}`),
+    ...storageDecision.migrationSteps.map((item) => `- Migration: ${item}`),
+    ...storageDecision.blockers.map((item) => `- Blocker: ${item}`),
+    "",
+    "## Founder Beta Checklist",
+    `- Beta readiness: ${betaScore}/100`,
+    ...betaChecklist.map((item) => `- ${item.label}: ${item.status} | ${item.score}/100 | ${item.proof} | ${item.action}`),
+    "",
+    "## Founder Invite Gate",
+    `- Posture: ${inviteGate.posture}`,
+    `- Invite cap: ${inviteGate.cap} named retail users`,
+    `- Ready/Dry-run/Blocked: ${inviteGate.readyCount}/${inviteGate.dryRunCount}/${inviteGate.blockedCount}`,
+    `- Next proof: ${inviteGate.cards.find((card) => card.label === "Next proof")?.value || "Record beta proof"}`,
+    ...inviteGate.noGo.map((item) => `- No-go: ${item}`),
+    "",
+    "## Founder Invite Receipt",
+    `- Receipt ID: ${inviteReceipt.id}`,
+    ...inviteReceipt.fields.map((field) => `- ${field.label}: ${field.value} | ${field.detail}`),
+    ...inviteReceipt.proofTrail.map((item) => `- Proof: ${item}`),
+    `- Blocked fields: ${inviteReceipt.blockedFields.join(", ")}`,
+    ...inviteReceipt.operatingRules.map((item) => `- Operating rule: ${item}`),
+    "",
+    "## Founder Support Drill",
+    `- Status: ${supportDrill.status}`,
+    `- Score: ${supportDrill.score}/100`,
+    `- Response cadence: ${supportDrill.responseCadence}`,
+    `- Pause trigger: ${supportDrill.pauseTrigger}`,
+    ...supportDrill.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...supportDrill.queue.map((item) => `- Queue: ${item.label}: ${item.severity} | ${item.owner} | ${item.detail} | ${item.receipt}`),
+    ...supportDrill.escalation.map((item) => `- Escalation: ${item}`),
+    ...supportDrill.redactionRules.map((item) => `- Redaction: ${item}`),
+    "",
+    "## Founder Support Casebook",
+    `- Case ID: ${supportCasebook.caseId}`,
+    `- Status: ${supportCasebook.status}`,
+    `- Readiness: ${supportCasebook.readiness}/100`,
+    `- Primary case: ${supportCasebook.primaryCase.label} | ${supportCasebook.primaryCase.severity} | ${supportCasebook.primaryCase.owner}`,
+    `- Founder response: ${supportCasebook.firstResponse}`,
+    `- Pause decision: ${supportCasebook.pauseDecision}`,
+    ...supportCasebook.fields.map((field) => `- Field: ${field.label}: ${field.value} | ${field.detail}`),
+    ...supportCasebook.workflow.map((item) => `- Workflow: ${item.step}: ${item.title} | ${item.detail}`),
+    ...supportCasebook.redactionChecks.map((item) => `- Redaction check: ${item}`),
+    "",
+    "## Support Operations Handoff",
+    `- Status: ${supportOps.status}`,
+    `- Readiness: ${supportOps.readiness}/100`,
+    `- Receipt family: ${supportOps.receiptId}`,
+    ...supportOps.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...supportOps.lanes.map((lane) => `- Lane: ${lane.label}: ${lane.score}/100 | Owner: ${lane.owner} | Proof: ${lane.proof} | Action: ${lane.action}`),
+    ...supportOps.sequence.map((item) => `- Sequence: ${item}`),
+    ...supportOps.blockers.map((item) => `- Blocker: ${item}`),
+    ...supportOps.guardrails.map((item) => `- Guardrail: ${item}`),
     "",
     "## Launch Gates",
     ...ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `- ${gate.label}: ${gate.score}/100 | ${gate.event} | ${gate.proof} | ${gate.guardrail}`),
@@ -4695,7 +7164,7 @@ function accountVaultBlueprintConfig() {
     "Support and audit views need redaction before paid launch."
   ];
 
-  return {
+  const vault = {
     blockers,
     collectionScore,
     collections,
@@ -4707,13 +7176,131 @@ function accountVaultBlueprintConfig() {
     saveFlow,
     vaultScore
   };
+  vault.handoff = backendStorageHandoffBoard(vault);
+  return vault;
+}
+
+function backendStorageHandoffBoard(vault) {
+  const findControl = (label) => vault.controls.find((item) => item.label === label) || { score: 0, check: "Control missing" };
+  const findCollection = (label) => vault.collections.find((item) => item.label === label) || { score: 0, guardrail: "Collection missing" };
+  const rowOwnership = findControl("Row ownership");
+  const exportBundle = findControl("Export bundle");
+  const deletionJob = findControl("Deletion job");
+  const entitlementGuard = findControl("Entitlement guard");
+  const supportRedaction = findControl("Redacted support");
+  const auditEvents = findCollection("Audit events");
+  const savedPacks = findCollection("Saved research packs");
+  const exportQueue = findCollection("Export and delete queue");
+  const receiptId = ["NN", "VAULT", "HANDOFF", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const readiness = clampNumber(Math.round((
+    vault.collectionScore +
+    vault.controlScore +
+    rowOwnership.score +
+    exportBundle.score +
+    deletionJob.score +
+    auditEvents.score
+  ) / 6), 18, 88);
+  const blockers = [
+    ...(rowOwnership.score < 50 ? ["Row ownership must reject cross-account reads before backend storage opens."] : []),
+    ...(exportBundle.score < 45 ? ["Export bundle is not ready enough for account-backed saved research."] : []),
+    ...(deletionJob.score < 45 ? ["Deletion job and completion receipt are below launch threshold."] : []),
+    ...(entitlementGuard.score < 45 ? ["Paid feature access must come from backend entitlement state, not browser flags."] : []),
+    ...(supportRedaction.score < 45 ? ["Support redaction must be proven before support can inspect account objects."] : []),
+    ...(exportQueue.score < 45 ? ["Export/delete queue needs backend workflow before paid accounts."] : [])
+  ];
+  const status = blockers.length
+    ? "Backend handoff blocked"
+    : readiness >= 70
+      ? "Backend handoff ready"
+      : "Backend handoff dry-run";
+  const tone = blockers.length ? "blocked" : readiness >= 70 ? "ready" : "draft";
+  const metrics = [
+    {
+      label: "Handoff status",
+      value: status,
+      detail: blockers[0] || "Saved research can enter a controlled backend storage rehearsal."
+    },
+    {
+      label: "Handoff receipt",
+      value: receiptId,
+      detail: "Use this receipt family for migration, restore, export, deletion, and rollback proof."
+    },
+    {
+      label: "Backend owner",
+      value: "Account storage owner",
+      detail: "One founder/operator must own schema, migration batch, backup, restore, and deletion evidence."
+    },
+    {
+      label: "Source state",
+      value: "Browser prototype",
+      detail: "Move only research context, packs, watchlist, reviews, dossiers, and receipt references."
+    }
+  ];
+  const contracts = [
+    {
+      label: "Row ownership",
+      score: rowOwnership.score,
+      detail: rowOwnership.check,
+      action: "Every row needs account_id, object_id, created_at, updated_at, and delete_state."
+    },
+    {
+      label: "Pack migration",
+      score: savedPacks.score,
+      detail: savedPacks.guardrail,
+      action: "Migrate selected research packs with source artifact, batch ID, and rollback marker."
+    },
+    {
+      label: "Audit receipt",
+      score: auditEvents.score,
+      detail: auditEvents.guardrail,
+      action: "Write redacted action receipts without private notes or financial identifiers."
+    },
+    {
+      label: "Entitlement join",
+      score: entitlementGuard.score,
+      detail: entitlementGuard.check,
+      action: "Join account capability to verified payment receipt and plan limits."
+    },
+    {
+      label: "Export bundle",
+      score: exportBundle.score,
+      detail: exportBundle.check,
+      action: "Generate readable export that lists included and excluded collections."
+    },
+    {
+      label: "Deletion receipt",
+      score: deletionJob.score,
+      detail: deletionJob.check,
+      action: "Delete saved research and keep only minimal non-sensitive completion proof."
+    }
+  ];
+  const sequence = [
+    "Freeze browser-local artifact list for profile, packs, watchlist, reviews, dossiers, and receipts.",
+    "Reject PAN, folio, CAS, bank, card, UPI, ARN/EUIN, client-book, tax, address, and nominee fields.",
+    "Create backend rows with owner, object type, source artifact, migration batch, and rollback marker.",
+    "Run restore proof and export/delete proof before the first paid account cohort.",
+    "Attach handoff receipt to backend audit receipts, support casebook, and account launch route."
+  ];
+  const releaseBlocks = blockers.length
+    ? blockers
+    : ["No backend handoff blocker in this preview. Still run restore, export/delete, support redaction, and payment-entitlement proof before launch."];
+  return {
+    blockers: releaseBlocks,
+    contracts,
+    metrics,
+    readiness,
+    receiptId,
+    sequence,
+    status,
+    tone
+  };
 }
 
 function renderAccountVaultBlueprint() {
   if (!els.accountVaultOutput) return;
   const vault = accountVaultBlueprintConfig();
   if (els.accountVaultSummary) {
-    els.accountVaultSummary.textContent = `${vault.vaultScore}/100 | ${vault.collections.length} vault sets`;
+    els.accountVaultSummary.textContent = `${vault.handoff.readiness}/100 | ${vault.handoff.status}`;
   }
   els.accountVaultOutput.innerHTML = `
     <div class="account-vault-hero">
@@ -4732,6 +7319,58 @@ function renderAccountVaultBlueprint() {
       <article><span>Control readiness</span><strong>${vault.controlScore}/100</strong><p>Row ownership, entitlement guard, support redaction, export bundle, deletion job, and Phase 2 firewall.</p></article>
       <article><span>Next blocker</span><strong>${escapeHtml(vault.nextBlocker.label)}</strong><p>${vault.nextBlocker.score}/100 | ${escapeHtml(vault.nextBlocker.check || vault.nextBlocker.guardrail)}</p></article>
       <article><span>Never stored</span><strong>PAN, folio, CAS</strong><p>Private investor identifiers stay outside Phase 1 account storage.</p></article>
+    </div>
+    <div class="account-vault-handoff ${escapeHtml(vault.handoff.tone)}">
+      <div class="account-vault-handoff-head">
+        <div>
+          <span>Backend storage handoff board</span>
+          <h3>${escapeHtml(vault.handoff.status)}</h3>
+          <p>Move saved research from browser-local prototype into backend-owned rows only when owner, schema, migration, restore, export/delete, support redaction, and rollback proof are visible.</p>
+        </div>
+        <div class="account-vault-handoff-score" style="--score:${vault.handoff.readiness}">
+          <strong>${vault.handoff.readiness}</strong>
+          <span>handoff</span>
+        </div>
+      </div>
+      <div class="account-vault-handoff-grid">
+        ${vault.handoff.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-vault-handoff-contract-grid">
+        ${vault.handoff.contracts.map((contract) => `
+          <article>
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(contract.label)}</span>
+                <strong>${contract.score}/100</strong>
+              </div>
+              <b>${contract.score >= 50 ? "Dry-run" : "Blocked"}</b>
+            </div>
+            <div class="build-progress-bar launch"><span style="width:${contract.score}%"></span></div>
+            <p>${escapeHtml(contract.detail)}</p>
+            <small>${escapeHtml(contract.action)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-vault-handoff-two">
+        <article>
+          <span>Backend cutover sequence</span>
+          <ol>
+            ${vault.handoff.sequence.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <span>Release blockers</span>
+          <ul>
+            ${vault.handoff.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="account-vault-collection-grid">
       ${vault.collections.map((collection) => `
@@ -4799,6 +7438,15 @@ function makeAccountVaultBrief() {
     `Collection readiness: ${vault.collectionScore}/100`,
     `Control readiness: ${vault.controlScore}/100`,
     `Next blocker: ${vault.nextBlocker.label} (${vault.nextBlocker.score}/100)`,
+    "",
+    "## Backend Storage Handoff Board",
+    `- Status: ${vault.handoff.status}`,
+    `- Readiness: ${vault.handoff.readiness}/100`,
+    `- Receipt: ${vault.handoff.receiptId}`,
+    ...vault.handoff.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...vault.handoff.contracts.map((contract) => `- Contract: ${contract.label}: ${contract.score}/100 | ${contract.detail} | ${contract.action}`),
+    ...vault.handoff.sequence.map((step) => `- Sequence: ${step}`),
+    ...vault.handoff.blockers.map((blocker) => `- Blocker: ${blocker}`),
     "",
     "## Vault Collections",
     ...vault.collections.map((item) => [
@@ -11036,6 +13684,7 @@ function makeCompareNote() {
 function renderAll() {
   renderSignalStrip();
   renderBuildTracker();
+  renderBuildPhasesRoom();
   renderLaunchReadinessBoard();
   renderPaymentReadinessLab();
   renderPaymentWiringConsole();
@@ -14347,6 +16996,85 @@ function sourceReceiptSnapshotFromDryRunItem(item, config = sourceDryRunBoardCon
   };
 }
 
+function sourceReceiptProductionEnvelope(receipt, entries = loadSourceReceipts()) {
+  const sourceSlug = (receipt.source?.id || "source").replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const statusScore = receipt.status === "Release candidate" ? 92 : receipt.status === "Preview only" ? 62 : 24;
+  const savedScore = entries.length ? Math.min(92, 54 + entries.length * 8) : 36;
+  const readiness = Math.round(clampNumber(
+    receipt.score * 0.28 +
+      receipt.metrics.freshness * 0.18 +
+      receipt.metrics.parser * 0.16 +
+      receipt.metrics.citation * 0.14 +
+      statusScore * 0.14 +
+      savedScore * 0.1,
+    14,
+    96
+  ));
+  const blockers = [
+    ...(!entries.length ? ["receipt has not been saved into the vault yet"] : []),
+    ...(receipt.status !== "Release candidate" ? [`receipt status is ${receipt.status.toLowerCase()}`] : []),
+    ...(!receipt.metrics.citationVisible ? ["visible citation path is missing"] : []),
+    ...(receipt.metrics.staleDays > 0 ? [`source date is stale by ${receipt.metrics.staleDays} day${receipt.metrics.staleDays === 1 ? "" : "s"}`] : []),
+    ...(receipt.metrics.parser < 72 ? ["parser confidence is below production threshold"] : []),
+    ...(receipt.metrics.freshness < 72 ? ["freshness score is below production threshold"] : []),
+    ...receipt.blockers.slice(0, 3)
+  ];
+  const status = blockers.length
+    ? readiness >= 68
+      ? "Reviewer release needed"
+      : "Do not release"
+    : readiness >= 82
+      ? "Production receipt ready"
+      : "Reviewer release needed";
+  const tone = status === "Production receipt ready" ? "ready" : status === "Reviewer release needed" ? "watch" : "caution";
+  const envelopeId = ["NN", "SOURCE", "PROD", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const metrics = [
+    { label: "Envelope ID", value: envelopeId, detail: "Attach this ID to release notes and reviewer sign-off." },
+    { label: "Launch verdict", value: status, detail: `Production envelope readiness ${readiness}/100.` },
+    { label: "Claim surface", value: receipt.surfaceLabel, detail: receipt.releaseSurface },
+    { label: "Saved proof", value: entries.length ? `${entries.length} receipt${entries.length === 1 ? "" : "s"}` : "Preview only", detail: "Saved receipts create the audit trail." }
+  ];
+  const productionFields = [
+    { label: "source_family", value: receipt.source.title, detail: "AMFI, AMC, SID/KIM, portfolio, benchmark, TER, or riskometer family." },
+    { label: "source_date_age_days", value: `${receipt.metrics.age}`, detail: `Freshness score ${receipt.metrics.freshness}/100.` },
+    { label: "parser_version", value: `${DATA_VERSION}-parser`, detail: `Parser confidence ${receipt.metrics.parser}/100.` },
+    { label: "citation_path", value: receipt.metrics.citationVisible ? "visible" : "missing", detail: "Investor-facing citation link or file path must be visible before launch." },
+    { label: "reviewer_status", value: receipt.status, detail: receipt.reviewer },
+    { label: "claim_surface", value: receipt.surfaceLabel, detail: receipt.claimSurface }
+  ];
+  const replaySteps = [
+    `Import ${receipt.source.title} and store source URL or file hash, source date, owner, row count, parser version, and rejected-row count.`,
+    "Validate required fields against the live data contract and freeze changed fields that fail parsing or citation checks.",
+    "Map the receipt into Claim Surface Map and Surface Release Queue before any public score, card, X-Ray, or dossier updates.",
+    "Require reviewer approval, rollback note, and correction path before the claim leaves preview.",
+    "Write backend audit receipt with import timestamp, data version, reviewer status, and affected public surfaces."
+  ];
+  const launchSurfaces = [
+    { label: "Screener and fund cards", status: receipt.status === "Release candidate" && receipt.metrics.citationVisible ? "Release candidate" : "Preview only" },
+    { label: "Score and comparison", status: receipt.score >= 80 && receipt.metrics.parser >= 72 ? "Release candidate" : "Reviewer check" },
+    { label: "X-Ray and portfolio", status: receipt.source.id === "portfolio-disclosure" ? "Release candidate" : "No direct change" },
+    { label: "Decision pack and dossier", status: blockers.length ? "Blocked" : "Release candidate" }
+  ];
+  const guardrails = [
+    "No live-looking value moves without source date, citation path, parser version, and reviewer status.",
+    "A production receipt updates product claims only; it never stores PAN, folio, CAS, bank, contact, credential, or distributor client data.",
+    "If a receipt fails, freeze the affected public surface and route it to source refresh, parser QA, citation repair, or rollback."
+  ];
+
+  return {
+    blockers: blockers.length ? blockers : ["No active production blocker in this preview. Keep legal and reviewer sign-off before public launch."],
+    envelopeId,
+    guardrails,
+    launchSurfaces,
+    metrics,
+    productionFields,
+    readiness,
+    replaySteps,
+    status,
+    tone
+  };
+}
+
 function saveCurrentSourceReceipt() {
   const snapshot = sourceReceiptSnapshotFromConfig();
   const entries = [snapshot, ...loadSourceReceipts()].slice(0, 30);
@@ -14381,6 +17109,8 @@ function renderSourceReceiptVault() {
   const preview = sourceReceiptSnapshotFromConfig();
   const latest = entries[0] || null;
   const prior = entries[1] || null;
+  const activeReceipt = latest || preview;
+  const productionEnvelope = sourceReceiptProductionEnvelope(activeReceipt, entries);
   const releaseCount = entries.filter((entry) => entry.status === "Release candidate").length;
   const previewCount = entries.filter((entry) => entry.status === "Preview only").length;
   const frozenCount = entries.filter((entry) => entry.status === "Frozen").length;
@@ -14400,6 +17130,28 @@ function renderSourceReceiptVault() {
         <div class="source-receipt-score" style="--score:${preview.score}">
           <b>${preview.score}</b>
           <span>Preview</span>
+        </div>
+      </div>
+      <div class="source-production-envelope ${escapeHtml(productionEnvelope.tone)}">
+        <div class="source-production-head">
+          <div>
+            <span>Live data production receipt</span>
+            <h3>${escapeHtml(productionEnvelope.status)}</h3>
+            <p>Save the dry-run receipt before treating this production envelope as an audit-ready source proof.</p>
+          </div>
+          <div class="source-production-score" style="--score:${productionEnvelope.readiness}">
+            <strong>${productionEnvelope.readiness}</strong>
+            <span>Live</span>
+          </div>
+        </div>
+        <div class="source-production-metric-grid">
+          ${productionEnvelope.metrics.map((metric) => `
+            <article>
+              <span>${escapeHtml(metric.label)}</span>
+              <strong>${escapeHtml(metric.value)}</strong>
+              <p>${escapeHtml(metric.detail)}</p>
+            </article>
+          `).join("")}
         </div>
       </div>
     `;
@@ -14425,6 +17177,68 @@ function renderSourceReceiptVault() {
       <div><span>Preview only</span><strong>${previewCount}</strong></div>
       <div><span>Frozen</span><strong>${frozenCount}</strong></div>
       <div><span>Citation gaps</span><strong>${citationGaps}</strong></div>
+    </div>
+    <div class="source-production-envelope ${escapeHtml(productionEnvelope.tone)}">
+      <div class="source-production-head">
+        <div>
+          <span>Live data production receipt</span>
+          <h3>${escapeHtml(productionEnvelope.status)}</h3>
+          <p>Bind the latest saved source receipt into a production envelope with source date, parser version, citation path, reviewer status, claim surface, and replay rules.</p>
+        </div>
+        <div class="source-production-score" style="--score:${productionEnvelope.readiness}">
+          <strong>${productionEnvelope.readiness}</strong>
+          <span>Live</span>
+        </div>
+      </div>
+      <div class="source-production-metric-grid">
+        ${productionEnvelope.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-production-field-grid">
+        ${productionEnvelope.productionFields.map((field) => `
+          <article>
+            <span>${escapeHtml(field.label)}</span>
+            <strong>${escapeHtml(field.value)}</strong>
+            <p>${escapeHtml(field.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-production-surface-grid">
+        ${productionEnvelope.launchSurfaces.map((surface) => `
+          <article>
+            <span>${escapeHtml(surface.status)}</span>
+            <strong>${escapeHtml(surface.label)}</strong>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-production-two">
+        <article class="${escapeHtml(productionEnvelope.tone)}">
+          <span>Production blockers</span>
+          <strong>${productionEnvelope.blockers.length} launch check${productionEnvelope.blockers.length === 1 ? "" : "s"}</strong>
+          <ul>
+            ${productionEnvelope.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Replay sequence</span>
+          <strong>Source to release trail</strong>
+          <ol>
+            ${productionEnvelope.replaySteps.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="source-receipt-guardrail">
+          <span>Production guardrails</span>
+          <strong>No silent live refresh</strong>
+          <ul>
+            ${productionEnvelope.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="source-receipt-grid">
       ${entries.slice(0, 9).map((entry) => `
@@ -14474,6 +17288,7 @@ function makeSourceReceiptVaultBrief() {
   const preview = sourceReceiptSnapshotFromConfig();
   const latest = entries[0] || preview;
   const prior = entries[1] || null;
+  const productionEnvelope = sourceReceiptProductionEnvelope(latest, entries);
   return [
     "# NiveshNadi Source Receipt Vault",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -14484,6 +17299,21 @@ function makeSourceReceiptVaultBrief() {
     `Score delta: ${reviewVaultDelta(latest.score, prior?.score)}`,
     `Surface: ${latest.surfaceLabel}`,
     `Reviewer: ${latest.reviewer}`,
+    "",
+    "## Live Data Production Receipt",
+    `Envelope ID: ${productionEnvelope.envelopeId}`,
+    `Verdict: ${productionEnvelope.status}`,
+    `Production readiness: ${productionEnvelope.readiness}/100`,
+    "Production fields:",
+    ...productionEnvelope.productionFields.map((field) => `- ${field.label}: ${field.value} | ${field.detail}`),
+    "Launch surfaces:",
+    ...productionEnvelope.launchSurfaces.map((surface) => `- ${surface.label}: ${surface.status}`),
+    "Replay sequence:",
+    ...productionEnvelope.replaySteps.map((step, index) => `${index + 1}. ${step}`),
+    "Production blockers:",
+    ...productionEnvelope.blockers.map((blocker) => `- ${blocker}`),
+    "Guardrails:",
+    ...productionEnvelope.guardrails.map((item) => `- ${item}`),
     "",
     "## Latest Receipt",
     `Receipt: ${latest.receipt}`,
@@ -15789,15 +18619,15 @@ function backendAuditRetentionLabel(retention) {
 }
 
 function backendAuditSelectedStream() {
-  const id = els.backendAuditStream?.value || "reviewer-release";
+  const id = els.backendAuditStream?.value || "source-ingestion";
   return BACKEND_AUDIT_STREAMS.find((stream) => stream.id === id) || BACKEND_AUDIT_STREAMS[0];
 }
 
 function backendAuditConfig() {
   const stream = backendAuditSelectedStream();
   const mode = els.backendAuditMode?.value || "launch";
-  const storage = els.backendAuditStorage?.value || "append";
-  const retention = els.backendAuditRetention?.value || "strict";
+  const storage = els.backendAuditStorage?.value || "event";
+  const retention = els.backendAuditRetention?.value || "finance";
   const modeScore = { launch: 84, dry: 68, stress: 58, privacy: 78 }[mode] || 68;
   const storageScore = { append: 86, event: 82, database: 66, browser: 34 }[storage] || 70;
   const retentionScore = { strict: 84, user: 72, finance: 78, minimal: 62 }[retention] || 74;
@@ -15860,10 +18690,1542 @@ function backendAuditConfig() {
   };
 }
 
+function productionSourceImportJobs(config = backendAuditConfig()) {
+  const sourceReceipts = loadSourceReceipts();
+  const reviewerDecisions = loadReviewerDecisionLedger();
+  const claimReleases = loadClaimReleaseLedger();
+  const selectedPipeline = selectedSourceIntakePipeline();
+  const selectedGate = sourceIntakeProductionGate(sourceIntakeConfig());
+  const storageScore = { append: 86, event: 90, database: 66, browser: 24 }[config.storage] || 68;
+  const modeScore = { launch: 84, dry: 70, stress: 62, privacy: 76 }[config.mode] || 70;
+  const expectedRows = {
+    "amfi-nav": "46k NAV rows",
+    "amc-factsheet": "1.2k fund facts",
+    "sid-kim": "400 document clauses",
+    "portfolio-disclosure": "18k holdings rows",
+    "benchmark-feed": "600 index values",
+    "risk-ter": "2.4k risk and TER rows"
+  };
+  const jobs = DATA_PIPELINES.map((pipeline, index) => {
+    const contract = LIVE_DATA_CONTRACTS.find((item) => item.id === pipeline.id) || LIVE_DATA_CONTRACTS[0];
+    const receipt = sourceReceipts.find((entry) => entry.source?.id === pipeline.id) || null;
+    const envelope = receipt ? sourceReceiptProductionEnvelope(receipt, sourceReceipts) : null;
+    const selected = pipeline.id === selectedPipeline.id;
+    const gateScore = selected
+      ? selectedGate.productionScore
+      : Math.round(clampNumber(
+        pipeline.readiness * 0.28 +
+          contract.contractScore * 0.24 +
+          (envelope?.readiness || 34) * 0.18 +
+          storageScore * 0.16 +
+          modeScore * 0.14,
+        18,
+        96
+      ));
+    const sourceSlug = pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+    const jobId = ["NN", "SRCJOB", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+    const gateId = selected
+      ? selectedGate.gateId
+      : ["NN", "IMPORT", "GATE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+    const blockers = [
+      ...(!receipt ? ["no saved source receipt for this source family"] : []),
+      ...(receipt && receipt.status !== "Release candidate" ? [`source receipt status is ${receipt.status.toLowerCase()}`] : []),
+      ...(envelope && envelope.status !== "Production receipt ready" ? [`production receipt envelope says ${envelope.status.toLowerCase()}`] : []),
+      ...(contract.contractScore < 58 ? ["field contract needs production schema hardening"] : []),
+      ...(config.storage === "browser" ? ["browser-local storage cannot own a production import job"] : []),
+      ...(config.mode === "privacy" ? ["privacy minimization review must approve retained metadata"] : []),
+      ...(selected && selectedGate.status === "Import blocked" ? selectedGate.blockers.slice(0, 2) : [])
+    ];
+    const status = blockers.length === 0 && gateScore >= 84
+      ? "Import job ready"
+      : gateScore >= 66
+        ? "Reviewer dry-run"
+        : "Blocked";
+    const tone = status === "Import job ready" ? "ready" : status === "Blocked" ? "caution" : "watch";
+    const receiptPayload = [
+      "import_job_id",
+      "gate_id",
+      "source_family",
+      "source_url_or_file_hash",
+      "source_date",
+      "schema_version",
+      "parser_version",
+      "accepted_row_count",
+      "rejected_row_count",
+      "citation_path",
+      "reviewer_decision_id",
+      "rollback_ref"
+    ];
+    const jobEvents = [
+      "source_import_job.scheduled",
+      "source_file.fetched",
+      "parser_run.completed",
+      "source_rows.reconciled",
+      "source_receipt.persisted",
+      "claim_surfaces.queued"
+    ];
+    return {
+      blockers: blockers.length ? blockers : ["No active blocker in this preview. Keep production worker, legal, and reviewer approval before launch."],
+      contract,
+      expectedRows: expectedRows[pipeline.id] || `${pipeline.fields.length * 100} rows`,
+      gateId,
+      gateScore,
+      jobEvents,
+      jobId,
+      pipeline,
+      receipt,
+      receiptPayload,
+      rejectedPolicy: "Reject rows with missing source date, duplicate primary key, invalid numeric field, citation gap, parser exception, or unsupported schema version.",
+      rollbackPolicy: "Freeze affected claim surfaces, restore last approved receipt, create correction or rollback note, and rerun reviewer release before public refresh.",
+      selected,
+      status,
+      tone
+    };
+  });
+  const activeJob = jobs.find((job) => job.selected) || jobs[0];
+  const readiness = Math.round(jobs.reduce((sum, job) => sum + job.gateScore, 0) / jobs.length);
+  const ready = jobs.filter((job) => job.status === "Import job ready").length;
+  const dryRun = jobs.filter((job) => job.status === "Reviewer dry-run").length;
+  const blocked = jobs.filter((job) => job.status === "Blocked").length;
+  const boardStatus = blocked
+    ? "Import jobs need control work"
+    : ready >= 4
+      ? "Production import lane forming"
+      : "Reviewer dry-run lane";
+  const boardTone = blocked ? "caution" : ready >= 4 ? "ready" : "watch";
+  const metrics = [
+    { label: "Import readiness", value: `${readiness}/100`, detail: "Average across official source-family job contracts." },
+    { label: "Ready jobs", value: `${ready}/${jobs.length}`, detail: `${dryRun} reviewer dry-run and ${blocked} blocked.` },
+    { label: "Active job", value: activeJob.jobId, detail: `${activeJob.pipeline.title} | ${activeJob.status}` },
+    { label: "Receipt proof", value: `${sourceReceipts.length} source receipts`, detail: `${reviewerDecisions.length} reviewer decisions and ${claimReleases.length} claim-release records available locally.` }
+  ];
+  const controls = [
+    { label: "Scheduler", value: activeJob.pipeline.cadence, detail: "Import job must run on explicit cadence with retry and pause state." },
+    { label: "Storage", value: backendAuditStorageLabel(config.storage), detail: "Production should use event stream plus append-only audit table." },
+    { label: "Rejected rows", value: "quarantine required", detail: activeJob.rejectedPolicy },
+    { label: "Rollback", value: "surface freeze first", detail: activeJob.rollbackPolicy }
+  ];
+
+  return {
+    activeJob,
+    blocked,
+    boardStatus,
+    boardTone,
+    controls,
+    dryRun,
+    jobs,
+    metrics,
+    readiness,
+    ready
+  };
+}
+
+function sourceImportWorkerBlueprint(sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
+  const sourceReceipts = loadSourceReceipts();
+  const reviewerDecisions = loadReviewerDecisionLedger();
+  const claimReleases = loadClaimReleaseLedger();
+  const activeJob = sourceImportJobs.activeJob;
+  const activeBlockers = activeJob.blockers.filter((blocker) => !blocker.startsWith("No active blocker"));
+  const storageScore = config.storage === "event" ? 92 : config.storage === "append" ? 78 : config.storage === "database" ? 62 : 18;
+  const reviewerScore = reviewerDecisions.length ? 82 : 42;
+  const receiptScore = sourceReceipts.length ? 78 : 36;
+  const releaseScore = claimReleases.length ? 76 : 48;
+  const readiness = clampNumber(Math.round(
+    activeJob.gateScore * 0.3 +
+      sourceImportJobs.readiness * 0.2 +
+      storageScore * 0.18 +
+      reviewerScore * 0.13 +
+      receiptScore * 0.11 +
+      releaseScore * 0.08
+  ) - activeBlockers.length * 3, 12, 96);
+  const status = readiness >= 84 && activeBlockers.length === 0
+    ? "Worker blueprint ready"
+    : readiness >= 64
+      ? "Worker dry-run"
+      : "Worker blocked";
+  const tone = status === "Worker blueprint ready" ? "ready" : status === "Worker blocked" ? "caution" : "watch";
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const workerId = ["NN", "SRCWORKER", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const runbookId = ["NN", "RUNBOOK", "SOURCE", "IMPORT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const retryPolicy = config.mode === "stress"
+    ? "2 attempts, then freeze surfaces"
+    : "3 attempts with manual reviewer release";
+  const alertRules = [
+    {
+      code: "source_fetch_failed",
+      severity: "High",
+      owner: "Data Ops",
+      trigger: `No source file or endpoint response is captured within the ${activeJob.pipeline.cadence} cadence.`,
+      response: "Pause import, keep last approved receipt active, and create a source incident."
+    },
+    {
+      code: "schema_drift_detected",
+      severity: "High",
+      owner: "Data Engineering",
+      trigger: `Primary key ${activeJob.contract.primaryKey} or date field ${activeJob.contract.dateField} changes or disappears.`,
+      response: "Quarantine the batch and route the field contract to reviewer approval before release."
+    },
+    {
+      code: "parser_rejection_spike",
+      severity: "Medium",
+      owner: "Data QA",
+      trigger: "Rejected-row rate crosses 2 percent or rejected rows include price, TER, riskometer, or holdings fields.",
+      response: "Keep accepted rows private, attach rejected-row sample, and rerun parser validation."
+    },
+    {
+      code: "citation_missing",
+      severity: "High",
+      owner: "Research Ops",
+      trigger: "Any public claim lacks source date, source family, receipt ID, or citation path.",
+      response: "Freeze affected public surfaces and route the claim through reviewer release."
+    },
+    {
+      code: "reviewer_release_missing",
+      severity: "Medium",
+      owner: "Reviewer",
+      trigger: "Import job finishes but no reviewer decision is bound to the surface release queue.",
+      response: "Keep status as workbench preview only and block release binder output."
+    },
+    {
+      code: "surface_freeze_triggered",
+      severity: "Medium",
+      owner: "Release Ops",
+      trigger: "Rollback note, correction notice, or source receipt downgrade touches the active job family.",
+      response: "Hold queue, restore previous approved receipt, and require correction notice before refresh."
+    }
+  ];
+  const runbookSteps = [
+    "Create scheduled worker instance and bind it to the source job ID, import gate ID, parser version, and schema version.",
+    "Fetch official file or endpoint, compute checksum, store source date, and reject stale or duplicate batches.",
+    "Parse rows into quarantine first, validate primary key, date field, numeric fields, citations, and accepted/rejected counts.",
+    "Persist source receipt, parser log, rejected-row digest, reviewer decision link, and rollback reference in append-only storage.",
+    "Queue affected public surfaces only after reviewer release and pause automatically when any high alert is open."
+  ];
+  const pauseRules = [
+    "Pause if source date, checksum, parser version, schema version, or row count is missing.",
+    "Pause if reviewer decision, release binder, correction note, or rollback reference is required but absent.",
+    "Pause if browser-local storage is the only proof for production data.",
+    "Pause if alert severity is high or repeated medium alerts appear in the same source family."
+  ];
+  const controls = [
+    { label: "Worker ID", value: workerId, detail: `${activeJob.pipeline.title} | ${activeJob.jobId}` },
+    { label: "Run cadence", value: activeJob.pipeline.cadence, detail: `Retry policy: ${retryPolicy}.` },
+    { label: "Runbook", value: runbookId, detail: "Every run must emit fetch, parser, validation, receipt, queue, alert, and rollback evidence." },
+    { label: "Alert posture", value: `${alertRules.filter((alert) => alert.severity === "High").length} high alerts`, detail: "High alerts freeze claim surfaces before investors see refreshed data." }
+  ];
+  const blockers = [
+    ...activeBlockers,
+    ...(config.storage === "browser" ? ["production worker cannot rely on browser-local storage"] : []),
+    ...(sourceReceipts.length === 0 ? ["source receipt vault has no saved receipt proof"] : []),
+    ...(reviewerDecisions.length === 0 ? ["reviewer decision ledger has no saved release decision"] : []),
+    ...(readiness < 70 ? ["worker readiness needs storage, reviewer, and receipt proof before launch"] : [])
+  ];
+
+  return {
+    activeJob,
+    alertRules,
+    blockers: blockers.length ? blockers : ["No active worker blocker in this preview. Keep real scheduler, alert delivery, append-only storage, and reviewer identity before launch."],
+    controls,
+    pauseRules,
+    readiness,
+    runbookId,
+    runbookSteps,
+    status,
+    tone,
+    workerId
+  };
+}
+
+function sourceWorkerAlertRouting(sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const activeBlockers = sourceWorker.blockers.filter((blocker) => !blocker.startsWith("No active worker blocker"));
+  const storageScore = config.storage === "event" ? 92 : config.storage === "append" ? 78 : config.storage === "database" ? 58 : 20;
+  const routeModeScore = config.mode === "stress" ? 84 : config.mode === "launch" ? 78 : config.mode === "dry" ? 68 : 72;
+  const highAlertCount = sourceWorker.alertRules.filter((alert) => alert.severity === "High").length;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const alertRouteId = ["NN", "ALERT", "ROUTE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const incidentReceiptId = ["NN", "INCIDENT", "SOURCE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const readiness = clampNumber(Math.round(
+    sourceWorker.readiness * 0.3 +
+      sourceImportJobs.readiness * 0.18 +
+      storageScore * 0.18 +
+      routeModeScore * 0.14 +
+      (100 - highAlertCount * 6) * 0.1 +
+      (activeBlockers.length ? 48 : 86) * 0.1
+  ) - activeBlockers.length * 2, 14, 96);
+  const status = readiness >= 84 && activeBlockers.length === 0
+    ? "Alert route ready"
+    : readiness >= 64
+      ? "Alert route dry-run"
+      : "Alert route blocked";
+  const tone = status === "Alert route ready" ? "ready" : status === "Alert route blocked" ? "caution" : "watch";
+  const ownerDestinations = {
+    "Data Ops": "Ops source queue and source receipt vault",
+    "Data Engineering": "Parser contract queue and schema review",
+    "Data QA": "Rejected-row quarantine and validation queue",
+    "Research Ops": "Claim surface map and reviewer workbench",
+    "Reviewer": "Reviewer decision ledger and release binder",
+    "Release Ops": "Surface release queue and correction notice desk"
+  };
+  const routes = sourceWorker.alertRules.map((alert, index) => {
+    const alertSlug = alert.code.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+    const acknowledgement = alert.severity === "High" ? "15 min ack | 60 min rollback or reviewer release" : "4 hour ack | next release batch";
+    const releaseAction = alert.severity === "High" ? "freeze affected public surfaces" : "hold next refresh until reviewer note";
+    const routeScore = clampNumber(
+      Math.round(readiness - index * 2 + (alert.severity === "High" ? 4 : -2) - activeBlockers.length * 3),
+      18,
+      96
+    );
+    return {
+      acknowledgement,
+      alertId: ["NN", "ALERT", alertSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      code: alert.code,
+      destination: ownerDestinations[alert.owner] || "Operations queue",
+      owner: alert.owner,
+      releaseAction,
+      response: alert.response,
+      routeScore,
+      severity: alert.severity,
+      tone: routeScore >= 78 ? "ready" : routeScore < 56 ? "caution" : "watch",
+      trigger: alert.trigger
+    };
+  });
+  const ownerMap = Object.values(routes.reduce((map, route) => {
+    if (!map[route.owner]) {
+      map[route.owner] = {
+        count: 0,
+        destination: route.destination,
+        high: 0,
+        owner: route.owner
+      };
+    }
+    map[route.owner].count += 1;
+    if (route.severity === "High") map[route.owner].high += 1;
+    return map;
+  }, {}));
+  const metrics = [
+    { label: "Alert route ID", value: alertRouteId, detail: `${routes.length} alert routes mapped for ${activeJob.pipeline.title}.` },
+    { label: "Incident receipt", value: incidentReceiptId, detail: "Every material alert should create a source incident receipt before closure." },
+    { label: "High severity", value: `${highAlertCount}/${routes.length}`, detail: "High alerts freeze affected public surfaces before new claims are shown." },
+    { label: "Routing status", value: status, detail: `${ownerMap.length} owners, ${activeBlockers.length} active worker blockers.` }
+  ];
+  const incidentFields = [
+    "incident_receipt_id",
+    "alert_id",
+    "worker_id",
+    "source_job_id",
+    "source_family",
+    "severity",
+    "owner",
+    "acknowledged_at",
+    "source_receipt_id",
+    "affected_surface_ids",
+    "freeze_action",
+    "reviewer_decision_id",
+    "rollback_or_correction_ref",
+    "closed_at"
+  ];
+  const escalationSteps = [
+    "High alert opens incident receipt and freezes affected claim surfaces immediately.",
+    "Owner acknowledges route, attaches source receipt or rejected-row digest, and chooses repair, rollback, or reviewer release.",
+    "Reviewer validates source date, citation path, parser/schema version, and affected public surfaces.",
+    "Release Ops either resumes the queue with approved receipt or publishes correction and rollback notes.",
+    "Incident closes only after support-safe status, public-surface state, and reviewer decision are bound to the receipt."
+  ];
+  const blockers = [
+    ...activeBlockers,
+    ...(config.storage === "browser" ? ["alert routes cannot close against browser-local evidence"] : []),
+    ...(config.mode === "privacy" ? ["privacy minimization review must approve alert receipt metadata"] : []),
+    ...(readiness < 70 ? ["alert routing needs durable storage and notification delivery before production"] : []),
+    "real alert delivery endpoint is still outside this static prototype"
+  ];
+
+  return {
+    alertRouteId,
+    blockers,
+    escalationSteps,
+    incidentFields,
+    incidentReceiptId,
+    metrics,
+    ownerMap,
+    readiness,
+    routes,
+    status,
+    tone
+  };
+}
+
+function sourceAlertDeliveryBackend(alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const highRoutes = alertRouting.routes.filter((route) => route.severity === "High");
+  const routeBlockers = alertRouting.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const storageScore = config.storage === "event" ? 94 : config.storage === "append" ? 80 : config.storage === "database" ? 60 : 18;
+  const deliveryModeScore = config.mode === "stress" ? 88 : config.mode === "launch" ? 82 : config.mode === "dry" ? 72 : 76;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const deliveryId = ["NN", "ALERT", "DELIVERY", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const deadLetterId = ["NN", "ALERT", "DLQ", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const reviewerQueueId = ["NN", "REVIEWER", "ESCALATION", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const readiness = clampNumber(Math.round(
+    alertRouting.readiness * 0.3 +
+      sourceWorker.readiness * 0.18 +
+      sourceImportJobs.readiness * 0.12 +
+      storageScore * 0.18 +
+      deliveryModeScore * 0.12 +
+      (highRoutes.length ? 82 : 70) * 0.1
+  ) - routeBlockers.length * 2, 14, 96);
+  const status = readiness >= 84 && routeBlockers.length <= 1
+    ? "Delivery backend ready"
+    : readiness >= 64
+      ? "Delivery dry-run"
+      : "Delivery blocked";
+  const tone = status === "Delivery backend ready" ? "ready" : status === "Delivery blocked" ? "caution" : "watch";
+  const channelTemplates = [
+    {
+      channel: "Ops inbox",
+      destination: "source-ops-alerts",
+      owner: "Data Ops",
+      purpose: "First acknowledgement and worker pause ownership.",
+      proof: "delivery_attempt_id, acknowledged_at, owner_hash, incident_receipt_id"
+    },
+    {
+      channel: "Reviewer queue",
+      destination: reviewerQueueId,
+      owner: "Reviewer",
+      purpose: "Evidence lock, citation path, and release posture review.",
+      proof: "reviewer_queue_id, evidence_lock_id, reviewer_decision_id"
+    },
+    {
+      channel: "Release queue",
+      destination: "surface-release-hold",
+      owner: "Release Ops",
+      purpose: "Freeze affected public surfaces until correction, rollback, or resume proof exists.",
+      proof: "surface_ids, freeze_action, rollback_ref, correction_notice_id"
+    },
+    {
+      channel: "Audit stream",
+      destination: "append-only-alert-events",
+      owner: "Security Ops",
+      purpose: "Persist dispatch, retry, dead-letter, escalation, and closeout events.",
+      proof: "event_id, idempotency_key, delivery_state, retention_policy"
+    }
+  ];
+  const channels = channelTemplates.map((channel, index) => {
+    const score = clampNumber(Math.round(readiness - index * 3 + (channel.channel === "Audit stream" ? storageScore - 72 : 0)), 18, 96);
+    return {
+      ...channel,
+      score,
+      tone: score >= 78 ? "ready" : score < 56 ? "caution" : "watch"
+    };
+  });
+  const deliveryFlow = [
+    {
+      label: "Route fan-out",
+      event: "source_alert.delivery_requested",
+      owner: "Data Ops",
+      detail: "Create one delivery attempt per channel with idempotency key and incident receipt link."
+    },
+    {
+      label: "Acknowledge or escalate",
+      event: "source_alert.delivery_acknowledged",
+      owner: "Ops lead",
+      detail: "High severity needs acknowledgement before the rollback or reviewer-release timer expires."
+    },
+    {
+      label: "Retry policy",
+      event: "source_alert.delivery_retry_scheduled",
+      owner: "Scheduler",
+      detail: "Retry failed notification attempts with capped backoff and no duplicate public surface release."
+    },
+    {
+      label: "Dead-letter capture",
+      event: "source_alert.delivery_dead_lettered",
+      owner: "Security Ops",
+      detail: `Persist failed delivery into ${deadLetterId} with redacted payload and owner queue.`
+    },
+    {
+      label: "Reviewer escalation",
+      event: "source_alert.reviewer_escalated",
+      owner: "Reviewer",
+      detail: "Attach evidence lock and reviewer queue reference before incident closeout."
+    },
+    {
+      label: "Closeout receipt",
+      event: "source_alert.delivery_closed",
+      owner: "Release Ops",
+      detail: "Close only after delivery state, incident receipt, reviewer decision, and surface state agree."
+    }
+  ].map((step, index) => {
+    const score = clampNumber(readiness - index * 2, 18, 96);
+    return {
+      ...step,
+      score,
+      tone: score >= 78 ? "ready" : score < 56 ? "caution" : "watch"
+    };
+  });
+  const metrics = [
+    { label: "Delivery backend", value: deliveryId, detail: `${channels.length} delivery channels for ${activeJob.pipeline.title}.` },
+    { label: "Reviewer queue", value: reviewerQueueId, detail: "Reviewer escalation is explicit before release recovery." },
+    { label: "Dead letter queue", value: deadLetterId, detail: "Failed notification attempts need redacted durable storage." },
+    { label: "Delivery status", value: status, detail: `${deliveryFlow.length} event steps and ${routeBlockers.length} route blockers.` }
+  ];
+  const receiptFields = [
+    "delivery_attempt_id",
+    "alert_route_id",
+    "incident_receipt_id",
+    "channel",
+    "destination",
+    "owner_role",
+    "idempotency_key",
+    "delivery_state",
+    "attempt_count",
+    "last_attempt_at",
+    "acknowledged_at",
+    "reviewer_queue_id",
+    "dead_letter_id",
+    "retention_policy",
+    "redaction_policy"
+  ];
+  const dispatchRules = [
+    "Every high alert fans out to Ops, Reviewer, Release Ops, and append-only audit stream.",
+    "Every delivery attempt gets an idempotency key so retries do not create duplicate release actions.",
+    "Dead-letter events must retain redacted metadata, not PAN, folio, CAS, credentials, contact data, or private notes.",
+    "Reviewer escalation must bind evidence lock and affected surface IDs before queue resume.",
+    "No incident can close if delivery state, incident receipt, reviewer decision, and public surface state disagree."
+  ];
+  const blockers = [
+    ...routeBlockers,
+    ...(config.storage === "browser" ? ["alert delivery backend cannot rely on browser-local delivery state"] : []),
+    ...(config.storage !== "event" && config.storage !== "append" ? ["delivery attempts need event stream or append-only audit storage"] : []),
+    ...(config.mode !== "launch" && config.mode !== "stress" ? ["delivery backend should be tested in launch or stress mode before production"] : []),
+    "real notification provider and dead-letter queue are still outside this static prototype"
+  ];
+
+  return {
+    blockers,
+    channels,
+    deadLetterId,
+    deliveryFlow,
+    deliveryId,
+    dispatchRules,
+    metrics,
+    readiness,
+    receiptFields,
+    reviewerQueueId,
+    status,
+    tone
+  };
+}
+
+function sourceFailedRunEventStore(alertDelivery = sourceAlertDeliveryBackend(), alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const eventStoreId = ["NN", "FAILED", "RUN", "STORE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const runEnvelopeId = ["NN", "FAILED", "RUN", "ENVELOPE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const replayCursorId = ["NN", "FAILED", "RUN", "CURSOR", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const deliveryBlockers = alertDelivery.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const routeBlockers = alertRouting.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const storageScore = config.storage === "event" ? 96 : config.storage === "append" ? 84 : config.storage === "database" ? 62 : 16;
+  const storeModeScore = config.mode === "stress" ? 90 : config.mode === "launch" ? 84 : config.mode === "dry" ? 72 : 76;
+  const readiness = clampNumber(Math.round(
+    alertDelivery.readiness * 0.22 +
+      alertRouting.readiness * 0.18 +
+      sourceWorker.readiness * 0.18 +
+      sourceImportJobs.readiness * 0.14 +
+      storageScore * 0.18 +
+      storeModeScore * 0.1
+  ) - Math.max(0, deliveryBlockers.length - 1) * 2, 14, 96);
+  const status = readiness >= 84 && (config.storage === "event" || config.storage === "append")
+    ? "Event store ready"
+    : readiness >= 64
+      ? "Event store dry-run"
+      : "Event store blocked";
+  const tone = status === "Event store ready" ? "ready" : status === "Event store blocked" ? "caution" : "watch";
+  const metrics = [
+    { label: "Event store", value: eventStoreId, detail: `Failed ${activeJob.pipeline.title} runs get a durable event chain.` },
+    { label: "Run envelope", value: runEnvelopeId, detail: "Fetch, parser, quarantine, alert, delivery, reviewer, and closeout events share one envelope." },
+    { label: "Replay cursor", value: replayCursorId, detail: "Cursor rebuilds failed-run state without relying on browser memory." },
+    { label: "Store status", value: status, detail: `${deliveryBlockers.length + routeBlockers.length} routed blocker signal(s) and ${config.storage} storage selected.` }
+  ];
+  const eventFamilies = [
+    {
+      label: "Fetch envelope",
+      event: "source_worker.fetch_failed",
+      owner: "Data Ops",
+      proof: "source_url_hash, checksum, http_status, source_date, opened_at",
+      score: sourceWorker.readiness + 4
+    },
+    {
+      label: "Parser log",
+      event: "source_parser.validation_failed",
+      owner: "Data Engineering",
+      proof: "parser_version, schema_version, field_errors, rejected_row_digest_id",
+      score: sourceWorker.readiness
+    },
+    {
+      label: "Row quarantine digest",
+      event: "source_import.rows_quarantined",
+      owner: "Data QA",
+      proof: "accepted_row_count, rejected_row_count, quarantine_ref, digest_hash",
+      score: sourceImportJobs.readiness - 2
+    },
+    {
+      label: "Delivery receipt join",
+      event: "source_alert.delivery_bound",
+      owner: "Security Ops",
+      proof: "delivery_attempt_id, dead_letter_id, reviewer_queue_id, alert_route_id",
+      score: alertDelivery.readiness
+    },
+    {
+      label: "Replay cursor",
+      event: "source_failed_run.replay_cursor_saved",
+      owner: "Reviewer",
+      proof: "cursor_id, event_count, closeout_ref, idempotency_key",
+      score: readiness + 2
+    },
+    {
+      label: "Surface recovery",
+      event: readiness >= 74 ? "claim_surface.recovery_ready" : "claim_surface.recovery_blocked",
+      owner: "Release Ops",
+      proof: "surface_ids, freeze_action, rollback_or_correction_ref, reviewer_decision_id",
+      score: readiness - 4
+    }
+  ].map((family) => {
+    const score = clampNumber(Math.round(family.score), 18, 96);
+    return {
+      ...family,
+      score,
+      tone: score >= 78 ? "ready" : score < 56 ? "caution" : "watch"
+    };
+  });
+  const retentionRules = [
+    "Append a failed-run event before mutating worker, reviewer, or public surface state.",
+    "Use immutable event IDs and idempotency keys so retries never duplicate release actions.",
+    "Reject closeout without source receipt, alert delivery receipt, reviewer queue reference, and affected surface list.",
+    "Store redacted metadata only: never PAN, folio, CAS, credentials, bank details, contact data, or private notes.",
+    "Keep replay cursor, rejected-row digest, parser version, and schema version long enough to defend a correction notice."
+  ];
+  const replayChecks = [
+    "Event sequence is gap-free from fetch failure to closeout or recovery.",
+    "Parser log ties to parser and schema versions used by the failed run.",
+    "Rejected-row digest can reproduce accepted and rejected counts.",
+    "Delivery receipt joins to alert route, dead-letter queue, reviewer queue, and incident receipt.",
+    "Replay cursor rebuilds failed-run state without private account or user data."
+  ];
+  const receiptFields = [
+    "failed_run_event_store_id",
+    "run_envelope_id",
+    "worker_id",
+    "source_job_id",
+    "import_gate_id",
+    "event_sequence",
+    "event_name",
+    "idempotency_key",
+    "parser_version",
+    "schema_version",
+    "source_url_hash",
+    "source_date",
+    "accepted_row_count",
+    "rejected_row_count",
+    "rejected_row_digest_id",
+    "delivery_attempt_id",
+    "dead_letter_id",
+    "replay_cursor_id",
+    "reviewer_decision_id",
+    "rollback_or_correction_ref",
+    "retention_policy"
+  ];
+  const blockers = [
+    ...deliveryBlockers,
+    ...routeBlockers,
+    ...(config.storage === "browser" ? ["failed-run event store cannot rely on browser-local evidence"] : []),
+    ...(config.storage !== "event" && config.storage !== "append" ? ["failed-run event store needs event stream or append-only audit storage"] : []),
+    ...(config.mode !== "launch" && config.mode !== "stress" ? ["failed-run event store should be tested in launch or stress mode before production"] : []),
+    "real failed-run storage outside this static prototype is still pending"
+  ];
+
+  return {
+    blockers,
+    eventFamilies,
+    eventStoreId,
+    metrics,
+    readiness,
+    receiptFields,
+    replayChecks,
+    replayCursorId,
+    retentionRules,
+    runEnvelopeId,
+    status,
+    tone
+  };
+}
+
+function sourceReviewerSignoffBridge(failedRunStore = sourceFailedRunEventStore(), alertDelivery = sourceAlertDeliveryBackend(), alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const signoffId = ["NN", "REVIEWER", "SIGNOFF", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const releaseScopeId = ["NN", "RELEASE", "SCOPE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const rollbackBinderId = ["NN", "ROLLBACK", "BINDER", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const durableStorageScore = config.storage === "event" ? 94 : config.storage === "append" ? 84 : config.storage === "database" ? 66 : 18;
+  const reviewerModeScore = config.mode === "launch" ? 88 : config.mode === "stress" ? 84 : config.mode === "dry" ? 74 : 70;
+  const failedStoreBlockers = failedRunStore.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const deliveryBlockers = alertDelivery.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const readiness = clampNumber(Math.round(
+    failedRunStore.readiness * 0.28 +
+      alertDelivery.readiness * 0.16 +
+      alertRouting.readiness * 0.14 +
+      sourceWorker.readiness * 0.12 +
+      sourceImportJobs.readiness * 0.1 +
+      durableStorageScore * 0.12 +
+      reviewerModeScore * 0.08
+  ) - Math.max(0, failedStoreBlockers.length - 2) * 2, 12, 96);
+  const status = readiness >= 84 && failedStoreBlockers.length <= 2
+    ? "Sign-off bridge ready"
+    : readiness >= 64
+      ? "Sign-off bridge dry-run"
+      : "Sign-off bridge blocked";
+  const tone = status === "Sign-off bridge ready" ? "ready" : status === "Sign-off bridge blocked" ? "caution" : "watch";
+  const signoffLanes = [
+    {
+      label: "Evidence lock",
+      owner: "Reviewer",
+      event: "reviewer.evidence_lock_checked",
+      proof: "event_store_id, run_envelope_id, source_receipt_id, citation_path",
+      score: failedRunStore.readiness + 2
+    },
+    {
+      label: "Reviewer posture",
+      owner: "Research reviewer",
+      event: "reviewer.signoff_posture_selected",
+      proof: "approve, hold, rollback, correction, or resume scope with reviewer_reason_id",
+      score: readiness + 3
+    },
+    {
+      label: "Rollback or correction",
+      owner: "Trust",
+      event: "reviewer.recovery_path_bound",
+      proof: "rollback_ref, correction_notice_id, affected_surface_ids, support_safe_summary",
+      score: readiness
+    },
+    {
+      label: "Release scope",
+      owner: "Release Ops",
+      event: "release.scope_bound_to_signoff",
+      proof: "release_scope_id, rollout_scope, blocked_surface_ids, resume_queue_id",
+      score: alertRouting.readiness
+    },
+    {
+      label: "Receipt join",
+      owner: "Security Ops",
+      event: "reviewer.signoff_receipts_joined",
+      proof: "delivery_attempt_id, failed_run_event_store_id, replay_cursor_id, incident_receipt_id",
+      score: alertDelivery.readiness - 1
+    },
+    {
+      label: "Surface recovery",
+      owner: "Product Ops",
+      event: "claim_surface.recovery_authorized",
+      proof: "old_claim_state, proposed_claim_state, reviewer_decision_id, release_binder_id",
+      score: readiness - 4
+    }
+  ].map((lane) => {
+    const score = clampNumber(Math.round(lane.score), 18, 96);
+    return {
+      ...lane,
+      score,
+      tone: score >= 78 ? "ready" : score < 56 ? "caution" : "watch"
+    };
+  });
+  const bridgeSteps = [
+    "Load failed-run event store, delivery receipt, alert route, source receipt, and replay cursor for the same run envelope.",
+    "Reviewer checks source date, citation path, parser/schema version, rejected-row digest, and affected public surfaces.",
+    "Reviewer selects hold, rollback, correction, or resume posture and writes a bounded reason.",
+    "Release Ops binds the decision to surface scope, rollout scope, rollback/correction reference, and support-safe language.",
+    "Closeout can proceed only after sign-off receipt, release binder, event store, and incident replay agree."
+  ];
+  const approvalRules = [
+    "No resume when source date, citation path, event sequence, or rejected-row digest is missing.",
+    "No public correction without affected surface list and support-safe wording.",
+    "No rollback closure without reviewer decision ID and rollback binder reference.",
+    "No sign-off receipt may contain PAN, folio, CAS, credentials, bank details, contact data, or private notes.",
+    "Reviewer approval authorizes claim recovery only; it does not approve investment advice or transactions."
+  ];
+  const receiptFields = [
+    "reviewer_signoff_id",
+    "failed_run_event_store_id",
+    "run_envelope_id",
+    "replay_cursor_id",
+    "delivery_attempt_id",
+    "incident_receipt_id",
+    "source_receipt_id",
+    "reviewer_role",
+    "reviewer_decision_id",
+    "reviewer_posture",
+    "reviewer_reason_id",
+    "release_scope_id",
+    "affected_surface_ids",
+    "rollback_binder_id",
+    "correction_notice_id",
+    "support_safe_summary_id",
+    "old_claim_state",
+    "proposed_claim_state",
+    "approved_at",
+    "retention_policy"
+  ];
+  const blockers = [
+    ...failedStoreBlockers.slice(0, 4),
+    ...deliveryBlockers.slice(0, 2),
+    ...(config.storage === "browser" ? ["reviewer sign-off cannot be launch-ready with browser-local event memory"] : []),
+    ...(config.storage !== "event" && config.storage !== "append" ? ["reviewer sign-off bridge needs event stream or append-only audit storage"] : []),
+    ...(config.mode !== "launch" && config.mode !== "stress" ? ["reviewer sign-off bridge should be rehearsed in launch or stress mode before production"] : []),
+    "real reviewer identity, approval workflow, and release binder backend are still outside this static prototype"
+  ];
+  const metrics = [
+    { label: "Sign-off ID", value: signoffId, detail: `Reviewer gate for ${activeJob.pipeline.title} failed-run recovery.` },
+    { label: "Release scope", value: releaseScopeId, detail: "Public surfaces can recover only inside the reviewer-approved scope." },
+    { label: "Rollback binder", value: rollbackBinderId, detail: "Rollback or correction proof is bound before incident closeout." },
+    { label: "Bridge status", value: status, detail: `${signoffLanes.length} sign-off lanes and ${blockers.length} launch blockers.` }
+  ];
+
+  return {
+    approvalRules,
+    blockers,
+    bridgeSteps,
+    metrics,
+    readiness,
+    receiptFields,
+    releaseScopeId,
+    rollbackBinderId,
+    signoffId,
+    signoffLanes,
+    status,
+    tone
+  };
+}
+
+function sourceRollbackEvidenceStore(reviewerSignoff = sourceReviewerSignoffBridge(), failedRunStore = sourceFailedRunEventStore(), alertDelivery = sourceAlertDeliveryBackend(), alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const rollbackEvidenceId = ["NN", "ROLLBACK", "EVIDENCE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const correctionReceiptId = ["NN", "CORRECTION", "RECEIPT", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const resumeReceiptId = ["NN", "RESUME", "RECEIPT", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const surfaceRecoveryId = ["NN", "SURFACE", "RECOVERY", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const signoffBlockers = reviewerSignoff.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const failedBlockers = failedRunStore.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const storageScore = config.storage === "event" ? 96 : config.storage === "append" ? 86 : config.storage === "database" ? 68 : 16;
+  const recoveryModeScore = config.mode === "launch" ? 90 : config.mode === "stress" ? 86 : config.mode === "dry" ? 74 : 72;
+  const readiness = clampNumber(Math.round(
+    reviewerSignoff.readiness * 0.3 +
+      failedRunStore.readiness * 0.18 +
+      alertDelivery.readiness * 0.14 +
+      alertRouting.readiness * 0.1 +
+      sourceWorker.readiness * 0.1 +
+      storageScore * 0.12 +
+      recoveryModeScore * 0.06
+  ) - Math.max(0, signoffBlockers.length - 2) * 2, 12, 96);
+  const status = readiness >= 84 && signoffBlockers.length <= 2 && (config.storage === "event" || config.storage === "append")
+    ? "Rollback evidence ready"
+    : readiness >= 64
+      ? "Rollback evidence dry-run"
+      : "Rollback evidence blocked";
+  const tone = status === "Rollback evidence ready" ? "ready" : status === "Rollback evidence blocked" ? "caution" : "watch";
+  const evidencePackets = [
+    {
+      label: "Reviewer decision packet",
+      owner: "Reviewer",
+      event: "rollback.reviewer_packet_bound",
+      proof: "reviewer_signoff_id, reviewer_decision_id, reviewer_reason_id, evidence_lock_id",
+      score: reviewerSignoff.readiness + 3
+    },
+    {
+      label: "Rollback note",
+      owner: "Trust",
+      event: "rollback.note_saved",
+      proof: "rollback_binder_id, old_claim_state, restored_claim_state, rollback_reason",
+      score: readiness + 2
+    },
+    {
+      label: "Correction notice",
+      owner: "Compliance",
+      event: "correction.notice_ready",
+      proof: "correction_receipt_id, affected_surface_ids, user_safe_wording, published_state",
+      score: readiness
+    },
+    {
+      label: "Resume receipt",
+      owner: "Release Ops",
+      event: "release.resume_receipt_saved",
+      proof: "resume_receipt_id, release_scope_id, replay_cursor_id, queue_resume_at",
+      score: alertRouting.readiness
+    },
+    {
+      label: "Support-safe disclosure",
+      owner: "Support",
+      event: "support.recovery_summary_saved",
+      proof: "support_safe_summary_id, blocked_data_classes, response_script_id",
+      score: readiness - 2
+    },
+    {
+      label: "Surface state diff",
+      owner: "Product Ops",
+      event: "claim_surface.state_diff_stored",
+      proof: "surface_recovery_id, affected_surface_ids, before_state, after_state, verifier_role",
+      score: readiness - 4
+    }
+  ].map((packet) => {
+    const score = clampNumber(Math.round(packet.score), 18, 96);
+    return {
+      ...packet,
+      score,
+      tone: score >= 78 ? "ready" : score < 56 ? "caution" : "watch"
+    };
+  });
+  const recoveryScript = [
+    "Open reviewer sign-off, failed-run event store, delivery receipt, incident replay, and affected surface list for one run envelope.",
+    "Choose rollback, correction, or resume path and bind it to old claim state, proposed claim state, and public surface scope.",
+    "Write rollback or correction receipt before changing any visible claim state.",
+    "Create support-safe summary that excludes PAN, folio, CAS, contact data, private notes, and transaction context.",
+    "Resume or freeze public surfaces only after rollback evidence, reviewer sign-off, and incident replay agree."
+  ];
+  const evidenceRules = [
+    "Rollback evidence is a launch-control record, not investment advice or a transaction approval.",
+    "Every correction needs affected surfaces, old wording, corrected wording, reason code, and reviewer decision ID.",
+    "Every resume needs release scope, replay cursor, event sequence, and support-safe summary.",
+    "No evidence packet can include PAN, folio, CAS, credentials, bank details, contact data, or private notes.",
+    "If source receipt and event sequence disagree, recovery remains frozen."
+  ];
+  const receiptFields = [
+    "rollback_evidence_id",
+    "reviewer_signoff_id",
+    "reviewer_decision_id",
+    "failed_run_event_store_id",
+    "run_envelope_id",
+    "replay_cursor_id",
+    "incident_receipt_id",
+    "delivery_attempt_id",
+    "rollback_binder_id",
+    "correction_receipt_id",
+    "resume_receipt_id",
+    "surface_recovery_id",
+    "affected_surface_ids",
+    "old_claim_state",
+    "proposed_claim_state",
+    "recovery_path",
+    "reason_code",
+    "support_safe_summary_id",
+    "approved_release_scope",
+    "retention_policy"
+  ];
+  const blockers = [
+    ...signoffBlockers.slice(0, 4),
+    ...failedBlockers.slice(0, 2),
+    ...(config.storage === "browser" ? ["rollback evidence store cannot be launch-ready with browser-local recovery records"] : []),
+    ...(config.storage !== "event" && config.storage !== "append" ? ["rollback evidence store needs event stream or append-only audit storage"] : []),
+    ...(config.mode !== "launch" && config.mode !== "stress" ? ["rollback evidence store should be rehearsed in launch or stress mode before production"] : []),
+    "real rollback/correction publishing workflow is still outside this static prototype"
+  ];
+  const metrics = [
+    { label: "Rollback evidence", value: rollbackEvidenceId, detail: `Recovery proof for ${activeJob.pipeline.title} failed-run sign-off.` },
+    { label: "Correction receipt", value: correctionReceiptId, detail: "Public correction wording must bind to reviewer-approved evidence." },
+    { label: "Resume receipt", value: resumeReceiptId, detail: "Queue resume needs scope, replay cursor, and event sequence proof." },
+    { label: "Recovery status", value: status, detail: `${evidencePackets.length} evidence packets and ${blockers.length} launch blockers.` }
+  ];
+
+  return {
+    blockers,
+    correctionReceiptId,
+    evidencePackets,
+    evidenceRules,
+    metrics,
+    readiness,
+    receiptFields,
+    recoveryScript,
+    resumeReceiptId,
+    rollbackEvidenceId,
+    status,
+    surfaceRecoveryId,
+    tone
+  };
+}
+
+function sourcePublicRecoveryRehearsal(rollbackEvidence = sourceRollbackEvidenceStore(), reviewerSignoff = sourceReviewerSignoffBridge(), failedRunStore = sourceFailedRunEventStore(), alertDelivery = sourceAlertDeliveryBackend(), alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const recoveryPlanId = ["NN", "PUBLIC", "RECOVERY", "PLAN", sourceSlug, suffix].join("-").toUpperCase();
+  const surfaceQueueId = ["NN", "PUBLIC", "SURFACE", "QUEUE", sourceSlug, suffix].join("-").toUpperCase();
+  const correctionPublishId = ["NN", "CORRECTION", "PUBLISH", sourceSlug, suffix].join("-").toUpperCase();
+  const freezeResumeId = ["NN", "FREEZE", "RESUME", sourceSlug, suffix].join("-").toUpperCase();
+  const rollbackBlockers = rollbackEvidence.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const signoffBlockers = reviewerSignoff.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const failedBlockers = failedRunStore.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const storageScore = config.storage === "event" ? 94 : config.storage === "append" ? 84 : config.storage === "database" ? 66 : 16;
+  const rehearsalModeScore = config.mode === "launch" ? 90 : config.mode === "stress" ? 86 : config.mode === "dry" ? 74 : 72;
+  const readiness = clampNumber(Math.round(
+    rollbackEvidence.readiness * 0.32 +
+      reviewerSignoff.readiness * 0.18 +
+      failedRunStore.readiness * 0.14 +
+      alertDelivery.readiness * 0.1 +
+      alertRouting.readiness * 0.08 +
+      storageScore * 0.12 +
+      rehearsalModeScore * 0.06
+  ) - Math.max(0, rollbackBlockers.length - 2) * 2, 12, 96);
+  const status = readiness >= 84 && rollbackBlockers.length <= 2 && (config.storage === "event" || config.storage === "append")
+    ? "Recovery rehearsal ready"
+    : readiness >= 64
+      ? "Recovery rehearsal dry-run"
+      : "Recovery rehearsal blocked";
+  const tone = status === "Recovery rehearsal ready" ? "ready" : status === "Recovery rehearsal blocked" ? "caution" : "watch";
+  const surfaceMoves = [
+    {
+      label: "Freeze confirmation",
+      owner: "Release Ops",
+      event: "claim_surface.freeze_confirmed",
+      proof: "affected_surface_ids, old_claim_state, rollback_evidence_id, freeze_reason",
+      score: rollbackEvidence.readiness + 2
+    },
+    {
+      label: "Correction preview",
+      owner: "Compliance",
+      event: "correction.notice_previewed",
+      proof: "correction_receipt_id, public_wording, reviewer_signoff_id, support_safe_summary_id",
+      score: readiness
+    },
+    {
+      label: "Resume queue",
+      owner: "Product Ops",
+      event: "claim_surface.resume_queued",
+      proof: "resume_receipt_id, release_scope_id, replay_cursor_id, queue_resume_at",
+      score: alertRouting.readiness + 1
+    },
+    {
+      label: "Support script",
+      owner: "Support",
+      event: "support.recovery_script_ready",
+      proof: "support_safe_summary_id, blocked_data_classes, response_script_id",
+      score: readiness - 1
+    },
+    {
+      label: "Public surface diff",
+      owner: "Research Ops",
+      event: "claim_surface.diff_rehearsed",
+      proof: "before_state, after_state, verifier_role, no_private_data_attestation",
+      score: readiness - 3
+    },
+    {
+      label: "Launch monitor",
+      owner: "Security Ops",
+      event: "recovery.monitoring_armed",
+      proof: "alert_route_id, rollback_evidence_id, retry_policy, monitoring_window",
+      score: alertDelivery.readiness
+    }
+  ].map((move) => {
+    const score = clampNumber(Math.round(move.score), 18, 96);
+    return {
+      ...move,
+      score,
+      tone: score >= 78 ? "ready" : score < 56 ? "caution" : "watch"
+    };
+  });
+  const rehearsalSteps = [
+    "Load rollback evidence packet, reviewer sign-off, failed-run event store, and affected public surfaces.",
+    "Confirm freeze, correction, or resume path with old claim state, proposed claim state, and reviewer-approved scope.",
+    "Preview public wording and support-safe summary before any visible surface changes.",
+    "Stage release queue task, monitoring window, and rollback-or-correction reference for launch review.",
+    "Do not move a public surface if receipt IDs, event sequence, source date, or reviewer posture disagree."
+  ];
+  const releaseChecks = [
+    "old_claim_state and proposed_claim_state are both present",
+    "correction wording is visible, factual, and not personalized advice",
+    "support_safe_summary excludes PAN, folio, CAS, credentials, bank details, contact data, and private notes",
+    "release queue task is bound to rollback evidence and reviewer sign-off",
+    "monitoring route is armed before resume or public correction publication"
+  ];
+  const receiptFields = [
+    "public_recovery_plan_id",
+    "rollback_evidence_id",
+    "reviewer_signoff_id",
+    "correction_receipt_id",
+    "resume_receipt_id",
+    "surface_recovery_id",
+    "affected_surface_ids",
+    "old_claim_state",
+    "proposed_claim_state",
+    "recovery_path",
+    "public_wording_hash",
+    "support_safe_summary_id",
+    "release_queue_id",
+    "freeze_resume_id",
+    "monitoring_window",
+    "no_private_data_attestation",
+    "verifier_role",
+    "release_scope_id",
+    "rollback_or_correction_ref",
+    "retention_policy"
+  ];
+  const blockers = [
+    ...rollbackBlockers.slice(0, 3),
+    ...signoffBlockers.slice(0, 2),
+    ...failedBlockers.slice(0, 1),
+    ...(config.storage === "browser" ? ["public recovery rehearsal cannot launch with browser-local recovery records"] : []),
+    ...(config.storage !== "event" && config.storage !== "append" ? ["public recovery release queue needs event stream or append-only audit storage"] : []),
+    ...(config.mode !== "launch" && config.mode !== "stress" ? ["public recovery rehearsal should run in launch or stress mode before production"] : []),
+    "real public recovery release queue and correction publishing workflow are still outside this static prototype"
+  ];
+  const metrics = [
+    { label: "Recovery plan", value: recoveryPlanId, detail: `Public recovery rehearsal for ${activeJob.pipeline.title}.` },
+    { label: "Surface queue", value: surfaceQueueId, detail: "Frozen, corrected, and resumed public surfaces move only through this queue." },
+    { label: "Correction publish", value: correctionPublishId, detail: "Public wording preview binds to correction receipt and reviewer sign-off." },
+    { label: "Freeze resume", value: freezeResumeId, detail: `${status} with ${surfaceMoves.length} rehearsed surface moves.` }
+  ];
+
+  return {
+    blockers,
+    correctionPublishId,
+    freezeResumeId,
+    metrics,
+    readiness,
+    receiptFields,
+    recoveryPlanId,
+    rehearsalSteps,
+    releaseChecks,
+    status,
+    surfaceMoves,
+    surfaceQueueId,
+    tone
+  };
+}
+
+function sourceRecoveryReleaseQueue(publicRecovery = sourcePublicRecoveryRehearsal(), rollbackEvidence = sourceRollbackEvidenceStore(), reviewerSignoff = sourceReviewerSignoffBridge(), failedRunStore = sourceFailedRunEventStore(), alertDelivery = sourceAlertDeliveryBackend(), alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const queueId = ["NN", "RECOVERY", "RELEASE", "QUEUE", sourceSlug, suffix].join("-").toUpperCase();
+  const correctionTaskId = ["NN", "CORRECTION", "TASK", sourceSlug, suffix].join("-").toUpperCase();
+  const supportTaskId = ["NN", "SUPPORT", "RECOVERY", "TASK", sourceSlug, suffix].join("-").toUpperCase();
+  const monitorTaskId = ["NN", "RECOVERY", "MONITOR", "TASK", sourceSlug, suffix].join("-").toUpperCase();
+  const publishBatchId = ["NN", "PUBLIC", "RECOVERY", "BATCH", sourceSlug, suffix].join("-").toUpperCase();
+  const publicBlockers = publicRecovery.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const rollbackBlockers = rollbackEvidence.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const signoffBlockers = reviewerSignoff.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const storageScore = config.storage === "event" ? 96 : config.storage === "append" ? 88 : config.storage === "database" ? 68 : 18;
+  const queueModeScore = config.mode === "launch" ? 92 : config.mode === "stress" ? 86 : config.mode === "dry" ? 74 : 70;
+  const readiness = clampNumber(Math.round(
+    publicRecovery.readiness * 0.34 +
+      rollbackEvidence.readiness * 0.18 +
+      reviewerSignoff.readiness * 0.13 +
+      failedRunStore.readiness * 0.1 +
+      alertDelivery.readiness * 0.09 +
+      alertRouting.readiness * 0.06 +
+      storageScore * 0.07 +
+      queueModeScore * 0.03
+  ) - Math.max(0, publicBlockers.length - 2) * 2, 12, 96);
+  const status = readiness >= 84 && publicBlockers.length <= 2 && (config.storage === "event" || config.storage === "append")
+    ? "Recovery queue release-ready"
+    : readiness >= 64
+      ? "Recovery queue dry-run"
+      : "Recovery queue blocked";
+  const tone = status === "Recovery queue release-ready" ? "ready" : status === "Recovery queue blocked" ? "caution" : "watch";
+  const queueTasks = [
+    {
+      label: "Evidence intake",
+      owner: "Trust Ops",
+      event: "recovery_queue.evidence_intake",
+      proof: "public_recovery_plan_id, rollback_evidence_id, reviewer_signoff_id, affected_surface_ids",
+      score: publicRecovery.readiness + 2
+    },
+    {
+      label: "Correction publish task",
+      owner: "Compliance",
+      event: "correction_publish.task_queued",
+      proof: "correction_task_id, correction_receipt_id, public_wording_hash, approver_role",
+      score: readiness
+    },
+    {
+      label: "Support response task",
+      owner: "Support",
+      event: "support_recovery.task_queued",
+      proof: "support_task_id, support_safe_summary_id, blocked_data_classes, script_version",
+      score: readiness - 1
+    },
+    {
+      label: "Surface resume task",
+      owner: "Release Ops",
+      event: "claim_surface.resume_task_queued",
+      proof: "resume_receipt_id, release_scope_id, freeze_resume_id, resume_after_monitor",
+      score: alertRouting.readiness + 2
+    },
+    {
+      label: "Monitor arm task",
+      owner: "Security Ops",
+      event: "recovery_monitor.task_queued",
+      proof: "monitor_task_id, alert_route_id, monitoring_window, retry_policy",
+      score: alertDelivery.readiness
+    },
+    {
+      label: "Closeout review task",
+      owner: "Reviewer",
+      event: "recovery_closeout.review_queued",
+      proof: "reviewer_signoff_id, release_queue_id, publish_batch_id, final_verifier_role",
+      score: reviewerSignoff.readiness
+    }
+  ].map((task) => {
+    const score = clampNumber(Math.round(task.score), 18, 96);
+    return {
+      ...task,
+      score,
+      tone: score >= 78 ? "ready" : score < 56 ? "caution" : "watch"
+    };
+  });
+  const queuePolicy = [
+    "Queue task must link to public recovery plan, rollback evidence, reviewer sign-off, and affected public surfaces.",
+    "Correction publish task must carry public wording hash, correction receipt, approver role, and rollback reference.",
+    "Support response task must use only support-safe summary text and blocked data classes.",
+    "Surface resume task waits for monitor arm task and can resume only inside approved release scope.",
+    "Closeout review cannot complete until correction, support, surface, and monitoring tasks agree."
+  ];
+  const releaseGates = [
+    "release_queue_id exists in append-only or event storage",
+    "each queued task has owner, SLA, event name, proof fields, and idempotency key",
+    "correction publish and surface resume are separate tasks",
+    "support script excludes PAN, folio, CAS, credentials, bank details, contact data, and private notes",
+    "monitoring window is armed before correction publication or resume action"
+  ];
+  const receiptFields = [
+    "release_queue_id",
+    "publish_batch_id",
+    "public_recovery_plan_id",
+    "rollback_evidence_id",
+    "reviewer_signoff_id",
+    "correction_task_id",
+    "support_task_id",
+    "monitor_task_id",
+    "affected_surface_ids",
+    "task_owner",
+    "task_sla",
+    "task_state",
+    "idempotency_key",
+    "public_wording_hash",
+    "support_safe_summary_id",
+    "release_scope_id",
+    "freeze_resume_id",
+    "monitoring_window",
+    "rollback_reference",
+    "closeout_reviewer_role"
+  ];
+  const blockers = [
+    ...publicBlockers.slice(0, 3),
+    ...rollbackBlockers.slice(0, 2),
+    ...signoffBlockers.slice(0, 1),
+    ...(config.storage === "browser" ? ["recovery release queue cannot launch with browser-local task state"] : []),
+    ...(config.storage !== "event" && config.storage !== "append" ? ["recovery release queue needs append-only or event-backed task storage"] : []),
+    ...(config.mode !== "launch" && config.mode !== "stress" ? ["recovery release queue should be rehearsed in launch or stress mode before production"] : []),
+    "production queue worker, notification transport, and correction publication approval are still outside this static prototype"
+  ];
+  const metrics = [
+    { label: "Release queue", value: queueId, detail: `Recovery task queue for ${activeJob.pipeline.title}.` },
+    { label: "Publish batch", value: publishBatchId, detail: "Groups correction, support, resume, monitor, and closeout tasks." },
+    { label: "Correction task", value: correctionTaskId, detail: "Public correction cannot publish without reviewer and evidence locks." },
+    { label: "Queue status", value: status, detail: `${queueTasks.length} tasks, ${releaseGates.length} gates, and ${blockers.length} blockers.` }
+  ];
+
+  return {
+    blockers,
+    correctionTaskId,
+    metrics,
+    monitorTaskId,
+    publishBatchId,
+    queueId,
+    queuePolicy,
+    queueTasks,
+    readiness,
+    receiptFields,
+    releaseGates,
+    status,
+    supportTaskId,
+    tone
+  };
+}
+
+function sourceIncidentReceiptReplay(alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const activeRoute = alertRouting.routes.find((route) => route.severity === "High") || alertRouting.routes[0];
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const replayId = ["NN", "INCIDENT", "REPLAY", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const closeoutId = ["NN", "INCIDENT", "CLOSEOUT", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const storageScore = config.storage === "event" ? 92 : config.storage === "append" ? 76 : config.storage === "database" ? 58 : 20;
+  const replayModeScore = config.mode === "stress" ? 88 : config.mode === "launch" ? 80 : config.mode === "dry" ? 70 : 74;
+  const routeBlockers = alertRouting.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const readiness = clampNumber(Math.round(
+    alertRouting.readiness * 0.28 +
+      sourceWorker.readiness * 0.22 +
+      activeRoute.routeScore * 0.18 +
+      storageScore * 0.16 +
+      replayModeScore * 0.1 +
+      (routeBlockers.length > 2 ? 42 : 82) * 0.06
+  ) - Math.max(0, routeBlockers.length - 1) * 2, 12, 96);
+  const status = readiness >= 84 && routeBlockers.length <= 1
+    ? "Incident replay ready"
+    : readiness >= 64
+      ? "Incident replay dry-run"
+      : "Incident replay blocked";
+  const tone = status === "Incident replay ready" ? "ready" : status === "Incident replay blocked" ? "caution" : "watch";
+  const replayLegs = [
+    {
+      label: "Alert opened",
+      owner: activeRoute.owner,
+      score: activeRoute.routeScore,
+      event: "source_alert.opened",
+      proof: "alert_id, route_id, severity, source_family, trigger, opened_at"
+    },
+    {
+      label: "Worker run frozen",
+      owner: "Data Ops",
+      score: sourceWorker.readiness,
+      event: "source_worker.paused",
+      proof: "worker_id, source_job_id, runbook_id, parser_version, schema_version"
+    },
+    {
+      label: "Incident receipt persisted",
+      owner: "Ops",
+      score: readiness,
+      event: "source_incident.receipt_created",
+      proof: "incident_receipt_id, alert_id, source_receipt_id, affected_surface_ids"
+    },
+    {
+      label: "Surface freeze applied",
+      owner: "Release Ops",
+      score: activeRoute.severity === "High" ? 88 : 72,
+      event: "claim_surface.freeze_applied",
+      proof: "freeze_action, public_surface_ids, last_approved_receipt, rollback_ref"
+    },
+    {
+      label: "Reviewer decision bound",
+      owner: "Reviewer",
+      score: sourceWorker.readiness - 4,
+      event: "reviewer_decision.bound_to_incident",
+      proof: "reviewer_decision_id, evidence_lock, citation_path, release_scope"
+    },
+    {
+      label: "Correction or rollback closed",
+      owner: "Trust",
+      score: readiness - 3,
+      event: "source_incident.closed",
+      proof: "closeout_id, correction_notice_id, rollback_or_resume, closed_at"
+    }
+  ].map((leg) => ({
+    ...leg,
+    score: clampNumber(Math.round(leg.score), 18, 96),
+    tone: leg.score >= 78 ? "ready" : leg.score < 56 ? "caution" : "watch"
+  }));
+  const metrics = [
+    { label: "Replay ID", value: replayId, detail: `Reconstructs ${activeRoute.code} from alert open to closeout.` },
+    { label: "Active incident", value: activeRoute.alertId, detail: `${activeRoute.severity} | ${activeRoute.acknowledgement}` },
+    { label: "Closeout ID", value: closeoutId, detail: "Close only after reviewer, rollback/correction, and surface state agree." },
+    { label: "Replay status", value: status, detail: `${replayLegs.length} replay legs and ${routeBlockers.length} route blockers.` }
+  ];
+  const replayScript = [
+    "Load the alert route and confirm owner, acknowledgement window, source family, and trigger.",
+    "Replay the worker run envelope: source job, import gate, parser version, schema version, source date, accepted rows, and rejected rows.",
+    "Verify the source incident receipt exists before any repair or release action is treated as complete.",
+    "Freeze affected public surfaces and compare them against the claim surface map and release queue.",
+    "Attach reviewer decision, correction notice, or rollback note before queue resume.",
+    "Close the incident only when closeout receipt, support-safe state, public surface state, and reviewer decision point to the same outcome."
+  ];
+  const closeoutRules = [
+    "Do not close if source date, citation path, source receipt, or affected surface list is missing.",
+    "Do not close if reviewer decision and release binder disagree on public surface state.",
+    "Do not resume queue until rollback or correction reference is attached.",
+    "Do not store PAN, folio, CAS, credentials, bank details, contact data, or private notes in incident receipts."
+  ];
+  const receiptFields = [
+    "incident_replay_id",
+    "incident_receipt_id",
+    "alert_route_id",
+    "alert_id",
+    "worker_id",
+    "source_job_id",
+    "import_gate_id",
+    "parser_version",
+    "schema_version",
+    "source_date",
+    "accepted_row_count",
+    "rejected_row_count",
+    "affected_surface_ids",
+    "freeze_action",
+    "reviewer_decision_id",
+    "correction_or_rollback_ref",
+    "closeout_status"
+  ];
+  const blockers = [
+    ...routeBlockers,
+    ...(config.storage === "browser" ? ["incident replay cannot close against browser-local evidence"] : []),
+    "real failed-run event store is still outside this static prototype"
+  ];
+
+  return {
+    activeRoute,
+    blockers,
+    closeoutId,
+    closeoutRules,
+    metrics,
+    readiness,
+    receiptFields,
+    replayId,
+    replayLegs,
+    replayScript,
+    status,
+    tone
+  };
+}
+
+function paymentReconciliationReplay(config) {
+  const streamFit = config.stream.id === "payment-entitlement" ? 92 : config.stream.id === "support-ops" ? 68 : 54;
+  const eventScore = config.storage === "event" ? 88 : config.storage === "append" ? 70 : config.storage === "database" ? 58 : 18;
+  const financeScore = config.retention === "finance" ? 86 : config.retention === "strict" ? 78 : config.retention === "user" ? 62 : 44;
+  const replayScore = config.mode === "stress" ? 82 : config.mode === "launch" ? 76 : config.mode === "dry" ? 68 : 58;
+  const supportScore = config.stream.id === "support-ops" ? 76 : config.stream.id === "payment-entitlement" ? 70 : 52;
+  const privacyScore = config.storage === "browser" ? 18 : config.retention === "minimal" ? 48 : 78;
+  const blockers = [
+    ...config.blockers,
+    ...(config.stream.id !== "payment-entitlement" ? ["select payment and entitlement receipts to rehearse the full payment reconciliation replay"] : []),
+    ...(config.storage !== "event" ? ["payment reconciliation replay needs event stream and audit table storage"] : []),
+    ...(config.retention !== "finance" && config.retention !== "strict" ? ["finance/dispute retention should be selected before paid reconciliation launch"] : []),
+    ...(config.storage === "browser" ? ["browser-local evidence cannot reconcile paid subscriptions"] : [])
+  ];
+  const readiness = clampNumber(Math.round((
+    streamFit +
+    eventScore +
+    financeScore +
+    replayScore +
+    supportScore +
+    privacyScore
+  ) / 6) - blockers.length * 3, 12, 94);
+  const status = blockers.length
+    ? "Replay blocked"
+    : readiness >= 78
+      ? "Replay audit-ready"
+      : "Replay dry-run";
+  const tone = blockers.length
+    ? "caution"
+    : readiness >= 78
+      ? "ready"
+      : "watch";
+  const replayId = [
+    "NN",
+    "PAY",
+    "REPLAY",
+    DATA_VERSION.replace(/-/g, ""),
+    config.storage,
+    config.retention
+  ].join("-").toUpperCase();
+  const metrics = [
+    {
+      label: "Replay ID",
+      value: replayId,
+      detail: "One replay batch should bind payment, refund, entitlement, support, invoice, settlement, and variance evidence."
+    },
+    {
+      label: "Storage proof",
+      value: backendAuditStorageLabel(config.storage),
+      detail: "Event stream plus audit table is preferred so every mutation can replay in order."
+    },
+    {
+      label: "Finance posture",
+      value: backendAuditRetentionLabel(config.retention),
+      detail: "Invoices, refunds, disputes, chargebacks, and settlement files need a longer finance-proof window."
+    },
+    {
+      label: "Replay status",
+      value: status,
+      detail: blockers[0] || "Replay can move to a paid beta dry-run with server-owned events and reconciliation checks."
+    }
+  ];
+  const legs = [
+    {
+      label: "Checkout event",
+      owner: "Gateway",
+      score: eventScore,
+      event: "payment.succeeded",
+      proof: "gateway_event_id, amount, currency, plan_id, idempotency_key"
+    },
+    {
+      label: "Invoice ledger",
+      owner: "Finance",
+      score: financeScore,
+      event: "invoice.issued",
+      proof: "invoice_id, tax_mode, plan_id, amount, issue_date"
+    },
+    {
+      label: "Entitlement projection",
+      owner: "Account",
+      score: config.stream.id === "payment-entitlement" ? 76 : 58,
+      event: "entitlement.activated",
+      proof: "user_id_hash, entitlement_state, feature_policy, expires_at"
+    },
+    {
+      label: "Refund or chargeback",
+      owner: "Finance",
+      score: financeScore - 4,
+      event: "refund.created",
+      proof: "refund_id, invoice_id, reason_code, entitlement_action"
+    },
+    {
+      label: "Support repair",
+      owner: "Support",
+      score: supportScore,
+      event: "support.entitlement_repair_logged",
+      proof: "case_id, prior_state, new_state, reviewer_role"
+    },
+    {
+      label: "Settlement close",
+      owner: "Finance Ops",
+      score: financeScore - 6,
+      event: "settlement.reconciliation_closed",
+      proof: "settlement_id, gateway_total, app_total, variance_state"
+    }
+  ];
+  const replaySteps = [
+    "Collect gateway, invoice, entitlement, refund, support, and settlement receipts for the same user hash and plan.",
+    "Sort by source timestamp, then apply idempotency keys and duplicate-event rules.",
+    "Rebuild entitlement state from receipts and compare it with the user-facing access projection.",
+    "Compare invoice amount, refund amount, gateway total, app total, and settlement variance.",
+    "Route mismatch to support repair, finance check, incident freeze, or correction note before launch readiness improves."
+  ];
+  const varianceChecks = [
+    "gateway_total equals sum of accepted payment receipts",
+    "invoice_total equals active plan and tax-mode ledger",
+    "refund_total agrees with revoked or downgraded entitlement state",
+    "support repairs reference source receipt and rollback ref",
+    "settlement variance is closed before revenue is treated as launch-ready"
+  ];
+  return {
+    blockers: blockers.length ? blockers : ["No active reconciliation replay blocker in this preview. Keep the replay in dry-run until real gateway and finance files are connected."],
+    legs,
+    metrics,
+    readiness,
+    replayId,
+    replaySteps,
+    status,
+    tone,
+    varianceChecks
+  };
+}
+
 function renderBackendAuditReceipts(event) {
   if (event) event.preventDefault();
   if (!els.backendAuditOutput || !els.backendAuditSummary) return;
   const config = backendAuditConfig();
+  const paymentReplay = paymentReconciliationReplay(config);
+  const sourceImportJobs = productionSourceImportJobs(config);
+  const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config);
+  const alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config);
+  const failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
   const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
   const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
   els.backendAuditSummary.textContent = `${config.score}/100 | ${config.status}`;
@@ -15910,6 +20272,657 @@ function renderBackendAuditReceipts(event) {
         <p>${escapeHtml(config.stream.launchGate)}</p>
       </article>
     </div>
+    <div class="source-job-board ${escapeHtml(sourceImportJobs.boardTone)}">
+      <div class="source-job-head">
+        <div>
+          <span>Production source import jobs</span>
+          <h3>${escapeHtml(sourceImportJobs.boardStatus)}</h3>
+          <p>Backend-owned import jobs bind official sources to gate IDs, parser/schema versions, accepted and rejected row counts, source receipts, reviewer release, rollback, and affected public surfaces.</p>
+        </div>
+        <div class="source-job-score" style="--score:${sourceImportJobs.readiness}">
+          <strong>${sourceImportJobs.readiness}</strong>
+          <span>Jobs</span>
+        </div>
+      </div>
+      <div class="source-job-metric-grid">
+        ${sourceImportJobs.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-job-active-grid">
+        ${sourceImportJobs.controls.map((control) => `
+          <article>
+            <span>${escapeHtml(control.label)}</span>
+            <strong>${escapeHtml(control.value)}</strong>
+            <p>${escapeHtml(control.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-job-grid">
+        ${sourceImportJobs.jobs.map((job) => `
+          <article class="${escapeHtml(job.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(job.status)}</span>
+                <strong>${escapeHtml(job.pipeline.title)}</strong>
+              </div>
+              <b>${job.gateScore}</b>
+            </div>
+            <p>${escapeHtml(job.jobId)}</p>
+            <div class="build-progress-bar"><span style="width:${job.gateScore}%"></span></div>
+            <small>${escapeHtml(job.expectedRows)} | ${escapeHtml(job.pipeline.owner)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-job-two">
+        <article class="${escapeHtml(sourceImportJobs.activeJob.tone)}">
+          <span>Active import job</span>
+          <strong>${escapeHtml(sourceImportJobs.activeJob.pipeline.title)}</strong>
+          <p><b>Gate:</b> ${escapeHtml(sourceImportJobs.activeJob.gateId)}</p>
+          <p><b>Contract:</b> ${escapeHtml(sourceImportJobs.activeJob.contract.primaryKey)} | ${escapeHtml(sourceImportJobs.activeJob.contract.dateField)}</p>
+          <ul>
+            ${sourceImportJobs.activeJob.blockers.slice(0, 6).map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Job event chain</span>
+          <strong>Source to surface queue</strong>
+          <ol>
+            ${sourceImportJobs.activeJob.jobEvents.map((eventName) => `<li>${escapeHtml(eventName)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <span>Receipt payload</span>
+          <strong>${sourceImportJobs.activeJob.receiptPayload.length} required fields</strong>
+          <ul>
+            ${sourceImportJobs.activeJob.receiptPayload.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="source-worker-board ${escapeHtml(sourceWorker.tone)}">
+      <div class="source-worker-head">
+        <div>
+          <span>Source import worker blueprint</span>
+          <h3>${escapeHtml(sourceWorker.status)}</h3>
+          <p>Scheduled worker plan for fetch, parser validation, rejected-row quarantine, monitoring alerts, pause rules, reviewer release, rollback, and public-surface queueing.</p>
+        </div>
+        <div class="source-worker-score" style="--score:${sourceWorker.readiness}">
+          <strong>${sourceWorker.readiness}</strong>
+          <span>Worker</span>
+        </div>
+      </div>
+      <div class="source-worker-metric-grid">
+        ${sourceWorker.controls.map((control) => `
+          <article>
+            <span>${escapeHtml(control.label)}</span>
+            <strong>${escapeHtml(control.value)}</strong>
+            <p>${escapeHtml(control.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-worker-alert-grid">
+        ${sourceWorker.alertRules.map((alert) => `
+          <article class="${alert.severity === "High" ? "caution" : "watch"}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(alert.severity)} alert</span>
+                <strong>${escapeHtml(alert.code)}</strong>
+              </div>
+              <b>${escapeHtml(alert.owner)}</b>
+            </div>
+            <p>${escapeHtml(alert.trigger)}</p>
+            <small>${escapeHtml(alert.response)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-worker-runbook-grid">
+        <article>
+          <h3>Worker runbook</h3>
+          <ol>
+            ${sourceWorker.runbookSteps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${escapeHtml(sourceWorker.tone)}">
+          <h3>Pause rules</h3>
+          <ul>
+            ${sourceWorker.pauseRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${sourceWorker.blockers.some((item) => item.startsWith("No active worker blocker")) ? "ready" : "caution"}">
+          <h3>Worker blockers</h3>
+          <ul>
+            ${sourceWorker.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="source-alert-board ${escapeHtml(alertRouting.tone)}">
+      <div class="source-alert-head">
+        <div>
+          <span>Monitoring alert routing</span>
+          <h3>${escapeHtml(alertRouting.status)}</h3>
+          <p>Alert routes connect source-worker failures to owners, acknowledgement windows, incident receipts, freeze actions, reviewer escalation, correction notes, and release queue recovery.</p>
+        </div>
+        <div class="source-alert-score" style="--score:${alertRouting.readiness}">
+          <strong>${alertRouting.readiness}</strong>
+          <span>Route</span>
+        </div>
+      </div>
+      <div class="source-alert-metric-grid">
+        ${alertRouting.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-alert-route-grid">
+        ${alertRouting.routes.map((route) => `
+          <article class="${escapeHtml(route.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(route.severity)} route</span>
+                <strong>${escapeHtml(route.code)}</strong>
+              </div>
+              <b>${route.routeScore}</b>
+            </div>
+            <p>${escapeHtml(route.destination)}</p>
+            <div class="build-progress-bar"><span style="width:${route.routeScore}%"></span></div>
+            <small>${escapeHtml(route.alertId)} | ${escapeHtml(route.acknowledgement)} | ${escapeHtml(route.releaseAction)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-alert-two">
+        <article>
+          <h3>Owner routing map</h3>
+          <ul>
+            ${alertRouting.ownerMap.map((owner) => `<li>${escapeHtml(owner.owner)}: ${owner.count} route${owner.count === 1 ? "" : "s"} | ${owner.high} high | ${escapeHtml(owner.destination)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Incident receipt fields</h3>
+          <ul>
+            ${alertRouting.incidentFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Escalation path</h3>
+          <ol>
+            ${alertRouting.escalationSteps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${alertRouting.blockers.length > 1 ? "caution" : "ready"}">
+          <h3>Routing blockers</h3>
+          <ul>
+            ${alertRouting.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="source-delivery-board ${escapeHtml(alertDelivery.tone)}">
+      <div class="source-delivery-head">
+        <div>
+          <span>Alert delivery backend</span>
+          <h3>${escapeHtml(alertDelivery.status)}</h3>
+          <p>Delivery backend binds alert routes to notification channels, durable delivery receipts, reviewer escalation, retry handling, dead-letter storage, and closeout proof.</p>
+        </div>
+        <div class="source-delivery-score" style="--score:${alertDelivery.readiness}">
+          <strong>${alertDelivery.readiness}</strong>
+          <span>Delivery</span>
+        </div>
+      </div>
+      <div class="source-delivery-metric-grid">
+        ${alertDelivery.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-delivery-channel-grid">
+        ${alertDelivery.channels.map((channel) => `
+          <article class="${escapeHtml(channel.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(channel.owner)}</span>
+                <strong>${escapeHtml(channel.channel)}</strong>
+              </div>
+              <b>${channel.score}</b>
+            </div>
+            <p>${escapeHtml(channel.destination)}</p>
+            <div class="build-progress-bar"><span style="width:${channel.score}%"></span></div>
+            <small>${escapeHtml(channel.purpose)} | ${escapeHtml(channel.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-delivery-flow-grid">
+        ${alertDelivery.deliveryFlow.map((step) => `
+          <article class="${escapeHtml(step.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(step.owner)}</span>
+                <strong>${escapeHtml(step.label)}</strong>
+              </div>
+              <b>${step.score}</b>
+            </div>
+            <p>${escapeHtml(step.event)}</p>
+            <div class="build-progress-bar"><span style="width:${step.score}%"></span></div>
+            <small>${escapeHtml(step.detail)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-delivery-two">
+        <article>
+          <h3>Delivery receipt fields</h3>
+          <ul>
+            ${alertDelivery.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Dispatch rules</h3>
+          <ul>
+            ${alertDelivery.dispatchRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${alertDelivery.blockers.length > 1 ? "caution" : "ready"}">
+          <h3>Delivery blockers</h3>
+          <ul>
+            ${alertDelivery.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="source-failed-board ${escapeHtml(failedRunStore.tone)}">
+      <div class="source-failed-head">
+        <div>
+          <span>Failed-run event store</span>
+          <h3>${escapeHtml(failedRunStore.status)}</h3>
+          <p>Event store persists failed import run envelopes, parser logs, rejected-row digests, delivery joins, retry state, replay cursors, and recovery proof outside browser storage.</p>
+        </div>
+        <div class="source-failed-score" style="--score:${failedRunStore.readiness}">
+          <strong>${failedRunStore.readiness}</strong>
+          <span>Store</span>
+        </div>
+      </div>
+      <div class="source-failed-metric-grid">
+        ${failedRunStore.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-failed-event-grid">
+        ${failedRunStore.eventFamilies.map((family) => `
+          <article class="${escapeHtml(family.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(family.owner)}</span>
+                <strong>${escapeHtml(family.label)}</strong>
+              </div>
+              <b>${family.score}</b>
+            </div>
+            <p>${escapeHtml(family.event)}</p>
+            <div class="build-progress-bar"><span style="width:${family.score}%"></span></div>
+            <small>${escapeHtml(family.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-failed-two">
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${failedRunStore.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Replay checks</h3>
+          <ul>
+            ${failedRunStore.replayChecks.map((check) => `<li>${escapeHtml(check)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Retention rules</h3>
+          <ul>
+            ${failedRunStore.retentionRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${failedRunStore.blockers.length > 1 ? "caution" : "ready"}">
+          <h3>Event store blockers</h3>
+          <ul>
+            ${failedRunStore.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="source-signoff-board ${escapeHtml(reviewerSignoff.tone)}">
+      <div class="source-signoff-head">
+        <div>
+          <span>Reviewer sign-off bridge</span>
+          <h3>${escapeHtml(reviewerSignoff.status)}</h3>
+          <p>Reviewer bridge binds failed-run evidence to reviewer posture, rollback or correction proof, release scope, support-safe wording, and public-surface recovery before incident closeout.</p>
+        </div>
+        <div class="source-signoff-score" style="--score:${reviewerSignoff.readiness}">
+          <strong>${reviewerSignoff.readiness}</strong>
+          <span>Review</span>
+        </div>
+      </div>
+      <div class="source-signoff-metric-grid">
+        ${reviewerSignoff.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-signoff-lane-grid">
+        ${reviewerSignoff.signoffLanes.map((lane) => `
+          <article class="${escapeHtml(lane.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(lane.owner)}</span>
+                <strong>${escapeHtml(lane.label)}</strong>
+              </div>
+              <b>${lane.score}</b>
+            </div>
+            <p>${escapeHtml(lane.event)}</p>
+            <div class="build-progress-bar"><span style="width:${lane.score}%"></span></div>
+            <small>${escapeHtml(lane.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-signoff-two">
+        <article>
+          <h3>Bridge steps</h3>
+          <ol>
+            ${reviewerSignoff.bridgeSteps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${reviewerSignoff.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Approval rules</h3>
+          <ul>
+            ${reviewerSignoff.approvalRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${reviewerSignoff.blockers.length > 1 ? "caution" : "ready"}">
+          <h3>Sign-off blockers</h3>
+          <ul>
+            ${reviewerSignoff.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="source-rollback-board ${escapeHtml(rollbackEvidence.tone)}">
+      <div class="source-rollback-head">
+        <div>
+          <span>Rollback evidence store</span>
+          <h3>${escapeHtml(rollbackEvidence.status)}</h3>
+          <p>Rollback evidence store persists reviewer-approved rollback, correction, and resume proof so public research surfaces can recover without losing the audit trail.</p>
+        </div>
+        <div class="source-rollback-score" style="--score:${rollbackEvidence.readiness}">
+          <strong>${rollbackEvidence.readiness}</strong>
+          <span>Recover</span>
+        </div>
+      </div>
+      <div class="source-rollback-metric-grid">
+        ${rollbackEvidence.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-rollback-packet-grid">
+        ${rollbackEvidence.evidencePackets.map((packet) => `
+          <article class="${escapeHtml(packet.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(packet.owner)}</span>
+                <strong>${escapeHtml(packet.label)}</strong>
+              </div>
+              <b>${packet.score}</b>
+            </div>
+            <p>${escapeHtml(packet.event)}</p>
+            <div class="build-progress-bar"><span style="width:${packet.score}%"></span></div>
+            <small>${escapeHtml(packet.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-rollback-two">
+        <article>
+          <h3>Recovery script</h3>
+          <ol>
+            ${rollbackEvidence.recoveryScript.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${rollbackEvidence.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Evidence rules</h3>
+          <ul>
+            ${rollbackEvidence.evidenceRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${rollbackEvidence.blockers.length > 1 ? "caution" : "ready"}">
+          <h3>Recovery blockers</h3>
+          <ul>
+            ${rollbackEvidence.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="source-recovery-board ${escapeHtml(publicRecovery.tone)}">
+      <div class="source-recovery-head">
+        <div>
+          <span>Public recovery rehearsal</span>
+          <h3>${escapeHtml(publicRecovery.status)}</h3>
+          <p>Rehearse how rollback evidence moves frozen public surfaces into correction preview, support-safe wording, release queue resume, and launch monitoring before anything visible changes.</p>
+        </div>
+        <div class="source-recovery-score" style="--score:${publicRecovery.readiness}">
+          <strong>${publicRecovery.readiness}</strong>
+          <span>Public</span>
+        </div>
+      </div>
+      <div class="source-recovery-metric-grid">
+        ${publicRecovery.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-recovery-surface-grid">
+        ${publicRecovery.surfaceMoves.map((move) => `
+          <article class="${escapeHtml(move.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(move.owner)}</span>
+                <strong>${escapeHtml(move.label)}</strong>
+              </div>
+              <b>${move.score}</b>
+            </div>
+            <p>${escapeHtml(move.event)}</p>
+            <div class="build-progress-bar"><span style="width:${move.score}%"></span></div>
+            <small>${escapeHtml(move.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-recovery-two">
+        <article>
+          <h3>Rehearsal steps</h3>
+          <ol>
+            ${publicRecovery.rehearsalSteps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${publicRecovery.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Release checks</h3>
+          <ul>
+            ${publicRecovery.releaseChecks.map((check) => `<li>${escapeHtml(check)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${publicRecovery.blockers.length > 1 ? "caution" : "ready"}">
+          <h3>Recovery blockers</h3>
+          <ul>
+            ${publicRecovery.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="recovery-release-board ${escapeHtml(recoveryQueue.tone)}">
+      <div class="recovery-release-head">
+        <div>
+          <span>Recovery release queue</span>
+          <h3>${escapeHtml(recoveryQueue.status)}</h3>
+          <p>Queue the rehearsed recovery into owned tasks for evidence intake, correction publishing, support response, surface resume, monitor arming, and final closeout review.</p>
+        </div>
+        <div class="recovery-release-score" style="--score:${recoveryQueue.readiness}">
+          <strong>${recoveryQueue.readiness}</strong>
+          <span>Queue</span>
+        </div>
+      </div>
+      <div class="recovery-release-metric-grid">
+        ${recoveryQueue.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="recovery-release-task-grid">
+        ${recoveryQueue.queueTasks.map((task) => `
+          <article class="${escapeHtml(task.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(task.owner)}</span>
+                <strong>${escapeHtml(task.label)}</strong>
+              </div>
+              <b>${task.score}</b>
+            </div>
+            <p>${escapeHtml(task.event)}</p>
+            <div class="build-progress-bar"><span style="width:${task.score}%"></span></div>
+            <small>${escapeHtml(task.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="recovery-release-two">
+        <article>
+          <h3>Queue policy</h3>
+          <ol>
+            ${recoveryQueue.queuePolicy.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${recoveryQueue.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Release gates</h3>
+          <ul>
+            ${recoveryQueue.releaseGates.map((gate) => `<li>${escapeHtml(gate)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${recoveryQueue.blockers.length > 1 ? "caution" : "ready"}">
+          <h3>Queue blockers</h3>
+          <ul>
+            ${recoveryQueue.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="source-incident-board ${escapeHtml(incidentReplay.tone)}">
+      <div class="source-incident-head">
+        <div>
+          <span>Incident receipt replay</span>
+          <h3>${escapeHtml(incidentReplay.status)}</h3>
+          <p>Replay a failed source import from alert open to worker pause, incident receipt, surface freeze, reviewer decision, correction or rollback, and closeout.</p>
+        </div>
+        <div class="source-incident-score" style="--score:${incidentReplay.readiness}">
+          <strong>${incidentReplay.readiness}</strong>
+          <span>Replay</span>
+        </div>
+      </div>
+      <div class="source-incident-metric-grid">
+        ${incidentReplay.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-incident-leg-grid">
+        ${incidentReplay.replayLegs.map((leg) => `
+          <article class="${escapeHtml(leg.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(leg.owner)}</span>
+                <strong>${escapeHtml(leg.label)}</strong>
+              </div>
+              <b>${leg.score}</b>
+            </div>
+            <p>${escapeHtml(leg.event)}</p>
+            <div class="build-progress-bar"><span style="width:${leg.score}%"></span></div>
+            <small>${escapeHtml(leg.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-incident-two">
+        <article>
+          <h3>Replay script</h3>
+          <ol>
+            ${incidentReplay.replayScript.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${incidentReplay.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Closeout rules</h3>
+          <ul>
+            ${incidentReplay.closeoutRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${incidentReplay.blockers.length > 1 ? "caution" : "ready"}">
+          <h3>Replay blockers</h3>
+          <ul>
+            ${incidentReplay.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="backend-audit-control-grid">
       ${config.controls.map((control) => `
         <article>
@@ -15923,6 +20936,68 @@ function renderBackendAuditReceipts(event) {
           <p>${escapeHtml(control.detail)}</p>
         </article>
       `).join("")}
+    </div>
+    <div class="payment-replay-board ${escapeHtml(paymentReplay.tone)}">
+      <div class="payment-replay-head">
+        <div>
+          <span>Payment reconciliation replay</span>
+          <h3>${escapeHtml(paymentReplay.status)}</h3>
+          <p>Replay payment, refund, entitlement, support, invoice, and settlement receipts together before paid retail access is treated as launch-ready.</p>
+        </div>
+        <div class="payment-replay-score" style="--score:${paymentReplay.readiness}">
+          <strong>${paymentReplay.readiness}</strong>
+          <span>Replay</span>
+        </div>
+      </div>
+      <div class="payment-replay-metric-grid">
+        ${paymentReplay.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="payment-replay-leg-grid">
+        ${paymentReplay.legs.map((leg) => `
+          <article class="${leg.score >= 74 ? "ready" : leg.score < 50 ? "caution" : "watch"}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(leg.owner)}</span>
+                <strong>${escapeHtml(leg.label)}</strong>
+              </div>
+              <b>${leg.score}</b>
+            </div>
+            <p>${escapeHtml(leg.event)}</p>
+            <div class="build-progress-bar"><span style="width:${leg.score}%"></span></div>
+            <small>${escapeHtml(leg.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="payment-replay-two">
+        <article>
+          <h3>Replay script</h3>
+          <ol>
+            ${paymentReplay.replaySteps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${escapeHtml(paymentReplay.tone)}">
+          <h3>Replay blockers</h3>
+          <ul>
+            ${paymentReplay.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Variance checks</h3>
+          <ul>
+            ${paymentReplay.varianceChecks.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="backend-audit-guardrail">
+          <h3>Launch boundary</h3>
+          <p>The replay proves operational consistency only. It must not store PAN, folio, CAS, raw payment instrument data, credentials, private notes, or distributor client records.</p>
+        </article>
+      </div>
     </div>
     <div class="backend-audit-panel-grid">
       <article>
@@ -15939,6 +21014,17 @@ function renderBackendAuditReceipts(event) {
 
 function makeBackendAuditReceiptBrief() {
   const config = backendAuditConfig();
+  const paymentReplay = paymentReconciliationReplay(config);
+  const sourceImportJobs = productionSourceImportJobs(config);
+  const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config);
+  const alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config);
+  const failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
   return [
     "# NiveshNadi Backend Audit Receipts",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -15957,8 +21043,148 @@ function makeBackendAuditReceiptBrief() {
     "## Required Receipt Fields",
     ...config.receiptFields.map((field) => `- ${field}`),
     "",
+    "## Production Source Import Jobs",
+    `- Board status: ${sourceImportJobs.boardStatus}`,
+    `- Import readiness: ${sourceImportJobs.readiness}/100`,
+    `- Ready jobs: ${sourceImportJobs.ready}/${sourceImportJobs.jobs.length}`,
+    `- Reviewer dry-runs: ${sourceImportJobs.dryRun}`,
+    `- Blocked jobs: ${sourceImportJobs.blocked}`,
+    `- Active job: ${sourceImportJobs.activeJob.jobId}`,
+    `- Active gate: ${sourceImportJobs.activeJob.gateId}`,
+    ...sourceImportJobs.controls.map((control) => `- Control: ${control.label}: ${control.value} | ${control.detail}`),
+    ...sourceImportJobs.activeJob.jobEvents.map((eventName) => `- Job event: ${eventName}`),
+    ...sourceImportJobs.activeJob.receiptPayload.map((field) => `- Import receipt field: ${field}`),
+    ...sourceImportJobs.activeJob.blockers.map((blocker) => `- Import blocker: ${blocker}`),
+    "",
+    "## Source Import Worker Blueprint",
+    `- Worker status: ${sourceWorker.status}`,
+    `- Worker readiness: ${sourceWorker.readiness}/100`,
+    `- Worker ID: ${sourceWorker.workerId}`,
+    `- Runbook ID: ${sourceWorker.runbookId}`,
+    ...sourceWorker.controls.map((control) => `- Worker control: ${control.label}: ${control.value} | ${control.detail}`),
+    ...sourceWorker.alertRules.map((alert) => `- Worker alert: ${alert.code}: ${alert.severity} | ${alert.owner} | ${alert.trigger} | ${alert.response}`),
+    ...sourceWorker.runbookSteps.map((step) => `- Worker runbook step: ${step}`),
+    ...sourceWorker.pauseRules.map((rule) => `- Worker pause rule: ${rule}`),
+    ...sourceWorker.blockers.map((blocker) => `- Worker blocker: ${blocker}`),
+    "",
+    "## Monitoring Alert Routing",
+    `- Routing status: ${alertRouting.status}`,
+    `- Routing readiness: ${alertRouting.readiness}/100`,
+    `- Alert route ID: ${alertRouting.alertRouteId}`,
+    `- Incident receipt ID: ${alertRouting.incidentReceiptId}`,
+    ...alertRouting.metrics.map((metric) => `- Alert metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...alertRouting.routes.map((route) => `- Alert route: ${route.code}: ${route.severity} | ${route.owner} | ${route.destination} | ${route.acknowledgement} | ${route.releaseAction}`),
+    ...alertRouting.ownerMap.map((owner) => `- Owner route: ${owner.owner}: ${owner.count} route(s), ${owner.high} high | ${owner.destination}`),
+    ...alertRouting.incidentFields.map((field) => `- Incident receipt field: ${field}`),
+    ...alertRouting.escalationSteps.map((step) => `- Escalation step: ${step}`),
+    ...alertRouting.blockers.map((blocker) => `- Alert blocker: ${blocker}`),
+    "",
+    "## Alert Delivery Backend",
+    `- Delivery status: ${alertDelivery.status}`,
+    `- Delivery readiness: ${alertDelivery.readiness}/100`,
+    `- Delivery backend ID: ${alertDelivery.deliveryId}`,
+    `- Reviewer queue ID: ${alertDelivery.reviewerQueueId}`,
+    `- Dead letter queue ID: ${alertDelivery.deadLetterId}`,
+    ...alertDelivery.metrics.map((metric) => `- Delivery metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...alertDelivery.channels.map((channel) => `- Delivery channel: ${channel.channel}: ${channel.score}/100 | ${channel.owner} | ${channel.destination} | ${channel.proof}`),
+    ...alertDelivery.deliveryFlow.map((step) => `- Delivery event: ${step.label}: ${step.score}/100 | ${step.event} | ${step.detail}`),
+    ...alertDelivery.receiptFields.map((field) => `- Delivery receipt field: ${field}`),
+    ...alertDelivery.dispatchRules.map((rule) => `- Delivery rule: ${rule}`),
+    ...alertDelivery.blockers.map((blocker) => `- Delivery blocker: ${blocker}`),
+    "",
+    "## Failed-Run Event Store",
+    `- Store status: ${failedRunStore.status}`,
+    `- Store readiness: ${failedRunStore.readiness}/100`,
+    `- Event store ID: ${failedRunStore.eventStoreId}`,
+    `- Run envelope ID: ${failedRunStore.runEnvelopeId}`,
+    `- Replay cursor ID: ${failedRunStore.replayCursorId}`,
+    ...failedRunStore.metrics.map((metric) => `- Failed-run metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...failedRunStore.eventFamilies.map((family) => `- Failed-run event: ${family.label}: ${family.score}/100 | ${family.event} | ${family.proof}`),
+    ...failedRunStore.receiptFields.map((field) => `- Failed-run receipt field: ${field}`),
+    ...failedRunStore.replayChecks.map((check) => `- Failed-run replay check: ${check}`),
+    ...failedRunStore.retentionRules.map((rule) => `- Failed-run retention rule: ${rule}`),
+    ...failedRunStore.blockers.map((blocker) => `- Failed-run blocker: ${blocker}`),
+    "",
+    "## Reviewer Sign-off Bridge",
+    `- Sign-off status: ${reviewerSignoff.status}`,
+    `- Sign-off readiness: ${reviewerSignoff.readiness}/100`,
+    `- Reviewer sign-off ID: ${reviewerSignoff.signoffId}`,
+    `- Release scope ID: ${reviewerSignoff.releaseScopeId}`,
+    `- Rollback binder ID: ${reviewerSignoff.rollbackBinderId}`,
+    ...reviewerSignoff.metrics.map((metric) => `- Sign-off metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...reviewerSignoff.signoffLanes.map((lane) => `- Sign-off lane: ${lane.label}: ${lane.score}/100 | ${lane.event} | ${lane.proof}`),
+    ...reviewerSignoff.bridgeSteps.map((step) => `- Sign-off bridge step: ${step}`),
+    ...reviewerSignoff.receiptFields.map((field) => `- Sign-off receipt field: ${field}`),
+    ...reviewerSignoff.approvalRules.map((rule) => `- Sign-off approval rule: ${rule}`),
+    ...reviewerSignoff.blockers.map((blocker) => `- Sign-off blocker: ${blocker}`),
+    "",
+    "## Rollback Evidence Store",
+    `- Recovery status: ${rollbackEvidence.status}`,
+    `- Recovery readiness: ${rollbackEvidence.readiness}/100`,
+    `- Rollback evidence ID: ${rollbackEvidence.rollbackEvidenceId}`,
+    `- Correction receipt ID: ${rollbackEvidence.correctionReceiptId}`,
+    `- Resume receipt ID: ${rollbackEvidence.resumeReceiptId}`,
+    `- Surface recovery ID: ${rollbackEvidence.surfaceRecoveryId}`,
+    ...rollbackEvidence.metrics.map((metric) => `- Rollback metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...rollbackEvidence.evidencePackets.map((packet) => `- Rollback evidence packet: ${packet.label}: ${packet.score}/100 | ${packet.event} | ${packet.proof}`),
+    ...rollbackEvidence.recoveryScript.map((step) => `- Recovery script step: ${step}`),
+    ...rollbackEvidence.receiptFields.map((field) => `- Rollback receipt field: ${field}`),
+    ...rollbackEvidence.evidenceRules.map((rule) => `- Rollback evidence rule: ${rule}`),
+    ...rollbackEvidence.blockers.map((blocker) => `- Rollback blocker: ${blocker}`),
+    "",
+    "## Public Recovery Rehearsal",
+    `- Recovery status: ${publicRecovery.status}`,
+    `- Recovery readiness: ${publicRecovery.readiness}/100`,
+    `- Public recovery plan ID: ${publicRecovery.recoveryPlanId}`,
+    `- Surface queue ID: ${publicRecovery.surfaceQueueId}`,
+    `- Correction publish ID: ${publicRecovery.correctionPublishId}`,
+    `- Freeze/resume ID: ${publicRecovery.freezeResumeId}`,
+    ...publicRecovery.metrics.map((metric) => `- Public recovery metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...publicRecovery.surfaceMoves.map((move) => `- Public surface move: ${move.label}: ${move.score}/100 | ${move.event} | ${move.proof}`),
+    ...publicRecovery.rehearsalSteps.map((step) => `- Recovery rehearsal step: ${step}`),
+    ...publicRecovery.receiptFields.map((field) => `- Public recovery receipt field: ${field}`),
+    ...publicRecovery.releaseChecks.map((check) => `- Public recovery release check: ${check}`),
+    ...publicRecovery.blockers.map((blocker) => `- Public recovery blocker: ${blocker}`),
+    "",
+    "## Recovery Release Queue",
+    `- Queue status: ${recoveryQueue.status}`,
+    `- Queue readiness: ${recoveryQueue.readiness}/100`,
+    `- Release queue ID: ${recoveryQueue.queueId}`,
+    `- Publish batch ID: ${recoveryQueue.publishBatchId}`,
+    `- Correction task ID: ${recoveryQueue.correctionTaskId}`,
+    `- Support task ID: ${recoveryQueue.supportTaskId}`,
+    `- Monitor task ID: ${recoveryQueue.monitorTaskId}`,
+    ...recoveryQueue.metrics.map((metric) => `- Recovery queue metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...recoveryQueue.queueTasks.map((task) => `- Recovery queue task: ${task.label}: ${task.score}/100 | ${task.event} | ${task.proof}`),
+    ...recoveryQueue.queuePolicy.map((item) => `- Recovery queue policy: ${item}`),
+    ...recoveryQueue.receiptFields.map((field) => `- Recovery queue receipt field: ${field}`),
+    ...recoveryQueue.releaseGates.map((gate) => `- Recovery queue release gate: ${gate}`),
+    ...recoveryQueue.blockers.map((blocker) => `- Recovery queue blocker: ${blocker}`),
+    "",
+    "## Incident Receipt Replay",
+    `- Replay status: ${incidentReplay.status}`,
+    `- Replay readiness: ${incidentReplay.readiness}/100`,
+    `- Incident replay ID: ${incidentReplay.replayId}`,
+    `- Incident closeout ID: ${incidentReplay.closeoutId}`,
+    ...incidentReplay.metrics.map((metric) => `- Incident replay metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...incidentReplay.replayLegs.map((leg) => `- Incident replay leg: ${leg.label}: ${leg.score}/100 | ${leg.event} | ${leg.proof}`),
+    ...incidentReplay.replayScript.map((step) => `- Incident replay step: ${step}`),
+    ...incidentReplay.receiptFields.map((field) => `- Incident replay receipt field: ${field}`),
+    ...incidentReplay.closeoutRules.map((rule) => `- Incident closeout rule: ${rule}`),
+    ...incidentReplay.blockers.map((blocker) => `- Incident replay blocker: ${blocker}`),
+    "",
     "## Controls",
     ...config.controls.map((control) => `- ${control.label}: ${control.score}/100 | ${control.detail}`),
+    "",
+    "## Payment Reconciliation Replay",
+    `- Status: ${paymentReplay.status}`,
+    `- Readiness: ${paymentReplay.readiness}/100`,
+    `- Replay ID: ${paymentReplay.replayId}`,
+    ...paymentReplay.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...paymentReplay.legs.map((leg) => `- Replay leg: ${leg.label}: ${leg.score}/100 | ${leg.event} | ${leg.proof}`),
+    ...paymentReplay.replaySteps.map((step) => `- Replay step: ${step}`),
+    ...paymentReplay.varianceChecks.map((check) => `- Variance check: ${check}`),
+    ...paymentReplay.blockers.map((item) => `- Replay blocker: ${item}`),
     "",
     "## Blockers",
     ...(config.blockers.length ? config.blockers.map((item) => `- ${item}`) : ["- No active blockers in this audit receipt preview."]),
@@ -16326,11 +21552,109 @@ function sourceIntakeConfig() {
   };
 }
 
+function sourceIntakeProductionGate(config = sourceIntakeConfig()) {
+  const contract = LIVE_DATA_CONTRACTS.find((item) => item.id === config.pipeline.id) || LIVE_DATA_CONTRACTS[0];
+  const sourceReceipts = loadSourceReceipts();
+  const matchingReceipts = sourceReceipts.filter((receipt) => receipt.source?.id === config.pipeline.id);
+  const latestReceipt = matchingReceipts[0] || null;
+  const receiptEnvelope = latestReceipt ? sourceReceiptProductionEnvelope(latestReceipt, sourceReceipts) : null;
+  const sourceSlug = config.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const gateId = ["NN", "IMPORT", "GATE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const receiptScore = receiptEnvelope ? receiptEnvelope.readiness : 34;
+  const channelProductionScore = {
+    "official-url": 84,
+    "upload-batch": 72,
+    "api-partner": 88,
+    "manual-review": 42
+  }[config.channel] || 68;
+  const backendScore = Math.round(clampNumber(
+    contract.contractScore * 0.34 +
+      channelProductionScore * 0.26 +
+      config.formatScore * 0.16 +
+      config.evidenceScore * 0.14 +
+      config.scopeScore * 0.1,
+    22,
+    94
+  ));
+  const productionScore = Math.round(clampNumber(
+    config.score * 0.3 +
+      contract.contractScore * 0.22 +
+      receiptScore * 0.18 +
+      config.freshnessScore * 0.12 +
+      channelProductionScore * 0.1 +
+      backendScore * 0.08,
+    18,
+    96
+  ));
+  const blockers = [
+    ...(config.score < 68 ? ["intake gate score is below mapping QA threshold"] : []),
+    ...(!latestReceipt ? ["no saved source receipt exists for this source family"] : []),
+    ...(latestReceipt && latestReceipt.status !== "Release candidate" ? [`latest receipt status is ${latestReceipt.status.toLowerCase()}`] : []),
+    ...(receiptEnvelope && receiptEnvelope.status !== "Production receipt ready" ? [`production receipt envelope says ${receiptEnvelope.status.toLowerCase()}`] : []),
+    ...(contract.contractScore < 58 ? ["live data field contract is below production threshold"] : []),
+    ...(config.evidence !== "citation-bound" ? ["investor-visible citation path is not bound"] : []),
+    ...(config.staleDays ? [`source date is stale by ${config.staleDays} day${config.staleDays === 1 ? "" : "s"}`] : []),
+    ...(config.channel === "manual-review" ? ["manual review cannot be the only import path"] : []),
+    ...(["pdf", "html"].includes(config.format) && config.formatScore < 70 ? ["parser QA is required before production import"] : []),
+    ...(config.scope === "full-amc" && productionScore < 84 ? ["full AMC rollout needs staged import pilot first"] : [])
+  ];
+  const status = blockers.length === 0 && productionScore >= 84
+    ? "Production import ready"
+    : productionScore >= 68
+      ? "Reviewer controlled import"
+      : "Import blocked";
+  const tone = status === "Production import ready" ? "ready" : status === "Import blocked" ? "caution" : "watch";
+  const importControls = [
+    { label: "source_url_or_file_hash", value: config.channel === "upload-batch" ? "file hash required" : "official path required", detail: sourceIntakeChannelLabel(config.channel) },
+    { label: "source_date", value: `${config.age}d old`, detail: `Freshness rule ${config.maxAge} days.` },
+    { label: "schema_version", value: `${DATA_VERSION}-schema`, detail: `${config.contractFields.length} mapped fields.` },
+    { label: "parser_version", value: `${DATA_VERSION}-parser`, detail: sourceIntakeFormatLabel(config.format) },
+    { label: "row_or_object_count", value: "required", detail: "Import receipt must record accepted and rejected rows." },
+    { label: "citation_path", value: config.evidence === "citation-bound" ? "bound" : "missing", detail: sourceIntakeEvidenceLabel(config.evidence) },
+    { label: "reviewer_decision", value: latestReceipt?.status || "not saved", detail: latestReceipt?.reviewer || "Reviewer sign-off required before release." },
+    { label: "rollback_note", value: status === "Production import ready" ? "required before merge" : "draft before pilot", detail: "Rollback and correction path must exist before public refresh." }
+  ];
+  const jobSequence = [
+    { step: "01 Register source", status: config.channel === "manual-review" ? "Blocked" : "Ready", detail: "Store source owner, official path, file hash, source date, and import cadence." },
+    { step: "02 Validate schema", status: contract.contractScore >= 58 ? "Ready" : "Needs work", detail: `Primary key: ${contract.primaryKey}. Date field: ${contract.dateField}.` },
+    { step: "03 Parse and reconcile", status: config.formatScore >= 70 ? "Ready" : "Parser QA", detail: "Record parser version, extraction confidence, accepted count, rejected count, and field exceptions." },
+    { step: "04 Bind evidence", status: config.evidence === "citation-bound" ? "Ready" : "Blocked", detail: "Map citation path, source date, and receipt ID to affected claim surfaces." },
+    { step: "05 Reviewer release", status: latestReceipt?.status === "Release candidate" ? "Ready" : "Reviewer needed", detail: "Reviewer decision, rollback note, and release scope decide whether the import affects public surfaces." }
+  ];
+  const launchPolicy = [
+    { label: "Release candidate", status: status === "Production import ready" ? "Allowed" : "Not yet", detail: "Only after receipt, schema, citation, reviewer, and rollback controls pass." },
+    { label: "Preview refresh", status: productionScore >= 68 ? "Allowed" : "Limited", detail: "Internal preview can use the import while blockers are closed." },
+    { label: "Freeze rule", status: blockers.length ? "Active" : "Standby", detail: contract.failureMode },
+    { label: "Audit trail", status: "Required", detail: "Backend receipt must retain import timestamp, source proof, rejected rows, affected surfaces, and reviewer status." }
+  ];
+  const metrics = [
+    { label: "Gate ID", value: gateId, detail: "Use this ID in source import tickets and release notes." },
+    { label: "Import posture", value: status, detail: `Production import score ${productionScore}/100.` },
+    { label: "Backend contract", value: `${backendScore}/100`, detail: `${contract.ingestion}; ${contract.sourceProof}` },
+    { label: "Receipt proof", value: latestReceipt ? `${receiptScore}/100` : "Missing", detail: latestReceipt ? latestReceipt.receipt : "Save a source receipt before production import." }
+  ];
+
+  return {
+    backendScore,
+    blockers: blockers.length ? blockers : ["No active import blocker in this preview. Keep legal, reviewer, and operations sign-off before launch."],
+    gateId,
+    importControls,
+    jobSequence,
+    launchPolicy,
+    latestReceipt,
+    metrics,
+    productionScore,
+    status,
+    tone
+  };
+}
+
 function renderSourceIntakeConsole(event) {
   if (event) event.preventDefault();
   if (!els.sourceIntakeOutput || !els.sourceIntakeSummary) return;
   const config = sourceIntakeConfig();
-  els.sourceIntakeSummary.textContent = `${config.score}/100 | ${config.posture}`;
+  const productionGate = sourceIntakeProductionGate(config);
+  els.sourceIntakeSummary.textContent = `${productionGate.productionScore}/100 | ${productionGate.status}`;
   els.sourceIntakeOutput.innerHTML = `
     <div class="source-intake-hero ${escapeHtml(config.tone)}">
       <div>
@@ -16348,6 +21672,62 @@ function renderSourceIntakeConsole(event) {
       <article><span>Format</span><strong>${config.formatScore}/100</strong><p>${escapeHtml(sourceIntakeFormatLabel(config.format))}</p></article>
       <article><span>Evidence</span><strong>${config.evidenceScore}/100</strong><p>${escapeHtml(sourceIntakeEvidenceLabel(config.evidence))}</p></article>
       <article><span>Owner</span><strong>${escapeHtml(config.pipeline.owner)}</strong><p>${escapeHtml(config.pipeline.cadence)} source cadence.</p></article>
+    </div>
+    <div class="source-import-gate ${escapeHtml(productionGate.tone)}">
+      <div class="source-import-head">
+        <div>
+          <span>Production source import gate</span>
+          <h3>${escapeHtml(productionGate.status)}</h3>
+          <p>Gate ${escapeHtml(productionGate.gateId)} controls whether this source can become a production import, stay in reviewer pilot, or remain frozen before public claims refresh.</p>
+        </div>
+        <div class="source-import-score" style="--score:${productionGate.productionScore}">
+          <b>${productionGate.productionScore}</b>
+          <span>Import</span>
+        </div>
+      </div>
+      <div class="source-import-metric-grid">
+        ${productionGate.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-import-control-grid">
+        ${productionGate.importControls.map((control) => `
+          <article>
+            <span>${escapeHtml(control.label)}</span>
+            <strong>${escapeHtml(control.value)}</strong>
+            <p>${escapeHtml(control.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-import-flow-grid">
+        ${productionGate.jobSequence.map((step) => `
+          <article>
+            <span>${escapeHtml(step.status)}</span>
+            <strong>${escapeHtml(step.step)}</strong>
+            <p>${escapeHtml(step.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-import-two">
+        <article class="${escapeHtml(productionGate.tone)}">
+          <span>Import blockers</span>
+          <strong>${productionGate.blockers.length} gate check${productionGate.blockers.length === 1 ? "" : "s"}</strong>
+          <ul>
+            ${productionGate.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Release policy</span>
+          <strong>Preview, freeze, or release</strong>
+          <ul>
+            ${productionGate.launchPolicy.map((policy) => `<li><b>${escapeHtml(policy.label)}:</b> ${escapeHtml(policy.status)} - ${escapeHtml(policy.detail)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="source-intake-grid">
       <article class="source-intake-card">
@@ -16389,6 +21769,7 @@ function renderSourceIntakeConsole(event) {
 
 function makeSourceIntakeNote() {
   const config = sourceIntakeConfig();
+  const productionGate = sourceIntakeProductionGate(config);
   return [
     "# NiveshNadi Source Intake Console",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -16402,6 +21783,20 @@ function makeSourceIntakeNote() {
     `Intake score: ${config.score}/100`,
     `Posture: ${config.posture}`,
     `Next step: ${config.nextStep}`,
+    "",
+    "## Production Source Import Gate",
+    `Gate ID: ${productionGate.gateId}`,
+    `Import posture: ${productionGate.status}`,
+    `Production import score: ${productionGate.productionScore}/100`,
+    `Backend contract score: ${productionGate.backendScore}/100`,
+    "Import controls:",
+    ...productionGate.importControls.map((control) => `- ${control.label}: ${control.value} | ${control.detail}`),
+    "Job sequence:",
+    ...productionGate.jobSequence.map((step) => `- ${step.step}: ${step.status} | ${step.detail}`),
+    "Release policy:",
+    ...productionGate.launchPolicy.map((policy) => `- ${policy.label}: ${policy.status} | ${policy.detail}`),
+    "Import blockers:",
+    ...productionGate.blockers.map((blocker) => `- ${blocker}`),
     "",
     "## Field contract",
     ...config.contractFields.map((field) => `- ${field}`),
@@ -19413,7 +24808,7 @@ function privacyControlConfig() {
       ? "Local metadata only"
       : "Clean local slate";
   const tone = freeTextStores.length ? "watch" : "ready";
-  return {
+  const config = {
     stores,
     activeStores,
     totalRecords,
@@ -19421,6 +24816,129 @@ function privacyControlConfig() {
     freeTextStores,
     privacyScore,
     posture,
+    tone
+  };
+  config.execution = exportDeleteExecutionBoard(config);
+  return config;
+}
+
+function exportDeleteExecutionBoard(config) {
+  const receiptId = ["NN", "PRIVACY", "EXEC", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const exportScope = config.activeStores.length
+    ? `${config.activeStores.length} active bucket${config.activeStores.length === 1 ? "" : "s"}`
+    : "No active export data";
+  const deleteScope = config.activeStores.length
+    ? `${config.totalRecords} local record${config.totalRecords === 1 ? "" : "s"}`
+    : "No local delete job";
+  const exportScore = config.activeStores.length ? 72 : 64;
+  const deleteScore = config.activeStores.length ? 56 : 50;
+  const receiptScore = config.activeStores.length ? 50 : 46;
+  const retentionScore = config.freeTextStores.length ? 48 : 58;
+  const redactionScore = config.freeTextStores.length ? 52 : 64;
+  const supportScore = config.activeStores.length ? 54 : 58;
+  const readiness = clampNumber(Math.round((
+    exportScore +
+    deleteScore +
+    receiptScore +
+    retentionScore +
+    redactionScore +
+    supportScore
+  ) / 6), 42, 78);
+  const blockers = [
+    "Production export needs a backend-owned export job, downloadable bundle, and immutable request receipt.",
+    "Production deletion needs account ownership proof, queue status, completion receipt, and rollback-safe retention rule.",
+    ...(config.freeTextStores.length ? ["Free-text buckets must be reviewed or scrubbed before a share/export handoff."] : []),
+    ...(config.activeStores.length ? [] : ["No active browser-local bucket exists; keep this as a dry-run route until accounts store saved research."])
+  ];
+  const status = readiness >= 66 && config.activeStores.length && !config.freeTextStores.length
+    ? "Export delete review ready"
+    : config.activeStores.length
+      ? "Export delete dry-run"
+      : "Execution route preview";
+  const tone = readiness >= 66 && !config.freeTextStores.length
+    ? "ready"
+    : config.freeTextStores.length
+      ? "watch"
+      : "draft";
+  const metrics = [
+    {
+      label: "Execution status",
+      value: status,
+      detail: config.activeStores.length ? "Browser-local data can be mapped into an export/delete rehearsal." : "No saved local research exists in this browser right now."
+    },
+    {
+      label: "Execution receipt",
+      value: receiptId,
+      detail: "Use this receipt family for export request, delete request, completion, and support-safe proof."
+    },
+    {
+      label: "Export scope",
+      value: exportScope,
+      detail: "Export should include research objects and a clear excluded-data list."
+    },
+    {
+      label: "Delete scope",
+      value: deleteScope,
+      detail: "Delete should clear saved research while keeping only minimal non-sensitive completion proof."
+    }
+  ];
+  const jobs = [
+    {
+      label: "Export bundle",
+      score: exportScore,
+      detail: "Build a readable account bundle for profile context, saved packs, watchlist, reviews, dossiers, receipts, and metadata.",
+      action: "List included buckets and excluded sensitive fields before download."
+    },
+    {
+      label: "Delete job",
+      score: deleteScore,
+      detail: "Clear selected saved research buckets with account ownership, queue status, retry, and completion state.",
+      action: "Do not silently retain private notes, free text, or abandoned artifacts."
+    },
+    {
+      label: "Deletion receipt",
+      score: receiptScore,
+      detail: "Write a minimal receipt after completion: request ID, object family, timestamp, status, and confirmation hash.",
+      action: "Never keep PAN, folio, CAS, bank, contact, payment, ARN/EUIN, or client-book fields."
+    },
+    {
+      label: "Retention window",
+      score: retentionScore,
+      detail: "Separate immediate deletion, legal retention, failed-job retry window, and support-safe audit proof.",
+      action: "Show what remains after deletion and why it remains."
+    },
+    {
+      label: "Redaction pass",
+      score: redactionScore,
+      detail: config.freeTextStores.length
+        ? `${config.freeTextStores.length} free-text bucket${config.freeTextStores.length === 1 ? "" : "s"} need review.`
+        : "No active free-text bucket is currently stored in this browser.",
+      action: "Scrub written notes before export or support review."
+    },
+    {
+      label: "Support-safe status",
+      score: supportScore,
+      detail: "Support should see request status, receipt ID, and object family without private user text.",
+      action: "Bind export/delete requests to redacted support casebook fields."
+    }
+  ];
+  const sequence = [
+    "Show export preview with included buckets, record counts, and excluded sensitive fields.",
+    "Create export request receipt and generate readable research bundle.",
+    "Show delete preview with affected buckets, irreversible warning, and retained receipt policy.",
+    "Run deletion job, mark affected objects deleted, and create completion receipt.",
+    "Expose support-safe status without private notes or investor identifiers."
+  ];
+  return {
+    blockers,
+    deleteScope,
+    exportScope,
+    jobs,
+    metrics,
+    readiness,
+    receiptId,
+    sequence,
+    status,
     tone
   };
 }
@@ -19444,7 +24962,7 @@ function clearAllPrivacyStores() {
 function renderPrivacyControlRoom() {
   if (!els.privacyControlOutput || !els.privacyControlSummary) return;
   const config = privacyControlConfig();
-  els.privacyControlSummary.textContent = `${config.activeStores.length} active store${config.activeStores.length === 1 ? "" : "s"} | ${config.totalRecords} record${config.totalRecords === 1 ? "" : "s"}`;
+  els.privacyControlSummary.textContent = `${config.execution.readiness}/100 | ${config.execution.status}`;
 
   els.privacyControlOutput.innerHTML = `
     <div class="privacy-control-hero ${escapeHtml(config.tone)}">
@@ -19465,6 +24983,58 @@ function renderPrivacyControlRoom() {
       <article><span>Free-text buckets</span><strong>${config.freeTextStores.length}</strong></article>
       <article><span>Cloud sync</span><strong>Off</strong></article>
       <article><span>Private IDs</span><strong>Not stored</strong></article>
+    </div>
+    <div class="privacy-execution ${escapeHtml(config.execution.tone)}">
+      <div class="privacy-execution-head">
+        <div>
+          <span>Export/delete execution board</span>
+          <h3>${escapeHtml(config.execution.status)}</h3>
+          <p>Turn privacy control from a promise into an operating route: export preview, delete preview, request receipt, completion receipt, retention rule, and support-safe status.</p>
+        </div>
+        <div class="privacy-execution-score" style="--score:${config.execution.readiness}">
+          <strong>${config.execution.readiness}</strong>
+          <span>exec</span>
+        </div>
+      </div>
+      <div class="privacy-execution-metrics">
+        ${config.execution.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="privacy-execution-job-grid">
+        ${config.execution.jobs.map((job) => `
+          <article>
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(job.label)}</span>
+                <strong>${job.score}/100</strong>
+              </div>
+              <b>${job.score >= 60 ? "Ready" : job.score >= 50 ? "Dry-run" : "Blocked"}</b>
+            </div>
+            <div class="build-progress-bar launch"><span style="width:${job.score}%"></span></div>
+            <p>${escapeHtml(job.detail)}</p>
+            <small>${escapeHtml(job.action)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="privacy-execution-two">
+        <article>
+          <span>Execution sequence</span>
+          <ol>
+            ${config.execution.sequence.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <span>Before paid accounts</span>
+          <ul>
+            ${config.execution.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="privacy-control-grid">
       ${config.stores.map((store) => `
@@ -19514,6 +25084,17 @@ function makePrivacyControlReport() {
     `Local records: ${config.totalRecords}`,
     `Approx storage size: ${privacyFormatBytes(config.totalBytes)}`,
     `Free-text buckets: ${config.freeTextStores.length}`,
+    "",
+    "## Export/Delete Execution Board",
+    `- Status: ${config.execution.status}`,
+    `- Readiness: ${config.execution.readiness}/100`,
+    `- Receipt: ${config.execution.receiptId}`,
+    `- Export scope: ${config.execution.exportScope}`,
+    `- Delete scope: ${config.execution.deleteScope}`,
+    ...config.execution.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...config.execution.jobs.map((job) => `- Job: ${job.label}: ${job.score}/100 | ${job.detail} | ${job.action}`),
+    ...config.execution.sequence.map((step) => `- Sequence: ${step}`),
+    ...config.execution.blockers.map((blocker) => `- Blocker: ${blocker}`),
     "",
     "## Local storage buckets",
     ...config.stores.map((store) => `- ${store.definition.label}: ${store.count} record(s), ${privacyFormatBytes(store.bytes)}, ${store.definition.sensitivity}`),
@@ -23213,6 +28794,8 @@ function bindEvents() {
   els.copyProfileRoom?.addEventListener("click", () => copyText(makeProfileRoomBrief()));
   els.openBuildNext?.addEventListener("click", openBuildNextLane);
   els.copyBuildTracker?.addEventListener("click", () => copyText(makeBuildTrackerBrief()));
+  els.openBuildPhaseCurrent?.addEventListener("click", openBuildCurrentLane);
+  els.copyBuildPhases?.addEventListener("click", () => copyText(makeBuildPhasesBrief()));
   els.openLaunchBlocker?.addEventListener("click", openTopLaunchBlocker);
   els.copyLaunchReadiness?.addEventListener("click", () => copyText(makeLaunchReadinessBrief()));
   els.openPaymentBlocker?.addEventListener("click", openPaymentBlocker);
@@ -24493,6 +30076,10 @@ function cacheElements() {
     buildTrackerOutput: qs("#buildTrackerOutput"),
     openBuildNext: qs("#openBuildNext"),
     copyBuildTracker: qs("#copyBuildTracker"),
+    buildPhasesSummary: qs("#buildPhasesSummary"),
+    buildPhasesOutput: qs("#buildPhasesOutput"),
+    openBuildPhaseCurrent: qs("#openBuildPhaseCurrent"),
+    copyBuildPhases: qs("#copyBuildPhases"),
     launchReadinessSummary: qs("#launchReadinessSummary"),
     launchReadinessOutput: qs("#launchReadinessOutput"),
     openLaunchBlocker: qs("#openLaunchBlocker"),

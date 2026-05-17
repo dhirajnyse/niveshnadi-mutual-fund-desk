@@ -88,6 +88,15 @@ assert(index.includes("id=\"review-rhythm\""), "index.html is missing the Review
 assert(index.includes("id=\"watchlist\""), "index.html is missing the Watchlist and Alerts Room.");
 assert(index.includes("id=\"decision-pack\""), "index.html is missing the Nadi Decision Pack.");
 assert(index.includes("id=\"pricing\""), "index.html is missing the Pricing section.");
+assert(index.includes("id=\"market-strategy\""), "index.html is missing the Market Strategy Room.");
+assert(index.includes("id=\"paid-beta-pack\""), "index.html is missing the Paid Beta Evidence Pack.");
+assert(index.includes("id=\"founder-invite-path\""), "index.html is missing the Founder Invite Proof Path.");
+assert(index.includes("id=\"founder-cohort-control\""), "index.html is missing the Founder Cohort Control Room.");
+assert(index.includes("id=\"cohort-receipt-backend\""), "index.html is missing the Cohort Receipt Backend.");
+assert(index.includes("id=\"cohort-decision-replay\""), "index.html is missing the Cohort Decision Replay.");
+assert(index.includes("id=\"paid-cohort-expansion-gate\""), "index.html is missing the Paid Cohort Expansion Gate.");
+assert(index.includes("id=\"founder-beta-operating-room\""), "index.html is missing the Founder Beta Operating Room.");
+assert(index.includes("id=\"paid-beta-support-ledger\""), "index.html is missing the Paid Beta Support Ledger.");
 assert(index.includes("id=\"journal\""), "index.html is missing Decision Journal.");
 assert(index.includes("id=\"workspaceJump\""), "index.html is missing the Workspace Navigator.");
 assert(index.includes("id=\"workspaceStatus\""), "index.html is missing the Workspace Command status.");
@@ -99,6 +108,12 @@ assert(index.includes("id=\"launch-readiness\""), "index.html is missing the Nad
 assert(index.includes("id=\"payment-readiness\""), "index.html is missing the Nadi Payment Readiness Lab.");
 assert(index.includes("id=\"payment-wiring\""), "index.html is missing the Nadi Payment Wiring Console.");
 assert(index.includes("id=\"payment-sandbox\""), "index.html is missing the Nadi Payment Gateway Sandbox Route.");
+assert(index.includes("id=\"gateway-webhook-drill\""), "index.html is missing the Nadi Gateway Decision and Webhook Drill.");
+assert(index.includes("id=\"provider-pilot-receipt\""), "index.html is missing the Nadi Payment Provider Pilot Receipt Contract.");
+assert(index.includes("id=\"pilot-receipt-vault\""), "index.html is missing the Nadi Pilot Receipt Vault.");
+assert(index.includes("id=\"paid-pilot-launch-gate\""), "index.html is missing the Nadi Paid Pilot Launch Gate.");
+assert(index.includes("id=\"backend-ticket-factory\""), "index.html is missing the Nadi Backend Ticket Factory.");
+assert(index.includes("id=\"receipt-replay-engine\""), "index.html is missing the Nadi Receipt Replay Engine.");
 assert(index.includes("id=\"entitlement-bridge\""), "index.html is missing the Nadi Entitlement Bridge.");
 assert(index.includes("id=\"subscription-ops\""), "index.html is missing the Nadi Subscription Ops Console.");
 assert(index.includes("id=\"subscription-backend\""), "index.html is missing the Nadi Subscription Backend Blueprint.");
@@ -136,17 +151,32 @@ assert(app.includes("function renderSignalStrip") && app.includes("function make
 assert(app.includes("function renderBuildTracker") && app.includes("function makeBuildTrackerBrief"), "app.js is missing Nadi Build Tracker behavior.");
 assert(app.includes("function renderBuildPhasesRoom") && app.includes("function makeBuildPhasesBrief") && app.includes("buildPhaseGridMarkup"), "app.js is missing Nadi Build Phases Room behavior.");
 assert(app.includes("BUILD_TRACKER_CURRENT_SPRINT") && app.includes("launchReadiness") && app.includes("distributorPreview"), "app.js is missing V78 executive Build Tracker behavior.");
+assert(app.includes("function renderMarketStrategyRoom") && app.includes("function makeMarketStrategyBrief") && app.includes("MARKET_STRATEGY_SIGNALS"), "app.js is missing Market Strategy Room behavior.");
+assert(app.includes("function renderPaidBetaEvidencePack") && app.includes("function makePaidBetaEvidenceBrief") && app.includes("PAID_BETA_EVIDENCE_REQUIREMENTS"), "app.js is missing Paid Beta Evidence Pack behavior.");
+assert(app.includes("function renderFounderInviteProofPath") && app.includes("function makeFounderInviteProofBrief") && app.includes("FOUNDER_INVITE_PROOF_STEPS"), "app.js is missing Founder Invite Proof Path behavior.");
+assert(app.includes("function renderFounderCohortControlRoom") && app.includes("function makeFounderCohortControlBrief") && app.includes("FOUNDER_COHORT_CONTROL_RECORDS"), "app.js is missing Founder Cohort Control Room behavior.");
+assert(app.includes("function renderCohortReceiptBackend") && app.includes("function makeCohortReceiptBackendBrief") && app.includes("COHORT_RECEIPT_BACKEND_STREAMS"), "app.js is missing Cohort Receipt Backend behavior.");
+assert(app.includes("function renderCohortDecisionReplay") && app.includes("function makeCohortDecisionReplayBrief") && app.includes("COHORT_DECISION_REPLAY_CASES"), "app.js is missing Cohort Decision Replay behavior.");
+assert(app.includes("function renderPaidCohortExpansionGate") && app.includes("function makePaidCohortExpansionBrief") && app.includes("PAID_COHORT_EXPANSION_GATES"), "app.js is missing Paid Cohort Expansion Gate behavior.");
+assert(app.includes("function renderFounderBetaOperatingRoom") && app.includes("function makeFounderBetaOperatingBrief") && app.includes("FOUNDER_BETA_OPERATING_LANES"), "app.js is missing Founder Beta Operating Room behavior.");
+assert(app.includes("function renderPaidBetaSupportLedger") && app.includes("function makePaidBetaSupportLedgerBrief") && app.includes("PAID_BETA_SUPPORT_CASES"), "app.js is missing Paid Beta Support Ledger behavior.");
 assert(app.includes("function renderLaunchReadinessBoard") && app.includes("function makeLaunchReadinessBrief") && app.includes("LAUNCH_READINESS_GATES") && app.includes("function paidBetaProductionGate"), "app.js is missing Launch Readiness Board behavior.");
 assert(app.includes("function renderPaymentReadinessLab") && app.includes("function makePaymentReadinessBrief") && app.includes("PAYMENT_READINESS_STEPS"), "app.js is missing Payment Readiness Lab behavior.");
 assert(app.includes("function renderPaymentWiringConsole") && app.includes("function makePaymentWiringBrief") && app.includes("function paymentGatewayRetentionPolicy") && app.includes("PAYMENT_WIRING_STATES"), "app.js is missing Payment Wiring Console behavior.");
 assert(app.includes("function renderPaymentGatewaySandbox") && app.includes("function makePaymentSandboxBrief") && app.includes("function paidBetaRunbook") && app.includes("PAYMENT_SANDBOX_TESTS"), "app.js is missing Payment Gateway Sandbox behavior.");
-assert(app.includes("function renderEntitlementBridge") && app.includes("function makeEntitlementBridgeBrief") && app.includes("ENTITLEMENT_BRIDGE_STATES"), "app.js is missing Entitlement Bridge behavior.");
+assert(app.includes("function renderGatewayWebhookDrill") && app.includes("function makeGatewayWebhookBrief") && app.includes("GATEWAY_WEBHOOK_DRILL_REQUIREMENTS"), "app.js is missing Gateway Decision and Webhook Drill behavior.");
+assert(app.includes("function renderProviderPilotReceiptContract") && app.includes("function makeProviderPilotReceiptBrief") && app.includes("function providerPaymentTwin") && app.includes("PROVIDER_PILOT_RECEIPT_FIELDS"), "app.js is missing Payment Provider Pilot Receipt Contract behavior.");
+assert(app.includes("function renderPilotReceiptVault") && app.includes("function makePilotReceiptVaultBrief") && app.includes("PILOT_RECEIPT_VAULT_LANES"), "app.js is missing Pilot Receipt Vault behavior.");
+assert(app.includes("function renderPaidPilotLaunchGate") && app.includes("function makePaidPilotLaunchGateBrief") && app.includes("PAID_PILOT_LAUNCH_GATES"), "app.js is missing Paid Pilot Launch Gate behavior.");
+assert(app.includes("function renderBackendTicketFactory") && app.includes("function makeBackendTicketFactoryBrief") && app.includes("function backendTicketCloseout") && app.includes("BACKEND_TICKET_FACTORY_TEMPLATES"), "app.js is missing Backend Ticket Factory behavior.");
+assert(app.includes("function renderReceiptReplayEngine") && app.includes("function makeReceiptReplayEngineBrief") && app.includes("RECEIPT_REPLAY_ENGINE_CASES"), "app.js is missing Receipt Replay Engine behavior.");
+assert(app.includes("function renderEntitlementBridge") && app.includes("function makeEntitlementBridgeBrief") && app.includes("ENTITLEMENT_BRIDGE_STATES") && app.includes("ENTITLEMENT_ACCESS_MATRIX"), "app.js is missing Entitlement Bridge behavior.");
 assert(app.includes("function renderSubscriptionOpsConsole") && app.includes("function makeSubscriptionOpsBrief") && app.includes("function productionSupportTooling") && app.includes("SUBSCRIPTION_OPS_STATES"), "app.js is missing Subscription Ops Console behavior.");
-assert(app.includes("function renderSubscriptionBackendBlueprint") && app.includes("function makeSubscriptionBackendBrief") && app.includes("function backendSupportReceipts") && app.includes("SUBSCRIPTION_BACKEND_CONTRACTS"), "app.js is missing Subscription Backend Blueprint behavior.");
+assert(app.includes("function renderSubscriptionBackendBlueprint") && app.includes("function makeSubscriptionBackendBrief") && app.includes("function backendSupportReceipts") && app.includes("function paymentAdapterRepairBoard") && app.includes("SUBSCRIPTION_BACKEND_CONTRACTS"), "app.js is missing Subscription Backend Blueprint behavior.");
 assert(app.includes("function renderAccountReadinessLab") && app.includes("function makeAccountReadinessBrief") && app.includes("ACCOUNT_READINESS_STEPS"), "app.js is missing Account Readiness Lab behavior.");
 assert(app.includes("function renderAccountLaunchRoute") && app.includes("function makeAccountLaunchRouteBrief") && app.includes("function founderBetaChecklist") && app.includes("function founderAuthDecisionBoard") && app.includes("function founderStorageDecisionBoard") && app.includes("function founderInviteGate") && app.includes("function founderInviteReceipt") && app.includes("function founderSupportDrill") && app.includes("function founderSupportCasebook") && app.includes("function supportOperationsHandoff") && app.includes("ACCOUNT_LAUNCH_ROUTE_GATES"), "app.js is missing Retail Account Launch Route behavior.");
 assert(app.includes("function renderAccountLaunchShell") && app.includes("function makeAccountLaunchBrief") && app.includes("ACCOUNT_LAUNCH_STATES"), "app.js is missing Account Launch Shell behavior.");
-assert(app.includes("function renderAccountVaultBlueprint") && app.includes("function makeAccountVaultBrief") && app.includes("function backendStorageHandoffBoard") && app.includes("ACCOUNT_VAULT_COLLECTIONS"), "app.js is missing Account Vault Blueprint behavior.");
+assert(app.includes("function renderAccountVaultBlueprint") && app.includes("function makeAccountVaultBrief") && app.includes("function backendStorageHandoffBoard") && app.includes("function accountVaultLimitFromAccess") && app.includes("function accountVaultSupportRepairJoinBoard") && app.includes("ACCOUNT_VAULT_COLLECTIONS"), "app.js is missing Account Vault Blueprint behavior.");
 assert(app.includes("function renderDailyCommandBrief") && app.includes("function makeDailyCommandBrief"), "app.js is missing Nadi Daily Command Brief behavior.");
 assert(app.includes("function renderDecisionRadar") && app.includes("function makeDecisionRadarBrief"), "app.js is missing Nadi Research Decision Radar behavior.");
 assert(app.includes("function renderQuestionStack") && app.includes("function makeQuestionStackBrief"), "app.js is missing Nadi Research Question Stack behavior.");
@@ -157,7 +187,7 @@ assert(app.includes("function renderShortlistReasonBoard") && app.includes("func
 assert(app.includes("function renderProofGapQueue") && app.includes("function makeProofGapQueueBrief"), "app.js is missing Nadi Proof Gap Queue behavior.");
 assert(app.includes("function renderMemoClearanceDesk") && app.includes("function makeMemoClearanceBrief"), "app.js is missing Nadi Memo Clearance Desk behavior.");
 assert(app.includes("function renderClearanceSprintBoard") && app.includes("function makeClearanceSprintBrief"), "app.js is missing Nadi Clearance Sprint Board behavior.");
-assert(app.includes("function renderProfileRoom") && app.includes("function makeProfileRoomBrief"), "app.js is missing Nadi Investor Profile Room behavior.");
+assert(app.includes("function renderProfileRoom") && app.includes("function makeProfileRoomBrief") && app.includes("function profileInvestorTwin"), "app.js is missing Nadi Investor Profile Room behavior.");
 assert(app.includes("function renderJourneyTimeline") && app.includes("function makeJourneyTimelineBrief"), "app.js is missing Nadi Journey Timeline behavior.");
 assert(app.includes("function renderResearchBriefing") && app.includes("function makeResearchBriefingNote"), "app.js is missing Nadi Research Briefing behavior.");
 assert(app.includes("function renderBriefingVault") && app.includes("function makeBriefingVaultBrief"), "app.js is missing Nadi Briefing Vault behavior.");
@@ -186,7 +216,7 @@ assert(app.includes("renderGoalFitCompass"), "app.js is missing Goal Fit Compass
 assert(app.includes("function renderCompareMatrix") && app.includes("function makeCompareNote"), "app.js is missing Fund Compare Matrix behavior.");
 assert(app.includes("renderFirstSipCoach"), "app.js is missing First SIP Coach behavior.");
 assert(app.includes("renderWatchlistRoom"), "app.js is missing Watchlist and Alerts behavior.");
-assert(app.includes("renderDecisionPack"), "app.js is missing Nadi Decision Pack behavior.");
+assert(app.includes("renderDecisionPack") && app.includes("function decisionFlightRecorder") && app.includes("function decisionAntiHypeCourt") && app.includes("function decisionRegretLab") && app.includes("function decisionMotiveMri") && app.includes("function decisionMultiverse"), "app.js is missing Nadi Decision Pack behavior.");
 assert(app.includes("function analyzePortfolio"), "app.js is missing portfolio analysis.");
 assert(app.includes("function portfolioThesis") && app.includes("function duplicationScore"), "app.js is missing Portfolio Intelligence behavior.");
 assert(app.includes("function renderBlueprintLab") && app.includes("function makeBlueprintNote"), "app.js is missing Portfolio Blueprint Lab behavior.");
@@ -207,7 +237,7 @@ assert(app.includes("function renderSurfaceReleaseQueue") && app.includes("funct
 assert(app.includes("function renderReviewerWorkbench") && app.includes("function makeReviewerWorkbenchBrief"), "app.js is missing Reviewer Workbench behavior.");
 assert(app.includes("function renderReviewerDecisionLedger") && app.includes("function makeReviewerDecisionLedgerBrief"), "app.js is missing Reviewer Decision Ledger behavior.");
 assert(app.includes("function renderReviewerReleaseBinder") && app.includes("function bindReviewerDecisionToClaimReleaseGate") && app.includes("function makeReviewerReleaseBinderBrief"), "app.js is missing Reviewer Release Binder behavior.");
-assert(app.includes("function renderBackendAuditReceipts") && app.includes("BACKEND_AUDIT_STREAMS") && app.includes("function makeBackendAuditReceiptBrief") && app.includes("function paymentReconciliationReplay") && app.includes("function productionSourceImportJobs") && app.includes("function sourceImportWorkerBlueprint") && app.includes("function sourceWorkerAlertRouting") && app.includes("function sourceAlertDeliveryBackend") && app.includes("function sourceFailedRunEventStore") && app.includes("function sourceReviewerSignoffBridge") && app.includes("function sourceRollbackEvidenceStore") && app.includes("function sourcePublicRecoveryRehearsal") && app.includes("function sourceRecoveryReleaseQueue") && app.includes("function sourceIncidentReceiptReplay"), "app.js is missing Backend Audit Receipts behavior.");
+assert(app.includes("function renderBackendAuditReceipts") && app.includes("BACKEND_AUDIT_STREAMS") && app.includes("function makeBackendAuditReceiptBrief") && app.includes("function paymentReconciliationReplay") && app.includes("function productionSourceImportJobs") && app.includes("function sourceImportWorkerBlueprint") && app.includes("function sourceWorkerAlertRouting") && app.includes("function sourceAlertDeliveryBackend") && app.includes("function sourceFailedRunEventStore") && app.includes("function sourceReviewerSignoffBridge") && app.includes("function sourceRollbackEvidenceStore") && app.includes("function sourcePublicRecoveryRehearsal") && app.includes("function sourceRecoveryReleaseQueue") && app.includes("function sourceCorrectionPublishConsole") && app.includes("function sourceIncidentReceiptReplay") && app.includes("function launchFreezeAutomation"), "app.js is missing Backend Audit Receipts behavior.");
 assert(app.includes("function renderSourceQaQueue") && app.includes("function makeSourceQaNote"), "app.js is missing Source QA Queue behavior.");
 assert(app.includes("function renderSourceIntakeConsole") && app.includes("function makeSourceIntakeNote") && app.includes("function sourceIntakeProductionGate"), "app.js is missing Source Intake Console behavior.");
 assert(app.includes("function renderSourceDriftMonitor") && app.includes("function makeSourceDriftNote"), "app.js is missing Source Drift Monitor behavior.");
@@ -245,13 +275,19 @@ assert(styles.includes(".launch-readiness-output") && styles.includes(".launch-g
 assert(styles.includes(".payment-readiness-output") && styles.includes(".payment-step-grid") && styles.includes(".payment-flow-grid"), "styles.css is missing Payment Readiness Lab styles.");
 assert(styles.includes(".payment-wiring-output") && styles.includes(".payment-wiring-state-grid") && styles.includes(".payment-wiring-flow-grid") && styles.includes(".payment-retention-board") && styles.includes(".payment-retention-lane-grid"), "styles.css is missing Payment Wiring Console styles.");
 assert(styles.includes(".payment-sandbox-output") && styles.includes(".payment-sandbox-test-grid") && styles.includes(".payment-sandbox-flow-grid") && styles.includes(".payment-beta-runbook") && styles.includes(".payment-beta-lane-grid"), "styles.css is missing Payment Gateway Sandbox styles.");
-assert(styles.includes(".entitlement-output") && styles.includes(".entitlement-state-grid") && styles.includes(".entitlement-flow-grid"), "styles.css is missing Entitlement Bridge styles.");
+assert(styles.includes(".gateway-webhook-output") && styles.includes(".gateway-webhook-hero") && styles.includes(".gateway-webhook-requirement-grid"), "styles.css is missing Gateway Decision and Webhook Drill styles.");
+assert(styles.includes(".provider-pilot-output") && styles.includes(".provider-pilot-hero") && styles.includes(".provider-pilot-field-grid") && styles.includes(".provider-twin-board") && styles.includes(".provider-twin-flow-grid"), "styles.css is missing Payment Provider Pilot Receipt Contract styles.");
+assert(styles.includes(".pilot-vault-output") && styles.includes(".pilot-vault-hero") && styles.includes(".pilot-vault-lane-grid"), "styles.css is missing Pilot Receipt Vault styles.");
+assert(styles.includes(".paid-pilot-gate-output") && styles.includes(".paid-pilot-gate-hero") && styles.includes(".paid-pilot-gate-grid"), "styles.css is missing Paid Pilot Launch Gate styles.");
+assert(styles.includes(".backend-ticket-output") && styles.includes(".backend-ticket-hero") && styles.includes(".backend-ticket-grid") && styles.includes(".backend-ticket-closeout") && styles.includes(".backend-ticket-closeout-grid"), "styles.css is missing Backend Ticket Factory styles.");
+assert(styles.includes(".receipt-replay-output") && styles.includes(".receipt-replay-hero") && styles.includes(".receipt-replay-case-grid"), "styles.css is missing Receipt Replay Engine styles.");
+assert(styles.includes(".entitlement-output") && styles.includes(".entitlement-state-grid") && styles.includes(".entitlement-flow-grid") && styles.includes(".entitlement-access-matrix") && styles.includes(".entitlement-proof-grid"), "styles.css is missing Entitlement Bridge styles.");
 assert(styles.includes(".subscription-ops-output") && styles.includes(".subscription-ops-state-grid") && styles.includes(".subscription-ops-flow-grid") && styles.includes(".subscription-support-tooling") && styles.includes(".subscription-support-tool-grid"), "styles.css is missing Subscription Ops Console styles.");
-assert(styles.includes(".subscription-backend-output") && styles.includes(".subscription-backend-contract-grid") && styles.includes(".subscription-backend-flow-grid") && styles.includes(".subscription-support-receipts") && styles.includes(".subscription-support-receipts-grid"), "styles.css is missing Subscription Backend Blueprint styles.");
+assert(styles.includes(".subscription-backend-output") && styles.includes(".subscription-backend-contract-grid") && styles.includes(".subscription-backend-flow-grid") && styles.includes(".subscription-adapter-repairs") && styles.includes(".subscription-adapter-repairs-grid") && styles.includes(".subscription-support-receipts") && styles.includes(".subscription-support-receipts-grid"), "styles.css is missing Subscription Backend Blueprint styles.");
 assert(styles.includes(".account-readiness-output") && styles.includes(".account-step-grid") && styles.includes(".account-flow-grid"), "styles.css is missing Account Readiness Lab styles.");
 assert(styles.includes(".account-route-output") && styles.includes(".account-route-form label") && styles.includes(".account-route-beta") && styles.includes(".account-route-check-grid") && styles.includes(".account-route-auth") && styles.includes(".account-route-auth-control-grid") && styles.includes(".account-route-storage") && styles.includes(".account-route-storage-contract-grid") && styles.includes(".account-route-invite") && styles.includes(".account-route-invite-grid") && styles.includes(".account-route-receipt") && styles.includes(".account-route-receipt-grid") && styles.includes(".account-route-support") && styles.includes(".account-route-support-queue") && styles.includes(".account-route-casebook") && styles.includes(".account-route-case-flow") && styles.includes(".account-route-ops") && styles.includes(".account-route-ops-lane-grid") && styles.includes(".account-route-gate-grid") && styles.includes(".account-route-map-grid"), "styles.css is missing Retail Account Launch Route styles.");
 assert(styles.includes(".account-launch-output") && styles.includes(".account-launch-state-grid") && styles.includes(".account-launch-flow-grid"), "styles.css is missing Account Launch Shell styles.");
-assert(styles.includes(".account-vault-output") && styles.includes(".account-vault-handoff") && styles.includes(".account-vault-handoff-contract-grid") && styles.includes(".account-vault-collection-grid") && styles.includes(".account-vault-flow-grid"), "styles.css is missing Account Vault Blueprint styles.");
+assert(styles.includes(".account-vault-output") && styles.includes(".account-vault-handoff") && styles.includes(".account-vault-handoff-contract-grid") && styles.includes(".account-vault-limit-grid") && styles.includes(".account-vault-repair") && styles.includes(".account-vault-repair-join-grid") && styles.includes(".account-vault-collection-grid") && styles.includes(".account-vault-flow-grid"), "styles.css is missing Account Vault Blueprint styles.");
 assert(styles.includes(".daily-command-output") && styles.includes(".daily-command-hero"), "styles.css is missing Nadi Daily Command Brief styles.");
 assert(styles.includes(".decision-radar-output") && styles.includes(".decision-radar-hero"), "styles.css is missing Nadi Research Decision Radar styles.");
 assert(styles.includes(".question-stack-output") && styles.includes(".question-stack-hero"), "styles.css is missing Nadi Research Question Stack styles.");
@@ -262,7 +298,7 @@ assert(styles.includes(".shortlist-board-output") && styles.includes(".shortlist
 assert(styles.includes(".proof-gap-output") && styles.includes(".proof-gap-hero"), "styles.css is missing Nadi Proof Gap Queue styles.");
 assert(styles.includes(".memo-clearance-output") && styles.includes(".memo-clearance-hero"), "styles.css is missing Nadi Memo Clearance Desk styles.");
 assert(styles.includes(".clearance-sprint-output") && styles.includes(".clearance-sprint-hero"), "styles.css is missing Nadi Clearance Sprint Board styles.");
-assert(styles.includes(".profile-room-grid") && styles.includes(".profile-room-hero"), "styles.css is missing Nadi Investor Profile Room styles.");
+assert(styles.includes(".profile-room-grid") && styles.includes(".profile-room-hero") && styles.includes(".profile-twin-board") && styles.includes(".profile-twin-scenario-grid"), "styles.css is missing Nadi Investor Profile Room styles.");
 assert(styles.includes(".journey-timeline-rail") && styles.includes(".journey-timeline-hero"), "styles.css is missing Nadi Journey Timeline styles.");
 assert(styles.includes(".briefing-layout") && styles.includes(".briefing-card"), "styles.css is missing Nadi Research Briefing styles.");
 assert(styles.includes(".briefing-vault-output") && styles.includes(".briefing-vault-card"), "styles.css is missing Nadi Briefing Vault styles.");
@@ -290,7 +326,7 @@ assert(styles.includes(".cost-grid") && styles.includes(".cost-hero"), "styles.c
 assert(styles.includes(".readiness-grid") && styles.includes(".readiness-hero"), "styles.css is missing Investor Readiness Gate styles.");
 assert(styles.includes(".journey-grid") && styles.includes(".journey-output"), "styles.css is missing First SIP Coach styles.");
 assert(styles.includes(".watch-grid") && styles.includes(".watch-card"), "styles.css is missing Watchlist and Alerts styles.");
-assert(styles.includes(".pack-grid") && styles.includes(".pack-card"), "styles.css is missing Nadi Decision Pack styles.");
+assert(styles.includes(".pack-grid") && styles.includes(".pack-card") && styles.includes(".pack-flight-recorder") && styles.includes(".pack-flight-grid") && styles.includes(".pack-court") && styles.includes(".pack-court-grid") && styles.includes(".pack-regret-lab") && styles.includes(".pack-regret-grid") && styles.includes(".pack-motive-mri") && styles.includes(".pack-motive-grid") && styles.includes(".pack-multiverse") && styles.includes(".pack-multiverse-grid"), "styles.css is missing Nadi Decision Pack styles.");
 assert(styles.includes(".xray-thesis") && styles.includes(".role-list"), "styles.css is missing Portfolio Intelligence styles.");
 assert(styles.includes(".blueprint-grid") && styles.includes(".blueprint-hero"), "styles.css is missing Portfolio Blueprint Lab styles.");
 assert(styles.includes(".rebalance-grid") && styles.includes(".rebalance-hero"), "styles.css is missing Rebalance Guard styles.");
@@ -310,7 +346,7 @@ assert(styles.includes(".surface-queue-output") && styles.includes(".surface-que
 assert(styles.includes(".reviewer-workbench-output") && styles.includes(".reviewer-workbench-grid"), "styles.css is missing Reviewer Workbench styles.");
 assert(styles.includes(".reviewer-decision-output") && styles.includes(".reviewer-decision-card"), "styles.css is missing Reviewer Decision Ledger styles.");
 assert(styles.includes(".reviewer-release-output") && styles.includes(".reviewer-release-card"), "styles.css is missing Reviewer Release Binder styles.");
-assert(styles.includes(".backend-audit-output") && styles.includes(".backend-audit-card") && styles.includes(".payment-replay-board") && styles.includes(".payment-replay-leg-grid") && styles.includes(".source-job-board") && styles.includes(".source-job-grid") && styles.includes(".source-worker-board") && styles.includes(".source-worker-alert-grid") && styles.includes(".source-alert-board") && styles.includes(".source-alert-route-grid") && styles.includes(".source-delivery-board") && styles.includes(".source-delivery-channel-grid") && styles.includes(".source-failed-board") && styles.includes(".source-failed-event-grid") && styles.includes(".source-signoff-board") && styles.includes(".source-signoff-lane-grid") && styles.includes(".source-rollback-board") && styles.includes(".source-rollback-packet-grid") && styles.includes(".source-recovery-board") && styles.includes(".source-recovery-surface-grid") && styles.includes(".recovery-release-board") && styles.includes(".recovery-release-task-grid") && styles.includes(".source-incident-board") && styles.includes(".source-incident-leg-grid"), "styles.css is missing Backend Audit Receipts styles.");
+assert(styles.includes(".backend-audit-output") && styles.includes(".backend-audit-card") && styles.includes(".payment-replay-board") && styles.includes(".payment-replay-leg-grid") && styles.includes(".source-job-board") && styles.includes(".source-job-grid") && styles.includes(".source-worker-board") && styles.includes(".source-worker-alert-grid") && styles.includes(".source-alert-board") && styles.includes(".source-alert-route-grid") && styles.includes(".source-delivery-board") && styles.includes(".source-delivery-channel-grid") && styles.includes(".source-failed-board") && styles.includes(".source-failed-event-grid") && styles.includes(".source-signoff-board") && styles.includes(".source-signoff-lane-grid") && styles.includes(".source-rollback-board") && styles.includes(".source-rollback-packet-grid") && styles.includes(".source-recovery-board") && styles.includes(".source-recovery-surface-grid") && styles.includes(".recovery-release-board") && styles.includes(".recovery-release-task-grid") && styles.includes(".correction-publish-board") && styles.includes(".correction-publish-control-grid") && styles.includes(".correction-publish-wording") && styles.includes(".source-incident-board") && styles.includes(".source-incident-leg-grid") && styles.includes(".launch-freeze-board") && styles.includes(".launch-freeze-trigger-grid"), "styles.css is missing Backend Audit Receipts styles.");
 assert(styles.includes(".source-queue-layout") && styles.includes(".source-queue-card"), "styles.css is missing Source QA Queue styles.");
 assert(styles.includes(".source-intake-layout") && styles.includes(".source-intake-card") && styles.includes(".source-import-gate") && styles.includes(".source-import-control-grid"), "styles.css is missing Source Intake Console styles.");
 assert(styles.includes(".source-drift-layout") && styles.includes(".source-drift-card"), "styles.css is missing Source Drift Monitor styles.");
@@ -329,6 +365,15 @@ assert(styles.includes(".receipt-layout") && styles.includes(".receipt-hero"), "
 assert(styles.includes(".receipt-vault-output") && styles.includes(".receipt-vault-card"), "styles.css is missing Receipt Vault styles.");
 assert(styles.includes(".rhythm-grid") && styles.includes(".rhythm-hero"), "styles.css is missing Review Rhythm Board styles.");
 assert(styles.includes(".pricing-grid") && styles.includes(".pricing-card"), "styles.css is missing pricing section styles.");
+assert(styles.includes(".market-strategy-output") && styles.includes(".market-strategy-hero") && styles.includes(".market-strategy-gate-grid"), "styles.css is missing Market Strategy Room styles.");
+assert(styles.includes(".paid-beta-pack-output") && styles.includes(".paid-beta-pack-hero") && styles.includes(".paid-beta-proof-grid"), "styles.css is missing Paid Beta Evidence Pack styles.");
+assert(styles.includes(".founder-invite-output") && styles.includes(".founder-invite-hero") && styles.includes(".founder-invite-proof-grid"), "styles.css is missing Founder Invite Proof Path styles.");
+assert(styles.includes(".founder-cohort-output") && styles.includes(".founder-cohort-hero") && styles.includes(".founder-cohort-ledger"), "styles.css is missing Founder Cohort Control Room styles.");
+assert(styles.includes(".cohort-receipt-output") && styles.includes(".cohort-receipt-hero") && styles.includes(".cohort-receipt-stream-grid"), "styles.css is missing Cohort Receipt Backend styles.");
+assert(styles.includes(".cohort-replay-output") && styles.includes(".cohort-replay-hero") && styles.includes(".cohort-replay-case-grid"), "styles.css is missing Cohort Decision Replay styles.");
+assert(styles.includes(".paid-expansion-output") && styles.includes(".paid-expansion-hero") && styles.includes(".paid-expansion-gate-grid"), "styles.css is missing Paid Cohort Expansion Gate styles.");
+assert(styles.includes(".founder-beta-ops-output") && styles.includes(".founder-beta-ops-hero") && styles.includes(".founder-beta-ops-lane-grid"), "styles.css is missing Founder Beta Operating Room styles.");
+assert(styles.includes(".paid-support-output") && styles.includes(".paid-support-hero") && styles.includes(".paid-support-case-grid"), "styles.css is missing Paid Beta Support Ledger styles.");
 assert(!styles.includes("letter-spacing: -"), "styles.css uses negative letter spacing.");
 assert(!styles.includes("vw;"), "styles.css appears to scale font size directly with viewport width.");
 
@@ -434,6 +479,21 @@ for (const file of [
   "docs/REVIEWER_DECISION_LEDGER.md",
   "docs/REVIEWER_RELEASE_BINDER.md",
   "docs/BACKEND_AUDIT_RECEIPTS.md",
+  "docs/MARKET_STRATEGY_ROOM.md",
+  "docs/PAID_BETA_EVIDENCE_PACK.md",
+  "docs/FOUNDER_INVITE_PROOF_PATH.md",
+  "docs/FOUNDER_COHORT_CONTROL_ROOM.md",
+  "docs/COHORT_RECEIPT_BACKEND.md",
+  "docs/COHORT_DECISION_REPLAY.md",
+  "docs/PAID_COHORT_EXPANSION_GATE.md",
+  "docs/FOUNDER_BETA_OPERATING_ROOM.md",
+  "docs/PAID_BETA_SUPPORT_LEDGER.md",
+  "docs/GATEWAY_WEBHOOK_DRILL.md",
+  "docs/PROVIDER_PILOT_RECEIPT_CONTRACT.md",
+  "docs/PILOT_RECEIPT_VAULT.md",
+  "docs/PAID_PILOT_LAUNCH_GATE.md",
+  "docs/BACKEND_TICKET_FACTORY.md",
+  "docs/RECEIPT_REPLAY_ENGINE.md",
   "docs/MONETIZATION.md",
   "docs/PORTFOLIO_INTELLIGENCE.md",
   "docs/REPO_HANDOFF.md",

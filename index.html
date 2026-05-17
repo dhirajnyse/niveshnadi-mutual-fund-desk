@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260515-15">
+    <link rel="stylesheet" href="styles.css?v=20260517-02">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -31,6 +31,12 @@
             <a href="#launch-readiness">Launch</a>
             <a href="#payment-wiring">Wiring</a>
             <a href="#payment-sandbox">Sandbox</a>
+            <a href="#gateway-webhook-drill">Webhook</a>
+            <a href="#provider-pilot-receipt">Pilot</a>
+            <a href="#pilot-receipt-vault">Vault</a>
+            <a href="#paid-pilot-launch-gate">Pilot Gate</a>
+            <a href="#backend-ticket-factory">Tickets</a>
+            <a href="#receipt-replay-engine">Receipt Replay</a>
             <a href="#entitlement-bridge">Access</a>
             <a href="#subscription-ops">Ops</a>
             <a href="#subscription-backend">Contract</a>
@@ -54,6 +60,15 @@
             <a href="#portfolio">X-Ray</a>
             <a href="#research-dossier">Dossier</a>
             <a href="#pricing">Pricing</a>
+            <a href="#market-strategy">Strategy</a>
+            <a href="#paid-beta-pack">Beta</a>
+            <a href="#founder-invite-path">Invite</a>
+            <a href="#founder-cohort-control">Cohort</a>
+            <a href="#cohort-receipt-backend">C-Receipts</a>
+            <a href="#cohort-decision-replay">Replay</a>
+            <a href="#paid-cohort-expansion-gate">Gate</a>
+            <a href="#founder-beta-operating-room">Ops Room</a>
+            <a href="#paid-beta-support-ledger">Support</a>
           </div>
           <div class="nav-mode-strip" aria-label="Guided workspace phases">
             <a href="#profile-room"><span>01</span> Profile</a>
@@ -73,9 +88,23 @@
                 <option value="#build-tracker">Build Tracker</option>
                 <option value="#build-phases">Build Phases Room</option>
                 <option value="#launch-readiness">Launch Readiness</option>
+                <option value="#paid-beta-pack">Paid Beta Evidence Pack</option>
+                <option value="#founder-invite-path">Founder Invite Proof Path</option>
+                <option value="#founder-cohort-control">Founder Cohort Control Room</option>
+                <option value="#cohort-receipt-backend">Cohort Receipt Backend</option>
+                <option value="#cohort-decision-replay">Cohort Decision Replay</option>
+                <option value="#paid-cohort-expansion-gate">Paid Cohort Expansion Gate</option>
+                <option value="#founder-beta-operating-room">Founder Beta Operating Room</option>
+                <option value="#paid-beta-support-ledger">Paid Beta Support Ledger</option>
                 <option value="#payment-readiness">Payment Readiness</option>
                 <option value="#payment-wiring">Payment Wiring Console</option>
                 <option value="#payment-sandbox">Payment Gateway Sandbox</option>
+                <option value="#gateway-webhook-drill">Gateway Decision and Webhook Drill</option>
+                <option value="#provider-pilot-receipt">Payment Provider Pilot Receipt Contract</option>
+                <option value="#pilot-receipt-vault">Pilot Receipt Vault</option>
+                <option value="#paid-pilot-launch-gate">Paid Pilot Launch Gate</option>
+                <option value="#backend-ticket-factory">Backend Ticket Factory</option>
+                <option value="#receipt-replay-engine">Receipt Replay Engine</option>
                 <option value="#entitlement-bridge">Entitlement Bridge</option>
                 <option value="#subscription-ops">Subscription Ops Console</option>
                 <option value="#subscription-backend">Subscription Backend Blueprint</option>
@@ -168,6 +197,21 @@
                 <option value="#watchlist">Watchlist</option>
                 <option value="#decision-pack">Decision Pack</option>
                 <option value="#pricing">Pricing</option>
+                <option value="#market-strategy">Market Strategy Room</option>
+                <option value="#paid-beta-pack">Paid Beta Evidence Pack</option>
+                <option value="#founder-invite-path">Founder Invite Proof Path</option>
+                <option value="#founder-cohort-control">Founder Cohort Control Room</option>
+                <option value="#cohort-receipt-backend">Cohort Receipt Backend</option>
+                <option value="#cohort-decision-replay">Cohort Decision Replay</option>
+                <option value="#paid-cohort-expansion-gate">Paid Cohort Expansion Gate</option>
+                <option value="#founder-beta-operating-room">Founder Beta Operating Room</option>
+                <option value="#paid-beta-support-ledger">Paid Beta Support Ledger</option>
+                <option value="#gateway-webhook-drill">Gateway Decision and Webhook Drill</option>
+                <option value="#provider-pilot-receipt">Payment Provider Pilot Receipt Contract</option>
+                <option value="#pilot-receipt-vault">Pilot Receipt Vault</option>
+                <option value="#paid-pilot-launch-gate">Paid Pilot Launch Gate</option>
+                <option value="#backend-ticket-factory">Backend Ticket Factory</option>
+                <option value="#receipt-replay-engine">Receipt Replay Engine</option>
                 <option value="#journal">Journal</option>
               </optgroup>
             </select>
@@ -181,7 +225,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-            <p class="release-pill">Phase 1 v130</p>
+            <p class="release-pill">Phase 1 v159</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -438,6 +482,108 @@
         </div>
       </section>
 
+      <section id="gateway-webhook-drill" class="workspace-band gateway-webhook-band" aria-labelledby="gateway-webhook-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Payment launch decision</p>
+            <h2 id="gateway-webhook-title">Nadi Gateway Decision and Webhook Drill</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Gateway Webhook Drill actions">
+            <span id="gatewayWebhookSummary" class="status-chip">Gateway drill</span>
+            <button class="text-button" id="openGatewayWebhookBlocker" type="button">Open webhook blocker</button>
+            <button class="text-button" id="copyGatewayWebhook" type="button">Copy gateway drill</button>
+          </div>
+        </div>
+        <div id="gatewayWebhookOutput" class="gateway-webhook-output" aria-live="polite">
+          Gateway Decision and Webhook Drill will convert the sandbox route into a provider choice, signed webhook proof, idempotency replay, entitlement mutation, invoice, refund, reconciliation, and incident rollback gate before any retail payment rail is switched on.
+        </div>
+      </section>
+
+      <section id="provider-pilot-receipt" class="workspace-band provider-pilot-band" aria-labelledby="provider-pilot-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Provider pilot evidence</p>
+            <h2 id="provider-pilot-title">Nadi Payment Provider Pilot Receipt Contract</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Payment Provider Pilot actions">
+            <span id="providerPilotSummary" class="status-chip">Pilot contract</span>
+            <button class="text-button" id="openProviderPilotBlocker" type="button">Open receipt blocker</button>
+            <button class="text-button" id="copyProviderPilot" type="button">Copy pilot contract</button>
+          </div>
+        </div>
+        <div id="providerPilotOutput" class="provider-pilot-output" aria-live="polite">
+          Payment Provider Pilot Receipt Contract will define the exact backend-owned fields for checkout, signed webhook, idempotency, entitlement, invoice, refund, reconciliation, support repair, and incident receipts before a live paid pilot can be trusted.
+        </div>
+      </section>
+
+      <section id="pilot-receipt-vault" class="workspace-band pilot-vault-band" aria-labelledby="pilot-vault-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Payment receipt storage</p>
+            <h2 id="pilot-vault-title">Nadi Pilot Receipt Vault</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Pilot Receipt Vault actions">
+            <span id="pilotReceiptVaultSummary" class="status-chip">Pilot vault</span>
+            <button class="text-button" id="openPilotReceiptVaultBlocker" type="button">Open vault blocker</button>
+            <button class="text-button" id="copyPilotReceiptVault" type="button">Copy vault brief</button>
+          </div>
+        </div>
+        <div id="pilotReceiptVaultOutput" class="pilot-vault-output" aria-live="polite">
+          Pilot Receipt Vault will show where provider pilot receipts are stored, replayed, audited, exported, and frozen before live paid access can rely on payment events.
+        </div>
+      </section>
+
+      <section id="paid-pilot-launch-gate" class="workspace-band paid-pilot-gate-band" aria-labelledby="paid-pilot-gate-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Founder paid pilot decision</p>
+            <h2 id="paid-pilot-gate-title">Nadi Paid Pilot Launch Gate</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Paid Pilot Launch Gate actions">
+            <span id="paidPilotLaunchGateSummary" class="status-chip">Pilot gate</span>
+            <button class="text-button" id="openPaidPilotLaunchBlocker" type="button">Open gate blocker</button>
+            <button class="text-button" id="copyPaidPilotLaunchGate" type="button">Copy pilot gate</button>
+          </div>
+        </div>
+        <div id="paidPilotLaunchGateOutput" class="paid-pilot-gate-output" aria-live="polite">
+          Paid Pilot Launch Gate will combine vault replay, payment provider proof, entitlement, support, account, evidence, privacy, and founder capacity into a go, hold, or no-go decision before the first paid cohort opens.
+        </div>
+      </section>
+
+      <section id="backend-ticket-factory" class="workspace-band backend-ticket-band" aria-labelledby="backend-ticket-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Production implementation bridge</p>
+            <h2 id="backend-ticket-title">Nadi Backend Ticket Factory</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Backend Ticket Factory actions">
+            <span id="backendTicketFactorySummary" class="status-chip">Ticket factory</span>
+            <button class="text-button" id="openBackendTicketBlocker" type="button">Open first ticket</button>
+            <button class="text-button" id="copyBackendTicketFactory" type="button">Copy ticket pack</button>
+          </div>
+        </div>
+        <div id="backendTicketFactoryOutput" class="backend-ticket-output" aria-live="polite">
+          Backend Ticket Factory will turn paid pilot blockers into production tickets for receipt replay, provider webhooks, entitlement unlock, support-safe refunds, account migration, evidence release, privacy export/delete, and founder operations.
+        </div>
+      </section>
+
+      <section id="receipt-replay-engine" class="workspace-band receipt-replay-band" aria-labelledby="receipt-replay-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Backend replay implementation</p>
+            <h2 id="receipt-replay-title">Nadi Receipt Replay Engine</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Receipt Replay Engine actions">
+            <span id="receiptReplaySummary" class="status-chip">Receipt replay</span>
+            <button class="text-button" id="openReceiptReplayBlocker" type="button">Open replay blocker</button>
+            <button class="text-button" id="copyReceiptReplayEngine" type="button">Copy replay pack</button>
+          </div>
+        </div>
+        <div id="receiptReplayOutput" class="receipt-replay-output" aria-live="polite">
+          Receipt Replay Engine will turn the first backend ticket into replay cases for clean checkout, duplicate webhook handling, refund reversal, settlement drift, support repair, audit export, and incident freeze.
+        </div>
+      </section>
+
       <section id="entitlement-bridge" class="workspace-band entitlement-band" aria-labelledby="entitlement-title">
         <div class="section-heading">
           <div>
@@ -495,7 +641,7 @@
             <button class="primary-button" type="submit">Build access bridge</button>
           </form>
           <div id="entitlementOutput" class="entitlement-output" aria-live="polite">
-            Entitlement Bridge will connect free, monthly, annual, grace, refund, expired, support, and receipt states to the research features each retail account can access.
+            Entitlement Bridge will connect every plan, lifecycle, receipt posture, replay proof, and account feature limit before paid retail access can widen.
           </div>
         </div>
       </section>
@@ -771,7 +917,7 @@
           </div>
         </div>
         <div id="accountVaultOutput" class="account-vault-output" aria-live="polite">
-          Account Vault Blueprint will show saved research collections, entitlement guards, audit trail, export/delete, and Phase 2 exclusions.
+          Account Vault Blueprint will show saved research collections, entitlement guards, plan limits, support repair joins, audit trail, export/delete, and Phase 2 exclusions.
         </div>
       </section>
 
@@ -4029,6 +4175,141 @@
         </div>
       </section>
 
+      <section id="market-strategy" class="workspace-band market-strategy-band" aria-labelledby="market-strategy-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Founder strategy</p>
+            <h2 id="market-strategy-title">Market Strategy Room</h2>
+          </div>
+          <div class="toolbar">
+            <span id="marketStrategySummary" class="status-chip">Strategy loading</span>
+            <button class="text-button" id="openMarketStrategyNext" type="button">Open next proof</button>
+            <button class="text-button" id="copyMarketStrategy" type="button">Copy strategy brief</button>
+          </div>
+        </div>
+        <div id="marketStrategyOutput" class="market-strategy-output" aria-live="polite"></div>
+      </section>
+
+      <section id="paid-beta-pack" class="workspace-band paid-beta-pack-band" aria-labelledby="paid-beta-pack-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Paid beta proof</p>
+            <h2 id="paid-beta-pack-title">Paid Beta Evidence Pack</h2>
+          </div>
+          <div class="toolbar">
+            <span id="paidBetaPackSummary" class="status-chip">Beta proof loading</span>
+            <button class="text-button" id="openPaidBetaPackNext" type="button">Open next proof</button>
+            <button class="text-button" id="copyPaidBetaPack" type="button">Copy beta pack</button>
+          </div>
+        </div>
+        <div id="paidBetaPackOutput" class="paid-beta-pack-output" aria-live="polite"></div>
+      </section>
+
+      <section id="founder-invite-path" class="workspace-band founder-invite-band" aria-labelledby="founder-invite-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Founder invite path</p>
+            <h2 id="founder-invite-title">Founder Invite Proof Path</h2>
+          </div>
+          <div class="toolbar">
+            <span id="founderInviteSummary" class="status-chip">Invite proof loading</span>
+            <button class="text-button" id="openFounderInviteNext" type="button">Open next proof</button>
+            <button class="text-button" id="copyFounderInvite" type="button">Copy invite brief</button>
+          </div>
+        </div>
+        <div id="founderInviteOutput" class="founder-invite-output" aria-live="polite"></div>
+      </section>
+
+      <section id="founder-cohort-control" class="workspace-band founder-cohort-band" aria-labelledby="founder-cohort-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Founder cohort control</p>
+            <h2 id="founder-cohort-title">Founder Cohort Control Room</h2>
+          </div>
+          <div class="toolbar">
+            <span id="founderCohortSummary" class="status-chip">Cohort control loading</span>
+            <button class="text-button" id="openFounderCohortNext" type="button">Open next gate</button>
+            <button class="text-button" id="copyFounderCohort" type="button">Copy cohort brief</button>
+          </div>
+        </div>
+        <div id="founderCohortOutput" class="founder-cohort-output" aria-live="polite"></div>
+      </section>
+
+      <section id="cohort-receipt-backend" class="workspace-band cohort-receipt-band" aria-labelledby="cohort-receipt-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Backend receipt trail</p>
+            <h2 id="cohort-receipt-title">Cohort Receipt Backend</h2>
+          </div>
+          <div class="toolbar">
+            <span id="cohortReceiptSummary" class="status-chip">Cohort receipts loading</span>
+            <button class="text-button" id="openCohortReceiptNext" type="button">Open next blocker</button>
+            <button class="text-button" id="copyCohortReceipt" type="button">Copy receipt brief</button>
+          </div>
+        </div>
+        <div id="cohortReceiptOutput" class="cohort-receipt-output" aria-live="polite"></div>
+      </section>
+
+      <section id="cohort-decision-replay" class="workspace-band cohort-replay-band" aria-labelledby="cohort-replay-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Replay before expansion</p>
+            <h2 id="cohort-replay-title">Cohort Decision Replay</h2>
+          </div>
+          <div class="toolbar">
+            <span id="cohortReplaySummary" class="status-chip">Cohort replay loading</span>
+            <button class="text-button" id="openCohortReplayNext" type="button">Open next replay</button>
+            <button class="text-button" id="copyCohortReplay" type="button">Copy replay brief</button>
+          </div>
+        </div>
+        <div id="cohortReplayOutput" class="cohort-replay-output" aria-live="polite"></div>
+      </section>
+
+      <section id="paid-cohort-expansion-gate" class="workspace-band paid-expansion-band" aria-labelledby="paid-expansion-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Founder go/no-go</p>
+            <h2 id="paid-expansion-title">Paid Cohort Expansion Gate</h2>
+          </div>
+          <div class="toolbar">
+            <span id="paidExpansionSummary" class="status-chip">Expansion gate loading</span>
+            <button class="text-button" id="openPaidExpansionBlocker" type="button">Open blocker</button>
+            <button class="text-button" id="copyPaidExpansion" type="button">Copy gate brief</button>
+          </div>
+        </div>
+        <div id="paidExpansionOutput" class="paid-expansion-output" aria-live="polite"></div>
+      </section>
+
+      <section id="founder-beta-operating-room" class="workspace-band founder-beta-ops-band" aria-labelledby="founder-beta-ops-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Founder operating rhythm</p>
+            <h2 id="founder-beta-ops-title">Founder Beta Operating Room</h2>
+          </div>
+          <div class="toolbar">
+            <span id="founderBetaOpsSummary" class="status-chip">Operating room loading</span>
+            <button class="text-button" id="openFounderBetaOpsPriority" type="button">Open priority</button>
+            <button class="text-button" id="copyFounderBetaOps" type="button">Copy operating brief</button>
+          </div>
+        </div>
+        <div id="founderBetaOpsOutput" class="founder-beta-ops-output" aria-live="polite"></div>
+      </section>
+
+      <section id="paid-beta-support-ledger" class="workspace-band paid-support-band" aria-labelledby="paid-support-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Paid beta support memory</p>
+            <h2 id="paid-support-title">Paid Beta Support Ledger</h2>
+          </div>
+          <div class="toolbar">
+            <span id="paidSupportSummary" class="status-chip">Support ledger loading</span>
+            <button class="text-button" id="openPaidSupportPriority" type="button">Open priority case</button>
+            <button class="text-button" id="copyPaidSupport" type="button">Copy support ledger</button>
+          </div>
+        </div>
+        <div id="paidSupportOutput" class="paid-support-output" aria-live="polite"></div>
+      </section>
+
       <section class="workspace-band roadmap-band" aria-labelledby="roadmap-title">
         <div class="section-heading">
           <div>
@@ -4155,6 +4436,15 @@
             <a href="#watchlist">Watchlist</a>
             <a href="#decision-pack">Pack</a>
             <a href="#pricing">Pricing</a>
+            <a href="#market-strategy">Strategy</a>
+            <a href="#paid-beta-pack">Beta</a>
+            <a href="#founder-invite-path">Invite</a>
+            <a href="#founder-cohort-control">Cohort</a>
+            <a href="#cohort-receipt-backend">C Receipts</a>
+            <a href="#cohort-decision-replay">Replay</a>
+            <a href="#paid-cohort-expansion-gate">P Gate</a>
+            <a href="#founder-beta-operating-room">Ops Room</a>
+            <a href="#paid-beta-support-ledger">Support</a>
             <a href="#journal">Journal</a>
           </div>
         </section>
@@ -4168,6 +4458,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260515-15"></script>
+    <script src="app.js?v=20260517-02"></script>
   </body>
 </html>

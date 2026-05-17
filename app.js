@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260515-15";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v130 Recovery Release Queue";
+const DATA_VERSION = "20260517-02";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v159 Decision Multiverse";
 const HASH_SETTLE_DELAYS = [0, 80, 180, 360, 720, 1200, 1900, 2800, 4000, 5600];
 const HASH_SETTLE_WINDOW = 6400;
 
@@ -947,22 +947,22 @@ const BUILD_TRACKER_PHASES = [
   {
     phase: "Phase 1A",
     label: "Retail self-research cockpit",
-    progress: 94,
-    launch: 62,
+    progress: 96,
+    launch: 64,
     status: "Done",
     route: "#screener",
-    done: ["screener", "profile room", "compare matrix", "goal fit", "SIP/STP lab"],
-    next: "Polish flows and reduce decision friction before account launch."
+    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab"],
+    next: "Make profile-twin outcomes portable into saved accounts without collecting private identifiers."
   },
   {
     phase: "Phase 1B",
     label: "Decision discipline and memo path",
-    progress: 88,
-    launch: 54,
+    progress: 98,
+    launch: 68,
     status: "Done",
     route: "#clearance-sprint",
-    done: ["question stack", "answer sheet", "conviction ladder", "proof queue", "memo clearance", "clearance sprint"],
-    next: "Make every blocker route measurable and ready for saved accounts."
+    done: ["question stack", "answer sheet", "conviction ladder", "proof queue", "memo clearance", "clearance sprint", "decision flight recorder", "anti-hype court", "regret lab", "motive MRI", "decision multiverse"],
+    next: "Make multiverse, motive, regret, and court verdicts portable into saved accounts and review vault history."
   },
   {
     phase: "Phase 1C",
@@ -971,8 +971,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 86,
     status: "In progress",
     route: "#backend-audit-receipts",
-    done: ["evidence ledger", "citation binder", "data readiness", "live data contract lab", "source dry-run board", "source receipt vault", "live data production receipts", "production source import gate", "production source import jobs", "source import worker blueprint", "monitoring alert routing", "alert delivery backend", "failed-run event store", "reviewer sign-off bridge", "rollback evidence store", "public recovery rehearsal", "recovery release queue", "incident receipt replay", "claim surface map", "surface release queue", "reviewer workbench", "reviewer decision ledger", "reviewer release binder", "backend audit receipts", "source QA", "claim gates", "privacy controls"],
-    next: "Bind recovery queue tasks to production queue workers, correction publication, support handoff, and launch monitoring."
+    done: ["evidence ledger", "citation binder", "data readiness", "live data contract lab", "source dry-run board", "source receipt vault", "live data production receipts", "production source import gate", "production source import jobs", "source import worker blueprint", "monitoring alert routing", "alert delivery backend", "failed-run event store", "reviewer sign-off bridge", "rollback evidence store", "public recovery rehearsal", "recovery release queue", "correction publish console", "incident receipt replay", "claim surface map", "surface release queue", "reviewer workbench", "reviewer decision ledger", "reviewer release binder", "backend audit receipts", "source QA", "claim gates", "privacy controls"],
+    next: "Bind correction publish console to production correction notice publishing, approval capture, rollback hold, and investor-visible correction receipt storage."
   },
   {
     phase: "Phase 1D",
@@ -988,11 +988,11 @@ const BUILD_TRACKER_PHASES = [
     phase: "Phase 1E",
     label: "Launch, monetization, and account layer",
     progress: 100,
-    launch: 94,
+    launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Choose final gateway provider, paid beta operating owner, and production data-retention windows before any live paid cohort."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Turn the payment provider twin into production provider selection, sandbox credentials, webhook endpoint implementation, and deployment receipts."
   },
   {
     phase: "Phase 2",
@@ -1008,16 +1008,16 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Recovery release queue",
+    label: "Decision Multiverse",
     status: "Shipping now",
-    route: "#backend-audit-receipts",
-    detail: "Persist public recovery rehearsal outputs into release queue tasks, support scripts, correction publication, and launch monitoring."
+    route: "#decision-pack",
+    detail: "Simulate four competing research timelines before action so the memo chooses a defensible path instead of a single emotional future."
   },
   {
-    label: "Correction publish console",
+    label: "Decision memory vault",
     status: "Next",
-    route: "#backend-audit-receipts",
-    detail: "Turn queued correction tasks into publish preview, approval, rollback, and investor-visible correction receipt controls."
+    route: "#account-vault",
+    detail: "Persist flight-recorder, anti-hype, regret, motive, and multiverse verdicts into account vault objects with consent, export, deletion, support redaction, and Phase 2 firewall boundaries."
   },
   {
     label: "MFD preview",
@@ -1295,6 +1295,462 @@ const PAYMENT_SANDBOX_TESTS = [
   }
 ];
 
+const GATEWAY_WEBHOOK_DRILL_REQUIREMENTS = [
+  {
+    label: "Provider selection",
+    owner: "Founder",
+    score: 64,
+    proof: "gateway_provider, settlement_owner, pricing_plan, support_owner",
+    action: "Pick one hosted provider path for the first paid cohort and freeze the manual fallback boundary."
+  },
+  {
+    label: "Hosted checkout boundary",
+    owner: "Product",
+    score: 70,
+    proof: "checkout_session_id, plan_id, amount, expires_at, return_url",
+    action: "Create checkout on the backend and keep card, UPI, bank, and OTP entry outside NiveshNadi."
+  },
+  {
+    label: "Webhook signature gate",
+    owner: "Backend",
+    score: 48,
+    proof: "gateway_event_id, signature_hash, timestamp_tolerance, parser_version",
+    action: "Reject unsigned, stale, malformed, unexpected, or unsupported payment events before access changes."
+  },
+  {
+    label: "Idempotency and replay",
+    owner: "Platform",
+    score: 52,
+    proof: "idempotency_key, replay_count, first_seen_at, duplicate_action",
+    action: "Prove duplicate, retried, and delayed webhooks cannot double-charge, double-invoice, or double-unlock."
+  },
+  {
+    label: "Entitlement projection",
+    owner: "Account",
+    score: 58,
+    proof: "user_hash, plan_state, starts_at, expires_at, grace_until, repair_id",
+    action: "Paid access changes only from verified backend events, never from success URL, local storage, or browser state."
+  },
+  {
+    label: "Invoice and refund route",
+    owner: "Finance",
+    score: 54,
+    proof: "invoice_id, refund_id, tax_mode, policy_version, support_case_id",
+    action: "Tie invoice, refund, cancellation, and support wording to one auditable payment receipt."
+  },
+  {
+    label: "Settlement reconciliation",
+    owner: "Finance Ops",
+    score: 46,
+    proof: "settlement_id, gateway_total, app_total, variance_state, reviewer",
+    action: "Match gateway settlement reports to app receipts, invoices, refunds, and entitlement state before widening."
+  },
+  {
+    label: "Incident rollback",
+    owner: "Ops Lead",
+    score: 44,
+    proof: "incident_id, affected_events, pause_state, rollback_state, notice_id",
+    action: "Prepare pause, replay, rollback, correction notice, and user support scripts for payment incidents."
+  }
+];
+
+const PROVIDER_PILOT_RECEIPT_FIELDS = [
+  {
+    label: "Checkout session receipt",
+    event: "checkout.session_created",
+    owner: "Product",
+    score: 72,
+    required: ["receipt_id", "provider", "plan_id", "amount", "currency", "user_hash", "session_id", "expires_at"],
+    blocker: "Checkout must be created server-side and expire without collecting card, UPI, bank, or OTP data inside NiveshNadi."
+  },
+  {
+    label: "Webhook verification receipt",
+    event: "webhook.signature_verified",
+    owner: "Backend",
+    score: 50,
+    required: ["gateway_event_id", "signature_hash", "timestamp_tolerance", "schema_version", "received_at", "verified_at"],
+    blocker: "Unsigned, stale, malformed, unexpected, or unsupported events cannot mutate paid access."
+  },
+  {
+    label: "Idempotency replay receipt",
+    event: "webhook.idempotency_checked",
+    owner: "Platform",
+    score: 52,
+    required: ["idempotency_key", "dedupe_key", "first_seen_at", "replay_count", "duplicate_action", "final_state"],
+    blocker: "Duplicate or retried events must not double-charge, double-invoice, double-refund, or double-unlock."
+  },
+  {
+    label: "Entitlement mutation receipt",
+    event: "entitlement.projected",
+    owner: "Account",
+    score: 58,
+    required: ["user_hash", "plan_state", "starts_at", "expires_at", "source_event_id", "repair_id", "changed_by"],
+    blocker: "Paid access must come from verified backend events, not from success URLs, browser state, or support notes."
+  },
+  {
+    label: "Invoice receipt",
+    event: "invoice.issued",
+    owner: "Finance",
+    score: 50,
+    required: ["invoice_id", "tax_mode", "amount", "currency", "receipt_url_hash", "policy_version", "issued_at"],
+    blocker: "Invoice, tax, cancellation, and refund language need finance/legal signoff before public billing."
+  },
+  {
+    label: "Refund and cancellation receipt",
+    event: "refund.or_cancel.saved",
+    owner: "Support",
+    score: 48,
+    required: ["refund_id", "gateway_refund_id", "reason_code", "entitlement_action", "support_case_id", "notice_state"],
+    blocker: "Refund or cancellation must adjust entitlement and notify support without storing private support-note bodies."
+  },
+  {
+    label: "Settlement reconciliation receipt",
+    event: "settlement.reconciled",
+    owner: "Finance Ops",
+    score: 44,
+    required: ["settlement_id", "gateway_total", "app_total", "refund_total", "variance_state", "reviewer", "closed_at"],
+    blocker: "Gateway settlement reports, app receipts, invoices, refunds, and entitlement states must match before widening."
+  },
+  {
+    label: "Incident closeout receipt",
+    event: "payment.incident_closed",
+    owner: "Ops Lead",
+    score: 46,
+    required: ["incident_id", "affected_receipts", "pause_state", "rollback_state", "notice_id", "closeout_owner"],
+    blocker: "Payment incidents need pause, replay, rollback, notice, and closeout proof before the pilot resumes."
+  }
+];
+
+const PILOT_RECEIPT_VAULT_LANES = [
+  {
+    label: "Append-only receipt table",
+    owner: "Backend",
+    score: 58,
+    route: "#backend-audit-receipts",
+    evidence: "receipt_id, event_name, provider, actor_hash, payload_hash, created_at",
+    action: "Store every pilot payment mutation as an immutable backend receipt before any entitlement read model updates."
+  },
+  {
+    label: "Replay index",
+    owner: "Platform",
+    score: 52,
+    route: "#backend-audit-receipts",
+    evidence: "idempotency_key, dedupe_key, first_seen_at, replay_count, replay_result",
+    action: "Rebuild entitlement, invoice, refund, and support state from receipts without trusting browser-local state."
+  },
+  {
+    label: "Entitlement projection log",
+    owner: "Account",
+    score: 56,
+    route: "#entitlement-bridge",
+    evidence: "source_receipt_id, old_state, new_state, starts_at, expires_at, changed_by",
+    action: "Join payment receipts to access state with a reversible projection and clear repair history."
+  },
+  {
+    label: "Invoice and refund ledger",
+    owner: "Finance",
+    score: 50,
+    route: "#paid-beta-support-ledger",
+    evidence: "invoice_id, refund_id, gateway_reference, amount, tax_mode, notice_state",
+    action: "Keep invoices, cancellations, refunds, and entitlement reversals together for support and reconciliation."
+  },
+  {
+    label: "Settlement reconciliation join",
+    owner: "Finance Ops",
+    score: 44,
+    route: "#backend-audit-receipts",
+    evidence: "settlement_id, receipt_total, gateway_total, refund_total, variance_state",
+    action: "Match provider settlements to app receipts before the paid pilot expands beyond founder review."
+  },
+  {
+    label: "Support lookup view",
+    owner: "Support",
+    score: 54,
+    route: "#paid-beta-support-ledger",
+    evidence: "support_case_id, receipt_ref, redacted_user_hash, repair_action, closeout_state",
+    action: "Let support repair paid access using redacted receipt references instead of private notes or payment credentials."
+  },
+  {
+    label: "Audit export packet",
+    owner: "Compliance",
+    score: 48,
+    route: "#reviewer-release-binder",
+    evidence: "export_id, receipt_range, reviewer_id, release_scope, excluded_fields",
+    action: "Export only receipt metadata needed for review while excluding sensitive investor and payment data."
+  },
+  {
+    label: "Incident freeze rule",
+    owner: "Ops Lead",
+    score: 46,
+    route: "#backend-audit-receipts",
+    evidence: "incident_id, affected_receipts, frozen_routes, rollback_receipt, resume_receipt",
+    action: "Freeze checkout, entitlement, refund, or public claims when receipt replay shows payment-state drift."
+  }
+];
+
+const PAID_PILOT_LAUNCH_GATES = [
+  {
+    label: "Receipt vault replay",
+    owner: "Backend",
+    route: "#pilot-receipt-vault",
+    weight: 0.2,
+    detail: "Payment receipts must be append-only, replayable, exportable, and freeze-safe."
+  },
+  {
+    label: "Payment provider posture",
+    owner: "Finance Ops",
+    route: "#provider-pilot-receipt",
+    weight: 0.14,
+    detail: "Hosted checkout, signed webhooks, idempotency, invoices, refunds, settlement, and incident closeout must be ready."
+  },
+  {
+    label: "Entitlement enforcement",
+    owner: "Account",
+    route: "#entitlement-bridge",
+    weight: 0.14,
+    detail: "Paid access must unlock only from verified backend receipts and reversible entitlement projection."
+  },
+  {
+    label: "Support and refund handling",
+    owner: "Support",
+    route: "#subscription-ops",
+    weight: 0.12,
+    detail: "Failed payments, refunds, invoice questions, entitlement repair, and redacted support lookup must be workable."
+  },
+  {
+    label: "Account route readiness",
+    owner: "Product",
+    route: "#account-launch-route",
+    weight: 0.12,
+    detail: "Auth, account vault, export/delete, research migration, and Phase 2 firewall must be scoped."
+  },
+  {
+    label: "Evidence and claim safety",
+    owner: "Trust",
+    route: "#reviewer-release-binder",
+    weight: 0.1,
+    detail: "Public research claims must show source posture, reviewer release, demo/live state, and correction path."
+  },
+  {
+    label: "Privacy and blocked data",
+    owner: "Compliance",
+    route: "#privacy-control",
+    weight: 0.09,
+    detail: "PAN, folio, CAS, bank, UPI, card, OTP, gateway secrets, ARN/EUIN, and private note bodies stay out."
+  },
+  {
+    label: "Founder operating capacity",
+    owner: "Founder",
+    route: "#founder-beta-operating-room",
+    weight: 0.09,
+    detail: "Cohort cap, owner, weekly review, freeze rules, support hour, and escalation path must be explicit."
+  }
+];
+
+const BACKEND_TICKET_FACTORY_TEMPLATES = [
+  {
+    gateLabel: "Receipt vault replay",
+    title: "Receipt vault replay",
+    owner: "Backend",
+    lane: "Payments",
+    route: "#pilot-receipt-vault",
+    priority: "P0",
+    summary: "Build append-only payment receipt storage and replay projection for checkout, webhook, entitlement, invoice, refund, support, settlement, and incident events.",
+    eventContract: ["receipt_id", "event_name", "provider_ref", "payload_hash", "idempotency_key", "user_hash", "created_at", "source_version"],
+    acceptance: [
+      "Replay duplicate webhook without double access.",
+      "Rebuild entitlement state from receipts only.",
+      "Export a receipt range with excluded-field proof."
+    ],
+    blockedData: ["PAN", "folio", "CAS", "bank", "UPI", "card", "OTP", "gateway secret", "private notes"]
+  },
+  {
+    gateLabel: "Payment provider posture",
+    title: "Payment provider webhook contract",
+    owner: "Finance Ops",
+    lane: "Payments",
+    route: "#provider-pilot-receipt",
+    priority: "P0",
+    summary: "Lock hosted checkout, webhook signature verification, refund receipt, invoice receipt, settlement reconciliation, and provider incident closeout before any paid pilot opens.",
+    eventContract: ["provider", "checkout_session_id", "webhook_signature_hash", "invoice_id", "refund_id", "settlement_id", "verified_at", "failure_code"],
+    acceptance: [
+      "Reject unsigned or stale provider events.",
+      "Map refund and invoice receipts to the same user hash.",
+      "Show settlement variance before founder expansion."
+    ],
+    blockedData: ["raw card data", "CVV", "OTP", "gateway secret", "full payment credential"]
+  },
+  {
+    gateLabel: "Entitlement enforcement",
+    title: "Entitlement unlock service",
+    owner: "Account",
+    lane: "Access",
+    route: "#entitlement-bridge",
+    priority: "P0",
+    summary: "Create a backend entitlement projection that unlocks paid features only from verified receipt events and can revoke access from refund, chargeback, expiry, or incident freeze.",
+    eventContract: ["user_hash", "plan_id", "receipt_id", "entitlement_state", "feature_policy", "starts_at", "expires_at", "revoked_at"],
+    acceptance: [
+      "Browser-local success cannot unlock paid features.",
+      "Refund event revokes access and stores a reason code.",
+      "Feature limits are computed server-side before UI display."
+    ],
+    blockedData: ["PAN", "folio", "CAS", "manual paid note", "support free-text secret"]
+  },
+  {
+    gateLabel: "Support and refund handling",
+    title: "Support and refund casebook",
+    owner: "Support",
+    lane: "Operations",
+    route: "#subscription-ops",
+    priority: "P1",
+    summary: "Give support a redacted casebook for failed payments, refund closeout, invoice questions, and entitlement repair without exposing sensitive investor or payment data.",
+    eventContract: ["case_id", "user_hash", "receipt_ref", "case_type", "redaction_level", "resolution", "refund_ref", "closed_at"],
+    acceptance: [
+      "Support sees receipt references and safe summaries only.",
+      "Refund closeout stores provider and entitlement outcomes.",
+      "Escalation route appears when paid access and receipt replay disagree."
+    ],
+    blockedData: ["PAN", "folio", "CAS", "card", "bank", "UPI", "private note body"]
+  },
+  {
+    gateLabel: "Account route readiness",
+    title: "Account research vault migration",
+    owner: "Product",
+    lane: "Accounts",
+    route: "#account-launch-route",
+    priority: "P1",
+    summary: "Move browser-local packs, dossiers, watchlists, reviews, and memos into account storage only with explicit migration consent, version history, export, deletion, and rollback support.",
+    eventContract: ["migration_batch_id", "user_hash", "artifact_type", "artifact_count", "consent_state", "source_store", "version", "rolled_back_at"],
+    acceptance: [
+      "User can preview what moves before migration.",
+      "Export and delete work for every migrated artifact type.",
+      "Rollback restores browser-local preview without copying private notes."
+    ],
+    blockedData: ["PAN", "folio", "CAS", "account credential", "private note body"]
+  },
+  {
+    gateLabel: "Evidence and claim safety",
+    title: "Evidence release and claim freeze",
+    owner: "Trust",
+    lane: "Research claims",
+    route: "#reviewer-release-binder",
+    priority: "P1",
+    summary: "Tie every public research claim, score, and fund card to source date, citation path, reviewer release, demo/live state, and correction or freeze path.",
+    eventContract: ["claim_id", "source_receipt_id", "surface_id", "reviewer_id", "release_state", "citation_path", "demo_live_state", "frozen_at"],
+    acceptance: [
+      "Claim cannot show as live without source date and reviewer release.",
+      "Rollback note exists for every released public surface.",
+      "Correction notice can be generated from frozen claim receipt."
+    ],
+    blockedData: ["unreviewed claim", "missing citation", "stale source pretending live"]
+  },
+  {
+    gateLabel: "Privacy and blocked data",
+    title: "Privacy export/delete job",
+    owner: "Compliance",
+    lane: "Privacy",
+    route: "#privacy-control",
+    priority: "P1",
+    summary: "Build export, delete, retention, blocked-data scanning, and audit receipt jobs for accounts without collecting PAN, folio, CAS, bank, UPI, card, OTP, or distributor identifiers in Phase 1.",
+    eventContract: ["privacy_request_id", "user_hash", "request_type", "artifact_scope", "blocked_data_scan", "retention_policy", "completed_at", "proof_id"],
+    acceptance: [
+      "Export packet excludes blocked data classes by proof.",
+      "Delete request removes account-owned research artifacts within retention policy.",
+      "Scanner flags forbidden identifiers before support or export handoff."
+    ],
+    blockedData: ["PAN", "folio", "CAS", "bank", "UPI", "card", "OTP", "ARN", "EUIN", "client record"]
+  },
+  {
+    gateLabel: "Founder operating capacity",
+    title: "Founder pilot operations queue",
+    owner: "Founder",
+    lane: "Operations",
+    route: "#founder-beta-operating-room",
+    priority: "P2",
+    summary: "Create the founder-owned queue for cohort cap, daily review, support hour, freeze rules, escalation, rollback, and pilot stop criteria before any wider paid launch.",
+    eventContract: ["pilot_queue_id", "cohort_cap", "owner_id", "review_cadence", "freeze_rule_id", "escalation_path", "stop_rule", "reviewed_at"],
+    acceptance: [
+      "Founder can see daily blockers and open routes in one queue.",
+      "Freeze rule has an owner and stop condition.",
+      "Pilot does not expand when support capacity is below policy."
+    ],
+    blockedData: ["private user notes", "manual payment secrets", "Phase 2 client records"]
+  }
+];
+
+const RECEIPT_REPLAY_ENGINE_CASES = [
+  {
+    label: "Clean checkout to active access",
+    owner: "Backend + Account",
+    route: "#entitlement-bridge",
+    relatedLane: "Entitlement projection log",
+    sequence: ["checkout.session.created", "webhook.verified", "entitlement.projected"],
+    expected: "Nadi Plus access becomes active from a verified receipt chain.",
+    acceptance: ["verified webhook required", "idempotency key stored", "feature policy projected server-side"],
+    freeze: "Freeze if checkout exists without signed webhook proof."
+  },
+  {
+    label: "Duplicate webhook no double unlock",
+    owner: "Platform",
+    route: "#provider-pilot-receipt",
+    relatedLane: "Replay index",
+    sequence: ["webhook.verified", "webhook.duplicate_seen", "idempotency.replayed"],
+    expected: "Replay returns the first entitlement result without extending access twice.",
+    acceptance: ["dedupe key matches", "replay count increments", "projection remains unchanged"],
+    freeze: "Freeze provider route if duplicate event creates a second active grant."
+  },
+  {
+    label: "Refund reverses entitlement",
+    owner: "Support + Account",
+    route: "#subscription-ops",
+    relatedLane: "Invoice and refund ledger",
+    sequence: ["refund.or_cancel.saved", "entitlement.revoked", "support.case_closed"],
+    expected: "Paid access is revoked, refund receipt is linked, and support has a redacted closeout.",
+    acceptance: ["refund reason stored", "revocation receipt linked", "support-safe notice ready"],
+    freeze: "Freeze account access if refund and entitlement states disagree."
+  },
+  {
+    label: "Settlement variance routes to finance",
+    owner: "Finance Ops",
+    route: "#backend-audit-receipts",
+    relatedLane: "Settlement reconciliation join",
+    sequence: ["settlement.imported", "receipt.range_matched", "variance.flagged"],
+    expected: "Founder sees variance before the paid pilot widens.",
+    acceptance: ["gateway total compared", "app receipt total compared", "variance owner assigned"],
+    freeze: "Hold paid expansion while settlement variance is unresolved."
+  },
+  {
+    label: "Support repair without private data",
+    owner: "Support",
+    route: "#paid-beta-support-ledger",
+    relatedLane: "Support lookup view",
+    sequence: ["support.case_opened", "receipt.ref_loaded", "repair.action_saved"],
+    expected: "Support can repair access using receipt references and redacted user hashes only.",
+    acceptance: ["no private note body exposed", "repair action receipt stored", "case closeout replayable"],
+    freeze: "Freeze support repair if raw PAN, folio, card, bank, or private notes appear."
+  },
+  {
+    label: "Audit export proves exclusions",
+    owner: "Compliance",
+    route: "#reviewer-release-binder",
+    relatedLane: "Audit export packet",
+    sequence: ["audit.export_requested", "receipt.range_exported", "excluded.fields_proved"],
+    expected: "Reviewer receives only allowed receipt metadata with blocked-data proof.",
+    acceptance: ["receipt range bounded", "reviewer scope visible", "excluded-field proof attached"],
+    freeze: "Block export if sensitive investor or payment data enters the packet."
+  },
+  {
+    label: "Payment incident freezes routes",
+    owner: "Ops Lead",
+    route: "#backend-audit-receipts",
+    relatedLane: "Incident freeze rule",
+    sequence: ["payment.incident_opened", "route.freeze_applied", "resume.receipt_required"],
+    expected: "Checkout, entitlement, refund, or claim surfaces freeze until replay proves safe resume.",
+    acceptance: ["affected receipts listed", "freeze route stored", "resume receipt required"],
+    freeze: "Keep routes frozen until closeout receipt and replay result agree."
+  }
+];
+
 const ACCOUNT_READINESS_STEPS = [
   {
     label: "Identity boundary",
@@ -1539,6 +1995,121 @@ const ENTITLEMENT_BRIDGE_STATES = [
   }
 ];
 
+const ENTITLEMENT_ACCESS_MATRIX = [
+  {
+    key: "core-screener",
+    label: "Core research screener",
+    owner: "Product",
+    score: 86,
+    access: {
+      free: "Open",
+      monthly: "Open plus",
+      annual: "Open plus",
+      founder: "Open beta",
+      phase2: "Role separated"
+    },
+    receiptGate: "account.created or public starter policy",
+    lifecycleRule: "Always available as research-only public value.",
+    auditField: "feature_key, plan_id, policy_version"
+  },
+  {
+    key: "saved-packs",
+    label: "Saved research packs",
+    owner: "Account",
+    score: 68,
+    access: {
+      free: "2 pack cap",
+      monthly: "Plus vault",
+      annual: "Expanded vault",
+      founder: "Founder vault",
+      phase2: "Client-vault preview only"
+    },
+    receiptGate: "entitlement.granted and vault.policy_loaded",
+    lifecycleRule: "Refund or expiry moves packs to read-only until renewal or export.",
+    auditField: "artifact_count, vault_limit, entitlement_state"
+  },
+  {
+    key: "watchlist-alerts",
+    label: "Watchlist alerts",
+    owner: "Habit",
+    score: 62,
+    access: {
+      free: "Preview",
+      monthly: "Enabled",
+      annual: "Enabled plus history",
+      founder: "Beta enabled",
+      phase2: "Distributor watch preview"
+    },
+    receiptGate: "alert.policy_checked and entitlement.feature_checked",
+    lifecycleRule: "Grace keeps watchlist visible but pauses paid alert expansion.",
+    auditField: "alert_count, review_date, notice_policy"
+  },
+  {
+    key: "dossier-builder",
+    label: "Research dossier builder",
+    owner: "Research",
+    score: 64,
+    access: {
+      free: "Preview only",
+      monthly: "Plus limit",
+      annual: "Priority history",
+      founder: "Founder preview",
+      phase2: "MFD dossier later"
+    },
+    receiptGate: "dossier.policy_checked and evidence_lock",
+    lifecycleRule: "Dossiers stay research packets, not advisory execution records.",
+    auditField: "dossier_count, source_lock, export_state"
+  },
+  {
+    key: "share-safe-export",
+    label: "Share-safe export",
+    owner: "Privacy",
+    score: 72,
+    access: {
+      free: "Limited export",
+      monthly: "Enabled",
+      annual: "Enabled plus archive",
+      founder: "Enabled beta",
+      phase2: "Consent export later"
+    },
+    receiptGate: "privacy.export_policy_loaded",
+    lifecycleRule: "Export remains available during refund, expiry, or deletion requests.",
+    auditField: "export_job_id, redaction_policy, delivery_state"
+  },
+  {
+    key: "live-refresh",
+    label: "Future live-data refresh",
+    owner: "Data",
+    score: 48,
+    access: {
+      free: "No live refresh",
+      monthly: "Refresh quota",
+      annual: "Higher quota",
+      founder: "Beta quota",
+      phase2: "Advisor refresh later"
+    },
+    receiptGate: "source_receipt_ready and feature.limit.checked",
+    lifecycleRule: "Live-looking values stay locked until source date and citation checks pass.",
+    auditField: "source_date, refresh_quota, citation_status"
+  },
+  {
+    key: "support-repair",
+    label: "Support repair view",
+    owner: "Support",
+    score: 56,
+    access: {
+      free: "Basic support",
+      monthly: "Entitlement repair",
+      annual: "Priority repair",
+      founder: "Founder support",
+      phase2: "MFD support later"
+    },
+    receiptGate: "support.case_opened and redaction_policy_loaded",
+    lifecycleRule: "Support can repair access only with a redacted receipt and reviewer role.",
+    auditField: "case_id, reviewer_role, prior_state, repaired_state"
+  }
+];
+
 const SUBSCRIPTION_OPS_STATES = [
   {
     label: "Renewal queued",
@@ -1595,6 +2166,69 @@ const SUBSCRIPTION_OPS_STATES = [
     owner: "Ops Lead",
     receipt: "incident_id, severity, affected_users, resolution_state",
     guardrail: "Payment incidents need owner, rollback posture, user notice, and post-incident learning."
+  }
+];
+
+const PAID_BETA_SUPPORT_CASES = [
+  {
+    label: "Failed payment grace",
+    caseType: "failed_payment",
+    owner: "Support",
+    route: "#subscription-ops",
+    score: 68,
+    sla: "same day user notice",
+    receipt: "failure code, retry count, grace_until, notice id",
+    closeout: "retry scheduled or access downgraded with clear user copy"
+  },
+  {
+    label: "Refund and cancellation",
+    caseType: "refund",
+    owner: "Finance",
+    route: "#subscription-ops",
+    score: 62,
+    sla: "48 hour policy answer",
+    receipt: "refund id, invoice id, entitlement action, support case id",
+    closeout: "refund route and access change are visible in one receipt trail"
+  },
+  {
+    label: "Invoice clarification",
+    caseType: "invoice",
+    owner: "Finance Ops",
+    route: "#subscription-backend",
+    score: 58,
+    sla: "monthly billing review",
+    receipt: "invoice id, tax posture, amount, issue date, user notice",
+    closeout: "finance answer does not expose payment instruments or private research notes"
+  },
+  {
+    label: "Entitlement mismatch",
+    caseType: "entitlement",
+    owner: "Account Ops",
+    route: "#entitlement-bridge",
+    score: 64,
+    sla: "support repair before next login",
+    receipt: "prior state, proposed state, source receipt, reviewer role",
+    closeout: "access is repaired through a reversible backend event"
+  },
+  {
+    label: "Account recovery",
+    caseType: "account_recovery",
+    owner: "Security",
+    route: "#account-launch-route",
+    score: 56,
+    sla: "identity-safe recovery path",
+    receipt: "user hash, recovery event id, device/session posture, support role",
+    closeout: "recovery protects account ownership without collecting PAN, folio, CAS, or OTP"
+  },
+  {
+    label: "Research correction",
+    caseType: "correction",
+    owner: "Trust",
+    route: "#correction-notice",
+    score: 72,
+    sla: "public correction note before claim reuse",
+    receipt: "claim id, old value, corrected value, source receipt, notice id",
+    closeout: "affected research surface is corrected, rolled back, or frozen"
   }
 ];
 
@@ -2199,7 +2833,7 @@ function buildTrackerConfig() {
     detail: "MFD dashboard, ARN/EUIN, PAN-consent, registered clients, review packs, and handoff audit trail stay planned after Phase 1 retail launch.",
     blockers: ["Phase 1 account model", "consent workflow", "privacy review", "role-based distributor access"]
   };
-  const pace = `v130 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
+  const pace = `v143 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
   const guardrails = [
     "Build Tracker is a project roadmap for this prototype; it is not an investor-facing recommendation or launch promise.",
     "Product build progress and launch readiness are intentionally separate because a prototype can be polished before live data, auth, payments, and legal gates are complete.",
@@ -2354,7 +2988,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-      <article><span>Prototype version</span><strong>Phase 1 v130</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+      <article><span>Prototype version</span><strong>Phase 1 v159</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -2465,6 +3099,2209 @@ function openBuildNextLane() {
 
 function openBuildCurrentLane() {
   scrollToHash(buildTrackerConfig().current.route, "smooth", true);
+}
+
+const MARKET_STRATEGY_SIGNALS = {
+  score: 82,
+  posture: "Trust wedge first, distribution engine later",
+  thesis: "NiveshNadi should win the retail market by making mutual fund research calmer, evidence-backed, and repeatable before asking the investor to pay much.",
+  pricing: "Keep the retail plan near Rs. 100 per month or Rs. 1,000 per year. Let Phase 2 distributor tools carry the larger annual software revenue.",
+  wedge: "A self-research cockpit is safer and more differentiated than another transaction app, tips channel, or generic rating table.",
+  boundary: "Research workspace only: no personalized advice, no execution promise, no return guarantee, and no distributor client workflow until consent and role controls exist.",
+  competitors: [
+    {
+      label: "Transaction apps",
+      stance: "Avoid the execution race",
+      detail: "Large apps already own account opening and order flow. NiveshNadi should own the slower thinking layer before an investor clicks invest.",
+      move: "Win the memo before the transaction."
+    },
+    {
+      label: "Research portals",
+      stance: "Respect the data depth",
+      detail: "Established research sites are strong on facts, tables, and ratings. NiveshNadi can feel more personal by turning facts into a decision path.",
+      move: "Convert data into a repeatable research ritual."
+    },
+    {
+      label: "Social advice noise",
+      stance: "Make claims earn trust",
+      detail: "Retail investors hear many fund claims from videos, groups, and friends. The product should ask for evidence, role, risk, overlap, and review date.",
+      move: "Turn borrowed conviction into written reasoning."
+    },
+    {
+      label: "MFD software",
+      stance: "Enter after consent",
+      detail: "Distributor desks monetize better, but Phase 2 needs ARN/EUIN, PAN consent, client book, audit log, and role-based access discipline.",
+      move: "Keep Phase 2 planned, not rushed."
+    }
+  ],
+  economics: [
+    { label: "10k retail users", value: "Rs. 1 cr ARR", detail: "At Rs. 1,000 per year, this is a credible early B2C validation target." },
+    { label: "50k retail users", value: "Rs. 5 cr ARR", detail: "Still affordable for investors while proving a serious consumer research habit." },
+    { label: "100k retail users", value: "Rs. 10 cr ARR", detail: "A strong brand proof point before the distributor platform becomes the bigger engine." },
+    { label: "1k MFD seats", value: "Rs. 1.2 cr ARR", detail: "At Rs. 12k per year, Phase 2 can scale with client book, seats, and audit workflows." }
+  ],
+  moats: [
+    "Decision memory: written reasons, review dates, watch triggers, and research packets.",
+    "Evidence discipline: source dates, citation paths, factsheet readiness, and claim gates.",
+    "Behavior guardrails: duplication, drawdown, cost, role, and emergency-money checks.",
+    "Phase 2 bridge: retail habit can become distributor workflow only after consent and identity controls."
+  ],
+  gates: [
+    { label: "Positioning", score: 92, route: "#pricing", detail: "Low-cost self-research, not fund selling." },
+    { label: "Trust proof", score: 76, route: "#evidence", detail: "Source map and launch gates must become live and date-stamped." },
+    { label: "Paid beta", score: 66, route: "#payment-readiness", detail: "Entitlement, receipts, support, and refund policy need production wiring." },
+    { label: "Account memory", score: 64, route: "#account-launch-route", detail: "Saved research must move safely beyond browser storage." },
+    { label: "Phase 2 firewall", score: 58, route: "#consent-gate", detail: "ARN/EUIN, PAN consent, client roles, and audit review stay separate from retail Phase 1." }
+  ],
+  nextMoves: [
+    "Ship a founder beta invite that explains the product as research discipline, not advice.",
+    "Make annual pricing feel natural: Rs. 999 or Rs. 1,000 with a low-friction monthly option.",
+    "Add proof of value before paywall: one saved research packet, one X-Ray, one decision memo.",
+    "Prepare Phase 2 MFD pricing only after retail trust, account storage, and consent workflows are mature."
+  ]
+};
+
+function marketStrategyConfig() {
+  const tracker = buildTrackerConfig();
+  const paidGate = MARKET_STRATEGY_SIGNALS.gates.find((gate) => gate.label === "Paid beta");
+  const phaseOneLaunch = Math.round(
+    BUILD_TRACKER_PHASES
+      .filter((phase) => phase.phase !== "Phase 2")
+      .reduce((sum, phase) => sum + phase.launch, 0) /
+      BUILD_TRACKER_PHASES.filter((phase) => phase.phase !== "Phase 2").length
+  );
+  return {
+    ...MARKET_STRATEGY_SIGNALS,
+    selectedFundName: selectedFund().name,
+    buildScore: tracker.buildProgress,
+    launchReadiness: tracker.launchReadiness,
+    phaseOneLaunch,
+    paidGate: paidGate || MARKET_STRATEGY_SIGNALS.gates[0]
+  };
+}
+
+function renderMarketStrategyRoom() {
+  if (!els.marketStrategyOutput) return;
+  const strategy = marketStrategyConfig();
+  if (els.marketStrategySummary) {
+    els.marketStrategySummary.textContent = `${strategy.score}/100 | ${strategy.paidGate.label} ${strategy.paidGate.score}/100`;
+  }
+  els.marketStrategyOutput.innerHTML = `
+    <div class="market-strategy-hero">
+      <div>
+        <span class="metric-label">Founder market view</span>
+        <h3>${escapeHtml(strategy.posture)}</h3>
+        <p>${escapeHtml(strategy.thesis)}</p>
+      </div>
+      <div class="market-strategy-score" style="--score:${strategy.score}">
+        <b>${strategy.score}</b>
+        <span>Strategy</span>
+      </div>
+    </div>
+    <div class="market-strategy-metric-grid">
+      <article><span>Retail price</span><strong>Rs. 100/mo</strong><p>or Rs. 1,000/year for the main B2C plan.</p></article>
+      <article><span>Market wedge</span><strong>Self-research</strong><p>${escapeHtml(strategy.wedge)}</p></article>
+      <article><span>Launch readiness</span><strong>${strategy.launchReadiness}/100</strong><p>Build is strong; live data, paid accounts, legal, and security gates still matter.</p></article>
+      <article><span>Current fund signal</span><strong>${escapeHtml(strategy.selectedFundName)}</strong><p>Strategy stays tied to the product workflow, not abstract market slides.</p></article>
+    </div>
+    <div class="market-strategy-card">
+      <span>Monetization posture</span>
+      <strong>${escapeHtml(strategy.pricing)}</strong>
+      <p>${escapeHtml(strategy.boundary)}</p>
+    </div>
+    <div class="market-strategy-competitor-grid">
+      ${strategy.competitors.map((item) => `
+        <article>
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.stance)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+          <small>${escapeHtml(item.move)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="market-strategy-math-grid">
+      ${strategy.economics.map((item) => `
+        <article>
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.value)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="market-strategy-gate-grid">
+      ${strategy.gates.map((gate) => `
+        <article>
+          <div>
+            <span>${escapeHtml(gate.label)}</span>
+            <strong>${gate.score}/100</strong>
+          </div>
+          <div class="build-progress-bar"><span style="width:${gate.score}%"></span></div>
+          <p>${escapeHtml(gate.detail)}</p>
+          <button class="text-button" type="button" data-market-route="${escapeHtml(gate.route)}">Open gate</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="market-strategy-two">
+      <article>
+        <span>Defensible moat</span>
+        <ul>${strategy.moats.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Next founder moves</span>
+        <ul>${strategy.nextMoves.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+    </div>
+  `;
+}
+
+function makeMarketStrategyBrief() {
+  const strategy = marketStrategyConfig();
+  return [
+    "# NiveshNadi Market Strategy Room",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Strategy score: ${strategy.score}/100`,
+    `Posture: ${strategy.posture}`,
+    `Retail pricing: ${strategy.pricing}`,
+    `Boundary: ${strategy.boundary}`,
+    `Product build: ${strategy.buildScore}/100`,
+    `Launch readiness: ${strategy.launchReadiness}/100`,
+    "",
+    "## Competitor Posture",
+    ...strategy.competitors.map((item) => `- ${item.label}: ${item.stance}. ${item.move}`),
+    "",
+    "## Monetization Scenarios",
+    ...strategy.economics.map((item) => `- ${item.label}: ${item.value}. ${item.detail}`),
+    "",
+    "## Launch Gates",
+    ...strategy.gates.map((gate) => `- ${gate.label}: ${gate.score}/100. ${gate.detail}`),
+    "",
+    "## Next Moves",
+    ...strategy.nextMoves.map((item) => `- ${item}`),
+    "",
+    "Research workspace and founder strategy only. This is not personalized investment advice, distributor onboarding, execution, or a revenue promise."
+  ].join("\n");
+}
+
+function openMarketStrategyNext() {
+  scrollToHash(marketStrategyConfig().paidGate.route, "smooth", true);
+}
+
+const PAID_BETA_EVIDENCE_REQUIREMENTS = [
+  {
+    label: "Value proof",
+    score: 78,
+    route: "#decision-pack",
+    status: "Strong prototype proof",
+    detail: "A user should see practical value before paying: one saved research packet, one compare set, one X-Ray, one memo, and one review date."
+  },
+  {
+    label: "Source proof",
+    score: 62,
+    route: "#evidence",
+    status: "Needs live source dates",
+    detail: "Every live-looking claim needs AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, benchmark, source date, and citation path."
+  },
+  {
+    label: "Payment proof",
+    score: 58,
+    route: "#payment-readiness",
+    status: "Sandbox first",
+    detail: "Hosted checkout, webhook signature, invoice, refund, renewal, cancellation, settlement, and entitlement activation must be dry-run before launch."
+  },
+  {
+    label: "Account proof",
+    score: 64,
+    route: "#account-launch-route",
+    status: "Founder pilot only",
+    detail: "Saved research, profile settings, vault migration, export, delete, support lookup, and account recovery need identity-light backend ownership."
+  },
+  {
+    label: "Support proof",
+    score: 56,
+    route: "#subscription-ops",
+    status: "Manual support route",
+    detail: "Failed payment, refund, entitlement repair, invoice lookup, deletion request, and correction notice must be handled without private-note leakage."
+  },
+  {
+    label: "Compliance proof",
+    score: 70,
+    route: "#trust-center",
+    status: "Research-only posture",
+    detail: "The paid beta must sell workflow discipline, not personalized advice, fund recommendation, return promise, transaction execution, or distributor service."
+  }
+];
+
+function paidBetaEvidencePackConfig() {
+  const strategy = marketStrategyConfig();
+  const launch = launchReadinessBoardConfig();
+  const payment = paymentReadinessLabConfig();
+  const fund = selectedFund();
+  const requirements = PAID_BETA_EVIDENCE_REQUIREMENTS.map((item) => ({
+    ...item,
+    tone: item.score >= 70 ? "ready" : item.score >= 58 ? "watch" : "blocked"
+  }));
+  const blockers = requirements.filter((item) => item.score < 68);
+  const evidenceScore = evidenceReadinessScore(fund);
+  const betaScore = Math.round(
+    requirements.reduce((sum, item) => sum + item.score, 0) / requirements.length * 0.54 +
+    launch.paidBetaGate.readiness * 0.28 +
+    payment.paymentScore * 0.18
+  );
+  const cohortCap = betaScore >= 80 && blockers.length === 0 ? "50 paid users" : betaScore >= 68 ? "25 founder users" : "0 paid users";
+  const verdict = betaScore >= 80 && blockers.length === 0
+    ? "Invite first paid cohort"
+    : betaScore >= 68
+      ? "Founder-supervised beta only"
+      : "Keep free beta until proof closes";
+  const nextProof = blockers[0] || requirements[0];
+  const offerProof = [
+    { label: "Plan", value: "Founder Circle", detail: "Rs. 499 first year while live data and paid account rails are still being hardened." },
+    { label: "Retail anchor", value: "Rs. 100/mo", detail: "Monthly path stays light for retail investors testing the habit." },
+    { label: "Annual anchor", value: "Rs. 1,000/yr", detail: "Main Nadi Plus target after the evidence and account proof pass." },
+    { label: "Launch limit", value: cohortCap, detail: "Cohort cap is evidence-led, not marketing-led." }
+  ];
+  const userPromise = [
+    "You are paying for saved research discipline, not advice.",
+    "Your first paid value is a clean evidence-backed research packet and review habit.",
+    "The product stays refund-ready and support-visible during the founder beta.",
+    "No PAN, folio, CAS, bank, UPI, card, OTP, or distributor-client data is needed for Phase 1 paid beta."
+  ];
+  const receipts = [
+    "pricing_version, plan_id, amount, currency, cohort_cap, refund_rule",
+    "source_receipt_id, source_date, citation_path, demo_or_live_status",
+    "saved_pack_id, xray_snapshot_id, memo_id, review_date",
+    "gateway_event_id, invoice_id, entitlement_state, idempotency_key",
+    "support_case_id, redaction_status, repair_action, closeout_owner",
+    "founder_approval_id, blocker_status, rollback_note, launch_window"
+  ];
+  const releaseSteps = [
+    "Keep free beta open until the next proof item is cleared.",
+    "Invite only a small founder cohort with explicit research-only wording.",
+    "Collect payment only through hosted gateway flow after entitlement and refund tests pass.",
+    "Review first support cases manually before expanding the cohort.",
+    "Use the Build Tracker to raise launch readiness only after receipts are real."
+  ];
+
+  return {
+    betaScore,
+    blockers,
+    cohortCap,
+    evidenceScore,
+    fund,
+    launch,
+    nextProof,
+    offerProof,
+    payment,
+    receipts,
+    releaseSteps,
+    requirements,
+    strategy,
+    userPromise,
+    verdict
+  };
+}
+
+function renderPaidBetaEvidencePack() {
+  if (!els.paidBetaPackOutput) return;
+  const pack = paidBetaEvidencePackConfig();
+  if (els.paidBetaPackSummary) {
+    els.paidBetaPackSummary.textContent = `${pack.betaScore}/100 | ${pack.cohortCap}`;
+  }
+  els.paidBetaPackOutput.innerHTML = `
+    <div class="paid-beta-pack-hero">
+      <div>
+        <span class="metric-label">Founder paid beta gate</span>
+        <h3>${escapeHtml(pack.verdict)}</h3>
+        <p>Turn the low-fee retail thesis into proof before asking individual investors to pay. The pack binds value, source, payment, account, support, and compliance evidence into one launch decision.</p>
+      </div>
+      <div class="paid-beta-pack-score" style="--score:${pack.betaScore}">
+        <b>${pack.betaScore}</b>
+        <span>Beta</span>
+      </div>
+    </div>
+    <div class="paid-beta-pack-metrics">
+      <article><span>Strategy posture</span><strong>${escapeHtml(pack.strategy.posture)}</strong><p>${pack.strategy.score}/100 strategy confidence.</p></article>
+      <article><span>Paid gate</span><strong>${pack.launch.paidBetaGate.readiness}/100</strong><p>${escapeHtml(pack.launch.paidBetaGate.status)}</p></article>
+      <article><span>Payment readiness</span><strong>${pack.payment.paymentScore}/100</strong><p>Payment flow remains in sandbox proof mode.</p></article>
+      <article><span>Selected fund proof</span><strong>${pack.evidenceScore}/100</strong><p>${escapeHtml(pack.fund.name)} evidence readiness.</p></article>
+    </div>
+    <div class="paid-beta-offer-grid">
+      ${pack.offerProof.map((item) => `
+        <article>
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.value)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="paid-beta-proof-grid">
+      ${pack.requirements.map((item) => `
+        <article class="${escapeHtml(item.tone)}">
+          <div>
+            <span>${escapeHtml(item.status)}</span>
+            <strong>${escapeHtml(item.label)}</strong>
+          </div>
+          <div class="build-progress-bar launch"><span style="width:${item.score}%"></span></div>
+          <p>${item.score}/100 | ${escapeHtml(item.detail)}</p>
+          <button class="text-button" type="button" data-paid-beta-route="${escapeHtml(item.route)}">Open proof</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="paid-beta-pack-two">
+      <article class="${pack.blockers.length ? "blocked" : "ready"}">
+        <span>Next proof to close</span>
+        <strong>${escapeHtml(pack.nextProof.label)}</strong>
+        <p>${escapeHtml(pack.nextProof.detail)}</p>
+        <button class="text-button" type="button" data-paid-beta-route="${escapeHtml(pack.nextProof.route)}">Open next proof</button>
+      </article>
+      <article>
+        <span>User promise</span>
+        <strong>Charge only for discipline</strong>
+        <ul>${pack.userPromise.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Required receipts</span>
+        <strong>Evidence before invoice</strong>
+        <ul>${pack.receipts.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Release sequence</span>
+        <strong>Small, reversible, founder-reviewed</strong>
+        <ol>${pack.releaseSteps.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol>
+      </article>
+    </div>
+  `;
+}
+
+function makePaidBetaEvidenceBrief() {
+  const pack = paidBetaEvidencePackConfig();
+  return [
+    "# NiveshNadi Paid Beta Evidence Pack",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Paid beta score: ${pack.betaScore}/100`,
+    `Verdict: ${pack.verdict}`,
+    `Cohort cap: ${pack.cohortCap}`,
+    `Next proof: ${pack.nextProof.label}`,
+    "",
+    "## Offer Proof",
+    ...pack.offerProof.map((item) => `- ${item.label}: ${item.value}. ${item.detail}`),
+    "",
+    "## Evidence Requirements",
+    ...pack.requirements.map((item) => `- ${item.label}: ${item.score}/100 | ${item.status} | ${item.detail}`),
+    "",
+    "## User Promise",
+    ...pack.userPromise.map((item) => `- ${item}`),
+    "",
+    "## Required Receipts",
+    ...pack.receipts.map((item) => `- ${item}`),
+    "",
+    "## Release Sequence",
+    ...pack.releaseSteps.map((item, index) => `${index + 1}. ${item}`),
+    "",
+    "Founder launch planning only. This pack is not investment advice, legal approval, a payment gateway certification, or a guarantee of revenue."
+  ].join("\n");
+}
+
+function openPaidBetaNextProof() {
+  scrollToHash(paidBetaEvidencePackConfig().nextProof.route, "smooth", true);
+}
+
+const FOUNDER_INVITE_PROOF_STEPS = [
+  {
+    label: "Audience fit",
+    score: 82,
+    route: "#profile-room",
+    status: "Retail self-research only",
+    detail: "Invite only investors who want to learn a repeatable research habit, not users looking for tips, execution, or fund calls."
+  },
+  {
+    label: "Promise boundary",
+    score: 88,
+    route: "#trust-center",
+    status: "Research discipline",
+    detail: "The invite must sell saved research workflow, evidence checks, compare discipline, and review rhythm, not personalized advice or returns."
+  },
+  {
+    label: "Value proof",
+    score: 78,
+    route: "#paid-beta-pack",
+    status: "Beta pack mapped",
+    detail: "Every invited user should see one profile route, one compare set, one evidence gap, one memo, and one review date before payment."
+  },
+  {
+    label: "Account readiness",
+    score: 72,
+    route: "#account-launch-route",
+    status: "Pilot route",
+    detail: "Research state, login, support, export, delete, and entitlement join are planned, but the first cohort stays founder-supervised."
+  },
+  {
+    label: "Payment restraint",
+    score: 66,
+    route: "#payment-sandbox",
+    status: "Sandbox before charge",
+    detail: "Charge only after checkout, entitlement, refund, failed payment, invoice, reconciliation, and support repair receipts are tested."
+  },
+  {
+    label: "Support promise",
+    score: 70,
+    route: "#subscription-ops",
+    status: "Manual first",
+    detail: "The invite must say how a user can pause, refund, report an issue, export data, delete data, and reach support during beta."
+  },
+  {
+    label: "Privacy filter",
+    score: 86,
+    route: "#privacy-control",
+    status: "No identifiers",
+    detail: "No PAN, folio, CAS, bank, UPI, card, OTP, nominee, or distributor-client records are required for Phase 1 founder invites."
+  },
+  {
+    label: "Expansion gate",
+    score: 62,
+    route: "#build-tracker",
+    status: "Wait for receipts",
+    detail: "Do not expand the cohort until invite acceptance, activation, support, refund, source proof, and review-retention receipts are visible."
+  }
+];
+
+function founderInviteProofPathConfig() {
+  const beta = paidBetaEvidencePackConfig();
+  const route = accountLaunchRouteConfig();
+  const payment = paymentReadinessLabConfig();
+  const fund = selectedFund();
+  const proofSteps = FOUNDER_INVITE_PROOF_STEPS.map((step) => ({
+    ...step,
+    tone: step.score >= 80 ? "ready" : step.score >= 68 ? "watch" : "blocked"
+  }));
+  const avgStepScore = Math.round(proofSteps.reduce((sum, step) => sum + step.score, 0) / proofSteps.length);
+  const blockerSteps = proofSteps.filter((step) => step.score < 68);
+  const nextStep = blockerSteps[0] || proofSteps.find((step) => step.score < 80) || proofSteps[0];
+  const inviteScore = Math.round(
+    beta.betaScore * 0.34 +
+    route.score * 0.24 +
+    payment.paymentScore * 0.16 +
+    beta.evidenceScore * 0.12 +
+    avgStepScore * 0.14
+  );
+  const inviteMode = inviteScore >= 82 && beta.blockers.length === 0 && route.blockers.length === 0
+    ? "Paid founder cohort"
+    : inviteScore >= 70
+      ? "Free founder rehearsal"
+      : "Hold invite";
+  const cohortLimit = inviteMode === "Paid founder cohort"
+    ? "25 paid founder users"
+    : inviteMode === "Free founder rehearsal"
+      ? "15 free rehearsal users"
+      : "No external invite";
+  const verdict = inviteMode === "Paid founder cohort"
+    ? "Invite only after payment and account receipts are attached"
+    : inviteMode === "Free founder rehearsal"
+      ? "Rehearse the founder invite before charging users"
+      : "Keep testing internally until proof improves";
+  const subject = inviteMode === "Paid founder cohort"
+    ? "Founder invite: NiveshNadi research habit beta"
+    : "Private rehearsal: help shape NiveshNadi before launch";
+  const inviteBody = [
+    "NiveshNadi is a mutual fund research workspace for Indian retail investors who want to slow down before making SIP, STP, or portfolio decisions.",
+    "This invite gives access to a founder beta focused on saved research packets, compare discipline, evidence checks, X-Ray review, and written decision memos.",
+    "It is research software only. It does not provide personalized investment advice, execution, guaranteed returns, tax advice, or distributor service.",
+    "During the founder phase, access is limited, support is manual, and every beta promise remains reversible until live source, account, payment, refund, and support receipts are ready."
+  ];
+  const eligibilityRules = [
+    "Investor understands that the product is research-only and no investment action is executed inside the app.",
+    "User can test with sample or non-sensitive research notes and will not enter PAN, folio, CAS, bank, UPI, card, OTP, or nominee data.",
+    "User accepts that live source coverage, citations, and account persistence are still being hardened before broad launch.",
+    "User agrees to give feedback on clarity, trust, usefulness, support, and whether the low fee feels fair."
+  ];
+  const accessRules = [
+    "Allow Profile, Screener, Compare, X-Ray, Evidence, Decision Pack, Watchlist, Review, Dossier, and Pricing rooms.",
+    "Keep execution, fund recommendation, tax planning, distributor client book, and transaction flow outside the founder beta.",
+    "Show beta status, source freshness status, and support route before any user relies on a research packet.",
+    "Keep expansion tied to Build Tracker launch readiness, not to sign-up excitement."
+  ];
+  const pauseRules = [
+    "Pause invites if source freshness drops, support cases exceed manual capacity, or payment entitlement cannot be repaired within the support window.",
+    "Refund or extend founder access if a paid beta promise is unavailable because of account, payment, source, or support fault.",
+    "Do not collect new paid users while source, account, entitlement, refund, or support receipts are missing.",
+    "Keep Phase 2 distributor identifiers blocked until consent and role controls are production designed."
+  ];
+  const receiptPlan = [
+    "invite_id, invited_by, cohort_limit, invitation_copy_version, acceptance_timestamp",
+    "beta_pack_id, evidence_score, source_status, citation_status, demo_or_live_status",
+    "account_route_id, auth_provider, vault_scope, export_delete_status, support_redaction_status",
+    "payment_mode, plan_id, invoice_id, refund_policy_id, entitlement_state, repair_status",
+    "feedback_score, activation_status, memo_created, review_date_saved, churn_or_pause_reason"
+  ];
+  const rollout = [
+    { label: "01", title: "Write invite", detail: "Use research-only promise, audience fit, and privacy boundary." },
+    { label: "02", title: "Attach proof", detail: "Bind invite to beta evidence, source status, account route, and payment sandbox." },
+    { label: "03", title: "Invite tiny cohort", detail: `Cap at ${cohortLimit}; founder reviews first support cases manually.` },
+    { label: "04", title: "Measure habit", detail: "Track profile, compare, evidence, memo, review date, and support outcomes." },
+    { label: "05", title: "Decide expansion", detail: "Expand only after receipts, refunds, pauses, and support handoff are clean." }
+  ];
+
+  return {
+    accessRules,
+    beta,
+    blockerSteps,
+    cohortLimit,
+    eligibilityRules,
+    fund,
+    inviteBody,
+    inviteMode,
+    inviteScore,
+    nextStep,
+    pauseRules,
+    payment,
+    proofSteps,
+    receiptPlan,
+    route,
+    rollout,
+    subject,
+    verdict
+  };
+}
+
+function renderFounderInviteProofPath() {
+  if (!els.founderInviteOutput) return;
+  const invite = founderInviteProofPathConfig();
+  if (els.founderInviteSummary) {
+    els.founderInviteSummary.textContent = `${invite.inviteScore}/100 | ${invite.inviteMode}`;
+  }
+  els.founderInviteOutput.innerHTML = `
+    <div class="founder-invite-hero">
+      <div>
+        <span class="metric-label">Founder invitation gate</span>
+        <h3>${escapeHtml(invite.verdict)}</h3>
+        <p>Translate the paid beta evidence into a careful first invite: who qualifies, what we promise, what stays blocked, how support works, and when the cohort may expand.</p>
+      </div>
+      <div class="founder-invite-score" style="--score:${invite.inviteScore}">
+        <b>${invite.inviteScore}</b>
+        <span>Invite</span>
+      </div>
+    </div>
+    <div class="founder-invite-metrics">
+      <article><span>Invite mode</span><strong>${escapeHtml(invite.inviteMode)}</strong><p>${escapeHtml(invite.cohortLimit)}</p></article>
+      <article><span>Beta proof</span><strong>${invite.beta.betaScore}/100</strong><p>${escapeHtml(invite.beta.verdict)}</p></article>
+      <article><span>Account route</span><strong>${invite.route.score}/100</strong><p>${escapeHtml(invite.route.status)}</p></article>
+      <article><span>Payment proof</span><strong>${invite.payment.paymentScore}/100</strong><p>Payment remains evidence-gated before public charge.</p></article>
+    </div>
+    <div class="founder-invite-proof-grid">
+      ${invite.proofSteps.map((step) => `
+        <article class="${escapeHtml(step.tone)}">
+          <span>${escapeHtml(step.status)}</span>
+          <strong>${escapeHtml(step.label)}</strong>
+          <div class="build-progress-bar launch"><span style="width:${step.score}%"></span></div>
+          <p>${step.score}/100 | ${escapeHtml(step.detail)}</p>
+          <button class="text-button" type="button" data-founder-invite-route="${escapeHtml(step.route)}">Open proof</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="founder-invite-copy-card">
+      <span>Invite copy</span>
+      <strong>${escapeHtml(invite.subject)}</strong>
+      ${invite.inviteBody.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+    </div>
+    <div class="founder-invite-two">
+      <article>
+        <span>Eligibility</span>
+        <strong>Who gets invited</strong>
+        <ul>${invite.eligibilityRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Access boundary</span>
+        <strong>What opens, what stays blocked</strong>
+        <ul>${invite.accessRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article class="${invite.blockerSteps.length ? "blocked" : "ready"}">
+        <span>Next proof</span>
+        <strong>${escapeHtml(invite.nextStep.label)}</strong>
+        <p>${escapeHtml(invite.nextStep.detail)}</p>
+        <button class="text-button" type="button" data-founder-invite-route="${escapeHtml(invite.nextStep.route)}">Open next proof</button>
+      </article>
+      <article>
+        <span>Pause and refund</span>
+        <strong>Keep the invite reversible</strong>
+        <ul>${invite.pauseRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+    </div>
+    <div class="founder-invite-sequence">
+      ${invite.rollout.map((step) => `
+        <article>
+          <span>${escapeHtml(step.label)}</span>
+          <strong>${escapeHtml(step.title)}</strong>
+          <p>${escapeHtml(step.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="founder-invite-copy-card">
+      <span>Receipt plan</span>
+      <strong>Proof fields before expansion</strong>
+      <ul>${invite.receiptPlan.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+    </div>
+  `;
+}
+
+function makeFounderInviteProofBrief() {
+  const invite = founderInviteProofPathConfig();
+  return [
+    "# NiveshNadi Founder Invite Proof Path",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Invite score: ${invite.inviteScore}/100`,
+    `Invite mode: ${invite.inviteMode}`,
+    `Cohort limit: ${invite.cohortLimit}`,
+    `Verdict: ${invite.verdict}`,
+    `Next proof: ${invite.nextStep.label}`,
+    "",
+    "## Invite Copy",
+    `Subject: ${invite.subject}`,
+    ...invite.inviteBody.map((line) => `- ${line}`),
+    "",
+    "## Proof Steps",
+    ...invite.proofSteps.map((step) => `- ${step.label}: ${step.score}/100 | ${step.status} | ${step.detail}`),
+    "",
+    "## Eligibility",
+    ...invite.eligibilityRules.map((item) => `- ${item}`),
+    "",
+    "## Access Boundary",
+    ...invite.accessRules.map((item) => `- ${item}`),
+    "",
+    "## Pause and Refund Rules",
+    ...invite.pauseRules.map((item) => `- ${item}`),
+    "",
+    "## Receipt Plan",
+    ...invite.receiptPlan.map((item) => `- ${item}`),
+    "",
+    "Founder invite planning only. This is not investment advice, legal approval, a payment certification, a public launch promise, or distributor onboarding."
+  ].join("\n");
+}
+
+function openFounderInviteNext() {
+  scrollToHash(founderInviteProofPathConfig().nextStep.route, "smooth", true);
+}
+
+const FOUNDER_COHORT_CONTROL_RECORDS = [
+  {
+    id: "FC-001",
+    lane: "Founder rehearsal",
+    invite: "Accepted",
+    activation: "Profile, compare, memo",
+    entitlement: "Free rehearsal",
+    support: "No case",
+    pause: "Not requested",
+    score: 86,
+    status: "Clean",
+    next: "Ask for clarity feedback after the first memo.",
+    route: "#review-vault"
+  },
+  {
+    id: "FC-002",
+    lane: "Founder rehearsal",
+    invite: "Invited",
+    activation: "Evidence pending",
+    entitlement: "Free rehearsal",
+    support: "Follow-up needed",
+    pause: "Not requested",
+    score: 68,
+    status: "Watch",
+    next: "Confirm the user reached Evidence before asking for pricing feedback.",
+    route: "#evidence"
+  },
+  {
+    id: "FC-003",
+    lane: "Paid beta candidate",
+    invite: "Waitlist",
+    activation: "Not started",
+    entitlement: "Blocked",
+    support: "No case",
+    pause: "Hold",
+    score: 54,
+    status: "Blocked",
+    next: "Wait until payment and account receipts are production-ready.",
+    route: "#payment-sandbox"
+  },
+  {
+    id: "FC-004",
+    lane: "Support rehearsal",
+    invite: "Accepted",
+    activation: "Support drill",
+    entitlement: "Free rehearsal",
+    support: "Manual repair test",
+    pause: "Refund route tested",
+    score: 72,
+    status: "Watch",
+    next: "Attach support receipt before expanding the invite batch.",
+    route: "#subscription-ops"
+  },
+  {
+    id: "FC-005",
+    lane: "Privacy rehearsal",
+    invite: "Accepted",
+    activation: "Export/delete review",
+    entitlement: "Free rehearsal",
+    support: "Redacted view only",
+    pause: "Delete route visible",
+    score: 80,
+    status: "Clean",
+    next: "Confirm no private identifiers are requested in the feedback flow.",
+    route: "#privacy-control"
+  }
+];
+
+function founderCohortControlRoomConfig() {
+  const invite = founderInviteProofPathConfig();
+  const beta = paidBetaEvidencePackConfig();
+  const route = accountLaunchRouteConfig();
+  const payment = paymentReadinessLabConfig();
+  const records = FOUNDER_COHORT_CONTROL_RECORDS.map((record) => ({
+    ...record,
+    tone: record.score >= 80 ? "ready" : record.score >= 65 ? "watch" : "blocked"
+  }));
+  const averageRecordScore = Math.round(records.reduce((sum, record) => sum + record.score, 0) / records.length);
+  const blockers = [
+    ...records.filter((record) => record.score < 65).map((record) => `${record.id}: ${record.next}`),
+    ...invite.blockerSteps.map((step) => `${step.label}: ${step.detail}`),
+    ...route.blockers
+  ];
+  const controlScore = Math.round(
+    invite.inviteScore * 0.26 +
+    beta.betaScore * 0.16 +
+    route.score * 0.2 +
+    payment.paymentScore * 0.16 +
+    averageRecordScore * 0.22
+  );
+  const clean = records.filter((record) => record.status === "Clean").length;
+  const watch = records.filter((record) => record.status === "Watch").length;
+  const blocked = records.filter((record) => record.status === "Blocked").length;
+  const expansionMode = controlScore >= 82 && blocked === 0 && !route.blockers.length
+    ? "Expand small paid cohort"
+    : controlScore >= 70
+      ? "Hold at rehearsal cohort"
+      : "Do not expand";
+  const nextGate = [
+    {
+      label: "Cohort receipt store",
+      score: 58,
+      route: "#subscription-backend",
+      detail: "Invite decisions, activation events, support cases, entitlement changes, pauses, and refunds need backend receipts."
+    },
+    {
+      label: "Support capacity",
+      score: 64,
+      route: "#subscription-ops",
+      detail: "First support cases must be redacted, owned, repaired, and closed before invite expansion."
+    },
+    {
+      label: "Payment proof",
+      score: payment.paymentScore,
+      route: "#payment-sandbox",
+      detail: "Hosted checkout, entitlement repair, refund, failed payment, and invoice states must pass dry-run."
+    },
+    {
+      label: "Privacy proof",
+      score: 78,
+      route: "#privacy-control",
+      detail: "Export, delete, redaction, and no-identifier boundaries must remain visible in the cohort flow."
+    },
+    {
+      label: "Evidence proof",
+      score: beta.evidenceScore,
+      route: "#evidence",
+      detail: "Users should see demo/live source status before trusting fund packets."
+    }
+  ].sort((a, b) => a.score - b.score)[0];
+  const operatingRules = [
+    "Use cohort IDs only; do not store names, phone numbers, PAN, folio, CAS, bank, card, UPI, OTP, nominee, ARN, EUIN, or distributor client records in this prototype.",
+    "Do not invite a paid user if entitlement repair, refund, pause, export, delete, or support redaction is not testable.",
+    "Count activation only when a user completes a profile route, compare set, evidence check, memo, and review date.",
+    "Pause expansion if support cases exceed founder capacity, source proof becomes stale, or payment receipts cannot be reconciled.",
+    "Treat Phase 2 distributor interest as a separate waitlist, not as part of the retail founder cohort."
+  ];
+  const receiptFields = [
+    "cohort_id, invite_id, invitation_copy_version, acceptance_status, cohort_lane",
+    "activation_step, selected_route, memo_created, review_date_saved, evidence_status",
+    "entitlement_state, plan_mode, invoice_reference, refund_state, pause_state",
+    "support_case_id, redaction_status, repair_action, closeout_status, founder_owner",
+    "expansion_decision, blocker_status, rollback_note, next_review_at"
+  ];
+
+  return {
+    averageRecordScore,
+    beta,
+    blocked,
+    blockers,
+    clean,
+    controlScore,
+    expansionMode,
+    invite,
+    nextGate,
+    operatingRules,
+    payment,
+    receiptFields,
+    records,
+    route,
+    watch
+  };
+}
+
+function renderFounderCohortControlRoom() {
+  if (!els.founderCohortOutput) return;
+  const cohort = founderCohortControlRoomConfig();
+  if (els.founderCohortSummary) {
+    els.founderCohortSummary.textContent = `${cohort.controlScore}/100 | ${cohort.expansionMode}`;
+  }
+  els.founderCohortOutput.innerHTML = `
+    <div class="founder-cohort-hero">
+      <div>
+        <span class="metric-label">Founder cohort control</span>
+        <h3>${escapeHtml(cohort.expansionMode)}</h3>
+        <p>Operate the first retail beta as a controlled ledger: invite state, activation proof, entitlement posture, support outcome, pause or refund readiness, and expansion decision.</p>
+      </div>
+      <div class="founder-cohort-score" style="--score:${cohort.controlScore}">
+        <b>${cohort.controlScore}</b>
+        <span>Cohort</span>
+      </div>
+    </div>
+    <div class="founder-cohort-metrics">
+      <article><span>Invite path</span><strong>${cohort.invite.inviteScore}/100</strong><p>${escapeHtml(cohort.invite.inviteMode)}</p></article>
+      <article><span>Records</span><strong>${cohort.records.length}</strong><p>${cohort.clean} clean, ${cohort.watch} watch, ${cohort.blocked} blocked.</p></article>
+      <article><span>Account route</span><strong>${cohort.route.score}/100</strong><p>${escapeHtml(cohort.route.status)}</p></article>
+      <article><span>Next gate</span><strong>${escapeHtml(cohort.nextGate.label)}</strong><p>${cohort.nextGate.score}/100 readiness.</p></article>
+    </div>
+    <div class="founder-cohort-ledger">
+      ${cohort.records.map((record) => `
+        <article class="${escapeHtml(record.tone)}">
+          <div>
+            <span>${escapeHtml(record.id)} | ${escapeHtml(record.status)}</span>
+            <strong>${escapeHtml(record.lane)}</strong>
+          </div>
+          <div class="build-progress-bar launch"><span style="width:${record.score}%"></span></div>
+          <dl>
+            <div><dt>Invite</dt><dd>${escapeHtml(record.invite)}</dd></div>
+            <div><dt>Activation</dt><dd>${escapeHtml(record.activation)}</dd></div>
+            <div><dt>Entitlement</dt><dd>${escapeHtml(record.entitlement)}</dd></div>
+            <div><dt>Support</dt><dd>${escapeHtml(record.support)}</dd></div>
+            <div><dt>Pause/refund</dt><dd>${escapeHtml(record.pause)}</dd></div>
+          </dl>
+          <p>${escapeHtml(record.next)}</p>
+          <button class="text-button" type="button" data-founder-cohort-route="${escapeHtml(record.route)}">Open route</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="founder-cohort-two">
+      <article class="${cohort.blockers.length ? "blocked" : "ready"}">
+        <span>Expansion blocker</span>
+        <strong>${escapeHtml(cohort.nextGate.label)}</strong>
+        <p>${escapeHtml(cohort.nextGate.detail)}</p>
+        <button class="text-button" type="button" data-founder-cohort-route="${escapeHtml(cohort.nextGate.route)}">Open blocker</button>
+      </article>
+      <article>
+        <span>Operating rules</span>
+        <strong>Keep the cohort small and clean</strong>
+        <ul>${cohort.operatingRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Receipt fields</span>
+        <strong>What must persist later</strong>
+        <ul>${cohort.receiptFields.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Decision posture</span>
+        <strong>${escapeHtml(cohort.expansionMode)}</strong>
+        <p>Expansion waits for backend receipts, payment proof, support repair, privacy controls, and source status to agree.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeFounderCohortControlBrief() {
+  const cohort = founderCohortControlRoomConfig();
+  return [
+    "# NiveshNadi Founder Cohort Control Room",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Control score: ${cohort.controlScore}/100`,
+    `Expansion mode: ${cohort.expansionMode}`,
+    `Invite path: ${cohort.invite.inviteScore}/100 | ${cohort.invite.inviteMode}`,
+    `Account route: ${cohort.route.score}/100 | ${cohort.route.status}`,
+    `Next gate: ${cohort.nextGate.label} (${cohort.nextGate.score}/100)`,
+    "",
+    "## Cohort Records",
+    ...cohort.records.map((record) => `- ${record.id}: ${record.status} | ${record.lane} | ${record.score}/100 | ${record.next}`),
+    "",
+    "## Operating Rules",
+    ...cohort.operatingRules.map((item) => `- ${item}`),
+    "",
+    "## Receipt Fields",
+    ...cohort.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## Blockers",
+    ...(cohort.blockers.length ? cohort.blockers.map((item) => `- ${item}`) : ["- No active cohort blocker in the prototype preview."]),
+    "",
+    "Founder cohort planning only. This is not investment advice, legal approval, a payment certification, or a live customer database."
+  ].join("\n");
+}
+
+function openFounderCohortNext() {
+  scrollToHash(founderCohortControlRoomConfig().nextGate.route, "smooth", true);
+}
+
+const COHORT_RECEIPT_BACKEND_STREAMS = [
+  {
+    label: "Invite decision",
+    owner: "Founder Ops",
+    score: 82,
+    event: "cohort.invite.recorded",
+    route: "#founder-invite-path",
+    fields: ["invite_id", "cohort_id", "invite_copy_version", "invite_state", "invited_by_hash"],
+    risk: "Invite proof is strong, but expansion still needs backend cohort ownership before paid beta widens."
+  },
+  {
+    label: "Activation proof",
+    owner: "Product",
+    score: 74,
+    event: "cohort.activation.recorded",
+    route: "#founder-cohort-control",
+    fields: ["profile_done", "compare_done", "evidence_done", "memo_done", "review_date_saved"],
+    risk: "Activation should mean a completed research route, not a vanity sign-up count."
+  },
+  {
+    label: "Entitlement state",
+    owner: "Commercial",
+    score: 68,
+    event: "cohort.entitlement.projected",
+    route: "#entitlement-bridge",
+    fields: ["plan_mode", "entitlement_state", "feature_policy", "invoice_ref_hash", "expires_at"],
+    risk: "Paid access must come from backend entitlement projection, not editable browser state."
+  },
+  {
+    label: "Support case",
+    owner: "Support",
+    score: 64,
+    event: "cohort.support.receipt_saved",
+    route: "#subscription-ops",
+    fields: ["case_id", "severity", "redaction_status", "repair_action", "closeout_state"],
+    risk: "Support needs redacted lookup and closeout proof before the founder cohort grows."
+  },
+  {
+    label: "Refund and pause",
+    owner: "Finance",
+    score: 58,
+    event: "cohort.pause_or_refund.recorded",
+    route: "#payment-sandbox",
+    fields: ["refund_state", "pause_state", "entitlement_before", "entitlement_after", "reviewer_role"],
+    risk: "Pause, refund, and entitlement reversal need replay proof before public paid access."
+  },
+  {
+    label: "Privacy action",
+    owner: "Privacy",
+    score: 76,
+    event: "cohort.privacy.request_closed",
+    route: "#privacy-control",
+    fields: ["request_type", "export_scope", "delete_scope", "redaction_status", "closed_at"],
+    risk: "Export and delete receipts should be visible before saved accounts launch."
+  },
+  {
+    label: "Expansion decision",
+    owner: "Founder",
+    score: 56,
+    event: "cohort.expansion.decision_saved",
+    route: "#build-tracker",
+    fields: ["current_cap", "proposed_cap", "blocker_count", "rollback_note", "next_review_at"],
+    risk: "Cohort expansion should be evidence-led, not marketing-led."
+  }
+];
+
+function cohortReceiptBackendConfig() {
+  const cohort = founderCohortControlRoomConfig();
+  const backend = subscriptionBackendConfig();
+  const payment = paymentReadinessLabConfig();
+  const account = accountLaunchRouteConfig();
+  const streams = COHORT_RECEIPT_BACKEND_STREAMS.map((stream) => ({
+    ...stream,
+    tone: stream.score >= 76 ? "ready" : stream.score >= 64 ? "watch" : "blocked"
+  }));
+  const streamReadiness = Math.round(streams.reduce((sum, stream) => sum + stream.score, 0) / streams.length);
+  const receiptScore = clampNumber(Math.round(
+    cohort.controlScore * 0.22 +
+    backend.score * 0.24 +
+    payment.paymentScore * 0.14 +
+    account.score * 0.14 +
+    streamReadiness * 0.26
+  ), 18, 94);
+  const streamBlockers = streams
+    .filter((stream) => stream.score < 64)
+    .map((stream) => `${stream.label}: ${stream.risk}`);
+  const blockers = [
+    ...streamBlockers,
+    ...backend.blockers.map((item) => `Backend: ${item}`),
+    ...payment.steps.filter((step) => step.score < 55).map((step) => `${step.label}: ${step.detail}`),
+    ...(account.blockers || []).map((item) => `Account route: ${item}`)
+  ];
+  const releaseState = receiptScore >= 82 && streamBlockers.length === 0 && backend.score >= 78
+    ? "Cohort receipts beta ready"
+    : receiptScore >= 68
+      ? "Receipt backend draft"
+      : "Do not expand cohort";
+  const nextStream = [...streams].sort((a, b) => a.score - b.score)[0];
+  const eventContract = [
+    "receipt_id, event_name, cohort_id, actor_role, actor_hash",
+    "idempotency_key, source_surface, state_before, state_after",
+    "created_at, source_receipt_id, correction_link, replay_cursor",
+    "retention_policy, redaction_status, reviewer_role, rollback_ref"
+  ];
+  const replayRules = [
+    "Every event is append-only; corrections create a new linked receipt instead of editing history.",
+    "Idempotency keys must prevent duplicate invites, double refunds, double entitlement, or repeated support repair.",
+    "Read models can refresh from receipts, but the raw event log stays backend-owned and immutable.",
+    "Support and finance views use hashes, states, and references only; no PAN, folio, CAS, bank, UPI, card, OTP, ARN, EUIN, credentials, or private notes.",
+    "Expansion cannot move from rehearsal to paid cohort until blockers are closed and replay shows no state drift."
+  ];
+  const readModels = [
+    { label: "Cohort timeline", detail: "Invite, accept, activate, support, pause, refund, privacy, and expansion events in one chronological trail." },
+    { label: "Entitlement projection", detail: "Feature access reads from payment, refund, support, and pause receipts." },
+    { label: "Support queue", detail: "Redacted case state, repair owner, closeout reason, and reopen route without private identifiers." },
+    { label: "Expansion gate", detail: "Founder sees cap, blocker count, receipt health, and rollback note before widening the cohort." }
+  ];
+  const releaseSequence = [
+    "Map each founder cohort action to a receipt event.",
+    "Dry-run replay for invite, activation, support, refund, privacy, and expansion paths.",
+    "Compare browser-local prototype state against backend-owned read models.",
+    "Freeze cohort expansion when a receipt is missing, stale, duplicate, or not replay-safe.",
+    "Publish only summary status to the UI; keep raw evidence and private notes outside public surfaces."
+  ];
+
+  return {
+    account,
+    backend,
+    blockers,
+    cohort,
+    eventContract,
+    nextStream,
+    payment,
+    readModels,
+    receiptScore,
+    releaseSequence,
+    releaseState,
+    replayRules,
+    streamBlockers,
+    streamReadiness,
+    streams
+  };
+}
+
+function renderCohortReceiptBackend() {
+  if (!els.cohortReceiptOutput) return;
+  const receipt = cohortReceiptBackendConfig();
+  if (els.cohortReceiptSummary) {
+    els.cohortReceiptSummary.textContent = `${receipt.receiptScore}/100 | ${receipt.releaseState}`;
+  }
+  els.cohortReceiptOutput.innerHTML = `
+    <div class="cohort-receipt-hero ${receipt.streamBlockers.length ? "watch" : "ready"}">
+      <div>
+        <span class="metric-label">Backend receipt trail</span>
+        <h3>${escapeHtml(receipt.releaseState)}</h3>
+        <p>Bind the founder cohort into durable backend events: invite, activation, entitlement, support, pause, refund, privacy, and expansion decisions stay provable without collecting sensitive investor identifiers.</p>
+      </div>
+      <div class="cohort-receipt-score" style="--score:${receipt.receiptScore}">
+        <b>${receipt.receiptScore}</b>
+        <span>Receipt</span>
+      </div>
+    </div>
+    <div class="cohort-receipt-metrics">
+      <article><span>Founder cohort</span><strong>${receipt.cohort.controlScore}/100</strong><p>${escapeHtml(receipt.cohort.expansionMode)}</p></article>
+      <article><span>Subscription backend</span><strong>${receipt.backend.score}/100</strong><p>${escapeHtml(receipt.backend.status)}</p></article>
+      <article><span>Receipt streams</span><strong>${receipt.streams.length}</strong><p>${receipt.streamBlockers.length} blocker streams.</p></article>
+      <article><span>Next blocker</span><strong>${escapeHtml(receipt.nextStream.label)}</strong><p>${receipt.nextStream.score}/100 readiness.</p></article>
+    </div>
+    <div class="cohort-receipt-stream-grid">
+      ${receipt.streams.map((stream) => `
+        <article class="${escapeHtml(stream.tone)}">
+          <div class="cohort-receipt-card-head">
+            <div>
+              <span>${escapeHtml(stream.owner)}</span>
+              <strong>${escapeHtml(stream.label)}</strong>
+            </div>
+            <b>${stream.score}</b>
+          </div>
+          <p>${escapeHtml(stream.event)}</p>
+          <div class="build-progress-bar launch"><span style="width:${stream.score}%"></span></div>
+          <small>${stream.fields.map((field) => escapeHtml(field)).join(", ")}</small>
+          <p>${escapeHtml(stream.risk)}</p>
+          <button class="text-button" type="button" data-cohort-receipt-route="${escapeHtml(stream.route)}">Open route</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="cohort-receipt-two">
+      <article>
+        <span>Event contract</span>
+        <strong>Minimum receipt payload</strong>
+        <ul>${receipt.eventContract.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Replay rules</span>
+        <strong>Proof before expansion</strong>
+        <ul>${receipt.replayRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article class="${receipt.streamBlockers.length ? "blocked" : "ready"}">
+        <span>Blockers before release</span>
+        <strong>${receipt.blockers.length ? `${receipt.blockers.length} open checks` : "No open receipt blocker"}</strong>
+        <ul>${(receipt.blockers.length ? receipt.blockers : ["Cohort receipt streams are clear in this prototype preview."]).slice(0, 8).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Read models</span>
+        <strong>What the app may show</strong>
+        <ul>${receipt.readModels.map((model) => `<li><b>${escapeHtml(model.label)}:</b> ${escapeHtml(model.detail)}</li>`).join("")}</ul>
+      </article>
+    </div>
+    <div class="cohort-receipt-sequence">
+      ${receipt.releaseSequence.map((step, index) => `
+        <article>
+          <span>${String(index + 1).padStart(2, "0")}</span>
+          <p>${escapeHtml(step)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function makeCohortReceiptBackendBrief() {
+  const receipt = cohortReceiptBackendConfig();
+  return [
+    "# NiveshNadi Cohort Receipt Backend",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt score: ${receipt.receiptScore}/100`,
+    `Release state: ${receipt.releaseState}`,
+    `Founder cohort: ${receipt.cohort.controlScore}/100 | ${receipt.cohort.expansionMode}`,
+    `Subscription backend: ${receipt.backend.score}/100 | ${receipt.backend.status}`,
+    `Next blocker: ${receipt.nextStream.label} (${receipt.nextStream.score}/100)`,
+    "",
+    "## Receipt Streams",
+    ...receipt.streams.map((stream) => `- ${stream.label}: ${stream.score}/100 | ${stream.event} | ${stream.risk}`),
+    "",
+    "## Event Contract",
+    ...receipt.eventContract.map((item) => `- ${item}`),
+    "",
+    "## Replay Rules",
+    ...receipt.replayRules.map((item) => `- ${item}`),
+    "",
+    "## Read Models",
+    ...receipt.readModels.map((model) => `- ${model.label}: ${model.detail}`),
+    "",
+    "## Release Sequence",
+    ...receipt.releaseSequence.map((step) => `- ${step}`),
+    "",
+    "## Blockers",
+    ...(receipt.blockers.length ? receipt.blockers.map((item) => `- ${item}`) : ["- No active cohort receipt blocker in this prototype preview."]),
+    "",
+    "Cohort Receipt Backend is launch planning only. It is not investment advice, legal approval, payment certification, or a live customer database."
+  ].join("\n");
+}
+
+function openCohortReceiptNext() {
+  scrollToHash(cohortReceiptBackendConfig().nextStream.route, "smooth", true);
+}
+
+const COHORT_DECISION_REPLAY_CASES = [
+  {
+    label: "Clean activation replay",
+    owner: "Product",
+    score: 78,
+    route: "#founder-cohort-control",
+    trigger: "A founder user completes profile, compare, evidence, memo, and review date.",
+    before: "invited.accepted",
+    after: "activation.complete",
+    expected: "Activation read model updates once with no duplicate progress."
+  },
+  {
+    label: "Duplicate invite replay",
+    owner: "Founder Ops",
+    score: 74,
+    route: "#founder-invite-path",
+    trigger: "The same invite acceptance is submitted twice or retried after timeout.",
+    before: "invite.sent",
+    after: "invite.accepted",
+    expected: "Idempotency key ignores duplicate acceptance and keeps one cohort record."
+  },
+  {
+    label: "Support repair replay",
+    owner: "Support",
+    score: 64,
+    route: "#subscription-ops",
+    trigger: "A support case repairs entitlement or access after a failed payment event.",
+    before: "entitlement.limited",
+    after: "entitlement.repaired",
+    expected: "Repair receipt links reviewer role, reason code, and rollback reference."
+  },
+  {
+    label: "Refund rollback replay",
+    owner: "Finance",
+    score: 58,
+    route: "#payment-sandbox",
+    trigger: "A refund or pause reverses entitlement after payment or support activity.",
+    before: "plan.active",
+    after: "plan.paused_or_refunded",
+    expected: "Replay proves no double refund, stale access, or broken invoice state."
+  },
+  {
+    label: "Privacy closeout replay",
+    owner: "Privacy",
+    score: 70,
+    route: "#privacy-control",
+    trigger: "A user requests export or delete after saved research and support receipts exist.",
+    before: "vault.active",
+    after: "privacy.request_closed",
+    expected: "Read models hide or purge allowed state while audit receipts remain redacted."
+  },
+  {
+    label: "Expansion freeze replay",
+    owner: "Founder",
+    score: 56,
+    route: "#build-tracker",
+    trigger: "The founder tries to widen the cohort while receipt blockers remain open.",
+    before: "cohort.rehearsal",
+    after: "cohort.expansion_frozen",
+    expected: "Expansion gate freezes and routes to the lowest replay blocker."
+  }
+];
+
+function cohortDecisionReplayConfig() {
+  const receipt = cohortReceiptBackendConfig();
+  const backend = subscriptionBackendConfig();
+  const cases = COHORT_DECISION_REPLAY_CASES.map((item) => ({
+    ...item,
+    eventId: ["NN", "COHORT", "REPLAY", item.label.replace(/[^a-z0-9]+/gi, "-"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    tone: item.score >= 74 ? "ready" : item.score >= 64 ? "watch" : "blocked"
+  }));
+  const replayAverage = Math.round(cases.reduce((sum, item) => sum + item.score, 0) / cases.length);
+  const replayBlockers = cases
+    .filter((item) => item.score < 64)
+    .map((item) => `${item.label}: ${item.expected}`);
+  const score = clampNumber(Math.round(
+    receipt.receiptScore * 0.36 +
+    backend.score * 0.2 +
+    replayAverage * 0.34 +
+    (receipt.streamBlockers.length ? 44 : 80) * 0.1
+  ), 18, 94);
+  const posture = score >= 82 && replayBlockers.length === 0
+    ? "Replay safe for small expansion"
+    : score >= 68
+      ? "Replay rehearsal active"
+      : "Expansion frozen";
+  const nextCase = [...cases].sort((a, b) => a.score - b.score)[0];
+  const replayScript = [
+    "Load the cohort receipt family and verify every event has an idempotency key.",
+    "Sort receipts by created_at, replay_cursor, and source_receipt_id.",
+    "Rebuild read models for cohort timeline, entitlement projection, support queue, privacy state, and expansion gate.",
+    "Compare prior public surface, proposed public surface, and correction or rollback note.",
+    "Freeze expansion if replay changes access, refund, privacy, support, or expansion state unexpectedly."
+  ];
+  const decisionLocks = [
+    "No paid cohort expansion while refund rollback score is below 64.",
+    "No manual support repair without reviewer role, reason code, and rollback reference.",
+    "No public success claim unless replay proves entitlement and privacy state agree.",
+    "No saved-account launch if export/delete closeout cannot replay after support activity.",
+    "No Phase 2 distributor preview inside this replay lane; ARN/EUIN and client records stay outside Phase 1."
+  ];
+  const readout = [
+    { label: "Receipt score", value: `${receipt.receiptScore}/100`, detail: receipt.releaseState },
+    { label: "Replay cases", value: `${cases.length}`, detail: `${replayBlockers.length} blockers below threshold.` },
+    { label: "Backend posture", value: `${backend.score}/100`, detail: backend.status },
+    { label: "Next replay", value: nextCase.label, detail: `${nextCase.score}/100 readiness.` }
+  ];
+  const blockers = [
+    ...replayBlockers,
+    ...receipt.streamBlockers.map((item) => `Receipt stream: ${item}`),
+    ...backend.blockers.map((item) => `Backend: ${item}`)
+  ];
+
+  return {
+    backend,
+    blockers,
+    cases,
+    decisionLocks,
+    nextCase,
+    posture,
+    readout,
+    receipt,
+    replayAverage,
+    replayBlockers,
+    replayScript,
+    score
+  };
+}
+
+function renderCohortDecisionReplay() {
+  if (!els.cohortReplayOutput) return;
+  const replay = cohortDecisionReplayConfig();
+  if (els.cohortReplaySummary) {
+    els.cohortReplaySummary.textContent = `${replay.score}/100 | ${replay.posture}`;
+  }
+  els.cohortReplayOutput.innerHTML = `
+    <div class="cohort-replay-hero ${replay.replayBlockers.length ? "watch" : "ready"}">
+      <div>
+        <span class="metric-label">Replay before expansion</span>
+        <h3>${escapeHtml(replay.posture)}</h3>
+        <p>Replay the founder cohort chain before expansion: activation, duplicate invite, support repair, refund rollback, privacy closeout, and expansion freeze must rebuild the same safe state every time.</p>
+      </div>
+      <div class="cohort-replay-score" style="--score:${replay.score}">
+        <b>${replay.score}</b>
+        <span>Replay</span>
+      </div>
+    </div>
+    <div class="cohort-replay-readout">
+      ${replay.readout.map((item) => `
+        <article>
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.value)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="cohort-replay-case-grid">
+      ${replay.cases.map((item) => `
+        <article class="${escapeHtml(item.tone)}">
+          <div class="cohort-replay-card-head">
+            <div>
+              <span>${escapeHtml(item.owner)}</span>
+              <strong>${escapeHtml(item.label)}</strong>
+            </div>
+            <b>${item.score}</b>
+          </div>
+          <p>${escapeHtml(item.trigger)}</p>
+          <div class="build-progress-bar launch"><span style="width:${item.score}%"></span></div>
+          <dl>
+            <div><dt>Before</dt><dd>${escapeHtml(item.before)}</dd></div>
+            <div><dt>After</dt><dd>${escapeHtml(item.after)}</dd></div>
+          </dl>
+          <small>${escapeHtml(item.eventId)}</small>
+          <p>${escapeHtml(item.expected)}</p>
+          <button class="text-button" type="button" data-cohort-replay-route="${escapeHtml(item.route)}">Open route</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="cohort-replay-two">
+      <article>
+        <span>Replay script</span>
+        <strong>Rebuild before release</strong>
+        <ol>${replay.replayScript.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol>
+      </article>
+      <article class="${replay.blockers.length ? "blocked" : "ready"}">
+        <span>Replay blockers</span>
+        <strong>${replay.blockers.length ? `${replay.blockers.length} open blockers` : "No replay blocker"}</strong>
+        <ul>${(replay.blockers.length ? replay.blockers : ["All replay cases are above the prototype threshold."]).slice(0, 8).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Decision locks</span>
+        <strong>Founder cannot bypass these</strong>
+        <ul>${replay.decisionLocks.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Next replay route</span>
+        <strong>${escapeHtml(replay.nextCase.label)}</strong>
+        <p>${escapeHtml(replay.nextCase.expected)}</p>
+        <button class="text-button" type="button" data-cohort-replay-route="${escapeHtml(replay.nextCase.route)}">Open next route</button>
+      </article>
+    </div>
+  `;
+}
+
+function makeCohortDecisionReplayBrief() {
+  const replay = cohortDecisionReplayConfig();
+  return [
+    "# NiveshNadi Cohort Decision Replay",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Replay score: ${replay.score}/100`,
+    `Posture: ${replay.posture}`,
+    `Receipt backend: ${replay.receipt.receiptScore}/100 | ${replay.receipt.releaseState}`,
+    `Next replay: ${replay.nextCase.label} (${replay.nextCase.score}/100)`,
+    "",
+    "## Replay Cases",
+    ...replay.cases.map((item) => `- ${item.label}: ${item.score}/100 | ${item.before} -> ${item.after} | ${item.expected}`),
+    "",
+    "## Replay Script",
+    ...replay.replayScript.map((item) => `- ${item}`),
+    "",
+    "## Decision Locks",
+    ...replay.decisionLocks.map((item) => `- ${item}`),
+    "",
+    "## Blockers",
+    ...(replay.blockers.length ? replay.blockers.map((item) => `- ${item}`) : ["- No active replay blocker in this prototype preview."]),
+    "",
+    "Cohort Decision Replay is launch planning only. It does not approve expansion, execute payments, provide advice, or store private investor identifiers."
+  ].join("\n");
+}
+
+function openCohortReplayNext() {
+  scrollToHash(cohortDecisionReplayConfig().nextCase.route, "smooth", true);
+}
+
+const PAID_COHORT_EXPANSION_GATES = [
+  {
+    label: "Replay proof",
+    owner: "Trust",
+    score: 68,
+    route: "#cohort-decision-replay",
+    detail: "Founder cohort replays should rebuild activation, support, refund, privacy, and expansion freeze states before widening the cohort."
+  },
+  {
+    label: "Receipt coverage",
+    owner: "Backend",
+    score: 74,
+    route: "#cohort-receipt-backend",
+    detail: "Every cohort event needs a durable receipt family, idempotency key, source, actor role, and rollback note."
+  },
+  {
+    label: "Payment/refund proof",
+    owner: "Finance",
+    score: 62,
+    route: "#payment-sandbox",
+    detail: "Hosted checkout, refund, cancellation, invoice, duplicate webhook, and entitlement repair still need dry-run evidence."
+  },
+  {
+    label: "Account and vault",
+    owner: "Product",
+    score: 72,
+    route: "#account-launch-route",
+    detail: "Saved research can move into accounts only with identity-light auth, export/delete, redacted support, and entitlement state."
+  },
+  {
+    label: "Support capacity",
+    owner: "Support",
+    score: 64,
+    route: "#subscription-ops",
+    detail: "First paid users need renewal, refund, failed-payment, invoice, deletion, and correction support without private-note leakage."
+  },
+  {
+    label: "Privacy closeout",
+    owner: "Privacy",
+    score: 70,
+    route: "#privacy-control",
+    detail: "Export, delete, saved-pack removal, support redaction, and audit receipt retention must be visible before expansion."
+  },
+  {
+    label: "Compliance wording",
+    owner: "Compliance",
+    score: 44,
+    route: "#trust-center",
+    detail: "Paid beta copy must sell research workflow discipline, not investment advice, recommendation, return promise, execution, or distributor service."
+  },
+  {
+    label: "Live-source posture",
+    owner: "Data",
+    score: 76,
+    route: "#reviewer-release-binder",
+    detail: "Live-looking fund claims need source date, citation path, reviewer release, rollback notes, and demo/live status."
+  },
+  {
+    label: "Phase 2 firewall",
+    owner: "Product",
+    score: 78,
+    route: "#consent-gate",
+    detail: "ARN, EUIN, PAN, folio, CAS, distributor client book, and advisory records stay outside the Phase 1 retail beta."
+  }
+];
+
+function paidCohortExpansionGateConfig() {
+  const replay = cohortDecisionReplayConfig();
+  const receipt = cohortReceiptBackendConfig();
+  const beta = paidBetaEvidencePackConfig();
+  const payment = paymentReadinessLabConfig();
+  const account = accountLaunchRouteConfig();
+  const support = subscriptionOpsConfig();
+  const gates = PAID_COHORT_EXPANSION_GATES.map((gate) => ({
+    ...gate,
+    tone: gate.score >= 76 ? "ready" : gate.score >= 64 ? "watch" : "blocked",
+    status: gate.score >= 76 ? "Clear" : gate.score >= 64 ? "Founder watch" : "Expansion blocker"
+  }));
+  const gateAverage = Math.round(gates.reduce((sum, gate) => sum + gate.score, 0) / gates.length);
+  const blockerGates = gates.filter((gate) => gate.score < 64);
+  const expansionScore = clampNumber(Math.round(
+    replay.score * 0.28 +
+    receipt.receiptScore * 0.2 +
+    beta.betaScore * 0.14 +
+    payment.paymentScore * 0.14 +
+    account.score * 0.14 +
+    gateAverage * 0.1
+  ), 18, 94);
+  const blockers = [
+    ...blockerGates.map((gate) => ({ label: gate.label, route: gate.route, detail: gate.detail })),
+    ...replay.blockers.slice(0, 3).map((detail) => ({ label: "Replay blocker", route: "#cohort-decision-replay", detail })),
+    ...receipt.streamBlockers.slice(0, 3).map((detail) => ({ label: "Receipt blocker", route: "#cohort-receipt-backend", detail })),
+    ...payment.blocked.slice(0, 3).map((step) => ({ label: step.label, route: step.route, detail: step.detail })),
+    ...account.blockers.slice(0, 3).map((detail) => ({ label: "Account blocker", route: "#account-launch-route", detail })),
+    ...support.blockers.slice(0, 3).map((detail) => ({ label: "Support blocker", route: "#subscription-ops", detail }))
+  ];
+  const nextBlocker = blockers[0] || [...gates].sort((a, b) => a.score - b.score)[0];
+  const decision = expansionScore >= 82 && blockerGates.length === 0 && !blockers.length
+    ? "Go: widen carefully"
+    : expansionScore >= 68
+      ? "Hold: founder cohort only"
+      : "No-go: freeze expansion";
+  const cohortCap = decision.startsWith("Go")
+    ? "Expand to 25 paid users"
+    : decision.startsWith("Hold")
+      ? "Stay at founder rehearsal cap"
+      : "Freeze paid expansion";
+  const readout = [
+    { label: "Decision", value: decision, detail: cohortCap },
+    { label: "Replay", value: `${replay.score}/100`, detail: replay.posture },
+    { label: "Receipt backend", value: `${receipt.receiptScore}/100`, detail: receipt.releaseState },
+    { label: "Payment", value: `${payment.paymentScore}/100`, detail: `${payment.blocked.length} payment blockers` },
+    { label: "Account", value: `${account.score}/100`, detail: account.status },
+    { label: "Support", value: `${support.score}/100`, detail: support.status }
+  ];
+  const decisionRules = [
+    "No expansion while compliance wording is below 64/100.",
+    "No expansion while refund rollback or replay safety is below the founder threshold.",
+    "No public claim until source date, citation path, reviewer release, and demo/live status are visible.",
+    "Support owner must accept first-case load before payment invites widen.",
+    "Phase 2 distributor identifiers stay outside Phase 1 retail beta."
+  ];
+  const founderChecklist = [
+    "Name the paid cohort cap and owner before sending invites.",
+    "Bind every payment, entitlement, support, privacy, and correction event to a receipt.",
+    "Keep refund and cancellation language visible before first payment.",
+    "Review first support cases manually and record what broke.",
+    "Freeze expansion immediately if any claim, support, or entitlement replay changes state."
+  ];
+  const launchPacket = [
+    `Gate ID: ${["NN", "PAID", "COHORT", "EXPANSION", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase()}`,
+    `Cohort cap: ${cohortCap}`,
+    `Beta proof: ${beta.betaScore}/100 | ${beta.verdict}`,
+    `Next blocker: ${nextBlocker.label}`,
+    "Boundary: no advice, no execution, no PAN/folio/CAS capture, no distributor workflow in Phase 1."
+  ];
+
+  return {
+    account,
+    beta,
+    blockers,
+    cohortCap,
+    decision,
+    decisionRules,
+    expansionScore,
+    founderChecklist,
+    gateAverage,
+    gates,
+    launchPacket,
+    nextBlocker,
+    payment,
+    readout,
+    receipt,
+    replay,
+    support
+  };
+}
+
+function renderPaidCohortExpansionGate() {
+  if (!els.paidExpansionOutput) return;
+  const gate = paidCohortExpansionGateConfig();
+  if (els.paidExpansionSummary) {
+    els.paidExpansionSummary.textContent = `${gate.expansionScore}/100 | ${gate.decision}`;
+  }
+  els.paidExpansionOutput.innerHTML = `
+    <div class="paid-expansion-hero ${gate.decision.startsWith("Go") ? "ready" : gate.decision.startsWith("Hold") ? "watch" : "blocked"}">
+      <div>
+        <span class="metric-label">Founder expansion decision</span>
+        <h3>${escapeHtml(gate.decision)}</h3>
+        <p>${escapeHtml(gate.cohortCap)}. The gate combines replay proof, backend receipts, payment/refund safety, account readiness, support capacity, privacy closeout, compliance wording, live-source posture, and the Phase 2 firewall.</p>
+      </div>
+      <div class="paid-expansion-score" style="--score:${gate.expansionScore}">
+        <b>${gate.expansionScore}</b>
+        <span>Gate</span>
+      </div>
+    </div>
+    <div class="paid-expansion-readout">
+      ${gate.readout.map((item) => `
+        <article>
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.value)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="paid-expansion-gate-grid">
+      ${gate.gates.map((item) => `
+        <article class="${escapeHtml(item.tone)}">
+          <div class="paid-expansion-card-head">
+            <div>
+              <span>${escapeHtml(item.owner)}</span>
+              <strong>${escapeHtml(item.label)}</strong>
+            </div>
+            <b>${item.score}</b>
+          </div>
+          <div class="build-progress-bar launch"><span style="width:${item.score}%"></span></div>
+          <p>${escapeHtml(item.detail)}</p>
+          <small>${escapeHtml(item.status)}</small>
+          <button class="text-button" type="button" data-paid-expansion-route="${escapeHtml(item.route)}">Open route</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="paid-expansion-two">
+      <article>
+        <span>Decision rules</span>
+        <strong>Founder cannot override these</strong>
+        <ul>${gate.decisionRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article class="${gate.blockers.length ? "blocked" : "ready"}">
+        <span>Expansion blockers</span>
+        <strong>${gate.blockers.length ? `${gate.blockers.length} blockers` : "No active blocker"}</strong>
+        <ul>${(gate.blockers.length ? gate.blockers : [{ detail: "All paid expansion gates are above the prototype threshold." }]).slice(0, 8).map((item) => `<li>${escapeHtml(item.detail)}</li>`).join("")}</ul>
+        <button class="text-button" type="button" data-paid-expansion-route="${escapeHtml(gate.nextBlocker.route)}">Open top blocker</button>
+      </article>
+      <article>
+        <span>Launch packet</span>
+        <strong>Expansion receipt contents</strong>
+        <ul>${gate.launchPacket.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Founder checklist</span>
+        <strong>Before the next invite</strong>
+        <ol>${gate.founderChecklist.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol>
+      </article>
+    </div>
+  `;
+}
+
+function makePaidCohortExpansionBrief() {
+  const gate = paidCohortExpansionGateConfig();
+  return [
+    "# NiveshNadi Paid Cohort Expansion Gate",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Expansion score: ${gate.expansionScore}/100`,
+    `Decision: ${gate.decision}`,
+    `Cohort cap: ${gate.cohortCap}`,
+    `Next blocker: ${gate.nextBlocker.label} | ${gate.nextBlocker.detail}`,
+    "",
+    "## Gate Scores",
+    ...gate.gates.map((item) => `- ${item.label}: ${item.score}/100 | ${item.owner} | ${item.status} | ${item.detail}`),
+    "",
+    "## Decision Rules",
+    ...gate.decisionRules.map((item) => `- ${item}`),
+    "",
+    "## Expansion Blockers",
+    ...(gate.blockers.length ? gate.blockers.map((item) => `- ${item.label}: ${item.detail}`) : ["- No active expansion blocker in this prototype preview."]),
+    "",
+    "## Founder Checklist",
+    ...gate.founderChecklist.map((item) => `- ${item}`),
+    "",
+    "The Paid Cohort Expansion Gate is a founder operating control. It does not approve investments, execute transactions, certify compliance, or collect PAN, folio, CAS, bank, card, UPI, ARN, EUIN, or distributor-client records."
+  ].join("\n");
+}
+
+function openPaidExpansionBlocker() {
+  scrollToHash(paidCohortExpansionGateConfig().nextBlocker.route, "smooth", true);
+}
+
+const FOUNDER_BETA_OPERATING_LANES = [
+  {
+    label: "Invite wave control",
+    owner: "Founder",
+    score: 78,
+    route: "#founder-cohort-control",
+    day: "Monday",
+    task: "Confirm cohort cap, invite copy, eligibility boundary, refund promise, and rollback owner before any new invite."
+  },
+  {
+    label: "Gate review",
+    owner: "Trust",
+    score: 70,
+    route: "#paid-cohort-expansion-gate",
+    day: "Monday",
+    task: "Read the expansion gate, name the top blocker, and decide whether the week is expand, hold, or freeze."
+  },
+  {
+    label: "Payment drill",
+    owner: "Finance",
+    score: 58,
+    route: "#payment-sandbox",
+    day: "Tuesday",
+    task: "Dry-run successful checkout, failed payment, duplicate webhook, cancellation, refund, invoice, and entitlement downgrade."
+  },
+  {
+    label: "Account rehearsal",
+    owner: "Product",
+    score: 74,
+    route: "#account-launch-route",
+    day: "Tuesday",
+    task: "Rehearse passwordless access, saved research migration, account vault state, export/delete, and support-safe recovery."
+  },
+  {
+    label: "Support hour",
+    owner: "Support",
+    score: 66,
+    route: "#subscription-ops",
+    day: "Wednesday",
+    task: "Open the first paid-beta support queue and confirm user notice, redacted lookup, entitlement repair, and closeout receipt."
+  },
+  {
+    label: "Evidence refresh",
+    owner: "Data",
+    score: 76,
+    route: "#reviewer-release-binder",
+    day: "Wednesday",
+    task: "Confirm demo/live status, source date, citation path, reviewer posture, rollback note, and affected public surfaces."
+  },
+  {
+    label: "Privacy closeout",
+    owner: "Privacy",
+    score: 72,
+    route: "#privacy-control",
+    day: "Thursday",
+    task: "Check export, delete, saved-pack removal, local vault status, support redaction, and retained audit receipt wording."
+  },
+  {
+    label: "Compliance wording",
+    owner: "Compliance",
+    score: 54,
+    route: "#trust-center",
+    day: "Thursday",
+    task: "Review every paid beta claim so it sells research discipline, not advice, recommendation, return promise, or execution."
+  },
+  {
+    label: "Friday decision",
+    owner: "Founder",
+    score: 68,
+    route: "#build-tracker",
+    day: "Friday",
+    task: "Compare gate, support, payment, privacy, and evidence results, then choose hold, freeze, or one narrow invite wave."
+  }
+];
+
+function founderBetaOperatingRoomConfig() {
+  const expansion = paidCohortExpansionGateConfig();
+  const account = accountLaunchRouteConfig();
+  const payment = paymentReadinessLabConfig();
+  const support = subscriptionOpsConfig();
+  const replay = cohortDecisionReplayConfig();
+  const lanes = FOUNDER_BETA_OPERATING_LANES.map((lane) => ({
+    ...lane,
+    tone: lane.score >= 74 ? "ready" : lane.score >= 64 ? "watch" : "blocked",
+    status: lane.score >= 74 ? "Ready for operating review" : lane.score >= 64 ? "Founder watch" : "Needs repair before expansion"
+  }));
+  const laneAverage = Math.round(lanes.reduce((sum, lane) => sum + lane.score, 0) / lanes.length);
+  const operatingScore = clampNumber(Math.round(
+    expansion.expansionScore * 0.32 +
+    account.score * 0.14 +
+    payment.paymentScore * 0.14 +
+    support.score * 0.14 +
+    replay.score * 0.12 +
+    laneAverage * 0.14
+  ), 18, 94);
+  const priorityLane = [...lanes].sort((a, b) => a.score - b.score)[0];
+  const laneBlockers = lanes.filter((lane) => lane.score < 64);
+  const posture = expansion.decision.startsWith("Go") && operatingScore >= 82 && laneBlockers.length === 0
+    ? "Open one controlled paid wave"
+    : operatingScore >= 68
+      ? "Founder rehearsal week"
+      : "Freeze and repair";
+  const supportCapacity = support.score >= 82
+    ? "5 to 8 support cases/week"
+    : support.score >= 64
+      ? "3 founder-reviewed cases/week"
+      : "Support freeze";
+  const inviteWindow = posture.startsWith("Open")
+    ? "Open 5 paid invites after Friday review"
+    : posture.startsWith("Founder")
+      ? "No new paid invites until blockers close"
+      : "Freeze all paid invites";
+  const dailyCadence = [
+    { day: "Monday", label: "Gate and invite posture", detail: "Read expansion gate, cohort cap, blocker, and invite boundary." },
+    { day: "Tuesday", label: "Payment and account rehearsal", detail: "Run checkout/refund drill and account migration dry run." },
+    { day: "Wednesday", label: "Support and evidence hour", detail: "Review first cases, source posture, reviewer release, and rollback notes." },
+    { day: "Thursday", label: "Privacy and wording closeout", detail: "Confirm export/delete, redaction, paid copy, and research-only boundary." },
+    { day: "Friday", label: "Founder decision", detail: "Decide hold, freeze, or one narrow invite wave with a saved operating receipt." }
+  ];
+  const freezeRules = [
+    "Freeze expansion if the Paid Cohort Expansion Gate is not Go.",
+    "Freeze expansion if payment/refund proof or compliance wording remains below 64/100.",
+    "Freeze expansion if support cannot close first cases with redacted receipts.",
+    "Freeze expansion if source dates, citation paths, reviewer release, or demo/live status are unclear.",
+    "Freeze expansion if any Phase 2 distributor identifier enters Phase 1 retail beta."
+  ];
+  const commandQueue = [
+    {
+      label: priorityLane.label,
+      route: priorityLane.route,
+      detail: priorityLane.task
+    },
+    {
+      label: expansion.nextBlocker.label,
+      route: expansion.nextBlocker.route,
+      detail: expansion.nextBlocker.detail
+    },
+    {
+      label: payment.nextBlocker.label,
+      route: payment.nextBlocker.route,
+      detail: payment.nextBlocker.detail
+    }
+  ];
+  const operatingPacket = [
+    `Operating ID: ${["NN", "FOUNDER", "BETA", "OPS", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase()}`,
+    `Posture: ${posture}`,
+    `Invite window: ${inviteWindow}`,
+    `Support capacity: ${supportCapacity}`,
+    `Expansion gate: ${expansion.expansionScore}/100 | ${expansion.decision}`,
+    `Priority owner: ${priorityLane.owner} | ${priorityLane.label}`,
+    "Boundary: no advice, no execution, no PAN/folio/CAS/bank/payment credential capture, and no Phase 2 distributor workflow."
+  ];
+  const readout = [
+    { label: "Operating posture", value: posture, detail: inviteWindow },
+    { label: "Support capacity", value: supportCapacity, detail: support.status },
+    { label: "Expansion gate", value: `${expansion.expansionScore}/100`, detail: expansion.decision },
+    { label: "Priority lane", value: priorityLane.label, detail: `${priorityLane.owner} | ${priorityLane.score}/100` },
+    { label: "Payment proof", value: `${payment.paymentScore}/100`, detail: `${payment.blocked.length} payment blockers` },
+    { label: "Account route", value: `${account.score}/100`, detail: account.status }
+  ];
+
+  return {
+    account,
+    commandQueue,
+    dailyCadence,
+    expansion,
+    freezeRules,
+    inviteWindow,
+    laneAverage,
+    laneBlockers,
+    lanes,
+    operatingPacket,
+    operatingScore,
+    payment,
+    posture,
+    priorityLane,
+    readout,
+    replay,
+    support,
+    supportCapacity
+  };
+}
+
+function renderFounderBetaOperatingRoom() {
+  if (!els.founderBetaOpsOutput) return;
+  const ops = founderBetaOperatingRoomConfig();
+  if (els.founderBetaOpsSummary) {
+    els.founderBetaOpsSummary.textContent = `${ops.operatingScore}/100 | ${ops.posture}`;
+  }
+  els.founderBetaOpsOutput.innerHTML = `
+    <div class="founder-beta-ops-hero ${ops.posture.startsWith("Open") ? "ready" : ops.posture.startsWith("Founder") ? "watch" : "blocked"}">
+      <div>
+        <span class="metric-label">Weekly founder command</span>
+        <h3>${escapeHtml(ops.posture)}</h3>
+        <p>${escapeHtml(ops.inviteWindow)}. This room turns the paid cohort gate into a week-by-week operating cockpit for invite control, payments, accounts, support, evidence, privacy, compliance, and Friday expansion decisions.</p>
+      </div>
+      <div class="founder-beta-ops-score" style="--score:${ops.operatingScore}">
+        <b>${ops.operatingScore}</b>
+        <span>Ops</span>
+      </div>
+    </div>
+    <div class="founder-beta-ops-readout">
+      ${ops.readout.map((item) => `
+        <article>
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.value)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="founder-beta-ops-lane-grid">
+      ${ops.lanes.map((lane) => `
+        <article class="${escapeHtml(lane.tone)}">
+          <div class="founder-beta-ops-card-head">
+            <div>
+              <span>${escapeHtml(lane.day)} | ${escapeHtml(lane.owner)}</span>
+              <strong>${escapeHtml(lane.label)}</strong>
+            </div>
+            <b>${lane.score}</b>
+          </div>
+          <div class="build-progress-bar launch"><span style="width:${lane.score}%"></span></div>
+          <p>${escapeHtml(lane.task)}</p>
+          <small>${escapeHtml(lane.status)}</small>
+          <button class="text-button" type="button" data-founder-beta-ops-route="${escapeHtml(lane.route)}">Open lane</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="founder-beta-ops-two">
+      <article class="${ops.laneBlockers.length ? "blocked" : "ready"}">
+        <span>Command queue</span>
+        <strong>${ops.commandQueue.length} priority moves</strong>
+        <ol>${ops.commandQueue.map((item) => `<li><b>${escapeHtml(item.label)}:</b> ${escapeHtml(item.detail)}</li>`).join("")}</ol>
+        <button class="text-button" type="button" data-founder-beta-ops-route="${escapeHtml(ops.priorityLane.route)}">Open priority lane</button>
+      </article>
+      <article>
+        <span>Weekly cadence</span>
+        <strong>Five operating checks</strong>
+        <ul>${ops.dailyCadence.map((item) => `<li><b>${escapeHtml(item.day)}:</b> ${escapeHtml(item.label)} - ${escapeHtml(item.detail)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Freeze rules</span>
+        <strong>No shortcut around these</strong>
+        <ul>${ops.freezeRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Operating packet</span>
+        <strong>Founder handoff receipt</strong>
+        <ul>${ops.operatingPacket.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+    </div>
+  `;
+}
+
+function makeFounderBetaOperatingBrief() {
+  const ops = founderBetaOperatingRoomConfig();
+  return [
+    "# NiveshNadi Founder Beta Operating Room",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Operating score: ${ops.operatingScore}/100`,
+    `Posture: ${ops.posture}`,
+    `Invite window: ${ops.inviteWindow}`,
+    `Support capacity: ${ops.supportCapacity}`,
+    `Priority lane: ${ops.priorityLane.label} | ${ops.priorityLane.owner} | ${ops.priorityLane.score}/100`,
+    "",
+    "## Operating Lanes",
+    ...ops.lanes.map((lane) => `- ${lane.day} | ${lane.label}: ${lane.score}/100 | ${lane.owner} | ${lane.task}`),
+    "",
+    "## Command Queue",
+    ...ops.commandQueue.map((item) => `- ${item.label}: ${item.detail}`),
+    "",
+    "## Weekly Cadence",
+    ...ops.dailyCadence.map((item) => `- ${item.day}: ${item.label} | ${item.detail}`),
+    "",
+    "## Freeze Rules",
+    ...ops.freezeRules.map((item) => `- ${item}`),
+    "",
+    "## Operating Packet",
+    ...ops.operatingPacket.map((item) => `- ${item}`),
+    "",
+    "The Founder Beta Operating Room is an operating-control layer for a small paid beta. It does not approve investments, execute transactions, certify compliance, collect sensitive identifiers, or run Phase 2 distributor workflows."
+  ].join("\n");
+}
+
+function openFounderBetaOpsPriority() {
+  scrollToHash(founderBetaOperatingRoomConfig().priorityLane.route, "smooth", true);
+}
+
+function paidBetaSupportLedgerConfig() {
+  const ops = subscriptionOpsConfig();
+  const supportTooling = productionSupportTooling(ops);
+  const backend = subscriptionBackendConfig();
+  const backendReceipts = backendSupportReceipts(backend);
+  const founderOps = founderBetaOperatingRoomConfig();
+  const supportLift = supportTooling.readiness >= 72 ? 7 : supportTooling.readiness >= 58 ? 2 : -8;
+  const backendLift = backendReceipts.readiness >= 76 ? 7 : backendReceipts.readiness >= 58 ? 1 : -8;
+  const cases = PAID_BETA_SUPPORT_CASES.map((item) => {
+    const score = clampNumber(item.score + supportLift + backendLift, 18, 94);
+    return {
+      ...item,
+      score,
+      tone: score >= 72 ? "ready" : score < 50 ? "blocked" : "draft"
+    };
+  });
+  const caseAverage = Math.round(cases.reduce((sum, item) => sum + item.score, 0) / cases.length);
+  const openCases = cases.filter((item) => item.score < 70);
+  const priorityCase = [...cases].sort((a, b) => a.score - b.score)[0];
+  const blockers = [
+    ...openCases.map((item) => `${item.label}: ${item.closeout}`),
+    ...supportTooling.blockers.slice(0, 2),
+    ...backendReceipts.blockers.slice(0, 2)
+  ];
+  const ledgerScore = clampNumber(Math.round(
+    caseAverage * 0.28 +
+    supportTooling.readiness * 0.24 +
+    backendReceipts.readiness * 0.22 +
+    ops.score * 0.16 +
+    backend.score * 0.1
+  ) - Math.min(blockers.length, 5) * 2, 18, 94);
+  const status = ledgerScore >= 82 && openCases.length <= 1
+    ? "Paid beta support ready"
+    : ledgerScore >= 62
+      ? "Support ledger dry-run"
+      : "Do not expand paid beta";
+  const tone = status === "Paid beta support ready" ? "ready" : status === "Do not expand paid beta" ? "blocked" : "draft";
+  const ledgerId = [
+    "NN",
+    "PAID",
+    "BETA",
+    "SUPPORT",
+    DATA_VERSION.replace(/-/g, "")
+  ].join("-").toUpperCase();
+  const metrics = [
+    {
+      label: "Ledger posture",
+      value: status,
+      detail: `${openCases.length} case lanes need attention before wider paid beta.`
+    },
+    {
+      label: "Support capacity",
+      value: founderOps.supportCapacity,
+      detail: "Founder week must not invite more users than support can close."
+    },
+    {
+      label: "Tooling readiness",
+      value: `${supportTooling.readiness}/100`,
+      detail: supportTooling.status
+    },
+    {
+      label: "Receipt readiness",
+      value: `${backendReceipts.readiness}/100`,
+      detail: backendReceipts.status
+    },
+    {
+      label: "Priority case",
+      value: priorityCase.label,
+      detail: `${priorityCase.owner} | ${priorityCase.sla}`
+    },
+    {
+      label: "Ledger id",
+      value: ledgerId,
+      detail: "One support memory for founder paid beta cases."
+    }
+  ];
+  const supportScript = [
+    "Open every case with category, severity, owner, due time, and user-safe notice state.",
+    "Check plan status, entitlement state, invoice/refund references, and source receipt ids in a redacted view.",
+    "Choose one action: user notice, grace, entitlement repair, refund route, invoice clarification, correction route, or freeze.",
+    "Write a closeout receipt with actor role, prior state, new state, evidence reference, user copy, and next prevention step.",
+    "Route repeated issues into product, payment, backend, privacy, security, trust, or finance before adding more paid users."
+  ];
+  const redactionRules = [
+    "Never store PAN, folio, CAS, bank, UPI, card, OTP, gateway secrets, ARN/EUIN, distributor client records, or private research notes.",
+    "Support sees user hash, plan, feature access, receipt refs, invoice/refund state, case status, and public correction state only.",
+    "Manual repairs need reviewer role, reason code, old state, new state, rollback reference, and closeout note.",
+    "Research questions remain education/support; no personalized advice, execution, or fund recommendation."
+  ];
+  const closeoutPacket = [
+    `Ledger ID: ${ledgerId}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Status: ${status}`,
+    `Priority: ${priorityCase.label} | ${priorityCase.owner}`,
+    `Support tooling: ${supportTooling.status} | ${supportTooling.readiness}/100`,
+    `Backend receipts: ${backendReceipts.status} | ${backendReceipts.readiness}/100`,
+    "Expansion rule: close support receipts before inviting the next paid cohort."
+  ];
+
+  return {
+    backend,
+    backendReceipts,
+    blockers: blockers.length ? blockers : ["No active paid beta support blocker in this preview. Keep the ledger in dry-run until backend receipts are connected."],
+    caseAverage,
+    cases,
+    closeoutPacket,
+    hasBlockers: blockers.length > 0,
+    ledgerId,
+    ledgerScore,
+    metrics,
+    openCases,
+    ops,
+    priorityCase,
+    redactionRules,
+    status,
+    supportScript,
+    supportTooling,
+    tone
+  };
+}
+
+function renderPaidBetaSupportLedger() {
+  if (!els.paidSupportOutput) return;
+  const ledger = paidBetaSupportLedgerConfig();
+  if (els.paidSupportSummary) {
+    els.paidSupportSummary.textContent = `${ledger.ledgerScore}/100 | ${ledger.status}`;
+  }
+  els.paidSupportOutput.innerHTML = `
+    <div class="paid-support-hero ${escapeHtml(ledger.tone)}">
+      <div>
+        <span class="metric-label">Founder paid beta support memory</span>
+        <h3>${escapeHtml(ledger.status)}</h3>
+        <p>Track first paid-user cases, refunds, invoice questions, entitlement repairs, account recovery, and research corrections before the beta cohort widens.</p>
+      </div>
+      <div class="paid-support-score" style="--score:${ledger.ledgerScore}">
+        <b>${ledger.ledgerScore}</b>
+        <span>Ledger</span>
+      </div>
+    </div>
+    <div class="paid-support-readout">
+      ${ledger.metrics.map((item) => `
+        <article>
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.value)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="paid-support-case-grid">
+      ${ledger.cases.map((item) => `
+        <article class="${escapeHtml(item.tone)}">
+          <div class="paid-support-card-head">
+            <div>
+              <span>${escapeHtml(item.owner)} | ${escapeHtml(item.caseType)}</span>
+              <strong>${escapeHtml(item.label)}</strong>
+            </div>
+            <b>${item.score}</b>
+          </div>
+          <div class="build-progress-bar launch"><span style="width:${item.score}%"></span></div>
+          <p>${escapeHtml(item.closeout)}</p>
+          <small>${escapeHtml(item.sla)} | ${escapeHtml(item.receipt)}</small>
+          <button class="text-button" type="button" data-paid-support-route="${escapeHtml(item.route)}">Open case lane</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="paid-support-two">
+      <article>
+        <span>Support script</span>
+        <strong>Five-step case closeout</strong>
+        <ol>${ledger.supportScript.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol>
+      </article>
+      <article class="${ledger.hasBlockers ? "blocked" : "ready"}">
+        <span>Expansion blockers</span>
+        <strong>${ledger.hasBlockers ? `${ledger.blockers.length} ledger warnings` : "No active blockers"}</strong>
+        <ul>${ledger.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Redaction rules</span>
+        <strong>Support-safe only</strong>
+        <ul>${ledger.redactionRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Closeout packet</span>
+        <strong>${escapeHtml(ledger.ledgerId)}</strong>
+        <ul>${ledger.closeoutPacket.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+    </div>
+  `;
+}
+
+function makePaidBetaSupportLedgerBrief() {
+  const ledger = paidBetaSupportLedgerConfig();
+  return [
+    "# NiveshNadi Paid Beta Support Ledger",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Ledger score: ${ledger.ledgerScore}/100`,
+    `Status: ${ledger.status}`,
+    `Ledger ID: ${ledger.ledgerId}`,
+    `Priority case: ${ledger.priorityCase.label} | ${ledger.priorityCase.owner} | ${ledger.priorityCase.score}/100`,
+    "",
+    "## Case Lanes",
+    ...ledger.cases.map((item) => `- ${item.label}: ${item.score}/100 | ${item.owner} | ${item.sla} | ${item.closeout}`),
+    "",
+    "## Support Script",
+    ...ledger.supportScript.map((item) => `- ${item}`),
+    "",
+    "## Expansion Blockers",
+    ...ledger.blockers.map((item) => `- ${item}`),
+    "",
+    "## Redaction Rules",
+    ...ledger.redactionRules.map((item) => `- ${item}`),
+    "",
+    "## Closeout Packet",
+    ...ledger.closeoutPacket.map((item) => `- ${item}`),
+    "",
+    "This ledger is a paid beta support-control layer. It does not collect payment credentials, PAN, folio, CAS, bank data, or distributor client records, and it does not provide personalized investment advice."
+  ].join("\n");
+}
+
+function openPaidSupportPriority() {
+  scrollToHash(paidBetaSupportLedgerConfig().priorityCase.route, "smooth", true);
 }
 
 function launchReadinessBoardConfig() {
@@ -3948,6 +6785,1692 @@ function openPaymentSandboxBlocker() {
   scrollToHash(sandbox.blockers.length ? "#backend-audit-receipts" : "#account-launch", "smooth", true);
 }
 
+function gatewayWebhookDrillConfig() {
+  const wiring = paymentWiringConfig();
+  const retention = paymentGatewayRetentionPolicy(wiring);
+  const sandbox = paymentSandboxConfig();
+  const betaRunbook = paidBetaRunbook(sandbox);
+  const base = Math.round(GATEWAY_WEBHOOK_DRILL_REQUIREMENTS.reduce((sum, item) => sum + item.score, 0) / GATEWAY_WEBHOOK_DRILL_REQUIREMENTS.length);
+  const evidenceProof = ["signed", "replay", "idempotent"].includes(sandbox.evidence);
+  const providerReady = sandbox.provider !== "manual" && wiring.gateway === "hosted";
+  const selectedProvider = sandbox.provider === "manual"
+    ? paymentWiringGatewayLabel(wiring.gateway)
+    : paymentSandboxProviderLabel(sandbox.provider);
+  const blockers = [
+    ...wiring.blockers,
+    ...retention.blockers,
+    ...sandbox.blockers,
+    ...(providerReady ? [] : ["choose one hosted provider path before any public paid checkout"]),
+    ...(evidenceProof ? [] : ["webhook signature, replay, or idempotency proof is not strong enough for launch"]),
+    ...(wiring.invoice === "invoiceReady" ? [] : ["invoice, refund, cancellation, and tax wording still need finance/legal signoff"]),
+    ...(retention.readiness >= 60 ? [] : ["retention and reconciliation policy is below launch threshold"]),
+    ...(betaRunbook.readiness >= 60 ? [] : ["founder paid beta runbook is not ready for a live-money cohort"])
+  ];
+  const uniqueBlockers = [...new Set(blockers)];
+  const score = clampNumber(Math.round((
+    base +
+    wiring.score +
+    retention.readiness +
+    sandbox.score +
+    betaRunbook.readiness
+  ) / 5) - uniqueBlockers.length * 2, 18, 94);
+  const status = score >= 82 && !uniqueBlockers.length
+    ? "Provider pilot ready"
+    : score >= 62
+      ? "Webhook drill active"
+      : "Gateway decision blocked";
+  const tone = status === "Provider pilot ready" ? "ready" : status === "Gateway decision blocked" ? "blocked" : "draft";
+  const requirements = GATEWAY_WEBHOOK_DRILL_REQUIREMENTS.map((item) => {
+    const delta = item.label === "Provider selection" && providerReady ? 12
+      : item.label === "Webhook signature gate" && evidenceProof ? 12
+        : item.label === "Idempotency and replay" && (sandbox.evidence === "idempotent" || sandbox.scenario === "duplicate") ? 10
+          : item.label === "Invoice and refund route" && wiring.invoice === "invoiceReady" ? 12
+            : item.label === "Settlement reconciliation" && (sandbox.scenario === "reconcile" || sandbox.mode === "finance") ? 10
+              : item.label === "Incident rollback" && (sandbox.scenario === "incident" || sandbox.mode === "stress") ? 8
+                : 0;
+    return {
+      ...item,
+      score: clampNumber(item.score + delta - uniqueBlockers.length, 16, 94),
+      route: item.label === "Settlement reconciliation" ? "#backend-audit-receipts"
+        : item.label === "Entitlement projection" ? "#entitlement-bridge"
+          : item.label === "Invoice and refund route" ? "#paid-beta-support-ledger"
+            : "#payment-sandbox"
+    };
+  });
+  const weakest = [...requirements].sort((a, b) => a.score - b.score)[0];
+  const receiptId = [
+    "NN",
+    "GATEWAY",
+    "WEBHOOK",
+    DATA_VERSION.replace(/-/g, ""),
+    sandbox.provider,
+    sandbox.scenario
+  ].join("-").toUpperCase();
+  const decisionPacket = [
+    {
+      label: "Provider posture",
+      value: selectedProvider,
+      detail: providerReady ? "Hosted checkout path can move into a small provider pilot." : "Provider path is still not launch-clean."
+    },
+    {
+      label: "Webhook proof",
+      value: evidenceProof ? paymentSandboxEvidenceLabel(sandbox.evidence) : "Weak receipt posture",
+      detail: "Signature, timestamp tolerance, schema validation, and idempotency must be accepted before entitlement changes."
+    },
+    {
+      label: "Entitlement source",
+      value: "Backend event only",
+      detail: "Success URL, browser state, local storage, and support notes cannot unlock paid features."
+    },
+    {
+      label: "Finance close",
+      value: wiring.invoice === "invoiceReady" ? "Invoice route ready" : "Finance signoff pending",
+      detail: "Invoice, refund, cancellation, settlement, and variance ownership stay visible before launch."
+    }
+  ];
+  const drillScript = [
+    "Create one hosted checkout session for the selected plan and expire it quickly.",
+    "Receive a success webhook, verify signature, validate schema, save receipt, and activate entitlement.",
+    "Replay the same webhook twice and prove duplicate events are ignored.",
+    "Run failed renewal, refund, and cancellation paths and confirm entitlement repair is receipt-bound.",
+    "Issue or preview invoice receipt, import settlement report, and reconcile gateway total to app total.",
+    "Trigger an incident rehearsal with pause, rollback, support notice, and closeout owner."
+  ];
+  const blockedData = [
+    "raw card number",
+    "UPI PIN or mandate credentials",
+    "bank login or account details",
+    "OTP",
+    "gateway secrets",
+    "PAN",
+    "folio",
+    "CAS",
+    "ARN/EUIN",
+    "distributor client records",
+    "free-form private investment notes"
+  ];
+  return {
+    betaRunbook,
+    blockedData,
+    blockers: uniqueBlockers,
+    decisionPacket,
+    drillScript,
+    receiptId,
+    requirements,
+    sandbox,
+    score,
+    selectedProvider,
+    status,
+    tone,
+    weakest,
+    wiring
+  };
+}
+
+function renderGatewayWebhookDrill() {
+  if (!els.gatewayWebhookOutput) return;
+  const drill = gatewayWebhookDrillConfig();
+  if (els.gatewayWebhookSummary) {
+    els.gatewayWebhookSummary.textContent = `${drill.score}/100 | ${drill.status}`;
+  }
+  els.gatewayWebhookOutput.innerHTML = `
+    <div class="gateway-webhook-hero ${escapeHtml(drill.tone)}">
+      <div>
+        <span class="metric-label">Gateway launch drill</span>
+        <h3>${escapeHtml(drill.status)}</h3>
+        <p>${escapeHtml(drill.selectedProvider)} | ${escapeHtml(paymentSandboxScenarioLabel(drill.sandbox.scenario))} | ${escapeHtml(paymentSandboxEvidenceLabel(drill.sandbox.evidence))}. The drill decides whether checkout, webhooks, entitlement, invoices, refunds, reconciliation, and incident rollback can enter a tiny paid pilot.</p>
+      </div>
+      <div class="gateway-webhook-score" style="--score:${drill.score}">
+        <b>${drill.score}</b>
+        <span>Gate</span>
+      </div>
+    </div>
+    <div class="gateway-webhook-readout">
+      ${drill.decisionPacket.map((item) => `
+        <article>
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.value)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="gateway-webhook-requirement-grid">
+      ${drill.requirements.map((item) => `
+        <article class="${item.score >= 72 ? "ready" : item.score < 45 ? "blocked" : "draft"}">
+          <div class="gateway-webhook-card-head">
+            <div>
+              <span>${escapeHtml(item.owner)}</span>
+              <strong>${escapeHtml(item.label)}</strong>
+            </div>
+            <b>${item.score}</b>
+          </div>
+          <div class="build-progress-bar"><span style="width:${item.score}%"></span></div>
+          <p>${escapeHtml(item.action)}</p>
+          <small>${escapeHtml(item.proof)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="gateway-webhook-two">
+      <article>
+        <span>Webhook drill script</span>
+        <ol>
+          ${drill.drillScript.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ol>
+      </article>
+      <article class="${drill.blockers.length ? "blocked" : "ready"}">
+        <span>Priority blocker</span>
+        <h3>${escapeHtml(drill.blockers[0] || `${drill.weakest.label} is the next control to tighten`)}</h3>
+        <p>Weakest requirement: ${escapeHtml(drill.weakest.label)} at ${drill.weakest.score}/100. The next click should go to ${escapeHtml(drill.weakest.route)}.</p>
+      </article>
+      <article>
+        <span>Receipt family</span>
+        <h3>${escapeHtml(drill.receiptId)}</h3>
+        <p>Use this family for checkout, webhook, idempotency, entitlement, invoice, refund, reconciliation, support repair, and incident replay receipts.</p>
+      </article>
+      <article>
+        <span>Blocked data</span>
+        <p>${drill.blockedData.map((item) => escapeHtml(item)).join(" | ")}</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeGatewayWebhookBrief() {
+  const drill = gatewayWebhookDrillConfig();
+  return [
+    "# NiveshNadi Gateway Decision and Webhook Drill",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Score: ${drill.score}/100`,
+    `Status: ${drill.status}`,
+    `Provider posture: ${drill.selectedProvider}`,
+    `Receipt family: ${drill.receiptId}`,
+    "",
+    "## Decision Packet",
+    ...drill.decisionPacket.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Required Webhook Drill",
+    ...drill.drillScript.map((item) => `- ${item}`),
+    "",
+    "## Requirements",
+    ...drill.requirements.map((item) => `- ${item.label}: ${item.score}/100 | Owner: ${item.owner} | Proof: ${item.proof} | Action: ${item.action}`),
+    "",
+    "## Blockers",
+    ...(drill.blockers.length ? drill.blockers.map((item) => `- ${item}`) : ["- No active gateway drill blocker in this preview."]),
+    "",
+    "## Blocked Data",
+    ...drill.blockedData.map((item) => `- ${item}`),
+    "",
+    "## Launch Guardrail",
+    "Gateway and webhook proof must be backend-owned before paid access turns on. NiveshNadi must not store raw card, UPI, bank, OTP, PAN, folio, CAS, gateway secrets, distributor client records, or free-form private investment notes."
+  ].join("\n");
+}
+
+function openGatewayWebhookBlocker() {
+  const drill = gatewayWebhookDrillConfig();
+  scrollToHash(drill.weakest.route || "#payment-sandbox", "smooth", true);
+}
+
+function providerPilotReceiptContractConfig() {
+  const drill = gatewayWebhookDrillConfig();
+  const sandbox = drill.sandbox;
+  const wiring = drill.wiring;
+  const evidenceProof = ["signed", "replay", "idempotent"].includes(sandbox.evidence);
+  const providerReady = sandbox.provider !== "manual" && wiring.gateway === "hosted";
+  const invoiceReady = wiring.invoice === "invoiceReady";
+  const fields = PROVIDER_PILOT_RECEIPT_FIELDS.map((field) => {
+    const boost = field.event === "checkout.session_created" && providerReady ? 10
+      : field.event === "webhook.signature_verified" && evidenceProof ? 16
+        : field.event === "webhook.idempotency_checked" && (sandbox.evidence === "idempotent" || sandbox.scenario === "duplicate") ? 14
+          : field.event === "entitlement.projected" && ["success", "refund", "failed"].includes(sandbox.scenario) ? 10
+            : field.event === "invoice.issued" && invoiceReady ? 16
+              : field.event === "refund.or_cancel.saved" && ["refund", "failed"].includes(sandbox.scenario) ? 12
+                : field.event === "settlement.reconciled" && (sandbox.scenario === "reconcile" || sandbox.mode === "finance") ? 14
+                  : field.event === "payment.incident_closed" && (sandbox.scenario === "incident" || sandbox.mode === "stress") ? 12
+                    : 0;
+    const route = field.event === "entitlement.projected" ? "#entitlement-bridge"
+      : field.event === "invoice.issued" || field.event === "refund.or_cancel.saved" ? "#paid-beta-support-ledger"
+        : field.event === "settlement.reconciled" || field.event === "payment.incident_closed" ? "#backend-audit-receipts"
+          : "#gateway-webhook-drill";
+    return {
+      ...field,
+      route,
+      score: clampNumber(field.score + boost - drill.blockers.length, 16, 96)
+    };
+  });
+  const weakest = [...fields].sort((a, b) => a.score - b.score)[0];
+  const fieldBlockers = fields
+    .filter((field) => field.score < 58)
+    .map((field) => `${field.label} needs ${field.required.slice(0, 4).join(", ")} proof before a provider pilot can widen`);
+  const blockers = [...new Set([
+    ...drill.blockers,
+    ...fieldBlockers,
+    ...(providerReady ? [] : ["hosted payment provider must be selected before a pilot receipt contract can go live"]),
+    ...(evidenceProof ? [] : ["webhook proof must include signature, replay, or idempotency before live billing"]),
+    ...(invoiceReady ? [] : ["invoice, refund, cancellation, and tax posture still need signoff"])
+  ])];
+  const average = Math.round(fields.reduce((sum, field) => sum + field.score, 0) / fields.length);
+  const readiness = clampNumber(Math.round((average + drill.score) / 2) - blockers.length, 18, 96);
+  const status = readiness >= 82 && !blockers.length
+    ? "Pilot contract ready"
+    : readiness >= 62
+      ? "Pilot contract rehearsal"
+      : "Pilot contract blocked";
+  const tone = status === "Pilot contract ready" ? "ready" : status === "Pilot contract blocked" ? "blocked" : "draft";
+  const contractId = [
+    "NN",
+    "PROVIDER",
+    "PILOT",
+    "RECEIPT",
+    DATA_VERSION.replace(/-/g, ""),
+    sandbox.provider
+  ].join("-").toUpperCase();
+  const metrics = [
+    {
+      label: "Contract ID",
+      value: contractId,
+      detail: "Use one receipt family across checkout, webhook, entitlement, invoice, refund, reconciliation, support, and incident events."
+    },
+    {
+      label: "Provider posture",
+      value: drill.selectedProvider,
+      detail: providerReady ? "Hosted checkout can move into provider pilot rehearsal." : "Provider selection is still a launch blocker."
+    },
+    {
+      label: "Required fields",
+      value: String([...new Set(fields.flatMap((field) => field.required))].length),
+      detail: "Fields are identity-light and exclude sensitive investor or payment credentials."
+    },
+    {
+      label: "Priority route",
+      value: weakest.route,
+      detail: `${weakest.label} is the weakest receipt lane at ${weakest.score}/100.`
+    }
+  ];
+  const eventChain = [
+    "plan.selected",
+    "checkout.session_created",
+    "webhook.signature_verified",
+    "webhook.idempotency_checked",
+    "entitlement.projected",
+    "invoice.or_refund.saved",
+    "settlement.reconciled",
+    "support.repair_or_notice.saved",
+    "payment.incident_closed"
+  ];
+  const releaseRules = [
+    "Do not unlock access from a success URL, browser-local state, screenshot, or manual support note.",
+    "Reject unsigned, stale, duplicate, malformed, unexpected, and unsupported webhook events.",
+    "Save idempotency and replay fields before invoice, refund, entitlement, or support repair moves.",
+    "Keep PAN, folio, CAS, ARN/EUIN, card, UPI, bank, OTP, gateway secret, and private note data outside this contract.",
+    "Widen the paid cohort only after reconciliation variance and support repair cases close cleanly."
+  ];
+  return {
+    blockers,
+    contractId,
+    drill,
+    eventChain,
+    fields,
+    metrics,
+    readiness,
+    releaseRules,
+    status,
+    tone,
+    weakest
+  };
+}
+
+function providerPaymentTwin(contract) {
+  const fieldByEvent = Object.fromEntries(contract.fields.map((field) => [field.event, field]));
+  const sandbox = contract.drill.sandbox;
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const twinId = ["NN", "PAYMENT", "PROVIDER", "TWIN", suffix, sandbox.provider].join("-").toUpperCase();
+  const flowTemplates = [
+    {
+      label: "Hosted checkout twin",
+      event: "checkout.session_created",
+      expectedBackendState: "checkout_pending",
+      receiptProof: "server session, plan, amount, expiry, user hash",
+      failureMode: "success URL attempts to unlock access",
+      rollback: "expire session and keep entitlement unchanged",
+      owner: "Product"
+    },
+    {
+      label: "Signed webhook twin",
+      event: "webhook.signature_verified",
+      expectedBackendState: "gateway_event_verified",
+      receiptProof: "signature hash, tolerance, schema, received timestamp",
+      failureMode: "unsigned, stale, malformed, or unsupported event",
+      rollback: "reject event and write security notice",
+      owner: "Backend"
+    },
+    {
+      label: "Duplicate event twin",
+      event: "webhook.idempotency_checked",
+      expectedBackendState: "dedupe_lock_preserved",
+      receiptProof: "idempotency key, first seen, replay count, duplicate action",
+      failureMode: "double charge, double invoice, or double entitlement",
+      rollback: "return prior state and record duplicate receipt",
+      owner: "Platform"
+    },
+    {
+      label: "Entitlement projection twin",
+      event: "entitlement.projected",
+      expectedBackendState: "access_projection_ready",
+      receiptProof: "old state, new state, source receipt, repair id",
+      failureMode: "paid access changes from browser-local state",
+      rollback: "rebuild entitlement from receipts only",
+      owner: "Account"
+    },
+    {
+      label: "Invoice and tax twin",
+      event: "invoice.issued",
+      expectedBackendState: "invoice_or_tax_receipt_ready",
+      receiptProof: "invoice id, policy version, amount, receipt URL hash",
+      failureMode: "paid user receives no auditable billing proof",
+      rollback: "hold cohort expansion until invoice signoff",
+      owner: "Finance"
+    },
+    {
+      label: "Refund and cancel twin",
+      event: "refund.or_cancel.saved",
+      expectedBackendState: "refund_or_cancel_reconciled",
+      receiptProof: "refund id, reason code, entitlement action, notice state",
+      failureMode: "refund does not reverse entitlement or notify support",
+      rollback: "pause plan and run support repair receipt",
+      owner: "Support"
+    },
+    {
+      label: "Settlement variance twin",
+      event: "settlement.reconciled",
+      expectedBackendState: "settlement_variance_reviewed",
+      receiptProof: "gateway total, app total, refund total, reviewer, closed at",
+      failureMode: "provider settlement and app ledger disagree",
+      rollback: "freeze expansion and route to finance ops",
+      owner: "Finance Ops"
+    },
+    {
+      label: "Incident freeze twin",
+      event: "payment.incident_closed",
+      expectedBackendState: "incident_freeze_or_resume_decided",
+      receiptProof: "incident id, affected receipts, pause state, notice id",
+      failureMode: "payment issue continues without public correction path",
+      rollback: "pause billing, replay receipts, publish correction notice",
+      owner: "Ops Lead"
+    }
+  ];
+  const flows = flowTemplates.map((flow, index) => {
+    const eventScore = fieldByEvent[flow.event]?.score || contract.readiness;
+    const score = clampNumber(Math.round((eventScore * 0.58) + (contract.readiness * 0.24) + (contract.drill.score * 0.18)) - (index > 5 ? 2 : 0), 18, 96);
+    return {
+      ...flow,
+      route: fieldByEvent[flow.event]?.route || "#gateway-webhook-drill",
+      score,
+      status: score >= 72 ? "Twin pass" : score < 54 ? "Twin blocker" : "Twin rehearsal",
+      tone: score >= 72 ? "ready" : score < 54 ? "blocked" : "draft"
+    };
+  });
+  const weakest = [...flows].sort((a, b) => a.score - b.score)[0];
+  const flowBlockers = flows
+    .filter((flow) => flow.score < 58)
+    .map((flow) => `${flow.label} must prove ${flow.receiptProof} before the provider twin can authorize launch traffic`);
+  const blockers = [...new Set([
+    ...contract.blockers.slice(0, 6),
+    ...flowBlockers,
+    "production gateway credentials, webhook secrets, card, UPI, bank, OTP, PAN, folio, CAS, and private support notes must stay outside the browser twin"
+  ])];
+  const average = Math.round(flows.reduce((sum, flow) => sum + flow.score, 0) / flows.length);
+  const readiness = clampNumber(Math.round((average + contract.readiness + contract.drill.score) / 3) - Math.min(blockers.length, 10), 18, 96);
+  const status = readiness >= 84 && blockers.length <= 1
+    ? "Provider twin pilot ready"
+    : readiness >= 62
+      ? "Provider twin rehearsal active"
+      : "Provider twin blocked";
+  const tone = status === "Provider twin pilot ready" ? "ready" : status === "Provider twin blocked" ? "blocked" : "draft";
+  const metrics = [
+    {
+      label: "Twin run ID",
+      value: twinId,
+      detail: "Synthetic provider traffic is bound to one replayable run."
+    },
+    {
+      label: "Simulated flows",
+      value: `${flows.length}/8`,
+      detail: "Checkout, webhook, duplicate, entitlement, invoice, refund, settlement, and incident paths are rehearsed."
+    },
+    {
+      label: "Weakest flow",
+      value: weakest.label,
+      detail: `${weakest.score}/100 | ${weakest.failureMode}`
+    },
+    {
+      label: "Release posture",
+      value: status,
+      detail: "The twin can prove behavior before the first retail payment is switched on."
+    }
+  ];
+  const runSequence = [
+    "Create a synthetic checkout session from the selected plan and provider.",
+    "Replay signed, stale, malformed, duplicate, and unsupported webhook events.",
+    "Project entitlement from backend receipts only, then compare expected and actual access state.",
+    "Run invoice, refund, cancellation, and settlement variance branches.",
+    "Rehearse support repair, incident freeze, correction notice, and resume decisions.",
+    "Export the twin run as deployment evidence before any live paid cohort widens."
+  ];
+  const receiptFields = [
+    "twin_run_id",
+    "provider_ref",
+    "scenario_id",
+    "synthetic_event_hash",
+    "webhook_signature_status",
+    "idempotency_key",
+    "expected_backend_state",
+    "actual_backend_state",
+    "variance_reason",
+    "rollback_ref",
+    "owner_signoff",
+    "replayed_at"
+  ];
+  const guardrails = [
+    "No real customer payment credential, PAN, folio, CAS, bank, UPI, OTP, gateway secret, or private support-note body enters the twin.",
+    "The twin cannot unlock paid access; it can only produce receipts, blockers, and deployment evidence.",
+    "Every provider event must be replayable from stored backend receipts without a browser success URL.",
+    "Failed twin scenarios freeze launch expansion until owner signoff and rollback notes are saved."
+  ];
+  return {
+    blockers,
+    flows,
+    guardrails,
+    metrics,
+    readiness,
+    receiptFields,
+    runSequence,
+    status,
+    tone,
+    twinId,
+    weakest
+  };
+}
+
+function renderProviderPilotReceiptContract() {
+  if (!els.providerPilotOutput) return;
+  const contract = providerPilotReceiptContractConfig();
+  const twin = providerPaymentTwin(contract);
+  if (els.providerPilotSummary) {
+    els.providerPilotSummary.textContent = `${contract.readiness}/100 | ${contract.status} | Twin ${twin.readiness}/100`;
+  }
+  els.providerPilotOutput.innerHTML = `
+    <div class="provider-pilot-hero ${escapeHtml(contract.tone)}">
+      <div>
+        <span class="metric-label">Provider pilot receipt contract</span>
+        <h3>${escapeHtml(contract.status)}</h3>
+        <p>${escapeHtml(contract.drill.selectedProvider)} must save backend-owned checkout, webhook, idempotency, entitlement, invoice, refund, reconciliation, support, and incident receipts before any paid cohort widens.</p>
+      </div>
+      <div class="provider-pilot-score" style="--score:${contract.readiness}">
+        <b>${contract.readiness}</b>
+        <span>Pilot</span>
+      </div>
+    </div>
+    <div class="provider-pilot-metric-grid">
+      ${contract.metrics.map((metric) => `
+        <article>
+          <span>${escapeHtml(metric.label)}</span>
+          <strong>${escapeHtml(metric.value)}</strong>
+          <p>${escapeHtml(metric.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="provider-pilot-field-grid">
+      ${contract.fields.map((field) => `
+        <article class="${field.score >= 72 ? "ready" : field.score < 50 ? "blocked" : "draft"}">
+          <div class="provider-pilot-card-head">
+            <div>
+              <span>${escapeHtml(field.owner)}</span>
+              <strong>${escapeHtml(field.label)}</strong>
+            </div>
+            <b>${field.score}</b>
+          </div>
+          <p>${escapeHtml(field.event)}</p>
+          <div class="build-progress-bar"><span style="width:${field.score}%"></span></div>
+          <small>${field.required.map((item) => escapeHtml(item)).join(" | ")}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="provider-twin-board ${escapeHtml(twin.tone)}">
+      <div class="provider-twin-head">
+        <div>
+          <span class="metric-label">Payment provider twin</span>
+          <h3>${escapeHtml(twin.status)}</h3>
+          <p>A synthetic provider mirror rehearses checkout, signed webhooks, duplicate events, entitlement, invoice, refund, settlement, support, and incident behavior before any real retail payment route opens.</p>
+        </div>
+        <div class="provider-twin-score" style="--score:${twin.readiness}">
+          <b>${twin.readiness}</b>
+          <span>Twin</span>
+        </div>
+      </div>
+      <div class="provider-twin-metrics">
+        ${twin.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="provider-twin-flow-grid">
+        ${twin.flows.map((flow) => `
+          <article class="${escapeHtml(flow.tone)}">
+            <div class="provider-pilot-card-head">
+              <div>
+                <span>${escapeHtml(flow.owner)}</span>
+                <strong>${escapeHtml(flow.label)}</strong>
+              </div>
+              <b>${flow.score}</b>
+            </div>
+            <p>${escapeHtml(flow.expectedBackendState)}</p>
+            <div class="build-progress-bar"><span style="width:${flow.score}%"></span></div>
+            <small>${escapeHtml(flow.status)} | Proof: ${escapeHtml(flow.receiptProof)}</small>
+            <small>Failure: ${escapeHtml(flow.failureMode)}</small>
+            <small>Rollback: ${escapeHtml(flow.rollback)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="provider-twin-two">
+        <article>
+          <span>Twin run sequence</span>
+          <ol>
+            ${twin.runSequence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${twin.blockers.length ? "blocked" : "ready"}">
+          <span>Twin blockers</span>
+          <ul>
+            ${(twin.blockers.length ? twin.blockers : ["No active provider twin blocker in this preview."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Twin receipt fields</span>
+          <p>${twin.receiptFields.map((item) => escapeHtml(item)).join(" | ")}</p>
+        </article>
+        <article>
+          <span>Twin guardrails</span>
+          <ul>
+            ${twin.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="provider-pilot-two">
+      <article>
+        <span>Event chain</span>
+        <ol>
+          ${contract.eventChain.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ol>
+      </article>
+      <article class="${contract.blockers.length ? "blocked" : "ready"}">
+        <span>Receipt blockers</span>
+        <ul>
+          ${(contract.blockers.length ? contract.blockers : ["No active provider-pilot receipt blocker in this preview. Keep the pilot small and backend-owned."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>Blocked data</span>
+        <p>${contract.drill.blockedData.map((item) => escapeHtml(item)).join(" | ")}</p>
+      </article>
+      <article>
+        <span>Release rules</span>
+        <ul>
+          ${contract.releaseRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+    </div>
+  `;
+}
+
+function makeProviderPilotReceiptBrief() {
+  const contract = providerPilotReceiptContractConfig();
+  const twin = providerPaymentTwin(contract);
+  return [
+    "# NiveshNadi Payment Provider Pilot Receipt Contract",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Score: ${contract.readiness}/100`,
+    `Status: ${contract.status}`,
+    `Contract ID: ${contract.contractId}`,
+    `Provider posture: ${contract.drill.selectedProvider}`,
+    `Payment Provider Twin: ${twin.readiness}/100 | ${twin.status}`,
+    `Twin ID: ${twin.twinId}`,
+    "",
+    "## Metrics",
+    ...contract.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Payment Provider Twin",
+    ...twin.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Twin Flows",
+    ...twin.flows.map((flow) => `- ${flow.label}: ${flow.score}/100 | Event: ${flow.event} | State: ${flow.expectedBackendState} | Proof: ${flow.receiptProof} | Failure: ${flow.failureMode} | Rollback: ${flow.rollback}`),
+    "",
+    "## Twin Run Sequence",
+    ...twin.runSequence.map((item) => `- ${item}`),
+    "",
+    "## Twin Receipt Fields",
+    ...twin.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## Twin Guardrails",
+    ...twin.guardrails.map((item) => `- ${item}`),
+    "",
+    "## Receipt Fields",
+    ...contract.fields.map((field) => `- ${field.label}: ${field.score}/100 | Event: ${field.event} | Owner: ${field.owner} | Required: ${field.required.join(", ")} | Blocker: ${field.blocker}`),
+    "",
+    "## Event Chain",
+    ...contract.eventChain.map((item) => `- ${item}`),
+    "",
+    "## Blockers",
+    ...(contract.blockers.length ? contract.blockers.map((item) => `- ${item}`) : ["- No active provider-pilot receipt blocker in this preview."]),
+    "",
+    "## Blocked Data",
+    ...contract.drill.blockedData.map((item) => `- ${item}`),
+    "",
+    "## Release Rules",
+    ...contract.releaseRules.map((item) => `- ${item}`)
+  ].join("\n");
+}
+
+function openProviderPilotBlocker() {
+  const contract = providerPilotReceiptContractConfig();
+  scrollToHash(contract.weakest.route || "#gateway-webhook-drill", "smooth", true);
+}
+
+function pilotReceiptVaultConfig() {
+  const contract = providerPilotReceiptContractConfig();
+  const fieldByEvent = Object.fromEntries(contract.fields.map((field) => [field.event, field]));
+  const settlementScore = fieldByEvent["settlement.reconciled"]?.score || 0;
+  const refundScore = fieldByEvent["refund.or_cancel.saved"]?.score || 0;
+  const incidentScore = fieldByEvent["payment.incident_closed"]?.score || 0;
+  const lanes = PILOT_RECEIPT_VAULT_LANES.map((lane) => {
+    const boost = lane.label === "Append-only receipt table" && contract.readiness >= 54 ? 10
+      : lane.label === "Replay index" && (fieldByEvent["webhook.idempotency_checked"]?.score || 0) >= 58 ? 12
+        : lane.label === "Entitlement projection log" && (fieldByEvent["entitlement.projected"]?.score || 0) >= 58 ? 10
+          : lane.label === "Invoice and refund ledger" && Math.round((refundScore + (fieldByEvent["invoice.issued"]?.score || 0)) / 2) >= 58 ? 10
+            : lane.label === "Settlement reconciliation join" && settlementScore >= 56 ? 12
+              : lane.label === "Support lookup view" && Math.round((refundScore + incidentScore) / 2) >= 54 ? 8
+                : lane.label === "Audit export packet" && contract.readiness >= 62 ? 8
+                  : lane.label === "Incident freeze rule" && incidentScore >= 54 ? 10
+                    : 0;
+    return {
+      ...lane,
+      score: clampNumber(lane.score + boost - Math.min(contract.blockers.length, 8), 18, 96)
+    };
+  });
+  const weakest = [...lanes].sort((a, b) => a.score - b.score)[0];
+  const laneBlockers = lanes
+    .filter((lane) => lane.score < 58)
+    .map((lane) => `${lane.label} needs ${lane.evidence} before payment receipts are treated as durable`);
+  const blockers = [...new Set([
+    ...contract.blockers.slice(0, 6),
+    ...laneBlockers,
+    "backend-owned vault is required before paid access can rely on provider receipts",
+    "receipt replay must rebuild entitlement, invoice, refund, support, and incident state without browser-local data"
+  ])];
+  const average = Math.round(lanes.reduce((sum, lane) => sum + lane.score, 0) / lanes.length);
+  const readiness = clampNumber(Math.round((average + contract.readiness) / 2) - Math.min(blockers.length, 12), 18, 96);
+  const status = readiness >= 82 && blockers.length <= 1
+    ? "Vault pilot ready"
+    : readiness >= 62
+      ? "Vault rehearsal active"
+      : "Vault launch blocked";
+  const tone = status === "Vault pilot ready" ? "ready" : status === "Vault launch blocked" ? "blocked" : "draft";
+  const vaultId = [
+    "NN",
+    "PILOT",
+    "RECEIPT",
+    "VAULT",
+    DATA_VERSION.replace(/-/g, "")
+  ].join("-").toUpperCase();
+  const metrics = [
+    {
+      label: "Vault ID",
+      value: vaultId,
+      detail: "One payment-pilot vault for checkout, webhook, entitlement, invoice, refund, support, reconciliation, and incident receipts."
+    },
+    {
+      label: "Receipt lanes",
+      value: `${lanes.filter((lane) => lane.score >= 58).length}/${lanes.length}`,
+      detail: "Launch improves only when receipt lanes are durable, replayable, and support-safe."
+    },
+    {
+      label: "Replay posture",
+      value: `${contract.readiness}/100 source`,
+      detail: "The vault inherits the provider pilot contract and then checks storage, replay, audit, and freeze readiness."
+    },
+    {
+      label: "Priority route",
+      value: weakest.route,
+      detail: `${weakest.label} is the weakest vault lane at ${weakest.score}/100.`
+    }
+  ];
+  const replayTests = [
+    "Rebuild paid active state from checkout plus signed webhook receipt.",
+    "Replay duplicate webhook and prove entitlement is not double-unlocked.",
+    "Replay refund receipt and prove access is revoked with an invoice/refund trail.",
+    "Replay settlement variance and route it to finance before widening the pilot.",
+    "Replay support repair and prove the case closes with redacted receipt references.",
+    "Replay payment incident and prove checkout or entitlement can freeze and resume cleanly."
+  ];
+  const storageRules = [
+    "Receipts are backend-owned, append-only, and keyed by receipt ID plus idempotency key.",
+    "Public UI can show receipt posture, not raw payloads, secrets, card, UPI, bank, PAN, folio, CAS, or private note bodies.",
+    "Support views use redacted user hashes, receipt references, and repair actions only.",
+    "Audit export packets include receipt ranges, release scope, reviewer posture, and excluded-field proof.",
+    "Cohort expansion waits until replay, reconciliation, support repair, and incident freeze tests pass."
+  ];
+  return {
+    blockers,
+    contract,
+    lanes,
+    metrics,
+    readiness,
+    replayTests,
+    status,
+    storageRules,
+    tone,
+    vaultId,
+    weakest
+  };
+}
+
+function renderPilotReceiptVault() {
+  if (!els.pilotReceiptVaultOutput) return;
+  const vault = pilotReceiptVaultConfig();
+  if (els.pilotReceiptVaultSummary) {
+    els.pilotReceiptVaultSummary.textContent = `${vault.readiness}/100 | ${vault.status}`;
+  }
+  els.pilotReceiptVaultOutput.innerHTML = `
+    <div class="pilot-vault-hero ${escapeHtml(vault.tone)}">
+      <div>
+        <span class="metric-label">Pilot receipt vault</span>
+        <h3>${escapeHtml(vault.status)}</h3>
+        <p>Store, replay, inspect, export, and freeze payment pilot receipts before a retail paid cohort moves beyond founder-supervised rehearsal.</p>
+      </div>
+      <div class="pilot-vault-score" style="--score:${vault.readiness}">
+        <b>${vault.readiness}</b>
+        <span>Vault</span>
+      </div>
+    </div>
+    <div class="pilot-vault-metric-grid">
+      ${vault.metrics.map((metric) => `
+        <article>
+          <span>${escapeHtml(metric.label)}</span>
+          <strong>${escapeHtml(metric.value)}</strong>
+          <p>${escapeHtml(metric.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="pilot-vault-lane-grid">
+      ${vault.lanes.map((lane) => `
+        <article class="${lane.score >= 72 ? "ready" : lane.score < 50 ? "blocked" : "draft"}">
+          <div class="pilot-vault-card-head">
+            <div>
+              <span>${escapeHtml(lane.owner)}</span>
+              <strong>${escapeHtml(lane.label)}</strong>
+            </div>
+            <b>${lane.score}</b>
+          </div>
+          <p>${escapeHtml(lane.action)}</p>
+          <div class="build-progress-bar"><span style="width:${lane.score}%"></span></div>
+          <small>${escapeHtml(lane.evidence)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="pilot-vault-two">
+      <article>
+        <span>Replay tests</span>
+        <ol>
+          ${vault.replayTests.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ol>
+      </article>
+      <article class="${vault.blockers.length ? "blocked" : "ready"}">
+        <span>Vault blockers</span>
+        <ul>
+          ${vault.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>Storage rules</span>
+        <ul>
+          ${vault.storageRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>Data excluded</span>
+        <p>${vault.contract.drill.blockedData.map((item) => escapeHtml(item)).join(" | ")}</p>
+      </article>
+    </div>
+  `;
+}
+
+function makePilotReceiptVaultBrief() {
+  const vault = pilotReceiptVaultConfig();
+  return [
+    "# NiveshNadi Pilot Receipt Vault",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Score: ${vault.readiness}/100`,
+    `Status: ${vault.status}`,
+    `Vault ID: ${vault.vaultId}`,
+    "",
+    "## Metrics",
+    ...vault.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Vault Lanes",
+    ...vault.lanes.map((lane) => `- ${lane.label}: ${lane.score}/100 | Owner: ${lane.owner} | Evidence: ${lane.evidence} | Action: ${lane.action}`),
+    "",
+    "## Replay Tests",
+    ...vault.replayTests.map((item) => `- ${item}`),
+    "",
+    "## Storage Rules",
+    ...vault.storageRules.map((item) => `- ${item}`),
+    "",
+    "## Blockers",
+    ...vault.blockers.map((item) => `- ${item}`),
+    "",
+    "## Data Excluded",
+    ...vault.contract.drill.blockedData.map((item) => `- ${item}`)
+  ].join("\n");
+}
+
+function openPilotReceiptVaultBlocker() {
+  const vault = pilotReceiptVaultConfig();
+  scrollToHash(vault.weakest.route || "#backend-audit-receipts", "smooth", true);
+}
+
+function paidPilotLaunchGateConfig() {
+  const vault = pilotReceiptVaultConfig();
+  const contract = providerPilotReceiptContractConfig();
+  const bridge = entitlementBridgeConfig();
+  const ops = subscriptionOpsConfig();
+  const account = accountLaunchRouteConfig();
+  const launch = launchReadinessBoardConfig();
+  const privacy = privacyControlConfig();
+  const founderOps = founderBetaOperatingRoomConfig();
+  const sourceScores = {
+    "Receipt vault replay": vault.readiness,
+    "Payment provider posture": contract.readiness,
+    "Entitlement enforcement": bridge.score,
+    "Support and refund handling": ops.score,
+    "Account route readiness": account.score,
+    "Evidence and claim safety": launch.launchReadiness,
+    "Privacy and blocked data": privacy.execution.readiness,
+    "Founder operating capacity": founderOps.operatingScore
+  };
+  const launchBlocker = launch.topBlocker
+    ? [`${launch.topBlocker.label}: ${launch.topBlocker.next || launch.topBlocker.detail || "Launch blocker needs owner review"}`]
+    : [];
+  const blockersByLabel = {
+    "Receipt vault replay": vault.blockers,
+    "Payment provider posture": contract.blockers,
+    "Entitlement enforcement": bridge.blockers,
+    "Support and refund handling": ops.blockers,
+    "Account route readiness": account.blockers,
+    "Evidence and claim safety": launchBlocker,
+    "Privacy and blocked data": privacy.execution.blockers || [],
+    "Founder operating capacity": founderOps.laneBlockers.map((lane) => `${lane.label}: ${lane.task}`)
+  };
+  const gates = PAID_PILOT_LAUNCH_GATES.map((gate) => {
+    const score = clampNumber(sourceScores[gate.label] || 0, 18, 96);
+    const blockers = (blockersByLabel[gate.label] || []).slice(0, 3);
+    const tone = score >= 76 && !blockers.length ? "ready" : score >= 60 ? "draft" : "blocked";
+    const status = tone === "ready" ? "Clear" : tone === "draft" ? "Founder review" : "No-go blocker";
+    return {
+      ...gate,
+      blockers,
+      score,
+      status,
+      tone
+    };
+  });
+  const score = clampNumber(Math.round(gates.reduce((sum, gate) => sum + gate.score * gate.weight, 0)), 18, 96);
+  const hardBlockers = [
+    ...gates.filter((gate) => gate.score < 60).map((gate) => `${gate.label}: ${gate.blockers[0] || gate.detail}`),
+    ...vault.blockers.slice(0, 3),
+    ...contract.blockers.slice(0, 3),
+    ...bridge.blockers.slice(0, 2),
+    ...ops.blockers.slice(0, 2),
+    ...account.blockers.slice(0, 2),
+    ...privacy.execution.blockers.slice(0, 2),
+    ...founderOps.laneBlockers.slice(0, 2).map((lane) => `${lane.label}: ${lane.task}`)
+  ];
+  const blockers = [...new Set(hardBlockers)];
+  const weakest = [...gates].sort((a, b) => a.score - b.score)[0];
+  const decision = score >= 82 && !blockers.length
+    ? "Go: open tiny paid pilot"
+    : score >= 66
+      ? "Hold: founder rehearsal only"
+      : "No-go: keep paid pilot closed";
+  const cohortCap = decision.startsWith("Go")
+    ? "Open to 10-25 paid users"
+    : decision.startsWith("Hold")
+      ? "Founder rehearsal cap only"
+      : "No paid users yet";
+  const gateId = ["NN", "PAID", "PILOT", "LAUNCH", "GATE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const readout = [
+    { label: "Decision", value: decision, detail: cohortCap },
+    { label: "Gate ID", value: gateId, detail: "Copyable paid pilot decision packet." },
+    { label: "Weakest gate", value: weakest.label, detail: `${weakest.score}/100 | ${weakest.route}` },
+    { label: "Hard blockers", value: String(blockers.length), detail: blockers[0] || "No hard blocker in this preview." }
+  ];
+  const launchRules = [
+    "Do not charge public users until receipt vault replay, entitlement projection, support repair, refund, and settlement tests pass.",
+    "Keep the first paid pilot capped and founder-reviewed; no public waitlist promise.",
+    "Payment success URL, browser-local state, screenshot, or manual note cannot unlock paid access.",
+    "No PAN, folio, CAS, bank, UPI, card, OTP, gateway secret, ARN/EUIN, client records, or private note bodies.",
+    "Freeze paid pilot immediately if claim release, entitlement replay, refund closeout, settlement reconciliation, or support lookup drifts."
+  ];
+  const launchPacket = [
+    `Gate ID: ${gateId}`,
+    `Decision: ${decision}`,
+    `Cohort cap: ${cohortCap}`,
+    `Score: ${score}/100`,
+    `Weakest gate: ${weakest.label} (${weakest.score}/100)`,
+    "Boundary: research-only, no advice, no execution, no transaction routing."
+  ];
+  return {
+    account,
+    blockers,
+    bridge,
+    cohortCap,
+    contract,
+    decision,
+    founderOps,
+    gateId,
+    gates,
+    launch,
+    launchPacket,
+    launchRules,
+    ops,
+    privacy,
+    readout,
+    score,
+    vault,
+    weakest
+  };
+}
+
+function renderPaidPilotLaunchGate() {
+  if (!els.paidPilotLaunchGateOutput) return;
+  const gate = paidPilotLaunchGateConfig();
+  if (els.paidPilotLaunchGateSummary) {
+    els.paidPilotLaunchGateSummary.textContent = `${gate.score}/100 | ${gate.decision}`;
+  }
+  els.paidPilotLaunchGateOutput.innerHTML = `
+    <div class="paid-pilot-gate-hero ${gate.decision.startsWith("Go") ? "ready" : gate.decision.startsWith("Hold") ? "draft" : "blocked"}">
+      <div>
+        <span class="metric-label">Founder paid pilot decision</span>
+        <h3>${escapeHtml(gate.decision)}</h3>
+        <p>${escapeHtml(gate.cohortCap)}. This gate combines receipt replay, payment provider proof, entitlement enforcement, support readiness, account route, evidence safety, privacy controls, and founder capacity before any first paid cohort opens.</p>
+      </div>
+      <div class="paid-pilot-gate-score" style="--score:${gate.score}">
+        <b>${gate.score}</b>
+        <span>Pilot</span>
+      </div>
+    </div>
+    <div class="paid-pilot-gate-readout">
+      ${gate.readout.map((item) => `
+        <article>
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.value)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="paid-pilot-gate-grid">
+      ${gate.gates.map((item) => `
+        <article class="${escapeHtml(item.tone)}">
+          <div class="paid-pilot-gate-card-head">
+            <div>
+              <span>${escapeHtml(item.owner)} | ${Math.round(item.weight * 100)}%</span>
+              <strong>${escapeHtml(item.label)}</strong>
+            </div>
+            <b>${item.score}</b>
+          </div>
+          <p>${escapeHtml(item.detail)}</p>
+          <div class="build-progress-bar"><span style="width:${item.score}%"></span></div>
+          <small>${escapeHtml(item.status)}${item.blockers.length ? ` | ${escapeHtml(item.blockers[0])}` : " | No active blocker in this preview."}</small>
+          <button class="text-button" type="button" data-paid-pilot-route="${escapeHtml(item.route)}">Open route</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="paid-pilot-gate-two">
+      <article class="${gate.blockers.length ? "blocked" : "ready"}">
+        <span>Blockers before paid pilot</span>
+        <ul>
+          ${(gate.blockers.length ? gate.blockers : ["No active hard blocker in this preview. Keep the pilot tiny and receipt-bound."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>Launch rules</span>
+        <ul>
+          ${gate.launchRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>Launch packet</span>
+        <ul>
+          ${gate.launchPacket.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>What this gate protects</span>
+        <p>Low-price retail monetization works only if receipt replay, refunds, support, privacy, public claims, and founder capacity remain under control before real users pay.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makePaidPilotLaunchGateBrief() {
+  const gate = paidPilotLaunchGateConfig();
+  return [
+    "# NiveshNadi Paid Pilot Launch Gate",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Score: ${gate.score}/100`,
+    `Decision: ${gate.decision}`,
+    `Cohort cap: ${gate.cohortCap}`,
+    `Gate ID: ${gate.gateId}`,
+    "",
+    "## Readout",
+    ...gate.readout.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Gate Stack",
+    ...gate.gates.map((item) => `- ${item.label}: ${item.score}/100 | ${item.status} | Owner: ${item.owner} | Route: ${item.route} | ${item.detail}`),
+    "",
+    "## Blockers",
+    ...(gate.blockers.length ? gate.blockers.map((item) => `- ${item}`) : ["- No active hard blocker in this preview. Keep the pilot tiny and receipt-bound."]),
+    "",
+    "## Launch Rules",
+    ...gate.launchRules.map((item) => `- ${item}`),
+    "",
+    "## Launch Packet",
+    ...gate.launchPacket.map((item) => `- ${item}`)
+  ].join("\n");
+}
+
+function openPaidPilotLaunchBlocker() {
+  const gate = paidPilotLaunchGateConfig();
+  scrollToHash(gate.weakest.route || "#pilot-receipt-vault", "smooth", true);
+}
+
+function backendTicketFactoryConfig() {
+  const gate = paidPilotLaunchGateConfig();
+  const gateByLabel = Object.fromEntries(gate.gates.map((item) => [item.label, item]));
+  const tickets = BACKEND_TICKET_FACTORY_TEMPLATES.map((template, index) => {
+    const gateItem = gateByLabel[template.gateLabel] || {};
+    const score = clampNumber(Math.round((gateItem.score || 48) * 0.75 + (template.priority === "P0" ? 12 : template.priority === "P1" ? 18 : 24)), 18, 96);
+    const priority = score < 60 ? "P0" : score < 76 ? template.priority : template.priority === "P0" ? "P1" : "P2";
+    const tone = score < 60 ? "blocked" : score < 76 ? "draft" : "ready";
+    const status = tone === "blocked" ? "Open blocker" : tone === "draft" ? "Design ready" : "Implementation ready";
+    const blockers = (gateItem.blockers || []).slice(0, 2);
+    const ticketId = ["NN", "BACKEND", "TICKET", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+    return {
+      ...template,
+      blockers,
+      priority,
+      score,
+      status,
+      ticketId,
+      tone
+    };
+  });
+  const averageTicketScore = Math.round(tickets.reduce((sum, ticket) => sum + ticket.score, 0) / tickets.length);
+  const openP0 = tickets.filter((ticket) => ticket.priority === "P0" || ticket.tone === "blocked");
+  const firstTicket = [...tickets].sort((a, b) => {
+    const priorityRank = { P0: 0, P1: 1, P2: 2 };
+    return (priorityRank[a.priority] - priorityRank[b.priority]) || (a.score - b.score);
+  })[0];
+  const score = clampNumber(Math.round(gate.score * 0.45 + averageTicketScore * 0.55 - openP0.length * 2), 18, 96);
+  const posture = openP0.length
+    ? "Engineering blockers open"
+    : score >= 82
+      ? "Pilot implementation pack ready"
+      : "Ticket design active";
+  const factoryId = ["NN", "BACKEND", "FACTORY", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const readout = [
+    { label: "Factory score", value: `${score}/100`, detail: posture },
+    { label: "P0 tickets", value: String(openP0.length), detail: openP0[0]?.title || "No P0 blocker in this preview." },
+    { label: "First ticket", value: firstTicket.title, detail: `${firstTicket.owner} | ${firstTicket.route}` },
+    { label: "Source gate", value: `${gate.score}/100`, detail: gate.decision }
+  ];
+  const handoffRules = [
+    "Each ticket must store backend-owned receipts or reviewer receipts before public UI can rely on the state.",
+    "Paid access must come from verified events, never success URLs, screenshots, manual notes, or browser-local state.",
+    "Blocked data stays out: PAN, folio, CAS, bank, UPI, card, OTP, gateway secrets, ARN/EUIN, client records, and private note bodies.",
+    "Every ticket ships with acceptance tests, replay test, rollback or freeze rule, owner, and support-safe receipt view.",
+    "Founder pilot stays capped until all P0 tickets pass and support, refund, entitlement, and privacy workflows are observable."
+  ];
+  return {
+    averageTicketScore,
+    factoryId,
+    firstTicket,
+    gate,
+    handoffRules,
+    openP0,
+    posture,
+    readout,
+    score,
+    tickets
+  };
+}
+
+function backendTicketCloseout(factory) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const closeoutTickets = factory.tickets.map((ticket, index) => {
+    const acceptanceScore = clampNumber(ticket.score + ticket.acceptance.length * 3 - ticket.blockers.length * 8, 20, 96);
+    const receiptScore = clampNumber(Math.round(ticket.score * 0.5 + ticket.eventContract.length * 7), 20, 96);
+    const freezeScore = clampNumber(ticket.summary.toLowerCase().includes("freeze") || ticket.acceptance.join(" ").toLowerCase().includes("freeze")
+      ? ticket.score + 8
+      : ticket.score - (ticket.priority === "P0" ? 4 : 0), 20, 96);
+    const rollbackScore = clampNumber(ticket.summary.toLowerCase().includes("rollback") || ticket.acceptance.join(" ").toLowerCase().includes("rollback")
+      ? ticket.score + 6
+      : ticket.score - (ticket.priority === "P0" ? 6 : 1), 20, 96);
+    const ownerScore = clampNumber(ticket.score + (ticket.priority === "P0" ? -3 : ticket.priority === "P1" ? 2 : 6) - ticket.blockers.length * 4, 20, 96);
+    const gates = [
+      { label: "Acceptance tests", score: acceptanceScore, proof: ticket.acceptance[0] || "Acceptance path required." },
+      { label: "Receipt proof", score: receiptScore, proof: `${ticket.eventContract.length} event fields mapped.` },
+      { label: "Freeze posture", score: freezeScore, proof: "Launch freeze state must be visible before closeout." },
+      { label: "Rollback note", score: rollbackScore, proof: "Rollback or reversal path must be attached." },
+      { label: "Owner signoff", score: ownerScore, proof: `${ticket.owner} owns final closeout.` }
+    ].map((gate) => ({
+      ...gate,
+      tone: gate.score >= 80 ? "ready" : gate.score < 62 ? "blocked" : "draft"
+    }));
+    const score = clampNumber(Math.round(gates.reduce((sum, gate) => sum + gate.score, 0) / gates.length) - ticket.blockers.length * 2, 20, 96);
+    const blockers = [
+      ...ticket.blockers,
+      ...(gates.filter((gate) => gate.score < 66).map((gate) => `${gate.label}: ${gate.proof}`)),
+      ...(ticket.priority === "P0" && score < 82 ? ["P0 ticket cannot close until closeout score reaches 82/100."] : [])
+    ];
+    const status = blockers.length
+      ? "Closeout blocked"
+      : score >= 82
+        ? "Closeout ready"
+        : "Owner review";
+    const tone = status === "Closeout ready" ? "ready" : status === "Closeout blocked" ? "blocked" : "draft";
+    return {
+      ...ticket,
+      blockers,
+      closeoutId: ["NN", "BACKEND", "CLOSEOUT", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      gates,
+      score,
+      status,
+      tone
+    };
+  });
+  const readiness = clampNumber(Math.round(
+    closeoutTickets.reduce((sum, ticket) => sum + ticket.score, 0) / closeoutTickets.length * 0.68 +
+    factory.score * 0.22 +
+    (100 - closeoutTickets.filter((ticket) => ticket.status === "Closeout blocked").length * 7) * 0.1
+  ), 20, 96);
+  const blockedTickets = closeoutTickets.filter((ticket) => ticket.status === "Closeout blocked");
+  const readyTickets = closeoutTickets.filter((ticket) => ticket.status === "Closeout ready");
+  const nextTicket = [...closeoutTickets].sort((a, b) => {
+    const rank = { "Closeout blocked": 0, "Owner review": 1, "Closeout ready": 2 };
+    return (rank[a.status] - rank[b.status]) || (a.score - b.score);
+  })[0];
+  const status = blockedTickets.length
+    ? "Closeout blockers open"
+    : readiness >= 84
+      ? "Closeout pack ready"
+      : "Owner closeout review";
+  const tone = status === "Closeout pack ready" ? "ready" : blockedTickets.length ? "blocked" : "draft";
+  const closeoutId = ["NN", "BACKEND", "TICKET", "CLOSEOUT", suffix].join("-").toUpperCase();
+  const metrics = [
+    { label: "Closeout readiness", value: `${readiness}/100`, detail: status },
+    { label: "Ready to close", value: `${readyTickets.length}/${closeoutTickets.length}`, detail: "Tickets with tests, receipts, freeze posture, rollback note, and owner signoff." },
+    { label: "Open blockers", value: String(blockedTickets.length), detail: blockedTickets[0]?.title || "No hard closeout blocker in this preview." },
+    { label: "Next closeout", value: nextTicket.title, detail: `${nextTicket.score}/100 | ${nextTicket.owner}` }
+  ];
+  const sequence = [
+    "Run ticket acceptance tests and attach the test result ID.",
+    "Attach backend receipt proof, source receipt, payment receipt, or reviewer receipt as applicable.",
+    "Confirm launch freeze posture: clear, frozen, rollback, or resume-ready.",
+    "Attach rollback note, support-safe wording, and user-visible correction or notice when needed.",
+    "Owner signs the closeout and the ticket moves from implementation-ready to release-ready."
+  ];
+  const receiptFields = [
+    "closeout_id",
+    "ticket_id",
+    "owner_role",
+    "acceptance_test_id",
+    "receipt_proof_id",
+    "source_or_payment_receipt_id",
+    "freeze_posture",
+    "rollback_note_id",
+    "support_safe_summary_id",
+    "blocked_data_scan",
+    "reviewer_or_owner_signoff",
+    "closed_at",
+    "retention_policy"
+  ];
+  const ownerRules = [
+    "A ticket can be designed without owner signoff, but it cannot close without one.",
+    "P0 tickets need acceptance tests, replay proof, and a freeze or rollback decision before closeout.",
+    "Support and privacy tickets need redaction proof before any evidence leaves the backend lane.",
+    "Payment tickets need idempotency, refund, cancellation, settlement, and entitlement proof before paid access widens."
+  ];
+  const blockers = blockedTickets.length
+    ? blockedTickets.map((ticket) => `${ticket.title}: ${ticket.blockers[0] || ticket.status}`)
+    : ["No active closeout blocker in this preview. Keep real production closeout server-side and receipt-backed."];
+  return {
+    blockedTickets,
+    blockers,
+    closeoutId,
+    metrics,
+    nextTicket,
+    ownerRules,
+    readiness,
+    readyTickets,
+    receiptFields,
+    sequence,
+    status,
+    tickets: closeoutTickets,
+    tone
+  };
+}
+
+function renderBackendTicketFactory() {
+  if (!els.backendTicketFactoryOutput) return;
+  const factory = backendTicketFactoryConfig();
+  const closeout = backendTicketCloseout(factory);
+  if (els.backendTicketFactorySummary) {
+    els.backendTicketFactorySummary.textContent = `${closeout.readiness}/100 | ${closeout.status}`;
+  }
+  els.backendTicketFactoryOutput.innerHTML = `
+    <div class="backend-ticket-hero ${factory.openP0.length ? "blocked" : factory.score >= 82 ? "ready" : "draft"}">
+      <div>
+        <span class="metric-label">Production engineering handoff</span>
+        <h3>${escapeHtml(factory.posture)}</h3>
+        <p>V145 converts the paid pilot launch gate into implementation tickets with owners, routes, event contracts, acceptance tests, blocked-data rules, and release dependencies. This is the bridge from prototype confidence to production discipline.</p>
+      </div>
+      <div class="backend-ticket-score" style="--score:${factory.score}">
+        <b>${factory.score}</b>
+        <span>Tickets</span>
+      </div>
+    </div>
+    <div class="backend-ticket-readout">
+      ${factory.readout.map((item) => `
+        <article>
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.value)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="backend-ticket-grid">
+      ${factory.tickets.map((ticket) => `
+        <article class="${escapeHtml(ticket.tone)}">
+          <div class="backend-ticket-card-head">
+            <div>
+              <span>${escapeHtml(ticket.priority)} | ${escapeHtml(ticket.owner)} | ${escapeHtml(ticket.lane)}</span>
+              <strong>${escapeHtml(ticket.title)}</strong>
+            </div>
+            <b>${ticket.score}</b>
+          </div>
+          <p>${escapeHtml(ticket.summary)}</p>
+          <div class="build-progress-bar"><span style="width:${ticket.score}%"></span></div>
+          <small>${escapeHtml(ticket.status)} | ${escapeHtml(ticket.ticketId)}</small>
+          <div class="backend-ticket-lists">
+            <div>
+              <span>Event fields</span>
+              <ul>${ticket.eventContract.slice(0, 5).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+            </div>
+            <div>
+              <span>Acceptance tests</span>
+              <ul>${ticket.acceptance.slice(0, 3).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+            </div>
+          </div>
+          <button class="text-button" type="button" data-backend-ticket-route="${escapeHtml(ticket.route)}">Open route</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="backend-ticket-closeout ${escapeHtml(closeout.tone)}">
+      <div class="backend-ticket-closeout-head">
+        <div>
+          <span>Backend ticket closeout</span>
+          <h3>${escapeHtml(closeout.status)}</h3>
+          <p>V152 checks whether each backend ticket can actually close: acceptance tests, receipt proof, freeze posture, rollback note, blocked-data scan, and owner signoff must line up before release.</p>
+        </div>
+        <div class="backend-ticket-closeout-score" style="--score:${closeout.readiness}">
+          <b>${closeout.readiness}</b>
+          <span>Close</span>
+        </div>
+      </div>
+      <div class="backend-ticket-closeout-metrics">
+        ${closeout.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="backend-ticket-closeout-grid">
+        ${closeout.tickets.map((ticket) => `
+          <article class="${escapeHtml(ticket.tone)}">
+            <div class="backend-ticket-card-head">
+              <div>
+                <span>${escapeHtml(ticket.priority)} | ${escapeHtml(ticket.owner)}</span>
+                <strong>${escapeHtml(ticket.title)}</strong>
+              </div>
+              <b>${ticket.score}</b>
+            </div>
+            <p>${escapeHtml(ticket.status)} | ${escapeHtml(ticket.closeoutId)}</p>
+            <div class="build-progress-bar"><span style="width:${ticket.score}%"></span></div>
+            <div class="backend-ticket-closeout-gates">
+              ${ticket.gates.map((gate) => `
+                <small class="${escapeHtml(gate.tone)}">
+                  <strong>${escapeHtml(gate.label)}</strong>
+                  <span>${gate.score}</span>
+                </small>
+              `).join("")}
+            </div>
+            <button class="text-button" type="button" data-backend-ticket-route="${escapeHtml(ticket.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="backend-ticket-closeout-two">
+        <article>
+          <span>Closeout sequence</span>
+          <ol>${closeout.sequence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol>
+        </article>
+        <article class="${escapeHtml(closeout.tone)}">
+          <span>Closeout blockers</span>
+          <ul>${closeout.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <ul>${closeout.receiptFields.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>Owner rules</span>
+          <ul>${closeout.ownerRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        </article>
+      </div>
+    </div>
+    <div class="backend-ticket-two">
+      <article class="${factory.openP0.length ? "blocked" : "ready"}">
+        <span>Release blockers</span>
+        <ul>
+          ${(factory.openP0.length ? factory.openP0.map((ticket) => `${ticket.title}: ${ticket.blockers[0] || ticket.summary}`) : ["No open P0 ticket in this preview. Keep implementation receipt-bound."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>Handoff rules</span>
+        <ul>${factory.handoffRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Blocked data pack</span>
+        <p>${escapeHtml([...new Set(factory.tickets.flatMap((ticket) => ticket.blockedData))].join(", "))}</p>
+      </article>
+      <article>
+        <span>Factory ID</span>
+        <h3>${escapeHtml(factory.factoryId)}</h3>
+        <p>Use this pack as the backend implementation bridge before founder paid-pilot expansion.</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeBackendTicketFactoryBrief() {
+  const factory = backendTicketFactoryConfig();
+  const closeout = backendTicketCloseout(factory);
+  return [
+    "# NiveshNadi Backend Ticket Factory",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Factory ID: ${factory.factoryId}`,
+    `Factory score: ${factory.score}/100`,
+    `Posture: ${factory.posture}`,
+    `Closeout ID: ${closeout.closeoutId}`,
+    `Closeout readiness: ${closeout.readiness}/100`,
+    `Closeout status: ${closeout.status}`,
+    `Source gate: ${factory.gate.score}/100 | ${factory.gate.decision}`,
+    `First ticket: ${factory.firstTicket.title} | ${factory.firstTicket.route}`,
+    `Next closeout: ${closeout.nextTicket.title} | ${closeout.nextTicket.route}`,
+    "",
+    "## Readout",
+    ...factory.readout.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Tickets",
+    ...factory.tickets.map((ticket) => [
+      `- ${ticket.ticketId}: ${ticket.title}`,
+      `  Priority: ${ticket.priority} | Owner: ${ticket.owner} | Status: ${ticket.status} | Score: ${ticket.score}/100 | Route: ${ticket.route}`,
+      `  Summary: ${ticket.summary}`,
+      `  Event contract: ${ticket.eventContract.join(", ")}`,
+      `  Acceptance: ${ticket.acceptance.join(" | ")}`,
+      `  Blocked data: ${ticket.blockedData.join(", ")}`
+    ].join("\n")),
+    "",
+    "## Backend Ticket Closeout",
+    ...closeout.metrics.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Closeout Tickets",
+    ...closeout.tickets.map((ticket) => [
+      `- ${ticket.closeoutId}: ${ticket.title}`,
+      `  Status: ${ticket.status} | Score: ${ticket.score}/100 | Owner: ${ticket.owner} | Route: ${ticket.route}`,
+      `  Gates: ${ticket.gates.map((gate) => `${gate.label} ${gate.score}/100`).join(" | ")}`,
+      `  Blockers: ${ticket.blockers.join(" | ") || "None in preview"}`
+    ].join("\n")),
+    "",
+    "## Closeout Sequence",
+    ...closeout.sequence.map((item) => `- ${item}`),
+    "",
+    "## Closeout Receipt Fields",
+    ...closeout.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## Closeout Owner Rules",
+    ...closeout.ownerRules.map((item) => `- ${item}`),
+    "",
+    "## Handoff Rules",
+    ...factory.handoffRules.map((item) => `- ${item}`)
+  ].join("\n");
+}
+
+function openBackendTicketBlocker() {
+  const factory = backendTicketFactoryConfig();
+  scrollToHash(factory.firstTicket.route || "#pilot-receipt-vault", "smooth", true);
+}
+
+function receiptReplayEngineConfig() {
+  const vault = pilotReceiptVaultConfig();
+  const factory = backendTicketFactoryConfig();
+  const receiptTicket = factory.tickets.find((ticket) => ticket.title === "Receipt vault replay") || factory.firstTicket;
+  const laneByLabel = Object.fromEntries(vault.lanes.map((lane) => [lane.label, lane]));
+  const cases = RECEIPT_REPLAY_ENGINE_CASES.map((item, index) => {
+    const lane = laneByLabel[item.relatedLane] || vault.weakest;
+    const score = clampNumber(Math.round((lane.score || 48) * 0.7 + vault.readiness * 0.2 + receiptTicket.score * 0.1), 18, 96);
+    const tone = score >= 76 ? "ready" : score >= 58 ? "draft" : "blocked";
+    const status = tone === "ready" ? "Replay clear" : tone === "draft" ? "Replay rehearsal" : "Replay blocker";
+    const caseId = ["NN", "REPLAY", "CASE", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+    return {
+      ...item,
+      caseId,
+      lane,
+      score,
+      status,
+      tone
+    };
+  });
+  const average = Math.round(cases.reduce((sum, item) => sum + item.score, 0) / cases.length);
+  const blockers = cases
+    .filter((item) => item.score < 60)
+    .map((item) => `${item.label}: ${item.freeze}`);
+  const score = clampNumber(Math.round(average * 0.62 + vault.readiness * 0.28 + receiptTicket.score * 0.1 - Math.min(blockers.length, 5) * 2), 18, 96);
+  const status = score >= 82 && !blockers.length
+    ? "Replay engine implementation ready"
+    : score >= 62
+      ? "Replay engine rehearsal active"
+      : "Replay engine blockers open";
+  const tone = status.includes("ready") ? "ready" : status.includes("blockers") ? "blocked" : "draft";
+  const weakest = [...cases].sort((a, b) => a.score - b.score)[0];
+  const engineId = ["NN", "RECEIPT", "REPLAY", "ENGINE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const readout = [
+    { label: "Engine score", value: `${score}/100`, detail: status },
+    { label: "Replay cases", value: `${cases.filter((item) => item.score >= 58).length}/${cases.length}`, detail: "Cases must replay without private data or manual entitlement notes." },
+    { label: "First replay risk", value: weakest.label, detail: `${weakest.score}/100 | ${weakest.route}` },
+    { label: "Source ticket", value: receiptTicket.ticketId, detail: `${receiptTicket.score}/100 | ${receiptTicket.status}` }
+  ];
+  const stateModel = [
+    "append-only receipt stream stores the original event and payload hash",
+    "dedupe index prevents duplicate webhook or support repair side effects",
+    "projection log rebuilds paid access, expiry, refund, repair, freeze, and resume state",
+    "support-safe view exposes only receipt references, redacted user hash, and allowed closeout fields",
+    "audit export proves receipt range, reviewer scope, and excluded-data classes"
+  ];
+  const requiredFields = [
+    "receipt_id",
+    "event_name",
+    "provider_ref",
+    "payload_hash",
+    "idempotency_key",
+    "user_hash",
+    "source_receipt_id",
+    "projection_state",
+    "freeze_route",
+    "replay_result",
+    "created_at"
+  ];
+  const blockedData = [...new Set([
+    ...vault.contract.drill.blockedData,
+    ...receiptTicket.blockedData,
+    "raw payment payload",
+    "private support note body"
+  ])];
+  return {
+    blockedData,
+    blockers,
+    cases,
+    engineId,
+    factory,
+    readout,
+    receiptTicket,
+    requiredFields,
+    score,
+    stateModel,
+    status,
+    tone,
+    vault,
+    weakest
+  };
+}
+
+function renderReceiptReplayEngine() {
+  if (!els.receiptReplayOutput) return;
+  const engine = receiptReplayEngineConfig();
+  if (els.receiptReplaySummary) {
+    els.receiptReplaySummary.textContent = `${engine.score}/100 | ${engine.status}`;
+  }
+  els.receiptReplayOutput.innerHTML = `
+    <div class="receipt-replay-hero ${escapeHtml(engine.tone)}">
+      <div>
+        <span class="metric-label">Receipt replay implementation</span>
+        <h3>${escapeHtml(engine.status)}</h3>
+        <p>V146 turns the first backend ticket into replay cases for checkout, duplicate webhooks, refunds, settlement drift, support repair, audit export, and incident freeze before paid access can widen.</p>
+      </div>
+      <div class="receipt-replay-score" style="--score:${engine.score}">
+        <b>${engine.score}</b>
+        <span>Replay</span>
+      </div>
+    </div>
+    <div class="receipt-replay-readout">
+      ${engine.readout.map((item) => `
+        <article>
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.value)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="receipt-replay-case-grid">
+      ${engine.cases.map((item) => `
+        <article class="${escapeHtml(item.tone)}">
+          <div class="receipt-replay-card-head">
+            <div>
+              <span>${escapeHtml(item.owner)} | ${escapeHtml(item.caseId)}</span>
+              <strong>${escapeHtml(item.label)}</strong>
+            </div>
+            <b>${item.score}</b>
+          </div>
+          <p>${escapeHtml(item.expected)}</p>
+          <div class="build-progress-bar"><span style="width:${item.score}%"></span></div>
+          <small>${escapeHtml(item.status)} | ${escapeHtml(item.sequence.join(" -> "))}</small>
+          <div class="receipt-replay-acceptance">
+            <span>Acceptance tests</span>
+            <ul>${item.acceptance.map((test) => `<li>${escapeHtml(test)}</li>`).join("")}</ul>
+          </div>
+          <button class="text-button" type="button" data-receipt-replay-route="${escapeHtml(item.route)}">Open route</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="receipt-replay-two">
+      <article class="${engine.blockers.length ? "blocked" : "ready"}">
+        <span>Replay blockers</span>
+        <ul>
+          ${(engine.blockers.length ? engine.blockers : ["No replay blocker in this preview. Keep the paid pilot capped until backend storage exists."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </article>
+      <article>
+        <span>State model</span>
+        <ul>${engine.stateModel.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Required fields</span>
+        <p>${escapeHtml(engine.requiredFields.join(", "))}</p>
+      </article>
+      <article>
+        <span>Blocked data</span>
+        <p>${escapeHtml(engine.blockedData.join(", "))}</p>
+      </article>
+    </div>
+  `;
+}
+
+function makeReceiptReplayEngineBrief() {
+  const engine = receiptReplayEngineConfig();
+  return [
+    "# NiveshNadi Receipt Replay Engine",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Engine ID: ${engine.engineId}`,
+    `Score: ${engine.score}/100`,
+    `Status: ${engine.status}`,
+    `Source ticket: ${engine.receiptTicket.ticketId} | ${engine.receiptTicket.title}`,
+    "",
+    "## Readout",
+    ...engine.readout.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Replay Cases",
+    ...engine.cases.map((item) => [
+      `- ${item.caseId}: ${item.label}`,
+      `  Owner: ${item.owner} | Score: ${item.score}/100 | Status: ${item.status} | Route: ${item.route}`,
+      `  Sequence: ${item.sequence.join(" -> ")}`,
+      `  Expected: ${item.expected}`,
+      `  Acceptance: ${item.acceptance.join(" | ")}`,
+      `  Freeze rule: ${item.freeze}`
+    ].join("\n")),
+    "",
+    "## State Model",
+    ...engine.stateModel.map((item) => `- ${item}`),
+    "",
+    "## Required Fields",
+    ...engine.requiredFields.map((item) => `- ${item}`),
+    "",
+    "## Blocked Data",
+    ...engine.blockedData.map((item) => `- ${item}`),
+    "",
+    "## Blockers",
+    ...(engine.blockers.length ? engine.blockers.map((item) => `- ${item}`) : ["- No replay blocker in this preview. Keep the paid pilot capped until backend storage exists."])
+  ].join("\n");
+}
+
+function openReceiptReplayBlocker() {
+  const engine = receiptReplayEngineConfig();
+  scrollToHash(engine.weakest.route || "#backend-audit-receipts", "smooth", true);
+}
+
 function entitlementBridgePlanLabel(plan) {
   return {
     free: "Free Starter",
@@ -3985,6 +8508,68 @@ function entitlementBridgeReceiptLabel(receipt) {
     manual: "Manual support confirmation",
     missing: "No entitlement receipt"
   }[receipt] || "Verified payment webhook";
+}
+
+function entitlementBridgeAccessForPlan(item, plan) {
+  return item.access?.[plan] || item.access?.monthly || "Policy review";
+}
+
+function entitlementBridgeLifecycleImpact(item, lifecycle) {
+  if (lifecycle === "refund") return item.key === "share-safe-export" ? "Export remains available for user records." : "Revoke or downgrade until refund closeout.";
+  if (lifecycle === "expired") return item.key === "share-safe-export" ? "Export remains available; paid features become read-only." : "Read-only or renewal route only.";
+  if (lifecycle === "grace") return item.key === "live-refresh" ? "Pause live refresh quota during grace." : "Limited grace access with clear retry notice.";
+  if (lifecycle === "manual") return "Provisional founder support state; audit receipt still required.";
+  if (lifecycle === "trial") return "Starter limits apply until paid receipt arrives.";
+  return item.lifecycleRule;
+}
+
+function entitlementBridgeAccessDecision(item, bridge) {
+  const planAccess = entitlementBridgeAccessForPlan(item, bridge.plan);
+  const blockers = [];
+  if (bridge.plan === "phase2") blockers.push("Phase 2 role boundary");
+  if (bridge.policy === "unlimited") blockers.push("Unlimited policy not allowed");
+  if (bridge.receipt === "missing" && item.key !== "core-screener") blockers.push("Missing entitlement receipt");
+  if (bridge.lifecycle === "refund" && !["core-screener", "share-safe-export"].includes(item.key)) blockers.push("Refund revoke required");
+  if (bridge.lifecycle === "expired" && !["core-screener", "share-safe-export"].includes(item.key)) blockers.push("Expired entitlement");
+  const caution = [
+    bridge.receipt === "manual",
+    bridge.policy === "soft",
+    bridge.lifecycle === "grace",
+    bridge.lifecycle === "manual",
+    bridge.lifecycle === "trial",
+    item.score < 60
+  ].some(Boolean);
+  const tone = blockers.length ? "blocked" : caution ? "watch" : "ready";
+  const scoreDelta = blockers.length ? -28 : caution ? -10 : 8;
+  return {
+    ...item,
+    blockers,
+    decision: blockers.length ? "Blocked" : planAccess,
+    lifecycleImpact: entitlementBridgeLifecycleImpact(item, bridge.lifecycle),
+    planAccess,
+    score: clampNumber(item.score + scoreDelta, 12, 94),
+    tone
+  };
+}
+
+function entitlementBridgeReplayProofs() {
+  const proofPlan = [
+    { match: "Clean checkout", label: "Grant proof", effect: "Verified checkout can grant paid entitlement once." },
+    { match: "Duplicate webhook", label: "Idempotency proof", effect: "Duplicate payment events must not double-unlock access." },
+    { match: "Refund reverses", label: "Refund proof", effect: "Refund can revoke or downgrade access through receipt replay." },
+    { match: "Support repair", label: "Repair proof", effect: "Support can repair entitlement without exposing private data." },
+    { match: "Settlement variance", label: "Finance proof", effect: "Finance drift routes before entitlement counts are trusted." },
+    { match: "Payment incident", label: "Freeze proof", effect: "Incident state can freeze paid access until replay clears." }
+  ];
+  return proofPlan.map((proof) => {
+    const receiptCase = RECEIPT_REPLAY_ENGINE_CASES.find((item) => item.label.includes(proof.match));
+    return {
+      ...proof,
+      route: receiptCase?.route || "#receipt-replay-engine",
+      score: receiptCase?.score || 52,
+      status: receiptCase && receiptCase.score >= 70 ? "Ready" : receiptCase && receiptCase.score >= 58 ? "Dry-run" : "Needs proof"
+    };
+  });
 }
 
 function entitlementBridgeConfig() {
@@ -4042,7 +8627,12 @@ function entitlementBridgeConfig() {
   const lifecycleDelta = lifecycle === "active" ? 10 : lifecycle === "trial" ? 4 : lifecycle === "grace" ? -2 : lifecycle === "refund" ? -6 : lifecycle === "expired" ? -12 : -8;
   const policyDelta = policy === "hard" ? 12 : policy === "evidence" ? 8 : policy === "soft" ? 2 : -24;
   const receiptDelta = receipt === "auditReady" ? 14 : receipt === "webhook" ? 8 : receipt === "manual" ? -8 : -26;
-  const score = clampNumber(base + planDelta + lifecycleDelta + policyDelta + receiptDelta, 18, 94);
+  const preliminaryScore = clampNumber(base + planDelta + lifecycleDelta + policyDelta + receiptDelta, 18, 94);
+  const accessMatrix = ENTITLEMENT_ACCESS_MATRIX.map((item) => entitlementBridgeAccessDecision(item, { lifecycle, plan, policy, receipt }));
+  const matrixScore = Math.round(accessMatrix.reduce((sum, item) => sum + item.score, 0) / accessMatrix.length);
+  const replayProofs = entitlementBridgeReplayProofs();
+  const replayScore = Math.round(replayProofs.reduce((sum, item) => sum + item.score, 0) / replayProofs.length);
+  const score = clampNumber(Math.round((preliminaryScore * 0.5) + (matrixScore * 0.34) + (replayScore * 0.16)), 18, 94);
   const blockers = [
     ...(plan === "phase2" ? ["Phase 2 distributor entitlement cannot mix with Phase 1 retail accounts"] : []),
     ...(policy === "unlimited" ? ["unlimited access removes consumer limits and weakens pricing discipline"] : []),
@@ -4050,7 +8640,8 @@ function entitlementBridgeConfig() {
     ...(receipt === "manual" ? ["manual entitlement confirmation needs support review and reconciliation"] : []),
     ...(lifecycle === "refund" ? ["refund path must revoke or downgrade access through backend audit receipts"] : []),
     ...(lifecycle === "expired" ? ["expired access needs a clear downgrade and renewal route"] : []),
-    ...(lifecycle === "manual" ? ["manual founder review cannot become the default public launch path"] : [])
+    ...(lifecycle === "manual" ? ["manual founder review cannot become the default public launch path"] : []),
+    ...accessMatrix.filter((item) => item.tone === "blocked").map((item) => `${item.label}: ${item.blockers[0]}`)
   ];
   const status = score >= 82 && !blockers.length
     ? "Entitlement beta ready"
@@ -4108,15 +8699,19 @@ function entitlementBridgeConfig() {
     }
   ];
   return {
+    accessMatrix,
     blockers,
     controls,
     featureAccess,
     lifecycle,
     lifecycleRoute,
+    matrixScore,
     plan,
     planMeta,
     policy,
     receipt,
+    replayProofs,
+    replayScore,
     score,
     status,
     tone
@@ -4154,6 +8749,41 @@ function renderEntitlementBridge(event) {
           <span>${escapeHtml(feature.label)}</span>
           <strong>${escapeHtml(feature.access)}</strong>
           <p>${escapeHtml(feature.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="entitlement-access-matrix">
+      ${bridge.accessMatrix.map((item) => `
+        <article class="${escapeHtml(item.tone)}">
+          <div class="entitlement-card-head">
+            <div>
+              <span>${escapeHtml(item.owner)}</span>
+              <strong>${escapeHtml(item.label)}</strong>
+            </div>
+            <b>${item.score}</b>
+          </div>
+          <p><strong>${escapeHtml(item.decision)}</strong> | ${escapeHtml(item.lifecycleImpact)}</p>
+          <dl>
+            <div>
+              <dt>Receipt gate</dt>
+              <dd>${escapeHtml(item.receiptGate)}</dd>
+            </div>
+            <div>
+              <dt>Audit field</dt>
+              <dd>${escapeHtml(item.auditField)}</dd>
+            </div>
+          </dl>
+          <small>${escapeHtml(item.blockers.length ? item.blockers.join("; ") : item.lifecycleRule)}</small>
+        </article>
+      `).join("")}
+    </div>
+    <div class="entitlement-proof-grid">
+      ${bridge.replayProofs.map((proof) => `
+        <article class="${proof.score >= 70 ? "ready" : proof.score >= 58 ? "watch" : "blocked"}">
+          <span>${escapeHtml(proof.label)}</span>
+          <strong>${escapeHtml(proof.status)} | ${proof.score}/100</strong>
+          <p>${escapeHtml(proof.effect)}</p>
+          <button class="text-button" type="button" data-receipt-replay-route="${escapeHtml(proof.route)}">Open replay proof</button>
         </article>
       `).join("")}
     </div>
@@ -4218,6 +8848,12 @@ function makeEntitlementBridgeBrief() {
     "",
     "## Feature Access",
     ...bridge.featureAccess.map((feature) => `- ${feature.label}: ${feature.access} | ${feature.detail}`),
+    "",
+    "## Access Matrix",
+    ...bridge.accessMatrix.map((item) => `- ${item.label}: ${item.decision} | ${item.lifecycleImpact} | receipt gate: ${item.receiptGate}`),
+    "",
+    "## Receipt Replay Proof",
+    ...bridge.replayProofs.map((proof) => `- ${proof.label}: ${proof.status} | ${proof.effect}`),
     "",
     "## Entitlement Route",
     ...bridge.lifecycleRoute.map((item) => `- ${item}`),
@@ -4989,20 +9625,173 @@ function backendSupportReceipts(backend) {
   };
 }
 
+function paymentAdapterRepairBoard(backend, supportReceipts) {
+  const gatewayScore = backend.gateway === "hosted" ? 82 : backend.gateway === "adapter" ? 76 : backend.gateway === "manual" ? 48 : 18;
+  const webhookScore = backend.gateway === "hosted" || backend.gateway === "adapter" ? 80 : backend.gateway === "manual" ? 42 : 16;
+  const replayScore = backend.sync === "replay" ? 88 : backend.sync === "queued" ? 76 : backend.sync === "realtime" ? 70 : backend.sync === "manual" ? 38 : 12;
+  const entitlementScore = backend.sync === "browser" ? 18 : backend.source === "entitlement" ? 82 : 68;
+  const refundScore = backend.source === "finance" || backend.source === "reconciliation" ? 76 : 64;
+  const supportScore = supportReceipts.readiness;
+  const settlementScore = backend.source === "reconciliation" ? 78 : backend.source === "finance" ? 74 : 60;
+  const incidentScore = backend.failure === "freeze" ? 82 : backend.failure === "downgrade" ? 74 : backend.failure === "repair" ? 70 : 66;
+  const adapters = [
+    {
+      label: "Hosted checkout adapter",
+      owner: "Gateway",
+      score: gatewayScore,
+      eventIn: "checkout.session.created",
+      eventOut: "payment.authorized",
+      receiptJoin: "gateway.checkout.receipt",
+      repairAction: "Expire stale link and issue a fresh hosted checkout route.",
+      rollbackRule: "Never unlock from success URL; unlock only after verified backend event."
+    },
+    {
+      label: "Signed webhook adapter",
+      owner: "Backend",
+      score: webhookScore,
+      eventIn: "gateway.webhook_received",
+      eventOut: "signature.verified",
+      receiptJoin: "gateway.webhook.receipt",
+      repairAction: "Reject stale or unsigned payload and queue a source receipt review.",
+      rollbackRule: "No entitlement mutation until signature, source date, and event hash pass."
+    },
+    {
+      label: "Idempotency replay adapter",
+      owner: "Platform",
+      score: replayScore,
+      eventIn: "payment.event.accepted",
+      eventOut: "idempotency.locked",
+      receiptJoin: "idempotency.replay.receipt",
+      repairAction: "Replay the event chain and suppress duplicate entitlement or refund writes.",
+      rollbackRule: "Duplicate events can update audit state, not paid access state."
+    },
+    {
+      label: "Refund and cancellation adapter",
+      owner: "Finance",
+      score: refundScore,
+      eventIn: "refund_or_cancel.received",
+      eventOut: "entitlement.reversal_projected",
+      receiptJoin: "refund.cancel.receipt",
+      repairAction: "Reverse access through receipt-backed expiry, downgrade, or refund state.",
+      rollbackRule: "Refund closeout must link invoice, gateway event, support case, and settlement."
+    },
+    {
+      label: "Entitlement projection adapter",
+      owner: "Product",
+      score: entitlementScore,
+      eventIn: "receipt.state_changed",
+      eventOut: "feature_access.projected",
+      receiptJoin: "entitlement.projection.receipt",
+      repairAction: "Rebuild the read model from receipts and compare plan limits before release.",
+      rollbackRule: "The browser can display access, but cannot become the source of truth."
+    },
+    {
+      label: "Support repair adapter",
+      owner: "Support",
+      score: supportScore,
+      eventIn: "support.repair_requested",
+      eventOut: "support.case_closed",
+      receiptJoin: "support.repair.join",
+      repairAction: "Use reviewer role, prior state, proposed state, reason code, and rollback ref.",
+      rollbackRule: "Repair is evidence-only and cannot expose PAN, folio, CAS, card, UPI, or notes."
+    },
+    {
+      label: "Settlement and incident adapter",
+      owner: "Ops",
+      score: Math.round((settlementScore + incidentScore) / 2),
+      eventIn: "settlement_or_incident.detected",
+      eventOut: "freeze_or_resume.decided",
+      receiptJoin: "settlement.incident.receipt",
+      repairAction: "Route variance, failed reconciliation, or incident state into freeze review.",
+      rollbackRule: "Resume only after settlement, entitlement, support, and reviewer receipts agree."
+    }
+  ].map((adapter) => ({
+    ...adapter,
+    tone: adapter.score >= 76 ? "ready" : adapter.score < 48 ? "blocked" : "draft"
+  }));
+  const blockers = [
+    ...backend.blockers,
+    ...(backend.gateway === "none" ? ["choose a production gateway or provider adapter before adapter repairs can be trusted"] : []),
+    ...(backend.gateway === "manual" ? ["manual beta payment logs cannot close adapter repairs for public paid launch"] : []),
+    ...(backend.sync === "browser" ? ["browser-local state cannot close payment adapter repairs"] : []),
+    ...(backend.sync === "manual" ? ["manual adapter repairs need dual review, replay proof, and finance reconciliation"] : []),
+    ...(supportReceipts.tone === "blocked" ? ["backend support receipts must clear before adapter repair closeout is release-safe"] : []),
+    ...(refundScore < 70 ? ["refund and cancellation joins still need finance and reconciliation proof"] : [])
+  ];
+  const adapterAverage = Math.round(adapters.reduce((sum, adapter) => sum + adapter.score, 0) / adapters.length);
+  const readiness = clampNumber(Math.round(adapterAverage * 0.58 + supportReceipts.readiness * 0.24 + backend.score * 0.18) - blockers.length * 2, 12, 94);
+  const status = blockers.length
+    ? "Adapter repair dry-run"
+    : readiness >= 82
+      ? "Adapter repairs pilot-ready"
+      : "Adapter repair rehearsal";
+  const tone = blockers.length
+    ? "blocked"
+    : readiness >= 82
+      ? "ready"
+      : "draft";
+  const metrics = [
+    {
+      label: "Adapter readiness",
+      value: `${readiness}/100`,
+      detail: `${adapters.length} payment and support adapters mapped into one reversible route.`
+    },
+    {
+      label: "Gateway posture",
+      value: subscriptionBackendGatewayLabel(backend.gateway),
+      detail: "Hosted checkout and signed server events remain the preferred launch boundary."
+    },
+    {
+      label: "Replay posture",
+      value: subscriptionBackendSyncLabel(backend.sync),
+      detail: "Every adapter output needs idempotency, replay state, and a rollback reference."
+    },
+    {
+      label: "Support receipt",
+      value: `${supportReceipts.readiness}/100`,
+      detail: "Support repair can close only through redacted receipt families and reviewer posture."
+    }
+  ];
+  const sequence = [
+    "Receive provider event through hosted checkout or signed webhook adapter.",
+    "Verify signature, source timestamp, event hash, request id, and idempotency key.",
+    "Project entitlement, invoice, refund, support, and settlement state from receipts.",
+    "If mismatch appears, route to retry, downgrade, freeze, support repair, or reconciliation.",
+    "Close the case with rollback reference, user-safe notice, replay result, and prevention route."
+  ];
+  const guardrails = [
+    "Never store PAN, folio, CAS, bank details, UPI, raw card, OTP, gateway secrets, or credentials.",
+    "Never unlock access from a browser success URL, screenshot, email forward, or manual support note.",
+    "Every adapter mutation needs source receipt, old state, proposed state, reviewer or owner, and replay proof.",
+    "Freeze paid mutations when settlement, refund, support, entitlement, or incident receipts disagree."
+  ];
+  return {
+    adapters,
+    blockers: blockers.length ? blockers : ["No active payment adapter repair blocker in this preview. Keep provider integration in sandbox until real gateway, storage, and replay jobs exist."],
+    guardrails,
+    metrics,
+    readiness,
+    sequence,
+    status,
+    tone
+  };
+}
+
 function renderSubscriptionBackendBlueprint(event) {
   if (event) event.preventDefault();
   if (!els.subscriptionBackendOutput) return;
   const backend = subscriptionBackendConfig();
   const supportReceipts = backendSupportReceipts(backend);
+  const adapterRepairs = paymentAdapterRepairBoard(backend, supportReceipts);
   if (els.subscriptionBackendSummary) {
-    els.subscriptionBackendSummary.textContent = `${backend.score}/100 | ${backend.status}`;
+    els.subscriptionBackendSummary.textContent = `${adapterRepairs.readiness}/100 | ${adapterRepairs.status}`;
   }
   els.subscriptionBackendOutput.innerHTML = `
     <div class="subscription-backend-hero ${escapeHtml(backend.tone)}">
       <div>
         <span class="metric-label">${escapeHtml(subscriptionBackendSourceLabel(backend.source))}</span>
-        <h3>Subscription backend contract</h3>
-        <p>${escapeHtml(subscriptionBackendGatewayLabel(backend.gateway))} with ${escapeHtml(subscriptionBackendSyncLabel(backend.sync)).toLowerCase()} and ${escapeHtml(subscriptionBackendFailureLabel(backend.failure)).toLowerCase()} before paid retail launch.</p>
+        <h3>Subscription backend and payment adapter repairs</h3>
+        <p>${escapeHtml(subscriptionBackendGatewayLabel(backend.gateway))} with ${escapeHtml(subscriptionBackendSyncLabel(backend.sync)).toLowerCase()}, ${escapeHtml(subscriptionBackendFailureLabel(backend.failure)).toLowerCase()}, and ${escapeHtml(adapterRepairs.status).toLowerCase()} before paid retail launch.</p>
       </div>
       <div class="subscription-backend-score" style="--score:${backend.score}">
         <b>${backend.score}</b>
@@ -5023,6 +9812,67 @@ function renderSubscriptionBackendBlueprint(event) {
           <p>${escapeHtml(layer.detail)}</p>
         </article>
       `).join("")}
+    </div>
+    <div class="subscription-adapter-repairs ${escapeHtml(adapterRepairs.tone)}">
+      <div class="subscription-adapter-repairs-head">
+        <div>
+          <span>Payment adapter repair board</span>
+          <h3>${escapeHtml(adapterRepairs.status)}</h3>
+          <p>Bind checkout, signed webhook, duplicate replay, refund, entitlement, support repair, settlement, and incident outcomes into one reversible adapter route.</p>
+        </div>
+        <div class="subscription-adapter-repairs-score" style="--score:${adapterRepairs.readiness}">
+          <strong>${adapterRepairs.readiness}</strong>
+          <span>Pay</span>
+        </div>
+      </div>
+      <div class="subscription-adapter-repairs-metrics">
+        ${adapterRepairs.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="subscription-adapter-repairs-grid">
+        ${adapterRepairs.adapters.map((adapter) => `
+          <article class="${escapeHtml(adapter.tone)}">
+            <div class="subscription-backend-card-head">
+              <div>
+                <span>${escapeHtml(adapter.owner)}</span>
+                <strong>${escapeHtml(adapter.label)}</strong>
+              </div>
+              <b>${adapter.score}</b>
+            </div>
+            <p><strong>Event in:</strong> ${escapeHtml(adapter.eventIn)}</p>
+            <p><strong>Event out:</strong> ${escapeHtml(adapter.eventOut)}</p>
+            <div class="build-progress-bar"><span style="width:${adapter.score}%"></span></div>
+            <small><strong>Receipt join:</strong> ${escapeHtml(adapter.receiptJoin)}</small>
+            <small><strong>Repair:</strong> ${escapeHtml(adapter.repairAction)}</small>
+            <small><strong>Rollback rule:</strong> ${escapeHtml(adapter.rollbackRule)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="subscription-adapter-repairs-two">
+        <article>
+          <span>Adapter sequence</span>
+          <ol>
+            ${adapterRepairs.sequence.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${escapeHtml(adapterRepairs.tone)}">
+          <span>Adapter blockers</span>
+          <ul>
+            ${adapterRepairs.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Adapter guardrails</span>
+          <ul>
+            ${adapterRepairs.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="subscription-support-receipts ${escapeHtml(supportReceipts.tone)}">
       <div class="subscription-support-receipts-head">
@@ -5140,11 +9990,12 @@ function renderSubscriptionBackendBlueprint(event) {
 function makeSubscriptionBackendBrief() {
   const backend = subscriptionBackendConfig();
   const supportReceipts = backendSupportReceipts(backend);
+  const adapterRepairs = paymentAdapterRepairBoard(backend, supportReceipts);
   return [
     "# NiveshNadi Subscription Backend Blueprint",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
-    `Score: ${backend.score}/100`,
-    `Status: ${backend.status}`,
+    `Score: ${adapterRepairs.readiness}/100`,
+    `Status: ${adapterRepairs.status}`,
     `Gateway: ${subscriptionBackendGatewayLabel(backend.gateway)}`,
     `Source lane: ${subscriptionBackendSourceLabel(backend.source)}`,
     `Sync: ${subscriptionBackendSyncLabel(backend.sync)}`,
@@ -5155,6 +10006,15 @@ function makeSubscriptionBackendBrief() {
     "",
     "## Backend Layers",
     ...backend.layers.map((layer) => `- ${layer.label}: ${layer.state} | ${layer.detail}`),
+    "",
+    "## Payment Adapter Repairs",
+    `- Status: ${adapterRepairs.status}`,
+    `- Readiness: ${adapterRepairs.readiness}/100`,
+    ...adapterRepairs.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...adapterRepairs.adapters.map((adapter) => `- Adapter: ${adapter.label}: ${adapter.score}/100 | ${adapter.eventIn} -> ${adapter.eventOut} | ${adapter.receiptJoin} | ${adapter.rollbackRule}`),
+    ...adapterRepairs.sequence.map((step) => `- Sequence: ${step}`),
+    ...adapterRepairs.blockers.map((item) => `- Blocker: ${item}`),
+    ...adapterRepairs.guardrails.map((item) => `- Guardrail: ${item}`),
     "",
     "## Backend Support Receipts",
     `- Status: ${supportReceipts.status}`,
@@ -7127,7 +11987,207 @@ function openAccountLaunchBlocker() {
   scrollToHash(shell.blockers.length ? "#privacy-control" : "#account-vault", "smooth", true);
 }
 
+function accountVaultLimitFromAccess(item, bridge) {
+  const limitByKey = {
+    "core-screener": { limit: "Open research", storage: "No account row required", route: "#screener" },
+    "saved-packs": { limit: bridge.plan === "free" ? "2 active packs" : bridge.plan === "annual" ? "50 packs" : bridge.plan === "founder" ? "25 beta packs" : "15 packs", storage: "research_pack rows", route: "#research-dossier" },
+    "watchlist-alerts": { limit: bridge.plan === "free" ? "1 watch trigger" : bridge.plan === "annual" ? "30 alerts" : "12 alerts", storage: "watchlist_alert rows", route: "#watchlist" },
+    "dossier-builder": { limit: bridge.plan === "free" ? "Preview only" : bridge.plan === "annual" ? "25 dossiers" : "8 dossiers", storage: "dossier rows", route: "#research-dossier" },
+    "share-safe-export": { limit: bridge.plan === "free" ? "Basic export" : "Full export bundle", storage: "export_job rows", route: "#share-safe" },
+    "live-refresh": { limit: bridge.plan === "annual" ? "Higher refresh quota" : bridge.plan === "free" ? "No live refresh" : "Monthly refresh quota", storage: "refresh_quota rows", route: "#live-data-contracts" },
+    "support-repair": { limit: bridge.plan === "annual" ? "Priority repair" : bridge.plan === "free" ? "Basic support" : "Standard repair", storage: "support_case rows", route: "#paid-beta-support-ledger" }
+  }[item.key] || { limit: item.decision, storage: "policy rows", route: "#entitlement-bridge" };
+  const freeze = item.tone === "blocked"
+    ? "Do not write paid vault rows until blocker clears."
+    : bridge.lifecycle === "refund"
+      ? "Keep export path, revoke paid mutation rights."
+      : bridge.lifecycle === "expired"
+        ? "Keep read-only research and renewal route."
+        : bridge.lifecycle === "grace"
+          ? "Allow limited access, pause expansion."
+          : "Write through entitlement guard.";
+  const score = clampNumber(Math.round((item.score * 0.72) + (bridge.score * 0.28)), 12, 94);
+  return {
+    ...item,
+    freeze,
+    limit: limitByKey.limit,
+    route: limitByKey.route,
+    score,
+    storage: limitByKey.storage,
+    tone: item.tone
+  };
+}
+
+function accountVaultSupportRepairJoinFromLimit(item, bridge) {
+  const repairByKey = {
+    "core-screener": {
+      action: "Correct public starter policy or route copy without opening an account case.",
+      event: "public_policy.corrected",
+      reviewer: "Product reviewer",
+      rollback: "Rollback copy or policy flag only.",
+      route: "#screener"
+    },
+    "saved-packs": {
+      action: "Restore, cap, or read-only saved research packs after entitlement and usage count agree.",
+      event: "research_pack.repair_joined",
+      reviewer: "Account Ops",
+      rollback: "Return packs to prior read-only/exportable state.",
+      route: "#research-dossier"
+    },
+    "watchlist-alerts": {
+      action: "Pause, resume, or cap alerts after review date, notice policy, and entitlement state match.",
+      event: "watchlist_alert.repair_joined",
+      reviewer: "Support reviewer",
+      rollback: "Pause paid alert expansion and keep watchlist visible.",
+      route: "#watchlist"
+    },
+    "dossier-builder": {
+      action: "Repair dossier access without changing evidence locks or research memo history.",
+      event: "dossier.repair_joined",
+      reviewer: "Research reviewer",
+      rollback: "Keep dossier read-only until evidence lock and entitlement agree.",
+      route: "#research-dossier"
+    },
+    "share-safe-export": {
+      action: "Re-run or unblock export/delete job through privacy receipt, never through support notes.",
+      event: "export_job.repair_joined",
+      reviewer: "Privacy reviewer",
+      rollback: "Keep export available, freeze unsafe delivery, and preserve deletion proof.",
+      route: "#share-safe"
+    },
+    "live-refresh": {
+      action: "Freeze or restore refresh quota only after source date, citation status, and plan quota agree.",
+      event: "refresh_quota.repair_joined",
+      reviewer: "Data reviewer",
+      rollback: "Return to demo/stale-safe mode until source receipt clears.",
+      route: "#live-data-contracts"
+    },
+    "support-repair": {
+      action: "Close the support case through reviewer approval, redacted receipt, and rollback reference.",
+      event: "support_case.repair_joined",
+      reviewer: "Support lead",
+      rollback: "Undo repaired state through a new support receipt, not direct row edits.",
+      route: "#paid-beta-support-ledger"
+    }
+  }[item.key] || {
+    action: "Route the feature through support case review before changing account state.",
+    event: "feature.repair_joined",
+    reviewer: "Ops reviewer",
+    rollback: "Return to prior state with a support receipt.",
+    route: item.route || "#subscription-ops"
+  };
+  const receiptReady = ["auditReady", "webhook"].includes(bridge.receipt);
+  const lifecycleFreeze = ["refund", "expired"].includes(bridge.lifecycle) && !["core-screener", "share-safe-export"].includes(item.key);
+  const blockers = [
+    ...(item.tone === "blocked" ? item.blockers : []),
+    ...(!receiptReady && item.key !== "core-screener" ? ["support repair needs webhook or audit-ready receipt before state changes"] : []),
+    ...(bridge.policy === "unlimited" ? ["unlimited policy cannot be repaired into account storage"] : []),
+    ...(bridge.plan === "phase2" ? ["Phase 2 distributor state cannot join Phase 1 retail repair"] : []),
+    ...(lifecycleFreeze ? [`${entitlementBridgeLifecycleLabel(bridge.lifecycle)} state allows read-only/export handling before repair`] : [])
+  ];
+  const posture = blockers.length
+    ? "Repair frozen"
+    : bridge.lifecycle === "grace"
+      ? "Grace repair"
+      : bridge.lifecycle === "manual"
+        ? "Reviewer repair"
+        : bridge.lifecycle === "refund"
+          ? "Refund closeout"
+          : bridge.lifecycle === "expired"
+            ? "Read-only repair"
+            : item.key === "core-screener"
+              ? "Policy correction"
+              : "Repairable";
+  const score = clampNumber(Math.round(
+    (item.score * 0.44) +
+    (bridge.score * 0.24) +
+    (receiptReady ? 18 : 4) +
+    (blockers.length ? -18 : 8)
+  ), 12, 94);
+  return {
+    ...repairByKey,
+    auditJoin: `${item.auditField} + support_case_id + rollback_ref`,
+    blockers,
+    label: item.label,
+    limit: item.limit,
+    posture,
+    receiptJoin: `${item.receiptGate} -> support.case_opened -> ${repairByKey.event}`,
+    route: repairByKey.route,
+    score,
+    storage: item.storage,
+    tone: blockers.length ? "blocked" : score >= 70 ? "ready" : "draft"
+  };
+}
+
+function accountVaultSupportRepairJoinBoard(bridge, vaultLimits) {
+  const joins = vaultLimits.map((item) => accountVaultSupportRepairJoinFromLimit(item, bridge));
+  const score = Math.round(joins.reduce((sum, item) => sum + item.score, 0) / joins.length);
+  const blockers = joins
+    .filter((item) => item.tone === "blocked" || item.score < 45)
+    .map((item) => ({
+      label: item.label,
+      route: item.route,
+      score: item.score,
+      check: item.blockers[0] || item.rollback
+    }));
+  const status = blockers.length
+    ? "Repair joins blocked"
+    : score >= 72
+      ? "Repair joins ready"
+      : "Repair joins dry-run";
+  const tone = blockers.length ? "blocked" : score >= 72 ? "ready" : "draft";
+  const nextCase = blockers[0] || [...joins].sort((a, b) => a.score - b.score)[0];
+  const metrics = [
+    {
+      label: "Repair readiness",
+      value: `${score}/100`,
+      detail: "Plan limits, storage rows, receipt gates, reviewer roles, and rollback references are joined."
+    },
+    {
+      label: "Receipt posture",
+      value: entitlementBridgeReceiptLabel(bridge.receipt),
+      detail: "Support repair can mutate account state only through webhook or audit-ready receipts."
+    },
+    {
+      label: "Lifecycle posture",
+      value: entitlementBridgeLifecycleLabel(bridge.lifecycle),
+      detail: "Refund, expiry, and grace states convert repairs into closeout, read-only, or freeze paths."
+    },
+    {
+      label: "Next case",
+      value: nextCase.label,
+      detail: nextCase.check || nextCase.action || nextCase.rollback
+    }
+  ];
+  const sequence = [
+    "Open support case with hashed account reference, feature key, current plan, and lifecycle state.",
+    "Join case to entitlement receipt, vault object ID, storage row, usage count, and prior state.",
+    "Reviewer chooses repair, read-only, export, downgrade, refund closeout, or incident freeze.",
+    "Write repaired state, user-safe notice, rollback reference, and closeout reason into the audit trail.",
+    "Escalate repeated repair patterns into backend ticket, payment adapter, privacy, or source-data fixes."
+  ];
+  const guardrails = [
+    "Support repair cannot collect PAN, folio, CAS, bank, card, UPI, OTP, ARN/EUIN, or private research notes.",
+    "Support can repair account access and saved research state, not give fund advice or transaction instruction.",
+    "Any repair that changes entitlement must have prior state, proposed state, source receipt, reviewer role, and rollback reference.",
+    "If receipt, reviewer, or lifecycle state is unclear, freeze mutation and keep export or read-only access where appropriate."
+  ];
+  return {
+    blockers,
+    guardrails,
+    joins,
+    metrics,
+    score,
+    sequence,
+    status,
+    tone
+  };
+}
+
 function accountVaultBlueprintConfig() {
+  const entitlementBridge = entitlementBridgeConfig();
+  const vaultLimits = entitlementBridge.accessMatrix.map((item) => accountVaultLimitFromAccess(item, entitlementBridge));
+  const supportRepair = accountVaultSupportRepairJoinBoard(entitlementBridge, vaultLimits);
   const collections = ACCOUNT_VAULT_COLLECTIONS.map((item) => ({
     ...item,
     tone: item.status === "Later" ? "later" : item.score >= 50 ? "ready" : item.score >= 38 ? "draft" : "blocked"
@@ -7138,8 +12198,15 @@ function accountVaultBlueprintConfig() {
   }));
   const collectionScore = Math.round(collections.reduce((sum, item) => sum + item.score, 0) / collections.length);
   const controlScore = Math.round(controls.reduce((sum, item) => sum + item.score, 0) / controls.length);
-  const vaultScore = Math.round((collectionScore + controlScore) / 2);
-  const blockers = [...collections, ...controls].filter((item) => item.score < 38 && item.status !== "Later");
+  const limitScore = Math.round(vaultLimits.reduce((sum, item) => sum + item.score, 0) / vaultLimits.length);
+  const supportRepairScore = supportRepair.score;
+  const vaultScore = Math.round((collectionScore + controlScore + limitScore + supportRepairScore) / 4);
+  const blockers = [
+    ...collections.filter((item) => item.score < 38 && item.status !== "Later"),
+    ...controls.filter((item) => item.score < 38),
+    ...vaultLimits.filter((item) => item.tone === "blocked"),
+    ...supportRepair.blockers
+  ];
   const nextBlocker = [...blockers].sort((a, b) => a.score - b.score)[0] || controls[0];
   const saveFlow = [
     "User signs in",
@@ -7170,11 +12237,16 @@ function accountVaultBlueprintConfig() {
     collections,
     controlScore,
     controls,
+    entitlementBridge,
     exportFlow,
     launchBlockers,
+    limitScore,
     nextBlocker,
     saveFlow,
-    vaultScore
+    supportRepair,
+    supportRepairScore,
+    vaultScore,
+    vaultLimits
   };
   vault.handoff = backendStorageHandoffBoard(vault);
   return vault;
@@ -7191,15 +12263,18 @@ function backendStorageHandoffBoard(vault) {
   const auditEvents = findCollection("Audit events");
   const savedPacks = findCollection("Saved research packs");
   const exportQueue = findCollection("Export and delete queue");
+  const supportRepair = vault.supportRepair || { score: 0, blockers: [] };
   const receiptId = ["NN", "VAULT", "HANDOFF", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
   const readiness = clampNumber(Math.round((
     vault.collectionScore +
     vault.controlScore +
+    vault.limitScore +
+    supportRepair.score +
     rowOwnership.score +
     exportBundle.score +
     deletionJob.score +
     auditEvents.score
-  ) / 6), 18, 88);
+  ) / 8), 18, 88);
   const blockers = [
     ...(rowOwnership.score < 50 ? ["Row ownership must reject cross-account reads before backend storage opens."] : []),
     ...(exportBundle.score < 45 ? ["Export bundle is not ready enough for account-backed saved research."] : []),
@@ -7234,6 +12309,16 @@ function backendStorageHandoffBoard(vault) {
       label: "Source state",
       value: "Browser prototype",
       detail: "Move only research context, packs, watchlist, reviews, dossiers, and receipt references."
+    },
+    {
+      label: "Limit source",
+      value: `${vault.limitScore}/100`,
+      detail: "Vault write rules now read from the entitlement access matrix before account storage widens."
+    },
+    {
+      label: "Repair joins",
+      value: `${supportRepair.score}/100`,
+      detail: "Support repair must join entitlement receipt, vault object, reviewer role, and rollback proof."
     }
   ];
   const contracts = [
@@ -7306,8 +12391,8 @@ function renderAccountVaultBlueprint() {
     <div class="account-vault-hero">
       <div>
         <span class="metric-label">Saved research architecture</span>
-        <h3>Account vault blueprint ${vault.vaultScore}/100</h3>
-        <p>Define exactly what moves from browser-local prototype into paid account storage, what stays excluded, and which controls must pass before launch.</p>
+        <h3>Account vault and repair joins ${vault.vaultScore}/100</h3>
+        <p>Define what moves from browser-local prototype into paid account storage, which plan limits apply, how support may repair issues, and what stays frozen until receipts agree.</p>
       </div>
       <div class="account-vault-score" style="--score:${vault.vaultScore}">
         <b>${vault.vaultScore}</b>
@@ -7317,8 +12402,104 @@ function renderAccountVaultBlueprint() {
     <div class="account-vault-metrics">
       <article><span>Collection readiness</span><strong>${vault.collectionScore}/100</strong><p>Research profile, saved packs, watchlist, reviews, entitlement, audit, export/delete, and Phase 2 consent boundaries.</p></article>
       <article><span>Control readiness</span><strong>${vault.controlScore}/100</strong><p>Row ownership, entitlement guard, support redaction, export bundle, deletion job, and Phase 2 firewall.</p></article>
-      <article><span>Next blocker</span><strong>${escapeHtml(vault.nextBlocker.label)}</strong><p>${vault.nextBlocker.score}/100 | ${escapeHtml(vault.nextBlocker.check || vault.nextBlocker.guardrail)}</p></article>
+      <article><span>Limit readiness</span><strong>${vault.limitScore}/100</strong><p>${escapeHtml(entitlementBridgePlanLabel(vault.entitlementBridge.plan))} | ${escapeHtml(entitlementBridgeLifecycleLabel(vault.entitlementBridge.lifecycle))} | ${escapeHtml(entitlementBridgeReceiptLabel(vault.entitlementBridge.receipt))}</p></article>
+      <article><span>Repair readiness</span><strong>${vault.supportRepairScore}/100</strong><p>${escapeHtml(vault.supportRepair.status)} | ${vault.supportRepair.blockers.length} repair blockers.</p></article>
+      <article><span>Next blocker</span><strong>${escapeHtml(vault.nextBlocker.label)}</strong><p>${vault.nextBlocker.score}/100 | ${escapeHtml(vault.nextBlocker.check || vault.nextBlocker.guardrail || vault.nextBlocker.freeze || vault.nextBlocker.lifecycleRule)}</p></article>
       <article><span>Never stored</span><strong>PAN, folio, CAS</strong><p>Private investor identifiers stay outside Phase 1 account storage.</p></article>
+    </div>
+    <div class="account-vault-limit-grid">
+      ${vault.vaultLimits.map((item) => `
+        <article class="${escapeHtml(item.tone)}">
+          <div class="account-route-card-head">
+            <div>
+              <span>${escapeHtml(item.owner)}</span>
+              <strong>${escapeHtml(item.label)}</strong>
+            </div>
+            <b>${item.score}/100</b>
+          </div>
+          <p><b>${escapeHtml(item.limit)}</b> | ${escapeHtml(item.decision)}</p>
+          <dl>
+            <div>
+              <dt>Storage row</dt>
+              <dd>${escapeHtml(item.storage)}</dd>
+            </div>
+            <div>
+              <dt>Receipt gate</dt>
+              <dd>${escapeHtml(item.receiptGate)}</dd>
+            </div>
+          </dl>
+          <small>${escapeHtml(item.freeze)}</small>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(item.route)}">Open limit source</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-vault-repair ${escapeHtml(vault.supportRepair.tone)}">
+      <div class="account-vault-repair-head">
+        <div>
+          <span>Support repair join board</span>
+          <h3>${escapeHtml(vault.supportRepair.status)}</h3>
+          <p>Join each support repair to entitlement receipt, vault storage row, reviewer boundary, rollback reference, and user-safe closeout before any account state changes.</p>
+        </div>
+        <div class="account-vault-repair-score" style="--score:${vault.supportRepair.score}">
+          <strong>${vault.supportRepair.score}</strong>
+          <span>repair</span>
+        </div>
+      </div>
+      <div class="account-vault-repair-grid">
+        ${vault.supportRepair.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-vault-repair-join-grid">
+        ${vault.supportRepair.joins.map((join) => `
+          <article class="${escapeHtml(join.tone)}">
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(join.reviewer)}</span>
+                <strong>${escapeHtml(join.label)}</strong>
+              </div>
+              <b>${join.score}/100</b>
+            </div>
+            <p><b>${escapeHtml(join.posture)}</b> | ${escapeHtml(join.action)}</p>
+            <dl>
+              <div>
+                <dt>Receipt join</dt>
+                <dd>${escapeHtml(join.receiptJoin)}</dd>
+              </div>
+              <div>
+                <dt>Audit join</dt>
+                <dd>${escapeHtml(join.auditJoin)}</dd>
+              </div>
+            </dl>
+            <small>${escapeHtml(join.blockers.length ? join.blockers.join("; ") : join.rollback)}</small>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(join.route)}">Open repair source</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-vault-repair-two">
+        <article>
+          <span>Repair sequence</span>
+          <ol>
+            ${vault.supportRepair.sequence.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${escapeHtml(vault.supportRepair.tone)}">
+          <span>Repair blockers</span>
+          <ul>
+            ${(vault.supportRepair.blockers.length ? vault.supportRepair.blockers.map((blocker) => blocker.check) : ["No active repair join blocker in this preview. Keep the join in dry-run until backend receipts own the state."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Support guardrails</span>
+          <ul>
+            ${vault.supportRepair.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="account-vault-handoff ${escapeHtml(vault.handoff.tone)}">
       <div class="account-vault-handoff-head">
@@ -7437,7 +12618,22 @@ function makeAccountVaultBrief() {
     `Vault readiness: ${vault.vaultScore}/100`,
     `Collection readiness: ${vault.collectionScore}/100`,
     `Control readiness: ${vault.controlScore}/100`,
+    `Limit readiness: ${vault.limitScore}/100`,
+    `Support repair readiness: ${vault.supportRepairScore}/100`,
+    `Entitlement source: ${entitlementBridgePlanLabel(vault.entitlementBridge.plan)} | ${entitlementBridgeLifecycleLabel(vault.entitlementBridge.lifecycle)} | ${entitlementBridgeReceiptLabel(vault.entitlementBridge.receipt)}`,
     `Next blocker: ${vault.nextBlocker.label} (${vault.nextBlocker.score}/100)`,
+    "",
+    "## Account Vault Limits",
+    ...vault.vaultLimits.map((item) => `- ${item.label}: ${item.limit} | ${item.decision} | ${item.storage} | ${item.receiptGate} | ${item.freeze}`),
+    "",
+    "## Support Repair Joins",
+    `- Status: ${vault.supportRepair.status}`,
+    `- Readiness: ${vault.supportRepair.score}/100`,
+    ...vault.supportRepair.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...vault.supportRepair.joins.map((join) => `- ${join.label}: ${join.posture} | ${join.action} | receipt: ${join.receiptJoin} | audit: ${join.auditJoin} | rollback: ${join.rollback}`),
+    ...vault.supportRepair.sequence.map((step) => `- Sequence: ${step}`),
+    ...vault.supportRepair.blockers.map((blocker) => `- Blocker: ${blocker.label}: ${blocker.check}`),
+    ...vault.supportRepair.guardrails.map((item) => `- Guardrail: ${item}`),
     "",
     "## Backend Storage Handoff Board",
     `- Status: ${vault.handoff.status}`,
@@ -7727,13 +12923,185 @@ function profileRoomProfile() {
   };
 }
 
+function profileInvestorTwin(profile) {
+  const config = profile.config;
+  const fund = profile.selected;
+  const evidence = evidenceReadinessScore(fund);
+  const nadi = nadiScore(fund);
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const twinId = ["NN", "INVESTOR", "TWIN", suffix, config.intent, profile.primaryCategory.replace(/[^a-z0-9]+/gi, "-")].join("-").toUpperCase();
+  const emergencyScore = config.emergency === "yes" ? 88 : config.emergency === "partial" ? 66 : 30;
+  const horizonScore = config.horizon >= 10 ? 88 : config.horizon >= 7 ? 78 : config.horizon >= 3 ? 58 : 34;
+  const sipScore = config.sip >= 5000 ? 78 : config.sip > 0 ? 58 : 28;
+  const drawdownScore = {
+    low: fund.maxDrawdown <= 10 ? 82 : 46,
+    balanced: fund.maxDrawdown <= 18 ? 76 : 58,
+    growth: fund.maxDrawdown <= 25 ? 74 : 62,
+    aggressive: fund.maxDrawdown <= 35 ? 72 : 54
+  }[config.drawdown] || 62;
+  const confidenceScore = config.confidence === "reviewing" ? 84 : config.confidence === "building" ? 70 : 54;
+  const scenarioTemplates = [
+    {
+      label: "SIP boredom twin",
+      trigger: "Twelve quiet months with no exciting headline return.",
+      route: "#journey-timeline",
+      trap: "stopping the process because the result feels slow",
+      rehearsal: "review the route, memo, and calendar before changing SIP behavior",
+      weight: [sipScore, confidenceScore, horizonScore]
+    },
+    {
+      label: "Drawdown panic twin",
+      trigger: `${fund.maxDrawdown}% demo drawdown appears on the selected fund.`,
+      route: "#stress-lab",
+      trap: "switching after pain without checking role, horizon, and written reason",
+      rehearsal: "run stress impact, pause rule, compare set, and decision memo first",
+      weight: [drawdownScore, horizonScore, profile.readiness]
+    },
+    {
+      label: "Emergency shock twin",
+      trigger: "Unexpected cash need arrives while the research route is active.",
+      route: "#category-playbook",
+      trap: "treating volatile money as emergency money",
+      rehearsal: "separate emergency buffer, parking bucket, and long-horizon research",
+      weight: [emergencyScore, sipScore, profile.readiness]
+    },
+    {
+      label: "Return-chasing twin",
+      trigger: "A high-return fund, friend tip, or social post looks more exciting.",
+      route: "#behavior-guard",
+      trap: "borrowing conviction before source evidence and role fit",
+      rehearsal: "convert the claim into evidence, peer benchmark, and own-word reason",
+      weight: [confidenceScore, evidence, nadi]
+    },
+    {
+      label: "Goal-drift twin",
+      trigger: "The stated horizon changes from long-term investing to near-term use.",
+      route: "#goal-fit",
+      trap: "keeping the same fund role after the money purpose changed",
+      rehearsal: "re-run goal fit, category route, liquidity need, and horizon band",
+      weight: [horizonScore, profile.selectedFit, emergencyScore]
+    },
+    {
+      label: "Evidence-gap twin",
+      trigger: "Source date, factsheet, TER, riskometer, or portfolio disclosure is missing.",
+      route: "#evidence",
+      trap: "treating demo or stale research as live conviction",
+      rehearsal: "open Evidence Ledger, Citation Binder, and Review route before action",
+      weight: [evidence, profile.readiness, confidenceScore]
+    },
+    {
+      label: "Switch temptation twin",
+      trigger: "The current fund looks weaker than a peer for a short period.",
+      route: "#switch-lab",
+      trap: "switching the whole route without checking tax, cost, role, and overlap",
+      rehearsal: "use Switch Lab, Compare, Cost Reality, and X-Ray before deciding",
+      weight: [profile.selectedFit, nadi, confidenceScore]
+    },
+    {
+      label: "Review fatigue twin",
+      trigger: "The investor stops reviewing after the first memo is saved.",
+      route: "#review-rhythm",
+      trap: "turning a one-time screen into a long-term decision",
+      rehearsal: "set 30/60/90-day review rhythm, watch triggers, and decision pack",
+      weight: [confidenceScore, profile.readiness, evidence]
+    }
+  ];
+  const scenarios = scenarioTemplates.map((scenario, index) => {
+    const base = Math.round(scenario.weight.reduce((sum, value) => sum + value, 0) / scenario.weight.length);
+    const score = clampNumber(base - (index % 3) * 2 + (profile.selectedFit >= 78 ? 3 : 0), 18, 96);
+    return {
+      ...scenario,
+      score,
+      tone: score >= 76 ? "ready" : score >= 58 ? "watch" : "caution",
+      outcome: score >= 76 ? "Future self steady" : score >= 58 ? "Needs a pause rule" : "Behavior blocker"
+    };
+  });
+  const weakest = [...scenarios].sort((a, b) => a.score - b.score)[0];
+  const survivalScore = clampNumber(Math.round(
+    profile.readiness * 0.24 +
+    profile.selectedFit * 0.18 +
+    evidence * 0.14 +
+    emergencyScore * 0.14 +
+    horizonScore * 0.12 +
+    confidenceScore * 0.1 +
+    drawdownScore * 0.08
+  ), 18, 96);
+  const posture = survivalScore >= 80 && weakest.score >= 60
+    ? "Future-self route ready"
+    : survivalScore >= 62
+      ? "Future-self rehearsal"
+      : "Future-self blocker";
+  const tone = posture === "Future-self route ready" ? "strong" : posture === "Future-self blocker" ? "caution" : "watch";
+  const metrics = [
+    {
+      label: "Twin ID",
+      value: twinId,
+      detail: "Identity-light behavior simulation for this profile route."
+    },
+    {
+      label: "Survival score",
+      value: `${survivalScore}/100`,
+      detail: "Combines profile readiness, selected fund fit, evidence, emergency buffer, horizon, and behavior comfort."
+    },
+    {
+      label: "Weakest future moment",
+      value: weakest.label,
+      detail: `${weakest.score}/100 | ${weakest.trap}`
+    },
+    {
+      label: "Next rehearsal",
+      value: workspaceOption(weakest.route)?.textContent?.trim() || weakest.route,
+      detail: weakest.rehearsal
+    }
+  ];
+  const decisionScript = [
+    `I am researching ${fund.name} for ${profileIntentLabel(config.intent).toLowerCase()}, not buying it because of noise.`,
+    `My time horizon is ${config.horizon} years and my monthly SIP comfort is ${profile.amountLabel}.`,
+    `If ${weakest.trigger.toLowerCase()}, I will open ${workspaceOption(weakest.route)?.textContent?.trim() || weakest.route} before changing the plan.`,
+    "I will not use this profile as advice, execution, return promise, or suitability approval."
+  ];
+  const noGoTriggers = [
+    "Emergency buffer is not ready and the fund role is volatile.",
+    "The selected fund has missing evidence, stale source date, or unclear riskometer/factsheet posture.",
+    "The reason cannot be written in the investor's own words.",
+    "The action is driven by social proof, recent return, tax urgency, or fear after drawdown.",
+    "The route has no review date, watch trigger, or pause rule."
+  ];
+  const twinReceipts = [
+    "profile_twin_id",
+    "intent",
+    "horizon_years",
+    "sip_comfort",
+    "drawdown_comfort",
+    "emergency_buffer",
+    "selected_fund_id",
+    "weakest_scenario",
+    "pause_rule",
+    "next_route",
+    "created_at"
+  ];
+  return {
+    decisionScript,
+    metrics,
+    noGoTriggers,
+    posture,
+    scenarios,
+    survivalScore,
+    tone,
+    twinId,
+    twinReceipts,
+    weakest
+  };
+}
+
 function renderProfileRoom(event) {
   if (event) event.preventDefault();
   if (!els.profileRoomOutput) return;
   const profile = profileRoomProfile();
+  const twin = profileInvestorTwin(profile);
   const config = profile.config;
   if (els.profileRoomSummary) {
-    els.profileRoomSummary.textContent = `${profile.readiness}/100 | ${profile.posture}`;
+    els.profileRoomSummary.textContent = `${profile.readiness}/100 | ${profile.posture} | Twin ${twin.survivalScore}/100`;
   }
   els.profileRoomOutput.innerHTML = `
     <div class="profile-room-hero ${escapeHtml(profile.tone)}">
@@ -7783,6 +13151,69 @@ function renderProfileRoom(event) {
         </article>
       `).join("")}
     </div>
+    <div class="profile-twin-board ${escapeHtml(twin.tone)}">
+      <div class="profile-twin-hero">
+        <div>
+          <span class="metric-label">Nadi Investor Twin</span>
+          <h3>${escapeHtml(twin.posture)}</h3>
+          <p>Test the investor's future self against boredom, drawdown, emergency shock, social noise, goal drift, evidence gaps, switch temptation, and review fatigue before any fund is treated as suitable.</p>
+        </div>
+        <div class="profile-twin-score" style="--score:${twin.survivalScore}">
+          <b>${twin.survivalScore}</b>
+          <span>Twin</span>
+        </div>
+      </div>
+      <div class="profile-twin-metric-grid">
+        ${twin.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="profile-twin-scenario-grid">
+        ${twin.scenarios.map((scenario) => `
+          <article class="${escapeHtml(scenario.tone)}">
+            <div class="profile-twin-card-head">
+              <div>
+                <span>${escapeHtml(scenario.outcome)}</span>
+                <strong>${escapeHtml(scenario.label)}</strong>
+              </div>
+              <b>${scenario.score}</b>
+            </div>
+            <p>${escapeHtml(scenario.trigger)}</p>
+            <div class="build-progress-bar"><span style="width:${scenario.score}%"></span></div>
+            <small>Trap: ${escapeHtml(scenario.trap)}</small>
+            <small>Rehearsal: ${escapeHtml(scenario.rehearsal)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="profile-twin-two">
+        <article>
+          <span>Decision script</span>
+          <ol>
+            ${twin.decisionScript.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="caution">
+          <span>No-go triggers</span>
+          <ul>
+            ${twin.noGoTriggers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Twin receipts</span>
+          <p>${twin.twinReceipts.map((item) => escapeHtml(item)).join(" | ")}</p>
+        </article>
+        <article>
+          <span>Open weakest route</span>
+          <strong>${escapeHtml(twin.weakest.label)}</strong>
+          <p>${escapeHtml(twin.weakest.rehearsal)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(twin.weakest.route)}">Open rehearsal</button>
+        </article>
+      </div>
+    </div>
     <div class="profile-room-guardrail">
       <span>Profile boundary</span>
       <ul>
@@ -7795,6 +13226,7 @@ function renderProfileRoom(event) {
 
 function makeProfileRoomBrief() {
   const profile = profileRoomProfile();
+  const twin = profileInvestorTwin(profile);
   const config = profile.config;
   return [
     "# NiveshNadi Investor Profile Room",
@@ -7809,9 +13241,23 @@ function makeProfileRoomBrief() {
     `Profile readiness: ${profile.readiness}/100`,
     `Suggested route: ${profile.routeLabel}`,
     `Category anchor: ${profile.primaryCategory}`,
+    `Investor Twin: ${twin.survivalScore}/100 | ${twin.posture}`,
+    `Twin ID: ${twin.twinId}`,
     "",
     "## Top Research Candidates",
     ...profile.candidates.slice(0, 4).map(({ fund, score }) => `- ${fund.name}: ${score}/100 profile fit | ${fund.category} | ${fund.risk} risk | TER ${fund.expense.toFixed(2)}%`),
+    "",
+    "## Nadi Investor Twin Scenarios",
+    ...twin.scenarios.map((scenario) => `- ${scenario.label}: ${scenario.score}/100 | Trigger: ${scenario.trigger} | Trap: ${scenario.trap} | Rehearsal: ${scenario.rehearsal}`),
+    "",
+    "## Decision Script",
+    ...twin.decisionScript.map((item) => `- ${item}`),
+    "",
+    "## No-Go Triggers",
+    ...twin.noGoTriggers.map((item) => `- ${item}`),
+    "",
+    "## Twin Receipt Fields",
+    ...twin.twinReceipts.map((item) => `- ${item}`),
     "",
     "## Guardrails",
     ...profile.guardrails.map((item) => `- ${item}`),
@@ -13685,10 +19131,25 @@ function renderAll() {
   renderSignalStrip();
   renderBuildTracker();
   renderBuildPhasesRoom();
+  renderMarketStrategyRoom();
+  renderPaidBetaEvidencePack();
+  renderFounderInviteProofPath();
+  renderFounderCohortControlRoom();
+  renderCohortReceiptBackend();
+  renderCohortDecisionReplay();
+  renderPaidCohortExpansionGate();
+  renderFounderBetaOperatingRoom();
+  renderPaidBetaSupportLedger();
   renderLaunchReadinessBoard();
   renderPaymentReadinessLab();
   renderPaymentWiringConsole();
   renderPaymentGatewaySandbox();
+  renderGatewayWebhookDrill();
+  renderProviderPilotReceiptContract();
+  renderPilotReceiptVault();
+  renderPaidPilotLaunchGate();
+  renderBackendTicketFactory();
+  renderReceiptReplayEngine();
   renderEntitlementBridge();
   renderSubscriptionOpsConsole();
   renderSubscriptionBackendBlueprint();
@@ -19946,6 +25407,175 @@ function sourceRecoveryReleaseQueue(publicRecovery = sourcePublicRecoveryRehears
   };
 }
 
+function sourceCorrectionPublishConsole(recoveryQueue = sourceRecoveryReleaseQueue(), publicRecovery = sourcePublicRecoveryRehearsal(), rollbackEvidence = sourceRollbackEvidenceStore(), reviewerSignoff = sourceReviewerSignoffBridge(), alertDelivery = sourceAlertDeliveryBackend(), alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const correctionConsoleId = ["NN", "CORRECTION", "CONSOLE", sourceSlug, suffix].join("-").toUpperCase();
+  const correctionNoticeId = ["NN", "CORRECTION", "NOTICE", sourceSlug, suffix].join("-").toUpperCase();
+  const publicationAttemptId = ["NN", "CORRECTION", "PUBLISH", "ATTEMPT", sourceSlug, suffix].join("-").toUpperCase();
+  const investorVisibleReceiptId = ["NN", "INVESTOR", "CORRECTION", "RECEIPT", sourceSlug, suffix].join("-").toUpperCase();
+  const rollbackHoldId = ["NN", "CORRECTION", "ROLLBACK", "HOLD", sourceSlug, suffix].join("-").toUpperCase();
+  const monitorWindowId = ["NN", "CORRECTION", "MONITOR", "WINDOW", sourceSlug, suffix].join("-").toUpperCase();
+  const queueBlockers = recoveryQueue.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const recoveryBlockers = publicRecovery.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const signoffBlockers = reviewerSignoff.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const storageScore = config.storage === "event" ? 96 : config.storage === "append" ? 88 : config.storage === "database" ? 66 : 16;
+  const publishModeScore = config.mode === "launch" ? 92 : config.mode === "stress" ? 84 : config.mode === "dry" ? 72 : 68;
+  const readiness = clampNumber(Math.round(
+    recoveryQueue.readiness * 0.32 +
+      publicRecovery.readiness * 0.18 +
+      rollbackEvidence.readiness * 0.12 +
+      reviewerSignoff.readiness * 0.14 +
+      alertDelivery.readiness * 0.08 +
+      alertRouting.readiness * 0.06 +
+      storageScore * 0.07 +
+      publishModeScore * 0.03
+  ) - Math.max(0, queueBlockers.length - 2) * 2, 12, 96);
+  const status = readiness >= 84 && queueBlockers.length <= 2 && (config.storage === "event" || config.storage === "append")
+    ? "Correction publish ready"
+    : readiness >= 64
+      ? "Correction publish dry-run"
+      : "Correction publish blocked";
+  const tone = status === "Correction publish ready" ? "ready" : status === "Correction publish blocked" ? "caution" : "watch";
+  const wording = {
+    before: "Selected fund card may show stale demo return, expense, or source date until refreshed source receipts are approved.",
+    corrected: "Selected fund card is refreshed only after source receipt, reviewer approval, correction notice, and monitoring window are complete.",
+    investorSummary: "A source refresh issue was reviewed. The research surface is corrected or held until verified data is available.",
+    supportSummary: "Explain source freshness, correction receipt, review status, and next monitoring window. Do not request PAN, folio, CAS, bank details, or transaction details.",
+    reviewerState: reviewerSignoff.status,
+    publishPosture: status === "Correction publish ready"
+      ? "Ready to publish correction"
+      : status === "Correction publish dry-run"
+        ? "Hold for release review"
+        : "Rollback or freeze"
+  };
+  const publishControls = [
+    {
+      label: "Preview wording",
+      owner: "Compliance",
+      event: "correction_publish.wording_previewed",
+      proof: "correction_notice_id, old_claim_state, proposed_claim_state, public_wording_hash",
+      score: readiness
+    },
+    {
+      label: "Approve reviewer state",
+      owner: "Reviewer",
+      event: "correction_publish.reviewer_approved",
+      proof: "reviewer_signoff_id, evidence_lock_id, release_scope_id, reviewer_reason",
+      score: reviewerSignoff.readiness
+    },
+    {
+      label: "Bind support script",
+      owner: "Support",
+      event: "correction_publish.support_script_bound",
+      proof: "support_task_id, support_safe_summary_id, blocked_data_classes, script_version",
+      score: recoveryQueue.readiness - 1
+    },
+    {
+      label: "Publish or hold",
+      owner: "Release Ops",
+      event: "correction_publish.posture_selected",
+      proof: "publication_attempt_id, publish_posture, rollback_hold_id, approver_role",
+      score: readiness - 2
+    },
+    {
+      label: "Investor receipt",
+      owner: "Product Ops",
+      event: "correction_publish.investor_receipt_ready",
+      proof: "investor_visible_receipt_id, correction_notice_id, public_surface_ids, visible_status",
+      score: publicRecovery.readiness
+    },
+    {
+      label: "Post-publish monitor",
+      owner: "Security Ops",
+      event: "correction_publish.monitor_window_armed",
+      proof: "monitor_window_id, alert_route_id, monitoring_window, retry_policy",
+      score: alertDelivery.readiness
+    }
+  ].map((control) => {
+    const score = clampNumber(Math.round(control.score), 18, 96);
+    return {
+      ...control,
+      score,
+      tone: score >= 78 ? "ready" : score < 56 ? "caution" : "watch"
+    };
+  });
+  const approvalChecks = [
+    "before and after wording are visible in one review panel",
+    "public wording is factual and not personalized advice",
+    "reviewer approval state matches release scope and evidence lock",
+    "support script excludes PAN, folio, CAS, credentials, bank details, contact data, and private notes",
+    "publish posture is publish, hold, or rollback, never silent overwrite",
+    "monitor window starts before correction becomes investor-visible"
+  ];
+  const receiptFields = [
+    "correction_console_id",
+    "release_queue_id",
+    "publish_batch_id",
+    "correction_notice_id",
+    "publication_attempt_id",
+    "investor_visible_receipt_id",
+    "rollback_hold_id",
+    "monitor_window_id",
+    "old_claim_state",
+    "proposed_claim_state",
+    "public_wording_hash",
+    "support_safe_summary_id",
+    "reviewer_signoff_id",
+    "evidence_lock_id",
+    "release_scope_id",
+    "publish_posture",
+    "approver_role",
+    "visible_status",
+    "monitoring_window",
+    "idempotency_key",
+    "retention_policy"
+  ];
+  const operatorSteps = [
+    "load the recovery release queue item and confirm the affected public surface",
+    "compare old and proposed wording beside source receipt and reviewer state",
+    "check reviewer approval, release scope, and support-safe summary",
+    "choose publish, hold, or rollback with approver role and reason",
+    "arm the monitor window before any investor-visible wording changes",
+    "save investor-visible correction receipt and rollback hold reference"
+  ];
+  const blockers = [
+    ...queueBlockers.slice(0, 3),
+    ...recoveryBlockers.slice(0, 2),
+    ...signoffBlockers.slice(0, 2),
+    ...(config.storage === "browser" ? ["correction publish console cannot launch with browser-local correction receipts"] : []),
+    ...(config.storage !== "event" && config.storage !== "append" ? ["correction publish console needs append-only or event-backed publication receipts"] : []),
+    ...(config.mode !== "launch" && config.mode !== "stress" ? ["correction publish console should be rehearsed in launch or stress mode before production"] : []),
+    "real correction publishing, notification delivery, and investor-visible receipt persistence are still outside this static prototype"
+  ];
+  const metrics = [
+    { label: "Correction console", value: correctionConsoleId, detail: `Publish console for ${activeJob.pipeline.title}.` },
+    { label: "Notice", value: correctionNoticeId, detail: "Public wording preview is bound to release queue and reviewer state." },
+    { label: "Investor receipt", value: investorVisibleReceiptId, detail: "Investor-facing correction reference stays separate from private evidence." },
+    { label: "Publish status", value: status, detail: `${publishControls.length} controls, ${approvalChecks.length} checks, and ${blockers.length} blockers.` }
+  ];
+
+  return {
+    approvalChecks,
+    blockers,
+    correctionConsoleId,
+    correctionNoticeId,
+    investorVisibleReceiptId,
+    metrics,
+    monitorWindowId,
+    operatorSteps,
+    publicationAttemptId,
+    publishControls,
+    readiness,
+    receiptFields,
+    rollbackHoldId,
+    status,
+    tone,
+    wording
+  };
+}
+
 function sourceIncidentReceiptReplay(alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
   const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
   const activeRoute = alertRouting.routes.find((route) => route.severity === "High") || alertRouting.routes[0];
@@ -20211,6 +25841,178 @@ function paymentReconciliationReplay(config) {
   };
 }
 
+function launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker) {
+  const activeBlockers = (items) => items.filter((item) => !item.startsWith("No active"));
+  const freezeId = ["NN", "LAUNCH", "FREEZE", DATA_VERSION.replace(/-/g, ""), config.stream.id.replace(/[^a-z0-9]+/gi, "").toUpperCase()].join("-");
+  const paymentScore = paymentReplay.readiness;
+  const sourceScore = incidentReplay.readiness;
+  const releaseScore = Math.round((correctionPublish.readiness + recoveryQueue.readiness + publicRecovery.readiness) / 3);
+  const storageScore = config.storage === "event" ? 88 : config.storage === "append" ? 76 : config.storage === "database" ? 62 : 18;
+  const supportScore = config.stream.id === "support-ops" ? 76 : config.stream.id === "payment-entitlement" ? 70 : 58;
+  const privacyScore = config.storage === "browser" ? 18 : config.retention === "minimal" ? 54 : config.stream.id === "privacy-consent" ? 74 : 68;
+  const triggers = [
+    {
+      label: "Live claim freeze",
+      owner: "Trust Ops",
+      surface: "Screener, evidence, data, fund cards",
+      trigger: "source_incident.receipt_created",
+      freezeAction: "Freeze affected public claims and keep last approved wording visible.",
+      resumeRule: "Reviewer sign-off plus rollback, correction, or resume receipt.",
+      closeout: incidentReplay.closeoutId,
+      score: Math.round((sourceScore + releaseScore) / 2)
+    },
+    {
+      label: "Payment entitlement freeze",
+      owner: "Commercial Ops",
+      surface: "Pricing, account access, paid features",
+      trigger: "payment_replay.variance_detected",
+      freezeAction: "Freeze paid mutations, keep safe read-only access, and route to reconciliation.",
+      resumeRule: "Gateway replay, settlement closeout, entitlement projection, and finance receipt agree.",
+      closeout: paymentReplay.replayId,
+      score: paymentScore
+    },
+    {
+      label: "Support repair freeze",
+      owner: "Support Ops",
+      surface: "Account vault, support repair, user notice",
+      trigger: "support.repair_missing_rollback",
+      freezeAction: "Block repair writes until prior state, proposed state, reviewer role, and rollback ref exist.",
+      resumeRule: "Support repair receipt, closeout reason, and prevention route are saved.",
+      closeout: "support.case_closed",
+      score: supportScore
+    },
+    {
+      label: "Privacy action freeze",
+      owner: "Privacy Ops",
+      surface: "Export, delete, consent handoff",
+      trigger: "privacy.proof_missing",
+      freezeAction: "Freeze data handoff or account deletion completion until proof receipt exists.",
+      resumeRule: "Export/delete receipt, processor, scope, and completion hash are attached.",
+      closeout: "privacy.request_closed",
+      score: privacyScore
+    },
+    {
+      label: "Reviewer release freeze",
+      owner: "Reviewer",
+      surface: "Claim release, correction publish, rollback",
+      trigger: "reviewer_release.scope_mismatch",
+      freezeAction: "Hold release queue and correction publish until reviewer scope matches public surface.",
+      resumeRule: "Release scope, correction notice, rollback hold, and monitor window agree.",
+      closeout: correctionPublish.correctionConsoleId,
+      score: releaseScore
+    },
+    {
+      label: "Launch route freeze",
+      owner: "Founder Ops",
+      surface: "Paid cohort expansion and public launch route",
+      trigger: "launch_gate.blocker_active",
+      freezeAction: "Pause invite waves, route blocker to owner, and keep launch status in dry-run.",
+      resumeRule: "Backend ticket, owner receipt, rollback note, and launch monitor are closed.",
+      closeout: freezeId,
+      score: Math.round((config.score + storageScore + alertRouting.readiness + sourceWorker.readiness) / 4)
+    }
+  ].map((trigger) => ({
+    ...trigger,
+    score: clampNumber(Math.round(trigger.score), 12, 96),
+    tone: trigger.score >= 78 ? "ready" : trigger.score < 56 ? "caution" : "watch"
+  }));
+  const blockerSet = Array.from(new Set([
+    ...activeBlockers(config.blockers),
+    ...activeBlockers(paymentReplay.blockers),
+    ...activeBlockers(incidentReplay.blockers),
+    ...activeBlockers(correctionPublish.blockers),
+    ...activeBlockers(recoveryQueue.blockers),
+    ...(config.storage === "browser" ? ["launch freeze automation cannot close from browser-local evidence"] : []),
+    ...(paymentReplay.readiness < 64 ? ["payment reconciliation replay is below freeze-resume threshold"] : []),
+    ...(incidentReplay.readiness < 64 ? ["incident replay is below freeze-resume threshold"] : []),
+    ...(releaseScore < 64 ? ["public recovery, queue, or correction publish route is below closeout threshold"] : [])
+  ]));
+  const triggerAverage = Math.round(triggers.reduce((sum, trigger) => sum + trigger.score, 0) / triggers.length);
+  const readiness = clampNumber(Math.round(
+    triggerAverage * 0.44 +
+      paymentReplay.readiness * 0.18 +
+      incidentReplay.readiness * 0.18 +
+      releaseScore * 0.12 +
+      storageScore * 0.08
+  ) - Math.min(14, blockerSet.length * 2), 12, 96);
+  const status = blockerSet.length
+    ? "Freeze automation dry-run"
+    : readiness >= 84
+      ? "Freeze automation launch-ready"
+      : "Freeze automation rehearsed";
+  const tone = blockerSet.length
+    ? "caution"
+    : readiness >= 84
+      ? "ready"
+      : "watch";
+  const metrics = [
+    {
+      label: "Freeze automation ID",
+      value: freezeId,
+      detail: "One receipt family binds source, payment, support, privacy, reviewer, and launch freeze decisions."
+    },
+    {
+      label: "Freeze readiness",
+      value: `${readiness}/100`,
+      detail: `${triggers.filter((trigger) => trigger.tone === "ready").length}/${triggers.length} trigger routes are ready.`
+    },
+    {
+      label: "Primary blocker",
+      value: blockerSet[0] || "No active blocker",
+      detail: "The first blocker becomes the next owner route before launch status can improve."
+    },
+    {
+      label: "Resume posture",
+      value: config.storage === "event" ? "Replay first" : backendAuditStorageLabel(config.storage),
+      detail: "Resume requires replay, reviewer or owner closeout, rollback reference, and monitor window."
+    }
+  ];
+  const sequence = [
+    "Detect trigger from source incident, payment replay, support repair, privacy action, reviewer release, or launch gate.",
+    "Write freeze receipt with affected surface, old state, proposed state, owner, severity, and reason code.",
+    "Apply freeze to public claims, paid mutations, export/delete completion, support repair, or invite wave.",
+    "Route owner work through recovery queue, correction publish, reconciliation, support closeout, or backend ticket.",
+    "Resume only after replay result, reviewer or owner closeout, rollback reference, user-safe notice, and monitor window agree."
+  ];
+  const receiptFields = [
+    "freeze_id",
+    "trigger_event",
+    "severity",
+    "affected_surface_ids",
+    "old_state",
+    "proposed_state",
+    "owner_role",
+    "reason_code",
+    "source_receipt_id",
+    "payment_replay_id",
+    "support_case_id",
+    "privacy_request_id",
+    "reviewer_decision_id",
+    "rollback_ref",
+    "resume_receipt_id",
+    "monitor_window_id",
+    "closed_at"
+  ];
+  const resumeRules = [
+    "Do not resume if source date, citation path, gateway event, invoice/refund state, or support closeout is missing.",
+    "Do not resume if old state and proposed state are not visible in the receipt.",
+    "Do not resume if reviewer release, correction publish, or recovery queue posture disagrees.",
+    "Do not resume if PAN, folio, CAS, raw card, UPI, bank details, credentials, contact data, or private notes entered the receipt."
+  ];
+  return {
+    blockers: blockerSet.length ? blockerSet : ["No active launch freeze automation blocker in this preview. Keep dry-run until backend workers, gateway events, and append-only receipts exist."],
+    freezeId,
+    metrics,
+    readiness,
+    receiptFields,
+    resumeRules,
+    sequence,
+    status,
+    tone,
+    triggers
+  };
+}
+
 function renderBackendAuditReceipts(event) {
   if (event) event.preventDefault();
   if (!els.backendAuditOutput || !els.backendAuditSummary) return;
@@ -20225,10 +26027,12 @@ function renderBackendAuditReceipts(event) {
   const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
+  const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
   const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
   const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
-  els.backendAuditSummary.textContent = `${config.score}/100 | ${config.status}`;
+  els.backendAuditSummary.textContent = `${freezeAutomation.readiness}/100 | ${freezeAutomation.status}`;
   els.backendAuditOutput.innerHTML = `
     <div class="backend-audit-hero ${escapeHtml(config.tone)}">
       <div>
@@ -20246,6 +26050,73 @@ function renderBackendAuditReceipts(event) {
       <article><span>Storage</span><strong>${escapeHtml(backendAuditStorageLabel(config.storage))}</strong><p>${escapeHtml(config.stream.retention)}</p></article>
       <article><span>Risk band</span><strong>${escapeHtml(config.stream.risk)}</strong><p>${escapeHtml(backendAuditRetentionLabel(config.retention))}</p></article>
       <article><span>Ready streams</span><strong>${readyCount}/${BACKEND_AUDIT_STREAMS.length}</strong><p>${veryHighCount} very-high-risk streams need stricter audit.</p></article>
+    </div>
+    <div class="launch-freeze-board ${escapeHtml(freezeAutomation.tone)}">
+      <div class="launch-freeze-head">
+        <div>
+          <span>Launch freeze automation</span>
+          <h3>${escapeHtml(freezeAutomation.status)}</h3>
+          <p>Route stale sources, payment adapter mismatches, support repair gaps, privacy proof gaps, reviewer conflicts, and launch blockers into freeze, rollback, resume, and closeout receipts.</p>
+        </div>
+        <div class="launch-freeze-score" style="--score:${freezeAutomation.readiness}">
+          <strong>${freezeAutomation.readiness}</strong>
+          <span>Freeze</span>
+        </div>
+      </div>
+      <div class="launch-freeze-metric-grid">
+        ${freezeAutomation.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="launch-freeze-trigger-grid">
+        ${freezeAutomation.triggers.map((trigger) => `
+          <article class="${escapeHtml(trigger.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(trigger.owner)}</span>
+                <strong>${escapeHtml(trigger.label)}</strong>
+              </div>
+              <b>${trigger.score}</b>
+            </div>
+            <p><strong>Trigger:</strong> ${escapeHtml(trigger.trigger)}</p>
+            <p><strong>Surface:</strong> ${escapeHtml(trigger.surface)}</p>
+            <div class="build-progress-bar"><span style="width:${trigger.score}%"></span></div>
+            <small><strong>Freeze:</strong> ${escapeHtml(trigger.freezeAction)}</small>
+            <small><strong>Resume:</strong> ${escapeHtml(trigger.resumeRule)}</small>
+            <small><strong>Closeout:</strong> ${escapeHtml(trigger.closeout)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="launch-freeze-two">
+        <article>
+          <h3>Automation sequence</h3>
+          <ol>
+            ${freezeAutomation.sequence.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Freeze receipt fields</h3>
+          <ul>
+            ${freezeAutomation.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Resume rules</h3>
+          <ul>
+            ${freezeAutomation.resumeRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${escapeHtml(freezeAutomation.tone)}">
+          <h3>Freeze blockers</h3>
+          <ul>
+            ${freezeAutomation.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="backend-audit-grid">
       <article class="backend-audit-card ${escapeHtml(config.tone)}">
@@ -20859,6 +26730,92 @@ function renderBackendAuditReceipts(event) {
         </article>
       </div>
     </div>
+    <div class="correction-publish-board ${escapeHtml(correctionPublish.tone)}">
+      <div class="correction-publish-head">
+        <div>
+          <span>Correction publish console</span>
+          <h3>${escapeHtml(correctionPublish.status)}</h3>
+          <p>Turn queued recovery work into a controlled correction publish path: compare wording, capture reviewer approval, choose publish or hold, save investor-visible receipts, and arm monitoring before anything changes on the public surface.</p>
+        </div>
+        <div class="correction-publish-score" style="--score:${correctionPublish.readiness}">
+          <strong>${correctionPublish.readiness}</strong>
+          <span>Publish</span>
+        </div>
+      </div>
+      <div class="correction-publish-metric-grid">
+        ${correctionPublish.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="correction-publish-wording">
+        <article class="old">
+          <span>Old visible claim</span>
+          <strong>Before correction</strong>
+          <p>${escapeHtml(correctionPublish.wording.before)}</p>
+        </article>
+        <article class="corrected">
+          <span>Corrected public wording</span>
+          <strong>After approval</strong>
+          <p>${escapeHtml(correctionPublish.wording.corrected)}</p>
+        </article>
+        <article>
+          <span>Investor notice</span>
+          <strong>${escapeHtml(correctionPublish.wording.publishPosture)}</strong>
+          <p>${escapeHtml(correctionPublish.wording.investorSummary)}</p>
+        </article>
+        <article>
+          <span>Support-safe explanation</span>
+          <strong>${escapeHtml(correctionPublish.wording.reviewerState)}</strong>
+          <p>${escapeHtml(correctionPublish.wording.supportSummary)}</p>
+        </article>
+      </div>
+      <div class="correction-publish-control-grid">
+        ${correctionPublish.publishControls.map((control) => `
+          <article class="${escapeHtml(control.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(control.owner)}</span>
+                <strong>${escapeHtml(control.label)}</strong>
+              </div>
+              <b>${control.score}</b>
+            </div>
+            <p>${escapeHtml(control.event)}</p>
+            <div class="build-progress-bar"><span style="width:${control.score}%"></span></div>
+            <small>${escapeHtml(control.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="correction-publish-two">
+        <article>
+          <h3>Operator steps</h3>
+          <ol>
+            ${correctionPublish.operatorSteps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${correctionPublish.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Approval checks</h3>
+          <ul>
+            ${correctionPublish.approvalChecks.map((check) => `<li>${escapeHtml(check)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${correctionPublish.blockers.length > 1 ? "caution" : "ready"}">
+          <h3>Publish blockers</h3>
+          <ul>
+            ${correctionPublish.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="source-incident-board ${escapeHtml(incidentReplay.tone)}">
       <div class="source-incident-head">
         <div>
@@ -21024,13 +26981,15 @@ function makeBackendAuditReceiptBrief() {
   const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
+  const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
   return [
     "# NiveshNadi Backend Audit Receipts",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
     `Stream: ${config.stream.label}`,
-    `Status: ${config.status}`,
-    `Score: ${config.score}/100`,
+    `Status: ${freezeAutomation.status}`,
+    `Score: ${freezeAutomation.readiness}/100`,
     `Owner: ${config.stream.owner}`,
     `Risk: ${config.stream.risk}`,
     `Mode: ${backendAuditModeLabel(config.mode)}`,
@@ -21042,6 +27001,17 @@ function makeBackendAuditReceiptBrief() {
     "",
     "## Required Receipt Fields",
     ...config.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## Launch Freeze Automation",
+    `- Status: ${freezeAutomation.status}`,
+    `- Readiness: ${freezeAutomation.readiness}/100`,
+    `- Freeze automation ID: ${freezeAutomation.freezeId}`,
+    ...freezeAutomation.metrics.map((metric) => `- Freeze metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...freezeAutomation.triggers.map((trigger) => `- Freeze trigger: ${trigger.label}: ${trigger.score}/100 | ${trigger.trigger} | ${trigger.freezeAction} | Resume: ${trigger.resumeRule} | Closeout: ${trigger.closeout}`),
+    ...freezeAutomation.sequence.map((step) => `- Freeze sequence: ${step}`),
+    ...freezeAutomation.receiptFields.map((field) => `- Freeze receipt field: ${field}`),
+    ...freezeAutomation.resumeRules.map((rule) => `- Resume rule: ${rule}`),
+    ...freezeAutomation.blockers.map((blocker) => `- Freeze blocker: ${blocker}`),
     "",
     "## Production Source Import Jobs",
     `- Board status: ${sourceImportJobs.boardStatus}`,
@@ -21160,6 +27130,27 @@ function makeBackendAuditReceiptBrief() {
     ...recoveryQueue.receiptFields.map((field) => `- Recovery queue receipt field: ${field}`),
     ...recoveryQueue.releaseGates.map((gate) => `- Recovery queue release gate: ${gate}`),
     ...recoveryQueue.blockers.map((blocker) => `- Recovery queue blocker: ${blocker}`),
+    "",
+    "## Correction Publish Console",
+    `- Publish status: ${correctionPublish.status}`,
+    `- Publish readiness: ${correctionPublish.readiness}/100`,
+    `- Correction console ID: ${correctionPublish.correctionConsoleId}`,
+    `- Correction notice ID: ${correctionPublish.correctionNoticeId}`,
+    `- Publication attempt ID: ${correctionPublish.publicationAttemptId}`,
+    `- Investor-visible receipt ID: ${correctionPublish.investorVisibleReceiptId}`,
+    `- Rollback hold ID: ${correctionPublish.rollbackHoldId}`,
+    `- Monitor window ID: ${correctionPublish.monitorWindowId}`,
+    `- Old visible claim: ${correctionPublish.wording.before}`,
+    `- Corrected public wording: ${correctionPublish.wording.corrected}`,
+    `- Investor notice: ${correctionPublish.wording.investorSummary}`,
+    `- Support-safe explanation: ${correctionPublish.wording.supportSummary}`,
+    `- Publish posture: ${correctionPublish.wording.publishPosture}`,
+    ...correctionPublish.metrics.map((metric) => `- Correction publish metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...correctionPublish.publishControls.map((control) => `- Correction publish control: ${control.label}: ${control.score}/100 | ${control.event} | ${control.proof}`),
+    ...correctionPublish.operatorSteps.map((step) => `- Correction publish operator step: ${step}`),
+    ...correctionPublish.receiptFields.map((field) => `- Correction publish receipt field: ${field}`),
+    ...correctionPublish.approvalChecks.map((check) => `- Correction publish approval check: ${check}`),
+    ...correctionPublish.blockers.map((blocker) => `- Correction publish blocker: ${blocker}`),
     "",
     "## Incident Receipt Replay",
     `- Replay status: ${incidentReplay.status}`,
@@ -27311,6 +33302,11 @@ function renderDecisionPack(event) {
   if (event) event.preventDefault();
   if (!els.packOutput) return;
   const pack = buildDecisionPack();
+  const recorder = decisionFlightRecorder(pack);
+  const court = decisionAntiHypeCourt(pack, recorder);
+  const regret = decisionRegretLab(pack, recorder, court);
+  const motive = decisionMotiveMri(pack, recorder, court, regret);
+  const multiverse = decisionMultiverse(pack, recorder, court, regret, motive);
   const watchItems = pack.watchTriggers.length
     ? pack.watchTriggers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")
     : "<li>No saved watch triggers yet. Add review or risk triggers before committing real money.</li>";
@@ -27370,6 +33366,252 @@ function renderDecisionPack(event) {
         <p>${escapeHtml(pack.reason)}</p>
       </article>
     </div>
+    <div class="pack-flight-recorder ${escapeHtml(recorder.tone)}">
+      <div class="pack-flight-hero">
+        <div>
+          <span>Decision flight recorder</span>
+          <strong>${escapeHtml(recorder.status)}</strong>
+          <p>${escapeHtml(recorder.summary)}</p>
+        </div>
+        <div class="pack-flight-score" style="--score:${recorder.score}">
+          <b>${recorder.score}</b>
+          <small>Black box</small>
+        </div>
+      </div>
+      <div class="pack-flight-grid">
+        ${recorder.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="pack-flight-two">
+        <article>
+          <span>Thesis to preserve</span>
+          <ul class="pack-list">${recorder.thesis.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        </article>
+        <article class="caution">
+          <span>What would prove me wrong</span>
+          <ul class="pack-list">${recorder.changeMindRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>Future-self promise</span>
+          <ol class="pack-list">${recorder.futurePromises.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol>
+        </article>
+        <article>
+          <span>Replay receipt</span>
+          <p>${escapeHtml(recorder.recorderId)}</p>
+          <p>${recorder.receiptFields.map((item) => escapeHtml(item)).join(" | ")}</p>
+        </article>
+      </div>
+    </div>
+    <div class="pack-court ${escapeHtml(court.tone)}">
+      <div class="pack-court-hero">
+        <div>
+          <span>Nadi Anti-Hype Court</span>
+          <strong>${escapeHtml(court.verdict)}</strong>
+          <p>${escapeHtml(court.summary)}</p>
+        </div>
+        <div class="pack-court-score" style="--score:${court.score}">
+          <b>${court.score}</b>
+          <small>Court</small>
+        </div>
+      </div>
+      <div class="pack-court-grid">
+        ${court.jury.map((item) => `
+          <article class="${escapeHtml(item.tone)}">
+            <div class="pack-court-head">
+              <div>
+                <span>${escapeHtml(item.role)}</span>
+                <strong>${escapeHtml(item.charge)}</strong>
+              </div>
+              <b>${item.score}</b>
+            </div>
+            <p>${escapeHtml(item.objection)}</p>
+            <small>Demand: ${escapeHtml(item.demand)}</small>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(item.route)}">Open proof route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="pack-court-two">
+        <article>
+          <span>Cross-examination script</span>
+          <ol class="pack-list">${court.crossExam.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol>
+        </article>
+        <article class="caution">
+          <span>No-confidence order</span>
+          <ul class="pack-list">${court.noConfidenceOrder.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>Defense packet</span>
+          <p>${court.defensePacket.map((item) => escapeHtml(item)).join(" | ")}</p>
+        </article>
+        <article>
+          <span>Next objection to clear</span>
+          <strong>${escapeHtml(court.weakest.role)}</strong>
+          <p>${escapeHtml(court.weakest.demand)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(court.weakest.route)}">Clear objection</button>
+        </article>
+      </div>
+    </div>
+    <div class="pack-regret-lab ${escapeHtml(regret.tone)}">
+      <div class="pack-regret-hero">
+        <div>
+          <span>Nadi Regret Lab</span>
+          <strong>${escapeHtml(regret.verdict)}</strong>
+          <p>${escapeHtml(regret.summary)}</p>
+        </div>
+        <div class="pack-regret-score" style="--score:${regret.score}">
+          <b>${regret.score}</b>
+          <small>Regret</small>
+        </div>
+      </div>
+      <div class="pack-regret-grid">
+        ${regret.scenes.map((scene) => `
+          <article class="${escapeHtml(scene.tone)}">
+            <div class="pack-regret-head">
+              <div>
+                <span>${escapeHtml(scene.stage)}</span>
+                <strong>${escapeHtml(scene.label)}</strong>
+              </div>
+              <b>${scene.score}</b>
+            </div>
+            <p>${escapeHtml(scene.pressure)}</p>
+            <small>Future witness: ${escapeHtml(scene.witness)}</small>
+            <small>Clause: ${escapeHtml(scene.clause)}</small>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(scene.route)}">Open survival route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="pack-regret-two">
+        <article>
+          <span>Future-self oath</span>
+          <ol class="pack-list">${regret.oath.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol>
+        </article>
+        <article class="caution">
+          <span>First regret to neutralize</span>
+          <strong>${escapeHtml(regret.firstRegret.label)}</strong>
+          <p>${escapeHtml(regret.firstRegret.clause)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(regret.firstRegret.route)}">Neutralize regret</button>
+        </article>
+        <article>
+          <span>Escape clauses</span>
+          <ul class="pack-list">${regret.escapeClauses.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>Memory receipt</span>
+          <p>${escapeHtml(regret.regretId)}</p>
+          <p>${regret.receiptFields.map((item) => escapeHtml(item)).join(" | ")}</p>
+        </article>
+      </div>
+    </div>
+    <div class="pack-motive-mri ${escapeHtml(motive.tone)}">
+      <div class="pack-motive-hero">
+        <div>
+          <span>Nadi Motive MRI</span>
+          <strong>${escapeHtml(motive.verdict)}</strong>
+          <p>${escapeHtml(motive.summary)}</p>
+        </div>
+        <div class="pack-motive-score" style="--score:${motive.score}">
+          <b>${motive.score}</b>
+          <small>Motive</small>
+        </div>
+      </div>
+      <div class="pack-motive-grid">
+        ${motive.slices.map((slice) => `
+          <article class="${escapeHtml(slice.tone)}">
+            <div class="pack-motive-head">
+              <div>
+                <span>${escapeHtml(slice.lens)}</span>
+                <strong>${escapeHtml(slice.signal)}</strong>
+              </div>
+              <b>${slice.cleanScore}</b>
+            </div>
+            <p>${escapeHtml(slice.finding)}</p>
+            <small>Detox: ${escapeHtml(slice.detox)}</small>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(slice.route)}">Open detox route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="pack-motive-two">
+        <article>
+          <span>Motive statement to preserve</span>
+          <strong>${escapeHtml(motive.cleanMotive)}</strong>
+          <p>${escapeHtml(motive.cleanMotiveNote)}</p>
+        </article>
+        <article class="caution">
+          <span>First motive to detox</span>
+          <strong>${escapeHtml(motive.primaryRisk.signal)}</strong>
+          <p>${escapeHtml(motive.primaryRisk.detox)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(motive.primaryRisk.route)}">Detox first</button>
+        </article>
+        <article>
+          <span>Forbidden motive language</span>
+          <ul class="pack-list">${motive.forbiddenLanguage.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>MRI receipt</span>
+          <p>${escapeHtml(motive.mriId)}</p>
+          <p>${motive.receiptFields.map((item) => escapeHtml(item)).join(" | ")}</p>
+        </article>
+      </div>
+    </div>
+    <div class="pack-multiverse ${escapeHtml(multiverse.tone)}">
+      <div class="pack-multiverse-hero">
+        <div>
+          <span>Nadi Decision Multiverse</span>
+          <strong>${escapeHtml(multiverse.verdict)}</strong>
+          <p>${escapeHtml(multiverse.summary)}</p>
+        </div>
+        <div class="pack-multiverse-score" style="--score:${multiverse.score}">
+          <b>${multiverse.score}</b>
+          <small>Worlds</small>
+        </div>
+      </div>
+      <div class="pack-multiverse-grid">
+        ${multiverse.paths.map((path) => `
+          <article class="${escapeHtml(path.tone)}">
+            <div class="pack-multiverse-head">
+              <div>
+                <span>${escapeHtml(path.timeline)}</span>
+                <strong>${escapeHtml(path.label)}</strong>
+              </div>
+              <b>${path.score}</b>
+            </div>
+            <p>${escapeHtml(path.thesis)}</p>
+            <small>Upside: ${escapeHtml(path.upside)}</small>
+            <small>Danger: ${escapeHtml(path.danger)}</small>
+            <small>Rule: ${escapeHtml(path.rule)}</small>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(path.route)}">Open timeline route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="pack-multiverse-two">
+        <article>
+          <span>Most defensible research path</span>
+          <strong>${escapeHtml(multiverse.bestPath.label)}</strong>
+          <p>${escapeHtml(multiverse.bestPath.rule)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(multiverse.bestPath.route)}">Open best route</button>
+        </article>
+        <article class="caution">
+          <span>Timeline to slow down</span>
+          <strong>${escapeHtml(multiverse.dangerPath.label)}</strong>
+          <p>${escapeHtml(multiverse.dangerPath.danger)}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(multiverse.dangerPath.route)}">Slow this timeline</button>
+        </article>
+        <article>
+          <span>Timeline rules</span>
+          <ol class="pack-list">${multiverse.rules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol>
+        </article>
+        <article>
+          <span>Multiverse receipt</span>
+          <p>${escapeHtml(multiverse.multiverseId)}</p>
+          <p>${multiverse.receiptFields.map((item) => escapeHtml(item)).join(" | ")}</p>
+        </article>
+      </div>
+    </div>
     <div class="pack-card">
       <span>Final guardrails</span>
       <ul class="pack-list">
@@ -27399,11 +33641,12 @@ function buildDecisionPack() {
     });
   const decision = els.packDecision?.value || "Watch";
   const convictionLabel = packConvictionLabel(els.packConviction?.value || "medium");
-  const reason = (els.packReason?.value || "").trim() || defaultPackReason(fund, goalMap, decision);
+  const typedReason = (els.packReason?.value || "").trim();
+  const reason = typedReason || defaultPackReason(fund, goalMap, decision);
   let readiness = nadiScore(fund);
   if (compareFunds.length >= 2) readiness += 4;
   if (watchTriggers.length) readiness += 4;
-  if (reason.length > 60) readiness += 3;
+  if (typedReason.length > 60) readiness += 3;
   if (decision === "Start SIP" && amount <= 0) readiness -= 12;
   readiness = Math.max(45, Math.min(94, readiness));
 
@@ -27421,7 +33664,653 @@ function buildDecisionPack() {
     reviewDate: els.packReviewDate?.value || "",
     summary: `${fund.category} research pack for ${decision.toLowerCase()} decision with ${formatMoney(amount)} monthly amount and ${goalConfig.years} year horizon.`,
     title: `${fund.name} decision memo`,
+    typedReason,
     watchTriggers
+  };
+}
+
+function decisionFlightRecorder(pack) {
+  const fund = pack.fund;
+  const evidence = evidenceReadinessScore(fund);
+  const profile = profileRoomProfile();
+  const twin = profileInvestorTwin(profile);
+  const reasonScore = pack.typedReason.length >= 120 ? 90 : pack.typedReason.length >= 60 ? 76 : 42;
+  const compareScore = pack.compareFunds.length >= 3 ? 86 : pack.compareFunds.length >= 2 ? 74 : 48;
+  const watchScore = pack.watchTriggers.length >= 2 ? 84 : pack.watchTriggers.length ? 72 : 44;
+  const reviewScore = pack.reviewDate ? 78 : 36;
+  const riskDrag = fund.maxDrawdown >= 30 ? 18 : fund.maxDrawdown >= 20 ? 12 : fund.maxDrawdown >= 12 ? 7 : 2;
+  const score = clampNumber(Math.round(
+    pack.readiness * 0.22 +
+    evidence * 0.18 +
+    reasonScore * 0.17 +
+    compareScore * 0.13 +
+    watchScore * 0.12 +
+    reviewScore * 0.1 +
+    twin.survivalScore * 0.08 -
+    riskDrag
+  ), 24, 96);
+  const tone = score >= 78 ? "strong" : score >= 60 ? "watch" : "caution";
+  const status = score >= 78 ? "Replayable decision record" : score >= 60 ? "Decision record needs review hooks" : "Decision record is not ready";
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const recorderId = ["NN", "FLIGHT", "RECORDER", suffix, fund.id, pack.decision.replace(/[^a-z0-9]+/gi, "-")].join("-").toUpperCase();
+  const weakest = [
+    { label: "Reason quality", score: reasonScore, route: "#decision-pack", detail: "Write the why in the investor's own words." },
+    { label: "Evidence lock", score: evidence, route: "#evidence", detail: "Verify source date, factsheet, SID/KIM, riskometer, TER, and portfolio disclosure." },
+    { label: "Compare proof", score: compareScore, route: "#compare", detail: "Keep at least two credible alternatives in the X-Ray set." },
+    { label: "Watch trigger", score: watchScore, route: "#watchlist", detail: "Save one review or risk trigger before treating the memo as durable." },
+    { label: "Future-self twin", score: twin.survivalScore, route: "#profile-room", detail: "Rehearse the weakest future-self scenario." }
+  ].sort((a, b) => a.score - b.score)[0];
+  const thesis = [
+    `${fund.name} is being researched for this role: ${fund.role}`,
+    `${pack.decision} is only a research stance until evidence, review date, and risk triggers are complete.`,
+    `The current amount context is ${formatMoney(pack.amount)} per month for ${pack.goalYears} years at a demo assumption of ${pack.assumption.toFixed(1)}%.`,
+    `The compare set has ${pack.compareFunds.length} fund${pack.compareFunds.length === 1 ? "" : "s"} and evidence readiness is ${evidence}/100.`
+  ];
+  const changeMindRules = [
+    "Source date, TER, factsheet, SID/KIM, riskometer, or portfolio disclosure cannot be verified.",
+    "The reason becomes recent return, social proof, tax rush, fear, or excitement instead of role fit.",
+    "X-Ray shows repeated exposure, unclear category role, or a better low-cost benchmark comparison route.",
+    `Drawdown, liquidity need, or emergency buffer mismatch makes the ${fund.category} role unsuitable for the stated horizon.`,
+    "The review date passes without a fresh evidence check, watch trigger, or written reason update."
+  ];
+  const futurePromises = [
+    `Before changing the plan I will open ${workspaceOption(weakest.route)?.textContent?.trim() || weakest.route}.`,
+    `If ${twin.weakest.trigger.toLowerCase()}, I will run the future-self rehearsal instead of reacting immediately.`,
+    "I will preserve the original reason, counter-evidence, review date, and source status so the decision can be replayed later.",
+    "I will treat this as research workflow only, not advice, execution, suitability approval, or a return promise."
+  ];
+  const metrics = [
+    { label: "Recorder ID", value: recorderId, detail: "Portable black-box identity for this research memo." },
+    { label: "Weakest proof", value: weakest.label, detail: `${weakest.score}/100 | ${weakest.detail}` },
+    { label: "Evidence lock", value: `${evidence}/100`, detail: "Live launch still needs official source dates and citation paths." },
+    { label: "Twin pressure", value: `${twin.survivalScore}/100`, detail: `${twin.weakest.label}: ${twin.weakest.rehearsal}` }
+  ];
+  const receiptFields = [
+    "recorder_id",
+    "fund_id",
+    "decision_stance",
+    "reason_hash",
+    "evidence_score",
+    "compare_count",
+    "watch_trigger_count",
+    "review_date",
+    "weakest_proof",
+    "future_self_scenario",
+    "created_at"
+  ];
+  return {
+    changeMindRules,
+    futurePromises,
+    metrics,
+    receiptFields,
+    recorderId,
+    score,
+    status,
+    summary: "A replayable black-box memo that records thesis, counter-thesis, evidence lock, future-self pressure, and the first route to open before the investor changes behavior.",
+    thesis,
+    tone
+  };
+}
+
+function decisionAntiHypeCourt(pack, recorder) {
+  const fund = pack.fund;
+  const evidence = evidenceReadinessScore(fund);
+  const profile = profileRoomProfile();
+  const twin = profileInvestorTwin(profile);
+  const sleevePeers = FUNDS.filter((item) => item.sleeve === fund.sleeve && item.id !== fund.id);
+  const categoryPeers = FUNDS.filter((item) => item.category === fund.category && item.id !== fund.id);
+  const peerSet = categoryPeers.length ? categoryPeers : sleevePeers;
+  const lowestCostPeer = [...peerSet].sort((a, b) => a.expense - b.expense)[0] || fund;
+  const strongestPeer = [...peerSet].sort((a, b) => nadiScore(b) - nadiScore(a))[0] || fund;
+  const reasonScore = pack.typedReason.length >= 120 ? 90 : pack.typedReason.length >= 60 ? 74 : 38;
+  const compareScore = pack.compareFunds.length >= 3 ? 86 : pack.compareFunds.length >= 2 ? 74 : 44;
+  const costPressure = lowestCostPeer.id !== fund.id
+    ? clampNumber(Math.round(92 - Math.max(0, fund.expense - lowestCostPeer.expense) * 120), 28, 92)
+    : 82;
+  const drawdownDefense = clampNumber(Math.round(96 - fund.maxDrawdown + (profile.config.horizon >= 7 ? 8 : 0)), 24, 94);
+  const behaviorDefense = clampNumber(Math.round((twin.survivalScore + profile.readiness) / 2), 24, 96);
+  const portfolioDefense = clampNumber(Math.round((compareScore + (pack.compareFunds.length >= 2 ? 78 : 42) + (strongestPeer.id !== fund.id ? 68 : 80)) / 3), 24, 94);
+  const jury = [
+    {
+      role: "Evidence prosecutor",
+      score: evidence,
+      route: "#evidence",
+      charge: evidence >= 78 ? "Sources can defend the memo" : "Sources are not courtroom-ready",
+      objection: "A memo without source date, factsheet, TER, riskometer, SID/KIM, portfolio disclosure, and citation path is only a draft.",
+      demand: "Open Evidence Ledger and Citation Binder before treating this as durable research."
+    },
+    {
+      role: "Behavior witness",
+      score: behaviorDefense,
+      route: "#profile-room",
+      charge: behaviorDefense >= 78 ? "Future self sounds steady" : "Future self may break the thesis",
+      objection: `${twin.weakest.label} can still turn a researched memo into a reaction if the pause rule is not visible.`,
+      demand: twin.weakest.rehearsal
+    },
+    {
+      role: "Cost auditor",
+      score: costPressure,
+      route: "#cost-lab",
+      charge: costPressure >= 78 ? "Cost drag is explainable" : "Cost drag needs a defense",
+      objection: lowestCostPeer.id !== fund.id
+        ? `${lowestCostPeer.name} has a lower demo TER at ${lowestCostPeer.expense.toFixed(2)}%, so ${fund.name} must defend its role beyond cost.`
+        : "The fund still needs TER drag, exit load, tax friction, and low-cost alternative review.",
+      demand: "Run Cost Reality Lab and state why cost is acceptable for the selected role."
+    },
+    {
+      role: "Portfolio examiner",
+      score: portfolioDefense,
+      route: "#portfolio",
+      charge: portfolioDefense >= 78 ? "Portfolio role can be argued" : "Portfolio role is not yet proven",
+      objection: strongestPeer.id !== fund.id
+        ? `${strongestPeer.name} currently has a stronger demo Nadi score in the peer set, so the selected fund needs role and overlap defense.`
+        : "A strong single fund can still duplicate existing holdings or category exposure.",
+      demand: "Open X-Ray and Compare to prove this fund has a clear sleeve role."
+    },
+    {
+      role: "Reason judge",
+      score: reasonScore,
+      route: "#decision-pack",
+      charge: reasonScore >= 78 ? "Reason is written enough to challenge" : "Reason is too thin",
+      objection: pack.typedReason
+        ? "The reason exists, but it must survive counter-evidence, peer comparison, and a review date."
+        : "The default reason is not enough; the investor must write the reason in their own words.",
+      demand: "Write a plain reason that mentions role, horizon, risk, evidence, and what would change the mind."
+    }
+  ].map((item) => ({
+    ...item,
+    tone: item.score >= 78 ? "ready" : item.score >= 58 ? "watch" : "caution"
+  }));
+  const weakest = [...jury].sort((a, b) => a.score - b.score)[0];
+  const score = clampNumber(Math.round(
+    evidence * 0.22 +
+    behaviorDefense * 0.2 +
+    costPressure * 0.16 +
+    portfolioDefense * 0.16 +
+    reasonScore * 0.16 +
+    recorder.score * 0.1
+  ), 24, 96);
+  const verdict = score >= 80
+    ? "Memo survives first cross-examination"
+    : score >= 62
+      ? "Memo needs objection clearance"
+      : "Memo blocked by anti-hype review";
+  const tone = score >= 80 ? "strong" : score >= 62 ? "watch" : "caution";
+  const crossExam = [
+    `What exact role does ${fund.name} play that ${strongestPeer.name} or ${lowestCostPeer.name} cannot play better?`,
+    `Which source date, TER, riskometer, factsheet, SID/KIM, and portfolio disclosure support the current claim?`,
+    `What investor behavior would break this memo first: ${twin.weakest.label.toLowerCase()} or cost/overlap regret?`,
+    `What would make the investor reduce confidence before adding, increasing, switching, or defending the fund?`,
+    `Is the review date ${pack.reviewDate || "missing"} strong enough to stop this from becoming a forgotten one-time screen?`
+  ];
+  const noConfidenceOrder = [
+    "Do not treat the memo as durable if the reason is default text or borrowed conviction.",
+    "Do not rely on the fund card if source dates and citation paths are not visible.",
+    "Do not let a strong score override cost drag, overlap, drawdown, or emergency-buffer mismatch.",
+    "Do not move from research stance to real-world action without review date, watch trigger, and written pause rule."
+  ];
+  const defensePacket = [
+    "selected_fund_role",
+    "counter_evidence",
+    "peer_defense",
+    "cost_defense",
+    "future_self_objection",
+    "review_promise",
+    "no_confidence_order"
+  ];
+  return {
+    crossExam,
+    defensePacket,
+    jury,
+    noConfidenceOrder,
+    score,
+    summary: "The anti-hype layer attacks the memo before the market does: source proof, behavior risk, cost drag, peer alternatives, portfolio overlap, and reason quality must all survive.",
+    tone,
+    verdict,
+    weakest
+  };
+}
+
+function decisionRegretLab(pack, recorder, court) {
+  const fund = pack.fund;
+  const profile = profileRoomProfile();
+  const twin = profileInvestorTwin(profile);
+  const evidence = evidenceReadinessScore(fund);
+  const amount = pack.amount || profile.config.sip || 10000;
+  const horizon = pack.goalYears || profile.config.horizon || 7;
+  const projected = pack.projection?.value || calculateSipFutureValue(amount, horizon, pack.assumption || 10).value;
+  const drawdownRupee = Math.round(projected * (fund.maxDrawdown / 100));
+  const peerSet = pack.compareFunds.filter((item) => item.id !== fund.id);
+  const lowerCostPeer = [...(peerSet.length ? peerSet : FUNDS.filter((item) => item.sleeve === fund.sleeve && item.id !== fund.id))]
+    .sort((a, b) => a.expense - b.expense)[0] || fund;
+  const strongestPeer = [...(peerSet.length ? peerSet : FUNDS.filter((item) => item.sleeve === fund.sleeve && item.id !== fund.id))]
+    .sort((a, b) => nadiScore(b) - nadiScore(a))[0] || fund;
+  const reasonScore = pack.typedReason.length >= 120 ? 90 : pack.typedReason.length >= 60 ? 74 : 34;
+  const reviewScore = pack.reviewDate ? 78 : 34;
+  const watchScore = pack.watchTriggers.length >= 2 ? 84 : pack.watchTriggers.length ? 70 : 38;
+  const costGap = Math.max(0, fund.expense - lowerCostPeer.expense);
+  const panicScore = clampNumber(Math.round(96 - fund.maxDrawdown + (profile.config.horizon >= 7 ? 10 : 0) + (profile.config.emergency === "yes" ? 8 : -4)), 18, 96);
+  const boredomScore = clampNumber(Math.round((profile.readiness + reasonScore + reviewScore) / 3), 18, 96);
+  const peerEnvyScore = clampNumber(Math.round((court.score + (strongestPeer.id === fund.id ? 84 : 58) + (pack.compareFunds.length >= 2 ? 78 : 42)) / 3), 18, 96);
+  const costRegretScore = clampNumber(Math.round(92 - costGap * 140 + (reasonScore >= 74 ? 4 : -6)), 18, 96);
+  const cashShockScore = clampNumber(Math.round((profile.readiness + (profile.config.emergency === "yes" ? 90 : profile.config.emergency === "partial" ? 62 : 36) + panicScore) / 3), 18, 96);
+  const driftScore = clampNumber(Math.round((watchScore + reviewScore + recorder.score) / 3), 18, 96);
+  const sceneTemplates = [
+    {
+      stage: "Month 3",
+      label: "First red statement",
+      score: panicScore,
+      route: "#risk-lab",
+      pressure: `A normal ${fund.risk.toLowerCase()} risk move can make ${formatMoney(drawdownRupee)} of future value feel emotionally lost, even when the thesis has not changed.`,
+      witness: "I may panic if I never translated drawdown into rupees before starting.",
+      clause: "Open Stress Lab and re-read the original role before stopping, switching, or doubling the SIP."
+    },
+    {
+      stage: "Month 9",
+      label: "Boring SIP stretch",
+      score: boredomScore,
+      route: "#review-rhythm",
+      pressure: `${formatMoney(amount)} every month can feel slow when nothing dramatic happens and social media keeps showing faster stories.`,
+      witness: "I may abandon a good route because compounding is boring before it is visible.",
+      clause: "Keep the review rhythm and do not replace the plan with excitement unless the memo reason changes."
+    },
+    {
+      stage: "Year 1",
+      label: "Peer envy attack",
+      score: peerEnvyScore,
+      route: "#compare",
+      pressure: `${strongestPeer.name} can look better in a short window, making ${fund.name} feel wrong even if the role is different.`,
+      witness: "I may confuse another fund's recent shine with proof that my route failed.",
+      clause: "Open Compare and X-Ray; demand role, cost, drawdown, and overlap proof before switching."
+    },
+    {
+      stage: "Any time",
+      label: "Cost regret",
+      score: costRegretScore,
+      route: "#cost-lab",
+      pressure: lowerCostPeer.id !== fund.id
+        ? `${lowerCostPeer.name} has lower demo TER at ${lowerCostPeer.expense.toFixed(2)}%, so regret can appear if the selected fund cannot defend its extra cost.`
+        : "Even a low-cost route can create regret if exit load, tax friction, and plan class are ignored.",
+      witness: "I may later ask why I paid more when a simpler route existed.",
+      clause: "Run Cost Reality Lab and write the cost defense into the memo."
+    },
+    {
+      stage: "Emergency",
+      label: "Cash shock",
+      score: cashShockScore,
+      route: "#profile-room",
+      pressure: `A sudden cash need can force a bad exit if long-horizon money and emergency money were mixed inside the same mental bucket.`,
+      witness: "I may blame the fund when the real problem was liquidity planning.",
+      clause: "Separate emergency buffer, parking fund, and long-horizon SIP before increasing allocation."
+    },
+    {
+      stage: "Review date",
+      label: "Forgotten memo",
+      score: driftScore,
+      route: "#watchlist",
+      pressure: `A memo without triggers can become stale while factsheet, riskometer, TER, manager, or portfolio evidence changes quietly.`,
+      witness: "I may keep confidence alive after the evidence has expired.",
+      clause: "Save a review trigger and refresh Evidence Ledger before the next increase or defense."
+    }
+  ];
+  const scenes = sceneTemplates.map((scene) => ({
+    ...scene,
+    tone: scene.score >= 76 ? "ready" : scene.score >= 58 ? "watch" : "caution"
+  }));
+  const firstRegret = [...scenes].sort((a, b) => a.score - b.score)[0];
+  const score = clampNumber(Math.round(
+    recorder.score * 0.18 +
+    court.score * 0.18 +
+    twin.survivalScore * 0.18 +
+    evidence * 0.13 +
+    reasonScore * 0.12 +
+    reviewScore * 0.1 +
+    watchScore * 0.11
+  ), 20, 96);
+  const verdict = score >= 80
+    ? "Future self can defend the memo"
+    : score >= 62
+      ? "Future self needs survival clauses"
+      : "Future self will likely regret the memo";
+  const tone = score >= 80 ? "strong" : score >= 62 ? "watch" : "caution";
+  const regretId = ["NN", "REGRET", "LAB", DATA_VERSION.replace(/-/g, ""), fund.id].join("-").toUpperCase();
+  const oath = [
+    `I will not judge ${fund.name} only by the next red month, peer rally, or social-media noise.`,
+    `If ${firstRegret.label.toLowerCase()} appears, I will open ${workspaceOption(firstRegret.route)?.textContent?.trim() || firstRegret.route} before changing behavior.`,
+    `I will treat the review date ${pack.reviewDate || "as missing until set"} as a promise, not decoration.`,
+    "I will keep this as research discipline only, not advice, execution, suitability approval, or return guarantee."
+  ];
+  const escapeClauses = [
+    "Pause fresh money if source dates, TER, factsheet, SID/KIM, riskometer, or holdings cannot be verified.",
+    "Reduce confidence if the reason becomes recent return, peer envy, tax rush, fear, or borrowed conviction.",
+    "Rebuild the memo if the goal horizon, emergency buffer, fund role, or portfolio overlap changes.",
+    "Move to watchlist if the regret score falls below the court score or the first regret remains unresolved."
+  ];
+  const receiptFields = [
+    "regret_lab_id",
+    "fund_id",
+    "first_regret",
+    "panic_clause",
+    "peer_envy_clause",
+    "cost_clause",
+    "cash_shock_clause",
+    "review_drift_clause",
+    "future_oath_hash",
+    "created_at"
+  ];
+  return {
+    escapeClauses,
+    firstRegret,
+    oath,
+    receiptFields,
+    regretId,
+    scenes,
+    score,
+    summary: "This layer interviews the investor's future self under the exact situations where good research usually breaks: panic, boredom, peer envy, cost regret, cash shock, and stale review.",
+    tone,
+    verdict
+  };
+}
+
+function decisionMotiveMri(pack, recorder, court, regret) {
+  const fund = pack.fund;
+  const profile = profileRoomProfile();
+  const reason = pack.reason || "";
+  const typed = pack.typedReason || "";
+  const scanText = [
+    reason,
+    fund.name,
+    fund.category,
+    fund.risk,
+    fund.tags.join(" "),
+    pack.decision,
+    profileIntentLabel(profile.config.intent)
+  ].join(" ").toLowerCase();
+  const hasAny = (words) => words.some((word) => scanText.includes(word));
+  const reasonScore = typed.length >= 140 ? 92 : typed.length >= 80 ? 80 : typed.length >= 40 ? 62 : 34;
+  const reviewScore = pack.reviewDate ? 78 : 36;
+  const evidence = evidenceReadinessScore(fund);
+  const compareScore = pack.compareFunds.length >= 3 ? 86 : pack.compareFunds.length >= 2 ? 74 : 42;
+  const watchScore = pack.watchTriggers.length >= 2 ? 84 : pack.watchTriggers.length ? 70 : 38;
+  const fomoRisk = (hasAny(["best", "top", "winner", "highest", "return", "performance", "rally", "quick", "hot"]) ? 26 : 8) + (fund.returns3y >= 22 ? 9 : 0) + (fund.risk === "Very High" ? 6 : 0);
+  const socialRisk = (hasAny(["friend", "youtube", "whatsapp", "telegram", "social", "influencer", "everyone", "popular"]) ? 30 : 10) + (reasonScore < 65 ? 10 : 0);
+  const taxRisk = (hasAny(["tax", "80c", "march", "elss", "deadline"]) || fund.category === "ELSS Fund" ? 28 : 8) + (profile.config.intent === "tax" ? 6 : 0);
+  const brandRisk = (hasAny(["brand", "large", "known", "safe name", "popular", "big aum"]) ? 22 : 8) + (fund.aum >= 20000 && reasonScore < 70 ? 9 : 0);
+  const costIllusionRisk = (hasAny(["cheap", "low nav", "nav", "only", "small amount", "just", "lowest expense"]) ? 26 : 9) + (fund.expense <= 0.2 ? 5 : 0);
+  const actionBiasRisk = (hasAny(["do something", "deploy", "idle", "switch now", "start now", "bonus", "lump sum"]) ? 30 : 10) + (reviewScore < 50 ? 10 : 0);
+  const slices = [
+    {
+      lens: "FOMO scan",
+      rawRisk: fomoRisk,
+      route: "#score-anatomy",
+      signal: fomoRisk >= 30 ? "Return-chasing motive detected" : "Return motive controlled",
+      finding: fomoRisk >= 30
+        ? "The memo contains or implies recent-performance pressure. A high return is evidence to inspect, not a reason to act."
+        : "The reason is not dominated by recent return language, but return context should still stay secondary.",
+      detox: "Open Score Anatomy and compare consistency, drawdown, evidence, benchmark, and role before trusting return excitement."
+    },
+    {
+      lens: "Borrowed conviction scan",
+      rawRisk: socialRisk,
+      route: "#behavior-guard",
+      signal: socialRisk >= 30 ? "Borrowed conviction possible" : "Own-word reason mostly present",
+      finding: socialRisk >= 30
+        ? "The motive may be coming from someone else's confidence rather than the investor's written thesis."
+        : "The memo looks closer to own-word research than borrowed conviction.",
+      detox: "Convert any outside tip into source-backed questions, then rewrite the reason without naming the tip source."
+    },
+    {
+      lens: "Tax or deadline scan",
+      rawRisk: taxRisk,
+      route: "#goal-fit",
+      signal: taxRisk >= 30 ? "Deadline pressure visible" : "Deadline pressure limited",
+      finding: taxRisk >= 30
+        ? "Tax saving or deadline pressure can make an unsuitable fund feel urgent."
+        : "The motive is not primarily deadline-driven, but lock-in and goal role still need review.",
+      detox: "Open Goal Fit and verify horizon, lock-in, risk, liquidity, and portfolio role before tax urgency influences the memo."
+    },
+    {
+      lens: "Brand comfort scan",
+      rawRisk: brandRisk,
+      route: "#fund-house",
+      signal: brandRisk >= 25 ? "Brand comfort may be substituting for proof" : "Brand comfort is not dominant",
+      finding: brandRisk >= 25
+        ? "A large AUM, familiar house, or popular category can feel safer than the evidence actually proves."
+        : "The reason is not simply leaning on familiarity, but fund-house checks should remain visible.",
+      detox: "Open Fund House Lens and require manager, process, source date, and category evidence rather than reputation alone."
+    },
+    {
+      lens: "Cost illusion scan",
+      rawRisk: costIllusionRisk,
+      route: "#cost-lab",
+      signal: costIllusionRisk >= 28 ? "Cheapness shortcut detected" : "Cost motive mostly disciplined",
+      finding: costIllusionRisk >= 28
+        ? "Low NAV, low amount, or low TER can become a shortcut if role, risk, tracking, exit load, and tax friction are ignored."
+        : "Cost is visible without becoming the whole motive.",
+      detox: "Run Cost Reality Lab and write why the cost is acceptable after role, risk, and peer alternatives are checked."
+    },
+    {
+      lens: "Action bias scan",
+      rawRisk: actionBiasRisk,
+      route: "#decision-pack",
+      signal: actionBiasRisk >= 30 ? "Action urge is too loud" : "Action urge contained",
+      finding: actionBiasRisk >= 30
+        ? "The investor may be trying to relieve discomfort by doing something, not because the research route is complete."
+        : "The memo is less likely to be a pure action-bias response.",
+      detox: "Use the written reason, review date, watch trigger, and no-confidence order before any increase, switch, or start decision."
+    }
+  ].map((slice) => {
+    const proofLift = Math.round((reasonScore * 0.24 + evidence * 0.2 + compareScore * 0.18 + watchScore * 0.16 + reviewScore * 0.12 + regret.score * 0.1) / 10);
+    const cleanScore = clampNumber(Math.round(100 - slice.rawRisk + proofLift - 10), 18, 96);
+    return {
+      ...slice,
+      cleanScore,
+      tone: cleanScore >= 76 ? "ready" : cleanScore >= 58 ? "watch" : "caution"
+    };
+  });
+  const primaryRisk = [...slices].sort((a, b) => a.cleanScore - b.cleanScore)[0];
+  const averageClean = Math.round(slices.reduce((sum, slice) => sum + slice.cleanScore, 0) / slices.length);
+  const score = clampNumber(Math.round(
+    averageClean * 0.42 +
+    reasonScore * 0.18 +
+    court.score * 0.14 +
+    regret.score * 0.14 +
+    recorder.score * 0.12
+  ), 18, 96);
+  const verdict = score >= 80
+    ? "Motive clean enough for research memory"
+    : score >= 62
+      ? "Motive needs detox before trust"
+      : "Motive contaminated by hidden bias";
+  const tone = score >= 80 ? "strong" : score >= 62 ? "watch" : "caution";
+  const mriId = ["NN", "MOTIVE", "MRI", DATA_VERSION.replace(/-/g, ""), fund.id].join("-").toUpperCase();
+  const cleanMotive = score >= 80
+    ? `${fund.name} is being researched for role fit, evidence, cost, risk, and review discipline.`
+    : `Do not trust the memo until ${primaryRisk.signal.toLowerCase()} is detoxed.`;
+  const cleanMotiveNote = score >= 80
+    ? "The motive is still not an investment approval; it is only clean enough to preserve as research memory."
+    : `${primaryRisk.finding} The memo should be rewritten after the detox route is opened.`;
+  const forbiddenLanguage = [
+    "I am investing because this is the best fund.",
+    "I am investing because everyone is talking about it.",
+    "I am investing because the deadline is near.",
+    "I am investing because NAV, TER, or SIP amount looks cheap.",
+    "I am investing because I need to do something now."
+  ];
+  const receiptFields = [
+    "motive_mri_id",
+    "fund_id",
+    "motive_score",
+    "primary_motive_risk",
+    "reason_quality",
+    "detox_route",
+    "forbidden_language_flags",
+    "clean_motive_hash",
+    "created_at"
+  ];
+  return {
+    cleanMotive,
+    cleanMotiveNote,
+    forbiddenLanguage,
+    mriId,
+    primaryRisk,
+    receiptFields,
+    score,
+    slices,
+    summary: "This layer scans the decision motive so hidden bias cannot wear the mask of research: return chasing, borrowed conviction, tax rush, brand comfort, cheapness shortcuts, and action bias are all tested.",
+    tone,
+    verdict
+  };
+}
+
+function decisionMultiverse(pack, recorder, court, regret, motive) {
+  const fund = pack.fund;
+  const profile = profileRoomProfile();
+  const evidence = evidenceReadinessScore(fund);
+  const reasonScore = pack.typedReason.length >= 140 ? 92 : pack.typedReason.length >= 80 ? 80 : pack.typedReason.length >= 40 ? 62 : 34;
+  const reviewScore = pack.reviewDate ? 82 : 36;
+  const watchScore = pack.watchTriggers.length >= 2 ? 86 : pack.watchTriggers.length ? 72 : 38;
+  const compareScore = pack.compareFunds.length >= 3 ? 88 : pack.compareFunds.length >= 2 ? 76 : 42;
+  const peerPool = pack.compareFunds.filter((item) => item.id !== fund.id).length
+    ? pack.compareFunds.filter((item) => item.id !== fund.id)
+    : FUNDS.filter((item) => item.sleeve === fund.sleeve && item.id !== fund.id);
+  const lowerCostPeer = [...peerPool].sort((a, b) => a.expense - b.expense)[0] || fund;
+  const strongestPeer = [...peerPool].sort((a, b) => nadiScore(b) - nadiScore(a))[0] || fund;
+  const amount = pack.amount || profile.config.sip || 10000;
+  const costGap = Math.max(0, fund.expense - lowerCostPeer.expense);
+  const emergencyScore = profile.config.emergency === "yes" ? 90 : profile.config.emergency === "partial" ? 64 : 38;
+  const drawdownDrag = fund.maxDrawdown >= 30 ? 18 : fund.maxDrawdown >= 20 ? 12 : fund.maxDrawdown >= 12 ? 7 : 2;
+  const evidenceGap = Math.max(0, 76 - evidence);
+  const motiveGap = Math.max(0, 70 - motive.score);
+
+  const actNowScore = clampNumber(Math.round(
+    evidence * 0.22 +
+    recorder.score * 0.14 +
+    court.score * 0.15 +
+    regret.score * 0.12 +
+    motive.score * 0.14 +
+    reasonScore * 0.1 +
+    reviewScore * 0.07 +
+    compareScore * 0.06 -
+    evidenceGap * 0.26 -
+    motiveGap * 0.18 -
+    drawdownDrag * 0.42
+  ), 18, 96);
+  const watchFirstScore = clampNumber(Math.round(
+    48 +
+    evidenceGap * 0.52 +
+    motiveGap * 0.26 +
+    watchScore * 0.16 +
+    reviewScore * 0.12 +
+    recorder.score * 0.12 +
+    (pack.reviewDate ? 4 : -4)
+  ), 18, 96);
+  const peerScore = clampNumber(Math.round(
+    compareScore * 0.26 +
+    court.score * 0.18 +
+    evidence * 0.16 +
+    (lowerCostPeer.id !== fund.id ? 78 + costGap * 110 : 58) * 0.18 +
+    (strongestPeer.id !== fund.id ? nadiScore(strongestPeer) : nadiScore(fund)) * 0.12 +
+    reasonScore * 0.1
+  ), 18, 96);
+  const cashFirstScore = clampNumber(Math.round(
+    (100 - emergencyScore) * 0.34 +
+    drawdownDrag * 2.2 +
+    regret.score * 0.14 +
+    profile.readiness * 0.12 +
+    (fund.risk === "High" || fund.risk === "Very High" ? 16 : 4) +
+    (amount >= 50000 ? 8 : 0) +
+    34
+  ), 18, 96);
+
+  const paths = [
+    {
+      timeline: "World 01",
+      label: "Act after all locks",
+      score: actNowScore,
+      route: "#evidence",
+      thesis: `${fund.name} can remain in the action-ready lane only if evidence date, motive, court objections, review date, and X-Ray proof all survive together.`,
+      upside: "Fastest memo completion when the proof stack is already clean.",
+      danger: "Can become action bias if source dates, review triggers, or motive detox are skipped.",
+      rule: "No action-ready label unless evidence, reason, compare set, watch/review, and guardrails are visible in the pack."
+    },
+    {
+      timeline: "World 02",
+      label: "Watch first",
+      score: watchFirstScore,
+      route: "#watchlist",
+      thesis: "The research memo becomes a 90-day observation route when source confidence, review rhythm, or motive cleanliness is not strong enough yet.",
+      upside: "Protects the investor from rushing while still preserving the fund as a serious candidate.",
+      danger: "Can become endless delay if the review date and trigger are not written.",
+      rule: "A watch route must name the next review date, trigger, and evidence item that would upgrade or downgrade confidence."
+    },
+    {
+      timeline: "World 03",
+      label: "Low-cost peer challenge",
+      score: peerScore,
+      route: "#cost-lab",
+      thesis: lowerCostPeer.id !== fund.id
+        ? `${lowerCostPeer.name} challenges the memo because its demo TER is ${lowerCostPeer.expense.toFixed(2)}% versus ${fund.expense.toFixed(2)}%.`
+        : "The selected fund still needs a peer challenge even when the obvious cost alternative is weak.",
+      upside: "Turns cost into a proof test instead of a cheapness shortcut.",
+      danger: `A peer like ${strongestPeer.name} can create envy if role, overlap, cost, and drawdown are not compared together.`,
+      rule: "The selected fund must defend any extra cost with role fit, evidence quality, risk control, and portfolio non-duplication."
+    },
+    {
+      timeline: "World 04",
+      label: "Protect cash first",
+      score: cashFirstScore,
+      route: "#profile-room",
+      thesis: "If emergency readiness, drawdown comfort, or monthly amount pressure is weak, the safer research path is to separate cash discipline before fund confidence.",
+      upside: "Prevents a good long-horizon fund from being blamed for a liquidity mistake.",
+      danger: "Can look boring, but it protects the investor from forced exits during a normal drawdown.",
+      rule: "Do not increase confidence until emergency buffer, SIP comfort, and drawdown rupees are visible to the future self."
+    }
+  ].map((path) => ({
+    ...path,
+    tone: path.score >= 76 ? "ready" : path.score >= 58 ? "watch" : "caution"
+  }));
+  const bestPath = [...paths].sort((a, b) => b.score - a.score)[0];
+  const dangerPath = [...paths].sort((a, b) => a.score - b.score)[0];
+  const average = Math.round(paths.reduce((sum, path) => sum + path.score, 0) / paths.length);
+  const score = clampNumber(Math.round(bestPath.score * 0.55 + average * 0.45), 18, 96);
+  const tone = score >= 80 ? "strong" : score >= 62 ? "watch" : "caution";
+  const verdict = score >= 80
+    ? `Best research future: ${bestPath.label}`
+    : score >= 62
+      ? `Slow path wins: ${bestPath.label}`
+      : `Do not trust a single future yet`;
+  const multiverseId = ["NN", "DECISION", "MULTIVERSE", DATA_VERSION.replace(/-/g, ""), fund.id].join("-").toUpperCase();
+  const rules = [
+    "The highest-scoring timeline is a research route, not investment advice, execution approval, or a return guarantee.",
+    `Before changing behavior, open ${workspaceOption(bestPath.route)?.textContent?.trim() || bestPath.route} and preserve the reason in the memo.`,
+    `If ${dangerPath.label.toLowerCase()} is the weakest future, slow the memo until its danger is answered in writing.`,
+    "Saved accounts should store the multiverse receipt and scores, not PAN, folio, CAS, bank details, or private identifiers."
+  ];
+  const receiptFields = [
+    "decision_multiverse_id",
+    "fund_id",
+    "best_timeline",
+    "weakest_timeline",
+    "act_after_locks_score",
+    "watch_first_score",
+    "peer_challenge_score",
+    "protect_cash_score",
+    "route_opened",
+    "timeline_reason_hash",
+    "created_at"
+  ];
+  return {
+    bestPath,
+    dangerPath,
+    multiverseId,
+    paths,
+    receiptFields,
+    rules,
+    score,
+    summary: "This layer runs four parallel research futures before the investor acts: action-ready, watch-first, low-cost peer challenge, and cash-protection route. The memo must survive more than one future.",
+    tone,
+    verdict
   };
 }
 
@@ -27437,6 +34326,11 @@ function defaultPackReason(fund, goalMap, decision) {
 
 function makeDecisionPackText() {
   const pack = buildDecisionPack();
+  const recorder = decisionFlightRecorder(pack);
+  const court = decisionAntiHypeCourt(pack, recorder);
+  const regret = decisionRegretLab(pack, recorder, court);
+  const motive = decisionMotiveMri(pack, recorder, court, regret);
+  const multiverse = decisionMultiverse(pack, recorder, court, regret, motive);
   const compareLines = pack.compareFunds.length
     ? pack.compareFunds.map((fund) => `- ${fund.name} | ${fund.category} | Score ${nadiScore(fund)}/100`).join("\n")
     : "- No X-Ray set selected";
@@ -27471,6 +34365,93 @@ function makeDecisionPackText() {
     "",
     "## Watchlist Triggers",
     watchLines,
+    "",
+    "## Decision Flight Recorder",
+    `- Recorder ID: ${recorder.recorderId}`,
+    `- Black-box score: ${recorder.score}/100`,
+    `- Status: ${recorder.status}`,
+    "",
+    "### Thesis to Preserve",
+    ...recorder.thesis.map((item) => `- ${item}`),
+    "",
+    "### What Would Prove Me Wrong",
+    ...recorder.changeMindRules.map((item) => `- ${item}`),
+    "",
+    "### Future-Self Promise",
+    ...recorder.futurePromises.map((item) => `- ${item}`),
+    "",
+    "### Replay Receipt Fields",
+    ...recorder.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## Nadi Anti-Hype Court",
+    `- Court score: ${court.score}/100`,
+    `- Verdict: ${court.verdict}`,
+    `- First objection to clear: ${court.weakest.role} - ${court.weakest.demand}`,
+    "",
+    "### Cross-Examination",
+    ...court.crossExam.map((item) => `- ${item}`),
+    "",
+    "### Jury Objections",
+    ...court.jury.map((item) => `- ${item.role}: ${item.score}/100 | ${item.charge} | Demand: ${item.demand}`),
+    "",
+    "### No-Confidence Order",
+    ...court.noConfidenceOrder.map((item) => `- ${item}`),
+    "",
+    "### Defense Packet Fields",
+    ...court.defensePacket.map((item) => `- ${item}`),
+    "",
+    "## Nadi Regret Lab",
+    `- Regret score: ${regret.score}/100`,
+    `- Verdict: ${regret.verdict}`,
+    `- First regret to neutralize: ${regret.firstRegret.label} - ${regret.firstRegret.clause}`,
+    `- Regret receipt: ${regret.regretId}`,
+    "",
+    "### Future Stress Scenes",
+    ...regret.scenes.map((scene) => `- ${scene.stage} | ${scene.label}: ${scene.score}/100 | ${scene.pressure} Clause: ${scene.clause}`),
+    "",
+    "### Future-Self Oath",
+    ...regret.oath.map((item) => `- ${item}`),
+    "",
+    "### Escape Clauses",
+    ...regret.escapeClauses.map((item) => `- ${item}`),
+    "",
+    "### Regret Receipt Fields",
+    ...regret.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## Nadi Motive MRI",
+    `- Motive score: ${motive.score}/100`,
+    `- Verdict: ${motive.verdict}`,
+    `- First motive to detox: ${motive.primaryRisk.signal} - ${motive.primaryRisk.detox}`,
+    `- MRI receipt: ${motive.mriId}`,
+    "",
+    "### Motive Slices",
+    ...motive.slices.map((slice) => `- ${slice.lens}: ${slice.cleanScore}/100 | ${slice.signal} | Detox: ${slice.detox}`),
+    "",
+    "### Motive Statement",
+    `- ${motive.cleanMotive}`,
+    `- ${motive.cleanMotiveNote}`,
+    "",
+    "### Forbidden Motive Language",
+    ...motive.forbiddenLanguage.map((item) => `- ${item}`),
+    "",
+    "### Motive MRI Receipt Fields",
+    ...motive.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## Nadi Decision Multiverse",
+    `- Multiverse score: ${multiverse.score}/100`,
+    `- Verdict: ${multiverse.verdict}`,
+    `- Best research path: ${multiverse.bestPath.label} - ${multiverse.bestPath.rule}`,
+    `- Timeline to slow down: ${multiverse.dangerPath.label} - ${multiverse.dangerPath.danger}`,
+    `- Multiverse receipt: ${multiverse.multiverseId}`,
+    "",
+    "### Research Timelines",
+    ...multiverse.paths.map((path) => `- ${path.timeline} | ${path.label}: ${path.score}/100 | ${path.thesis} Rule: ${path.rule}`),
+    "",
+    "### Multiverse Rules",
+    ...multiverse.rules.map((item) => `- ${item}`),
+    "",
+    "### Multiverse Receipt Fields",
+    ...multiverse.receiptFields.map((item) => `- ${item}`),
     "",
     "## Guardrails",
     "- Research memo only; not personalized investment advice.",
@@ -28796,31 +35777,113 @@ function bindEvents() {
   els.copyBuildTracker?.addEventListener("click", () => copyText(makeBuildTrackerBrief()));
   els.openBuildPhaseCurrent?.addEventListener("click", openBuildCurrentLane);
   els.copyBuildPhases?.addEventListener("click", () => copyText(makeBuildPhasesBrief()));
+  els.openMarketStrategyNext?.addEventListener("click", openMarketStrategyNext);
+  els.copyMarketStrategy?.addEventListener("click", () => copyText(makeMarketStrategyBrief()));
+  els.openPaidBetaPackNext?.addEventListener("click", openPaidBetaNextProof);
+  els.copyPaidBetaPack?.addEventListener("click", () => copyText(makePaidBetaEvidenceBrief()));
+  els.openFounderInviteNext?.addEventListener("click", openFounderInviteNext);
+  els.copyFounderInvite?.addEventListener("click", () => copyText(makeFounderInviteProofBrief()));
+  els.openFounderCohortNext?.addEventListener("click", openFounderCohortNext);
+  els.copyFounderCohort?.addEventListener("click", () => copyText(makeFounderCohortControlBrief()));
+  els.openCohortReceiptNext?.addEventListener("click", openCohortReceiptNext);
+  els.copyCohortReceipt?.addEventListener("click", () => copyText(makeCohortReceiptBackendBrief()));
+  els.openCohortReplayNext?.addEventListener("click", openCohortReplayNext);
+  els.copyCohortReplay?.addEventListener("click", () => copyText(makeCohortDecisionReplayBrief()));
+  els.openPaidExpansionBlocker?.addEventListener("click", openPaidExpansionBlocker);
+  els.copyPaidExpansion?.addEventListener("click", () => copyText(makePaidCohortExpansionBrief()));
+  els.openFounderBetaOpsPriority?.addEventListener("click", openFounderBetaOpsPriority);
+  els.copyFounderBetaOps?.addEventListener("click", () => copyText(makeFounderBetaOperatingBrief()));
+  els.openPaidSupportPriority?.addEventListener("click", openPaidSupportPriority);
+  els.copyPaidSupport?.addEventListener("click", () => copyText(makePaidBetaSupportLedgerBrief()));
   els.openLaunchBlocker?.addEventListener("click", openTopLaunchBlocker);
   els.copyLaunchReadiness?.addEventListener("click", () => copyText(makeLaunchReadinessBrief()));
   els.openPaymentBlocker?.addEventListener("click", openPaymentBlocker);
   els.copyPaymentReadiness?.addEventListener("click", () => copyText(makePaymentReadinessBrief()));
-  els.paymentWiringForm?.addEventListener("submit", renderPaymentWiringConsole);
+  els.paymentWiringForm?.addEventListener("submit", (event) => {
+    renderPaymentWiringConsole(event);
+    renderGatewayWebhookDrill();
+    renderProviderPilotReceiptContract();
+    renderPilotReceiptVault();
+    renderPaidPilotLaunchGate();
+    renderBackendTicketFactory();
+    renderReceiptReplayEngine();
+  });
   [els.paymentWiringGateway, els.paymentWiringPlan, els.paymentWiringScenario, els.paymentWiringInvoice].forEach((input) => {
-    input?.addEventListener("change", () => renderPaymentWiringConsole());
+    input?.addEventListener("change", () => {
+      renderPaymentWiringConsole();
+      renderGatewayWebhookDrill();
+      renderProviderPilotReceiptContract();
+      renderPilotReceiptVault();
+      renderPaidPilotLaunchGate();
+      renderBackendTicketFactory();
+      renderReceiptReplayEngine();
+    });
   });
   els.openPaymentWiringBlocker?.addEventListener("click", openPaymentWiringBlocker);
   els.copyPaymentWiring?.addEventListener("click", () => copyText(makePaymentWiringBrief()));
-  els.paymentSandboxForm?.addEventListener("submit", renderPaymentGatewaySandbox);
+  els.paymentSandboxForm?.addEventListener("submit", (event) => {
+    renderPaymentGatewaySandbox(event);
+    renderGatewayWebhookDrill();
+    renderProviderPilotReceiptContract();
+    renderPilotReceiptVault();
+    renderPaidPilotLaunchGate();
+    renderBackendTicketFactory();
+    renderReceiptReplayEngine();
+  });
   [els.paymentSandboxProvider, els.paymentSandboxScenario, els.paymentSandboxEvidence, els.paymentSandboxMode].forEach((input) => {
-    input?.addEventListener("change", () => renderPaymentGatewaySandbox());
+    input?.addEventListener("change", () => {
+      renderPaymentGatewaySandbox();
+      renderGatewayWebhookDrill();
+      renderProviderPilotReceiptContract();
+      renderPilotReceiptVault();
+      renderPaidPilotLaunchGate();
+      renderBackendTicketFactory();
+      renderReceiptReplayEngine();
+    });
   });
   els.openPaymentSandboxBlocker?.addEventListener("click", openPaymentSandboxBlocker);
   els.copyPaymentSandbox?.addEventListener("click", () => copyText(makePaymentSandboxBrief()));
-  els.entitlementForm?.addEventListener("submit", renderEntitlementBridge);
+  els.openGatewayWebhookBlocker?.addEventListener("click", openGatewayWebhookBlocker);
+  els.copyGatewayWebhook?.addEventListener("click", () => copyText(makeGatewayWebhookBrief()));
+  els.openProviderPilotBlocker?.addEventListener("click", openProviderPilotBlocker);
+  els.copyProviderPilot?.addEventListener("click", () => copyText(makeProviderPilotReceiptBrief()));
+  els.openPilotReceiptVaultBlocker?.addEventListener("click", openPilotReceiptVaultBlocker);
+  els.copyPilotReceiptVault?.addEventListener("click", () => copyText(makePilotReceiptVaultBrief()));
+  els.openPaidPilotLaunchBlocker?.addEventListener("click", openPaidPilotLaunchBlocker);
+  els.copyPaidPilotLaunchGate?.addEventListener("click", () => copyText(makePaidPilotLaunchGateBrief()));
+  els.openBackendTicketBlocker?.addEventListener("click", openBackendTicketBlocker);
+  els.copyBackendTicketFactory?.addEventListener("click", () => copyText(makeBackendTicketFactoryBrief()));
+  els.openReceiptReplayBlocker?.addEventListener("click", openReceiptReplayBlocker);
+  els.copyReceiptReplayEngine?.addEventListener("click", () => copyText(makeReceiptReplayEngineBrief()));
+  els.entitlementForm?.addEventListener("submit", (event) => {
+    renderEntitlementBridge(event);
+    renderPaidPilotLaunchGate();
+    renderBackendTicketFactory();
+    renderReceiptReplayEngine();
+  });
   [els.entitlementPlan, els.entitlementLifecycle, els.entitlementPolicy, els.entitlementReceipt].forEach((input) => {
-    input?.addEventListener("change", () => renderEntitlementBridge());
+    input?.addEventListener("change", () => {
+      renderEntitlementBridge();
+      renderPaidPilotLaunchGate();
+      renderBackendTicketFactory();
+      renderReceiptReplayEngine();
+    });
   });
   els.openEntitlementBlocker?.addEventListener("click", openEntitlementBlocker);
   els.copyEntitlement?.addEventListener("click", () => copyText(makeEntitlementBridgeBrief()));
-  els.subscriptionOpsForm?.addEventListener("submit", renderSubscriptionOpsConsole);
+  els.subscriptionOpsForm?.addEventListener("submit", (event) => {
+    renderSubscriptionOpsConsole(event);
+    renderPaidPilotLaunchGate();
+    renderBackendTicketFactory();
+    renderReceiptReplayEngine();
+  });
   [els.subscriptionOpsQueue, els.subscriptionOpsRisk, els.subscriptionOpsRunbook, els.subscriptionOpsReceipt].forEach((input) => {
-    input?.addEventListener("change", () => renderSubscriptionOpsConsole());
+    input?.addEventListener("change", () => {
+      renderSubscriptionOpsConsole();
+      renderPaidPilotLaunchGate();
+      renderBackendTicketFactory();
+      renderReceiptReplayEngine();
+    });
   });
   els.openSubscriptionOpsBlocker?.addEventListener("click", openSubscriptionOpsBlocker);
   els.copySubscriptionOps?.addEventListener("click", () => copyText(makeSubscriptionOpsBrief()));
@@ -28832,9 +35895,19 @@ function bindEvents() {
   els.copySubscriptionBackend?.addEventListener("click", () => copyText(makeSubscriptionBackendBrief()));
   els.openAccountBlocker?.addEventListener("click", openAccountBlocker);
   els.copyAccountReadiness?.addEventListener("click", () => copyText(makeAccountReadinessBrief()));
-  els.accountRouteForm?.addEventListener("submit", renderAccountLaunchRoute);
+  els.accountRouteForm?.addEventListener("submit", (event) => {
+    renderAccountLaunchRoute(event);
+    renderPaidPilotLaunchGate();
+    renderBackendTicketFactory();
+    renderReceiptReplayEngine();
+  });
   [els.accountRouteCohort, els.accountRouteAuth, els.accountRouteData, els.accountRouteCutover].forEach((input) => {
-    input?.addEventListener("change", () => renderAccountLaunchRoute());
+    input?.addEventListener("change", () => {
+      renderAccountLaunchRoute();
+      renderPaidPilotLaunchGate();
+      renderBackendTicketFactory();
+      renderReceiptReplayEngine();
+    });
   });
   els.openAccountRouteBlocker?.addEventListener("click", openAccountRouteBlocker);
   els.copyAccountRoute?.addEventListener("click", () => copyText(makeAccountLaunchRouteBrief()));
@@ -29660,6 +36733,78 @@ function bindEvents() {
   });
 
   document.addEventListener("click", (event) => {
+    const marketRoute = event.target.closest("[data-market-route]");
+    if (!marketRoute) return;
+    scrollToHash(marketRoute.dataset.marketRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const paidBetaRoute = event.target.closest("[data-paid-beta-route]");
+    if (!paidBetaRoute) return;
+    scrollToHash(paidBetaRoute.dataset.paidBetaRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const founderInviteRoute = event.target.closest("[data-founder-invite-route]");
+    if (!founderInviteRoute) return;
+    scrollToHash(founderInviteRoute.dataset.founderInviteRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const founderCohortRoute = event.target.closest("[data-founder-cohort-route]");
+    if (!founderCohortRoute) return;
+    scrollToHash(founderCohortRoute.dataset.founderCohortRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const cohortReceiptRoute = event.target.closest("[data-cohort-receipt-route]");
+    if (!cohortReceiptRoute) return;
+    scrollToHash(cohortReceiptRoute.dataset.cohortReceiptRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const cohortReplayRoute = event.target.closest("[data-cohort-replay-route]");
+    if (!cohortReplayRoute) return;
+    scrollToHash(cohortReplayRoute.dataset.cohortReplayRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const paidExpansionRoute = event.target.closest("[data-paid-expansion-route]");
+    if (!paidExpansionRoute) return;
+    scrollToHash(paidExpansionRoute.dataset.paidExpansionRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const founderBetaOpsRoute = event.target.closest("[data-founder-beta-ops-route]");
+    if (!founderBetaOpsRoute) return;
+    scrollToHash(founderBetaOpsRoute.dataset.founderBetaOpsRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const paidSupportRoute = event.target.closest("[data-paid-support-route]");
+    if (!paidSupportRoute) return;
+    scrollToHash(paidSupportRoute.dataset.paidSupportRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const paidPilotRoute = event.target.closest("[data-paid-pilot-route]");
+    if (!paidPilotRoute) return;
+    scrollToHash(paidPilotRoute.dataset.paidPilotRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const backendTicketRoute = event.target.closest("[data-backend-ticket-route]");
+    if (!backendTicketRoute) return;
+    scrollToHash(backendTicketRoute.dataset.backendTicketRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const receiptReplayRoute = event.target.closest("[data-receipt-replay-route]");
+    if (!receiptReplayRoute) return;
+    scrollToHash(receiptReplayRoute.dataset.receiptReplayRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
     const copySignal = event.target.closest("#copySignalStrip");
     if (!copySignal) return;
     copyText(makeSignalStripNote());
@@ -30080,6 +37225,42 @@ function cacheElements() {
     buildPhasesOutput: qs("#buildPhasesOutput"),
     openBuildPhaseCurrent: qs("#openBuildPhaseCurrent"),
     copyBuildPhases: qs("#copyBuildPhases"),
+    marketStrategySummary: qs("#marketStrategySummary"),
+    marketStrategyOutput: qs("#marketStrategyOutput"),
+    openMarketStrategyNext: qs("#openMarketStrategyNext"),
+    copyMarketStrategy: qs("#copyMarketStrategy"),
+    paidBetaPackSummary: qs("#paidBetaPackSummary"),
+    paidBetaPackOutput: qs("#paidBetaPackOutput"),
+    openPaidBetaPackNext: qs("#openPaidBetaPackNext"),
+    copyPaidBetaPack: qs("#copyPaidBetaPack"),
+    founderInviteSummary: qs("#founderInviteSummary"),
+    founderInviteOutput: qs("#founderInviteOutput"),
+    openFounderInviteNext: qs("#openFounderInviteNext"),
+    copyFounderInvite: qs("#copyFounderInvite"),
+    founderCohortSummary: qs("#founderCohortSummary"),
+    founderCohortOutput: qs("#founderCohortOutput"),
+    openFounderCohortNext: qs("#openFounderCohortNext"),
+    copyFounderCohort: qs("#copyFounderCohort"),
+    cohortReceiptSummary: qs("#cohortReceiptSummary"),
+    cohortReceiptOutput: qs("#cohortReceiptOutput"),
+    openCohortReceiptNext: qs("#openCohortReceiptNext"),
+    copyCohortReceipt: qs("#copyCohortReceipt"),
+    cohortReplaySummary: qs("#cohortReplaySummary"),
+    cohortReplayOutput: qs("#cohortReplayOutput"),
+    openCohortReplayNext: qs("#openCohortReplayNext"),
+    copyCohortReplay: qs("#copyCohortReplay"),
+    paidExpansionSummary: qs("#paidExpansionSummary"),
+    paidExpansionOutput: qs("#paidExpansionOutput"),
+    openPaidExpansionBlocker: qs("#openPaidExpansionBlocker"),
+    copyPaidExpansion: qs("#copyPaidExpansion"),
+    founderBetaOpsSummary: qs("#founderBetaOpsSummary"),
+    founderBetaOpsOutput: qs("#founderBetaOpsOutput"),
+    openFounderBetaOpsPriority: qs("#openFounderBetaOpsPriority"),
+    copyFounderBetaOps: qs("#copyFounderBetaOps"),
+    paidSupportSummary: qs("#paidSupportSummary"),
+    paidSupportOutput: qs("#paidSupportOutput"),
+    openPaidSupportPriority: qs("#openPaidSupportPriority"),
+    copyPaidSupport: qs("#copyPaidSupport"),
     launchReadinessSummary: qs("#launchReadinessSummary"),
     launchReadinessOutput: qs("#launchReadinessOutput"),
     openLaunchBlocker: qs("#openLaunchBlocker"),
@@ -30106,6 +37287,30 @@ function cacheElements() {
     paymentSandboxOutput: qs("#paymentSandboxOutput"),
     openPaymentSandboxBlocker: qs("#openPaymentSandboxBlocker"),
     copyPaymentSandbox: qs("#copyPaymentSandbox"),
+    gatewayWebhookSummary: qs("#gatewayWebhookSummary"),
+    gatewayWebhookOutput: qs("#gatewayWebhookOutput"),
+    openGatewayWebhookBlocker: qs("#openGatewayWebhookBlocker"),
+    copyGatewayWebhook: qs("#copyGatewayWebhook"),
+    providerPilotSummary: qs("#providerPilotSummary"),
+    providerPilotOutput: qs("#providerPilotOutput"),
+    openProviderPilotBlocker: qs("#openProviderPilotBlocker"),
+    copyProviderPilot: qs("#copyProviderPilot"),
+    pilotReceiptVaultSummary: qs("#pilotReceiptVaultSummary"),
+    pilotReceiptVaultOutput: qs("#pilotReceiptVaultOutput"),
+    openPilotReceiptVaultBlocker: qs("#openPilotReceiptVaultBlocker"),
+    copyPilotReceiptVault: qs("#copyPilotReceiptVault"),
+    paidPilotLaunchGateSummary: qs("#paidPilotLaunchGateSummary"),
+    paidPilotLaunchGateOutput: qs("#paidPilotLaunchGateOutput"),
+    openPaidPilotLaunchBlocker: qs("#openPaidPilotLaunchBlocker"),
+    copyPaidPilotLaunchGate: qs("#copyPaidPilotLaunchGate"),
+    backendTicketFactorySummary: qs("#backendTicketFactorySummary"),
+    backendTicketFactoryOutput: qs("#backendTicketFactoryOutput"),
+    openBackendTicketBlocker: qs("#openBackendTicketBlocker"),
+    copyBackendTicketFactory: qs("#copyBackendTicketFactory"),
+    receiptReplaySummary: qs("#receiptReplaySummary"),
+    receiptReplayOutput: qs("#receiptReplayOutput"),
+    openReceiptReplayBlocker: qs("#openReceiptReplayBlocker"),
+    copyReceiptReplayEngine: qs("#copyReceiptReplayEngine"),
     entitlementForm: qs("#entitlementForm"),
     entitlementPlan: qs("#entitlementPlan"),
     entitlementLifecycle: qs("#entitlementLifecycle"),

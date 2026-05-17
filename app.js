@@ -1,5 +1,6 @@
-const DATA_VERSION = "20260517-02";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v159 Decision Multiverse";
+const DATA_VERSION = "20260517-09";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v166 Autopilot Mission Plan";
+const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const HASH_SETTLE_DELAYS = [0, 80, 180, 360, 720, 1200, 1900, 2800, 4000, 5600];
 const HASH_SETTLE_WINDOW = 6400;
 
@@ -957,12 +958,12 @@ const BUILD_TRACKER_PHASES = [
   {
     phase: "Phase 1B",
     label: "Decision discipline and memo path",
-    progress: 98,
-    launch: 68,
+    progress: 100,
+    launch: 71,
     status: "Done",
     route: "#clearance-sprint",
-    done: ["question stack", "answer sheet", "conviction ladder", "proof queue", "memo clearance", "clearance sprint", "decision flight recorder", "anti-hype court", "regret lab", "motive MRI", "decision multiverse"],
-    next: "Make multiverse, motive, regret, and court verdicts portable into saved accounts and review vault history."
+    done: ["question stack", "answer sheet", "conviction ladder", "proof queue", "memo clearance", "clearance sprint", "decision flight recorder", "anti-hype court", "regret lab", "motive MRI", "decision multiverse", "fund genome", "future shock map", "memory capsule", "memory replay", "research autopilot", "autopilot mission plan"],
+    next: "Make the autopilot mission plan, route memory, replay deltas, capsules, shock maps, genome, multiverse, motive, regret, and court verdicts portable into saved accounts and review vault history."
   },
   {
     phase: "Phase 1C",
@@ -1008,16 +1009,16 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Decision Multiverse",
+    label: "Autopilot Mission Plan",
     status: "Shipping now",
-    route: "#decision-pack",
-    detail: "Simulate four competing research timelines before action so the memo chooses a defensible path instead of a single emotional future."
+    route: "#screener",
+    detail: "Turn the next-best research command into a compact route plan with open steps, visited-route memory, blockers, and memo readiness."
   },
   {
-    label: "Decision memory vault",
+    label: "Portable mission memory",
     status: "Next",
     route: "#account-vault",
-    detail: "Persist flight-recorder, anti-hype, regret, motive, and multiverse verdicts into account vault objects with consent, export, deletion, support redaction, and Phase 2 firewall boundaries."
+    detail: "Persist autopilot mission steps, route-open history, replay deltas, capsules, shock maps, genome, flight-recorder, anti-hype, regret, motive, and multiverse verdicts into account vault objects with consent, export, deletion, support redaction, and Phase 2 firewall boundaries."
   },
   {
     label: "MFD preview",
@@ -2775,6 +2776,925 @@ function makeSignalStripNote() {
   ].join("\n");
 }
 
+function loadAutopilotRouteMemory() {
+  try {
+    const value = JSON.parse(localStorage.getItem(AUTOPILOT_ROUTE_MEMORY_KEY) || "[]");
+    return Array.isArray(value) ? value.filter((entry) => entry && entry.route && entry.fundId) : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveAutopilotRouteMemory(entries) {
+  try {
+    localStorage.setItem(AUTOPILOT_ROUTE_MEMORY_KEY, JSON.stringify(entries.slice(0, 40)));
+  } catch (error) {
+    // Route memory is a convenience layer; the desk still works when storage is blocked.
+  }
+}
+
+function rememberAutopilotRoute(route, label = "Autopilot route") {
+  if (!route) return;
+  const signal = signalStripConfig();
+  const entry = {
+    route,
+    label,
+    fundId: signal.fund.id,
+    fundName: signal.fund.name,
+    openedAt: new Date().toISOString(),
+    dataVersion: DATA_VERSION,
+    release: RELEASE_LABEL
+  };
+  const prior = loadAutopilotRouteMemory().filter((item) => !(item.route === route && item.fundId === signal.fund.id));
+  saveAutopilotRouteMemory([entry, ...prior]);
+  renderResearchAutopilot();
+}
+
+function researchAutopilotConfig() {
+  const signal = signalStripConfig();
+  const genome = fundGenomeConfig();
+  const shock = futureShockMapConfig();
+  const memory = memoryCapsuleConfig();
+  const compareReady = signal.compareCount >= 2;
+  const evidenceReady = signal.evidence >= 78;
+  const memoryReady = Boolean(memory.latestSelected) && !memory.weakerRows.length;
+  const lanes = [
+    {
+      label: "Evidence lock",
+      route: "#evidence",
+      score: signal.evidence,
+      blocker: !evidenceReady,
+      action: "Confirm source dates",
+      reason: "AMFI, AMC factsheet, SID/KIM, TER, portfolio, and riskometer must be source-dated before any fund claim feels live."
+    },
+    {
+      label: "Role compare",
+      route: "#compare",
+      score: compareReady ? 86 : 46,
+      blocker: !compareReady,
+      action: "Add a peer set",
+      reason: "A fund needs at least two comparison anchors before the investor knows whether it is core, satellite, duplicate, or unnecessary."
+    },
+    {
+      label: "Weakest gene",
+      route: genome.weakest.route,
+      score: genome.weakest.score,
+      blocker: genome.weakest.score < 70,
+      action: `Clear ${genome.weakest.label.toLowerCase()}`,
+      reason: genome.weakest.mutation
+    },
+    {
+      label: "Future shock",
+      route: shock.weakest.route,
+      score: shock.weakest.score,
+      blocker: shock.weakest.score < 70,
+      action: `Rehearse ${shock.weakest.label.toLowerCase()}`,
+      reason: shock.weakest.counter
+    },
+    {
+      label: "Memory replay",
+      route: "#screener",
+      score: memory.replayScore,
+      blocker: !memoryReady,
+      action: memory.latestSelected ? "Inspect replay drift" : "Save first capsule",
+      reason: memory.latestSelected
+        ? `${memory.replayPosture}: ${memory.weakerRows.length ? memory.weakerRows.map((row) => row.label).join(", ") : "old research is stable against the saved baseline."}`
+        : "A saved capsule creates the baseline that prevents old conviction from being trusted blindly."
+    },
+    {
+      label: "Decision memo",
+      route: "#decision-pack",
+      score: evidenceReady && compareReady && memoryReady ? 88 : 54,
+      blocker: !(evidenceReady && compareReady && memoryReady),
+      action: "Write the memo only after gates clear",
+      reason: "The final memo should include reason, amount, horizon, review date, source posture, comparison set, and guardrails."
+    }
+  ].map((lane) => ({
+    ...lane,
+    tone: lane.blocker ? (lane.score < 58 ? "caution" : "watch") : "ready"
+  })); 
+  const blockers = lanes.filter((lane) => lane.blocker);
+  const routeMemory = loadAutopilotRouteMemory().filter((entry) => entry.fundId === signal.fund.id);
+  const openedRoutes = new Set(routeMemory.map((entry) => entry.route));
+  const missionSteps = lanes.map((lane, index) => {
+    const opened = openedRoutes.has(lane.route);
+    const status = opened ? (lane.blocker ? "Visited" : "Done") : (lane.blocker ? "Open" : "Ready");
+    return {
+      ...lane,
+      index: index + 1,
+      opened,
+      status,
+      missionTone: opened ? "ready" : lane.tone
+    };
+  });
+  const clearMissionSteps = missionSteps.filter((step) => !step.blocker || step.opened).length;
+  const missionProgress = clampNumber(Math.round((clearMissionSteps / missionSteps.length) * 100), 0, 100);
+  const missionOpen = missionSteps.find((step) => step.blocker && !step.opened)
+    || missionSteps.find((step) => !step.opened)
+    || missionSteps[missionSteps.length - 1];
+  const primary = blockers[0] || lanes[lanes.length - 1];
+  const score = clampNumber(Math.round(
+    signal.score * 0.24 +
+    genome.score * 0.2 +
+    shock.score * 0.2 +
+    memory.replayScore * 0.18 +
+    (compareReady ? 10 : -4) +
+    (evidenceReady ? 8 : -8) +
+    (memoryReady ? 8 : -2)
+  ), 0, 100);
+  const posture = blockers.length
+    ? "Autopilot says slow down"
+    : "Memo route ready";
+  const tone = blockers.length
+    ? blockers.some((lane) => lane.tone === "caution") ? "caution" : "watch"
+    : "ready";
+  const instruction = blockers.length
+    ? `${primary.action} before moving to the memo path.`
+    : "Build the decision memo, then save review rhythm before any real action.";
+  const noGo = blockers.length
+    ? `Do not move money or increase SIP until ${primary.label.toLowerCase()} is cleared and the reason is written.`
+    : "Do not treat the memo as advice or execution approval; it remains research until live data and personal suitability are separately confirmed.";
+  return {
+    blockers,
+    fund: signal.fund,
+    genome,
+    instruction,
+    lanes,
+    memory,
+    missionOpen,
+    missionProgress,
+    missionSteps,
+    noGo,
+    primary,
+    routeMemory,
+    score,
+    shock,
+    signal,
+    posture,
+    tone
+  };
+}
+
+function renderResearchAutopilot() {
+  if (!els.researchAutopilot) return;
+  const autopilot = researchAutopilotConfig();
+  els.researchAutopilot.innerHTML = `
+    <div class="autopilot-hero ${escapeHtml(autopilot.tone)}">
+      <div>
+        <span>Nadi Research Autopilot</span>
+        <strong>${escapeHtml(autopilot.posture)}</strong>
+        <p>${escapeHtml(autopilot.instruction)}</p>
+      </div>
+      <div class="autopilot-score" style="--score:${autopilot.score}">
+        <b>${autopilot.score}</b>
+        <small>Auto</small>
+      </div>
+    </div>
+    <div class="autopilot-command-grid">
+      <article class="${escapeHtml(autopilot.primary.tone)}">
+        <span>Do now</span>
+        <strong>${escapeHtml(autopilot.primary.action)}</strong>
+        <p>${escapeHtml(autopilot.primary.reason)}</p>
+        <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.primary.route)}" data-autopilot-step="${escapeHtml(autopilot.primary.label)}">Open autopilot route</button>
+      </article>
+      <article>
+        <span>Current fund</span>
+        <strong>${escapeHtml(autopilot.fund.name)}</strong>
+        <p>Signal ${autopilot.signal.score}/100 | Genome ${autopilot.genome.score}/100 | Shock ${autopilot.shock.score}/100 | Replay ${autopilot.memory.replayScore}/100</p>
+      </article>
+      <article class="caution">
+        <span>No-go rule</span>
+        <strong>Explain before action</strong>
+        <p>${escapeHtml(autopilot.noGo)}</p>
+      </article>
+      <article class="autopilot-actions">
+        <span>Autopilot controls</span>
+        <strong>${autopilot.blockers.length} blocker${autopilot.blockers.length === 1 ? "" : "s"}</strong>
+        <p>${autopilot.blockers.length ? autopilot.blockers.map((lane) => lane.label).join(" | ") : "All research gates are clear for memo drafting."}</p>
+        <button class="text-button" id="copyResearchAutopilot" type="button">Copy autopilot</button>
+      </article>
+    </div>
+    <div class="autopilot-lane-grid">
+      ${autopilot.lanes.map((lane) => `
+        <article class="${escapeHtml(lane.tone)}">
+          <span>${escapeHtml(lane.label)}</span>
+          <strong>${lane.score}/100</strong>
+          <p>${escapeHtml(lane.blocker ? lane.action : "Clear")}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(lane.route)}" data-autopilot-step="${escapeHtml(lane.label)}">Open</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="autopilot-mission">
+      <div class="autopilot-mission-hero ${escapeHtml(autopilot.missionOpen.missionTone)}">
+        <div>
+          <span>Autopilot Mission Plan</span>
+          <strong>${autopilot.missionProgress}/100 route clarity</strong>
+          <p>${escapeHtml(autopilot.routeMemory.length ? `${autopilot.routeMemory.length} route visit${autopilot.routeMemory.length === 1 ? "" : "s"} remembered for this fund. Next open step: ${autopilot.missionOpen.label}.` : `No routes opened yet. Start with ${autopilot.missionOpen.label} so the desk records the research path.`)}</p>
+        </div>
+        <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.missionOpen.route)}" data-autopilot-step="${escapeHtml(autopilot.missionOpen.label)}">Open mission step</button>
+      </div>
+      <div class="autopilot-mission-grid">
+        ${autopilot.missionSteps.map((step) => `
+          <article class="${escapeHtml(step.missionTone)}">
+            <span>${String(step.index).padStart(2, "0")} ${escapeHtml(step.status)}</span>
+            <strong>${escapeHtml(step.label)}</strong>
+            <p>${escapeHtml(step.opened ? `Visited route ${step.route}; check whether the blocker is actually cleared.` : `${step.action}: ${step.reason}`)}</p>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(step.route)}" data-autopilot-step="${escapeHtml(step.label)}">${step.opened ? "Reopen" : "Open"}</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function makeResearchAutopilotNote() {
+  const autopilot = researchAutopilotConfig();
+  return [
+    `# NiveshNadi Research Autopilot - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Autopilot score: ${autopilot.score}/100`,
+    `Posture: ${autopilot.posture}`,
+    `Do now: ${autopilot.primary.action}`,
+    `Primary route: ${autopilot.primary.route}`,
+    `Reason: ${autopilot.primary.reason}`,
+    `No-go rule: ${autopilot.noGo}`,
+    `Mission clarity: ${autopilot.missionProgress}/100`,
+    `Mission next step: ${autopilot.missionOpen.label} -> ${autopilot.missionOpen.route}`,
+    "",
+    "## Gate Lanes",
+    ...autopilot.lanes.map((lane) => `- ${lane.label}: ${lane.score}/100 | ${lane.blocker ? "Blocker" : "Clear"} | ${lane.action} | Route ${lane.route}`),
+    "",
+    "## Mission Plan",
+    ...autopilot.missionSteps.map((step) => `- ${String(step.index).padStart(2, "0")} ${step.label}: ${step.status} | ${step.opened ? "route visited" : step.action} | Route ${step.route}`),
+    "",
+    "## Route Memory",
+    ...(autopilot.routeMemory.length ? autopilot.routeMemory.slice(0, 8).map((entry) => `- ${researchMemoryDate(entry.openedAt)} | ${entry.label} | ${entry.route}`) : ["- No autopilot routes opened yet."]),
+    "",
+    "Research Autopilot is a workflow guide only. It is not personalized advice, suitability approval, execution instruction, distributor workflow approval, or return guarantee."
+  ].join("\n");
+}
+
+function fundGenomeConfig() {
+  const signal = signalStripConfig();
+  const fund = signal.fund;
+  const evidence = signal.evidence;
+  const profile = profileRoomProfile();
+  const twin = profileInvestorTwin(profile);
+  const peer = signal.peer;
+  const compareFunds = compareSet().filter((item) => item.id !== fund.id);
+  const watchTriggers = loadAlerts().filter((alert) => alert.fundId === fund.id || state.compare.has(alert.fundId));
+  const sameSleevePeers = compareFunds.filter((item) => item.sleeve === fund.sleeve).length;
+  const sameCategoryPeers = compareFunds.filter((item) => item.category === fund.category).length;
+  const roleScore = clampNumber(Math.round((signal.score * 0.38) + (signal.sleeveDelta >= 0 ? 28 : 18) + (compareFunds.length ? 24 : 12)), 22, 96);
+  const costScore = clampNumber(Math.round(94 - Math.max(0, fund.expense - peer.sleeveAvg.expense) * 160 - fund.expense * 10 + (fund.expense <= peer.sleeveAvg.expense ? 8 : 0)), 22, 96);
+  const behaviorScore = clampNumber(Math.round(82 - fund.maxDrawdown * 1.15 + twin.survivalScore * 0.22 - (fund.risk === "Very High" ? 8 : 0)), 18, 96);
+  const overlapScore = clampNumber(Math.round((compareFunds.length >= 2 ? 86 : 58) - sameCategoryPeers * 15 - Math.max(0, sameSleevePeers - 1) * 8), 24, 96);
+  const reviewScore = clampNumber(Math.round((watchTriggers.length ? 78 : 42) + Math.min(12, watchTriggers.length * 4) + (evidence >= 78 ? 6 : -4)), 20, 96);
+  const genes = [
+    {
+      label: "Role gene",
+      code: "ROLE",
+      score: roleScore,
+      route: "#why-lens",
+      expression: `${fund.category} | ${fund.role}`,
+      mutation: signal.sleeveDelta >= 0 ? "Role is visible against sleeve peers." : "Role needs a stronger peer defense."
+    },
+    {
+      label: "Evidence gene",
+      code: "EVID",
+      score: evidence,
+      route: "#evidence",
+      expression: `Source readiness ${evidence}/100`,
+      mutation: evidence >= 78 ? "Evidence can support research memory after live citation dates are attached." : "Source-date mutation: verify AMFI, factsheet, SID/KIM, TER, portfolio, and riskometer."
+    },
+    {
+      label: "Cost gene",
+      code: "COST",
+      score: costScore,
+      route: "#cost-lab",
+      expression: `TER ${fund.expense.toFixed(2)}% | sleeve avg ${peer.sleeveAvg.expense.toFixed(2)}%`,
+      mutation: costScore >= 74 ? "Cost drag is defensible for research." : "Cost mutation: rupee drag and lower-cost peer defense must be written."
+    },
+    {
+      label: "Behavior gene",
+      code: "BEHV",
+      score: behaviorScore,
+      route: "#profile-room",
+      expression: `${fund.risk} risk | drawdown ${fund.maxDrawdown}%`,
+      mutation: behaviorScore >= 72 ? "Future-self pressure is manageable if the memo remains reviewed." : "Behavior mutation: rehearse panic, boredom, and cash shock before trusting confidence."
+    },
+    {
+      label: "Overlap gene",
+      code: "OVLP",
+      score: overlapScore,
+      route: "#portfolio",
+      expression: `${compareFunds.length} peer${compareFunds.length === 1 ? "" : "s"} | ${sameCategoryPeers} same category`,
+      mutation: compareFunds.length >= 2 ? "Overlap can be inspected through X-Ray." : "Duplication mutation: add peers before treating this fund as distinct."
+    },
+    {
+      label: "Review gene",
+      code: "REVW",
+      score: reviewScore,
+      route: "#watchlist",
+      expression: `${watchTriggers.length} saved trigger${watchTriggers.length === 1 ? "" : "s"}`,
+      mutation: watchTriggers.length ? "Review discipline has a visible trigger." : "Memory mutation: save a review trigger before preserving this as durable research."
+    }
+  ].map((gene) => ({
+    ...gene,
+    tone: gene.score >= 76 ? "ready" : gene.score >= 58 ? "watch" : "caution"
+  }));
+  const genomeScore = clampNumber(Math.round(genes.reduce((sum, gene) => sum + gene.score, 0) / genes.length), 18, 96);
+  const weakest = [...genes].sort((a, b) => a.score - b.score)[0];
+  const strongest = [...genes].sort((a, b) => b.score - a.score)[0];
+  const tone = genomeScore >= 78 ? "ready" : genomeScore >= 60 ? "watch" : "caution";
+  const posture = genomeScore >= 78
+    ? "Clean research DNA"
+    : genomeScore >= 60
+      ? "Mutation watch"
+      : "Quarantine before trust";
+  const genomeId = ["NN", "FUND", "GENOME", DATA_VERSION.replace(/-/g, ""), fund.id].join("-").toUpperCase();
+  const mutationWarnings = [
+    weakest.mutation,
+    evidence < 78 ? "A high Nadi score cannot outrank missing live source citations." : "Evidence is usable for demo research, but source dates still control launch trust.",
+    compareFunds.length < 2 ? "The genome is under-sampled until at least two comparison funds are added." : "Peer context is visible; inspect category, cost, drawdown, and holdings overlap.",
+    watchTriggers.length ? "Review rhythm exists; keep it attached to the memo." : "No review trigger is saved yet, so memory can decay."
+  ];
+  const receiptFields = [
+    "fund_genome_id",
+    "fund_id",
+    "role_gene",
+    "evidence_gene",
+    "cost_gene",
+    "behavior_gene",
+    "overlap_gene",
+    "review_gene",
+    "weakest_gene",
+    "mutation_route",
+    "created_at"
+  ];
+  return {
+    fund,
+    genes,
+    genomeId,
+    mutationWarnings,
+    posture,
+    receiptFields,
+    score: genomeScore,
+    strongest,
+    summary: `The selected fund is decoded into six research genes so the investor can see which part of the research DNA is healthy, mutating, or not ready for durable memory.`,
+    tone,
+    weakest
+  };
+}
+
+function renderFundGenome() {
+  if (!els.fundGenome) return;
+  const genome = fundGenomeConfig();
+  els.fundGenome.innerHTML = `
+    <div class="fund-genome-hero ${escapeHtml(genome.tone)}">
+      <div>
+        <span>Nadi Fund Genome</span>
+        <strong>${escapeHtml(genome.posture)}</strong>
+        <p>${escapeHtml(genome.summary)}</p>
+      </div>
+      <div class="fund-genome-score" style="--score:${genome.score}">
+        <b>${genome.score}</b>
+        <small>Genome</small>
+      </div>
+    </div>
+    <div class="fund-gene-grid">
+      ${genome.genes.map((gene) => `
+        <article class="${escapeHtml(gene.tone)}">
+          <div class="fund-gene-head">
+            <div>
+              <span>${escapeHtml(gene.code)}</span>
+              <strong>${escapeHtml(gene.label)}</strong>
+            </div>
+            <b>${gene.score}</b>
+          </div>
+          <p>${escapeHtml(gene.expression)}</p>
+          <small>${escapeHtml(gene.mutation)}</small>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(gene.route)}">Open gene route</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="fund-genome-two">
+      <article>
+        <span>Strongest gene</span>
+        <strong>${escapeHtml(genome.strongest.label)}</strong>
+        <p>${escapeHtml(genome.strongest.mutation)}</p>
+      </article>
+      <article class="caution">
+        <span>Weakest mutation</span>
+        <strong>${escapeHtml(genome.weakest.label)}</strong>
+        <p>${escapeHtml(genome.weakest.mutation)}</p>
+        <button class="text-button" type="button" data-build-route="${escapeHtml(genome.weakest.route)}">Open mutation route</button>
+      </article>
+      <article>
+        <span>Mutation warnings</span>
+        <ul>${genome.mutationWarnings.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </article>
+      <article>
+        <span>Genome receipt</span>
+        <p>${escapeHtml(genome.genomeId)}</p>
+        <p>${genome.receiptFields.map((item) => escapeHtml(item)).join(" | ")}</p>
+        <button class="text-button" id="copyFundGenome" type="button">Copy genome</button>
+      </article>
+    </div>
+  `;
+}
+
+function makeFundGenomeNote() {
+  const genome = fundGenomeConfig();
+  return [
+    `# NiveshNadi Fund Genome - ${genome.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Genome ID: ${genome.genomeId}`,
+    `Genome score: ${genome.score}/100`,
+    `Posture: ${genome.posture}`,
+    `Strongest gene: ${genome.strongest.label} - ${genome.strongest.mutation}`,
+    `Weakest gene: ${genome.weakest.label} - ${genome.weakest.mutation}`,
+    "",
+    "## Genes",
+    ...genome.genes.map((gene) => `- ${gene.code} | ${gene.label}: ${gene.score}/100 | ${gene.expression} | ${gene.mutation}`),
+    "",
+    "## Mutation Warnings",
+    ...genome.mutationWarnings.map((item) => `- ${item}`),
+    "",
+    "## Receipt Fields",
+    ...genome.receiptFields.map((item) => `- ${item}`),
+    "",
+    "Research support only. Fund Genome is not personalized advice, a rating, an execution instruction, or a return guarantee."
+  ].join("\n");
+}
+
+function futureShockMapConfig() {
+  const signal = signalStripConfig();
+  const genome = fundGenomeConfig();
+  const profile = profileRoomProfile();
+  const twin = profileInvestorTwin(profile);
+  const fund = signal.fund;
+  const compareFunds = compareSet().filter((item) => item.id !== fund.id);
+  const peerPool = compareFunds.length
+    ? compareFunds
+    : FUNDS.filter((item) => item.sleeve === fund.sleeve && item.id !== fund.id);
+  const strongestPeer = [...peerPool].sort((a, b) => nadiScore(b) - nadiScore(a))[0] || fund;
+  const lowerCostPeer = [...peerPool].sort((a, b) => a.expense - b.expense)[0] || fund;
+  const watchTriggers = loadAlerts().filter((alert) => alert.fundId === fund.id || state.compare.has(alert.fundId));
+  const evidence = signal.evidence;
+  const riskControl = signal.riskControl;
+  const costGap = Math.max(0, fund.expense - lowerCostPeer.expense);
+  const peerReturnGap = Math.max(0, strongestPeer.returns5y - fund.returns5y);
+  const geneByCode = Object.fromEntries(genome.genes.map((gene) => [gene.code, gene]));
+
+  const shocks = [
+    {
+      code: "DROP",
+      label: "Red-month shock",
+      route: "#stress-lab",
+      score: clampNumber(Math.round(riskControl * 0.48 + twin.survivalScore * 0.26 + profile.readiness * 0.18 - fund.maxDrawdown * 0.28), 18, 96),
+      pressure: `${fund.maxDrawdown}% demo drawdown tests whether the investor respects role, horizon, and cash buffer.`,
+      counter: "Open Stress Lab, rehearse rupee pain, then write the pause rule before changing behavior."
+    },
+    {
+      code: "PEER",
+      label: "Peer-envy shock",
+      route: "#compare",
+      score: clampNumber(Math.round(78 - peerReturnGap * 2.8 + compareFunds.length * 4 + (signal.sleeveDelta >= 0 ? 8 : -6)), 18, 96),
+      pressure: `${strongestPeer.name} can look more exciting if it leads by ${peerReturnGap.toFixed(1)}% in demo 5Y return.`,
+      counter: "Use Compare and Peer Benchmark before borrowing conviction from a better-looking peer."
+    },
+    {
+      code: "SOURCE",
+      label: "Source-freeze shock",
+      route: "#evidence",
+      score: clampNumber(Math.round(evidence * 0.74 + (geneByCode.EVID?.score || evidence) * 0.26), 18, 96),
+      pressure: "A stale factsheet, TER, holdings date, SID/KIM, or riskometer should freeze confidence.",
+      counter: "Open Evidence Ledger and Citation Binder before treating any claim as live."
+    },
+    {
+      code: "COST",
+      label: "Cost-doubt shock",
+      route: "#cost-lab",
+      score: clampNumber(Math.round((geneByCode.COST?.score || 64) - costGap * 120 + (lowerCostPeer.id !== fund.id ? 3 : 0)), 18, 96),
+      pressure: `${lowerCostPeer.name} creates a lower-cost challenge at ${lowerCostPeer.expense.toFixed(2)}% TER.`,
+      counter: "Run Cost Reality and require a written reason if the selected fund costs more."
+    },
+    {
+      code: "GOAL",
+      label: "Goal-shift shock",
+      route: "#goal-fit",
+      score: clampNumber(Math.round(profile.selectedFit * 0.58 + twin.survivalScore * 0.2 + (fund.sleeve === "Debt" ? 8 : 0)), 18, 96),
+      pressure: "The money purpose can quietly change from long horizon to near-term use.",
+      counter: "Re-run Goal Fit and category route before keeping the same fund role."
+    },
+    {
+      code: "MEMO",
+      label: "Memory-decay shock",
+      route: "#watchlist",
+      score: clampNumber(Math.round((watchTriggers.length ? 78 : 38) + Math.min(14, watchTriggers.length * 4) + (geneByCode.REVW?.score || 48) * 0.18), 18, 96),
+      pressure: `${watchTriggers.length} saved trigger${watchTriggers.length === 1 ? "" : "s"} means the decision can ${watchTriggers.length ? "be reviewed" : "fade after the first screen"}.`,
+      counter: "Save a watch trigger, review date, and decision memo before trusting future memory."
+    }
+  ].map((shock) => ({
+    ...shock,
+    tone: shock.score >= 76 ? "ready" : shock.score >= 58 ? "watch" : "caution",
+    verdict: shock.score >= 76 ? "Clear" : shock.score >= 58 ? "Rehearse" : "Block"
+  }));
+  const score = clampNumber(Math.round(shocks.reduce((sum, shock) => sum + shock.score, 0) / shocks.length), 18, 96);
+  const weakest = [...shocks].sort((a, b) => a.score - b.score)[0];
+  const strongest = [...shocks].sort((a, b) => b.score - a.score)[0];
+  const tone = score >= 78 ? "ready" : score >= 60 ? "watch" : "caution";
+  const posture = score >= 78 ? "Shock-ready research" : score >= 60 ? "Pressure rehearsal" : "Confidence not ready";
+  const shockId = ["NN", "FUTURE", "SHOCK", DATA_VERSION.replace(/-/g, ""), fund.id].join("-").toUpperCase();
+  const rules = [
+    `Do not trust ${fund.name} until ${weakest.label.toLowerCase()} has a route, written counter-move, and review trigger.`,
+    `Strongest pressure defense: ${strongest.label} at ${strongest.score}/100.`,
+    `Weakest pressure defense: ${weakest.label} at ${weakest.score}/100.`,
+    "A shock map is research memory, not advice, suitability approval, or a transaction instruction."
+  ];
+  const receiptFields = [
+    "future_shock_id",
+    "fund_id",
+    "profile_route",
+    "weakest_shock",
+    "strongest_shock",
+    "evidence_score",
+    "compare_peer",
+    "watch_trigger_count",
+    "counter_move_route",
+    "created_at"
+  ];
+  return {
+    fund,
+    posture,
+    receiptFields,
+    rules,
+    score,
+    shockId,
+    shocks,
+    strongest,
+    summary: "Nadi Future Shock Map turns hidden future pressure into a visible checklist before the investor trusts a fund, memo, or subscription memory.",
+    tone,
+    weakest
+  };
+}
+
+function renderFutureShockMap() {
+  if (!els.futureShockMap) return;
+  const map = futureShockMapConfig();
+  els.futureShockMap.innerHTML = `
+    <div class="future-shock-hero ${escapeHtml(map.tone)}">
+      <div>
+        <span>Nadi Future Shock Map</span>
+        <strong>${escapeHtml(map.posture)}</strong>
+        <p>${escapeHtml(map.summary)}</p>
+      </div>
+      <div class="future-shock-score" style="--score:${map.score}">
+        <b>${map.score}</b>
+        <small>Shock</small>
+      </div>
+    </div>
+    <div class="future-shock-strip">
+      ${map.shocks.map((shock) => `
+        <article class="${escapeHtml(shock.tone)}">
+          <div class="future-shock-head">
+            <div>
+              <span>${escapeHtml(shock.code)}</span>
+              <strong>${escapeHtml(shock.label)}</strong>
+            </div>
+            <b>${shock.score}</b>
+          </div>
+          <p>${escapeHtml(shock.pressure)}</p>
+          <small>${escapeHtml(shock.counter)}</small>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(shock.route)}">Open shock route</button>
+        </article>
+      `).join("")}
+    </div>
+    <div class="future-shock-two">
+      <article class="caution">
+        <span>First shock to clear</span>
+        <strong>${escapeHtml(map.weakest.label)}</strong>
+        <p>${escapeHtml(map.weakest.counter)}</p>
+        <button class="text-button" type="button" data-build-route="${escapeHtml(map.weakest.route)}">Open first route</button>
+      </article>
+      <article>
+        <span>Shock receipt</span>
+        <strong>${escapeHtml(map.shockId)}</strong>
+        <p>${map.receiptFields.map((field) => escapeHtml(field)).join(" | ")}</p>
+        <button class="text-button" id="copyFutureShockMap" type="button">Copy shock map</button>
+      </article>
+    </div>
+  `;
+}
+
+function makeFutureShockMapNote() {
+  const map = futureShockMapConfig();
+  return [
+    `# NiveshNadi Future Shock Map - ${map.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Shock ID: ${map.shockId}`,
+    `Shock readiness: ${map.score}/100`,
+    `Posture: ${map.posture}`,
+    `First shock to clear: ${map.weakest.label} (${map.weakest.score}/100)`,
+    "",
+    "## Shock Routes",
+    ...map.shocks.map((shock) => `- ${shock.code} | ${shock.label}: ${shock.score}/100 | ${shock.verdict} | ${shock.pressure} | Counter-move: ${shock.counter}`),
+    "",
+    "## Rules",
+    ...map.rules.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...map.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Research support only. Future Shock Map is not personalized advice, suitability approval, a fund rating, execution instruction, or return guarantee."
+  ].join("\n");
+}
+
+const MEMORY_CAPSULE_STORAGE_KEY = "niveshnadi-memory-capsules";
+const MEMORY_CAPSULE_BOUNDARY = "Browser-local identity-light research memory. No PAN, folio, CAS, bank, contact, credentials, ARN/EUIN, client identifiers, personalized advice, execution approval, or return guarantee.";
+
+function memoryReplayMetric(label, current, previous, route, detail) {
+  const currentValue = Number(current) || 0;
+  const previousValue = Number.isFinite(Number(previous)) ? Number(previous) : null;
+  const delta = previousValue === null ? null : currentValue - previousValue;
+  const tone = delta === null
+    ? "watch"
+    : delta >= 3
+      ? "ready"
+      : delta <= -3
+        ? "caution"
+        : "watch";
+  const verdict = delta === null
+    ? "No saved baseline"
+    : delta >= 3
+      ? "Improved"
+      : delta <= -3
+        ? "Weaker"
+        : "Stable";
+  const deltaLabel = delta === null ? "New" : `${delta > 0 ? "+" : ""}${delta}`;
+  return {
+    label,
+    current: currentValue,
+    previous: previousValue,
+    delta,
+    deltaLabel,
+    detail,
+    route,
+    tone,
+    verdict
+  };
+}
+
+function memoryCapsuleConfig() {
+  const signal = signalStripConfig();
+  const genome = fundGenomeConfig();
+  const shock = futureShockMapConfig();
+  const fund = signal.fund;
+  const entries = loadMemoryCapsules();
+  const selectedEntries = entries.filter((entry) => entry.fundId === fund.id);
+  const watchTriggerCount = loadAlerts().filter((alert) => alert.fundId === fund.id || state.compare.has(alert.fundId)).length;
+  const compareCount = compareSet().length;
+  const score = clampNumber(Math.round((signal.score + genome.score + shock.score) / 3), 0, 100);
+  const weakestRoute = shock.weakest?.route || genome.weakest?.route || signal.next.route;
+  const latestSelected = selectedEntries[0] || null;
+  const latestAny = entries[0] || null;
+  const delta = latestSelected ? reviewVaultDelta(score, latestSelected.capsuleScore) : "New";
+  const tone = score >= 78 ? "ready" : score >= 58 ? "watch" : "caution";
+  const posture = score >= 78
+    ? "Research memory ready"
+    : score >= 58
+      ? "Memory worth saving"
+      : "Save after proof route";
+  const replayRows = [
+    memoryReplayMetric("Capsule score", score, latestSelected?.capsuleScore, "#screener", "Overall memory posture from signal, genome, and shock."),
+    memoryReplayMetric("Signal", signal.score, latestSelected?.signalScore, signal.next.route, signal.posture),
+    memoryReplayMetric("Evidence", signal.evidence, latestSelected?.evidenceScore, "#evidence", "Source readiness should improve before live reliance."),
+    memoryReplayMetric("Genome", genome.score, latestSelected?.genomeScore, genome.weakest.route, genome.weakest.label),
+    memoryReplayMetric("Future shock", shock.score, latestSelected?.shockScore, shock.weakest.route, shock.weakest.label),
+    memoryReplayMetric("Review hooks", watchTriggerCount, latestSelected?.watchTriggerCount, "#watchlist", "Saved triggers keep old research from going stale.")
+  ];
+  const weakerRows = replayRows.filter((row) => row.tone === "caution");
+  const improvedRows = replayRows.filter((row) => row.tone === "ready");
+  const replayScore = clampNumber(Math.round(
+    48 +
+    improvedRows.length * 7 -
+    weakerRows.length * 10 +
+    (latestSelected ? 12 : -8) +
+    Math.min(selectedEntries.length * 3, 12)
+  ), 0, 100);
+  const replayPosture = latestSelected
+    ? weakerRows.length
+      ? "Replay needs attention"
+      : improvedRows.length
+        ? "Memory improved"
+        : "Memory stable"
+    : "Save baseline first";
+  return {
+    entries,
+    fund,
+    genome,
+    latestAny,
+    latestSelected,
+    selectedEntries,
+    shock,
+    signal,
+    compareCount,
+    delta,
+    posture,
+    privacy: MEMORY_CAPSULE_BOUNDARY,
+    replayPosture,
+    replayRows,
+    replayScore,
+    score,
+    summary: "Save and replay the selected fund's signal, genome, and future-shock posture before old conviction is trusted again.",
+    tone,
+    watchTriggerCount,
+    weakerRows,
+    weakestRoute
+  };
+}
+
+function memoryCapsuleSnapshot(config = memoryCapsuleConfig()) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const fundSlug = config.fund.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const timeToken = Date.now().toString(36).toUpperCase();
+  return {
+    id: ["NN", "MEM", "CAPSULE", suffix, fundSlug, timeToken].join("-"),
+    createdAt: new Date().toISOString(),
+    release: RELEASE_LABEL,
+    dataVersion: DATA_VERSION,
+    fundId: config.fund.id,
+    fundName: config.fund.name,
+    category: config.fund.category,
+    risk: config.fund.risk,
+    capsuleScore: config.score,
+    posture: config.posture,
+    signalScore: config.signal.score,
+    signalPosture: config.signal.posture,
+    evidenceScore: config.signal.evidence,
+    riskControl: config.signal.riskControl,
+    genomeScore: config.genome.score,
+    genomePosture: config.genome.posture,
+    strongestGene: config.genome.strongest.label,
+    weakestGene: config.genome.weakest.label,
+    shockScore: config.shock.score,
+    shockPosture: config.shock.posture,
+    replayScore: config.replayScore,
+    replayPosture: config.replayPosture,
+    strongestShock: config.shock.strongest.label,
+    weakestShock: config.shock.weakest.label,
+    nextRoute: config.weakestRoute,
+    nextAction: config.shock.weakest.counter,
+    compareCount: config.compareCount,
+    watchTriggerCount: config.watchTriggerCount,
+    privacy: config.privacy
+  };
+}
+
+function renderMemoryCapsule() {
+  if (!els.memoryCapsule) return;
+  const config = memoryCapsuleConfig();
+  const latest = config.latestSelected || config.latestAny;
+  const latestLabel = latest
+    ? `${latest.fundName} | ${latest.capsuleScore}/100 | ${researchMemoryShortDate(latest.createdAt)}`
+    : "No saved capsule yet";
+  const latestReplayLabel = config.latestSelected
+    ? `${config.replayPosture} | Replay ${config.replayScore}/100 | ${config.delta} since saved`
+    : latest
+      ? "Save this selected fund to unlock a direct replay baseline."
+      : "Save one capsule to start replay memory.";
+  const recent = config.entries.slice(0, 4);
+  els.memoryCapsule.innerHTML = `
+    <div class="memory-capsule-hero ${escapeHtml(config.tone)}">
+      <div>
+        <span>Nadi Memory Capsule</span>
+        <strong>${escapeHtml(config.posture)}</strong>
+        <p>${escapeHtml(config.summary)}</p>
+      </div>
+      <div class="memory-capsule-score" style="--score:${config.score}">
+        <b>${config.score}</b>
+        <small>Memory</small>
+      </div>
+    </div>
+    <div class="memory-capsule-grid">
+      <article>
+        <span>Current capsule</span>
+        <strong>${escapeHtml(config.fund.name)}</strong>
+        <p>Signal ${config.signal.score}/100 | Genome ${config.genome.score}/100 | Shock ${config.shock.score}/100</p>
+      </article>
+      <article>
+        <span>Stored locally</span>
+        <strong>${config.entries.length} capsule${config.entries.length === 1 ? "" : "s"}</strong>
+        <p>${config.selectedEntries.length} for selected fund | Delta ${escapeHtml(config.delta)}</p>
+      </article>
+      <article>
+        <span>First route to remember</span>
+        <strong>${escapeHtml(config.shock.weakest.label)}</strong>
+        <p>${escapeHtml(config.shock.weakest.counter)}</p>
+      </article>
+      <article class="memory-capsule-actions">
+        <span>Capsule controls</span>
+        <button class="text-button" id="saveMemoryCapsule" type="button">Save capsule</button>
+        <button class="text-button" id="copyMemoryCapsule" type="button">Copy capsules</button>
+        <button class="text-button" id="clearMemoryCapsule" type="button" ${config.entries.length ? "" : "disabled"}>Clear</button>
+      </article>
+    </div>
+    <div class="memory-capsule-replay">
+      <article class="memory-replay-hero ${escapeHtml(config.weakerRows.length ? "caution" : config.latestSelected ? "ready" : "watch")}">
+        <div>
+          <span>Memory replay</span>
+          <strong>${escapeHtml(config.replayPosture)}</strong>
+          <p>${config.latestSelected ? `Compared with capsule saved ${escapeHtml(researchMemoryShortDate(config.latestSelected.createdAt))}.` : "Save one capsule, then this panel will replay current research against the saved baseline."}</p>
+        </div>
+        <div class="memory-replay-score" style="--score:${config.replayScore}">
+          <b>${config.replayScore}</b>
+          <small>Replay</small>
+        </div>
+      </article>
+      <div class="memory-replay-grid">
+        ${config.replayRows.map((row) => `
+          <article class="${escapeHtml(row.tone)}">
+            <span>${escapeHtml(row.label)}</span>
+            <strong>${row.current}${row.previous === null ? "" : ` vs ${row.previous}`}</strong>
+            <p>${escapeHtml(row.verdict)} | Delta ${escapeHtml(row.deltaLabel)} | ${escapeHtml(row.detail)}</p>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(row.route)}">Open replay route</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="memory-capsule-list">
+      <article class="memory-capsule-latest">
+        <span>Latest saved memory</span>
+        <strong>${escapeHtml(latestLabel)}</strong>
+        <p class="capsule-replay-summary">${escapeHtml(latestReplayLabel)}</p>
+        <p>${escapeHtml(config.privacy)}</p>
+      </article>
+      ${recent.length ? recent.map((entry) => `
+        <article>
+          <span>${escapeHtml(researchMemoryShortDate(entry.createdAt))}</span>
+          <strong>${escapeHtml(entry.fundName)}</strong>
+          <p>${entry.capsuleScore}/100 | ${escapeHtml(entry.posture)} | weakest: ${escapeHtml(entry.weakestShock || entry.weakestGene || "route check")}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(entry.nextRoute || "#evidence")}">Open saved route</button>
+        </article>
+      `).join("") : `
+        <article>
+          <span>Start memory</span>
+          <strong>Save the first capsule</strong>
+          <p>The capsule stores fund names, scores, posture, route metadata, and timestamps only.</p>
+        </article>
+      `}
+    </div>
+  `;
+}
+
+function saveCurrentMemoryCapsule() {
+  const snapshot = memoryCapsuleSnapshot();
+  const entries = [snapshot, ...loadMemoryCapsules()].slice(0, 30);
+  saveMemoryCapsules(entries);
+  renderResearchAutopilot();
+  renderMemoryCapsule();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
+  toast("Memory capsule saved locally.");
+}
+
+function clearMemoryCapsules() {
+  saveMemoryCapsules([]);
+  renderResearchAutopilot();
+  renderMemoryCapsule();
+  renderResearchMemory();
+  renderPrivacyControlRoom();
+  toast("Memory capsules cleared.");
+}
+
+function makeMemoryCapsuleNote() {
+  const config = memoryCapsuleConfig();
+  const entries = config.entries;
+  return [
+    `# NiveshNadi Memory Capsule - ${config.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Current capsule score: ${config.score}/100`,
+    `Posture: ${config.posture}`,
+    `Signal: ${config.signal.score}/100 | ${config.signal.posture}`,
+    `Genome: ${config.genome.score}/100 | Weakest gene: ${config.genome.weakest.label}`,
+    `Future shock: ${config.shock.score}/100 | Weakest shock: ${config.shock.weakest.label}`,
+    `Replay posture: ${config.replayPosture} (${config.replayScore}/100)`,
+    `Suggested next route: ${config.weakestRoute}`,
+    "",
+    "## Replay Deltas",
+    ...config.replayRows.map((row) => `- ${row.label}: current ${row.current}${row.previous === null ? "" : ` vs saved ${row.previous}`} | Delta ${row.deltaLabel} | ${row.verdict} | Route ${row.route}`),
+    "",
+    "## Saved Capsules",
+    ...(entries.length ? entries.slice(0, 10).map((entry) => `- ${researchMemoryDate(entry.createdAt)} | ${entry.fundName} | ${entry.capsuleScore}/100 | ${entry.posture} | Weakest shock: ${entry.weakestShock || "Not saved"} | Route: ${entry.nextRoute || "#evidence"}`) : ["- No saved capsules yet."]),
+    "",
+    "## Privacy Boundary",
+    `- ${config.privacy}`,
+    "",
+    "Memory Capsule is research continuity only. It is not personalized advice, suitability approval, a fund rating, execution instruction, distributor workflow approval, or return guarantee."
+  ].join("\n");
+}
+
 function buildTrackerConfig() {
   const buildProgress = Math.round(
     BUILD_TRACKER_PHASES.reduce((sum, phase) => sum + phase.progress, 0) / BUILD_TRACKER_PHASES.length
@@ -2833,7 +3753,7 @@ function buildTrackerConfig() {
     detail: "MFD dashboard, ARN/EUIN, PAN-consent, registered clients, review packs, and handoff audit trail stay planned after Phase 1 retail launch.",
     blockers: ["Phase 1 account model", "consent workflow", "privacy review", "role-based distributor access"]
   };
-  const pace = `v143 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
+  const pace = `v166 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
   const guardrails = [
     "Build Tracker is a project roadmap for this prototype; it is not an investor-facing recommendation or launch promise.",
     "Product build progress and launch readiness are intentionally separate because a prototype can be polished before live data, auth, payments, and legal gates are complete.",
@@ -2988,7 +3908,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-      <article><span>Prototype version</span><strong>Phase 1 v159</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+      <article><span>Prototype version</span><strong>Phase 1 v166</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -19129,6 +20049,10 @@ function makeCompareNote() {
 
 function renderAll() {
   renderSignalStrip();
+  renderResearchAutopilot();
+  renderFundGenome();
+  renderFutureShockMap();
+  renderMemoryCapsule();
   renderBuildTracker();
   renderBuildPhasesRoom();
   renderMarketStrategyRoom();
@@ -30381,6 +31305,17 @@ function researchMemoryTimeline() {
     next: entry.nextChecks?.[0] || "Keep proof checks current before action."
   }));
 
+  loadMemoryCapsules().forEach((entry) => add({
+    type: "Memory capsule",
+    tone: researchMemoryTone(entry.capsuleScore),
+    createdAt: entry.createdAt,
+    title: entry.fundName || "Saved memory capsule",
+    meta: `${entry.posture || "Saved capsule"} | ${entry.capsuleScore || 0}/100`,
+    detail: `Signal ${entry.signalScore || 0}/100 | Genome ${entry.genomeScore || 0}/100 | Shock ${entry.shockScore || 0}/100 | Weakest ${entry.weakestShock || entry.weakestGene || "route"}`,
+    score: entry.capsuleScore,
+    next: `Open ${entry.nextRoute || "#evidence"} before trusting the capsule again.`
+  }));
+
   loadResearchDossiers().forEach((entry) => add({
     type: "Dossier",
     tone: researchMemoryTone(entry.readiness),
@@ -30476,6 +31411,7 @@ function researchMemoryConfig() {
   const briefingVault = loadBriefingVault();
   const reviewVault = loadReviewVault();
   const receiptVault = loadReceiptVault();
+  const memoryCapsules = loadMemoryCapsules();
   const dossiers = loadResearchDossiers();
   const investorRecords = loadInvestorRecords();
   const claimLedger = loadClaimReleaseLedger();
@@ -30484,7 +31420,7 @@ function researchMemoryConfig() {
   const alerts = loadAlerts();
   const journal = loadJournal();
   const timeline = researchMemoryTimeline();
-  const artifactCount = briefingVault.length + reviewVault.length + receiptVault.length + dossiers.length + investorRecords.length + claimLedger.length + reviewerDecisions.length + journal.length;
+  const artifactCount = briefingVault.length + reviewVault.length + receiptVault.length + memoryCapsules.length + dossiers.length + investorRecords.length + claimLedger.length + reviewerDecisions.length + journal.length;
   const evidence = evidenceReadinessScore(fund);
   const memoryScore = clampNumber(Math.round(
     28 +
@@ -30497,6 +31433,7 @@ function researchMemoryConfig() {
   const gaps = [
     briefingVault.length ? null : "Save at least one Research Briefing snapshot.",
     receiptVault.length ? null : "Save one Research Receipt after proof checks.",
+    memoryCapsules.length ? null : "Save one Memory Capsule for the selected fund.",
     reviewVault.length ? null : "Save a Portfolio Review snapshot before major changes.",
     dossiers.length ? null : "Build one Research Dossier for the selected fund.",
     watchlist.length ? null : "Add selected or compared funds to the Watchlist.",
@@ -30507,6 +31444,7 @@ function researchMemoryConfig() {
     { label: "Briefings", count: briefingVault.length },
     { label: "Reviews", count: reviewVault.length },
     { label: "Receipts", count: receiptVault.length },
+    { label: "Capsules", count: memoryCapsules.length },
     { label: "Dossiers", count: dossiers.length },
     { label: "Records", count: investorRecords.length },
     { label: "Claim gates", count: claimLedger.length },
@@ -30682,6 +31620,14 @@ const PRIVACY_STORES = [
     label: "Receipt Vault",
     purpose: "Proof-of-research receipt metadata.",
     fields: "Fund name, proof score, claim flags",
+    sensitivity: "Metadata"
+  },
+  {
+    id: "memory-capsules",
+    key: "niveshnadi-memory-capsules",
+    label: "Memory Capsules",
+    purpose: "Identity-light saved signal, genome, and future-shock posture.",
+    fields: "Fund ID, fund name, scores, route metadata, timestamps",
     sensitivity: "Metadata"
   },
   {
@@ -35615,6 +36561,18 @@ function saveReceiptVault(entries) {
   localStorage.setItem("niveshnadi-receipt-vault", JSON.stringify(entries));
 }
 
+function loadMemoryCapsules() {
+  try {
+    return JSON.parse(localStorage.getItem(MEMORY_CAPSULE_STORAGE_KEY) || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveMemoryCapsules(entries) {
+  localStorage.setItem(MEMORY_CAPSULE_STORAGE_KEY, JSON.stringify(entries));
+}
+
 function loadSourceReceipts() {
   try {
     return JSON.parse(localStorage.getItem("niveshnadi-source-receipts") || "[]");
@@ -36729,6 +37687,9 @@ function bindEvents() {
   document.addEventListener("click", (event) => {
     const buildRoute = event.target.closest("[data-build-route]");
     if (!buildRoute) return;
+    if (buildRoute.dataset.autopilotStep) {
+      rememberAutopilotRoute(buildRoute.dataset.buildRoute, buildRoute.dataset.autopilotStep);
+    }
     scrollToHash(buildRoute.dataset.buildRoute, "smooth", true);
   });
 
@@ -36808,6 +37769,42 @@ function bindEvents() {
     const copySignal = event.target.closest("#copySignalStrip");
     if (!copySignal) return;
     copyText(makeSignalStripNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyAutopilot = event.target.closest("#copyResearchAutopilot");
+    if (!copyAutopilot) return;
+    copyText(makeResearchAutopilotNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyGenome = event.target.closest("#copyFundGenome");
+    if (!copyGenome) return;
+    copyText(makeFundGenomeNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyShockMap = event.target.closest("#copyFutureShockMap");
+    if (!copyShockMap) return;
+    copyText(makeFutureShockMapNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const saveCapsule = event.target.closest("#saveMemoryCapsule");
+    if (!saveCapsule) return;
+    saveCurrentMemoryCapsule();
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyCapsule = event.target.closest("#copyMemoryCapsule");
+    if (!copyCapsule) return;
+    copyText(makeMemoryCapsuleNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const clearCapsule = event.target.closest("#clearMemoryCapsule");
+    if (!clearCapsule) return;
+    clearMemoryCapsules();
   });
 
   document.addEventListener("click", (event) => {
@@ -36929,6 +37926,10 @@ function bindEvents() {
     if (!button) return;
     state.selectedId = button.dataset.selectFund;
     renderSignalStrip();
+    renderResearchAutopilot();
+    renderFundGenome();
+    renderFutureShockMap();
+    renderMemoryCapsule();
     renderProfileRoom();
     renderSelectionFunnel();
     renderShortlistReasonBoard();
@@ -37044,6 +38045,10 @@ function bindEvents() {
     if (event.target.checked) state.compare.add(id);
     else state.compare.delete(id);
     renderSignalStrip();
+    renderResearchAutopilot();
+    renderFundGenome();
+    renderFutureShockMap();
+    renderMemoryCapsule();
     renderProfileRoom();
     renderSelectionFunnel();
     renderShortlistReasonBoard();
@@ -37217,6 +38222,10 @@ function cacheElements() {
     resetFilters: qs("#resetFilters"),
     copyBrief: qs("#copyBrief"),
     nadiSignalStrip: qs("#nadiSignalStrip"),
+    researchAutopilot: qs("#researchAutopilot"),
+    fundGenome: qs("#fundGenome"),
+    futureShockMap: qs("#futureShockMap"),
+    memoryCapsule: qs("#memoryCapsule"),
     buildTrackerSummary: qs("#buildTrackerSummary"),
     buildTrackerOutput: qs("#buildTrackerOutput"),
     openBuildNext: qs("#openBuildNext"),

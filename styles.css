@@ -14603,6 +14603,251 @@ a:focus-visible {
   line-height: 1.45;
 }
 
+.stress-rehearsal {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(18, 130, 112, 0.28);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(238, 252, 248, 0.9), rgba(234, 242, 251, 0.86));
+}
+
+.stress-rehearsal.watch {
+  border-color: rgba(225, 157, 55, 0.38);
+  background: linear-gradient(135deg, rgba(255, 247, 229, 0.92), rgba(234, 242, 251, 0.86));
+}
+
+.stress-rehearsal.caution {
+  border-color: rgba(206, 86, 115, 0.38);
+  background: linear-gradient(135deg, rgba(255, 236, 242, 0.92), rgba(234, 242, 251, 0.86));
+}
+
+.stress-rehearsal-head,
+.stress-rehearsal-metric-grid,
+.stress-rehearsal-lane-grid,
+.stress-rehearsal-two,
+.stress-rehearsal-check-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.stress-rehearsal-head {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+.stress-rehearsal-head h3 {
+  margin: 4px 0 0;
+  font-size: 22px;
+  line-height: 1.12;
+}
+
+.stress-rehearsal-head p {
+  margin: 7px 0 0;
+}
+
+.stress-rehearsal-metric-grid,
+.stress-rehearsal-lane-grid,
+.stress-rehearsal-check-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.stress-rehearsal-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stress-rehearsal article,
+.stress-rehearsal-blockers {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.66);
+}
+
+.stress-rehearsal article span {
+  display: block;
+  color: var(--mint);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.stress-rehearsal article strong {
+  display: block;
+  margin-top: 4px;
+  overflow-wrap: anywhere;
+}
+
+.stress-rehearsal article p,
+.stress-rehearsal-blockers p {
+  margin: 7px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.stress-rehearsal-two article h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+
+.stress-rehearsal-two article.danger {
+  border-color: rgba(206, 86, 115, 0.35);
+  background: rgba(255, 242, 246, 0.7);
+}
+
+.stress-rehearsal-lane-grid .text-button {
+  width: 100%;
+  margin-top: 9px;
+}
+
+.stress-rehearsal-blockers {
+  border-color: rgba(18, 130, 112, 0.3);
+}
+
+.stress-rehearsal-blockers.has-blockers {
+  border-color: rgba(206, 86, 115, 0.35);
+  background: rgba(255, 242, 246, 0.72);
+}
+
+.stress-rehearsal-blockers strong {
+  color: var(--ink);
+}
+
+.stress-triage {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(18, 130, 112, 0.3);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(239, 252, 248, 0.94), rgba(255, 251, 242, 0.88));
+}
+
+.stress-triage.watch {
+  border-color: rgba(225, 157, 55, 0.44);
+  background: linear-gradient(135deg, rgba(255, 248, 233, 0.94), rgba(238, 246, 252, 0.9));
+}
+
+.stress-triage.caution {
+  border-color: rgba(206, 86, 115, 0.42);
+  background: linear-gradient(135deg, rgba(255, 240, 245, 0.94), rgba(255, 251, 242, 0.9));
+}
+
+.stress-triage-hero,
+.stress-triage-signal-grid,
+.stress-triage-two,
+.stress-triage-route-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.stress-triage-hero {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+.stress-triage-hero h3 {
+  margin: 4px 0 0;
+  font-size: 22px;
+  line-height: 1.12;
+}
+
+.stress-triage-hero p {
+  margin: 7px 0 0;
+}
+
+.stress-triage-signal-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.stress-triage-route-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.stress-triage-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stress-triage article,
+.stress-triage-blockers {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.stress-triage article span {
+  display: block;
+  color: var(--mint);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.stress-triage article strong {
+  display: block;
+  margin-top: 4px;
+  overflow-wrap: anywhere;
+}
+
+.stress-triage article p,
+.stress-triage-blockers p {
+  margin: 7px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.stress-triage-two article h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+
+.stress-triage-two article.danger {
+  border-color: rgba(206, 86, 115, 0.35);
+  background: rgba(255, 242, 246, 0.72);
+}
+
+.stress-triage-route-grid .text-button {
+  width: 100%;
+  margin-top: 9px;
+}
+
+.stress-triage-blockers {
+  border-color: rgba(18, 130, 112, 0.3);
+}
+
+.stress-triage-blockers.has-blockers {
+  border-color: rgba(206, 86, 115, 0.35);
+  background: rgba(255, 242, 246, 0.72);
+}
+
+.stress-triage-blockers strong {
+  color: var(--ink);
+}
+
+@media (max-width: 1100px) {
+  .stress-rehearsal-metric-grid,
+  .stress-rehearsal-lane-grid,
+  .stress-rehearsal-check-grid,
+  .stress-triage-signal-grid,
+  .stress-triage-route-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .stress-rehearsal-head,
+  .stress-rehearsal-two,
+  .stress-rehearsal-metric-grid,
+  .stress-rehearsal-lane-grid,
+  .stress-rehearsal-check-grid,
+  .stress-triage-hero,
+  .stress-triage-two,
+  .stress-triage-signal-grid,
+  .stress-triage-route-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .cost-grid {
   display: grid;
   grid-template-columns: minmax(300px, 0.52fr) minmax(0, 1.48fr);

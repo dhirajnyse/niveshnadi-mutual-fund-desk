@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260520-20";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v206 Founder Beta Scale Gate";
+const DATA_VERSION = "20260520-22";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v208 Market Panic Triage";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const HASH_SETTLE_DELAYS = [0, 80, 180, 360, 720, 1200, 1900, 2800, 4000, 5600];
 const HASH_SETTLE_WINDOW = 6400;
@@ -1144,10 +1144,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Founder Beta Scale Gate",
+    label: "Market Panic Triage",
     status: "Shipping now",
-    route: "#market-strategy",
-    detail: "Convert private beta learning rows into a strict invite, repeat, or no-invite gate with proof lock, support headroom, receipt readiness, and rollback posture before any next wave."
+    route: "#risk-lab",
+    detail: "Add a panic-mode triage layer to the Risk Stress Lab so red-market pressure is separated into allowed research, locked transactions, proof routes, wait windows, and a copyable calm-action receipt."
   },
   {
     label: "Portable mission memory",
@@ -7666,7 +7666,7 @@ function buildTrackerConfig() {
     detail: "MFD dashboard, ARN/EUIN, PAN-consent, registered clients, review packs, and handoff audit trail stay planned after Phase 1 retail launch.",
     blockers: ["Phase 1 account model", "consent workflow", "privacy review", "role-based distributor access"]
   };
-  const pace = `v206 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
+  const pace = `v208 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
   const guardrails = [
     "Build Tracker is a project roadmap for this prototype; it is not an investor-facing recommendation or launch promise.",
     "Product build progress and launch readiness are intentionally separate because a prototype can be polished before live data, auth, payments, and legal gates are complete.",
@@ -7821,7 +7821,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-      <article><span>Prototype version</span><strong>Phase 1 v206</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+      <article><span>Prototype version</span><strong>Phase 1 v208</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -42294,6 +42294,199 @@ function stressBehaviorNote(config) {
   return "Exiting after a fall can lock in the drawdown in this simulator. Treat this as a behavior warning, not advice.";
 }
 
+function stressRehearsalPlan(config) {
+  const annualSip = config.monthlySip * 12;
+  const drawdownMonths = config.monthlySip > 0 ? Math.ceil(config.drop / config.monthlySip) : null;
+  const oneYearGap = config.projectedValue - config.corpus;
+  const recoveryGap = Math.max(0, config.corpus - config.projectedValue);
+  const behaviorScores = {
+    continue: 74,
+    pause: 58,
+    exit: 30
+  };
+  const liquidityScore = config.drop <= annualSip
+    ? 78
+    : config.drop <= annualSip * 2
+      ? 60
+      : 42;
+  const shockScore = config.shock >= 30 ? 36 : config.shock >= 20 ? 52 : 68;
+  const recoveryScore = config.recoveryMonths === null
+    ? 35
+    : config.recoveryMonths <= 12
+      ? 78
+      : config.recoveryMonths <= 36
+        ? 62
+        : 44;
+  const sipScore = config.monthlySip > 0 ? 70 : 50;
+  const rehearsalScore = clampNumber(Math.round(
+    (behaviorScores[config.behavior] || 58) * 0.3
+    + liquidityScore * 0.25
+    + recoveryScore * 0.25
+    + shockScore * 0.14
+    + sipScore * 0.06
+  ), 20, 92);
+  const tone = rehearsalScore >= 74 ? "ready" : rehearsalScore >= 58 ? "watch" : "caution";
+  const posture = tone === "ready"
+    ? "Rehearsal steady"
+    : tone === "watch"
+      ? "Rules needed before stress"
+      : "Panic risk high";
+  const rehearsalId = ["NN", "BAD", "MARKET", "REHEARSAL", DATA_VERSION.replace(/-/g, ""), config.fund.id].join("-").toUpperCase();
+  const coolOff = config.shock >= 25 ? "48-hour cool-off before any switch, exit, or fresh high-risk purchase." : "24-hour cool-off before changing the written plan.";
+  const recoveryCopy = config.recoveryMonths === null
+    ? "No recovery marker under this behavior."
+    : `${config.recoveryMonths} month${config.recoveryMonths === 1 ? "" : "s"} recovery marker.`;
+  const doNow = [
+    `Write the maximum tolerable rupee fall before stress: ${formatMoney(config.drop)} in this scenario.`,
+    `Confirm the source date for AMFI, AMC factsheet, SID/KIM, TER, holdings, and riskometer before treating any score as current.`,
+    `${coolOff}`,
+    `Pre-commit the stress behavior: ${config.behaviorLabel.toLowerCase()}.`
+  ];
+  const dontDo = [
+    "Do not treat the simulator as a prediction, recommendation, or recovery promise.",
+    "Do not add a new high-risk fund only because prices fell; clear Evidence, Compare, Cost, and Memo routes first.",
+    config.behavior === "exit"
+      ? "Do not use the exit branch as a plan; treat it as a panic warning that needs a written reason."
+      : "Do not change SIP only because the one-year projection is below the starting corpus.",
+    "Do not use emergency money, loan money, or family pressure as a shortcut around the memo."
+  ];
+  const evidenceChecks = [
+    { label: "Source lock", value: "Evidence first", detail: "Open Evidence and Citation before trusting score, TER, returns, or holdings." },
+    { label: "Peer lock", value: "Compare role", detail: "Use Compare so the selected fund is not judged in isolation." },
+    { label: "Cost lock", value: "TER and exit", detail: "Check TER drag, exit load, and tax friction before switching or adding." },
+    { label: "Memo lock", value: "Reason written", detail: "Write the decision reason before any action feels allowed." }
+  ];
+  const actionLanes = [
+    { phase: "Before fall", route: "#evidence", action: "Lock source dates and write the no-panic rule." },
+    { phase: "During fall", route: "#risk-lab", action: `Follow only the rehearsed ${config.behaviorLabel.toLowerCase()} rule after cool-off.` },
+    { phase: "After bounce", route: "#compare", action: "Compare peers and cost before increasing or switching." },
+    { phase: "Closeout", route: "#decision-pack", action: "Save a memo with reason, review date, and blocker status." }
+  ];
+  const blockers = [
+    ...(config.behavior === "exit" ? ["Exit behavior selected"] : []),
+    ...(config.recoveryMonths === null ? ["No recovery marker"] : []),
+    ...(config.drop > annualSip && config.monthlySip > 0 ? ["Drawdown exceeds one year SIP"] : []),
+    ...(config.monthlySip === 0 ? ["No SIP discipline entered"] : []),
+    ...(rehearsalScore < 58 ? ["Rehearsal score below safe comfort"] : [])
+  ];
+  const metrics = [
+    {
+      label: "Rehearsal ID",
+      value: rehearsalId,
+      detail: "Identity-light proof that this stress rule was written."
+    },
+    {
+      label: "Pain in SIP months",
+      value: drawdownMonths === null ? "No SIP entered" : `${drawdownMonths} month${drawdownMonths === 1 ? "" : "s"}`,
+      detail: `Drawdown compared with monthly SIP of ${formatMoney(config.monthlySip)}.`
+    },
+    {
+      label: "Recovery discipline",
+      value: recoveryCopy,
+      detail: `One-year gap versus starting corpus: ${formatMoney(oneYearGap)}.`
+    },
+    {
+      label: "Rule posture",
+      value: posture,
+      detail: blockers.length ? `${blockers.length} blocker${blockers.length === 1 ? "" : "s"} before confidence.` : "No rehearsal blocker in this demo."
+    }
+  ];
+
+  return {
+    actionLanes,
+    blockers,
+    doNow,
+    dontDo,
+    evidenceChecks,
+    metrics,
+    oneYearGap,
+    posture,
+    recoveryGap,
+    rehearsalId,
+    rehearsalScore,
+    tone
+  };
+}
+
+function stressPanicTriagePlan(config, rehearsal) {
+  const annualSip = config.monthlySip * 12;
+  const painMultiple = config.monthlySip > 0 ? config.drop / config.monthlySip : null;
+  const panicLoad = clampNumber(Math.round(
+    config.shock * 1.1
+    + (config.behavior === "exit" ? 28 : config.behavior === "pause" ? 14 : 4)
+    + (rehearsal.blockers.length * 8)
+    + (config.drop > annualSip && config.monthlySip > 0 ? 10 : 0)
+  ), 0, 100);
+  const controlScore = clampNumber(100 - panicLoad + Math.round(rehearsal.rehearsalScore * 0.16), 18, 92);
+  const tone = controlScore >= 72 ? "ready" : controlScore >= 54 ? "watch" : "caution";
+  const posture = tone === "ready"
+    ? "Calm review mode"
+    : tone === "watch"
+      ? "Research freeze mode"
+      : "Hard action freeze";
+  const waitWindow = config.shock >= 30 || config.behavior === "exit"
+    ? "72 hours"
+    : config.shock >= 20
+      ? "48 hours"
+      : "24 hours";
+  const triageId = ["NN", "PANIC", "TRIAGE", DATA_VERSION.replace(/-/g, ""), config.fund.id].join("-").toUpperCase();
+  const firstProofRoute = rehearsal.blockers.includes("Exit behavior selected")
+    ? "#decision-pack"
+    : rehearsal.blockers.includes("Drawdown exceeds one year SIP")
+      ? "#risk-lab"
+      : "#evidence";
+  const allowedNow = [
+    "Record the feeling, the rupee drawdown, and the wait window.",
+    "Open Evidence and Citation to verify source dates before trusting any live-looking score.",
+    "Compare role and cost before treating another fund as a rescue.",
+    "Write or update the memo reason without executing a transaction."
+  ];
+  const lockedUntil = [
+    `No switch, redemption, lump-sum purchase, SIP stop, or SIP increase for ${waitWindow}.`,
+    "No decision from WhatsApp, TV, influencer, or recent-return pressure.",
+    "No use of emergency money, loan money, or family pressure as a shortcut.",
+    "No action while source proof, peer role, cost, and memo locks are open."
+  ];
+  const routeQueue = [
+    { label: "01 Cool-off", route: "#risk-lab", action: `Wait ${waitWindow} unless this is a separate household emergency.` },
+    { label: "02 Verify", route: "#evidence", action: "Check source dates, citation path, TER, holdings, riskometer, and data mode." },
+    { label: "03 Compare", route: "#compare", action: "Check whether the fund role is duplicated, cheaper, or still useful." },
+    { label: "04 Cost", route: "#cost-lab", action: "Translate TER, exit load, tax friction, and switch math into rupees." },
+    { label: "05 Memo", route: "#decision-pack", action: "Write the reason, blocker status, review date, and do-not-act line." }
+  ];
+  const emergencyBoundary = config.drop > Math.max(annualSip, 1) * 2
+    ? "If this drawdown affects rent, fees, medical cash, or debt service, separate household cash safety from fund selection."
+    : "If cash needs are normal, keep the decision inside research mode until proof locks clear.";
+  const signalCards = [
+    { label: "Triage ID", value: triageId, detail: "Identity-light panic receipt for this scenario." },
+    { label: "Wait window", value: waitWindow, detail: "Minimum cooling period before any transaction-like move." },
+    { label: "Pain load", value: painMultiple === null ? "No SIP anchor" : `${painMultiple.toFixed(1)} SIP months`, detail: `Rupee drawdown is ${formatMoney(config.drop)}.` },
+    { label: "First proof route", value: firstProofRoute.replace("#", ""), detail: "Open this route before trusting comfort or fear." }
+  ];
+  const blockers = [
+    ...rehearsal.blockers,
+    ...(controlScore < 54 ? ["Panic control score below comfort"] : []),
+    ...(config.behavior === "exit" ? ["Exit selected during stress"] : []),
+    ...(config.shock >= 30 ? ["Severe shock branch"] : [])
+  ];
+
+  return {
+    allowedNow,
+    blockers: [...new Set(blockers)],
+    controlScore,
+    emergencyBoundary,
+    firstProofRoute,
+    lockedUntil,
+    panicLoad,
+    posture,
+    routeQueue,
+    signalCards,
+    tone,
+    triageId,
+    waitWindow
+  };
+}
+
 function renderStressLab(event) {
   if (event) event.preventDefault();
   if (!els.stressOutput) return;
@@ -42307,6 +42500,8 @@ function renderStressLab(event) {
       ? "No recovery gap in this scenario."
       : `${config.recoveryMonths} month${config.recoveryMonths === 1 ? "" : "s"} to regain the starting corpus in this simulator.`;
   const oneYearGap = config.projectedValue - config.corpus;
+  const rehearsal = stressRehearsalPlan(config);
+  const triage = stressPanicTriagePlan(config, rehearsal);
 
   els.stressOutput.innerHTML = `
     <div class="stress-hero">
@@ -42342,12 +42537,115 @@ function renderStressLab(event) {
         </ul>
       </div>
     </div>
+    <div class="stress-rehearsal ${escapeHtml(rehearsal.tone)}">
+      <div class="stress-rehearsal-head">
+        <div>
+          <span class="metric-label">Bad market rehearsal</span>
+          <h3>${escapeHtml(rehearsal.posture)} | ${rehearsal.rehearsalScore}/100</h3>
+          <p>Write the rule before the fall. Score is secondary until source dates, peer role, cost, and memo reason are checked.</p>
+        </div>
+        <button class="text-button" id="copyStressRehearsal" type="button">Copy rehearsal</button>
+      </div>
+      <div class="stress-rehearsal-metric-grid">
+        ${rehearsal.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="stress-rehearsal-lane-grid">
+        ${rehearsal.actionLanes.map((lane) => `
+          <article>
+            <span>${escapeHtml(lane.phase)}</span>
+            <p>${escapeHtml(lane.action)}</p>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(lane.route)}">Open</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="stress-rehearsal-two">
+        <article>
+          <h3>Do before stress</h3>
+          <ul class="stress-list">
+            ${rehearsal.doNow.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="danger">
+          <h3>Do not do</h3>
+          <ul class="stress-list">
+            ${rehearsal.dontDo.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+      <div class="stress-rehearsal-check-grid">
+        ${rehearsal.evidenceChecks.map((check) => `
+          <article>
+            <span>${escapeHtml(check.label)}</span>
+            <strong>${escapeHtml(check.value)}</strong>
+            <p>${escapeHtml(check.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="stress-rehearsal-blockers ${rehearsal.blockers.length ? "has-blockers" : "clear"}">
+        <strong>${rehearsal.blockers.length ? "Blockers before comfort" : "Rehearsal clear in this demo"}</strong>
+        <p>${escapeHtml(rehearsal.blockers.length ? rehearsal.blockers.join(" | ") : "Keep the evidence lock and written memo before any real-world action.")}</p>
+      </div>
+    </div>
+    <div class="stress-triage ${escapeHtml(triage.tone)}">
+      <div class="stress-triage-hero">
+        <div>
+          <span class="metric-label">Market panic triage</span>
+          <h3>${escapeHtml(triage.posture)} | ${triage.controlScore}/100</h3>
+          <p>${escapeHtml(triage.emergencyBoundary)}</p>
+        </div>
+        <button class="text-button" id="copyStressTriage" type="button">Copy triage</button>
+      </div>
+      <div class="stress-triage-signal-grid">
+        ${triage.signalCards.map((card) => `
+          <article>
+            <span>${escapeHtml(card.label)}</span>
+            <strong>${escapeHtml(card.value)}</strong>
+            <p>${escapeHtml(card.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="stress-triage-two">
+        <article>
+          <h3>Allowed now</h3>
+          <ul class="stress-list">
+            ${triage.allowedNow.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="danger">
+          <h3>Locked until ${escapeHtml(triage.waitWindow)}</h3>
+          <ul class="stress-list">
+            ${triage.lockedUntil.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+      <div class="stress-triage-route-grid">
+        ${triage.routeQueue.map((route) => `
+          <article>
+            <span>${escapeHtml(route.label)}</span>
+            <p>${escapeHtml(route.action)}</p>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(route.route)}">Open</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="stress-triage-blockers ${triage.blockers.length ? "has-blockers" : "clear"}">
+        <strong>${triage.blockers.length ? "Triage blockers" : "Triage clear in this demo"}</strong>
+        <p>${escapeHtml(triage.blockers.length ? triage.blockers.join(" | ") : "Use the wait window, evidence lock, cost lock, and written memo before any real-world action.")}</p>
+      </div>
+    </div>
     <p class="journey-disclaimer">Stress test is a research scenario only. It is not a prediction, recommendation, or return guarantee.</p>
   `;
 }
 
 function makeStressNote() {
   const config = stressScenarioConfig();
+  const rehearsal = stressRehearsalPlan(config);
+  const triage = stressPanicTriagePlan(config, rehearsal);
   const recoveryCopy = config.recoveryMonths === null
     ? "Not recoverable under selected assumptions"
     : `${config.recoveryMonths} months`;
@@ -42366,7 +42664,76 @@ function makeStressNote() {
     `12M projected value: ${formatMoney(config.projectedValue)}`,
     `Recovery marker: ${recoveryCopy}`,
     "",
+    `Bad market rehearsal: ${rehearsal.posture} (${rehearsal.rehearsalScore}/100)`,
+    `Rehearsal ID: ${rehearsal.rehearsalId}`,
+    `Market panic triage: ${triage.posture} (${triage.controlScore}/100)`,
+    `Triage ID: ${triage.triageId}`,
+    "",
     "Research scenario only. This is not a prediction, recommendation, or return guarantee."
+  ].join("\n");
+}
+
+function makeStressRehearsalNote() {
+  const config = stressScenarioConfig();
+  const rehearsal = stressRehearsalPlan(config);
+  return [
+    "# NiveshNadi Bad Market Rehearsal",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Rehearsal ID: ${rehearsal.rehearsalId}`,
+    `Fund: ${config.fund.name}`,
+    `Scenario: ${config.shockLabel}`,
+    `Starting corpus: ${formatMoney(config.corpus)}`,
+    `Rupee drawdown rehearsed: ${formatMoney(config.drop)}`,
+    `Behavior rule: ${config.behaviorLabel}`,
+    `Rehearsal posture: ${rehearsal.posture} (${rehearsal.rehearsalScore}/100)`,
+    "",
+    "Do before stress:",
+    ...rehearsal.doNow.map((item) => `- ${item}`),
+    "",
+    "Do not do:",
+    ...rehearsal.dontDo.map((item) => `- ${item}`),
+    "",
+    "Evidence locks:",
+    ...rehearsal.evidenceChecks.map((item) => `- ${item.label}: ${item.value} - ${item.detail}`),
+    "",
+    "Action lanes:",
+    ...rehearsal.actionLanes.map((item) => `- ${item.phase}: ${item.action} (${item.route})`),
+    "",
+    `Blockers: ${rehearsal.blockers.length ? rehearsal.blockers.join(" | ") : "None in this demo, but source proof and memo still apply."}`,
+    "",
+    "Research rehearsal only. This is not personalized advice, a prediction, transaction instruction, or return guarantee."
+  ].join("\n");
+}
+
+function makeStressTriageNote() {
+  const config = stressScenarioConfig();
+  const rehearsal = stressRehearsalPlan(config);
+  const triage = stressPanicTriagePlan(config, rehearsal);
+  return [
+    "# NiveshNadi Market Panic Triage",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Triage ID: ${triage.triageId}`,
+    `Fund: ${config.fund.name}`,
+    `Scenario: ${config.shockLabel}`,
+    `Starting corpus: ${formatMoney(config.corpus)}`,
+    `Rupee drawdown: ${formatMoney(config.drop)}`,
+    `Current stress behavior selected: ${config.behaviorLabel}`,
+    `Triage posture: ${triage.posture} (${triage.controlScore}/100)`,
+    `Wait window: ${triage.waitWindow}`,
+    `Emergency boundary: ${triage.emergencyBoundary}`,
+    "",
+    "Allowed now:",
+    ...triage.allowedNow.map((item) => `- ${item}`),
+    "",
+    `Locked until ${triage.waitWindow}:`,
+    ...triage.lockedUntil.map((item) => `- ${item}`),
+    "",
+    "Route queue:",
+    ...triage.routeQueue.map((item) => `- ${item.label}: ${item.action} (${item.route})`),
+    "",
+    `Blockers: ${triage.blockers.length ? triage.blockers.join(" | ") : "None in this demo, but wait window and proof locks still apply."}`,
+    "",
+    "Research triage only. This is not personalized advice, an instruction to transact, a prediction, or a return guarantee."
   ].join("\n");
 }
 
@@ -43818,6 +44185,16 @@ function bindEvents() {
     input?.addEventListener("change", () => renderStressLab());
   });
   els.copyStress?.addEventListener("click", () => copyText(makeStressNote()));
+  document.addEventListener("click", (event) => {
+    const copyStressRehearsal = event.target.closest("#copyStressRehearsal");
+    if (!copyStressRehearsal) return;
+    copyText(makeStressRehearsalNote());
+  });
+  document.addEventListener("click", (event) => {
+    const copyStressTriage = event.target.closest("#copyStressTriage");
+    if (!copyStressTriage) return;
+    copyText(makeStressTriageNote());
+  });
   els.costForm?.addEventListener("submit", renderCostRealityLab);
   [els.costAmount, els.costSip, els.costYears, els.costAltExpense, els.costExitLoad, els.costTax, els.costMode].forEach((input) => {
     input?.addEventListener("change", () => renderCostRealityLab());

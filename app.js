@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260517-09";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v166 Autopilot Mission Plan";
+const DATA_VERSION = "20260520-20";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v206 Founder Beta Scale Gate";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const HASH_SETTLE_DELAYS = [0, 80, 180, 360, 720, 1200, 1900, 2800, 4000, 5600];
 const HASH_SETTLE_WINDOW = 6400;
@@ -934,6 +934,141 @@ const state = {
 
 const els = {};
 
+const RECOVERY_FIREWALL_OFFICIAL_DOMAINS = [
+  "sebi.gov.in",
+  "amfiindia.com",
+  "mfcentral.com",
+  "camsonline.com",
+  "camskra.com",
+  "kfintech.com",
+  "mfs.kfintech.com",
+  "mutualfund.adityabirlacapital.com"
+];
+
+const RECOVERY_OFFICIAL_ROUTE_DIRECTORY = [
+  {
+    family: "SEBI MITRA circular",
+    domain: "sebi.gov.in",
+    route: "https://www.sebi.gov.in/legal/circulars/feb-2025/service-platform-for-investors-to-trace-inactive-and-unclaimed-mutual-fund-folios-mitra-mutual-fund-investment-tracing-and-retrieval-assistant-_91847.html",
+    purpose: "Regulatory source for MITRA inactive and unclaimed mutual fund folio tracing.",
+    proof: "Circular SEBI/HO/IMD/IMD-SEC-3/P/CIR/2025/15",
+    habit: "Use it to understand the official MITRA framework before trusting any recovery claim."
+  },
+  {
+    family: "AMFI",
+    domain: "amfiindia.com",
+    route: "https://www.amfiindia.com/",
+    purpose: "Industry association source for AMC, NAV, investor, distributor, and mutual fund information.",
+    proof: "AMFI official site",
+    habit: "Use AMFI to cross-check fund house and industry-level routes."
+  },
+  {
+    family: "MF Central",
+    domain: "mfcentral.com",
+    route: "https://www.mfcentral.com/",
+    purpose: "Investor service gateway for mutual fund service requests across participating fund houses.",
+    proof: "CAMS and KFintech backed investor service platform",
+    habit: "Open MF Central independently for service requests instead of following chat links."
+  },
+  {
+    family: "CAMS",
+    domain: "camsonline.com",
+    route: "https://www.camsonline.com/",
+    purpose: "Registrar and Transfer Agent route for CAMS-served mutual fund folios and service requests.",
+    proof: "CAMS official investor service surface",
+    habit: "Use the CAMS official site or app route for CAMS-served folios."
+  },
+  {
+    family: "KFintech",
+    domain: "kfintech.com",
+    route: "https://www.kfintech.com/",
+    purpose: "Registrar and Transfer Agent route for KFintech-served mutual fund folios and service requests.",
+    proof: "KFintech official investor service surface",
+    habit: "Use the KFintech official site or app route for KFintech-served folios."
+  },
+  {
+    family: "AMC website",
+    domain: "official AMC domain",
+    route: "Open from AMFI or a saved official AMC bookmark",
+    purpose: "Fund-house source for scheme documents, factsheets, service notices, and investor support.",
+    proof: "AMC site should match the fund house brand and certificate identity.",
+    habit: "Type the AMC address yourself or reach it from AMFI; do not trust forwarded recovery links."
+  }
+];
+
+const RECOVERY_FIREWALL_SHORTENERS = [
+  "bit.ly",
+  "tinyurl.com",
+  "t.co",
+  "goo.gl",
+  "is.gd",
+  "cutt.ly",
+  "rebrand.ly",
+  "shorturl.at"
+];
+
+const RECOVERY_FIREWALL_SENSITIVE_TERMS = [
+  "otp",
+  "upi pin",
+  "cvv",
+  "bank password",
+  "netbanking password",
+  "screen share",
+  "anydesk",
+  "teamviewer",
+  "advance fee",
+  "processing fee",
+  "whatsapp",
+  "telegram",
+  "send pan",
+  "send aadhaar",
+  "folio number",
+  "cas statement",
+  "bank details",
+  "debit card",
+  "credit card",
+  "death certificate",
+  "nominee document"
+];
+
+const RECOVERY_SCAM_DRILL_PATTERNS = [
+  {
+    id: "urgency",
+    label: "Urgency pressure",
+    terms: ["urgent", "immediate", "today", "expire", "last chance", "within", "hurry", "now", "limited"],
+    detail: "The message tries to shorten thinking time before verification.",
+    defense: "Wait, close the message, and reopen the official route yourself."
+  },
+  {
+    id: "authority",
+    label: "Official-name mimic",
+    terms: ["sebi", "amfi", "mitra", "amc", "rta", "cams", "kfintech", "official", "recovery desk"],
+    detail: "Official words can be copied into fake messages.",
+    defense: "Trust only the official website or a verified app opened independently."
+  },
+  {
+    id: "private-data",
+    label: "Private-data pull",
+    terms: ["otp", "pan", "aadhaar", "folio", "cas", "bank", "card", "cvv", "upi pin", "password", "nominee", "claimant"],
+    detail: "The message tries to move from awareness into disclosure.",
+    defense: "Never share private identifiers through a pasted recovery route."
+  },
+  {
+    id: "payment",
+    label: "Fee hook",
+    terms: ["fee", "charge", "processing", "advance", "refund", "release amount", "upi", "pay now"],
+    detail: "The recovery promise is paired with a payment trigger.",
+    defense: "Do not pay from the message. Confirm any cost only through official channels."
+  },
+  {
+    id: "remote-control",
+    label: "Remote-control trap",
+    terms: ["screen share", "anydesk", "teamviewer", "whatsapp", "telegram", "call me", "helpline"],
+    detail: "The message tries to pull the investor into an uncontrolled support channel.",
+    defense: "Use only official support contacts found from the official site."
+  }
+];
+
 const BUILD_TRACKER_PHASES = [
   {
     phase: "Phase 0",
@@ -959,11 +1094,11 @@ const BUILD_TRACKER_PHASES = [
     phase: "Phase 1B",
     label: "Decision discipline and memo path",
     progress: 100,
-    launch: 71,
+    launch: 72,
     status: "Done",
     route: "#clearance-sprint",
-    done: ["question stack", "answer sheet", "conviction ladder", "proof queue", "memo clearance", "clearance sprint", "decision flight recorder", "anti-hype court", "regret lab", "motive MRI", "decision multiverse", "fund genome", "future shock map", "memory capsule", "memory replay", "research autopilot", "autopilot mission plan"],
-    next: "Make the autopilot mission plan, route memory, replay deltas, capsules, shock maps, genome, multiverse, motive, regret, and court verdicts portable into saved accounts and review vault history."
+    done: ["question stack", "answer sheet", "conviction ladder", "proof queue", "memo clearance", "clearance sprint", "decision flight recorder", "anti-hype court", "regret lab", "motive MRI", "decision multiverse", "fund genome", "future shock map", "memory capsule", "memory replay", "research autopilot", "autopilot mission plan", "mission quick jump", "mission receipt trail", "mission follow-up clock", "autopilot command card", "nadi proof graph", "no-buy gate", "anti-fomo firewall", "dissent engine", "live data gate", "claim passport", "passport share seal", "MITRA recovery shield", "recovery link firewall", "recovery route receipt", "scam immunity drill", "family safe-share brief", "official route directory"],
+    next: "Make the Official Route Directory, Family Safe-Share Brief, Scam Immunity Drill, Recovery Route Receipt, Recovery Link Firewall, MITRA Recovery Shield, Passport Share Seal, Claim Passport, Live Data Gate, Dissent Engine, Anti-FOMO Firewall, No-Buy Gate, Nadi Proof Graph, autopilot command card, mission plan, mission receipt trail, mission follow-up clock, route memory, replay deltas, capsules, shock maps, genome, multiverse, motive, regret, and court verdicts portable into saved accounts and review vault history."
   },
   {
     phase: "Phase 1C",
@@ -1009,10 +1144,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Autopilot Mission Plan",
+    label: "Founder Beta Scale Gate",
     status: "Shipping now",
-    route: "#screener",
-    detail: "Turn the next-best research command into a compact route plan with open steps, visited-route memory, blockers, and memo readiness."
+    route: "#market-strategy",
+    detail: "Convert private beta learning rows into a strict invite, repeat, or no-invite gate with proof lock, support headroom, receipt readiness, and rollback posture before any next wave."
   },
   {
     label: "Portable mission memory",
@@ -2693,6 +2828,7 @@ function signalStripConfig() {
   }
 
   const quickRoutes = [
+    { label: "Mission", route: "#autopilotMissionPlan" },
     { label: "Score", route: "#score-anatomy" },
     { label: "Evidence", route: "#evidence" },
     { label: "Stress", route: "#risk-lab" },
@@ -2892,6 +3028,59 @@ function researchAutopilotConfig() {
   const missionOpen = missionSteps.find((step) => step.blocker && !step.opened)
     || missionSteps.find((step) => !step.opened)
     || missionSteps[missionSteps.length - 1];
+  const latestRoute = routeMemory[0] || null;
+  const receiptId = ["NN", "MISSION", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase();
+  const remainingBlockers = missionSteps.filter((step) => step.blocker && !step.opened);
+  const latestRouteDate = latestRoute?.openedAt ? new Date(latestRoute.openedAt) : null;
+  const validLatestRouteDate = latestRouteDate && !Number.isNaN(latestRouteDate.getTime()) ? latestRouteDate : null;
+  const now = new Date();
+  const dayMs = 24 * 60 * 60 * 1000;
+  const followUpWindow = remainingBlockers.length ? 7 : 30;
+  const dueDate = new Date((validLatestRouteDate || now).getTime() + followUpWindow * dayMs);
+  const daysSinceLastRoute = validLatestRouteDate ? Math.max(0, Math.floor((now.getTime() - validLatestRouteDate.getTime()) / dayMs)) : null;
+  const daysToDue = validLatestRouteDate ? Math.ceil((dueDate.getTime() - now.getTime()) / dayMs) : null;
+  const missionClockStatus = !validLatestRouteDate
+    ? "Start follow-up clock"
+    : daysToDue <= 0
+      ? "Review due now"
+      : daysToDue <= 2
+        ? "Review soon"
+        : "Review scheduled";
+  const missionClockTone = !validLatestRouteDate
+    ? "watch"
+    : daysToDue <= 0
+      ? "caution"
+      : daysToDue <= 2
+        ? "watch"
+        : "ready";
+  const followUpRoute = remainingBlockers[0]?.route || missionOpen.route || "#decision-pack";
+  const followUpAction = !validLatestRouteDate
+    ? `Open ${missionOpen.label}`
+    : remainingBlockers.length
+      ? `Clear ${remainingBlockers[0].label}`
+      : "Draft memo or set review rhythm";
+  const missionReceipt = {
+    id: receiptId,
+    latestLabel: latestRoute?.label || "No route opened",
+    latestRoute: latestRoute?.route || "Start mission",
+    latestAt: latestRoute?.openedAt || "",
+    openedCount: routeMemory.length,
+    clearedCount: clearMissionSteps,
+    remainingBlockers,
+    nextLabel: missionOpen.label,
+    nextRoute: missionOpen.route,
+    posture: remainingBlockers.length ? "Trail still blocked" : "Trail ready for memo"
+  };
+  const missionClock = {
+    action: followUpAction,
+    dueDate,
+    daysSinceLastRoute,
+    daysToDue,
+    followUpWindow,
+    route: followUpRoute,
+    status: missionClockStatus,
+    tone: missionClockTone
+  };
   const primary = blockers[0] || lanes[lanes.length - 1];
   const score = clampNumber(Math.round(
     signal.score * 0.24 +
@@ -2914,18 +3103,605 @@ function researchAutopilotConfig() {
   const noGo = blockers.length
     ? `Do not move money or increase SIP until ${primary.label.toLowerCase()} is cleared and the reason is written.`
     : "Do not treat the memo as advice or execution approval; it remains research until live data and personal suitability are separately confirmed.";
+  const commandRank = blockers.length
+    ? primary.tone === "caution" ? "Hold" : "Verify"
+    : "Memo";
+  const commandTitle = blockers.length
+    ? `${commandRank}: ${primary.label}`
+    : "Memo-ready: write and review";
+  const commandLine = blockers.length
+    ? `${primary.action}. Keep money movement paused until ${primary.label.toLowerCase()} is cleared.`
+    : "Build the memo, save the review rhythm, and keep the conclusion research-only.";
+  const proofLocks = [
+    evidenceReady ? "Evidence mapped" : "Evidence gap",
+    compareReady ? `${state.compare.size} funds in compare` : "Compare pending",
+    memoryReady ? "Memory baseline saved" : "Memory baseline pending",
+    `${missionReceipt.remainingBlockers.length} blocker${missionReceipt.remainingBlockers.length === 1 ? "" : "s"}`
+  ];
+  const commandCard = {
+    id: ["NN", "COMMAND", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    blocker: blockers.length ? primary.label : "Memo discipline",
+    dueDate: missionClock.dueDate,
+    followUp: missionClock.status,
+    line: commandLine,
+    proofLocks,
+    rank: commandRank,
+    route: primary.route,
+    shareLine: `${signal.fund.name} | ${commandRank} | ${commandLine} | Route ${primary.route}`,
+    title: commandTitle,
+    tone
+  };
+  const memoLane = lanes.find((lane) => lane.label === "Decision memo") || primary;
+  const proofGraphNodes = [
+    {
+      label: "Source",
+      route: "#evidence",
+      score: signal.evidence,
+      status: evidenceReady ? "Locked" : "Open",
+      detail: evidenceReady ? "Source map is strong enough for demo research." : "Confirm AMFI, AMC, SID/KIM, TER, portfolio, and riskometer dates.",
+      tone: evidenceReady ? "ready" : "caution"
+    },
+    {
+      label: "Peer role",
+      route: "#compare",
+      score: compareReady ? 86 : 46,
+      status: compareReady ? "Connected" : "Missing",
+      detail: compareReady ? `${state.compare.size} funds anchor the comparison set.` : "Add at least two comparison anchors before trusting role fit.",
+      tone: compareReady ? "ready" : "caution"
+    },
+    {
+      label: "Genome",
+      route: genome.weakest.route,
+      score: genome.score,
+      status: genome.weakest.score >= 70 ? "Stable" : "Weak gene",
+      detail: `${genome.weakest.label}: ${genome.weakest.mutation}`,
+      tone: genome.weakest.score >= 70 ? "ready" : "watch"
+    },
+    {
+      label: "Behavior",
+      route: shock.weakest.route,
+      score: shock.score,
+      status: shock.weakest.score >= 70 ? "Rehearsed" : "Fragile",
+      detail: `${shock.weakest.label}: ${shock.weakest.counter}`,
+      tone: shock.weakest.score >= 70 ? "ready" : "watch"
+    },
+    {
+      label: "Memory",
+      route: "#screener",
+      score: memory.replayScore,
+      status: memoryReady ? "Baseline" : "Unproven",
+      detail: memory.latestSelected ? memory.replayPosture : "Save a capsule so old conviction can be replayed.",
+      tone: memoryReady ? "ready" : "watch"
+    },
+    {
+      label: "Memo",
+      route: "#decision-pack",
+      score: memoLane.score,
+      status: memoLane.blocker ? "Blocked" : "Ready",
+      detail: memoLane.blocker ? memoLane.action : "Memo can be drafted with guardrails and review rhythm.",
+      tone: memoLane.blocker ? "caution" : "ready"
+    }
+  ];
+  const brokenProofNodes = proofGraphNodes.filter((node) => node.tone !== "ready");
+  const proofGraphScore = clampNumber(Math.round(proofGraphNodes.reduce((sum, node) => sum + node.score, 0) / proofGraphNodes.length), 0, 100);
+  const weakestProofNode = brokenProofNodes[0] || proofGraphNodes.reduce((weakest, node) => node.score < weakest.score ? node : weakest, proofGraphNodes[0]);
+  const proofGraph = {
+    id: ["NN", "PROOF", "GRAPH", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    broken: brokenProofNodes,
+    nodes: proofGraphNodes,
+    posture: brokenProofNodes.length ? "Proof circuit open" : "Proof circuit connected",
+    route: weakestProofNode.route,
+    score: proofGraphScore,
+    tone: brokenProofNodes.some((node) => node.tone === "caution") ? "caution" : brokenProofNodes.length ? "watch" : "ready",
+    weakest: weakestProofNode
+  };
+  const liveClaimGates = [
+    {
+      label: "Scheme identity",
+      route: "#citation-binder",
+      source: "AMFI scheme and NAV master",
+      required: "scheme code, source date, import run id",
+      ready: signal.evidence >= 76,
+      score: clampNumber(Math.round(signal.evidence + (evidenceReady ? 8 : -8)), 12, 96),
+      block: "Fund name, category, active status, and NAV cannot look live until AMFI source date and row identity are attached."
+    },
+    {
+      label: "Return and TER",
+      route: "#live-data-contracts",
+      source: "AMC factsheet and TER disclosure",
+      required: "factsheet month, TER date, parser confidence",
+      ready: signal.evidence >= 82 && !signal.costNeedsCheck,
+      score: clampNumber(Math.round(signal.evidence - (signal.costNeedsCheck ? 18 : 2)), 12, 96),
+      block: "Returns, expense, manager, AUM, and style claims need factsheet month, extraction confidence, and TER source proof."
+    },
+    {
+      label: "Portfolio proof",
+      route: "#source-dry-run",
+      source: "Portfolio disclosure file",
+      required: "holdings date, reconciliation, stale flag",
+      ready: signal.evidence >= 80 && compareReady,
+      score: clampNumber(Math.round((signal.evidence * 0.72) + (compareReady ? 22 : 4)), 12, 96),
+      block: "Holdings, overlap, sector, and issuer concentration must show disclosure date before X-Ray claims feel current."
+    },
+    {
+      label: "Risk and benchmark",
+      route: "#data-readiness",
+      source: "Riskometer, TER history, benchmark feed",
+      required: "riskometer month, benchmark license, change flag",
+      ready: signal.evidence >= 78 && proofGraph.score >= 72,
+      score: clampNumber(Math.round((signal.evidence * 0.55) + (proofGraph.score * 0.35) + 4), 12, 96),
+      block: "Risk band, benchmark context, and drawdown language need current source month and allowed display fields."
+    },
+    {
+      label: "Public release",
+      route: "#reviewer-release-binder",
+      source: "Reviewer decision and claim surface map",
+      required: "reviewer decision, surface binding, rollback note",
+      ready: false,
+      score: 52,
+      block: "A reviewer release receipt is still required before live-looking claims can move from preview to public trust."
+    }
+  ].map((gate) => ({
+    ...gate,
+    tone: gate.ready ? "ready" : gate.score < 58 ? "caution" : "watch"
+  }));
+  const liveClaimBlocks = liveClaimGates.filter((gate) => !gate.ready);
+  const liveDataScore = clampNumber(Math.round(
+    liveClaimGates.reduce((sum, gate) => sum + gate.score, 0) / liveClaimGates.length
+  ), 0, 100);
+  const strongestLiveBlock = liveClaimBlocks[0] || liveClaimGates.reduce((weakest, gate) => gate.score < weakest.score ? gate : weakest, liveClaimGates[0]);
+  const liveDataGate = {
+    id: ["NN", "LIVE", "DATA", "GATE", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    blocks: liveClaimBlocks,
+    claims: liveClaimGates,
+    mode: liveClaimBlocks.length ? "Preview only" : "Source-dated preview",
+    releaseRule: liveClaimBlocks.length
+      ? `Do not label this claim live until ${strongestLiveBlock.label.toLowerCase()} has its receipt, citation path, and reviewer release.`
+      : "Keep source dates visible and refresh the reviewer receipt before widening public release.",
+    route: strongestLiveBlock.route,
+    score: liveDataScore,
+    sourceChain: "source date -> parser receipt -> citation path -> reviewer release -> public surface",
+    strongest: strongestLiveBlock,
+    tone: liveClaimBlocks.some((gate) => gate.tone === "caution") ? "caution" : liveClaimBlocks.length ? "watch" : "ready",
+    verdict: liveClaimBlocks.length ? "Live claim blocked" : "Live claim gated"
+  };
+  const noBuyRules = [
+    {
+      label: "Source proof",
+      route: "#evidence",
+      locked: !evidenceReady,
+      score: signal.evidence,
+      status: evidenceReady ? "Clear" : "Hard lock",
+      detail: evidenceReady ? "Evidence is strong enough for demo research." : "Source dates and citation paths must be confirmed first."
+    },
+    {
+      label: "Peer role",
+      route: "#compare",
+      locked: !compareReady,
+      score: compareReady ? 86 : 46,
+      status: compareReady ? "Clear" : "Hard lock",
+      detail: compareReady ? `${state.compare.size} funds define the role context.` : "At least two comparison anchors are required."
+    },
+    {
+      label: "Memory replay",
+      route: "#screener",
+      locked: !memoryReady,
+      score: memory.replayScore,
+      status: memoryReady ? "Clear" : "Soft lock",
+      detail: memoryReady ? "Saved baseline is stable against the current signal." : "Save or replay a memory capsule before trusting old conviction."
+    },
+    {
+      label: "Written memo",
+      route: "#decision-pack",
+      locked: memoLane.blocker,
+      score: memoLane.score,
+      status: memoLane.blocker ? "Hard lock" : "Clear",
+      detail: memoLane.blocker ? "A decision memo needs proof, comparison, memory, amount, horizon, and review date." : "Memo can be drafted with research-only guardrails."
+    },
+    {
+      label: "Proof graph",
+      route: proofGraph.route,
+      locked: Boolean(proofGraph.broken.length),
+      score: proofGraph.score,
+      status: proofGraph.broken.length ? "Circuit open" : "Clear",
+      detail: proofGraph.broken.length ? `${proofGraph.broken.length} proof node${proofGraph.broken.length === 1 ? "" : "s"} still open.` : "Proof circuit is connected for memo review."
+    }
+  ].map((rule) => ({
+    ...rule,
+    tone: rule.locked ? (rule.score < 58 ? "caution" : "watch") : "ready"
+  }));
+  const noBuyLocks = noBuyRules.filter((rule) => rule.locked);
+  const noBuyScore = clampNumber(Math.round(
+    proofGraph.score * 0.34 +
+    missionProgress * 0.24 +
+    signal.evidence * 0.18 +
+    memoLane.score * 0.14 +
+    (noBuyLocks.length ? -6 * noBuyLocks.length : 10)
+  ), 0, 100);
+  const primaryNoBuyLock = noBuyLocks[0] || noBuyRules[noBuyRules.length - 1];
+  const noBuyGate = {
+    id: ["NN", "NO", "BUY", "GATE", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    changeMind: noBuyLocks.length
+      ? `I will only reconsider after ${primaryNoBuyLock.label.toLowerCase()} is clear and the written reason survives review.`
+      : "I will only move from research to memo review, not execution, after the final guardrail is checked.",
+    expiry: researchMemoryShortDate(missionClock.dueDate.toISOString()),
+    locks: noBuyLocks,
+    lockLine: noBuyLocks.length ? noBuyLocks.map((rule) => rule.label).join(" | ") : "No hard research lock before memo drafting.",
+    route: primaryNoBuyLock.route,
+    rules: noBuyRules,
+    score: noBuyScore,
+    temptation: `${signal.fund.returns5y}% 5Y demo return is not permission to act without proof.`,
+    tone: noBuyLocks.some((rule) => rule.tone === "caution") ? "caution" : noBuyLocks.length ? "watch" : "ready",
+    verdict: noBuyLocks.length ? "No buy yet" : "Memo review only"
+  };
+  const fomoTriggers = [
+    {
+      label: "Return chase",
+      route: "#score-anatomy",
+      active: signal.fund.returns3y >= 18 || signal.fund.returns5y >= 14,
+      score: clampNumber(Math.round(96 - Math.max(0, signal.fund.returns3y - 12) * 3 - Math.max(0, signal.fund.returns5y - 10) * 2), 24, 96),
+      detail: `${signal.fund.returns3y.toFixed(1)}% 3Y and ${signal.fund.returns5y.toFixed(1)}% 5Y demo return is not a reason until role, risk, and evidence survive review.`
+    },
+    {
+      label: "Peer envy",
+      route: "#compare",
+      active: signal.sleeveDelta > 3 || !compareReady,
+      score: compareReady ? clampNumber(Math.round(86 - Math.max(0, signal.sleeveDelta - 3) * 4), 38, 92) : 42,
+      detail: compareReady ? `Sleeve delta ${signal.sleeveDelta >= 0 ? "+" : ""}${signal.sleeveDelta.toFixed(1)} needs role proof, not excitement.` : "No fund should feel attractive without at least two comparison anchors."
+    },
+    {
+      label: "Risk blindness",
+      route: "#risk-lab",
+      active: signal.fund.maxDrawdown >= 18 || ["High", "Very High"].includes(signal.fund.risk),
+      score: clampNumber(Math.round(92 - signal.fund.maxDrawdown * 1.2), 22, 92),
+      detail: `${signal.fund.risk} risk and ${signal.fund.maxDrawdown}% demo drawdown must be converted into rupee impact before conviction rises.`
+    },
+    {
+      label: "Cost amnesia",
+      route: "#cost-lab",
+      active: signal.costNeedsCheck || signal.fund.expense > 0.5,
+      score: signal.costNeedsCheck ? 54 : clampNumber(Math.round(88 - signal.fund.expense * 36), 42, 92),
+      detail: `${signal.fund.expense.toFixed(2)}% TER must be checked against alternatives and long-horizon drag before a fund looks cheap enough.`
+    },
+    {
+      label: "Proof bypass",
+      route: noBuyGate.route,
+      active: noBuyGate.locks.length > 0,
+      score: clampNumber(noBuyGate.score + 8, 20, 94),
+      detail: noBuyGate.locks.length ? `${noBuyGate.locks.length} no-buy lock${noBuyGate.locks.length === 1 ? "" : "s"} still block the research path.` : "No-buy locks are clear enough for memo review, not execution."
+    }
+  ].map((trigger) => ({
+    ...trigger,
+    tone: trigger.active ? (trigger.score < 58 ? "caution" : "watch") : "ready"
+  }));
+  const activeFomoTriggers = fomoTriggers.filter((trigger) => trigger.active);
+  const fomoCoolingHours = activeFomoTriggers.length >= 3 ? 72 : activeFomoTriggers.length ? 48 : 24;
+  const fomoCoolingUntil = new Date(now.getTime() + fomoCoolingHours * 60 * 60 * 1000);
+  const fomoFirewallScore = clampNumber(Math.round(
+    noBuyGate.score * 0.32 +
+    proofGraph.score * 0.22 +
+    shock.score * 0.18 +
+    memory.replayScore * 0.14 +
+    (activeFomoTriggers.length ? 42 - activeFomoTriggers.length * 5 : 88) * 0.14
+  ), 0, 100);
+  const primaryFomoTrigger = activeFomoTriggers[0] || fomoTriggers[fomoTriggers.length - 1];
+  const fomoFirewall = {
+    id: ["NN", "FOMO", "FIREWALL", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    active: activeFomoTriggers,
+    coolingHours: fomoCoolingHours,
+    coolingUntil: fomoCoolingUntil,
+    impulse: activeFomoTriggers.length
+      ? `${activeFomoTriggers[0].label}: ${activeFomoTriggers[0].detail}`
+      : "No major impulse trigger is active before memo review.",
+    question: activeFomoTriggers.length
+      ? `Would I still research this fund if ${activeFomoTriggers[0].label.toLowerCase()} disappeared tomorrow?`
+      : "Would I still hold the same thesis after a fresh source and risk review?",
+    route: primaryFomoTrigger.route,
+    rule: activeFomoTriggers.length
+      ? `Wait ${fomoCoolingHours} hours and clear ${activeFomoTriggers[0].label.toLowerCase()} before increasing confidence.`
+      : "Keep the memo research-only and refresh evidence before action.",
+    score: fomoFirewallScore,
+    tone: activeFomoTriggers.some((trigger) => trigger.tone === "caution") ? "caution" : activeFomoTriggers.length ? "watch" : "ready",
+    triggers: fomoTriggers,
+    verdict: activeFomoTriggers.length ? "FOMO blocked" : "Cooling route clear"
+  };
+  const comparisonFunds = compareSet().filter((fund) => fund.id !== signal.fund.id);
+  const overlapPeer = comparisonFunds
+    .map((fund) => ({
+      fund,
+      overlap: fund.holdings.filter((holding) => signal.fund.holdings.includes(holding)).length
+    }))
+    .sort((a, b) => b.overlap - a.overlap)[0] || null;
+  const cheaperPeer = signal.peer.sleevePeers
+    .filter((fund) => fund.id !== signal.fund.id)
+    .sort((a, b) => a.expense - b.expense)[0] || null;
+  const lowerDrawdownPeer = signal.peer.sleevePeers
+    .filter((fund) => fund.id !== signal.fund.id)
+    .sort((a, b) => a.maxDrawdown - b.maxDrawdown)[0] || null;
+  const higherEvidencePeer = signal.peer.sleevePeers
+    .filter((fund) => fund.id !== signal.fund.id)
+    .sort((a, b) => evidenceReadinessScore(b) - evidenceReadinessScore(a))[0] || null;
+  const betterScorePeer = signal.peer.sleevePeers
+    .filter((fund) => fund.id !== signal.fund.id)
+    .sort((a, b) => nadiScore(b) - nadiScore(a))[0] || null;
+  const dissentCases = [
+    {
+      label: "Cheaper substitute",
+      route: "#cost-lab",
+      active: Boolean(cheaperPeer && signal.fund.expense > cheaperPeer.expense + 0.08),
+      score: cheaperPeer ? clampNumber(Math.round((signal.fund.expense - cheaperPeer.expense) * 120 + 44), 18, 96) : 36,
+      objection: cheaperPeer ? `${cheaperPeer.name} has ${cheaperPeer.expense.toFixed(2)}% TER versus ${signal.fund.expense.toFixed(2)}%.` : "No cheaper sleeve peer exists in the demo set.",
+      answer: "Explain why the selected fund earns its extra cost after role, risk, and evidence review."
+    },
+    {
+      label: "Lower drawdown alternative",
+      route: "#risk-lab",
+      active: Boolean(lowerDrawdownPeer && signal.fund.maxDrawdown > lowerDrawdownPeer.maxDrawdown + 4),
+      score: lowerDrawdownPeer ? clampNumber(Math.round((signal.fund.maxDrawdown - lowerDrawdownPeer.maxDrawdown) * 2.6 + 36), 18, 96) : 34,
+      objection: lowerDrawdownPeer ? `${lowerDrawdownPeer.name} shows ${lowerDrawdownPeer.maxDrawdown}% demo drawdown versus ${signal.fund.maxDrawdown}%.` : "No lower-drawdown sleeve peer exists in the demo set.",
+      answer: "Translate the extra drawdown into rupees and explain why that pain is acceptable."
+    },
+    {
+      label: "Role duplication",
+      route: "#compare",
+      active: comparisonFunds.length < 1 || Boolean(overlapPeer && overlapPeer.overlap >= 3),
+      score: comparisonFunds.length < 1 ? 72 : clampNumber(Math.round((overlapPeer?.overlap || 0) * 18), 20, 96),
+      objection: comparisonFunds.length < 1
+        ? "No active comparison fund is selected, so the fund's role is not defended."
+        : `${overlapPeer.fund.name} shares ${overlapPeer.overlap} top holding${overlapPeer.overlap === 1 ? "" : "s"} with the selected fund.`,
+      answer: "State the distinct portfolio job, or mark the fund as a duplicate/watch item."
+    },
+    {
+      label: "Evidence challenger",
+      route: "#evidence",
+      active: !evidenceReady || Boolean(higherEvidencePeer && evidenceReadinessScore(higherEvidencePeer) > signal.evidence + 5),
+      score: higherEvidencePeer ? clampNumber(Math.round(evidenceReadinessScore(higherEvidencePeer) - signal.evidence + 58), 24, 96) : clampNumber(90 - signal.evidence, 18, 88),
+      objection: higherEvidencePeer ? `${higherEvidencePeer.name} has ${evidenceReadinessScore(higherEvidencePeer)}/100 evidence readiness versus ${signal.evidence}/100.` : `Selected fund evidence is ${signal.evidence}/100.`,
+      answer: "Confirm source dates, citations, factsheet, SID/KIM, TER, portfolio, and riskometer before relying on the claim."
+    },
+    {
+      label: "Thesis fragility",
+      route: fomoFirewall.route,
+      active: activeFomoTriggers.length >= 3 || noBuyGate.locks.length > 0 || Boolean(betterScorePeer && nadiScore(betterScorePeer) > signal.score + 4),
+      score: clampNumber(Math.round(activeFomoTriggers.length * 14 + noBuyGate.locks.length * 10 + (betterScorePeer ? Math.max(0, nadiScore(betterScorePeer) - signal.score) * 2 : 0) + 28), 22, 96),
+      objection: betterScorePeer ? `${betterScorePeer.name} scores ${nadiScore(betterScorePeer)}/100 versus ${signal.score}/100, while ${activeFomoTriggers.length} impulse trigger${activeFomoTriggers.length === 1 ? "" : "s"} remain.` : `${activeFomoTriggers.length} impulse trigger${activeFomoTriggers.length === 1 ? "" : "s"} and ${noBuyGate.locks.length} no-buy lock${noBuyGate.locks.length === 1 ? "" : "s"} remain.`,
+      answer: "Write the strongest reason this fund could be wrong before writing the strongest reason it could be right."
+    }
+  ].map((dissentCase) => ({
+    ...dissentCase,
+    tone: dissentCase.active ? (dissentCase.score >= 72 ? "caution" : "watch") : "ready"
+  }));
+  const activeDissentCases = dissentCases.filter((dissentCase) => dissentCase.active);
+  const dissentScore = clampNumber(Math.round(
+    activeDissentCases.length
+      ? activeDissentCases.reduce((sum, dissentCase) => sum + dissentCase.score, 0) / activeDissentCases.length
+      : 26
+  ), 0, 100);
+  const primaryDissent = activeDissentCases[0] || dissentCases.reduce((strongest, dissentCase) => dissentCase.score > strongest.score ? dissentCase : strongest, dissentCases[0]);
+  const dissentEngine = {
+    id: ["NN", "DISSENT", "ENGINE", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    active: activeDissentCases,
+    answerRule: activeDissentCases.length
+      ? `Do not write a positive memo until you can answer ${primaryDissent.label.toLowerCase()}.`
+      : "Keep one written counter-argument in the memo even when the objections are light.",
+    burden: activeDissentCases.length
+      ? `${activeDissentCases.length} open objection${activeDissentCases.length === 1 ? "" : "s"} must be answered before conviction rises.`
+      : "No major dissent case is active, but the memo still needs a counter-thesis.",
+    cases: dissentCases,
+    route: primaryDissent.route,
+    score: dissentScore,
+    strongest: primaryDissent,
+    tone: activeDissentCases.some((dissentCase) => dissentCase.tone === "caution") ? "caution" : activeDissentCases.length ? "watch" : "ready",
+    verdict: activeDissentCases.length ? "Objection open" : "Dissent cleared"
+  };
+  const liveClaimByLabel = (label) => liveDataGate.claims.find((claim) => claim.label === label) || liveDataGate.strongest;
+  const schemeGate = liveClaimByLabel("Scheme identity");
+  const returnGate = liveClaimByLabel("Return and TER");
+  const portfolioGate = liveClaimByLabel("Portfolio proof");
+  const riskGate = liveClaimByLabel("Risk and benchmark");
+  const reviewerGate = liveClaimByLabel("Public release");
+  const claimPassportItems = [
+    {
+      label: "Nadi score",
+      value: `${signal.score}/100`,
+      route: "#score-anatomy",
+      source: "Nadi score formula, selected fund card, and proof graph",
+      required: "formula version, source date, evidence score, reviewer release",
+      ready: schemeGate.ready && proofGraph.score >= 72,
+      score: clampNumber(Math.round((signal.score * 0.46) + (proofGraph.score * 0.34) + (schemeGate.score * 0.2)), 12, 98),
+      freshness: schemeGate.ready ? "Source-dated demo stamp" : "Source date needed",
+      displayRule: "Show as a research score only, always beside evidence posture and no-return-guarantee copy."
+    },
+    {
+      label: "5Y return",
+      value: `${signal.fund.returns5y.toFixed(1)}% demo`,
+      route: "#live-data-contracts",
+      source: "AMC factsheet return table",
+      required: "factsheet month, calculation period, parser confidence",
+      ready: returnGate.ready,
+      score: returnGate.score,
+      freshness: returnGate.ready ? "Factsheet month stamped" : "Factsheet month needed",
+      displayRule: "Never present return without demo/live label, period, source month, and risk reminder."
+    },
+    {
+      label: "Expense and TER",
+      value: `${signal.fund.expense.toFixed(2)}%`,
+      route: "#cost-lab",
+      source: "TER disclosure, factsheet, and cost lab",
+      required: "TER date, expense class, direct or regular plan label",
+      ready: returnGate.ready && !signal.costNeedsCheck,
+      score: clampNumber(Math.round(returnGate.score - (signal.costNeedsCheck ? 16 : 0) + (signal.fund.expense <= signal.peer.sleeveAvg.expense ? 8 : -4)), 12, 98),
+      freshness: signal.costNeedsCheck ? "Cost review needed" : "Cost check mapped",
+      displayRule: "Display TER only with plan context, date, and comparison against sleeve alternatives."
+    },
+    {
+      label: "Holdings snapshot",
+      value: `${signal.fund.holdings.length} demo holdings`,
+      route: "#source-dry-run",
+      source: "Portfolio disclosure file and X-Ray overlap map",
+      required: "holding date, issuer reconciliation, stale portfolio flag",
+      ready: portfolioGate.ready,
+      score: portfolioGate.score,
+      freshness: portfolioGate.ready ? "Portfolio date stamped" : "Portfolio date needed",
+      displayRule: "Treat holdings as snapshot data, never as today portfolio, until the disclosure date is visible."
+    },
+    {
+      label: "Risk band",
+      value: signal.fund.risk,
+      route: "#risk-lab",
+      source: "Riskometer, drawdown lab, and benchmark context",
+      required: "riskometer month, drawdown period, benchmark feed",
+      ready: riskGate.ready,
+      score: clampNumber(Math.round((riskGate.score * 0.74) + (100 - signal.fund.maxDrawdown) * 0.26), 12, 98),
+      freshness: riskGate.ready ? "Risk month stamped" : "Riskometer month needed",
+      displayRule: "Pair risk band with drawdown, rupee-pain example, and investor comfort check."
+    },
+    {
+      label: "Peer role",
+      value: compareReady ? `${state.compare.size} fund compare` : "Compare pending",
+      route: "#compare",
+      source: "Category, sleeve peer set, and compare matrix",
+      required: "two peer anchors, category role, duplication check",
+      ready: compareReady && proofGraph.nodes.some((node) => node.label === "Peer role" && node.tone === "ready"),
+      score: compareReady ? 86 : 46,
+      freshness: compareReady ? "Peer map active" : "Peer map needed",
+      displayRule: "Do not call a fund core, satellite, parking, or replacement until peer role is defended."
+    },
+    {
+      label: "Public release",
+      value: reviewerGate.ready ? "Reviewer released" : "Reviewer pending",
+      route: "#reviewer-release-binder",
+      source: "Reviewer release binder and claim surface map",
+      required: "reviewer decision, surface binding, rollback note",
+      ready: reviewerGate.ready,
+      score: reviewerGate.score,
+      freshness: reviewerGate.ready ? "Reviewer stamp present" : "Reviewer decision needed",
+      displayRule: "Keep every claim in preview until reviewer release and rollback posture are attached."
+    }
+  ].map((claim) => ({
+    ...claim,
+    state: claim.ready ? "Stamped" : claim.score < 58 ? "Blocked" : "Preview",
+    tone: claim.ready ? "ready" : claim.score < 58 ? "caution" : "watch"
+  }));
+  const claimPassportBlocks = claimPassportItems.filter((claim) => !claim.ready);
+  const claimPassportScore = clampNumber(Math.round(
+    claimPassportItems.reduce((sum, claim) => sum + claim.score, 0) / claimPassportItems.length
+  ), 0, 100);
+  const strongestClaimBlock = claimPassportBlocks[0] || claimPassportItems.reduce((weakest, claim) => claim.score < weakest.score ? claim : weakest, claimPassportItems[0]);
+  const claimPassport = {
+    id: ["NN", "CLAIM", "PASSPORT", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    blocks: claimPassportBlocks,
+    evidenceLine: `${liveDataGate.blocks.length} live gate block${liveDataGate.blocks.length === 1 ? "" : "s"} | ${proofGraph.broken.length} proof node${proofGraph.broken.length === 1 ? "" : "s"} | ${dissentEngine.active.length} objection${dissentEngine.active.length === 1 ? "" : "s"}`,
+    items: claimPassportItems,
+    mode: claimPassportBlocks.length ? "Claim passports incomplete" : "Claims carry proof stamps",
+    route: strongestClaimBlock.route,
+    rule: claimPassportBlocks.length
+      ? `Do not reuse ${strongestClaimBlock.label.toLowerCase()} outside this desk until its source, freshness, reviewer, and display rule are stamped.`
+      : "Keep claim passports attached whenever the research is copied, shared, reviewed, or converted into a memo.",
+    score: claimPassportScore,
+    strongest: strongestClaimBlock,
+    tone: claimPassportBlocks.some((claim) => claim.tone === "caution") ? "caution" : claimPassportBlocks.length ? "watch" : "ready",
+    verdict: claimPassportBlocks.length ? "Passport required" : "Passport stamped"
+  };
+  const shareReadyClaims = claimPassport.items.filter((claim) => claim.ready);
+  const previewClaims = claimPassport.items.filter((claim) => !claim.ready && claim.score >= 58);
+  const blockedClaims = claimPassport.items.filter((claim) => claim.score < 58);
+  const primaryShareBlock = blockedClaims[0] || previewClaims[0] || claimPassport.strongest;
+  const passportShareSealScore = clampNumber(Math.round(
+    (claimPassport.score * 0.45) +
+    (liveDataGate.score * 0.25) +
+    (proofGraph.score * 0.15) +
+    (noBuyGate.score * 0.1) +
+    (blockedClaims.length ? -blockedClaims.length * 5 : 8)
+  ), 0, 100);
+  const passportShareSeal = {
+    id: ["NN", "PASSPORT", "SHARE", "SEAL", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    blocked: blockedClaims,
+    claims: claimPassport.items,
+    mode: blockedClaims.length ? "Redacted share pack required" : previewClaims.length ? "Proof watermark required" : "Proof stamp attached",
+    preview: previewClaims,
+    ready: shareReadyClaims,
+    redactions: ["PAN", "folio", "CAS", "bank details", "account credentials", "contact data", "private notes", "advice or transaction instruction"],
+    route: primaryShareBlock.route,
+    rule: blockedClaims.length
+      ? `Do not share ${primaryShareBlock.label.toLowerCase()} until its passport is stamped.`
+      : previewClaims.length
+        ? `Share only with preview labels for ${previewClaims.map((claim) => claim.label).join(", ")}.`
+        : "Share the seal only with source and no-advice boundary attached.",
+    safeClaims: shareReadyClaims.map((claim) => claim.label).join(" | ") || "No claims stamped yet",
+    score: passportShareSealScore,
+    shareLine: `${signal.fund.name} | ${claimPassport.score}/100 passport | ${shareReadyClaims.length} stamped, ${previewClaims.length} preview, ${blockedClaims.length} blocked | Research-only, no advice.`,
+    strongest: primaryShareBlock,
+    tone: blockedClaims.length ? "caution" : previewClaims.length ? "watch" : "ready",
+    verdict: blockedClaims.length ? "Do not share yet" : previewClaims.length ? "Share as preview only" : "Share seal ready",
+    watermark: blockedClaims.length ? "BLOCKED PREVIEW" : previewClaims.length ? "PROOF PREVIEW" : "STAMPED RESEARCH"
+  };
+  const mitraRecoveryItems = [
+    {
+      label: "Inactive folio definition",
+      state: "10-year trace rule",
+      detail: "A mutual fund folio with no investor-initiated financial or non-financial transaction for 10 years, with units still available, can fall into the inactive-folio trace path.",
+      tone: "watch"
+    },
+    {
+      label: "Official route discipline",
+      state: "Use only official channels",
+      detail: "Reach MITRA through SEBI, AMFI, AMC, MF Central, CAMS, KFintech, or other official RTA routes. Avoid links from ads, chats, forwards, or caller instructions.",
+      tone: "ready"
+    },
+    {
+      label: "Data safety",
+      state: "Do not type private data here",
+      detail: "NiveshNadi should never collect PAN, folio, CAS, bank details, OTP, nominee documents, or claimant papers for a MITRA search.",
+      tone: "caution"
+    },
+    {
+      label: "KYC recovery habit",
+      state: "Update through official flow",
+      detail: "If a forgotten investment is found, complete KYC and claimant steps only on official RTA, AMC, or MF Central surfaces.",
+      tone: "watch"
+    }
+  ];
+  const mitraRecoveryShield = {
+    id: ["NN", "MITRA", "RECOVERY", "SHIELD", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    amcExample: "Aditya Birla Sun Life AMC MITRA page",
+    circular: "SEBI/HO/IMD/IMD-SEC-3/P/CIR/2025/15",
+    circularDate: "February 12, 2025",
+    detail: "Trace forgotten or inactive mutual fund folios through official MITRA and RTA routes before trusting any recovery claim.",
+    inactiveRule: "No investor-initiated financial or non-financial transaction in 10 years, with units remaining in the folio.",
+    items: mitraRecoveryItems,
+    officialChannels: ["SEBI circular", "AMFI", "AMC website", "MF Central", "CAMS", "KFintech", "official RTA link"],
+    officialCircularUrl: "https://www.sebi.gov.in/legal/circulars/feb-2025/service-platform-for-investors-to-trace-inactive-and-unclaimed-mutual-fund-folios-mitra-mutual-fund-investment-tracing-and-retrieval-assistant-_91847.html",
+    posture: "Scam-safe recovery education",
+    redFlags: ["WhatsApp recovery groups", "fake AMC apps", "screen-share requests", "OTP or bank-detail requests", "advance fee recovery calls"],
+    route: "#privacy-control",
+    score: 78,
+    tone: "watch",
+    verdict: "Trace only through official MITRA routes"
+  };
   return {
     blockers,
+    claimPassport,
+    commandCard,
+    dissentEngine,
+    fomoFirewall,
     fund: signal.fund,
     genome,
     instruction,
     lanes,
+    liveDataGate,
     memory,
+    mitraRecoveryShield,
+    missionClock,
     missionOpen,
     missionProgress,
+    missionReceipt,
     missionSteps,
+    noBuyGate,
     noGo,
+    passportShareSeal,
     primary,
+    proofGraph,
     routeMemory,
     score,
     shock,
@@ -2938,6 +3714,7 @@ function researchAutopilotConfig() {
 function renderResearchAutopilot() {
   if (!els.researchAutopilot) return;
   const autopilot = researchAutopilotConfig();
+  const firewallPreview = evaluateRecoveryLinkFirewall("");
   els.researchAutopilot.innerHTML = `
     <div class="autopilot-hero ${escapeHtml(autopilot.tone)}">
       <div>
@@ -2948,6 +3725,512 @@ function renderResearchAutopilot() {
       <div class="autopilot-score" style="--score:${autopilot.score}">
         <b>${autopilot.score}</b>
         <small>Auto</small>
+      </div>
+    </div>
+    <div class="autopilot-live-gate ${escapeHtml(autopilot.liveDataGate.tone)}">
+      <div class="autopilot-live-head">
+        <div>
+          <span>Nadi Live Data Gate</span>
+          <strong>${escapeHtml(autopilot.liveDataGate.verdict)} | ${autopilot.liveDataGate.score}/100</strong>
+          <p>Claim mode: ${escapeHtml(autopilot.liveDataGate.mode)}. Strongest block: ${escapeHtml(autopilot.liveDataGate.strongest.label)}. ${escapeHtml(autopilot.liveDataGate.releaseRule)}</p>
+        </div>
+        <div class="autopilot-live-actions">
+          <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.liveDataGate.route)}" data-autopilot-step="Live Data Gate">Open live gate</button>
+          <button class="text-button" id="copyLiveDataGate" type="button">Copy live gate</button>
+        </div>
+      </div>
+      <div class="autopilot-live-grid">
+        <article class="${escapeHtml(autopilot.liveDataGate.tone)}">
+          <span>Gate ID</span>
+          <strong>${escapeHtml(autopilot.liveDataGate.id)}</strong>
+          <p>${autopilot.liveDataGate.blocks.length} live claim block${autopilot.liveDataGate.blocks.length === 1 ? "" : "s"} open.</p>
+        </article>
+        <article>
+          <span>Source chain</span>
+          <strong>Receipts before trust</strong>
+          <p>${escapeHtml(autopilot.liveDataGate.sourceChain)}</p>
+        </article>
+        <article class="watch">
+          <span>Public rule</span>
+          <strong>Preview until released</strong>
+          <p>No score, return, TER, holding, or risk claim gets live posture without a dated source receipt.</p>
+        </article>
+        <article>
+          <span>Next gate route</span>
+          <strong>${escapeHtml(autopilot.liveDataGate.route)}</strong>
+          <p>Open this before trusting a live-looking claim in the memo.</p>
+        </article>
+      </div>
+      <div class="autopilot-live-claim-grid">
+        ${autopilot.liveDataGate.claims.map((claim, index) => `
+          <article class="${escapeHtml(claim.tone)}">
+            <span>${String(index + 1).padStart(2, "0")} ${claim.ready ? "Receipt ready" : "Receipt missing"}</span>
+            <strong>${escapeHtml(claim.label)}</strong>
+            <div class="proof-node-meter"><span style="width:${claim.score}%"></span></div>
+            <p>${claim.score}/100 | ${escapeHtml(claim.source)}</p>
+            <p>${escapeHtml(claim.required)}</p>
+            <p>${escapeHtml(claim.block)}</p>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(claim.route)}" data-autopilot-step="${escapeHtml(`Live data ${claim.label}`)}">Open receipt</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="autopilot-claim-passport ${escapeHtml(autopilot.claimPassport.tone)}">
+      <div class="autopilot-claim-head">
+        <div>
+          <span>Nadi Claim Passport</span>
+          <strong>${escapeHtml(autopilot.claimPassport.verdict)} | ${autopilot.claimPassport.score}/100</strong>
+          <p>${escapeHtml(autopilot.claimPassport.mode)}. Strongest passport gap: ${escapeHtml(autopilot.claimPassport.strongest.label)}. ${escapeHtml(autopilot.claimPassport.rule)}</p>
+        </div>
+        <div class="autopilot-claim-actions">
+          <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.claimPassport.route)}" data-autopilot-step="Claim Passport">Open passport route</button>
+          <button class="text-button" id="copyClaimPassport" type="button">Copy claim passport</button>
+        </div>
+      </div>
+      <div class="autopilot-claim-summary-grid">
+        <article class="${escapeHtml(autopilot.claimPassport.tone)}">
+          <span>Passport ID</span>
+          <strong>${escapeHtml(autopilot.claimPassport.id)}</strong>
+          <p>${autopilot.claimPassport.blocks.length} open passport${autopilot.claimPassport.blocks.length === 1 ? "" : "s"} before wider sharing.</p>
+        </article>
+        <article>
+          <span>Proof stamps</span>
+          <strong>${escapeHtml(autopilot.claimPassport.evidenceLine)}</strong>
+          <p>Every public claim carries source, freshness, reviewer, and display status.</p>
+        </article>
+        <article class="watch">
+          <span>Share rule</span>
+          <strong>Claim travels with proof</strong>
+          <p>${escapeHtml(autopilot.claimPassport.rule)}</p>
+        </article>
+        <article>
+          <span>Route</span>
+          <strong>${escapeHtml(autopilot.claimPassport.route)}</strong>
+          <p>Open this before copying the weakest claim into a memo, briefing, or share pack.</p>
+        </article>
+      </div>
+      <div class="autopilot-claim-grid">
+        ${autopilot.claimPassport.items.map((claim, index) => `
+          <article class="${escapeHtml(claim.tone)}">
+            <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(claim.state)}</span>
+            <strong>${escapeHtml(claim.label)}: ${escapeHtml(claim.value)}</strong>
+            <div class="proof-node-meter"><span style="width:${claim.score}%"></span></div>
+            <p>${claim.score}/100 | ${escapeHtml(claim.source)}</p>
+            <p>${escapeHtml(claim.freshness)} | Required: ${escapeHtml(claim.required)}</p>
+            <p>${escapeHtml(claim.displayRule)}</p>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(claim.route)}" data-autopilot-step="${escapeHtml(`Claim Passport ${claim.label}`)}">Open claim</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="autopilot-share-seal ${escapeHtml(autopilot.passportShareSeal.tone)}">
+      <div class="autopilot-share-head">
+        <div>
+          <span>Nadi Passport Share Seal</span>
+          <strong>${escapeHtml(autopilot.passportShareSeal.verdict)} | ${autopilot.passportShareSeal.score}/100</strong>
+          <p>${escapeHtml(autopilot.passportShareSeal.mode)}. Watermark: ${escapeHtml(autopilot.passportShareSeal.watermark)}. ${escapeHtml(autopilot.passportShareSeal.rule)}</p>
+        </div>
+        <div class="autopilot-share-actions">
+          <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.passportShareSeal.route)}" data-autopilot-step="Passport Share Seal">Open share route</button>
+          <button class="text-button" id="copyPassportShareSeal" type="button">Copy share seal</button>
+        </div>
+      </div>
+      <div class="autopilot-share-summary-grid">
+        <article class="${escapeHtml(autopilot.passportShareSeal.tone)}">
+          <span>Seal ID</span>
+          <strong>${escapeHtml(autopilot.passportShareSeal.id)}</strong>
+          <p>${escapeHtml(autopilot.passportShareSeal.shareLine)}</p>
+        </article>
+        <article class="watch">
+          <span>Watermark</span>
+          <strong>${escapeHtml(autopilot.passportShareSeal.watermark)}</strong>
+          <p>${autopilot.passportShareSeal.ready.length} stamped | ${autopilot.passportShareSeal.preview.length} preview | ${autopilot.passportShareSeal.blocked.length} blocked.</p>
+        </article>
+        <article>
+          <span>Stamped claims</span>
+          <strong>${escapeHtml(autopilot.passportShareSeal.safeClaims)}</strong>
+          <p>Only these claims can travel without extra preview warning.</p>
+        </article>
+        <article class="caution">
+          <span>Redaction line</span>
+          <strong>No private identifiers</strong>
+          <p>${escapeHtml(autopilot.passportShareSeal.redactions.join(" | "))}</p>
+        </article>
+      </div>
+      <div class="autopilot-share-claim-grid">
+        ${autopilot.passportShareSeal.claims.map((claim, index) => {
+          const shareState = claim.ready ? "Share-ready" : claim.score < 58 ? "Blocked" : "Preview";
+          return `
+            <article class="${escapeHtml(claim.tone)}">
+              <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(shareState)}</span>
+              <strong>${escapeHtml(claim.label)}: ${escapeHtml(claim.value)}</strong>
+              <div class="proof-node-meter"><span style="width:${claim.score}%"></span></div>
+              <p>Proof state: ${escapeHtml(claim.state)} | ${escapeHtml(claim.freshness)}</p>
+              <p>Display: ${escapeHtml(claim.displayRule)}</p>
+              <button class="text-button" type="button" data-build-route="${escapeHtml(claim.route)}" data-autopilot-step="${escapeHtml(`Share Seal ${claim.label}`)}">Open proof</button>
+            </article>
+          `;
+        }).join("")}
+      </div>
+    </div>
+    <div id="mitraRecoveryShield" class="mitra-shield ${escapeHtml(autopilot.mitraRecoveryShield.tone)}">
+      <div class="mitra-shield-head">
+        <div>
+          <span>Nadi MITRA Recovery Shield</span>
+          <strong>${escapeHtml(autopilot.mitraRecoveryShield.verdict)} | ${autopilot.mitraRecoveryShield.score}/100</strong>
+          <p>${escapeHtml(autopilot.mitraRecoveryShield.detail)} SEBI circular ${escapeHtml(autopilot.mitraRecoveryShield.circular)} dated ${escapeHtml(autopilot.mitraRecoveryShield.circularDate)}.</p>
+        </div>
+        <div class="mitra-shield-actions">
+          <a class="text-button" href="${escapeHtml(autopilot.mitraRecoveryShield.officialCircularUrl)}" target="_blank" rel="noopener noreferrer">Open SEBI circular</a>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.mitraRecoveryShield.route)}" data-autopilot-step="MITRA Recovery Shield">Open privacy route</button>
+          <button class="text-button" id="copyMitraRecoveryShield" type="button">Copy MITRA shield</button>
+        </div>
+      </div>
+      <div class="mitra-shield-grid">
+        <article class="watch">
+          <span>Inactive folio rule</span>
+          <strong>${escapeHtml(autopilot.mitraRecoveryShield.inactiveRule)}</strong>
+          <p>Use this as an education prompt, not as proof that a specific investor has a recoverable folio.</p>
+        </article>
+        <article>
+          <span>Official channels</span>
+          <strong>${escapeHtml(autopilot.mitraRecoveryShield.officialChannels.join(" | "))}</strong>
+          <p>Never follow recovery links from chats, callers, ads, or unofficial documents.</p>
+        </article>
+        <article class="caution">
+          <span>Scam red flags</span>
+          <strong>${escapeHtml(autopilot.mitraRecoveryShield.redFlags.slice(0, 3).join(" | "))}</strong>
+          <p>${escapeHtml(autopilot.mitraRecoveryShield.redFlags.slice(3).join(" | "))}</p>
+        </article>
+      </div>
+      <div class="mitra-shield-card-grid">
+        ${autopilot.mitraRecoveryShield.items.map((item, index) => `
+          <article class="${escapeHtml(item.tone)}">
+            <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(item.label)}</span>
+            <strong>${escapeHtml(item.state)}</strong>
+            <p>${escapeHtml(item.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div id="mitraRecoveryFirewall" class="mitra-firewall">
+        <div class="mitra-firewall-head">
+          <div>
+            <span>Nadi Recovery Link Firewall</span>
+            <strong>Paste before click</strong>
+            <p>Classify MITRA or forgotten-folio recovery links and messages locally before opening them. Do not paste PAN, folio, OTP, bank, CAS, nominee, claimant, or identity documents.</p>
+          </div>
+          <div class="mitra-firewall-actions">
+            <button class="text-button" id="runMitraFirewall" type="button">Run firewall</button>
+            <button class="text-button" id="copyMitraFirewall" type="button">Copy firewall note</button>
+          </div>
+        </div>
+        <label class="mitra-firewall-input">
+          <span>Recovery link or message</span>
+          <textarea id="mitraFirewallInput" rows="3" spellcheck="false" placeholder="Paste a public recovery URL or message only. Example: https://www.sebi.gov.in/..."></textarea>
+        </label>
+        <div id="mitraFirewallOutput" class="mitra-firewall-output">
+          ${renderMitraFirewallResult(firewallPreview)}
+        </div>
+        <div id="mitraRouteReceipt" class="mitra-route-receipt">
+          ${renderMitraRouteReceipt(firewallPreview)}
+        </div>
+        <div id="mitraScamDrill" class="mitra-scam-drill">
+          ${renderMitraScamDrill(firewallPreview, "")}
+        </div>
+        <div id="mitraFamilySafeShare" class="mitra-family-share">
+          ${renderMitraFamilySafeShare(firewallPreview, "")}
+        </div>
+        <div id="mitraOfficialRouteDirectory" class="mitra-route-directory">
+          ${renderMitraOfficialRouteDirectory(firewallPreview)}
+        </div>
+        <div id="mitraInvestorSourceCheck" class="mitra-source-check">
+          ${renderMitraInvestorSourceCheck(firewallPreview, "")}
+        </div>
+        <div id="mitraSourceHandshake" class="mitra-source-handshake">
+          ${renderMitraSourceHandshake(firewallPreview, "")}
+        </div>
+        <div id="mitraSafeReleaseVerdict" class="mitra-release-verdict">
+          ${renderMitraSafeReleaseVerdict(firewallPreview, "")}
+        </div>
+        <div id="mitraSafetyStackTimeline" class="mitra-safety-stack">
+          ${renderMitraSafetyStackTimeline(firewallPreview, "")}
+        </div>
+        <div id="mitraSafetyActionRouter" class="mitra-action-router">
+          ${renderMitraSafetyActionRouter(firewallPreview, "")}
+        </div>
+        <div id="mitraRecoveryActionReceipt" class="mitra-action-receipt">
+          ${renderMitraRecoveryActionReceipt(firewallPreview, "")}
+        </div>
+        <div id="mitraRecoveryFollowUpRoom" class="mitra-follow-up-room">
+          ${renderMitraRecoveryFollowUpRoom(firewallPreview, "")}
+        </div>
+        <div id="mitraRecoveryReminderCard" class="mitra-reminder-card">
+          ${renderMitraRecoveryReminderCard(firewallPreview, "")}
+        </div>
+        <div id="mitraRecoveryRecheckTrail" class="mitra-recheck-trail">
+          ${renderMitraRecoveryRecheckTrail(firewallPreview, "")}
+        </div>
+        <div id="mitraRecoveryOutcomeLedger" class="mitra-outcome-ledger">
+          ${renderMitraRecoveryOutcomeLedger(firewallPreview, "")}
+        </div>
+        <div class="mitra-firewall-rule-grid">
+          <article>
+            <span>Official allowlist</span>
+            <strong>${escapeHtml(RECOVERY_FIREWALL_OFFICIAL_DOMAINS.slice(0, 4).join(" | "))}</strong>
+            <p>Plus official AMC, MF Central, CAMS, KFintech, and RTA surfaces. Unknown links stay review-only.</p>
+          </article>
+          <article class="caution">
+            <span>Auto block signals</span>
+            <strong>${escapeHtml(RECOVERY_FIREWALL_SHORTENERS.slice(0, 4).join(" | "))}</strong>
+            <p>Shorteners, chat-led recovery claims, fees, screen-share, OTP, card, bank, PAN, Aadhaar, CAS, or folio requests trigger a hard pause.</p>
+          </article>
+          <article class="watch">
+            <span>Privacy rule</span>
+            <strong>Browser-local only</strong>
+            <p>The firewall does not store pasted text. The copied note excludes the raw message and keeps only safety posture.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+    <div id="autopilotMissionPlan" class="autopilot-mission-hero ${escapeHtml(autopilot.missionOpen.missionTone)}">
+      <div>
+        <span>Autopilot Mission Plan</span>
+        <strong>${autopilot.missionProgress}/100 route clarity</strong>
+        <p>${escapeHtml(autopilot.routeMemory.length ? `${autopilot.routeMemory.length} route visit${autopilot.routeMemory.length === 1 ? "" : "s"} remembered for this fund. Next open step: ${autopilot.missionOpen.label}.` : `No routes opened yet. Start with ${autopilot.missionOpen.label} so the desk records the research path.`)}</p>
+      </div>
+      <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.missionOpen.route)}" data-autopilot-step="${escapeHtml(autopilot.missionOpen.label)}">Open mission step</button>
+    </div>
+    <div class="autopilot-receipt-grid">
+      <article>
+        <span>Mission receipt</span>
+        <strong>${escapeHtml(autopilot.missionReceipt.id)}</strong>
+        <p>${escapeHtml(autopilot.missionReceipt.posture)} | ${autopilot.missionReceipt.clearedCount} of ${autopilot.missionSteps.length} steps clear or visited.</p>
+      </article>
+      <article>
+        <span>Last route</span>
+        <strong>${escapeHtml(autopilot.missionReceipt.latestLabel)}</strong>
+        <p>${escapeHtml(autopilot.missionReceipt.latestRoute)}${autopilot.missionReceipt.latestAt ? ` | ${escapeHtml(researchMemoryShortDate(autopilot.missionReceipt.latestAt))}` : ""}</p>
+      </article>
+      <article class="${autopilot.missionReceipt.remainingBlockers.length ? "watch" : "ready"}">
+        <span>Remaining blockers</span>
+        <strong>${autopilot.missionReceipt.remainingBlockers.length}</strong>
+        <p>${escapeHtml(autopilot.missionReceipt.remainingBlockers.length ? autopilot.missionReceipt.remainingBlockers.map((step) => step.label).join(" | ") : "Mission trail is clear enough for memo drafting.")}</p>
+      </article>
+      <article class="autopilot-receipt-actions">
+        <span>Receipt action</span>
+        <strong>Copy trail</strong>
+        <p>Identity-light route memory only.</p>
+        <button class="text-button" id="copyMissionReceipt" type="button">Copy mission receipt</button>
+      </article>
+    </div>
+    <div class="autopilot-clock-grid">
+      <article class="${escapeHtml(autopilot.missionClock.tone)}">
+        <span>Follow-up clock</span>
+        <strong>${escapeHtml(autopilot.missionClock.status)}</strong>
+        <p>${autopilot.missionClock.daysToDue === null ? "Open one mission route to start the review clock." : `${Math.max(0, autopilot.missionClock.daysToDue)} day${Math.abs(autopilot.missionClock.daysToDue) === 1 ? "" : "s"} to due date | ${escapeHtml(researchMemoryShortDate(autopilot.missionClock.dueDate.toISOString()))}`}</p>
+      </article>
+      <article>
+        <span>Blocker age</span>
+        <strong>${autopilot.missionClock.daysSinceLastRoute === null ? "Not started" : `${autopilot.missionClock.daysSinceLastRoute} day${autopilot.missionClock.daysSinceLastRoute === 1 ? "" : "s"}`}</strong>
+        <p>${escapeHtml(autopilot.missionReceipt.latestLabel)} | ${autopilot.missionReceipt.remainingBlockers.length} blocker${autopilot.missionReceipt.remainingBlockers.length === 1 ? "" : "s"} still open.</p>
+      </article>
+      <article>
+        <span>Next return route</span>
+        <strong>${escapeHtml(autopilot.missionClock.action)}</strong>
+        <p>${escapeHtml(autopilot.missionClock.route)}</p>
+        <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.missionClock.route)}" data-autopilot-step="Mission follow-up">Open follow-up</button>
+      </article>
+      <article class="autopilot-clock-actions">
+        <span>Follow-up note</span>
+        <strong>Copy reminder</strong>
+        <p>${autopilot.missionClock.followUpWindow}-day research rhythm.</p>
+        <button class="text-button" id="copyMissionClock" type="button">Copy follow-up</button>
+      </article>
+    </div>
+    <div class="autopilot-command-card ${escapeHtml(autopilot.commandCard.tone)}">
+      <div class="autopilot-command-card-inner">
+        <div>
+          <span>Nadi command card</span>
+          <strong>${escapeHtml(autopilot.commandCard.title)}</strong>
+          <p>${escapeHtml(autopilot.commandCard.line)}</p>
+        </div>
+        <div class="autopilot-command-code">
+          <span>Command ID</span>
+          <strong>${escapeHtml(autopilot.commandCard.id)}</strong>
+          <p>${escapeHtml(autopilot.commandCard.proofLocks.join(" | "))}</p>
+        </div>
+        <div>
+          <span>Follow-up</span>
+          <strong>${escapeHtml(autopilot.commandCard.followUp)}</strong>
+          <p>${escapeHtml(researchMemoryShortDate(autopilot.commandCard.dueDate.toISOString()))} | ${escapeHtml(autopilot.commandCard.blocker)}</p>
+        </div>
+        <div class="autopilot-command-buttons">
+          <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.commandCard.route)}" data-autopilot-step="Command card">Open command route</button>
+          <button class="text-button" id="copyAutopilotCommandCard" type="button">Copy command card</button>
+        </div>
+      </div>
+    </div>
+    <div class="autopilot-proof-graph ${escapeHtml(autopilot.proofGraph.tone)}">
+      <div class="autopilot-proof-head">
+        <div>
+          <span>Nadi Proof Graph</span>
+          <strong>${escapeHtml(autopilot.proofGraph.posture)} | ${autopilot.proofGraph.score}/100</strong>
+          <p>Weakest link: ${escapeHtml(autopilot.proofGraph.weakest.label)} | ${escapeHtml(autopilot.proofGraph.weakest.detail)}</p>
+        </div>
+        <div class="autopilot-proof-actions">
+          <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.proofGraph.route)}" data-autopilot-step="Proof graph">Open weakest link</button>
+          <button class="text-button" id="copyNadiProofGraph" type="button">Copy proof graph</button>
+        </div>
+      </div>
+      <div class="autopilot-proof-rail">
+        ${autopilot.proofGraph.nodes.map((node, index) => `
+          <article class="${escapeHtml(node.tone)}">
+            <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(node.status)}</span>
+            <strong>${escapeHtml(node.label)}</strong>
+            <div class="proof-node-meter"><span style="width:${node.score}%"></span></div>
+            <p>${node.score}/100 | ${escapeHtml(node.detail)}</p>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(node.route)}" data-autopilot-step="${escapeHtml(`Proof graph ${node.label}`)}">Open proof</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="autopilot-no-buy-gate ${escapeHtml(autopilot.noBuyGate.tone)}">
+      <div class="autopilot-no-buy-head">
+        <div>
+          <span>Nadi No-Buy Gate</span>
+          <strong>${escapeHtml(autopilot.noBuyGate.verdict)} | ${autopilot.noBuyGate.score}/100</strong>
+          <p>${escapeHtml(autopilot.noBuyGate.temptation)} ${escapeHtml(autopilot.noBuyGate.changeMind)}</p>
+        </div>
+        <div class="autopilot-no-buy-actions">
+          <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.noBuyGate.route)}" data-autopilot-step="No-Buy Gate">Open unlock route</button>
+          <button class="text-button" id="copyNoBuyGate" type="button">Copy no-buy gate</button>
+        </div>
+      </div>
+      <div class="autopilot-no-buy-grid">
+        <article class="${escapeHtml(autopilot.noBuyGate.tone)}">
+          <span>Gate ID</span>
+          <strong>${escapeHtml(autopilot.noBuyGate.id)}</strong>
+          <p>${escapeHtml(autopilot.noBuyGate.lockLine)}</p>
+        </article>
+        <article>
+          <span>Next unlock</span>
+          <strong>${escapeHtml(autopilot.noBuyGate.locks[0]?.label || "Memo review")}</strong>
+          <p>${escapeHtml(autopilot.noBuyGate.locks[0]?.detail || "All locks clear enough for a research memo, not execution.")}</p>
+        </article>
+        <article class="watch">
+          <span>Change-my-mind rule</span>
+          <strong>Explain before action</strong>
+          <p>${escapeHtml(autopilot.noBuyGate.changeMind)}</p>
+        </article>
+        <article>
+          <span>Expiry</span>
+          <strong>${escapeHtml(autopilot.noBuyGate.expiry)}</strong>
+          <p>Refresh the gate before increasing SIP, switching, redeeming, or treating old conviction as current.</p>
+        </article>
+      </div>
+      <div class="autopilot-no-buy-rule-grid">
+        ${autopilot.noBuyGate.rules.map((rule, index) => `
+          <article class="${escapeHtml(rule.tone)}">
+            <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(rule.status)}</span>
+            <strong>${escapeHtml(rule.label)}</strong>
+            <div class="proof-node-meter"><span style="width:${rule.score}%"></span></div>
+            <p>${rule.score}/100 | ${escapeHtml(rule.detail)}</p>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(rule.route)}" data-autopilot-step="${escapeHtml(`No-buy ${rule.label}`)}">Open lock</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="autopilot-fomo-firewall ${escapeHtml(autopilot.fomoFirewall.tone)}">
+      <div class="autopilot-fomo-head">
+        <div>
+          <span>Nadi Anti-FOMO Firewall</span>
+          <strong>${escapeHtml(autopilot.fomoFirewall.verdict)} | ${autopilot.fomoFirewall.score}/100</strong>
+          <p>${escapeHtml(autopilot.fomoFirewall.impulse)} ${escapeHtml(autopilot.fomoFirewall.rule)}</p>
+        </div>
+        <div class="autopilot-fomo-actions">
+          <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.fomoFirewall.route)}" data-autopilot-step="Anti-FOMO Firewall">Open cooling route</button>
+          <button class="text-button" id="copyFomoFirewall" type="button">Copy FOMO firewall</button>
+        </div>
+      </div>
+      <div class="autopilot-fomo-grid">
+        <article class="${escapeHtml(autopilot.fomoFirewall.tone)}">
+          <span>Firewall ID</span>
+          <strong>${escapeHtml(autopilot.fomoFirewall.id)}</strong>
+          <p>${autopilot.fomoFirewall.active.length} impulse trigger${autopilot.fomoFirewall.active.length === 1 ? "" : "s"} active.</p>
+        </article>
+        <article>
+          <span>Cooling period</span>
+          <strong>${autopilot.fomoFirewall.coolingHours} hours</strong>
+          <p>Recheck after ${escapeHtml(researchMemoryShortDate(autopilot.fomoFirewall.coolingUntil.toISOString()))}.</p>
+        </article>
+        <article class="watch">
+          <span>Tomorrow question</span>
+          <strong>Remove the excitement</strong>
+          <p>${escapeHtml(autopilot.fomoFirewall.question)}</p>
+        </article>
+        <article>
+          <span>Cooling route</span>
+          <strong>${escapeHtml(autopilot.fomoFirewall.route)}</strong>
+          <p>Use the route before trusting the score or increasing conviction.</p>
+        </article>
+      </div>
+      <div class="autopilot-fomo-trigger-grid">
+        ${autopilot.fomoFirewall.triggers.map((trigger, index) => `
+          <article class="${escapeHtml(trigger.tone)}">
+            <span>${String(index + 1).padStart(2, "0")} ${trigger.active ? "Active" : "Clear"}</span>
+            <strong>${escapeHtml(trigger.label)}</strong>
+            <div class="proof-node-meter"><span style="width:${trigger.score}%"></span></div>
+            <p>${trigger.score}/100 | ${escapeHtml(trigger.detail)}</p>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(trigger.route)}" data-autopilot-step="${escapeHtml(`FOMO ${trigger.label}`)}">Open check</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="autopilot-dissent-engine ${escapeHtml(autopilot.dissentEngine.tone)}">
+      <div class="autopilot-dissent-head">
+        <div>
+          <span>Nadi Dissent Engine</span>
+          <strong>${escapeHtml(autopilot.dissentEngine.verdict)} | ${autopilot.dissentEngine.score}/100</strong>
+          <p>Strongest objection: ${escapeHtml(autopilot.dissentEngine.strongest.label)}. ${escapeHtml(autopilot.dissentEngine.burden)} ${escapeHtml(autopilot.dissentEngine.answerRule)}</p>
+        </div>
+        <div class="autopilot-dissent-actions">
+          <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.dissentEngine.route)}" data-autopilot-step="Dissent Engine">Open objection route</button>
+          <button class="text-button" id="copyDissentEngine" type="button">Copy dissent brief</button>
+        </div>
+      </div>
+      <div class="autopilot-dissent-grid">
+        <article class="${escapeHtml(autopilot.dissentEngine.tone)}">
+          <span>Dissent ID</span>
+          <strong>${escapeHtml(autopilot.dissentEngine.id)}</strong>
+          <p>${autopilot.dissentEngine.active.length} objection${autopilot.dissentEngine.active.length === 1 ? "" : "s"} open.</p>
+        </article>
+        <article>
+          <span>Burden of proof</span>
+          <strong>${escapeHtml(autopilot.dissentEngine.strongest.label)}</strong>
+          <p>${escapeHtml(autopilot.dissentEngine.strongest.objection)}</p>
+        </article>
+        <article class="watch">
+          <span>Answer rule</span>
+          <strong>Defend or downgrade</strong>
+          <p>${escapeHtml(autopilot.dissentEngine.strongest.answer)}</p>
+        </article>
+        <article>
+          <span>Objection route</span>
+          <strong>${escapeHtml(autopilot.dissentEngine.route)}</strong>
+          <p>Open this before writing a positive memo or increasing conviction.</p>
+        </article>
+      </div>
+      <div class="autopilot-dissent-case-grid">
+        ${autopilot.dissentEngine.cases.map((dissentCase, index) => `
+          <article class="${escapeHtml(dissentCase.tone)}">
+            <span>${String(index + 1).padStart(2, "0")} ${dissentCase.active ? "Open" : "Answered"}</span>
+            <strong>${escapeHtml(dissentCase.label)}</strong>
+            <div class="proof-node-meter"><span style="width:${dissentCase.score}%"></span></div>
+            <p>${dissentCase.score}/100 | ${escapeHtml(dissentCase.objection)}</p>
+            <p>${escapeHtml(dissentCase.answer)}</p>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(dissentCase.route)}" data-autopilot-step="${escapeHtml(`Dissent ${dissentCase.label}`)}">Open objection</button>
+          </article>
+        `).join("")}
       </div>
     </div>
     <div class="autopilot-command-grid">
@@ -2974,25 +4257,7 @@ function renderResearchAutopilot() {
         <button class="text-button" id="copyResearchAutopilot" type="button">Copy autopilot</button>
       </article>
     </div>
-    <div class="autopilot-lane-grid">
-      ${autopilot.lanes.map((lane) => `
-        <article class="${escapeHtml(lane.tone)}">
-          <span>${escapeHtml(lane.label)}</span>
-          <strong>${lane.score}/100</strong>
-          <p>${escapeHtml(lane.blocker ? lane.action : "Clear")}</p>
-          <button class="text-button" type="button" data-build-route="${escapeHtml(lane.route)}" data-autopilot-step="${escapeHtml(lane.label)}">Open</button>
-        </article>
-      `).join("")}
-    </div>
     <div class="autopilot-mission">
-      <div class="autopilot-mission-hero ${escapeHtml(autopilot.missionOpen.missionTone)}">
-        <div>
-          <span>Autopilot Mission Plan</span>
-          <strong>${autopilot.missionProgress}/100 route clarity</strong>
-          <p>${escapeHtml(autopilot.routeMemory.length ? `${autopilot.routeMemory.length} route visit${autopilot.routeMemory.length === 1 ? "" : "s"} remembered for this fund. Next open step: ${autopilot.missionOpen.label}.` : `No routes opened yet. Start with ${autopilot.missionOpen.label} so the desk records the research path.`)}</p>
-        </div>
-        <button class="text-button" type="button" data-build-route="${escapeHtml(autopilot.missionOpen.route)}" data-autopilot-step="${escapeHtml(autopilot.missionOpen.label)}">Open mission step</button>
-      </div>
       <div class="autopilot-mission-grid">
         ${autopilot.missionSteps.map((step) => `
           <article class="${escapeHtml(step.missionTone)}">
@@ -3004,11 +4269,2634 @@ function renderResearchAutopilot() {
         `).join("")}
       </div>
     </div>
+    <div class="autopilot-lane-grid">
+      ${autopilot.lanes.map((lane) => `
+        <article class="${escapeHtml(lane.tone)}">
+          <span>${escapeHtml(lane.label)}</span>
+          <strong>${lane.score}/100</strong>
+          <p>${escapeHtml(lane.blocker ? lane.action : "Clear")}</p>
+          <button class="text-button" type="button" data-build-route="${escapeHtml(lane.route)}" data-autopilot-step="${escapeHtml(lane.label)}">Open</button>
+        </article>
+      `).join("")}
+    </div>
   `;
+}
+
+function normalizeRecoveryFirewallHost(host) {
+  return String(host || "")
+    .trim()
+    .toLowerCase()
+    .replace(/^www\./, "");
+}
+
+function isOfficialRecoveryHost(host) {
+  const normalized = normalizeRecoveryFirewallHost(host);
+  return RECOVERY_FIREWALL_OFFICIAL_DOMAINS.some((domain) => {
+    const official = normalizeRecoveryFirewallHost(domain);
+    return normalized === official || normalized.endsWith(`.${official}`);
+  });
+}
+
+function extractRecoveryFirewallUrls(text) {
+  const matches = String(text || "").match(/(?:https?:\/\/|www\.)[^\s<>"')]+|(?:[a-z0-9-]+\.)+(?:com|in|org|net|co|ly|io|app)(?:\/[^\s<>"')]+)?/gi) || [];
+  return Array.from(new Set(matches.map((url) => url.replace(/[.,;:!?]+$/g, ""))));
+}
+
+function recoveryFirewallHostFromUrl(url) {
+  try {
+    const prepared = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+    return normalizeRecoveryFirewallHost(new URL(prepared).hostname);
+  } catch (error) {
+    return "";
+  }
+}
+
+function evaluateRecoveryLinkFirewall(rawText = "") {
+  const text = String(rawText || "").trim();
+  const lowerText = text.toLowerCase();
+  const urls = extractRecoveryFirewallUrls(text);
+  const hosts = Array.from(new Set(urls.map(recoveryFirewallHostFromUrl).filter(Boolean)));
+  const officialHosts = hosts.filter(isOfficialRecoveryHost);
+  const shortenerHosts = hosts.filter((host) => RECOVERY_FIREWALL_SHORTENERS.includes(normalizeRecoveryFirewallHost(host)));
+  const unknownHosts = hosts.filter((host) => !isOfficialRecoveryHost(host) && !shortenerHosts.includes(host));
+  const sensitiveHits = RECOVERY_FIREWALL_SENSITIVE_TERMS.filter((term) => lowerText.includes(term));
+  const hasSensitiveRequest = sensitiveHits.length > 0;
+  const hasUnofficialLink = hosts.length > 0 && officialHosts.length !== hosts.length;
+  const hasNoUrl = text.length > 0 && urls.length === 0;
+  let score = 50;
+  let verdict = "Paste before click";
+  let action = "Paste a public recovery URL or message to inspect before clicking.";
+  let tone = "watch";
+
+  if (text) {
+    score = 58;
+    score += officialHosts.length ? 22 : 0;
+    score -= hasNoUrl ? 10 : 0;
+    score -= unknownHosts.length * 16;
+    score -= shortenerHosts.length * 28;
+    score -= sensitiveHits.length * 8;
+    score = clampNumber(Math.round(score), 0, 100);
+
+    if (hasSensitiveRequest || shortenerHosts.length) {
+      verdict = "Block and verify";
+      action = "Do not click, pay, screen-share, or share private data. Reopen the official AMC, RTA, AMFI, MF Central, or SEBI route yourself.";
+      tone = "caution";
+    } else if (officialHosts.length && !hasUnofficialLink) {
+      verdict = "Official-looking route";
+      action = "Still type or open the official site independently before entering any personal detail.";
+      tone = "ready";
+    } else {
+      verdict = "Review before click";
+      action = "Treat as unverified until the same route is found through an official AMC, RTA, AMFI, MF Central, or SEBI surface.";
+      tone = "watch";
+    }
+  }
+
+  return {
+    action,
+    hasNoUrl,
+    hosts,
+    id: ["NN", "MITRA", "LINK", "FIREWALL", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    officialHosts,
+    score,
+    sensitiveHits,
+    shortenerHosts,
+    tone,
+    unknownHosts,
+    urls,
+    verdict
+  };
+}
+
+function buildRecoveryRouteReceipt(result) {
+  const riskSignalCount = result.unknownHosts.length + result.shortenerHosts.length + result.sensitiveHits.length + (result.hasNoUrl ? 1 : 0);
+  const score = clampNumber(Math.round((result.score * 0.72) + (result.officialHosts.length ? 12 : 0) - (riskSignalCount * 6)), 0, 100);
+  const hasHardPause = result.shortenerHosts.length > 0 || result.sensitiveHits.length > 0;
+  const hasOfficialOnly = result.officialHosts.length > 0 && !result.unknownHosts.length && !result.shortenerHosts.length && !result.sensitiveHits.length;
+  const posture = hasHardPause
+    ? "Hard pause"
+    : hasOfficialOnly
+      ? "Open independently"
+      : result.hosts.length || result.hasNoUrl
+        ? "Verify route first"
+        : "Ready to inspect";
+  const tone = hasHardPause ? "caution" : hasOfficialOnly ? "ready" : "watch";
+  const primaryRoute = hasOfficialOnly
+    ? result.officialHosts[0]
+    : "SEBI, AMFI, AMC, MF Central, CAMS, KFintech, or RTA official entry point";
+  const nextAction = hasHardPause
+    ? "Close the message and restart from an official site you type or reach yourself."
+    : hasOfficialOnly
+      ? "Do not trust the pasted path blindly; open the same institution independently before entering private data."
+      : result.hosts.length
+        ? "Search the same recovery claim through official channels before opening any link."
+        : "Paste a public link or message first, then keep the official no-click route as the fallback.";
+
+  return {
+    id: ["NN", "MITRA", "ROUTE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    nextAction,
+    posture,
+    primaryRoute,
+    riskSignalCount,
+    score,
+    steps: [
+      {
+        label: "Stop",
+        detail: hasHardPause ? "Do not click, pay, screen-share, or share OTP/PAN/folio/CAS/bank data." : "Do not enter private data from a pasted route."
+      },
+      {
+        label: "Reopen",
+        detail: `Use ${primaryRoute} from a fresh browser tab or official bookmark.`
+      },
+      {
+        label: "Match",
+        detail: "Check source family, page purpose, date, and whether the recovery path appears on an official surface."
+      },
+      {
+        label: "Record",
+        detail: "Save only verdict, host posture, and next action. Do not store the pasted message or private identifiers."
+      }
+    ],
+    fields: [
+      { label: "Firewall", value: `${result.verdict} | ${result.score}/100` },
+      { label: "Receipt", value: `${posture} | ${score}/100` },
+      { label: "Risk signals", value: String(riskSignalCount) },
+      { label: "Official hosts", value: result.officialHosts.join(" | ") || "None yet" }
+    ],
+    tone
+  };
+}
+
+function renderMitraRouteReceipt(result) {
+  const receipt = buildRecoveryRouteReceipt(result);
+  return `
+    <div class="mitra-route-head ${escapeHtml(receipt.tone)}">
+      <div>
+        <span>Nadi Recovery Route Receipt</span>
+        <strong>${escapeHtml(receipt.posture)} | ${receipt.score}/100</strong>
+        <p>${escapeHtml(receipt.nextAction)}</p>
+      </div>
+      <button class="text-button" id="copyMitraRouteReceipt" type="button">Copy route receipt</button>
+    </div>
+    <div class="mitra-route-field-grid">
+      ${receipt.fields.map((field) => `
+        <article>
+          <span>${escapeHtml(field.label)}</span>
+          <strong>${escapeHtml(field.value)}</strong>
+        </article>
+      `).join("")}
+    </div>
+    <div class="mitra-route-step-grid">
+      ${receipt.steps.map((step, index) => `
+        <article class="${escapeHtml(index === 0 && receipt.tone === "caution" ? "caution" : receipt.tone === "ready" && index === 1 ? "ready" : "watch")}">
+          <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(step.label)}</span>
+          <strong>${escapeHtml(step.detail)}</strong>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildMitraScamImmunityDrill(result, rawText = "") {
+  const text = String(rawText || "").toLowerCase();
+  const matchedPatterns = RECOVERY_SCAM_DRILL_PATTERNS.map((pattern) => {
+    const hits = pattern.terms.filter((term) => text.includes(term));
+    return {
+      ...pattern,
+      active: hits.length > 0,
+      hits
+    };
+  });
+  const activePatterns = matchedPatterns.filter((pattern) => pattern.active);
+  const linkPressure = result.shortenerHosts.length || result.unknownHosts.length ? 1 : 0;
+  const triggerCount = activePatterns.length + linkPressure + (result.hasNoUrl && rawText.trim() ? 1 : 0);
+  const score = clampNumber(Math.round(72 - triggerCount * 8 - result.sensitiveHits.length * 3 - result.shortenerHosts.length * 6), 0, 100);
+  const tone = triggerCount >= 4 || result.tone === "caution" ? "caution" : triggerCount >= 1 ? "watch" : "ready";
+  const posture = !rawText.trim()
+    ? "Ready to drill"
+    : tone === "caution"
+      ? "Manipulation pressure high"
+      : tone === "watch"
+        ? "Pattern training"
+        : "Low pressure, still verify";
+  const primaryTrap = activePatterns[0]?.label || (result.shortenerHosts.length ? "Short-link redirect" : result.unknownHosts.length ? "Unknown-route trust" : result.hasNoUrl && rawText.trim() ? "No-link persuasion" : "No active trap");
+  const counterMove = tone === "caution"
+    ? "Stop, do not reply, do not click, and restart from an official channel."
+    : tone === "watch"
+      ? "Slow down, compare the message with an official route, then record only the safety posture."
+      : "Keep using the official-route habit before entering any private detail.";
+  const question = tone === "ready"
+    ? "Would I still be safe if I opened this path from the official site myself?"
+    : "What private action is this message trying to make me take before I verify?";
+
+  const patternCards = matchedPatterns.map((pattern) => ({
+    ...pattern,
+    tone: pattern.active ? (pattern.id === "private-data" || pattern.id === "payment" || pattern.id === "remote-control" ? "caution" : "watch") : "ready"
+  }));
+  if (result.shortenerHosts.length || result.unknownHosts.length) {
+    patternCards.push({
+      active: true,
+      defense: "Do not open the route from the message. Search or type the official site.",
+      detail: result.shortenerHosts.length ? "A shortened link hides the destination until after the click." : "An unknown host cannot carry recovery trust by itself.",
+      hits: [...result.shortenerHosts, ...result.unknownHosts],
+      id: "route-risk",
+      label: result.shortenerHosts.length ? "Hidden destination" : "Unknown route",
+      tone: result.shortenerHosts.length ? "caution" : "watch"
+    });
+  }
+
+  return {
+    counterMove,
+    id: ["NN", "MITRA", "SCAM", "DRILL", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    patternCards,
+    posture,
+    primaryTrap,
+    question,
+    score,
+    tone,
+    triggerCount
+  };
+}
+
+function renderMitraScamDrill(result, rawText = "") {
+  const drill = buildMitraScamImmunityDrill(result, rawText);
+  return `
+    <div class="mitra-scam-head ${escapeHtml(drill.tone)}">
+      <div>
+        <span>Nadi Scam Immunity Drill</span>
+        <strong>${escapeHtml(drill.posture)} | ${drill.score}/100</strong>
+        <p>${escapeHtml(drill.counterMove)}</p>
+      </div>
+      <button class="text-button" id="copyMitraScamDrill" type="button">Copy immunity drill</button>
+    </div>
+    <div class="mitra-scam-summary-grid">
+      <article class="${escapeHtml(drill.tone)}">
+        <span>Primary trap</span>
+        <strong>${escapeHtml(drill.primaryTrap)}</strong>
+        <p>${drill.triggerCount} persuasion signal${drill.triggerCount === 1 ? "" : "s"} active.</p>
+      </article>
+      <article>
+        <span>Investor question</span>
+        <strong>${escapeHtml(drill.question)}</strong>
+      </article>
+      <article class="watch">
+        <span>Copy rule</span>
+        <strong>No raw message</strong>
+        <p>Only the pattern, counter-move, and safe route can travel.</p>
+      </article>
+    </div>
+    <div class="mitra-scam-pattern-grid">
+      ${drill.patternCards.map((pattern, index) => `
+        <article class="${escapeHtml(pattern.tone)}">
+          <span>${String(index + 1).padStart(2, "0")} ${pattern.active ? "Active" : "Clear"}</span>
+          <strong>${escapeHtml(pattern.label)}</strong>
+          <p>${escapeHtml(pattern.active ? pattern.detail : `No ${pattern.label.toLowerCase()} cue detected.`)}</p>
+          <p>${escapeHtml(pattern.defense)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildMitraFamilySafeShare(result, rawText = "") {
+  const drill = buildMitraScamImmunityDrill(result, rawText);
+  const receipt = buildRecoveryRouteReceipt(result);
+  const riskCount = result.shortenerHosts.length + result.unknownHosts.length + result.sensitiveHits.length + (result.hasNoUrl && rawText.trim() ? 1 : 0);
+  const score = clampNumber(Math.round((receipt.score * 0.46) + (drill.score * 0.34) + (result.officialHosts.length ? 8 : 0) - (riskCount * 4)), 0, 100);
+  const tone = riskCount >= 3 || result.tone === "caution" || drill.tone === "caution" ? "caution" : riskCount >= 1 || result.tone === "watch" || drill.tone === "watch" ? "watch" : "ready";
+  const posture = !rawText.trim()
+    ? "Ready for safe family brief"
+    : tone === "caution"
+      ? "Share warning, not message"
+      : tone === "watch"
+        ? "Share context only"
+        : "Share official-route habit";
+  const openingLine = tone === "caution"
+    ? "I received a recovery message that may be unsafe. I am not clicking it or sharing private details; I am reopening the official route myself."
+    : tone === "watch"
+      ? "I am checking a recovery route. Please help me verify the official source before I enter any private detail."
+      : "I am using official mutual fund recovery routes and keeping private data out of chat.";
+  const familyAsk = tone === "caution"
+    ? "Help me confirm the official AMC, RTA, AMFI, MF Central, CAMS, KFintech, or SEBI path without opening the pasted link."
+    : "Help me compare this with an official source opened independently.";
+  const safeChannel = result.officialHosts[0] || receipt.primaryRoute;
+  const redactions = ["PAN", "folio", "CAS", "Aadhaar", "OTP", "bank or card details", "nominee or claimant documents", "raw pasted message"];
+  const fields = [
+    { label: "Family posture", value: `${posture} | ${score}/100` },
+    { label: "Do not share", value: redactions.slice(0, 4).join(" | ") },
+    { label: "Safe route", value: safeChannel },
+    { label: "Risk signal", value: drill.primaryTrap }
+  ];
+  const steps = [
+    {
+      label: "Tell",
+      detail: openingLine,
+      tone
+    },
+    {
+      label: "Ask",
+      detail: familyAsk,
+      tone: tone === "caution" ? "watch" : tone
+    },
+    {
+      label: "Hide",
+      detail: `Do not forward ${redactions.join(", ")}.`,
+      tone: "caution"
+    },
+    {
+      label: "Record",
+      detail: "Save only the safety posture, official route, and next check. Do not save the raw message.",
+      tone: "ready"
+    }
+  ];
+
+  return {
+    familyAsk,
+    fields,
+    id: ["NN", "MITRA", "FAMILY", "SHARE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    openingLine,
+    posture,
+    redactions,
+    safeChannel,
+    score,
+    steps,
+    tone
+  };
+}
+
+function renderMitraFamilySafeShare(result, rawText = "") {
+  const brief = buildMitraFamilySafeShare(result, rawText);
+  return `
+    <div class="mitra-family-head ${escapeHtml(brief.tone)}">
+      <div>
+        <span>Nadi Family Safe-Share Brief</span>
+        <strong>${escapeHtml(brief.posture)} | ${brief.score}/100</strong>
+        <p>${escapeHtml(brief.openingLine)}</p>
+      </div>
+      <button class="text-button" id="copyMitraFamilySafeShare" type="button">Copy family brief</button>
+    </div>
+    <div class="mitra-family-field-grid">
+      ${brief.fields.map((field) => `
+        <article>
+          <span>${escapeHtml(field.label)}</span>
+          <strong>${escapeHtml(field.value)}</strong>
+        </article>
+      `).join("")}
+    </div>
+    <div class="mitra-family-step-grid">
+      ${brief.steps.map((step, index) => `
+        <article class="${escapeHtml(step.tone)}">
+          <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(step.label)}</span>
+          <strong>${escapeHtml(step.detail)}</strong>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildMitraOfficialRouteDirectory(result) {
+  const matchedFamilies = RECOVERY_OFFICIAL_ROUTE_DIRECTORY.filter((route) => {
+    if (route.domain === "official AMC domain") {
+      return result.officialHosts.some((host) => !["sebi.gov.in", "amfiindia.com", "mfcentral.com", "camsonline.com", "camskra.com", "kfintech.com", "mfs.kfintech.com"].includes(host));
+    }
+    return result.officialHosts.some((host) => host === route.domain || host.endsWith(`.${route.domain}`));
+  });
+  const routeRisk = result.shortenerHosts.length + result.unknownHosts.length + result.sensitiveHits.length + (result.hasNoUrl ? 1 : 0);
+  const score = clampNumber(Math.round(74 + matchedFamilies.length * 4 - routeRisk * 7), 0, 100);
+  const tone = result.shortenerHosts.length || result.sensitiveHits.length ? "caution" : result.unknownHosts.length || result.hasNoUrl ? "watch" : "ready";
+  const posture = matchedFamilies.length
+    ? "Official family matched"
+    : tone === "caution"
+      ? "Use directory, not message"
+      : tone === "watch"
+        ? "Find official source"
+        : "Directory ready";
+  const nextAction = tone === "caution"
+    ? "Close the pasted route and reopen from one of these official source families."
+    : matchedFamilies.length
+      ? "Confirm the same family by typing or searching the official source independently."
+      : "Choose the official source family first, then begin any recovery or service request.";
+  const cards = RECOVERY_OFFICIAL_ROUTE_DIRECTORY.map((route) => ({
+    ...route,
+    matched: matchedFamilies.some((family) => family.family === route.family),
+    tone: matchedFamilies.some((family) => family.family === route.family) ? "ready" : route.family === "SEBI MITRA circular" || route.family === "MF Central" ? "watch" : "ready"
+  }));
+
+  return {
+    cards,
+    id: ["NN", "MITRA", "OFFICIAL", "ROUTE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    matchedFamilies,
+    nextAction,
+    posture,
+    score,
+    tone
+  };
+}
+
+function renderMitraOfficialRouteDirectory(result) {
+  const directory = buildMitraOfficialRouteDirectory(result);
+  return `
+    <div class="mitra-directory-head ${escapeHtml(directory.tone)}">
+      <div>
+        <span>Nadi Official Route Directory</span>
+        <strong>${escapeHtml(directory.posture)} | ${directory.score}/100</strong>
+        <p>${escapeHtml(directory.nextAction)}</p>
+      </div>
+      <button class="text-button" id="copyMitraOfficialRouteDirectory" type="button">Copy route map</button>
+    </div>
+    <div class="mitra-directory-field-grid">
+      <article>
+        <span>Route map ID</span>
+        <strong>${escapeHtml(directory.id)}</strong>
+      </article>
+      <article>
+        <span>Matched official families</span>
+        <strong>${escapeHtml(directory.matchedFamilies.map((route) => route.family).join(" | ") || "None yet")}</strong>
+      </article>
+      <article class="watch">
+        <span>Open habit</span>
+        <strong>Search, type, or bookmark</strong>
+      </article>
+      <article class="caution">
+        <span>Never paste here</span>
+        <strong>PAN | folio | OTP | bank</strong>
+      </article>
+    </div>
+    <div class="mitra-directory-grid">
+      ${directory.cards.map((route, index) => `
+        <article class="${escapeHtml(route.tone)}">
+          <span>${String(index + 1).padStart(2, "0")} ${route.matched ? "Matched" : "Official family"}</span>
+          <strong>${escapeHtml(route.family)}</strong>
+          <p>${escapeHtml(route.purpose)}</p>
+          <p><b>${escapeHtml(route.domain)}</b> | ${escapeHtml(route.habit)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildMitraInvestorSourceCheck(result, rawText = "") {
+  const directory = buildMitraOfficialRouteDirectory(result);
+  const hasText = String(rawText || "").trim().length > 0;
+  const matchedFamilyCount = directory.matchedFamilies.length;
+  const hardBlockers = result.shortenerHosts.length + result.sensitiveHits.length;
+  const reviewBlockers = result.unknownHosts.length + (result.hasNoUrl ? 1 : 0);
+  const score = clampNumber(Math.round(
+    54
+      + matchedFamilyCount * 10
+      + (result.officialHosts.length ? 8 : 0)
+      - hardBlockers * 13
+      - reviewBlockers * 7
+      - (!hasText ? 4 : 0)
+  ), 0, 100);
+  const tone = hardBlockers ? "caution" : reviewBlockers || !matchedFamilyCount ? "watch" : "ready";
+  const verdict = !hasText
+    ? "Ready to check"
+    : tone === "caution"
+      ? "Do not proceed"
+      : tone === "watch"
+        ? "Find official source first"
+        : "Source family matched";
+  const action = !hasText
+    ? "Paste a public source route or message only; keep private identifiers out."
+    : tone === "caution"
+      ? "Close the message, do not click or pay, and restart from an official source family."
+      : tone === "watch"
+        ? "Use the directory to locate the official source before trusting the route."
+        : "Open the same source independently, then record only the source-check receipt.";
+  const sourceFamily = matchedFamilyCount
+    ? directory.matchedFamilies.map((route) => route.family).join(" | ")
+    : "No official source family matched yet";
+  const domainPosture = result.shortenerHosts.length
+    ? `Shortener blocked: ${result.shortenerHosts.join(" | ")}`
+    : result.unknownHosts.length
+      ? `Unknown host: ${result.unknownHosts.join(" | ")}`
+      : result.officialHosts.length
+        ? `Official host: ${result.officialHosts.join(" | ")}`
+        : "No URL detected";
+  const privateDataPosture = result.sensitiveHits.length
+    ? `Private-data request detected: ${result.sensitiveHits.slice(0, 4).join(" | ")}`
+    : "No private-data request detected";
+  const checks = [
+    {
+      label: "Source family",
+      state: matchedFamilyCount ? "Mapped" : "Unmapped",
+      detail: matchedFamilyCount ? sourceFamily : "Use SEBI, AMFI, MF Central, CAMS, KFintech, or official AMC route first.",
+      tone: matchedFamilyCount ? "ready" : "watch"
+    },
+    {
+      label: "Domain hygiene",
+      state: result.shortenerHosts.length ? "Blocked" : result.unknownHosts.length ? "Review" : result.officialHosts.length ? "Clean" : "Missing",
+      detail: domainPosture,
+      tone: result.shortenerHosts.length ? "caution" : result.unknownHosts.length || !result.officialHosts.length ? "watch" : "ready"
+    },
+    {
+      label: "Private-data boundary",
+      state: result.sensitiveHits.length ? "Stop" : "Clean",
+      detail: privateDataPosture,
+      tone: result.sensitiveHits.length ? "caution" : "ready"
+    },
+    {
+      label: "Action permission",
+      state: tone === "ready" ? "Verify independently" : tone === "watch" ? "Research only" : "No action",
+      detail: tone === "ready" ? "Independent opening is still required before any private data or service request." : action,
+      tone
+    }
+  ];
+  const fields = [
+    { label: "Source check ID", value: ["NN", "MITRA", "SOURCE", "CHECK", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(), tone },
+    { label: "Verdict", value: `${verdict} | ${score}/100`, tone },
+    { label: "Official family", value: sourceFamily, tone: matchedFamilyCount ? "ready" : "watch" },
+    { label: "Receipt boundary", value: "No raw message | No PAN | No folio | No CAS", tone: "caution" }
+  ];
+
+  return {
+    action,
+    checks,
+    fields,
+    hardBlockers,
+    id: fields[0].value,
+    matchedFamilyCount,
+    privateDataPosture,
+    score,
+    sourceFamily,
+    tone,
+    verdict
+  };
+}
+
+function renderMitraInvestorSourceCheck(result, rawText = "") {
+  const sourceCheck = buildMitraInvestorSourceCheck(result, rawText);
+  return `
+    <div class="mitra-source-head ${escapeHtml(sourceCheck.tone)}">
+      <div>
+        <span>Nadi Investor Source Check Room</span>
+        <strong>${escapeHtml(sourceCheck.verdict)} | ${sourceCheck.score}/100</strong>
+        <p>${escapeHtml(sourceCheck.action)}</p>
+      </div>
+      <button class="text-button" id="copyMitraInvestorSourceCheck" type="button">Copy source check</button>
+    </div>
+    <div class="mitra-source-field-grid">
+      ${sourceCheck.fields.map((field) => `
+        <article class="${escapeHtml(field.tone)}">
+          <span>${escapeHtml(field.label)}</span>
+          <strong>${escapeHtml(field.value)}</strong>
+        </article>
+      `).join("")}
+    </div>
+    <div class="mitra-source-check-grid">
+      ${sourceCheck.checks.map((check, index) => `
+        <article class="${escapeHtml(check.tone)}">
+          <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(check.label)}</span>
+          <strong>${escapeHtml(check.state)}</strong>
+          <p>${escapeHtml(check.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildMitraSourceHandshake(result, rawText = "") {
+  const sourceCheck = buildMitraInvestorSourceCheck(result, rawText);
+  const directory = buildMitraOfficialRouteDirectory(result);
+  const matched = directory.matchedFamilies;
+  const hasText = String(rawText || "").trim().length > 0;
+  const hasHardStop = result.shortenerHosts.length > 0 || result.sensitiveHits.length > 0;
+  const hasReviewGap = result.unknownHosts.length > 0 || result.hasNoUrl || !matched.length;
+  const independentRoute = matched[0]?.route || "Open AMFI, MF Central, CAMS, KFintech, SEBI, or the official AMC from a fresh tab.";
+  const score = clampNumber(Math.round(
+    (sourceCheck.score * 0.42)
+      + (directory.score * 0.28)
+      + (matched.length ? 16 : 0)
+      + (result.officialHosts.length ? 8 : 0)
+      - (hasHardStop ? 18 : 0)
+      - (hasReviewGap ? 8 : 0)
+      - (!hasText ? 6 : 0)
+  ), 0, 100);
+  const tone = hasHardStop ? "caution" : hasReviewGap ? "watch" : "ready";
+  const verdict = !hasText
+    ? "Handshake waiting"
+    : tone === "caution"
+      ? "Handshake blocked"
+      : tone === "watch"
+        ? "Handshake incomplete"
+        : "Research handshake ready";
+  const action = !hasText
+    ? "Paste a public route or message, then match it with an independently opened official route."
+    : tone === "caution"
+      ? "Break the path: do not click, do not reply, do not pay, and restart from the official directory."
+      : tone === "watch"
+        ? "Do not proceed yet. Find the same source family through an official site opened independently."
+        : "Open the official route independently, compare the source family, then save only this handshake receipt.";
+  const locks = [
+    {
+      label: "Pasted route",
+      state: hasText ? "Captured as public text" : "Waiting",
+      detail: hasText ? "Raw pasted text is used locally for classification only." : "No source text has been checked yet.",
+      tone: hasText ? "ready" : "watch"
+    },
+    {
+      label: "Official family",
+      state: matched.length ? "Matched" : "Not matched",
+      detail: matched.length ? matched.map((route) => route.family).join(" | ") : "No SEBI, AMFI, MF Central, CAMS, KFintech, or official AMC family detected.",
+      tone: matched.length ? "ready" : "watch"
+    },
+    {
+      label: "Independent open",
+      state: tone === "ready" ? "Required now" : "Required before trust",
+      detail: independentRoute,
+      tone: tone === "caution" ? "caution" : "watch"
+    },
+    {
+      label: "Action boundary",
+      state: tone === "ready" ? "Research only" : "No action",
+      detail: tone === "ready" ? "Handshake allows research review only, not execution or claim handling." : action,
+      tone
+    }
+  ];
+  const fields = [
+    { label: "Handshake ID", value: ["NN", "MITRA", "SOURCE", "HANDSHAKE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(), tone },
+    { label: "Source check", value: `${sourceCheck.verdict} | ${sourceCheck.score}/100`, tone: sourceCheck.tone },
+    { label: "Independent route", value: independentRoute, tone: matched.length ? "ready" : "watch" },
+    { label: "Boundary", value: "Research-safe is not claim-safe", tone: "caution" }
+  ];
+
+  return {
+    action,
+    fields,
+    id: fields[0].value,
+    independentRoute,
+    locks,
+    matched,
+    score,
+    tone,
+    verdict
+  };
+}
+
+function renderMitraSourceHandshake(result, rawText = "") {
+  const handshake = buildMitraSourceHandshake(result, rawText);
+  return `
+    <div class="mitra-handshake-head ${escapeHtml(handshake.tone)}">
+      <div>
+        <span>Nadi Source Handshake</span>
+        <strong>${escapeHtml(handshake.verdict)} | ${handshake.score}/100</strong>
+        <p>${escapeHtml(handshake.action)}</p>
+      </div>
+      <button class="text-button" id="copyMitraSourceHandshake" type="button">Copy handshake</button>
+    </div>
+    <div class="mitra-handshake-field-grid">
+      ${handshake.fields.map((field) => `
+        <article class="${escapeHtml(field.tone)}">
+          <span>${escapeHtml(field.label)}</span>
+          <strong>${escapeHtml(field.value)}</strong>
+        </article>
+      `).join("")}
+    </div>
+    <div class="mitra-handshake-lock-grid">
+      ${handshake.locks.map((lock, index) => `
+        <article class="${escapeHtml(lock.tone)}">
+          <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(lock.label)}</span>
+          <strong>${escapeHtml(lock.state)}</strong>
+          <p>${escapeHtml(lock.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildMitraSafeReleaseVerdict(result, rawText = "") {
+  const raw = String(rawText || "").trim();
+  const handshake = buildMitraSourceHandshake(result, rawText);
+  const sourceCheck = buildMitraInvestorSourceCheck(result, rawText);
+  const hasHardStop = result.shortenerHosts.length > 0 || result.sensitiveHits.length > 0;
+  const hasTwoSourceMatch = handshake.matched.length > 0 && !result.unknownHosts.length && !result.hasNoUrl;
+  const canShareSafetyNote = raw.length > 0 && !hasHardStop && hasTwoSourceMatch && handshake.score >= 72;
+  const score = clampNumber(Math.round(
+    (handshake.score * 0.58)
+      + (sourceCheck.score * 0.18)
+      + (hasTwoSourceMatch ? 14 : 0)
+      + (result.officialHosts.length ? 8 : 0)
+      - (hasHardStop ? 24 : 0)
+      - (!raw ? 8 : 0)
+  ), 0, 100);
+  const tone = hasHardStop ? "caution" : canShareSafetyNote ? "ready" : "watch";
+  const verdict = !raw
+    ? "Release waiting"
+    : hasHardStop
+      ? "Release blocked"
+      : canShareSafetyNote
+        ? "Safety note release"
+        : "Reviewer hold";
+  const reason = !raw
+    ? "No public route or message has been checked yet."
+    : hasHardStop
+      ? "The pasted path has a shortener or private-data prompt, so it cannot be shared as a safe source path."
+      : canShareSafetyNote
+        ? "The pasted source family matched an official route family and can be shared only as a safety note."
+        : "The source family is still incomplete; hold the note until an official independent route is matched.";
+  const action = canShareSafetyNote
+    ? "Copy only the safety verdict and official-source family. Do not include the raw pasted message or any investor identifiers."
+    : hasHardStop
+      ? "Block the path, close the message, and restart from an official source opened independently."
+      : "Keep the route in research hold until the two-source match and privacy boundary are clear.";
+  const releaseScope = canShareSafetyNote
+    ? "Public safety note only"
+    : hasHardStop
+      ? "No release"
+      : "Internal research hold";
+  const fields = [
+    { label: "Verdict ID", value: ["NN", "MITRA", "SAFE", "RELEASE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(), tone },
+    { label: "Decision", value: `${verdict} | ${score}/100`, tone },
+    { label: "Release scope", value: releaseScope, tone },
+    { label: "Boundary", value: "No claim, no transaction, no private data", tone: "caution" }
+  ];
+  const locks = [
+    {
+      label: "Two-source match",
+      state: hasTwoSourceMatch ? "Matched" : "Not ready",
+      detail: hasTwoSourceMatch ? handshake.matched.map((route) => route.family).join(" | ") : "Match the pasted route with an independently opened official route.",
+      tone: hasTwoSourceMatch ? "ready" : "watch"
+    },
+    {
+      label: "Privacy scrub",
+      state: result.sensitiveHits.length ? "Blocked" : "Clean enough",
+      detail: result.sensitiveHits.length ? result.sensitiveHits.join(" | ") : "No PAN, folio, CAS, OTP, bank, card, nominee, claimant, or contact prompt detected.",
+      tone: result.sensitiveHits.length ? "caution" : "ready"
+    },
+    {
+      label: "Link hygiene",
+      state: result.shortenerHosts.length ? "Blocked" : "No shortener",
+      detail: result.shortenerHosts.length ? result.shortenerHosts.join(" | ") : "No shortener detected; still reopen official route independently.",
+      tone: result.shortenerHosts.length ? "caution" : "ready"
+    },
+    {
+      label: "Release boundary",
+      state: canShareSafetyNote ? "Share safety note" : "Hold",
+      detail: action,
+      tone
+    }
+  ];
+
+  return {
+    action,
+    fields,
+    id: fields[0].value,
+    locks,
+    reason,
+    releaseScope,
+    score,
+    tone,
+    verdict
+  };
+}
+
+function renderMitraSafeReleaseVerdict(result, rawText = "") {
+  const release = buildMitraSafeReleaseVerdict(result, rawText);
+  return `
+    <div class="mitra-release-head ${escapeHtml(release.tone)}">
+      <div>
+        <span>Nadi Safe Release Verdict</span>
+        <strong>${escapeHtml(release.verdict)} | ${release.score}/100</strong>
+        <p>${escapeHtml(release.reason)}</p>
+      </div>
+      <button class="text-button" id="copyMitraSafeReleaseVerdict" type="button">Copy release verdict</button>
+    </div>
+    <div class="mitra-release-field-grid">
+      ${release.fields.map((field) => `
+        <article class="${escapeHtml(field.tone)}">
+          <span>${escapeHtml(field.label)}</span>
+          <strong>${escapeHtml(field.value)}</strong>
+        </article>
+      `).join("")}
+    </div>
+    <div class="mitra-release-lock-grid">
+      ${release.locks.map((lock, index) => `
+        <article class="${escapeHtml(lock.tone)}">
+          <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(lock.label)}</span>
+          <strong>${escapeHtml(lock.state)}</strong>
+          <p>${escapeHtml(lock.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildMitraSafetyStackTimeline(result, rawText = "") {
+  const raw = String(rawText || "").trim();
+  const receipt = buildRecoveryRouteReceipt(result);
+  const drill = buildMitraScamImmunityDrill(result, rawText);
+  const sourceCheck = buildMitraInvestorSourceCheck(result, rawText);
+  const handshake = buildMitraSourceHandshake(result, rawText);
+  const release = buildMitraSafeReleaseVerdict(result, rawText);
+  const hasHardStop = result.shortenerHosts.length > 0 || result.sensitiveHits.length > 0;
+  const hasInput = raw.length > 0;
+  const steps = [
+    {
+      label: "Firewall",
+      score: result.score,
+      state: !hasInput ? "Waiting" : hasHardStop ? "Blocked" : result.verdict,
+      detail: result.action,
+      tone: !hasInput ? "watch" : result.tone,
+      clear: hasInput && !hasHardStop
+    },
+    {
+      label: "Route receipt",
+      score: receipt.score,
+      state: receipt.posture,
+      detail: receipt.nextAction,
+      tone: !hasInput ? "watch" : receipt.tone,
+      clear: hasInput && receipt.tone !== "caution"
+    },
+    {
+      label: "Scam drill",
+      score: drill.score,
+      state: drill.posture,
+      detail: drill.counterMove,
+      tone: !hasInput ? "watch" : drill.tone,
+      clear: hasInput && drill.tone !== "caution"
+    },
+    {
+      label: "Source check",
+      score: sourceCheck.score,
+      state: sourceCheck.verdict,
+      detail: sourceCheck.action,
+      tone: sourceCheck.tone,
+      clear: hasInput && sourceCheck.tone === "ready"
+    },
+    {
+      label: "Handshake",
+      score: handshake.score,
+      state: handshake.verdict,
+      detail: handshake.action,
+      tone: handshake.tone,
+      clear: hasInput && handshake.tone === "ready"
+    },
+    {
+      label: "Release verdict",
+      score: release.score,
+      state: release.verdict,
+      detail: release.action,
+      tone: release.tone,
+      clear: hasInput && release.tone === "ready"
+    }
+  ];
+  const clearCount = steps.filter((step) => step.clear).length;
+  const progress = clampNumber(Math.round((clearCount / steps.length) * 100), 0, 100);
+  const firstBlocker = steps.find((step) => step.tone === "caution") || steps.find((step) => !step.clear);
+  const current = firstBlocker || steps[steps.length - 1];
+  const score = clampNumber(Math.round((progress * 0.48) + (release.score * 0.34) + (handshake.score * 0.18)), 0, 100);
+  const tone = !hasInput ? "watch" : steps.some((step) => step.tone === "caution") ? "caution" : clearCount === steps.length ? "ready" : "watch";
+  const verdict = !hasInput
+    ? "Stack waiting"
+    : tone === "caution"
+      ? "Stack blocked"
+      : clearCount === steps.length
+        ? "Safety stack clear"
+        : "Stack in progress";
+  const nextAction = !hasInput
+    ? "Paste a public route or message to start the safety stack."
+    : tone === "caution"
+      ? `Stop at ${current.label}: ${current.detail}`
+      : clearCount === steps.length
+        ? "The stack can release a public safety note only; no claim, transaction, advice, or private data."
+        : `Continue with ${current.label}: ${current.detail}`;
+  const fields = [
+    { label: "Timeline ID", value: ["NN", "MITRA", "SAFETY", "STACK", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(), tone },
+    { label: "Stack progress", value: `${progress}% | ${clearCount} of ${steps.length}`, tone },
+    { label: "Current gate", value: current.label, tone: current.tone },
+    { label: "Final boundary", value: "Safety note only", tone: "caution" }
+  ];
+
+  return {
+    current,
+    fields,
+    id: fields[0].value,
+    nextAction,
+    progress,
+    score,
+    steps,
+    tone,
+    verdict
+  };
+}
+
+function renderMitraSafetyStackTimeline(result, rawText = "") {
+  const stack = buildMitraSafetyStackTimeline(result, rawText);
+  return `
+    <div class="mitra-stack-head ${escapeHtml(stack.tone)}">
+      <div>
+        <span>Nadi Safety Stack Timeline</span>
+        <strong>${escapeHtml(stack.verdict)} | ${stack.score}/100</strong>
+        <p>${escapeHtml(stack.nextAction)}</p>
+      </div>
+      <button class="text-button" id="copyMitraSafetyStackTimeline" type="button">Copy safety stack</button>
+    </div>
+    <div class="mitra-stack-meter" aria-hidden="true">
+      <span style="width:${stack.progress}%"></span>
+    </div>
+    <div class="mitra-stack-field-grid">
+      ${stack.fields.map((field) => `
+        <article class="${escapeHtml(field.tone)}">
+          <span>${escapeHtml(field.label)}</span>
+          <strong>${escapeHtml(field.value)}</strong>
+        </article>
+      `).join("")}
+    </div>
+    <div class="mitra-stack-timeline">
+      ${stack.steps.map((step, index) => `
+        <article class="${escapeHtml(step.tone)} ${step.clear ? "clear" : ""}">
+          <span>${String(index + 1).padStart(2, "0")} ${step.clear ? "Clear" : "Open"}</span>
+          <strong>${escapeHtml(step.label)}</strong>
+          <div class="mitra-stack-step-meter" aria-hidden="true"><span style="width:${step.score}%"></span></div>
+          <p>${escapeHtml(step.state)} | ${step.score}/100</p>
+          <p>${escapeHtml(step.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildMitraSafetyActionRouter(result, rawText = "") {
+  const raw = String(rawText || "").trim();
+  const stack = buildMitraSafetyStackTimeline(result, rawText);
+  const release = buildMitraSafeReleaseVerdict(result, rawText);
+  const handshake = buildMitraSourceHandshake(result, rawText);
+  const sourceCheck = buildMitraInvestorSourceCheck(result, rawText);
+  const familyShare = buildMitraFamilySafeShare(result, rawText);
+  const directory = buildMitraOfficialRouteDirectory(result);
+  const officialRoute = directory.matchedFamilies[0]?.route || handshake.independentRoute;
+  const hasHardStop = result.shortenerHosts.length > 0 || result.sensitiveHits.length > 0;
+  const score = clampNumber(Math.round(
+    (stack.score * 0.42)
+      + (release.score * 0.28)
+      + (handshake.score * 0.18)
+      + (sourceCheck.score * 0.12)
+  ), 0, 100);
+  const matchedFamilies = directory.matchedFamilies.map((route) => route.family).join(" | ") || "No official family matched yet";
+  let action = "Hold for review";
+  let posture = "Research hold";
+  let tone = "watch";
+  let reason = "The route still needs source confirmation before anything is shared.";
+  let route = officialRoute;
+  let doNow = "Continue the source check and keep the raw pasted message out of notes.";
+  let avoid = "No claim, no transaction, no private data.";
+
+  if (!raw) {
+    action = "Paste public route";
+    posture = "Router waiting";
+    reason = "No public route or message has been checked yet.";
+    route = "Recovery Link Firewall";
+    doNow = "Paste a public URL or message only, then run the safety stack.";
+    avoid = "Do not paste PAN, folio, CAS, Aadhaar, OTP, bank, card, contact, or legal papers.";
+  } else if (hasHardStop) {
+    action = "Block and restart";
+    posture = "Hard stop";
+    tone = "caution";
+    reason = "A shortener or private-data signal means this path cannot be trusted or forwarded.";
+    doNow = "Close the pasted route, do not reply, and reopen the official source independently.";
+    avoid = "No click, no payment, no screen-share, no OTP, no PAN, no folio, no CAS, no bank or card detail.";
+  } else if (release.tone === "ready") {
+    action = "Share safety note";
+    posture = "Safety note only";
+    tone = "ready";
+    reason = "The source family is matched enough to share the safety posture, not a recovery claim.";
+    route = officialRoute || familyShare.safeChannel;
+    doNow = "Copy a public safety note with the official family and no raw pasted message.";
+    avoid = "Do not say a claim is valid, do not request documents, and do not move money.";
+  } else if (stack.current.label === "Source check" || stack.current.label === "Handshake") {
+    action = "Reopen official route";
+    posture = "Verify official source";
+    reason = "The next safest move is independent source opening before trust.";
+    doNow = "Use the official route directory, then compare source family and page purpose.";
+  } else if (stack.current.label === "Firewall" || stack.current.label === "Route receipt" || stack.current.label === "Scam drill") {
+    action = "Slow down";
+    posture = "Behavior pause";
+    reason = "The route is still in the first safety checks.";
+    doNow = "Complete the firewall, route receipt, and scam-pattern check before source review.";
+  }
+
+  const cards = [
+    {
+      label: "Do now",
+      value: action,
+      detail: doNow,
+      tone
+    },
+    {
+      label: "Use route",
+      value: route,
+      detail: matchedFamilies,
+      tone: tone === "caution" ? "watch" : tone
+    },
+    {
+      label: "Do not do",
+      value: "No private data",
+      detail: avoid,
+      tone: "caution"
+    },
+    {
+      label: "Copy rule",
+      value: "Safety note only",
+      detail: "The raw pasted text is excluded from every router note.",
+      tone: "ready"
+    }
+  ];
+  const steps = [
+    {
+      label: "Stop",
+      detail: hasHardStop ? "Treat the pasted path as blocked." : "Pause before trusting the route.",
+      tone: hasHardStop ? "caution" : "watch"
+    },
+    {
+      label: "Reopen",
+      detail: route,
+      tone: tone === "ready" ? "ready" : "watch"
+    },
+    {
+      label: "Match",
+      detail: stack.current.label === "Release verdict" ? "Release verdict can share safety posture only." : `Clear current gate: ${stack.current.label}.`,
+      tone: stack.current.tone
+    },
+    {
+      label: "Record",
+      detail: "Save action, route family, and boundary only. Do not store the pasted message or investor identifiers.",
+      tone: "ready"
+    }
+  ];
+
+  return {
+    action,
+    cards,
+    id: ["NN", "MITRA", "SAFETY", "ACTION", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    posture,
+    reason,
+    route,
+    score,
+    stack,
+    steps,
+    tone
+  };
+}
+
+function renderMitraSafetyActionRouter(result, rawText = "") {
+  const router = buildMitraSafetyActionRouter(result, rawText);
+  return `
+    <div class="mitra-action-head ${escapeHtml(router.tone)}">
+      <div>
+        <span>Nadi Safety Action Router</span>
+        <strong>${escapeHtml(router.posture)} | ${router.score}/100</strong>
+        <p>${escapeHtml(router.reason)}</p>
+      </div>
+      <button class="text-button" id="copyMitraSafetyActionRouter" type="button">Copy action route</button>
+    </div>
+    <div class="mitra-action-card-grid">
+      ${router.cards.map((card) => `
+        <article class="${escapeHtml(card.tone)}">
+          <span>${escapeHtml(card.label)}</span>
+          <strong>${escapeHtml(card.value)}</strong>
+          <p>${escapeHtml(card.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="mitra-action-step-grid">
+      ${router.steps.map((step, index) => `
+        <article class="${escapeHtml(step.tone)}">
+          <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(step.label)}</span>
+          <strong>${escapeHtml(step.detail)}</strong>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildMitraRecoveryActionReceipt(result, rawText = "") {
+  const raw = String(rawText || "").trim();
+  const router = buildMitraSafetyActionRouter(result, rawText);
+  const release = buildMitraSafeReleaseVerdict(result, rawText);
+  const sourceCheck = buildMitraInvestorSourceCheck(result, rawText);
+  const hasHardStop = router.tone === "caution";
+  const canShare = router.tone === "ready";
+  const reviewDays = !raw ? 0 : hasHardStop ? 0 : canShare ? 30 : 7;
+  const reviewDate = reviewDays
+    ? new Date(Date.now() + reviewDays * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+    : "Immediate";
+  const score = clampNumber(Math.round((router.score * 0.54) + (release.score * 0.26) + (sourceCheck.score * 0.2)), 0, 100);
+  const posture = !raw
+    ? "Receipt waiting"
+    : hasHardStop
+      ? "Blocked receipt"
+      : canShare
+        ? "Public receipt ready"
+        : "Review receipt";
+  const tone = !raw ? "watch" : hasHardStop ? "caution" : canShare ? "ready" : "watch";
+  const publicLine = !raw
+    ? "No public route or message has been checked yet."
+    : hasHardStop
+      ? "A recovery path was blocked. Reopen the official source independently; do not click, pay, or share private data."
+      : canShare
+        ? "Official route family matched. Share only this safety posture, not a recovery claim."
+        : "Route is in research hold. Reopen the official source and clear the current safety gate before sharing.";
+  const fields = [
+    {
+      label: "Receipt ID",
+      value: ["NN", "MITRA", "ACTION", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      detail: posture,
+      tone
+    },
+    {
+      label: "Allowed action",
+      value: router.action,
+      detail: "Safety workflow only; no claim or execution.",
+      tone
+    },
+    {
+      label: "Evidence lock",
+      value: `${router.stack.current.label} | ${release.verdict}`,
+      detail: `${router.stack.progress}% stack progress | ${sourceCheck.sourceFamily}`,
+      tone: router.stack.current.tone
+    },
+    {
+      label: "Review clock",
+      value: reviewDate,
+      detail: reviewDays ? `${reviewDays} day re-check window.` : "Stop now; restart only from official source.",
+      tone: hasHardStop ? "caution" : "watch"
+    }
+  ];
+  const locks = [
+    {
+      label: "Raw message",
+      state: "Excluded",
+      detail: "Receipt stores posture only, never the pasted text.",
+      tone: "ready"
+    },
+    {
+      label: "Private identifiers",
+      state: "Blocked",
+      detail: "PAN, folio, CAS, Aadhaar, OTP, bank, card, contact, claimant, and nominee details stay out.",
+      tone: "caution"
+    },
+    {
+      label: "Claim status",
+      state: "Not verified",
+      detail: "This receipt does not prove that an inactive or unclaimed folio exists.",
+      tone: "caution"
+    },
+    {
+      label: "Public sharing",
+      state: canShare ? "Safety note only" : "Hold",
+      detail: publicLine,
+      tone
+    }
+  ];
+
+  return {
+    fields,
+    id: fields[0].value,
+    locks,
+    posture,
+    publicLine,
+    reviewDate,
+    reviewDays,
+    router,
+    score,
+    tone
+  };
+}
+
+function renderMitraRecoveryActionReceipt(result, rawText = "") {
+  const receipt = buildMitraRecoveryActionReceipt(result, rawText);
+  return `
+    <div class="mitra-receipt-head ${escapeHtml(receipt.tone)}">
+      <div>
+        <span>Nadi Recovery Action Receipt</span>
+        <strong>${escapeHtml(receipt.posture)} | ${receipt.score}/100</strong>
+        <p>${escapeHtml(receipt.publicLine)}</p>
+      </div>
+      <button class="text-button" id="copyMitraRecoveryActionReceipt" type="button">Copy action receipt</button>
+    </div>
+    <div class="mitra-receipt-field-grid">
+      ${receipt.fields.map((field) => `
+        <article class="${escapeHtml(field.tone)}">
+          <span>${escapeHtml(field.label)}</span>
+          <strong>${escapeHtml(field.value)}</strong>
+          <p>${escapeHtml(field.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="mitra-receipt-lock-grid">
+      ${receipt.locks.map((lock, index) => `
+        <article class="${escapeHtml(lock.tone)}">
+          <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(lock.label)}</span>
+          <strong>${escapeHtml(lock.state)}</strong>
+          <p>${escapeHtml(lock.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildMitraRecoveryFollowUpRoom(result, rawText = "") {
+  const raw = String(rawText || "").trim();
+  const receipt = buildMitraRecoveryActionReceipt(result, rawText);
+  const release = buildMitraSafeReleaseVerdict(result, rawText);
+  const sourceCheck = buildMitraInvestorSourceCheck(result, rawText);
+  const hasHardStop = receipt.tone === "caution";
+  const canShare = receipt.tone === "ready";
+  const waiting = !raw;
+  const score = clampNumber(Math.round(
+    (receipt.score * 0.46)
+      + (receipt.router.stack.score * 0.22)
+      + (sourceCheck.score * 0.18)
+      + (release.score * 0.14)
+  ), 0, 100);
+  const status = waiting
+    ? "Waiting for public route"
+    : hasHardStop
+      ? "Reset before action"
+      : canShare
+        ? "Follow-up ready"
+        : "Review route first";
+  const tone = waiting ? "watch" : hasHardStop ? "caution" : canShare ? "ready" : "watch";
+  const reviewWindow = waiting
+    ? "Before first click"
+    : hasHardStop
+      ? "Immediate"
+      : canShare
+        ? "30 days"
+        : "7 days";
+  const handoffLine = waiting
+    ? "Paste only a public route or message, then build the follow-up room."
+    : hasHardStop
+      ? "Tell family: this path is blocked; restart from official sources only."
+      : canShare
+        ? "Tell family: source family matched; share safety posture only, not a recovery claim."
+        : "Tell family: route is under review; reopen official source before trusting it.";
+  const actions = [
+    {
+      label: "Next action",
+      value: waiting ? "Check public route" : hasHardStop ? "Block and restart" : canShare ? "Share safety note" : "Reopen official source",
+      detail: waiting ? "Use the firewall before clicking anything." : receipt.publicLine,
+      tone
+    },
+    {
+      label: "Family handoff",
+      value: canShare ? "Safe to explain" : hasHardStop ? "Warn and stop" : "Hold note",
+      detail: handoffLine,
+      tone: canShare ? "ready" : hasHardStop ? "caution" : "watch"
+    },
+    {
+      label: "Review clock",
+      value: receipt.reviewDate,
+      detail: `${reviewWindow} review window. Keep route memory identity-light.`,
+      tone: hasHardStop ? "caution" : "watch"
+    },
+    {
+      label: "Record boundary",
+      value: "Receipt only",
+      detail: "Save posture, route family, and next step; exclude raw message and private identifiers.",
+      tone: "ready"
+    }
+  ];
+  const checklist = [
+    {
+      label: "Official source opened independently",
+      state: canShare ? "Ready" : waiting ? "Not started" : "Required",
+      detail: sourceCheck.sourceFamily,
+      tone: canShare ? "ready" : "watch"
+    },
+    {
+      label: "Claim proof avoided",
+      state: "No claim asserted",
+      detail: "The room never says an inactive folio exists or belongs to anyone.",
+      tone: "ready"
+    },
+    {
+      label: "Private data blocked",
+      state: hasHardStop ? "Triggered" : "Protected",
+      detail: "No PAN, folio, CAS, Aadhaar, OTP, bank, card, contact, claimant, or nominee details.",
+      tone: hasHardStop ? "caution" : "ready"
+    },
+    {
+      label: "Next review set",
+      state: reviewWindow,
+      detail: hasHardStop ? "Restart from official source only." : "Recheck source date and route family before any later share.",
+      tone: hasHardStop ? "caution" : "watch"
+    }
+  ];
+
+  return {
+    actions,
+    checklist,
+    handoffLine,
+    id: ["NN", "MITRA", "FOLLOW", "UP", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    receipt,
+    reviewWindow,
+    score,
+    status,
+    tone
+  };
+}
+
+function renderMitraRecoveryFollowUpRoom(result, rawText = "") {
+  const room = buildMitraRecoveryFollowUpRoom(result, rawText);
+  return `
+    <div class="mitra-follow-head ${escapeHtml(room.tone)}">
+      <div>
+        <span>Nadi Recovery Follow-Up Room</span>
+        <strong>${escapeHtml(room.status)} | ${room.score}/100</strong>
+        <p>${escapeHtml(room.handoffLine)}</p>
+      </div>
+      <button class="text-button" id="copyMitraRecoveryFollowUpRoom" type="button">Copy follow-up</button>
+    </div>
+    <div class="mitra-follow-action-grid">
+      ${room.actions.map((action) => `
+        <article class="${escapeHtml(action.tone)}">
+          <span>${escapeHtml(action.label)}</span>
+          <strong>${escapeHtml(action.value)}</strong>
+          <p>${escapeHtml(action.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="mitra-follow-check-grid">
+      ${room.checklist.map((item, index) => `
+        <article class="${escapeHtml(item.tone)}">
+          <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.state)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildMitraRecoveryReminderCard(result, rawText = "") {
+  const room = buildMitraRecoveryFollowUpRoom(result, rawText);
+  const receipt = room.receipt;
+  const waiting = !String(rawText || "").trim();
+  const isBlocked = room.tone === "caution";
+  const isReady = room.tone === "ready";
+  const dueDate = waiting || isBlocked ? "Today" : receipt.reviewDate;
+  const route = waiting
+    ? "Recovery Link Firewall"
+    : isBlocked
+      ? "Official route directory"
+      : receipt.router.route;
+  const cadence = waiting
+    ? "Before first click"
+    : isBlocked
+      ? "Immediate reset"
+      : isReady
+        ? "30-day recheck"
+        : "7-day recheck";
+  const headline = waiting
+    ? "Create reminder after route check"
+    : isBlocked
+      ? "Reminder: restart from official route only"
+      : isReady
+        ? "Reminder: recheck source before future sharing"
+        : "Reminder: finish source review";
+  const familyLine = waiting
+    ? "No route checked yet. Do not forward recovery messages."
+    : room.handoffLine;
+  const tone = waiting ? "watch" : isBlocked ? "caution" : isReady ? "ready" : "watch";
+  const score = clampNumber(Math.round((room.score * 0.62) + (receipt.router.stack.progress * 0.38)), 0, 100);
+  const cards = [
+    {
+      label: "Due",
+      value: dueDate,
+      detail: cadence,
+      tone
+    },
+    {
+      label: "Open first",
+      value: route,
+      detail: "Reopen independently; do not use a forwarded link as the source of truth.",
+      tone: isBlocked ? "caution" : "watch"
+    },
+    {
+      label: "Family line",
+      value: isReady ? "Safety posture only" : isBlocked ? "Do not continue" : "Hold",
+      detail: familyLine,
+      tone
+    },
+    {
+      label: "Saved memory",
+      value: "Identity-light",
+      detail: "Keep reminder ID, due date, route family, and boundary only.",
+      tone: "ready"
+    }
+  ];
+  const steps = [
+    {
+      label: "Reopen",
+      detail: route,
+      tone: isBlocked ? "caution" : "watch"
+    },
+    {
+      label: "Recheck source",
+      detail: "Confirm official source family, page purpose, and source date before any later share.",
+      tone: "watch"
+    },
+    {
+      label: "Refresh receipt",
+      detail: `Run firewall again, then compare with ${receipt.id}.`,
+      tone: "ready"
+    },
+    {
+      label: "Stay private",
+      detail: "No PAN, folio, CAS, Aadhaar, OTP, bank, card, claimant, nominee, contact, or legal documents.",
+      tone: "caution"
+    }
+  ];
+
+  return {
+    cards,
+    cadence,
+    dueDate,
+    familyLine,
+    headline,
+    id: ["NN", "MITRA", "REMINDER", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    receipt,
+    room,
+    route,
+    score,
+    steps,
+    tone
+  };
+}
+
+function renderMitraRecoveryReminderCard(result, rawText = "") {
+  const reminder = buildMitraRecoveryReminderCard(result, rawText);
+  return `
+    <div class="mitra-reminder-head ${escapeHtml(reminder.tone)}">
+      <div>
+        <span>Nadi Recovery Reminder Card</span>
+        <strong>${escapeHtml(reminder.headline)} | ${reminder.score}/100</strong>
+        <p>${escapeHtml(reminder.familyLine)}</p>
+      </div>
+      <button class="text-button" id="copyMitraRecoveryReminderCard" type="button">Copy reminder</button>
+    </div>
+    <div class="mitra-reminder-card-grid">
+      ${reminder.cards.map((card) => `
+        <article class="${escapeHtml(card.tone)}">
+          <span>${escapeHtml(card.label)}</span>
+          <strong>${escapeHtml(card.value)}</strong>
+          <p>${escapeHtml(card.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="mitra-reminder-step-grid">
+      ${reminder.steps.map((step, index) => `
+        <article class="${escapeHtml(step.tone)}">
+          <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(step.label)}</span>
+          <strong>${escapeHtml(step.detail)}</strong>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildMitraRecoveryRecheckTrail(result, rawText = "") {
+  const raw = String(rawText || "").trim();
+  const reminder = buildMitraRecoveryReminderCard(result, rawText);
+  const sourceCheck = buildMitraInvestorSourceCheck(result, rawText);
+  const release = buildMitraSafeReleaseVerdict(result, rawText);
+  const waiting = !raw;
+  const blocked = reminder.tone === "caution" || release.tone === "caution";
+  const ready = reminder.tone === "ready" && sourceCheck.tone === "ready" && release.tone === "ready";
+  const score = clampNumber(Math.round((reminder.score * 0.4) + (sourceCheck.score * 0.32) + (release.score * 0.28)), 0, 100);
+  const tone = waiting ? "watch" : blocked ? "caution" : ready ? "ready" : "watch";
+  const status = waiting
+    ? "Trail waiting"
+    : blocked
+      ? "Restart trail only"
+      : ready
+        ? "Recheck trail ready"
+        : "Trail needs source match";
+  const headline = waiting
+    ? "Start with official source"
+    : blocked
+      ? "Do not continue from this path"
+      : ready
+        ? "Recheck path is ready for safe reminder use"
+        : "Finish the official family comparison before saving";
+  const route = reminder.route;
+  const family = sourceCheck.sourceFamily || "No official family matched";
+  const id = ["NN", "MITRA", "RECHECK", "TRAIL", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const fields = [
+    {
+      label: "Trail ID",
+      value: id,
+      detail: `${reminder.cadence} | ${reminder.dueDate}`,
+      tone
+    },
+    {
+      label: "Official route",
+      value: route,
+      detail: "Reopen independently from a fresh tab or official bookmark.",
+      tone: blocked ? "caution" : "watch"
+    },
+    {
+      label: "Source family",
+      value: family,
+      detail: `${sourceCheck.verdict} | ${sourceCheck.score}/100 source check.`,
+      tone: sourceCheck.tone
+    },
+    {
+      label: "Memory boundary",
+      value: "Identity-light",
+      detail: "Save status, due date, route family, receipt ID, and outcome only.",
+      tone: "ready"
+    }
+  ];
+  const steps = [
+    {
+      label: "Open official route",
+      state: route,
+      detail: blocked ? "Ignore the pasted path and restart from the official directory." : "Do not use a forwarded recovery link as the source of truth.",
+      tone: blocked ? "caution" : "watch"
+    },
+    {
+      label: "Compare source family",
+      state: family,
+      detail: "The official family must match before any reminder is treated as durable memory.",
+      tone: sourceCheck.tone
+    },
+    {
+      label: "Refresh receipt",
+      state: reminder.receipt.id,
+      detail: "Run the firewall again before the due date and compare the posture.",
+      tone: "ready"
+    },
+    {
+      label: "Write outcome",
+      state: release.releaseScope,
+      detail: "Record only safe/hold/block, route family, due date, and boundary.",
+      tone: release.tone
+    }
+  ];
+
+  return {
+    family,
+    fields,
+    headline,
+    id,
+    reminder,
+    release,
+    route,
+    score,
+    sourceCheck,
+    status,
+    steps,
+    tone
+  };
+}
+
+function renderMitraRecoveryRecheckTrail(result, rawText = "") {
+  const trail = buildMitraRecoveryRecheckTrail(result, rawText);
+  return `
+    <div class="mitra-recheck-head ${escapeHtml(trail.tone)}">
+      <div>
+        <span>Nadi Recovery Recheck Trail</span>
+        <strong>${escapeHtml(trail.status)} | ${trail.score}/100</strong>
+        <p>${escapeHtml(trail.headline)}</p>
+      </div>
+      <button class="text-button" id="copyMitraRecoveryRecheckTrail" type="button">Copy recheck trail</button>
+    </div>
+    <div class="mitra-recheck-field-grid">
+      ${trail.fields.map((field) => `
+        <article class="${escapeHtml(field.tone)}">
+          <span>${escapeHtml(field.label)}</span>
+          <strong>${escapeHtml(field.value)}</strong>
+          <p>${escapeHtml(field.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="mitra-recheck-step-grid">
+      ${trail.steps.map((step, index) => `
+        <article class="${escapeHtml(step.tone)}">
+          <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(step.label)}</span>
+          <strong>${escapeHtml(step.state)}</strong>
+          <p>${escapeHtml(step.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function buildMitraRecoveryOutcomeLedger(result, rawText = "") {
+  const raw = String(rawText || "").trim();
+  const trail = buildMitraRecoveryRecheckTrail(result, rawText);
+  const waiting = !raw;
+  const blocked = trail.tone === "caution";
+  const ready = trail.tone === "ready";
+  const score = clampNumber(Math.round((trail.score * 0.72) + (trail.release.score * 0.18) + (trail.sourceCheck.score * 0.1)), 0, 100);
+  const tone = waiting ? "watch" : blocked ? "caution" : ready ? "ready" : "watch";
+  const status = waiting
+    ? "Outcome waiting"
+    : blocked
+      ? "Outcome: restart only"
+      : ready
+        ? "Outcome: safety note ready"
+        : "Outcome: hold for source match";
+  const decision = waiting
+    ? "No outcome can be logged until a public route or message is checked."
+    : blocked
+      ? "Close the path, do not reply, do not pay, and restart only from an official route."
+      : ready
+        ? "Log a safety education outcome only; never log claim success or investor identity."
+        : "Keep the case in research hold until official source family and receipt posture are refreshed.";
+  const nextReview = waiting
+    ? "Before first click"
+    : blocked
+      ? "Immediate reset"
+      : trail.reminder.dueDate;
+  const id = ["NN", "MITRA", "OUTCOME", "LEDGER", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const fields = [
+    {
+      label: "Ledger ID",
+      value: id,
+      detail: `${status} | ${score}/100`,
+      tone
+    },
+    {
+      label: "Outcome status",
+      value: status,
+      detail: decision,
+      tone
+    },
+    {
+      label: "Evidence lock",
+      value: trail.reminder.receipt.id,
+      detail: `${trail.family} | ${trail.release.releaseScope}`,
+      tone: trail.sourceCheck.tone
+    },
+    {
+      label: "Next review",
+      value: nextReview,
+      detail: trail.reminder.cadence,
+      tone: blocked ? "caution" : "watch"
+    }
+  ];
+  const ledger = [
+    {
+      label: "Checked path",
+      state: waiting ? "Not checked" : "Classified",
+      detail: waiting ? "No public path has been inspected yet." : "Raw text is excluded; only source family and posture remain.",
+      tone: waiting ? "watch" : "ready"
+    },
+    {
+      label: "Official source family",
+      state: trail.family,
+      detail: trail.route,
+      tone: trail.sourceCheck.tone
+    },
+    {
+      label: "Outcome boundary",
+      state: trail.release.releaseScope,
+      detail: "Education-only status. No claim verification, document handling, transaction, or advice.",
+      tone: trail.release.tone
+    },
+    {
+      label: "Private data",
+      state: "Excluded",
+      detail: "No PAN, folio, CAS, Aadhaar, OTP, bank, card, contact, claimant, nominee, payment, or legal data.",
+      tone: "caution"
+    }
+  ];
+
+  return {
+    decision,
+    fields,
+    id,
+    ledger,
+    nextReview,
+    score,
+    status,
+    tone,
+    trail
+  };
+}
+
+function renderMitraRecoveryOutcomeLedger(result, rawText = "") {
+  const outcome = buildMitraRecoveryOutcomeLedger(result, rawText);
+  return `
+    <div class="mitra-outcome-head ${escapeHtml(outcome.tone)}">
+      <div>
+        <span>Nadi Recovery Outcome Ledger</span>
+        <strong>${escapeHtml(outcome.status)} | ${outcome.score}/100</strong>
+        <p>${escapeHtml(outcome.decision)}</p>
+      </div>
+      <button class="text-button" id="copyMitraRecoveryOutcomeLedger" type="button">Copy outcome</button>
+    </div>
+    <div class="mitra-outcome-field-grid">
+      ${outcome.fields.map((field) => `
+        <article class="${escapeHtml(field.tone)}">
+          <span>${escapeHtml(field.label)}</span>
+          <strong>${escapeHtml(field.value)}</strong>
+          <p>${escapeHtml(field.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="mitra-outcome-row-grid">
+      ${outcome.ledger.map((entry, index) => `
+        <article class="${escapeHtml(entry.tone)}">
+          <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(entry.label)}</span>
+          <strong>${escapeHtml(entry.state)}</strong>
+          <p>${escapeHtml(entry.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderMitraFirewallResult(result) {
+  const hostLine = result.hosts.length ? result.hosts.join(" | ") : "No URL detected";
+  const signalLine = [
+    result.officialHosts.length ? `${result.officialHosts.length} official host${result.officialHosts.length === 1 ? "" : "s"}` : "No official host",
+    result.unknownHosts.length ? `${result.unknownHosts.length} unknown` : "No unknown host",
+    result.shortenerHosts.length ? `${result.shortenerHosts.length} shortener` : "No shortener",
+    result.sensitiveHits.length ? `${result.sensitiveHits.length} private-data signal${result.sensitiveHits.length === 1 ? "" : "s"}` : "No private-data signal"
+  ].join(" | ");
+  return `
+    <article class="${escapeHtml(result.tone)}">
+      <span>Firewall verdict</span>
+      <strong>${escapeHtml(result.verdict)} | ${result.score}/100</strong>
+      <p>${escapeHtml(result.action)}</p>
+    </article>
+    <article>
+      <span>Host check</span>
+      <strong>${escapeHtml(hostLine)}</strong>
+      <p>${escapeHtml(signalLine)}</p>
+    </article>
+    <article class="${result.sensitiveHits.length || result.shortenerHosts.length ? "caution" : "watch"}">
+      <span>Pause triggers</span>
+      <strong>${escapeHtml([...result.shortenerHosts, ...result.sensitiveHits].join(" | ") || "None detected")}</strong>
+      <p>${result.hasNoUrl ? "Message has no URL; verify through official routes before trusting it." : "No raw pasted text is saved or copied by this firewall."}</p>
+    </article>
+  `;
+}
+
+function updateMitraFirewall() {
+  const input = document.querySelector("#mitraFirewallInput");
+  const output = document.querySelector("#mitraFirewallOutput");
+  const receipt = document.querySelector("#mitraRouteReceipt");
+  const drill = document.querySelector("#mitraScamDrill");
+  const familyShare = document.querySelector("#mitraFamilySafeShare");
+  const directory = document.querySelector("#mitraOfficialRouteDirectory");
+  const sourceCheck = document.querySelector("#mitraInvestorSourceCheck");
+  const handshake = document.querySelector("#mitraSourceHandshake");
+  const releaseVerdict = document.querySelector("#mitraSafeReleaseVerdict");
+  const stackTimeline = document.querySelector("#mitraSafetyStackTimeline");
+  const actionRouter = document.querySelector("#mitraSafetyActionRouter");
+  const actionReceipt = document.querySelector("#mitraRecoveryActionReceipt");
+  const followUpRoom = document.querySelector("#mitraRecoveryFollowUpRoom");
+  const reminderCard = document.querySelector("#mitraRecoveryReminderCard");
+  const recheckTrail = document.querySelector("#mitraRecoveryRecheckTrail");
+  const outcomeLedger = document.querySelector("#mitraRecoveryOutcomeLedger");
+  if (!input || !output) return;
+  const result = evaluateRecoveryLinkFirewall(input.value);
+  output.innerHTML = renderMitraFirewallResult(result);
+  if (receipt) {
+    receipt.innerHTML = renderMitraRouteReceipt(result);
+  }
+  if (drill) {
+    drill.innerHTML = renderMitraScamDrill(result, input.value);
+  }
+  if (familyShare) {
+    familyShare.innerHTML = renderMitraFamilySafeShare(result, input.value);
+  }
+  if (directory) {
+    directory.innerHTML = renderMitraOfficialRouteDirectory(result);
+  }
+  if (sourceCheck) {
+    sourceCheck.innerHTML = renderMitraInvestorSourceCheck(result, input.value);
+  }
+  if (handshake) {
+    handshake.innerHTML = renderMitraSourceHandshake(result, input.value);
+  }
+  if (releaseVerdict) {
+    releaseVerdict.innerHTML = renderMitraSafeReleaseVerdict(result, input.value);
+  }
+  if (stackTimeline) {
+    stackTimeline.innerHTML = renderMitraSafetyStackTimeline(result, input.value);
+  }
+  if (actionRouter) {
+    actionRouter.innerHTML = renderMitraSafetyActionRouter(result, input.value);
+  }
+  if (actionReceipt) {
+    actionReceipt.innerHTML = renderMitraRecoveryActionReceipt(result, input.value);
+  }
+  if (followUpRoom) {
+    followUpRoom.innerHTML = renderMitraRecoveryFollowUpRoom(result, input.value);
+  }
+  if (reminderCard) {
+    reminderCard.innerHTML = renderMitraRecoveryReminderCard(result, input.value);
+  }
+  if (recheckTrail) {
+    recheckTrail.innerHTML = renderMitraRecoveryRecheckTrail(result, input.value);
+  }
+  if (outcomeLedger) {
+    outcomeLedger.innerHTML = renderMitraRecoveryOutcomeLedger(result, input.value);
+  }
+}
+
+function makeLiveDataGateNote() {
+  const autopilot = researchAutopilotConfig();
+  return [
+    `# NiveshNadi Live Data Gate - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Gate ID: ${autopilot.liveDataGate.id}`,
+    `Verdict: ${autopilot.liveDataGate.verdict}`,
+    `Gate score: ${autopilot.liveDataGate.score}/100`,
+    `Claim mode: ${autopilot.liveDataGate.mode}`,
+    `Open blocks: ${autopilot.liveDataGate.blocks.length}`,
+    `Strongest block: ${autopilot.liveDataGate.strongest.label}`,
+    `Gate route: ${autopilot.liveDataGate.route}`,
+    `Source chain: ${autopilot.liveDataGate.sourceChain}`,
+    `Release rule: ${autopilot.liveDataGate.releaseRule}`,
+    "",
+    "## Claim Gates",
+    ...autopilot.liveDataGate.claims.map((claim) => `- ${claim.label}: ${claim.score}/100 | ${claim.ready ? "Receipt ready" : "Receipt missing"} | Source: ${claim.source} | Required: ${claim.required} | Block: ${claim.block} | Route ${claim.route}`),
+    "",
+    "## Launch Boundary",
+    "- Demo data may support product exploration, but live-looking claims need source date, parser receipt, citation path, reviewer decision, public surface binding, and rollback posture.",
+    "- No PAN, folio, CAS, bank details, account credentials, distributor identifiers, client records, advice, or execution approval is required for this gate.",
+    "",
+    "The Live Data Gate is a source-trust release layer only. It is not personalized advice, suitability approval, execution instruction, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeClaimPassportNote() {
+  const autopilot = researchAutopilotConfig();
+  return [
+    `# NiveshNadi Claim Passport - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Passport ID: ${autopilot.claimPassport.id}`,
+    `Verdict: ${autopilot.claimPassport.verdict}`,
+    `Passport score: ${autopilot.claimPassport.score}/100`,
+    `Mode: ${autopilot.claimPassport.mode}`,
+    `Open passports: ${autopilot.claimPassport.blocks.length}`,
+    `Strongest gap: ${autopilot.claimPassport.strongest.label}`,
+    `Passport route: ${autopilot.claimPassport.route}`,
+    `Evidence line: ${autopilot.claimPassport.evidenceLine}`,
+    `Share rule: ${autopilot.claimPassport.rule}`,
+    "",
+    "## Claim Passports",
+    ...autopilot.claimPassport.items.map((claim) => `- ${claim.label}: ${claim.value} | ${claim.state} | ${claim.score}/100 | Source: ${claim.source} | Freshness: ${claim.freshness} | Required: ${claim.required} | Display rule: ${claim.displayRule} | Route ${claim.route}`),
+    "",
+    "## Open Passport Gaps",
+    ...(autopilot.claimPassport.blocks.length
+      ? autopilot.claimPassport.blocks.map((claim) => `- ${claim.label}: stamp source, freshness, reviewer posture, and display rule before copying or sharing.`)
+      : ["- All claim passports are stamped for research memo use."]),
+    "",
+    "## Launch Boundary",
+    "- Claim Passport stores source and display metadata only. It intentionally avoids PAN, folio, CAS, account credentials, bank details, contact data, distributor identifiers, client records, private notes, advice, or execution approval.",
+    "- A stamped claim can support research communication; it does not approve a transaction, suitability conclusion, or return guarantee.",
+    "",
+    "The Claim Passport is a proof-carrying research layer only. It is not personalized advice, suitability approval, execution instruction, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makePassportShareSealNote() {
+  const autopilot = researchAutopilotConfig();
+  return [
+    `# NiveshNadi Passport Share Seal - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Seal ID: ${autopilot.passportShareSeal.id}`,
+    `Verdict: ${autopilot.passportShareSeal.verdict}`,
+    `Seal score: ${autopilot.passportShareSeal.score}/100`,
+    `Mode: ${autopilot.passportShareSeal.mode}`,
+    `Watermark: ${autopilot.passportShareSeal.watermark}`,
+    `Share route: ${autopilot.passportShareSeal.route}`,
+    `Share rule: ${autopilot.passportShareSeal.rule}`,
+    `Share line: ${autopilot.passportShareSeal.shareLine}`,
+    `Safe claims: ${autopilot.passportShareSeal.safeClaims}`,
+    "",
+    "## Claim Share Map",
+    ...autopilot.passportShareSeal.claims.map((claim) => {
+      const shareState = claim.ready ? "Share-ready" : claim.score < 58 ? "Blocked" : "Preview";
+      return `- ${claim.label}: ${claim.value} | ${shareState} | ${claim.state} | ${claim.score}/100 | Source: ${claim.source} | Freshness: ${claim.freshness} | Display rule: ${claim.displayRule} | Route ${claim.route}`;
+    }),
+    "",
+    "## Redactions",
+    ...autopilot.passportShareSeal.redactions.map((redaction) => `- ${redaction}`),
+    "",
+    "## Launch Boundary",
+    "- The Passport Share Seal can support self-research sharing only when the watermark, source posture, no-advice boundary, and redaction line travel with it.",
+    "- It intentionally excludes PAN, folio, CAS, bank details, account credentials, contact data, distributor identifiers, client records, private notes, advice, and execution approval.",
+    "",
+    "The Passport Share Seal is a proof-aware sharing layer only. It is not personalized advice, suitability approval, execution instruction, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraRecoveryShieldNote() {
+  const autopilot = researchAutopilotConfig();
+  return [
+    `# NiveshNadi MITRA Recovery Shield - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Shield ID: ${autopilot.mitraRecoveryShield.id}`,
+    `Verdict: ${autopilot.mitraRecoveryShield.verdict}`,
+    `Shield score: ${autopilot.mitraRecoveryShield.score}/100`,
+    `SEBI circular: ${autopilot.mitraRecoveryShield.circular}`,
+    `Circular date: ${autopilot.mitraRecoveryShield.circularDate}`,
+    `Official circular URL: ${autopilot.mitraRecoveryShield.officialCircularUrl}`,
+    `Inactive folio rule: ${autopilot.mitraRecoveryShield.inactiveRule}`,
+    "",
+    "## Official Channel Discipline",
+    ...autopilot.mitraRecoveryShield.officialChannels.map((channel) => `- ${channel}`),
+    "",
+    "## Recovery Checks",
+    ...autopilot.mitraRecoveryShield.items.map((item) => `- ${item.label}: ${item.state} | ${item.detail}`),
+    "",
+    "## Scam Red Flags",
+    ...autopilot.mitraRecoveryShield.redFlags.map((flag) => `- ${flag}`),
+    "",
+    "## Boundary",
+    "- NiveshNadi should educate the user and link to official surfaces only. It should not collect PAN, folio, CAS, bank details, OTP, nominee documents, claimant papers, contact data, account credentials, or legal documents for MITRA recovery.",
+    "- This shield is not proof that any investor has a recoverable folio. It is a safety route for official tracing and KYC update awareness.",
+    "",
+    "The MITRA Recovery Shield is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraFirewallNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const receipt = buildRecoveryRouteReceipt(result);
+  return [
+    `# NiveshNadi Recovery Link Firewall - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Firewall ID: ${result.id}`,
+    `Route receipt: ${receipt.id} | ${receipt.posture} | ${receipt.score}/100`,
+    `Verdict: ${result.verdict}`,
+    `Firewall score: ${result.score}/100`,
+    `Action: ${result.action}`,
+    `Observed URL count: ${result.urls.length}`,
+    `Observed hosts: ${result.hosts.join(" | ") || "None"}`,
+    `Official-looking hosts: ${result.officialHosts.join(" | ") || "None"}`,
+    `Unknown hosts: ${result.unknownHosts.join(" | ") || "None"}`,
+    `Shortener hosts: ${result.shortenerHosts.join(" | ") || "None"}`,
+    `Private-data signals: ${result.sensitiveHits.join(" | ") || "None"}`,
+    "",
+    "## Official Recovery Discipline",
+    "- Prefer official SEBI, AMFI, AMC, MF Central, CAMS, KFintech, or RTA entry points opened independently.",
+    "- Treat WhatsApp, Telegram, ad, caller, screen-share, advance-fee, OTP, PAN, Aadhaar, folio, CAS, card, or bank-detail requests as a hard pause.",
+    "- Even official-looking links should be typed or reached from the official website before any private detail is entered.",
+    "",
+    "## Privacy Boundary",
+    "- The pasted message is inspected in the browser only and is not saved by NiveshNadi.",
+    "- This copied firewall note intentionally excludes the raw pasted text and includes only safety posture.",
+    "",
+    "The Recovery Link Firewall is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraRouteReceiptNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const receipt = buildRecoveryRouteReceipt(result);
+  return [
+    `# NiveshNadi Recovery Route Receipt - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${receipt.id}`,
+    `Receipt posture: ${receipt.posture}`,
+    `Receipt score: ${receipt.score}/100`,
+    `Firewall verdict: ${result.verdict}`,
+    `Firewall score: ${result.score}/100`,
+    `Primary no-click route: ${receipt.primaryRoute}`,
+    `Next action: ${receipt.nextAction}`,
+    `Observed hosts: ${result.hosts.join(" | ") || "None"}`,
+    `Official-looking hosts: ${result.officialHosts.join(" | ") || "None"}`,
+    `Unknown hosts: ${result.unknownHosts.join(" | ") || "None"}`,
+    `Shortener hosts: ${result.shortenerHosts.join(" | ") || "None"}`,
+    `Private-data signals: ${result.sensitiveHits.join(" | ") || "None"}`,
+    "",
+    "## No-Click Route",
+    ...receipt.steps.map((step) => `- ${step.label}: ${step.detail}`),
+    "",
+    "## Official Channel Discipline",
+    "- Open SEBI, AMFI, AMC, MF Central, CAMS, KFintech, or RTA routes independently from a fresh browser tab or saved official bookmark.",
+    "- Do not click recovery links from chats, ads, callers, copied documents, shortened URLs, or fee-led recovery promises.",
+    "- Do not share OTP, PAN, Aadhaar, folio, CAS, bank, card, nominee, claimant, contact, or identity documents from a pasted message.",
+    "",
+    "## Privacy Boundary",
+    "- This receipt intentionally excludes the raw pasted message.",
+    "- It may be saved as a safety posture, not as proof of a recoverable folio or claim validity.",
+    "",
+    "The Recovery Route Receipt is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraScamDrillNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const drill = buildMitraScamImmunityDrill(result, input?.value || "");
+  return [
+    `# NiveshNadi Scam Immunity Drill - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Drill ID: ${drill.id}`,
+    `Posture: ${drill.posture}`,
+    `Drill score: ${drill.score}/100`,
+    `Primary trap: ${drill.primaryTrap}`,
+    `Persuasion signals: ${drill.triggerCount}`,
+    `Counter-move: ${drill.counterMove}`,
+    `Investor question: ${drill.question}`,
+    `Firewall verdict: ${result.verdict}`,
+    `Route receipt posture: ${buildRecoveryRouteReceipt(result).posture}`,
+    "",
+    "## Pattern Map",
+    ...drill.patternCards.map((pattern) => `- ${pattern.label}: ${pattern.active ? "Active" : "Clear"} | ${pattern.detail} | Defense: ${pattern.defense}`),
+    "",
+    "## Practice Rule",
+    "- Name the persuasion pattern before responding to any recovery message.",
+    "- If the message asks for private data, payment, remote access, or urgency, close it and restart through official channels.",
+    "- Keep only the safety pattern and counter-move. Do not save the pasted message.",
+    "",
+    "## Privacy Boundary",
+    "- This copied drill intentionally excludes the raw pasted recovery text.",
+    "- It is behavior-safety education, not proof that a recovery claim is real.",
+    "",
+    "The Scam Immunity Drill is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraFamilySafeShareNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const brief = buildMitraFamilySafeShare(result, input?.value || "");
+  return [
+    `# NiveshNadi Family Safe-Share Brief - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Brief ID: ${brief.id}`,
+    `Posture: ${brief.posture}`,
+    `Brief score: ${brief.score}/100`,
+    `Safe channel: ${brief.safeChannel}`,
+    `Family ask: ${brief.familyAsk}`,
+    "",
+    "## Message To Family",
+    brief.openingLine,
+    "",
+    "## Safe Steps",
+    ...brief.steps.map((step) => `- ${step.label}: ${step.detail}`),
+    "",
+    "## Redaction Rule",
+    ...brief.redactions.map((item) => `- Do not share ${item}.`),
+    "",
+    "## Privacy Boundary",
+    "- This copied brief intentionally excludes the raw pasted recovery text.",
+    "- It can be shared for safety coordination only; it is not proof that a recovery claim is real.",
+    "- Use only official AMC, RTA, AMFI, MF Central, CAMS, KFintech, or SEBI routes opened independently.",
+    "",
+    "The Family Safe-Share Brief is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraOfficialRouteDirectoryNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const directory = buildMitraOfficialRouteDirectory(result);
+  return [
+    `# NiveshNadi Official Route Directory - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Directory ID: ${directory.id}`,
+    `Posture: ${directory.posture}`,
+    `Directory score: ${directory.score}/100`,
+    `Matched official families: ${directory.matchedFamilies.map((route) => route.family).join(" | ") || "None yet"}`,
+    `Next action: ${directory.nextAction}`,
+    "",
+    "## Official Source Families",
+    ...directory.cards.map((route) => `- ${route.family}: ${route.domain} | ${route.purpose} | Proof: ${route.proof} | Habit: ${route.habit}`),
+    "",
+    "## Open Independently",
+    "- Type the official source address, use a saved official bookmark, or reach the route from a known official source.",
+    "- Do not open recovery links from WhatsApp, Telegram, ads, callers, short links, copied PDFs, or social messages.",
+    "- Do not share PAN, folio, CAS, Aadhaar, OTP, bank, card, nominee, claimant, contact, account, or legal documents in NiveshNadi.",
+    "",
+    "## Privacy Boundary",
+    "- This copied directory intentionally excludes the raw pasted recovery text.",
+    "- It is a source-family map, not proof that a recovery claim is real.",
+    "",
+    "The Official Route Directory is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraInvestorSourceCheckNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const sourceCheck = buildMitraInvestorSourceCheck(result, input?.value || "");
+  return [
+    `# NiveshNadi Investor Source Check - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Source check ID: ${sourceCheck.id}`,
+    `Verdict: ${sourceCheck.verdict}`,
+    `Score: ${sourceCheck.score}/100`,
+    `Official family: ${sourceCheck.sourceFamily}`,
+    `Private-data posture: ${sourceCheck.privateDataPosture}`,
+    `Next action: ${sourceCheck.action}`,
+    "",
+    "## Check Results",
+    ...sourceCheck.checks.map((check) => `- ${check.label}: ${check.state} | ${check.detail}`),
+    "",
+    "## Receipt Boundary",
+    "- This receipt intentionally excludes the raw pasted route or message.",
+    "- Do not store PAN, folio, CAS, Aadhaar, OTP, bank, card, nominee, claimant, contact, account, or legal documents here.",
+    "- A source-family match is not claim verification; it only tells the investor where to restart safely.",
+    "",
+    "The Investor Source Check is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraSourceHandshakeNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const handshake = buildMitraSourceHandshake(result, input?.value || "");
+  return [
+    `# NiveshNadi Source Handshake - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Handshake ID: ${handshake.id}`,
+    `Verdict: ${handshake.verdict}`,
+    `Score: ${handshake.score}/100`,
+    `Matched families: ${handshake.matched.map((route) => route.family).join(" | ") || "None yet"}`,
+    `Independent route: ${handshake.independentRoute}`,
+    `Next action: ${handshake.action}`,
+    "",
+    "## Handshake Locks",
+    ...handshake.locks.map((lock) => `- ${lock.label}: ${lock.state} | ${lock.detail}`),
+    "",
+    "## Two-Source Rule",
+    "- A pasted route is never trusted by itself.",
+    "- The investor must reopen the official source independently before entering any private detail.",
+    "- Research-safe does not mean claim-safe, transaction-safe, advice-safe, or document-safe.",
+    "",
+    "## Privacy Boundary",
+    "- This receipt intentionally excludes the raw pasted route or message.",
+    "- Do not store PAN, folio, CAS, Aadhaar, OTP, bank, card, nominee, claimant, contact, account, or legal documents here.",
+    "",
+    "The Source Handshake is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraSafeReleaseVerdictNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const release = buildMitraSafeReleaseVerdict(result, input?.value || "");
+  return [
+    `# NiveshNadi Safe Release Verdict - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Verdict ID: ${release.id}`,
+    `Decision: ${release.verdict}`,
+    `Score: ${release.score}/100`,
+    `Release scope: ${release.releaseScope}`,
+    `Reason: ${release.reason}`,
+    `Next action: ${release.action}`,
+    "",
+    "## Release Locks",
+    ...release.locks.map((lock) => `- ${lock.label}: ${lock.state} | ${lock.detail}`),
+    "",
+    "## Release Boundary",
+    "- This release verdict may share a safety posture only; it does not release a recovery claim, transaction, advice, document request, distributor workflow, or investor identity.",
+    "- The raw pasted route or message is intentionally excluded.",
+    "- Do not store PAN, folio, CAS, Aadhaar, OTP, bank, card, nominee, claimant, contact, account, payment, or legal documents here.",
+    "",
+    "The Safe Release Verdict is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraSafetyStackTimelineNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const stack = buildMitraSafetyStackTimeline(result, input?.value || "");
+  return [
+    `# NiveshNadi Safety Stack Timeline - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Timeline ID: ${stack.id}`,
+    `Verdict: ${stack.verdict}`,
+    `Score: ${stack.score}/100`,
+    `Progress: ${stack.progress}%`,
+    `Current gate: ${stack.current.label}`,
+    `Next action: ${stack.nextAction}`,
+    "",
+    "## Stack Checkpoints",
+    ...stack.steps.map((step, index) => `- ${String(index + 1).padStart(2, "0")} ${step.label}: ${step.clear ? "Clear" : "Open"} | ${step.state} | ${step.score}/100 | ${step.detail}`),
+    "",
+    "## Boundary",
+    "- The stack may release a public safety note only.",
+    "- It never releases a recovery claim, investment action, transaction instruction, legal conclusion, document request, distributor workflow, or private-data collection.",
+    "- The raw pasted route or message is intentionally excluded.",
+    "",
+    "The Safety Stack Timeline is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraSafetyActionRouterNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const router = buildMitraSafetyActionRouter(result, input?.value || "");
+  return [
+    `# NiveshNadi Safety Action Router - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Router ID: ${router.id}`,
+    `Posture: ${router.posture}`,
+    `Score: ${router.score}/100`,
+    `Action: ${router.action}`,
+    `Route: ${router.route}`,
+    `Reason: ${router.reason}`,
+    `Current stack gate: ${router.stack.current.label}`,
+    `Stack verdict: ${router.stack.verdict} | ${router.stack.progress}%`,
+    "",
+    "## Action Cards",
+    ...router.cards.map((card) => `- ${card.label}: ${card.value} | ${card.detail}`),
+    "",
+    "## Action Steps",
+    ...router.steps.map((step, index) => `- ${String(index + 1).padStart(2, "0")} ${step.label}: ${step.detail}`),
+    "",
+    "## Boundary",
+    "- The router may suggest only safety workflow actions: block, reopen official route, share safety note, or hold for review.",
+    "- It never verifies a recovery claim, asks for documents, moves money, gives legal advice, or approves a distributor workflow.",
+    "- The raw pasted route or message is intentionally excluded.",
+    "- Do not store PAN, folio, CAS, Aadhaar, OTP, bank, card, nominee, claimant, contact, account, payment, or legal documents here.",
+    "",
+    "The Safety Action Router is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraRecoveryActionReceiptNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const receipt = buildMitraRecoveryActionReceipt(result, input?.value || "");
+  return [
+    `# NiveshNadi Recovery Action Receipt - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${receipt.id}`,
+    `Posture: ${receipt.posture}`,
+    `Score: ${receipt.score}/100`,
+    `Public line: ${receipt.publicLine}`,
+    `Router action: ${receipt.router.action}`,
+    `Router route: ${receipt.router.route}`,
+    `Review date: ${receipt.reviewDate}`,
+    "",
+    "## Receipt Fields",
+    ...receipt.fields.map((field) => `- ${field.label}: ${field.value} | ${field.detail}`),
+    "",
+    "## Receipt Locks",
+    ...receipt.locks.map((lock) => `- ${lock.label}: ${lock.state} | ${lock.detail}`),
+    "",
+    "## Boundary",
+    "- This receipt can explain a safety workflow only: stop, reopen official route, hold for review, or share a public safety note.",
+    "- It does not verify a recovery claim, confirm a folio exists, request documents, move money, or approve any service request.",
+    "- The raw pasted route or message is intentionally excluded.",
+    "- Do not store PAN, folio, CAS, Aadhaar, OTP, bank, card, nominee, claimant, contact, account, payment, or legal documents here.",
+    "",
+    "The Recovery Action Receipt is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraRecoveryFollowUpRoomNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const room = buildMitraRecoveryFollowUpRoom(result, input?.value || "");
+  return [
+    `# NiveshNadi Recovery Follow-Up Room - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Follow-up ID: ${room.id}`,
+    `Status: ${room.status}`,
+    `Score: ${room.score}/100`,
+    `Receipt ID: ${room.receipt.id}`,
+    `Receipt posture: ${room.receipt.posture}`,
+    `Review window: ${room.reviewWindow}`,
+    `Review date: ${room.receipt.reviewDate}`,
+    `Family handoff: ${room.handoffLine}`,
+    "",
+    "## Next Actions",
+    ...room.actions.map((action) => `- ${action.label}: ${action.value} | ${action.detail}`),
+    "",
+    "## Follow-Up Checklist",
+    ...room.checklist.map((item, index) => `- ${String(index + 1).padStart(2, "0")} ${item.label}: ${item.state} | ${item.detail}`),
+    "",
+    "## Boundary",
+    "- This room turns a recovery safety receipt into follow-up discipline only.",
+    "- It never verifies a recovery claim, confirms a folio exists, requests documents, moves money, or approves any service request.",
+    "- The raw pasted route or message is intentionally excluded.",
+    "- Do not store PAN, folio, CAS, Aadhaar, OTP, bank, card, nominee, claimant, contact, account, payment, or legal documents here.",
+    "",
+    "The Recovery Follow-Up Room is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraRecoveryReminderCardNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const reminder = buildMitraRecoveryReminderCard(result, input?.value || "");
+  return [
+    `# NiveshNadi Recovery Reminder Card - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Reminder ID: ${reminder.id}`,
+    `Headline: ${reminder.headline}`,
+    `Score: ${reminder.score}/100`,
+    `Due: ${reminder.dueDate}`,
+    `Cadence: ${reminder.cadence}`,
+    `Open first: ${reminder.route}`,
+    `Receipt ID: ${reminder.receipt.id}`,
+    `Follow-up ID: ${reminder.room.id}`,
+    `Family line: ${reminder.familyLine}`,
+    "",
+    "## Reminder Cards",
+    ...reminder.cards.map((card) => `- ${card.label}: ${card.value} | ${card.detail}`),
+    "",
+    "## Reminder Steps",
+    ...reminder.steps.map((step, index) => `- ${String(index + 1).padStart(2, "0")} ${step.label}: ${step.detail}`),
+    "",
+    "## Boundary",
+    "- This reminder is a safety recheck prompt only.",
+    "- It never verifies a recovery claim, confirms a folio exists, requests documents, moves money, or approves any service request.",
+    "- The raw pasted route or message is intentionally excluded.",
+    "- Do not store PAN, folio, CAS, Aadhaar, OTP, bank, card, nominee, claimant, contact, account, payment, or legal documents here.",
+    "",
+    "The Recovery Reminder Card is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraRecoveryRecheckTrailNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const trail = buildMitraRecoveryRecheckTrail(result, input?.value || "");
+  return [
+    `# NiveshNadi Recovery Recheck Trail - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Trail ID: ${trail.id}`,
+    `Status: ${trail.status}`,
+    `Score: ${trail.score}/100`,
+    `Reminder ID: ${trail.reminder.id}`,
+    `Receipt ID: ${trail.reminder.receipt.id}`,
+    `Due: ${trail.reminder.dueDate}`,
+    `Cadence: ${trail.reminder.cadence}`,
+    `Official route: ${trail.route}`,
+    `Source family: ${trail.family}`,
+    `Release scope: ${trail.release.releaseScope}`,
+    "",
+    "## Recheck Fields",
+    ...trail.fields.map((field) => `- ${field.label}: ${field.value} | ${field.detail}`),
+    "",
+    "## Trail Steps",
+    ...trail.steps.map((step, index) => `- ${String(index + 1).padStart(2, "0")} ${step.label}: ${step.state} | ${step.detail}`),
+    "",
+    "## Boundary",
+    "- This trail is a recheck workflow only.",
+    "- It never verifies a recovery claim, confirms a folio exists, requests documents, moves money, or approves any service request.",
+    "- The raw pasted route or message is intentionally excluded.",
+    "- Do not store PAN, folio, CAS, Aadhaar, OTP, bank, card, nominee, claimant, contact, account, payment, legal documents, or proof that any recovery claim exists.",
+    "",
+    "The Recovery Recheck Trail is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeMitraRecoveryOutcomeLedgerNote() {
+  const autopilot = researchAutopilotConfig();
+  const input = document.querySelector("#mitraFirewallInput");
+  const result = evaluateRecoveryLinkFirewall(input?.value || "");
+  const outcome = buildMitraRecoveryOutcomeLedger(result, input?.value || "");
+  return [
+    `# NiveshNadi Recovery Outcome Ledger - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Ledger ID: ${outcome.id}`,
+    `Status: ${outcome.status}`,
+    `Score: ${outcome.score}/100`,
+    `Decision: ${outcome.decision}`,
+    `Trail ID: ${outcome.trail.id}`,
+    `Reminder ID: ${outcome.trail.reminder.id}`,
+    `Receipt ID: ${outcome.trail.reminder.receipt.id}`,
+    `Official route: ${outcome.trail.route}`,
+    `Source family: ${outcome.trail.family}`,
+    `Release scope: ${outcome.trail.release.releaseScope}`,
+    `Next review: ${outcome.nextReview}`,
+    "",
+    "## Outcome Fields",
+    ...outcome.fields.map((field) => `- ${field.label}: ${field.value} | ${field.detail}`),
+    "",
+    "## Ledger Rows",
+    ...outcome.ledger.map((entry, index) => `- ${String(index + 1).padStart(2, "0")} ${entry.label}: ${entry.state} | ${entry.detail}`),
+    "",
+    "## Boundary",
+    "- This ledger records recovery-safety workflow status only.",
+    "- It never verifies a recovery claim, confirms a folio exists, stores private documents, requests documents, moves money, or approves any service request.",
+    "- The raw pasted route or message is intentionally excluded.",
+    "- Do not store PAN, folio, CAS, Aadhaar, OTP, bank, card, contact, claimant, nominee, payment, legal documents, or proof that any recovery claim exists.",
+    "",
+    "The Recovery Outcome Ledger is investor-protection education only. It is not personalized advice, legal advice, claim verification, transaction execution, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeAutopilotMissionClockNote() {
+  const autopilot = researchAutopilotConfig();
+  return [
+    `# NiveshNadi Mission Follow-Up - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${autopilot.missionReceipt.id}`,
+    `Clock status: ${autopilot.missionClock.status}`,
+    `Follow-up window: ${autopilot.missionClock.followUpWindow} days`,
+    `Due date: ${researchMemoryDate(autopilot.missionClock.dueDate.toISOString())}`,
+    `Days since last route: ${autopilot.missionClock.daysSinceLastRoute === null ? "Not started" : autopilot.missionClock.daysSinceLastRoute}`,
+    `Next action: ${autopilot.missionClock.action}`,
+    `Next route: ${autopilot.missionClock.route}`,
+    "",
+    "## Follow-Up Checklist",
+    `- Recheck latest route: ${autopilot.missionReceipt.latestLabel} -> ${autopilot.missionReceipt.latestRoute}`,
+    `- Clear blocker count: ${autopilot.missionReceipt.remainingBlockers.length}`,
+    `- Confirm evidence, compare set, memory replay, and written reason before any money movement.`,
+    "",
+    "This follow-up clock is a research habit reminder only. It is not personalized advice, suitability approval, execution instruction, distributor workflow approval, or return guarantee."
+  ].join("\n");
+}
+
+function makeAutopilotCommandCard() {
+  const autopilot = researchAutopilotConfig();
+  return [
+    `# NiveshNadi Autopilot Command Card - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Command ID: ${autopilot.commandCard.id}`,
+    `Rank: ${autopilot.commandCard.rank}`,
+    `Command: ${autopilot.commandCard.title}`,
+    `Today: ${autopilot.commandCard.line}`,
+    `Route: ${autopilot.commandCard.route}`,
+    `Follow-up: ${autopilot.commandCard.followUp}`,
+    `Due date: ${researchMemoryDate(autopilot.commandCard.dueDate.toISOString())}`,
+    `Primary blocker: ${autopilot.commandCard.blocker}`,
+    "",
+    "## Proof Locks",
+    ...autopilot.commandCard.proofLocks.map((lock) => `- ${lock}`),
+    "",
+    "## No-Go Rule",
+    `- ${autopilot.noGo}`,
+    "",
+    "## Share Line",
+    autopilot.commandCard.shareLine,
+    "",
+    "This command card is a research workflow card only. It is not personalized advice, suitability approval, execution instruction, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeNadiProofGraphNote() {
+  const autopilot = researchAutopilotConfig();
+  return [
+    `# NiveshNadi Proof Graph - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Proof graph ID: ${autopilot.proofGraph.id}`,
+    `Circuit score: ${autopilot.proofGraph.score}/100`,
+    `Posture: ${autopilot.proofGraph.posture}`,
+    `Weakest link: ${autopilot.proofGraph.weakest.label}`,
+    `Weakest route: ${autopilot.proofGraph.weakest.route}`,
+    "",
+    "## Proof Circuit",
+    ...autopilot.proofGraph.nodes.map((node) => `- ${node.label}: ${node.score}/100 | ${node.status} | ${node.detail} | Route ${node.route}`),
+    "",
+    "## Broken Links",
+    ...(autopilot.proofGraph.broken.length
+      ? autopilot.proofGraph.broken.map((node) => `- ${node.label}: ${node.detail}`)
+      : ["- No open proof links before memo drafting."]),
+    "",
+    "## No-Go Rule",
+    `- ${autopilot.noGo}`,
+    "",
+    "The Proof Graph is a research proof circuit only. It is not a fund ranking, personalized advice, suitability approval, execution instruction, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeNoBuyGateNote() {
+  const autopilot = researchAutopilotConfig();
+  return [
+    `# NiveshNadi No-Buy Gate - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Gate ID: ${autopilot.noBuyGate.id}`,
+    `Verdict: ${autopilot.noBuyGate.verdict}`,
+    `Gate score: ${autopilot.noBuyGate.score}/100`,
+    `Open locks: ${autopilot.noBuyGate.locks.length}`,
+    `Unlock route: ${autopilot.noBuyGate.route}`,
+    `Temptation firewall: ${autopilot.noBuyGate.temptation}`,
+    `Change-my-mind rule: ${autopilot.noBuyGate.changeMind}`,
+    `Gate expiry: ${autopilot.noBuyGate.expiry}`,
+    "",
+    "## Locks",
+    ...autopilot.noBuyGate.rules.map((rule) => `- ${rule.label}: ${rule.score}/100 | ${rule.status} | ${rule.detail} | Route ${rule.route}`),
+    "",
+    "## No-Go Rule",
+    `- ${autopilot.noGo}`,
+    "",
+    "The No-Buy Gate is an investor-protection research brake. It is not personalized advice, suitability approval, execution instruction, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeFomoFirewallNote() {
+  const autopilot = researchAutopilotConfig();
+  return [
+    `# NiveshNadi Anti-FOMO Firewall - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Firewall ID: ${autopilot.fomoFirewall.id}`,
+    `Verdict: ${autopilot.fomoFirewall.verdict}`,
+    `Firewall score: ${autopilot.fomoFirewall.score}/100`,
+    `Active triggers: ${autopilot.fomoFirewall.active.length}`,
+    `Cooling period: ${autopilot.fomoFirewall.coolingHours} hours`,
+    `Cooling until: ${researchMemoryDate(autopilot.fomoFirewall.coolingUntil.toISOString())}`,
+    `Cooling route: ${autopilot.fomoFirewall.route}`,
+    `Impulse: ${autopilot.fomoFirewall.impulse}`,
+    `Cooling rule: ${autopilot.fomoFirewall.rule}`,
+    `Tomorrow question: ${autopilot.fomoFirewall.question}`,
+    "",
+    "## Trigger Map",
+    ...autopilot.fomoFirewall.triggers.map((trigger) => `- ${trigger.label}: ${trigger.score}/100 | ${trigger.active ? "Active" : "Clear"} | ${trigger.detail} | Route ${trigger.route}`),
+    "",
+    "## No-Go Rule",
+    `- ${autopilot.noGo}`,
+    "",
+    "The Anti-FOMO Firewall is a behavior-protection research brake only. It is not personalized advice, suitability approval, execution instruction, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeDissentEngineNote() {
+  const autopilot = researchAutopilotConfig();
+  return [
+    `# NiveshNadi Dissent Engine - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Dissent ID: ${autopilot.dissentEngine.id}`,
+    `Verdict: ${autopilot.dissentEngine.verdict}`,
+    `Dissent pressure: ${autopilot.dissentEngine.score}/100`,
+    `Open objections: ${autopilot.dissentEngine.active.length}`,
+    `Strongest objection: ${autopilot.dissentEngine.strongest.label}`,
+    `Objection route: ${autopilot.dissentEngine.route}`,
+    `Burden: ${autopilot.dissentEngine.burden}`,
+    `Answer rule: ${autopilot.dissentEngine.answerRule}`,
+    "",
+    "## Objection Cases",
+    ...autopilot.dissentEngine.cases.map((dissentCase) => `- ${dissentCase.label}: ${dissentCase.score}/100 | ${dissentCase.active ? "Open" : "Answered"} | ${dissentCase.objection} | Answer: ${dissentCase.answer} | Route ${dissentCase.route}`),
+    "",
+    "## Investor Challenge",
+    `- Write why the strongest objection is wrong before writing why the selected fund is right.`,
+    `- If the objection cannot be answered, downgrade to watch, compare again, or pause the memo.`,
+    "",
+    "The Dissent Engine is a research challenge layer only. It is not personalized advice, suitability approval, execution instruction, distributor workflow approval, tax advice, or return guarantee."
+  ].join("\n");
+}
+
+function makeAutopilotMissionReceipt() {
+  const autopilot = researchAutopilotConfig();
+  return [
+    `# NiveshNadi Autopilot Mission Receipt - ${autopilot.fund.name}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${autopilot.missionReceipt.id}`,
+    `Mission posture: ${autopilot.missionReceipt.posture}`,
+    `Route clarity: ${autopilot.missionProgress}/100`,
+    `Follow-up clock: ${autopilot.missionClock.status}`,
+    `Follow-up route: ${autopilot.missionClock.action} -> ${autopilot.missionClock.route}`,
+    `Opened routes: ${autopilot.missionReceipt.openedCount}`,
+    `Current next route: ${autopilot.missionReceipt.nextLabel} -> ${autopilot.missionReceipt.nextRoute}`,
+    `Latest route: ${autopilot.missionReceipt.latestLabel} -> ${autopilot.missionReceipt.latestRoute}`,
+    "",
+    "## Remaining Blockers",
+    ...(autopilot.missionReceipt.remainingBlockers.length
+      ? autopilot.missionReceipt.remainingBlockers.map((step) => `- ${step.label}: ${step.action} | Route ${step.route}`)
+      : ["- No remaining mission blockers before memo drafting."]),
+    "",
+    "## Route Trail",
+    ...(autopilot.routeMemory.length
+      ? autopilot.routeMemory.slice(0, 12).map((entry) => `- ${researchMemoryDate(entry.openedAt)} | ${entry.label} | ${entry.route}`)
+      : ["- No routes opened yet."]),
+    "",
+    "This mission receipt stores workflow route metadata only. It is not personalized advice, suitability approval, execution instruction, distributor workflow approval, or return guarantee."
+  ].join("\n");
 }
 
 function makeResearchAutopilotNote() {
   const autopilot = researchAutopilotConfig();
+  const firewall = evaluateRecoveryLinkFirewall(document.querySelector("#mitraFirewallInput")?.value || "");
+  const routeReceipt = buildRecoveryRouteReceipt(firewall);
+  const scamDrill = buildMitraScamImmunityDrill(firewall, document.querySelector("#mitraFirewallInput")?.value || "");
+  const familyShare = buildMitraFamilySafeShare(firewall, document.querySelector("#mitraFirewallInput")?.value || "");
+  const routeDirectory = buildMitraOfficialRouteDirectory(firewall);
+  const sourceCheck = buildMitraInvestorSourceCheck(firewall, document.querySelector("#mitraFirewallInput")?.value || "");
+  const handshake = buildMitraSourceHandshake(firewall, document.querySelector("#mitraFirewallInput")?.value || "");
+  const releaseVerdict = buildMitraSafeReleaseVerdict(firewall, document.querySelector("#mitraFirewallInput")?.value || "");
+  const safetyStack = buildMitraSafetyStackTimeline(firewall, document.querySelector("#mitraFirewallInput")?.value || "");
+  const safetyActionRouter = buildMitraSafetyActionRouter(firewall, document.querySelector("#mitraFirewallInput")?.value || "");
+  const recoveryActionReceipt = buildMitraRecoveryActionReceipt(firewall, document.querySelector("#mitraFirewallInput")?.value || "");
+  const recoveryFollowUpRoom = buildMitraRecoveryFollowUpRoom(firewall, document.querySelector("#mitraFirewallInput")?.value || "");
+  const recoveryReminderCard = buildMitraRecoveryReminderCard(firewall, document.querySelector("#mitraFirewallInput")?.value || "");
+  const recoveryRecheckTrail = buildMitraRecoveryRecheckTrail(firewall, document.querySelector("#mitraFirewallInput")?.value || "");
+  const recoveryOutcomeLedger = buildMitraRecoveryOutcomeLedger(firewall, document.querySelector("#mitraFirewallInput")?.value || "");
   return [
     `# NiveshNadi Research Autopilot - ${autopilot.fund.name}`,
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -3020,6 +6908,31 @@ function makeResearchAutopilotNote() {
     `No-go rule: ${autopilot.noGo}`,
     `Mission clarity: ${autopilot.missionProgress}/100`,
     `Mission next step: ${autopilot.missionOpen.label} -> ${autopilot.missionOpen.route}`,
+    `Mission receipt: ${autopilot.missionReceipt.id}`,
+    `Live Data Gate: ${autopilot.liveDataGate.id} | ${autopilot.liveDataGate.verdict} | ${autopilot.liveDataGate.blocks.length} blocks`,
+    `Claim Passport: ${autopilot.claimPassport.id} | ${autopilot.claimPassport.verdict} | ${autopilot.claimPassport.blocks.length} open passports`,
+    `Passport Share Seal: ${autopilot.passportShareSeal.id} | ${autopilot.passportShareSeal.verdict} | ${autopilot.passportShareSeal.watermark}`,
+    `MITRA Recovery Shield: ${autopilot.mitraRecoveryShield.id} | ${autopilot.mitraRecoveryShield.verdict} | ${autopilot.mitraRecoveryShield.circularDate}`,
+    `Recovery Link Firewall: ${firewall.id} | ${firewall.verdict} | ${firewall.score}/100 | ${firewall.shortenerHosts.length} shortener hosts | ${firewall.sensitiveHits.length} private-data signals`,
+    `Recovery Route Receipt: ${routeReceipt.id} | ${routeReceipt.posture} | ${routeReceipt.score}/100 | ${routeReceipt.primaryRoute}`,
+    `Scam Immunity Drill: ${scamDrill.id} | ${scamDrill.posture} | ${scamDrill.primaryTrap} | ${scamDrill.triggerCount} signals`,
+    `Family Safe-Share Brief: ${familyShare.id} | ${familyShare.posture} | ${familyShare.score}/100 | ${familyShare.safeChannel}`,
+    `Official Route Directory: ${routeDirectory.id} | ${routeDirectory.posture} | ${routeDirectory.score}/100 | ${routeDirectory.matchedFamilies.length} matched families`,
+    `Investor Source Check: ${sourceCheck.id} | ${sourceCheck.verdict} | ${sourceCheck.score}/100 | ${sourceCheck.sourceFamily}`,
+    `Source Handshake: ${handshake.id} | ${handshake.verdict} | ${handshake.score}/100 | ${handshake.independentRoute}`,
+    `Safe Release Verdict: ${releaseVerdict.id} | ${releaseVerdict.verdict} | ${releaseVerdict.score}/100 | ${releaseVerdict.releaseScope}`,
+    `Safety Stack Timeline: ${safetyStack.id} | ${safetyStack.verdict} | ${safetyStack.progress}% | Current gate ${safetyStack.current.label}`,
+    `Safety Action Router: ${safetyActionRouter.id} | ${safetyActionRouter.posture} | ${safetyActionRouter.action} | ${safetyActionRouter.score}/100`,
+    `Recovery Action Receipt: ${recoveryActionReceipt.id} | ${recoveryActionReceipt.posture} | ${recoveryActionReceipt.reviewDate} | ${recoveryActionReceipt.score}/100`,
+    `Recovery Follow-Up Room: ${recoveryFollowUpRoom.id} | ${recoveryFollowUpRoom.status} | ${recoveryFollowUpRoom.reviewWindow} | ${recoveryFollowUpRoom.score}/100`,
+    `Recovery Reminder Card: ${recoveryReminderCard.id} | ${recoveryReminderCard.dueDate} | ${recoveryReminderCard.cadence} | ${recoveryReminderCard.score}/100`,
+    `Recovery Recheck Trail: ${recoveryRecheckTrail.id} | ${recoveryRecheckTrail.status} | ${recoveryRecheckTrail.route} | ${recoveryRecheckTrail.score}/100`,
+    `Recovery Outcome Ledger: ${recoveryOutcomeLedger.id} | ${recoveryOutcomeLedger.status} | ${recoveryOutcomeLedger.nextReview} | ${recoveryOutcomeLedger.score}/100`,
+    `Command card: ${autopilot.commandCard.id} | ${autopilot.commandCard.title}`,
+    `Proof graph: ${autopilot.proofGraph.id} | ${autopilot.proofGraph.posture}`,
+    `No-Buy Gate: ${autopilot.noBuyGate.id} | ${autopilot.noBuyGate.verdict} | ${autopilot.noBuyGate.locks.length} locks`,
+    `Anti-FOMO Firewall: ${autopilot.fomoFirewall.id} | ${autopilot.fomoFirewall.verdict} | ${autopilot.fomoFirewall.active.length} triggers`,
+    `Dissent Engine: ${autopilot.dissentEngine.id} | ${autopilot.dissentEngine.verdict} | ${autopilot.dissentEngine.active.length} objections`,
     "",
     "## Gate Lanes",
     ...autopilot.lanes.map((lane) => `- ${lane.label}: ${lane.score}/100 | ${lane.blocker ? "Blocker" : "Clear"} | ${lane.action} | Route ${lane.route}`),
@@ -3753,7 +7666,7 @@ function buildTrackerConfig() {
     detail: "MFD dashboard, ARN/EUIN, PAN-consent, registered clients, review packs, and handoff audit trail stay planned after Phase 1 retail launch.",
     blockers: ["Phase 1 account model", "consent workflow", "privacy review", "role-based distributor access"]
   };
-  const pace = `v166 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
+  const pace = `v206 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
   const guardrails = [
     "Build Tracker is a project roadmap for this prototype; it is not an investor-facing recommendation or launch promise.",
     "Product build progress and launch readiness are intentionally separate because a prototype can be polished before live data, auth, payments, and legal gates are complete.",
@@ -3908,7 +7821,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-      <article><span>Prototype version</span><strong>Phase 1 v166</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+      <article><span>Prototype version</span><strong>Phase 1 v206</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -4066,6 +7979,43 @@ const MARKET_STRATEGY_SIGNALS = {
     "Behavior guardrails: duplication, drawdown, cost, role, and emergency-money checks.",
     "Phase 2 bridge: retail habit can become distributor workflow only after consent and identity controls."
   ],
+  flywheel: [
+    {
+      label: "Learn before fund",
+      score: 88,
+      route: "#profile-room",
+      metric: "5-minute profile",
+      detail: "Start with investor intent, time horizon, SIP comfort, drawdown tolerance, and emergency buffer before showing fund conviction."
+    },
+    {
+      label: "Make trust visible",
+      score: 76,
+      route: "#evidence",
+      metric: "Evidence lock",
+      detail: "Every fund claim should carry source posture, citation readiness, reviewer gates, and a clear demo-versus-live boundary."
+    },
+    {
+      label: "Save a reason",
+      score: 84,
+      route: "#decision-pack",
+      metric: "Research memo",
+      detail: "The product wins when investors write why they are watching, buying, pausing, switching, or reviewing before money moves."
+    },
+    {
+      label: "Charge gently",
+      score: 72,
+      route: "#pricing",
+      metric: "Rs. 1,000/year",
+      detail: "Low B2C pricing protects trust while proving willingness to pay for discipline, memory, and safer research habits."
+    },
+    {
+      label: "Graduate by consent",
+      score: 58,
+      route: "#consent-gate",
+      metric: "Phase 2 firewall",
+      detail: "Distributor workflows should unlock only after ARN/EUIN, PAN consent, client roles, audit logs, and privacy boundaries are ready."
+    }
+  ],
   gates: [
     { label: "Positioning", score: 92, route: "#pricing", detail: "Low-cost self-research, not fund selling." },
     { label: "Trust proof", score: 76, route: "#evidence", detail: "Source map and launch gates must become live and date-stamped." },
@@ -4081,22 +8031,1563 @@ const MARKET_STRATEGY_SIGNALS = {
   ]
 };
 
+function marketTrustToPaidRadar(strategy) {
+  const gateByLabel = (label) => strategy.gates.find((gate) => gate.label === label) || strategy.gates[0];
+  const flywheelByLabel = (label) => strategy.flywheel.find((step) => step.label === label) || strategy.flywheel[0];
+  const paidGate = gateByLabel("Paid beta");
+  const trustGate = gateByLabel("Trust proof");
+  const accountGate = gateByLabel("Account memory");
+  const phaseFirewall = gateByLabel("Phase 2 firewall");
+  const learnStep = flywheelByLabel("Learn before fund");
+  const trustStep = flywheelByLabel("Make trust visible");
+  const memoStep = flywheelByLabel("Save a reason");
+  const pricingStep = flywheelByLabel("Charge gently");
+  const consentStep = flywheelByLabel("Graduate by consent");
+  const stages = [
+    {
+      label: "Discover",
+      score: Math.round((learnStep.score + strategy.score) / 2),
+      route: "#profile-room",
+      status: "Starter proof",
+      detail: "A free user should complete profile, compare, and first research context before seeing any paid ask."
+    },
+    {
+      label: "Trust",
+      score: Math.round((trustStep.score + trustGate.score) / 2),
+      route: "#evidence",
+      status: "Proof gate",
+      detail: "Source dates, citation paths, factsheet posture, and demo/live labels must be visible before payment."
+    },
+    {
+      label: "Commit",
+      score: Math.round((memoStep.score + pricingStep.score + paidGate.score) / 3),
+      route: "#decision-pack",
+      status: "Soft pay ask",
+      detail: "Invite payment only after one saved memo, one X-Ray, one comparison, and one review date exist."
+    },
+    {
+      label: "Retain",
+      score: Math.round((memoStep.score + accountGate.score) / 2),
+      route: "#account-launch-route",
+      status: "Account memory",
+      detail: "Paid users need safe saved packs, export/delete controls, support boundaries, and receipt-backed access."
+    },
+    {
+      label: "Graduate",
+      score: Math.round((consentStep.score + phaseFirewall.score) / 2),
+      route: "#consent-gate",
+      status: "Phase 2 firewall",
+      detail: "Distributor handoff stays blocked until ARN/EUIN, PAN consent, client role, and audit trails are real."
+    }
+  ];
+  const score = Math.round(
+    stages.reduce((sum, stage) => sum + stage.score, 0) / stages.length
+  );
+  const blockers = stages
+    .filter((stage) => stage.score < 75)
+    .sort((a, b) => a.score - b.score)
+    .slice(0, 3);
+  const tone = score >= 82 ? "ready" : score >= 70 ? "watch" : "caution";
+  const status = score >= 82 ? "Ready for narrow paid beta" : score >= 70 ? "Founder invite only" : "Proof before paid ask";
+  const recommendation = score >= 82
+    ? "Invite a very small paid cohort, watch support load, and keep refunds simple."
+    : score >= 70
+      ? "Show pricing, but ask for payment only after the user completes the free proof path."
+      : "Keep the flow free until evidence, account memory, and paid receipts are stronger.";
+  return {
+    score,
+    tone,
+    status,
+    recommendation,
+    ask: "Rs. 100/month visible, Rs. 1,000/year as the calm default after proof is earned.",
+    proofRequirement: "One profile, one comparison, one X-Ray, one decision memo, one review date, and one visible evidence lock.",
+    boundary: "No tips, no personalized advice, no return promise, no distributor workflow without consent.",
+    metrics: [
+      { label: "Proof before pay", value: `${Math.round((learnStep.score + trustGate.score + memoStep.score) / 3)}/100`, detail: "Free journey must demonstrate value first." },
+      { label: "Paid ask confidence", value: `${Math.round((pricingStep.score + paidGate.score) / 2)}/100`, detail: "Pricing is attractive; receipts and support still matter." },
+      { label: "Memory readiness", value: `${accountGate.score}/100`, detail: "Saved research needs account-safe storage." },
+      { label: "Distributor firewall", value: `${phaseFirewall.score}/100`, detail: "Phase 2 must stay separate until consent is production-ready." }
+    ],
+    stages,
+    blockers
+  };
+}
+
+function marketPaidBetaCohortConsole(strategy) {
+  const radar = strategy.trustToPaidRadar || marketTrustToPaidRadar(strategy);
+  const inviteCap = 100;
+  const conversionRate = Math.max(8, Math.min(18, Math.round((radar.score - 55) * 0.75)));
+  const expectedPaidSeats = Math.max(8, Math.round(inviteCap * conversionRate / 100));
+  const annualSeatMix = 0.65;
+  const annualSeats = Math.round(expectedPaidSeats * annualSeatMix);
+  const monthlySeats = expectedPaidSeats - annualSeats;
+  const firstCashSignal = annualSeats * 1000 + monthlySeats * 100;
+  const annualizedSignal = annualSeats * 1000 + monthlySeats * 100 * 12;
+  const supportLoad = Math.max(3, Math.ceil(expectedPaidSeats * 0.45));
+  const refundBuffer = Math.ceil(expectedPaidSeats * 0.12);
+  const scenarios = [
+    {
+      label: "Quiet pilot",
+      invites: 50,
+      conversion: Math.max(5, conversionRate - 5),
+      route: "#founder-invite-path",
+      detail: "Use personal founder invites only. Learn objections before showing the payment path widely."
+    },
+    {
+      label: "First 100",
+      invites: inviteCap,
+      conversion: conversionRate,
+      route: "#market-strategy",
+      detail: "Ask only after the free proof path is complete and support can manually handle refunds."
+    },
+    {
+      label: "Proof momentum",
+      invites: 250,
+      conversion: Math.min(22, conversionRate + 3),
+      route: "#paid-beta-pack",
+      detail: "Open a bigger cohort only after source receipts, account storage, and payment receipts are stable."
+    }
+  ].map((scenario) => {
+    const paidSeats = Math.max(1, Math.round(scenario.invites * scenario.conversion / 100));
+    const scenarioAnnualSeats = Math.round(paidSeats * annualSeatMix);
+    const scenarioMonthlySeats = paidSeats - scenarioAnnualSeats;
+    return {
+      ...scenario,
+      paidSeats,
+      cashSignal: scenarioAnnualSeats * 1000 + scenarioMonthlySeats * 100,
+      annualizedSignal: scenarioAnnualSeats * 1000 + scenarioMonthlySeats * 100 * 12
+    };
+  });
+  return {
+    inviteCap,
+    conversionRate,
+    expectedPaidSeats,
+    annualSeats,
+    monthlySeats,
+    firstCashSignal,
+    annualizedSignal,
+    supportLoad,
+    refundBuffer,
+    tone: radar.score >= 82 ? "ready" : radar.score >= 70 ? "watch" : "caution",
+    status: radar.score >= 82 ? "Run tightly" : "Invite carefully",
+    headline: "First 100 paid beta",
+    decision: "Use a founder-led cohort before public checkout.",
+    guardrail: "No broad ads, no advice language, no distributor promise, and no payment ask before proof path completion.",
+    metrics: [
+      { label: "Invite cap", value: `${inviteCap}`, detail: "Small enough for founder calls and manual support." },
+      { label: "Expected paid seats", value: `${expectedPaidSeats}`, detail: `${conversionRate}% conversion from proof-complete users.` },
+      { label: "First cash signal", value: formatMoney(firstCashSignal), detail: `${annualSeats} annual and ${monthlySeats} monthly seats.` },
+      { label: "Annualized signal", value: formatMoney(annualizedSignal), detail: "Tiny cohort signal, not a revenue forecast." },
+      { label: "Support load", value: `${supportLoad} cases`, detail: "Questions, refund requests, account help, and confusion." },
+      { label: "Refund buffer", value: `${refundBuffer} seats`, detail: "Founder should expect some reversals while learning." }
+    ],
+    scenarios,
+    rules: [
+      { label: "Ask only after proof", route: "#decision-pack", detail: "Profile, compare, X-Ray, memo, review date, and evidence lock must exist first." },
+      { label: "Stop on trust pain", route: "#paid-beta-support-ledger", detail: "Pause invites if refunds, source confusion, or support cases exceed the manual capacity." },
+      { label: "Keep annual calm", route: "#pricing", detail: "Make Rs. 1,000/year the default value plan, with monthly kept as a low-friction option." },
+      { label: "Do not mix Phase 2", route: "#consent-gate", detail: "Distributor workflows remain outside the retail beta until consent, roles, and audit trails are real." }
+    ]
+  };
+}
+
+function marketFounderInviteWaveRoom(strategy) {
+  const cohort = strategy.paidBetaCohortConsole || marketPaidBetaCohortConsole(strategy);
+  const radar = strategy.trustToPaidRadar || marketTrustToPaidRadar(strategy);
+  const proofQualifiedUsers = Math.max(42, Math.round(cohort.inviteCap * 0.62));
+  const founderWave = Math.min(25, Math.max(12, Math.round(proofQualifiedUsers * 0.4)));
+  const expectedPaidFromFounderWave = Math.max(2, Math.round(founderWave * cohort.conversionRate / 100));
+  const annualSeats = Math.max(1, Math.round(expectedPaidFromFounderWave * 0.68));
+  const monthlySeats = Math.max(0, expectedPaidFromFounderWave - annualSeats);
+  const firstWaveCash = annualSeats * 1000 + monthlySeats * 100;
+  const supportCeiling = Math.max(3, Math.ceil(founderWave * 0.18));
+  const stopTriggerCount = Math.max(2, Math.ceil(cohort.refundBuffer / 2));
+  const inviteScore = clampNumber(Math.round(
+    radar.score * 0.34 +
+    cohort.conversionRate * 2.2 +
+    strategy.launchReadiness * 0.2 +
+    strategy.phaseOneLaunch * 0.16 +
+    10
+  ), 28, 92);
+  const tone = inviteScore >= 82 ? "ready" : inviteScore >= 68 ? "watch" : "caution";
+  const status = inviteScore >= 82
+    ? "Open founder wave"
+    : inviteScore >= 68
+      ? "Invite by hand"
+      : "Build proof list first";
+  const waves = [
+    {
+      label: "Proof list",
+      cap: proofQualifiedUsers,
+      score: 78,
+      route: "#decision-pack",
+      ask: "No payment ask",
+      signal: "Users who complete profile, compare, X-Ray, decision memo, review date, and evidence lock.",
+      stop: "Do not invite anyone whose proof path is incomplete."
+    },
+    {
+      label: "Founder call wave",
+      cap: founderWave,
+      score: inviteScore,
+      route: "#founder-invite-path",
+      ask: "Founder invite with feedback call",
+      signal: `${expectedPaidFromFounderWave} expected paid seats and ${formatMoney(firstWaveCash)} first cash signal.`,
+      stop: `Pause if more than ${supportCeiling} support cases arrive before the next founder review.`
+    },
+    {
+      label: "First 100 wave",
+      cap: cohort.inviteCap,
+      score: Math.max(58, inviteScore - 6),
+      route: "#paid-beta-pack",
+      ask: "Rs. 1,000/year default, Rs. 100/month fallback",
+      signal: `${cohort.expectedPaidSeats} expected seats, ${formatMoney(cohort.firstCashSignal)} first cash, ${formatMoney(cohort.annualizedSignal)} annualized signal.`,
+      stop: `Stop if refunds exceed ${stopTriggerCount} seats or source confusion repeats.`
+    },
+    {
+      label: "Expansion hold",
+      cap: 250,
+      score: 54,
+      route: "#paid-cohort-expansion-gate",
+      ask: "No public checkout yet",
+      signal: "Use the larger waitlist only after receipts, support, account storage, and source gates pass.",
+      stop: "No ads, affiliate push, or distributor promise before the expansion gate clears."
+    }
+  ].map((wave) => ({
+    ...wave,
+    tone: wave.score >= 78 ? "ready" : wave.score >= 64 ? "watch" : "caution"
+  }));
+  return {
+    inviteScore,
+    tone,
+    status,
+    proofQualifiedUsers,
+    founderWave,
+    expectedPaidFromFounderWave,
+    firstWaveCash,
+    supportCeiling,
+    stopTriggerCount,
+    headline: "Founder invite wave room",
+    decision: "Convert proof-complete users into a tiny paid learning cohort before opening public checkout.",
+    metrics: [
+      { label: "Proof list", value: `${proofQualifiedUsers}`, detail: "Users eligible only after the full research path is complete." },
+      { label: "Founder wave", value: `${founderWave}`, detail: "Small enough for direct calls, manual refunds, and fast support." },
+      { label: "Paid signal", value: `${expectedPaidFromFounderWave} seats`, detail: `${formatMoney(firstWaveCash)} first-wave cash signal, not a forecast.` },
+      { label: "Support ceiling", value: `${supportCeiling} cases`, detail: "Founder-reviewed support before any wider invite." },
+      { label: "Stop trigger", value: `${stopTriggerCount} refunds`, detail: "Pause invites and inspect confusion before continuing." },
+      { label: "Proof gate", value: `${radar.score}/100`, detail: radar.status }
+    ],
+    waves,
+    safeguards: [
+      { label: "Evidence before ask", route: "#evidence", detail: "Every live-looking claim needs source date, citation path, and demo/live status before a payment invite." },
+      { label: "Refund before revenue", route: "#payment-sandbox", detail: "Refund, cancellation, invoice, and entitlement rollback must be rehearsed before the founder wave." },
+      { label: "Support before scale", route: "#paid-beta-support-ledger", detail: "Support cases should be redacted, owned, closed, and replayable before more invites." },
+      { label: "Phase 2 firewall", route: "#consent-gate", detail: "No ARN, EUIN, PAN, folio, CAS, bank, or distributor-client workflow enters the retail invite wave." }
+    ]
+  };
+}
+
+function marketPaidBetaInviteReceiptLedger(strategy) {
+  const waveRoom = strategy.founderInviteWaveRoom || marketFounderInviteWaveRoom(strategy);
+  const cohort = strategy.paidBetaCohortConsole || marketPaidBetaCohortConsole(strategy);
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const receiptRows = [
+    {
+      label: "Proof qualification",
+      event: "beta.proof_qualified",
+      owner: "Product",
+      score: 84,
+      route: "#decision-pack",
+      required: "profile, compare set, X-Ray, memo, review date, evidence lock",
+      redaction: "No name, PAN, folio, CAS, bank, card, UPI, phone, or email.",
+      blocker: "Do not send founder invite until proof path is complete."
+    },
+    {
+      label: "Founder invite sent",
+      event: "beta.invite_sent",
+      owner: "Founder",
+      score: waveRoom.inviteScore,
+      route: "#founder-invite-path",
+      required: "invite wave, cohort cap, pricing copy, research-only boundary, refund promise",
+      redaction: "Store invite hash and wave label, not personal contact data in this prototype.",
+      blocker: "Do not widen if founder cannot manually follow up."
+    },
+    {
+      label: "Payment ask shown",
+      event: "beta.payment_ask_shown",
+      owner: "Finance",
+      score: 68,
+      route: "#payment-sandbox",
+      required: "price shown, plan, cancellation copy, refund route, entitlement state",
+      redaction: "No card, UPI, bank, payment token, or gateway secret in front-end memory.",
+      blocker: "Do not collect payment before checkout, refund, and entitlement rollback are rehearsed."
+    },
+    {
+      label: "Support case opened",
+      event: "beta.support_case_opened",
+      owner: "Support",
+      score: 66,
+      route: "#paid-beta-support-ledger",
+      required: "case type, owner, redacted summary, closeout status, correction route",
+      redaction: "No private notes, account secrets, payment instruments, or investor identifiers.",
+      blocker: "Pause invites if support cases exceed founder-reviewed capacity."
+    },
+    {
+      label: "Refund stop checked",
+      event: "beta.refund_stop_checked",
+      owner: "Founder",
+      score: 72,
+      route: "#paid-cohort-expansion-gate",
+      required: "refund count, reason, support theme, source confusion, next action",
+      redaction: "Record reason codes and counts only until the backend receipt model is live.",
+      blocker: `Stop next wave if refunds reach ${waveRoom.stopTriggerCount} seats.`
+    },
+    {
+      label: "Expansion decision",
+      event: "beta.expansion_decision_saved",
+      owner: "Trust",
+      score: 58,
+      route: "#paid-cohort-expansion-gate",
+      required: "gate score, blocker, decision, cohort cap, Phase 2 firewall check",
+      redaction: "No distributor IDs, client book, ARN, EUIN, PAN, folio, or CAS data.",
+      blocker: "No public checkout until expansion gate and support receipts clear."
+    }
+  ].map((row, index) => ({
+    ...row,
+    receiptId: ["NN", "BETA", "INVITE", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+    tone: row.score >= 78 ? "ready" : row.score >= 66 ? "watch" : "caution"
+  }));
+  const openBlockers = receiptRows.filter((row) => row.score < 70);
+  const ledgerScore = clampNumber(Math.round(
+    waveRoom.inviteScore * 0.32 +
+    cohort.conversionRate * 1.4 +
+    receiptRows.reduce((sum, row) => sum + row.score, 0) / receiptRows.length * 0.4 +
+    strategy.launchReadiness * 0.14
+  ), 30, 94);
+  const status = ledgerScore >= 82 && openBlockers.length === 0
+    ? "Invite receipts clean"
+    : ledgerScore >= 68
+      ? "Founder receipt rehearsal"
+      : "Receipt blockers first";
+  return {
+    ledgerId: ["NN", "PAID", "BETA", "INVITE", "LEDGER", suffix].join("-").toUpperCase(),
+    ledgerScore,
+    tone: ledgerScore >= 82 ? "ready" : ledgerScore >= 68 ? "watch" : "caution",
+    status,
+    headline: "Paid beta invite receipt ledger",
+    decision: "Do not treat an invite as sent unless proof, payment ask, support, refund, and expansion-stop evidence can be replayed.",
+    metrics: [
+      { label: "Receipt families", value: `${receiptRows.length}`, detail: "Each invite wave needs a replayable event family." },
+      { label: "Open blockers", value: `${openBlockers.length}`, detail: "Rows below 70 stay founder-review blockers." },
+      { label: "Founder wave cap", value: `${waveRoom.founderWave}`, detail: "Receipt load stays small enough for manual review." },
+      { label: "Support ceiling", value: `${waveRoom.supportCeiling}`, detail: "Cases before the next invite wave must be reviewed." },
+      { label: "Refund stop", value: `${waveRoom.stopTriggerCount}`, detail: "Refund-trigger count before invite pause." },
+      { label: "Ledger ID", value: "Ready", detail: "Copyable receipt ID is generated per release." }
+    ],
+    receiptRows,
+    openBlockers,
+    payloadFields: [
+      "receipt_id",
+      "event_name",
+      "wave_label",
+      "proof_status",
+      "pricing_copy_version",
+      "research_only_boundary",
+      "refund_policy_version",
+      "support_case_count",
+      "redaction_policy",
+      "next_wave_decision",
+      "phase_2_firewall",
+      "created_at"
+    ],
+    releaseRules: [
+      { label: "No personal identity in prototype", route: "#privacy-control", detail: "Use anonymous proof and wave labels until account storage and consent are production-ready." },
+      { label: "No payment secret in browser", route: "#payment-sandbox", detail: "Hosted checkout owns sensitive payment data; this ledger stores only receipt posture." },
+      { label: "No expansion without replay", route: "#cohort-decision-replay", detail: "Every invite, payment ask, support case, and refund stop must rebuild safely." },
+      { label: "No distributor drift", route: "#consent-gate", detail: "Retail paid beta cannot collect MFD identifiers or client records." }
+    ]
+  };
+}
+
+function marketPaidBetaObjectionReplayRoom(strategy) {
+  const ledger = strategy.paidBetaInviteReceiptLedger || marketPaidBetaInviteReceiptLedger(strategy);
+  const waveRoom = strategy.founderInviteWaveRoom || marketFounderInviteWaveRoom(strategy);
+  const cohort = strategy.paidBetaCohortConsole || marketPaidBetaCohortConsole(strategy);
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const objections = [
+    {
+      label: "Is this advice?",
+      source: "Compliance",
+      score: 64,
+      route: "#trust-center",
+      signal: "User worries the paid plan is a fund recommendation or return promise.",
+      reply: "Explain research-only workflow, no fund call, no transaction, and no guaranteed outcome.",
+      copyFix: "Change paid copy from smarter decisions to better research discipline.",
+      nextAsk: "Allowed only after the research-only boundary is visible beside price."
+    },
+    {
+      label: "Why pay for demo data?",
+      source: "Evidence",
+      score: 58,
+      route: "#evidence",
+      signal: "User wants live source dates before paying.",
+      reply: "Keep beta founder-led and show demo/live status, AMFI, AMC, SID, KIM, TER, and portfolio source roadmap.",
+      copyFix: "Make paid beta a habit and memory beta, not a live-fund-data promise.",
+      nextAsk: "Hold public checkout until live-source receipts improve."
+    },
+    {
+      label: "Can I get a refund?",
+      source: "Finance",
+      score: 72,
+      route: "#payment-sandbox",
+      signal: "User asks cancellation or refund questions before paying.",
+      reply: "Show simple refund route, cancellation copy, and support owner before the payment ask.",
+      copyFix: "Place refund promise before the payment button.",
+      nextAsk: `Allowed while refund stop remains below ${waveRoom.stopTriggerCount} seats.`
+    },
+    {
+      label: "Will you store my PAN?",
+      source: "Privacy",
+      score: 76,
+      route: "#privacy-control",
+      signal: "User fears PAN, folio, CAS, payment, contact, or distributor-client data collection.",
+      reply: "Say Phase 1 stores research workflow only and excludes identifiers.",
+      copyFix: "Add identity-light promise near account and payment copy.",
+      nextAsk: "Allowed only while PAN, folio, CAS, bank, ARN, EUIN, and distributor client data stay out."
+    },
+    {
+      label: "Why not use free apps?",
+      source: "Market",
+      score: 80,
+      route: "#market-strategy",
+      signal: "User compares NiveshNadi with ratings, screeners, and transaction apps.",
+      reply: "Position NiveshNadi as decision memory, evidence discipline, and review habit.",
+      copyFix: "Lead with Know the fund before you fund it and saved decision discipline.",
+      nextAsk: "Allowed after the user saves one memo or review date."
+    },
+    {
+      label: "I need help choosing",
+      source: "Behavior",
+      score: 62,
+      route: "#coach-desk",
+      signal: "User wants a direct fund recommendation.",
+      reply: "Coach with questions, suitability guardrails, and compare paths, not fund picks.",
+      copyFix: "Replace choose this fund language with explain your decision before action.",
+      nextAsk: "Block the paid ask until a memo reason is written."
+    }
+  ].map((item, index) => ({
+    ...item,
+    replayId: ["NN", "BETA", "OBJECTION", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+    tone: item.score >= 76 ? "ready" : item.score >= 64 ? "watch" : "caution"
+  }));
+  const replayScore = clampNumber(Math.round(
+    ledger.ledgerScore * 0.3 +
+    waveRoom.inviteScore * 0.22 +
+    cohort.conversionRate * 1.2 +
+    objections.reduce((sum, item) => sum + item.score, 0) / objections.length * 0.34 +
+    8
+  ), 30, 94);
+  const blockers = objections.filter((item) => item.score < 64);
+  const nextObjection = [...objections].sort((a, b) => a.score - b.score)[0];
+  const status = replayScore >= 82 && blockers.length === 0
+    ? "Ready to ask after proof"
+    : replayScore >= 68
+      ? "Replay objections before ask"
+      : "Do not ask yet";
+  return {
+    replayId: ["NN", "PAID", "BETA", "OBJECTION", "REPLAY", suffix].join("-").toUpperCase(),
+    replayScore,
+    tone: replayScore >= 82 ? "ready" : replayScore >= 68 ? "watch" : "caution",
+    status,
+    headline: "Paid beta objection replay room",
+    decision: "Every no becomes a product proof route before the next paid ask.",
+    objections,
+    blockers,
+    nextObjection,
+    metrics: [
+      { label: "Objections mapped", value: `${objections.length}`, detail: "Each objection has proof, reply, copy fix, and next-ask rule." },
+      { label: "Weakest objection", value: nextObjection.label, detail: `${nextObjection.score}/100 readiness.` },
+      { label: "Copy fixes", value: `${objections.length}`, detail: "Founder should change wording before pushing payment harder." },
+      { label: "Ask status", value: status, detail: "Paid ask waits for proof and objection replay." },
+      { label: "Ledger support", value: `${ledger.ledgerScore}/100`, detail: ledger.status },
+      { label: "First wave", value: `${waveRoom.founderWave} users`, detail: `${waveRoom.supportCeiling} support-case ceiling.` }
+    ],
+    replayRules: [
+      { label: "No ask after confusion", route: "#trust-center", detail: "If a user thinks NiveshNadi is advice, replay compliance copy before asking for payment." },
+      { label: "No ask without source posture", route: "#evidence", detail: "If a user challenges demo or live data, show source roadmap and beta boundary first." },
+      { label: "No ask without refund path", route: "#payment-sandbox", detail: "If refund is unclear, fix payment copy and support receipt before the next invite." },
+      { label: "No ask with private-data fear", route: "#privacy-control", detail: "If a user fears identifier collection, show the Phase 1 exclusion list before price." }
+    ]
+  };
+}
+
+function marketPaidBetaOfferLab(strategy) {
+  const objectionRoom = strategy.paidBetaObjectionReplayRoom || marketPaidBetaObjectionReplayRoom(strategy);
+  const ledger = strategy.paidBetaInviteReceiptLedger || marketPaidBetaInviteReceiptLedger(strategy);
+  const waveRoom = strategy.founderInviteWaveRoom || marketFounderInviteWaveRoom(strategy);
+  const cohort = strategy.paidBetaCohortConsole || marketPaidBetaCohortConsole(strategy);
+  const radar = strategy.trustToPaidRadar || marketTrustToPaidRadar(strategy);
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const offerVariants = [
+    {
+      label: "Research Habit Beta",
+      price: "Rs. 99/month or Rs. 999/year",
+      score: 86,
+      route: "#review-rhythm",
+      audience: "Retail investor who wants discipline before every SIP or switch.",
+      promise: "Keep one profile, one compare set, one memo, one review date, and one evidence checklist in a calm research loop.",
+      proof: "Profile, Compare, Evidence, Pack, Review, and Memory rooms are visible before payment.",
+      objectionHandled: "Free apps show data; NiveshNadi keeps the decision habit alive.",
+      cta: "Start founder beta after saving your first memo."
+    },
+    {
+      label: "Evidence-First Founder Pass",
+      price: "Rs. 499 founder year",
+      score: 78,
+      route: "#evidence",
+      audience: "Early believer who accepts demo/live boundaries while source receipts are being connected.",
+      promise: "Get the research workflow, source-date discipline, and proof roadmap early while the product remains founder-led.",
+      proof: "Evidence Ledger, Trust Center, Source QA, and objection replay show what is demo, planned, or live.",
+      objectionHandled: "Do not sell live data; sell early access to a disciplined research operating system.",
+      cta: "Join only if the beta boundary is clear."
+    },
+    {
+      label: "Decision Memory Upgrade",
+      price: "Rs. 100/month beta anchor",
+      score: 82,
+      route: "#research-memory",
+      audience: "Investor who forgets why a fund was selected, watched, or rejected.",
+      promise: "Turn research notes into repeatable memory: reason, evidence, compare, watch trigger, review date, and correction trail.",
+      proof: "Briefing Vault, Review Vault, Decision Pack, Receipt Vault, and Objection Replay stay identity-light.",
+      objectionHandled: "Payment is for memory and workflow depth, not a fund pick.",
+      cta: "Upgrade after you create one reusable research packet."
+    }
+  ].map((offer, index) => ({
+    ...offer,
+    offerId: ["NN", "BETA", "OFFER", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+    tone: offer.score >= 84 ? "ready" : offer.score >= 74 ? "watch" : "caution"
+  }));
+  const primaryOffer = offerVariants.reduce(
+    (best, offer) => offer.score > best.score ? offer : best,
+    offerVariants[0]
+  );
+  const copyBlocks = [
+    {
+      label: "Hero line",
+      value: "Know the fund before you fund it.",
+      detail: "Lead with research discipline, not returns, rankings, or recommendations."
+    },
+    {
+      label: "Paid promise",
+      value: "Save your research loop",
+      detail: "Paid beta unlocks deeper memory, review rhythm, and reusable decision packets."
+    },
+    {
+      label: "Refund line",
+      value: "Founder-reviewed refund path",
+      detail: `Refund confusion pauses the wave if it reaches ${waveRoom.stopTriggerCount} seats.`
+    },
+    {
+      label: "Privacy line",
+      value: "No PAN, folio, CAS, or bank data in Phase 1",
+      detail: "The offer stays identity-light until account storage, consent, and legal gates are production-ready."
+    },
+    {
+      label: "Evidence line",
+      value: "Demo/live status stays visible",
+      detail: "The paid page must never make demo data feel like fully live source coverage."
+    },
+    {
+      label: "CTA line",
+      value: primaryOffer.cta,
+      detail: "The ask appears only after a proof action, not on first contact."
+    }
+  ];
+  const noSellRules = [
+    { label: "No return promise", route: "#trust-center", detail: "Never sell performance, best fund, guaranteed outcome, or direct action." },
+    { label: "No payment before refund route", route: "#payment-sandbox", detail: "Hosted checkout, cancellation copy, refund receipt, and support owner must be rehearsed." },
+    { label: "No paid claim without source posture", route: "#evidence", detail: "Every live-looking benefit needs demo/live label, citation route, and source-date boundary." },
+    { label: "No broad launch from first applause", route: "#market-strategy", detail: "Founder wave feedback must pass objection replay, support load, and receipt gates before scaling." }
+  ];
+  const offerScore = clampNumber(Math.round(
+    primaryOffer.score * 0.24 +
+    objectionRoom.replayScore * 0.24 +
+    ledger.ledgerScore * 0.18 +
+    radar.score * 0.16 +
+    cohort.conversionRate * 1.1 +
+    strategy.launchReadiness * 0.08
+  ), 30, 94);
+  const openBlockers = [
+    ...objectionRoom.blockers.map((item) => `${item.label}: ${item.nextAsk}`),
+    ...ledger.openBlockers.slice(0, 2).map((row) => `${row.label}: ${row.blocker}`)
+  ];
+  const status = offerScore >= 84 && openBlockers.length === 0
+    ? "Founder offer ready"
+    : offerScore >= 72
+      ? "Test carefully with proof"
+      : "Proof before offer";
+  return {
+    offerId: ["NN", "PAID", "BETA", "OFFER", "LAB", suffix].join("-").toUpperCase(),
+    offerScore,
+    tone: offerScore >= 84 ? "ready" : offerScore >= 72 ? "watch" : "caution",
+    status,
+    headline: "Paid beta offer lab",
+    decision: "The first offer should sell research discipline and saved memory, not fund recommendations or live-data certainty.",
+    primaryOffer,
+    offerVariants,
+    copyBlocks,
+    noSellRules,
+    openBlockers,
+    metrics: [
+      { label: "Primary offer", value: primaryOffer.label, detail: `${primaryOffer.score}/100 offer clarity.` },
+      { label: "Ask timing", value: "After proof", detail: "CTA appears after memo, evidence, or review memory, not before trust." },
+      { label: "Price anchor", value: "Rs. 99/month", detail: "Low-cost retail anchor remains simple and founder-led." },
+      { label: "Founder cap", value: `${waveRoom.founderWave} users`, detail: "Offer is not a public checkout push yet." },
+      { label: "Objection replay", value: `${objectionRoom.replayScore}/100`, detail: objectionRoom.status },
+      { label: "Receipt support", value: `${ledger.ledgerScore}/100`, detail: ledger.status }
+    ]
+  };
+}
+
+function marketFounderBetaLandingScript(strategy) {
+  const offerLab = strategy.paidBetaOfferLab || marketPaidBetaOfferLab(strategy);
+  const objectionRoom = strategy.paidBetaObjectionReplayRoom || marketPaidBetaObjectionReplayRoom(strategy);
+  const ledger = strategy.paidBetaInviteReceiptLedger || marketPaidBetaInviteReceiptLedger(strategy);
+  const radar = strategy.trustToPaidRadar || marketTrustToPaidRadar(strategy);
+  const primaryOffer = offerLab.primaryOffer;
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const proofSteps = [
+    {
+      label: "First-screen promise",
+      score: 90,
+      route: "#market-strategy",
+      detail: "Open with a research discipline promise, not performance, rankings, or personalized advice.",
+      proof: "Hero line, research-only boundary, demo/live status, and price anchor are visible before the CTA."
+    },
+    {
+      label: "Proof before payment",
+      score: 84,
+      route: "#evidence",
+      detail: "Show evidence posture, source-date gaps, and research packet behavior before asking for money.",
+      proof: "Evidence Ledger, Decision Pack, Trust Center, and objection replay are linked from the offer."
+    },
+    {
+      label: "Founder trust terms",
+      score: 76,
+      route: "#payment-sandbox",
+      detail: "Price, cancellation, refund route, support owner, and founder cap must be visible in plain language.",
+      proof: "Paid beta copy is small, founder-led, refund-aware, and not a public checkout push."
+    },
+    {
+      label: "Privacy comfort",
+      score: 86,
+      route: "#privacy-control",
+      detail: "Repeat that Phase 1 excludes PAN, folio, CAS, bank, card, UPI, ARN, EUIN, and distributor client records.",
+      proof: "The landing page sells workflow and memory, not private-data storage."
+    }
+  ].map((step, index) => ({
+    ...step,
+    stepId: ["NN", "LANDING", "STEP", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+    tone: step.score >= 84 ? "ready" : step.score >= 74 ? "watch" : "caution"
+  }));
+  const copyDeck = [
+    {
+      label: "Hero headline",
+      copy: "Know the fund before you fund it.",
+      reason: "It is memorable, plain, and already owns the NiveshNadi positioning."
+    },
+    {
+      label: "Founder promise",
+      copy: "A calm research cockpit for SIP, switch, review, and decision memory.",
+      reason: "Explains value without implying advice, execution, or return certainty."
+    },
+    {
+      label: "Paid beta line",
+      copy: `${primaryOffer.price} founder beta for investors who want saved research discipline.`,
+      reason: "Keeps the paid ask low, specific, and tied to behavior."
+    },
+    {
+      label: "Proof line",
+      copy: "Every claim shows demo/live status, source posture, and the next verification route.",
+      reason: "Turns trust into a visible product habit."
+    },
+    {
+      label: "Privacy line",
+      copy: "No PAN, folio, CAS, bank, card, UPI, ARN, EUIN, or client record collection in Phase 1.",
+      reason: "Removes the fear that a retail research tool is secretly a data grab."
+    },
+    {
+      label: "CTA line",
+      copy: "Join after you build your first research memo.",
+      reason: "Payment follows proof action, so the user understands the product before paying."
+    }
+  ];
+  const ctaRules = [
+    {
+      label: "Show soft CTA",
+      trigger: "User finishes Profile, Compare, or Evidence.",
+      copy: "Save this research loop",
+      blockIf: "Source posture is hidden or user expects a fund pick.",
+      route: "#profile"
+    },
+    {
+      label: "Show paid CTA",
+      trigger: "User builds a memo, pack, or review rhythm.",
+      copy: "Join founder beta",
+      blockIf: "Refund path, privacy line, or demo/live label is missing.",
+      route: "#decision-pack"
+    },
+    {
+      label: "Show waitlist CTA",
+      trigger: "Founder wave cap or support load is reached.",
+      copy: "Join next proof wave",
+      blockIf: "Support owner cannot respond within the promised window.",
+      route: "#market-strategy"
+    },
+    {
+      label: "Show no-action CTA",
+      trigger: "User asks for returns, best fund, or direct recommendation.",
+      copy: "Read the research boundary",
+      blockIf: "The product cannot explain research-only posture in one screen.",
+      route: "#trust-center"
+    }
+  ];
+  const trustTiles = [
+    { label: "Offer source", value: primaryOffer.label, detail: primaryOffer.promise },
+    { label: "Objection posture", value: `${objectionRoom.replayScore}/100`, detail: objectionRoom.status },
+    { label: "Receipt posture", value: `${ledger.ledgerScore}/100`, detail: ledger.status },
+    { label: "Trust-to-paid", value: `${radar.score}/100`, detail: radar.recommendation }
+  ];
+  const landingScore = clampNumber(Math.round(
+    offerLab.offerScore * 0.28 +
+    objectionRoom.replayScore * 0.2 +
+    ledger.ledgerScore * 0.16 +
+    radar.score * 0.16 +
+    proofSteps.reduce((sum, step) => sum + step.score, 0) / proofSteps.length * 0.2
+  ), 30, 96);
+  const blockers = [
+    ...offerLab.openBlockers,
+    ...proofSteps.filter((step) => step.score < 78).map((step) => `${step.label}: ${step.detail}`)
+  ];
+  const status = landingScore >= 86 && blockers.length === 0
+    ? "Landing script ready"
+    : landingScore >= 76
+      ? "Founder test ready"
+      : "Do proof before landing";
+  return {
+    scriptId: ["NN", "FOUNDER", "BETA", "LANDING", suffix].join("-").toUpperCase(),
+    landingScore,
+    tone: landingScore >= 86 ? "ready" : landingScore >= 76 ? "watch" : "caution",
+    status,
+    headline: "Founder beta landing script",
+    decision: "The paid-beta page should feel like a disciplined research invitation, not a checkout trap.",
+    primaryOffer,
+    proofSteps,
+    copyDeck,
+    ctaRules,
+    trustTiles,
+    blockers,
+    metrics: [
+      { label: "Landing score", value: `${landingScore}/100`, detail: "Blends offer clarity, objection replay, receipts, trust radar, and proof order." },
+      { label: "Primary CTA", value: "Join founder beta", detail: "Shown only after a memo, pack, or review proof action." },
+      { label: "Soft CTA", value: "Save this research loop", detail: "For users who are curious but not payment-ready." },
+      { label: "Proof steps", value: `${proofSteps.length}`, detail: "Promise, evidence, founder terms, and privacy comfort." },
+      { label: "Copy blocks", value: `${copyDeck.length}`, detail: "Landing page copy that can be pasted into the first paid-beta page." },
+      { label: "Blockers", value: `${blockers.length}`, detail: blockers.length ? "Keep the CTA founder-only." : "No broad landing blocker in this prototype." }
+    ]
+  };
+}
+
+function marketFounderBetaPagePreview(strategy) {
+  const script = strategy.founderBetaLandingScript || marketFounderBetaLandingScript(strategy);
+  const offerLab = strategy.paidBetaOfferLab || marketPaidBetaOfferLab(strategy);
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const heroHeadline = script.copyDeck.find((block) => block.label === "Hero headline")?.copy || "Know the fund before you fund it.";
+  const founderPromise = script.copyDeck.find((block) => block.label === "Founder promise")?.copy || "A calm research cockpit for SIP, switch, review, and decision memory.";
+  const privacyLine = script.copyDeck.find((block) => block.label === "Privacy line")?.copy || "No PAN, folio, CAS, bank, card, UPI, ARN, EUIN, or client record collection in Phase 1.";
+  const proofLine = script.copyDeck.find((block) => block.label === "Proof line")?.copy || "Every claim shows demo/live status, source posture, and the next verification route.";
+  const hero = {
+    eyebrow: "Founder beta preview",
+    headline: heroHeadline,
+    subhead: founderPromise,
+    primaryCta: "Join founder beta",
+    secondaryCta: "Inspect proof first",
+    price: script.primaryOffer.price,
+    boundary: "Research-only beta. No personalized advice, execution, return promise, or private identifier collection."
+  };
+  const pageSections = [
+    {
+      label: "Above-fold promise",
+      score: 90,
+      route: "#market-strategy",
+      heading: heroHeadline,
+      body: founderPromise,
+      proof: "Shows price, research-only boundary, and proof-first secondary CTA before payment."
+    },
+    {
+      label: "Proof ladder",
+      score: 84,
+      route: "#evidence",
+      heading: "Verify before you pay",
+      body: proofLine,
+      proof: "Evidence, memo, pack, and review routes are visible as the trust path."
+    },
+    {
+      label: "Founder terms",
+      score: 78,
+      route: "#payment-sandbox",
+      heading: "Small paid beta, founder reviewed",
+      body: `${script.primaryOffer.price}. Refund and support route must be clear before checkout.`,
+      proof: "Payment copy stays founder-led until support, refund, and receipt routes are rehearsed."
+    },
+    {
+      label: "Privacy comfort",
+      score: 90,
+      route: "#privacy-control",
+      heading: "Identity-light in Phase 1",
+      body: privacyLine,
+      proof: "Private identifiers stay outside the prototype landing promise."
+    },
+    {
+      label: "No-sell footer",
+      score: 86,
+      route: "#trust-center",
+      heading: "Research workspace, not advice",
+      body: "If you want a best-fund call or guaranteed return, this beta is not the right product.",
+      proof: "Confused users are routed to trust content instead of checkout."
+    }
+  ].map((section, index) => ({
+    ...section,
+    sectionId: ["NN", "PAGE", "PREVIEW", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+    tone: section.score >= 84 ? "ready" : section.score >= 74 ? "watch" : "caution"
+  }));
+  const ctaStates = [
+    {
+      label: "Cold visitor",
+      cta: "Inspect proof first",
+      allowed: "Yes",
+      detail: "Allow education, source posture, and research boundary. Do not push payment.",
+      route: "#evidence"
+    },
+    {
+      label: "Research action done",
+      cta: "Save this research loop",
+      allowed: "Yes",
+      detail: "After profile, compare, evidence, or memo action, the page can explain saved memory.",
+      route: "#profile"
+    },
+    {
+      label: "Memo or pack built",
+      cta: "Join founder beta",
+      allowed: "Carefully",
+      detail: "Hard CTA is allowed only when refund, privacy, source status, and research-only language are visible.",
+      route: "#decision-pack"
+    },
+    {
+      label: "Advice expectation",
+      cta: "Read the boundary",
+      allowed: "No payment",
+      detail: "When the user asks for a fund pick, recommendation, or return promise, block checkout language.",
+      route: "#trust-center"
+    }
+  ];
+  const launchChecklist = [
+    { label: "Research-only headline", status: "Required", detail: "Must be visible before pricing." },
+    { label: "Demo/live source posture", status: "Required", detail: "No live-looking claim without source boundary." },
+    { label: "Refund route", status: "Founder review", detail: "Must explain how a user asks for cancellation or refund." },
+    { label: "Privacy exclusion", status: "Required", detail: "Repeat what Phase 1 does not collect." },
+    { label: "Founder cap", status: "Required", detail: "Keep the first paid wave small and supportable." },
+    { label: "No-sell footer", status: "Required", detail: "Do not sell returns, execution, recommendations, or distributor service." }
+  ];
+  const pageScore = clampNumber(Math.round(
+    script.landingScore * 0.36 +
+    offerLab.offerScore * 0.22 +
+    pageSections.reduce((sum, section) => sum + section.score, 0) / pageSections.length * 0.28 +
+    launchChecklist.length * 2.4
+  ), 30, 96);
+  const blockers = [
+    ...script.blockers,
+    ...pageSections.filter((section) => section.score < 80).map((section) => `${section.label}: ${section.proof}`)
+  ];
+  const status = pageScore >= 88 && blockers.length === 0
+    ? "Preview ready for founder traffic"
+    : pageScore >= 78
+      ? "Preview ready for private test"
+      : "Fix proof before preview";
+  return {
+    previewId: ["NN", "FOUNDER", "BETA", "PAGE", "PREVIEW", suffix].join("-").toUpperCase(),
+    pageScore,
+    tone: pageScore >= 88 ? "ready" : pageScore >= 78 ? "watch" : "caution",
+    status,
+    headline: "Founder beta page preview",
+    decision: "Preview the paid-beta page as a real user surface before building checkout or public traffic.",
+    hero,
+    pageSections,
+    ctaStates,
+    launchChecklist,
+    blockers,
+    metrics: [
+      { label: "Preview score", value: `${pageScore}/100`, detail: "Blends landing script, offer clarity, page proof order, and launch checklist." },
+      { label: "Hero promise", value: hero.headline, detail: "The first viewport stays research-led and memorable." },
+      { label: "Founder price", value: hero.price, detail: "Low-cost paid beta is framed as saved research discipline." },
+      { label: "Page sections", value: `${pageSections.length}`, detail: "Above fold, proof, terms, privacy, and no-sell footer." },
+      { label: "CTA states", value: `${ctaStates.length}`, detail: "Different user states get different action prompts." },
+      { label: "Blockers", value: `${blockers.length}`, detail: blockers.length ? "Keep private until fixed." : "No broad preview blocker in this prototype." }
+    ]
+  };
+}
+
+function marketFounderBetaTrafficRehearsal(strategy) {
+  const preview = strategy.founderBetaPagePreview || marketFounderBetaPagePreview(strategy);
+  const inviteRoom = strategy.founderInviteWaveRoom || marketFounderInviteWaveRoom(strategy);
+  const cohort = strategy.paidBetaCohortConsole || marketPaidBetaCohortConsole(strategy);
+  const ledger = strategy.paidBetaInviteReceiptLedger || marketPaidBetaInviteReceiptLedger(strategy);
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const trafficSources = [
+    {
+      label: "Founder inner circle",
+      visitors: 35,
+      proofRate: 74,
+      paidRate: 18,
+      supportRate: 22,
+      route: "#market-strategy",
+      signal: "High trust, direct feedback, and low acquisition cost.",
+      risk: "Founder bias can overstate market pull."
+    },
+    {
+      label: "LinkedIn proof post",
+      visitors: 80,
+      proofRate: 42,
+      paidRate: 7,
+      supportRate: 12,
+      route: "#trust-center",
+      signal: "Tests whether the research-only promise is understandable outside friends.",
+      risk: "Public comments may push for advice or return claims."
+    },
+    {
+      label: "Retail investor community",
+      visitors: 60,
+      proofRate: 48,
+      paidRate: 9,
+      supportRate: 18,
+      route: "#profile",
+      signal: "Tests real SIP/STP questions and beginner confusion.",
+      risk: "High support load if privacy and source posture are unclear."
+    },
+    {
+      label: "Existing research-desk followers",
+      visitors: 45,
+      proofRate: 58,
+      paidRate: 12,
+      supportRate: 14,
+      route: "#decision-pack",
+      signal: "Tests cross-product trust from research-desk users.",
+      risk: "Users may expect institutional features before retail account gates."
+    }
+  ].map((source, index) => {
+    const proofActions = Math.round(source.visitors * source.proofRate / 100);
+    const paidSeats = Math.round(proofActions * source.paidRate / 100);
+    const supportCases = Math.round(proofActions * source.supportRate / 100);
+    const firstCash = paidSeats * 99;
+    const sourceScore = clampNumber(Math.round(
+      preview.pageScore * 0.24 +
+      source.proofRate * 0.26 +
+      source.paidRate * 2.2 +
+      Math.max(0, 22 - source.supportRate) * 0.9 +
+      18
+    ), 30, 94);
+    return {
+      ...source,
+      proofActions,
+      paidSeats,
+      supportCases,
+      firstCash,
+      sourceScore,
+      sourceId: ["NN", "TRAFFIC", "SOURCE", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      tone: sourceScore >= 84 ? "ready" : sourceScore >= 72 ? "watch" : "caution"
+    };
+  });
+  const totalVisitors = trafficSources.reduce((sum, source) => sum + source.visitors, 0);
+  const totalProofActions = trafficSources.reduce((sum, source) => sum + source.proofActions, 0);
+  const totalPaidSeats = trafficSources.reduce((sum, source) => sum + source.paidSeats, 0);
+  const totalSupportCases = trafficSources.reduce((sum, source) => sum + source.supportCases, 0);
+  const firstCash = trafficSources.reduce((sum, source) => sum + source.firstCash, 0);
+  const proofRate = Math.round(totalProofActions / totalVisitors * 100);
+  const paidRate = totalProofActions ? Math.round(totalPaidSeats / totalProofActions * 100) : 0;
+  const supportLoad = totalProofActions ? Math.round(totalSupportCases / totalProofActions * 100) : 0;
+  const stopRules = [
+    {
+      label: "Support load stop",
+      trigger: `${totalSupportCases} cases projected`,
+      rule: "Pause if support cases cross 20% of proof actions or if response time exceeds founder promise.",
+      route: "#paid-beta-support-ledger"
+    },
+    {
+      label: "Advice confusion stop",
+      trigger: "Best fund or return guarantee requests",
+      rule: "Pause paid CTA and route confused users to Trust Center before any payment prompt.",
+      route: "#trust-center"
+    },
+    {
+      label: "Refund pressure stop",
+      trigger: "Any unclear cancellation or refund question",
+      rule: "Pause checkout language until refund route, support owner, and receipt text are rehearsed.",
+      route: "#payment-sandbox"
+    },
+    {
+      label: "Source posture stop",
+      trigger: "Demo/live doubt",
+      rule: "Pause paid ask if source date, citation path, or demo/live status is not visible.",
+      route: "#evidence"
+    }
+  ];
+  const rehearsalScore = clampNumber(Math.round(
+    preview.pageScore * 0.28 +
+    inviteRoom.inviteScore * 0.16 +
+    cohort.betaScore * 0.14 +
+    ledger.ledgerScore * 0.14 +
+    proofRate * 0.16 +
+    paidRate * 1.6 +
+    Math.max(0, 28 - supportLoad) * 0.8
+  ), 30, 96);
+  const blockers = [
+    ...preview.blockers,
+    ...(supportLoad > 20 ? [`Support load: ${supportLoad}% of proof actions need help.`] : []),
+    ...(paidRate > 15 && ledger.openBlockers.length ? ["Paid interest is ahead of receipt readiness."] : [])
+  ];
+  const status = rehearsalScore >= 86 && blockers.length === 0
+    ? "Private traffic rehearsal ready"
+    : rehearsalScore >= 76
+      ? "Run tiny invite wave"
+      : "Fix page before traffic";
+  return {
+    rehearsalId: ["NN", "FOUNDER", "BETA", "TRAFFIC", "REHEARSAL", suffix].join("-").toUpperCase(),
+    rehearsalScore,
+    tone: rehearsalScore >= 86 ? "ready" : rehearsalScore >= 76 ? "watch" : "caution",
+    status,
+    headline: "Founder beta traffic rehearsal",
+    decision: "Only send private traffic when the page can absorb proof actions, support questions, refund doubt, and advice confusion.",
+    trafficSources,
+    stopRules,
+    blockers,
+    totals: {
+      visitors: totalVisitors,
+      proofActions: totalProofActions,
+      paidSeats: totalPaidSeats,
+      supportCases: totalSupportCases,
+      firstCash,
+      proofRate,
+      paidRate,
+      supportLoad
+    },
+    metrics: [
+      { label: "Visitors rehearsed", value: `${totalVisitors}`, detail: "Private traffic only; no ads or public checkout yet." },
+      { label: "Proof actions", value: `${totalProofActions}`, detail: `${proofRate}% expected to inspect proof before payment.` },
+      { label: "Paid seats", value: `${totalPaidSeats}`, detail: `${paidRate}% of proof actions convert in this rehearsal.` },
+      { label: "First cash signal", value: formatMoney(firstCash), detail: "Revenue signal, not a forecast or promise." },
+      { label: "Support cases", value: `${totalSupportCases}`, detail: `${supportLoad}% support load against proof actions.` },
+      { label: "Stop rules", value: `${stopRules.length}`, detail: "Support, advice confusion, refund pressure, and source posture." }
+    ]
+  };
+}
+
+function marketFounderBetaExperimentBoard(strategy) {
+  const rehearsal = strategy.founderBetaTrafficRehearsal || marketFounderBetaTrafficRehearsal(strategy);
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const sourceByLabel = (label) => rehearsal.trafficSources.find((source) => source.label === label) || rehearsal.trafficSources[0];
+  const experiments = [
+    {
+      label: "Evidence-before-price test",
+      sourceLabel: "Founder inner circle",
+      hypothesis: "If evidence opens before price, users understand this as a research workspace, not a fund tip.",
+      promise: "Know the source before the score.",
+      cta: "Open evidence, then request founder invite",
+      proofClarity: 88,
+      ctaRestraint: 84,
+      trustLift: 18,
+      minimumProof: 18,
+      paidIntentRate: 18,
+      supportCeilingRate: 18,
+      route: "#evidence",
+      stopRule: "Stop if any user asks for a best-fund answer before reading source posture.",
+      successMetric: "70% proof-first completion before payment interest."
+    },
+    {
+      label: "Research habit promise test",
+      sourceLabel: "LinkedIn proof post",
+      hypothesis: "If the promise is framed as a repeatable decision habit, strangers will inspect the memo path before asking for returns.",
+      promise: "Build the memo before the money moves.",
+      cta: "Read proof path, then join waitlist",
+      proofClarity: 78,
+      ctaRestraint: 86,
+      trustLift: 12,
+      minimumProof: 22,
+      paidIntentRate: 10,
+      supportCeilingRate: 14,
+      route: "#decision-pack",
+      stopRule: "Stop if comments pull the page into advice, tips, or guaranteed-return language.",
+      successMetric: "40 clean proof actions without advice drift."
+    },
+    {
+      label: "Beginner SIP confidence test",
+      sourceLabel: "Retail investor community",
+      hypothesis: "If the profile route comes first, beginners can self-identify risk comfort before comparing funds.",
+      promise: "Start with your investor profile, then compare.",
+      cta: "Apply profile before fund shortlist",
+      proofClarity: 82,
+      ctaRestraint: 80,
+      trustLift: 15,
+      minimumProof: 24,
+      paidIntentRate: 12,
+      supportCeilingRate: 20,
+      route: "#profile",
+      stopRule: "Stop if support questions cross the source date, refund, or privacy boundary.",
+      successMetric: "30 profile-first completions with support load below 20%."
+    },
+    {
+      label: "Existing-trust conversion test",
+      sourceLabel: "Existing research-desk followers",
+      hypothesis: "If existing trust is routed through a paid evidence pack, conversion can happen without weakening the retail boundary.",
+      promise: "Turn one research question into a saved pack.",
+      cta: "Open paid beta evidence pack",
+      proofClarity: 84,
+      ctaRestraint: 82,
+      trustLift: 16,
+      minimumProof: 20,
+      paidIntentRate: 14,
+      supportCeilingRate: 16,
+      route: "#paid-beta-pack",
+      stopRule: "Stop if users expect institutional or distributor features before Phase 2 controls exist.",
+      successMetric: "5 clean paid-intent signals with no Phase 2 confusion."
+    }
+  ].map((experiment, index) => {
+    const source = sourceByLabel(experiment.sourceLabel);
+    const proofTarget = Math.max(experiment.minimumProof, source.proofActions);
+    const paidTarget = Math.max(1, Math.round(proofTarget * experiment.paidIntentRate / 100));
+    const supportCeiling = Math.max(3, Math.ceil(proofTarget * experiment.supportCeilingRate / 100));
+    const learningScore = clampNumber(Math.round(
+      rehearsal.rehearsalScore * 0.2 +
+      source.sourceScore * 0.2 +
+      experiment.proofClarity * 0.2 +
+      experiment.ctaRestraint * 0.16 +
+      experiment.trustLift * 0.8 +
+      Math.max(0, 26 - experiment.supportCeilingRate) * 0.7
+    ), 35, 96);
+    return {
+      ...experiment,
+      experimentId: ["NN", "BETA", "EXPERIMENT", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      sourceScore: source.sourceScore,
+      sourceRoute: source.route,
+      proofTarget,
+      paidTarget,
+      supportCeiling,
+      firstCashSignal: paidTarget * 99,
+      learningScore,
+      tone: learningScore >= 86 ? "ready" : learningScore >= 76 ? "watch" : "caution",
+      status: learningScore >= 86 ? "Run as tiny test" : learningScore >= 76 ? "Founder review first" : "Hold experiment"
+    };
+  });
+  const boardScore = clampNumber(Math.round(
+    experiments.reduce((sum, experiment) => sum + experiment.learningScore, 0) / experiments.length * 0.62 +
+    rehearsal.rehearsalScore * 0.26 +
+    Math.max(0, 4 - rehearsal.blockers.length) * 3
+  ), 30, 96);
+  const readyExperiments = experiments.filter((experiment) => experiment.learningScore >= 86).length;
+  const totalProofTarget = experiments.reduce((sum, experiment) => sum + experiment.proofTarget, 0);
+  const totalPaidTarget = experiments.reduce((sum, experiment) => sum + experiment.paidTarget, 0);
+  const totalSupportCeiling = experiments.reduce((sum, experiment) => sum + experiment.supportCeiling, 0);
+  const firstCashSignal = experiments.reduce((sum, experiment) => sum + experiment.firstCashSignal, 0);
+  const blockers = [
+    ...rehearsal.blockers,
+    ...(readyExperiments === 0 ? ["No experiment is clean enough for even a tiny private test."] : []),
+    ...(totalSupportCeiling > 24 ? [`Support ceiling is ${totalSupportCeiling} cases across experiments; keep founder response capacity explicit.`] : [])
+  ];
+  const reviewCadence = [
+    { label: "Daily founder review", detail: "Review proof actions, support questions, advice drift, and refund doubt before more invites.", route: "#today" },
+    { label: "One promise per source", detail: "Do not mix proof-first, profile-first, and paid-pack messaging inside the same invite wave.", route: "#market-strategy" },
+    { label: "Decision after proof", detail: "Move only the experiment that creates clean proof actions without support overload.", route: "#decision-radar" },
+    { label: "No public scaling", detail: "Public ads wait until source receipts, account rails, refunds, and support closeouts are production-ready.", route: "#launch-readiness" }
+  ];
+  return {
+    boardId: ["NN", "FOUNDER", "BETA", "EXPERIMENT", "BOARD", suffix].join("-").toUpperCase(),
+    boardScore,
+    tone: boardScore >= 86 && blockers.length === 0 ? "ready" : boardScore >= 76 ? "watch" : "caution",
+    status: boardScore >= 86 && blockers.length === 0 ? "Tiny experiments ready" : boardScore >= 76 ? "Run founder-reviewed tests" : "Hold until proof is cleaner",
+    decision: "Run only one small experiment at a time, and scale only when proof actions are clean, support is absorbable, and users are not asking for advice.",
+    experiments,
+    reviewCadence,
+    blockers,
+    totals: {
+      readyExperiments,
+      totalProofTarget,
+      totalPaidTarget,
+      totalSupportCeiling,
+      firstCashSignal
+    },
+    metrics: [
+      { label: "Experiments mapped", value: `${experiments.length}`, detail: "Each test has a source, promise, CTA, proof target, stop rule, and route." },
+      { label: "Ready tiny tests", value: `${readyExperiments}`, detail: readyExperiments ? "Run one at a time by hand." : "Improve proof and support posture first." },
+      { label: "Proof target", value: `${totalProofTarget}`, detail: "The minimum clean proof actions before learning is trusted." },
+      { label: "Paid-intent target", value: `${totalPaidTarget}`, detail: "Interest signal only; not a revenue forecast." },
+      { label: "Support ceiling", value: `${totalSupportCeiling}`, detail: "Founder support capacity before pausing invitations." },
+      { label: "First-cash signal", value: formatMoney(firstCashSignal), detail: "Learning value for private beta, not a public projection." }
+    ]
+  };
+}
+
+function marketFounderBetaLearningLedger(strategy) {
+  const board = strategy.founderBetaExperimentBoard || marketFounderBetaExperimentBoard(strategy);
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const learningRows = board.experiments.map((experiment, index) => {
+    const proofRatio = experiment.learningScore >= 86 ? 0.92 : experiment.learningScore >= 76 ? 0.68 : 0.42;
+    const paidRatio = experiment.learningScore >= 86 ? 0.78 : experiment.learningScore >= 76 ? 0.5 : 0.24;
+    const supportRatio = experiment.learningScore >= 86 ? 0.52 : experiment.learningScore >= 76 ? 0.78 : 1.12;
+    const proofObserved = Math.max(1, Math.round(experiment.proofTarget * proofRatio));
+    const paidIntentObserved = Math.max(0, Math.round(experiment.paidTarget * paidRatio));
+    const supportObserved = Math.max(1, Math.round(experiment.supportCeiling * supportRatio));
+    const supportHeadroom = experiment.supportCeiling - supportObserved;
+    const proofCompletion = Math.round(proofObserved / experiment.proofTarget * 100);
+    const paidIntentCompletion = experiment.paidTarget ? Math.round(paidIntentObserved / experiment.paidTarget * 100) : 0;
+    const learningScore = clampNumber(Math.round(
+      experiment.learningScore * 0.36 +
+      proofCompletion * 0.26 +
+      paidIntentCompletion * 0.14 +
+      Math.max(0, supportHeadroom) * 3 +
+      (supportHeadroom >= 0 ? 8 : -6)
+    ), 30, 96);
+    const verdict = learningScore >= 86 && supportHeadroom >= 0
+      ? "Scale by hand"
+      : learningScore >= 76 && supportHeadroom >= 0
+        ? "Repeat with sharper proof"
+        : "Stop and repair";
+    const nextAction = verdict === "Scale by hand"
+      ? "Open one more tiny invite wave with the same promise and a founder review before expansion."
+      : verdict === "Repeat with sharper proof"
+        ? "Repeat the same source with cleaner proof wording, clearer source-date posture, and a lower paid ask."
+        : "Pause this source until support load, advice confusion, or proof weakness is repaired.";
+    return {
+      experimentLabel: experiment.label,
+      sourceLabel: experiment.sourceLabel,
+      promise: experiment.promise,
+      learningId: ["NN", "BETA", "LEARNING", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      proofTarget: experiment.proofTarget,
+      proofObserved,
+      proofCompletion,
+      paidTarget: experiment.paidTarget,
+      paidIntentObserved,
+      paidIntentCompletion,
+      supportCeiling: experiment.supportCeiling,
+      supportObserved,
+      supportHeadroom,
+      learningScore,
+      verdict,
+      nextAction,
+      route: experiment.route,
+      stopCondition: experiment.stopRule,
+      tone: learningScore >= 86 && supportHeadroom >= 0 ? "ready" : learningScore >= 76 && supportHeadroom >= 0 ? "watch" : "caution"
+    };
+  });
+  const scaleRows = learningRows.filter((row) => row.verdict === "Scale by hand").length;
+  const repeatRows = learningRows.filter((row) => row.verdict === "Repeat with sharper proof").length;
+  const stopRows = learningRows.filter((row) => row.verdict === "Stop and repair").length;
+  const proofObserved = learningRows.reduce((sum, row) => sum + row.proofObserved, 0);
+  const proofTarget = learningRows.reduce((sum, row) => sum + row.proofTarget, 0);
+  const paidIntentObserved = learningRows.reduce((sum, row) => sum + row.paidIntentObserved, 0);
+  const supportHeadroom = learningRows.reduce((sum, row) => sum + row.supportHeadroom, 0);
+  const ledgerScore = clampNumber(Math.round(
+    learningRows.reduce((sum, row) => sum + row.learningScore, 0) / learningRows.length * 0.68 +
+    board.boardScore * 0.22 +
+    Math.max(0, supportHeadroom) * 0.6 +
+    scaleRows * 2 -
+    stopRows * 3
+  ), 30, 96);
+  const blockers = [
+    ...board.blockers,
+    ...learningRows.filter((row) => row.supportHeadroom < 0).map((row) => `${row.experimentLabel}: support exceeded ceiling by ${Math.abs(row.supportHeadroom)} cases.`),
+    ...(stopRows > 1 ? [`${stopRows} experiments need repair before any scaling.`] : [])
+  ];
+  const ledgerRules = [
+    { label: "Scale only by hand", detail: "A scale verdict permits one more tiny invite wave, not ads, public checkout, or automation.", route: "#founder-invite-path" },
+    { label: "Repeat before rewrite", detail: "If proof is partial, repeat the same source with sharper proof instead of changing every variable.", route: "#decision-radar" },
+    { label: "Stop on support breach", detail: "Support overload, advice confusion, or refund doubt stops the experiment even if paid intent exists.", route: "#paid-beta-support-ledger" },
+    { label: "Archive the learning", detail: "Copy the ledger into founder notes without real customer identity, contact data, payment data, PAN, folio, or CAS.", route: "#research-memory" }
+  ];
+  return {
+    ledgerId: ["NN", "FOUNDER", "BETA", "LEARNING", "LEDGER", suffix].join("-").toUpperCase(),
+    ledgerScore,
+    tone: ledgerScore >= 86 && blockers.length === 0 ? "ready" : ledgerScore >= 76 ? "watch" : "caution",
+    status: ledgerScore >= 86 && blockers.length === 0 ? "Learning ready to scale by hand" : ledgerScore >= 76 ? "Repeat before scale" : "Repair before more traffic",
+    decision: "Use the learning ledger as the gate between tiny tests and any next invite wave; paid interest is not enough unless proof, support, and trust posture are clean.",
+    learningRows,
+    ledgerRules,
+    blockers,
+    totals: {
+      scaleRows,
+      repeatRows,
+      stopRows,
+      proofObserved,
+      proofTarget,
+      paidIntentObserved,
+      supportHeadroom
+    },
+    metrics: [
+      { label: "Learning rows", value: `${learningRows.length}`, detail: "Each row converts one experiment into a scale, repeat, or stop verdict." },
+      { label: "Scale by hand", value: `${scaleRows}`, detail: "Permits a tiny founder wave only, not public traffic." },
+      { label: "Repeat", value: `${repeatRows}`, detail: "Proof is useful but needs a sharper repeat before scale." },
+      { label: "Stop and repair", value: `${stopRows}`, detail: "Do not keep pushing a weak or support-heavy source." },
+      { label: "Proof observed", value: `${proofObserved}/${proofTarget}`, detail: "Proof action completion across all experiments." },
+      { label: "Support headroom", value: `${supportHeadroom}`, detail: "Positive headroom means support capacity stayed inside the ceiling." }
+    ]
+  };
+}
+
+function marketFounderBetaScaleGate(strategy) {
+  const ledger = strategy.founderBetaLearningLedger || marketFounderBetaLearningLedger(strategy);
+  const inviteLedger = strategy.paidBetaInviteReceiptLedger || { ledgerScore: 60, openBlockers: [] };
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const sortedRows = [...ledger.learningRows].sort((a, b) => b.learningScore - a.learningScore);
+  const scaleCandidate = sortedRows.find((row) => row.verdict === "Scale by hand") || sortedRows[0];
+  const proofLockScore = clampNumber(Math.round(scaleCandidate.proofCompletion * 0.6 + scaleCandidate.learningScore * 0.4), 30, 98);
+  const supportHeadroomScore = clampNumber(Math.round(64 + scaleCandidate.supportHeadroom * 8), 25, 96);
+  const receiptScore = clampNumber(Math.round(inviteLedger.ledgerScore * 0.72 + (inviteLedger.openBlockers?.length ? -8 : 8)), 30, 96);
+  const boundaryScore = clampNumber(Math.round(strategy.phaseOneLaunch * 0.45 + ledger.ledgerScore * 0.35 + 18), 30, 96);
+  const founderReviewScore = clampNumber(Math.round(scaleCandidate.learningScore * 0.55 + receiptScore * 0.25 + proofLockScore * 0.2), 30, 96);
+  const gates = [
+    {
+      label: "Learning proof lock",
+      owner: "Founder",
+      score: proofLockScore,
+      status: proofLockScore >= 84 ? "Proof lock clean" : proofLockScore >= 72 ? "Repeat proof first" : "Proof lock weak",
+      detail: `${scaleCandidate.proofObserved}/${scaleCandidate.proofTarget} proof actions observed from ${scaleCandidate.experimentLabel}.`,
+      route: scaleCandidate.route
+    },
+    {
+      label: "Support headroom",
+      owner: "Support",
+      score: supportHeadroomScore,
+      status: scaleCandidate.supportHeadroom >= 1 ? "Support inside ceiling" : "Support breach risk",
+      detail: `${scaleCandidate.supportObserved}/${scaleCandidate.supportCeiling} cases used; headroom ${scaleCandidate.supportHeadroom}.`,
+      route: "#paid-beta-support-ledger"
+    },
+    {
+      label: "Receipt readiness",
+      owner: "Backend",
+      score: receiptScore,
+      status: receiptScore >= 82 ? "Receipts ready enough" : "Receipt path needs work",
+      detail: "Invite, proof, entitlement, support, refund, and rollback receipts must be replayable before scale.",
+      route: "#founder-invite-path"
+    },
+    {
+      label: "Advice boundary",
+      owner: "Compliance",
+      score: boundaryScore,
+      status: boundaryScore >= 82 ? "Boundary visible" : "Boundary needs sharper wording",
+      detail: "The next wave must stay research-only, source-dated, refund-aware, and free of personalized advice.",
+      route: "#trust-center"
+    },
+    {
+      label: "Founder review",
+      owner: "Founder",
+      score: founderReviewScore,
+      status: founderReviewScore >= 84 ? "Manual review can approve" : "Manual review should hold",
+      detail: "One founder must sign the invite note, stop condition, support cap, and rollback note.",
+      route: "#reviewer-release-binder"
+    }
+  ].map((gate) => ({
+    ...gate,
+    tone: gate.score >= 84 ? "ready" : gate.score >= 72 ? "watch" : "caution",
+    pass: gate.score >= 76
+  }));
+  const gateBlockers = [
+    ...ledger.blockers.slice(0, 6),
+    ...gates.filter((gate) => !gate.pass).map((gate) => `${gate.label}: ${gate.status}.`),
+    ...(scaleCandidate.verdict !== "Scale by hand" ? [`Selected candidate verdict is "${scaleCandidate.verdict}", so do not invite yet.`] : [])
+  ];
+  const gateScore = clampNumber(Math.round(
+    ledger.ledgerScore * 0.34 +
+    proofLockScore * 0.18 +
+    supportHeadroomScore * 0.16 +
+    receiptScore * 0.14 +
+    boundaryScore * 0.1 +
+    founderReviewScore * 0.08 -
+    gateBlockers.length * 2
+  ), 24, 96);
+  const inviteCap = gateScore >= 88 && gateBlockers.length === 0
+    ? Math.min(10, Math.max(3, scaleCandidate.paidIntentObserved))
+    : gateScore >= 78 && gateBlockers.length <= 1
+      ? Math.min(3, Math.max(1, scaleCandidate.paidIntentObserved))
+      : 0;
+  const decision = inviteCap > 0
+    ? `Invite ${inviteCap} users by hand from ${scaleCandidate.sourceLabel}; stop immediately if support, refund, or advice confusion appears.`
+    : `No invite yet. Repair ${scaleCandidate.experimentLabel} before any next wave.`;
+  const actionPlan = [
+    { label: "Pick one source", detail: `Use ${scaleCandidate.sourceLabel} only; do not mix channels while learning is unresolved.`, route: scaleCandidate.route },
+    { label: "Write the founder note", detail: "State what is being tested, what proof counts, and why this is research-only.", route: "#decision-pack" },
+    { label: "Set the hard stop", detail: `${scaleCandidate.stopCondition}`, route: "#paid-beta-support-ledger" },
+    { label: "Attach receipts", detail: "Invite, proof, payment intent, support case, refund, and rollback receipts must exist before widening.", route: "#source-receipts" },
+    { label: "Archive the verdict", detail: "Save only anonymous learning IDs, route names, scores, stop rules, and next action notes.", route: "#research-memory" }
+  ];
+  return {
+    gateId: ["NN", "FOUNDER", "BETA", "SCALE", "GATE", suffix].join("-").toUpperCase(),
+    gateScore,
+    tone: gateScore >= 88 && gateBlockers.length === 0 ? "ready" : gateScore >= 76 ? "watch" : "caution",
+    status: gateScore >= 88 && gateBlockers.length === 0 ? "Tiny wave allowed" : gateScore >= 76 ? "Founder hold review" : "No invite yet",
+    decision,
+    inviteCap,
+    scaleCandidate,
+    gates,
+    actionPlan,
+    blockers: gateBlockers,
+    metrics: [
+      { label: "Gate score", value: `${gateScore}/100`, detail: "Composite of learning, proof, support, receipts, boundary, and founder review." },
+      { label: "Candidate", value: scaleCandidate.experimentLabel, detail: `${scaleCandidate.verdict} from ${scaleCandidate.sourceLabel}.` },
+      { label: "Invite cap", value: `${inviteCap}`, detail: inviteCap ? "Manual users only; no public traffic." : "No new invites until blockers are repaired." },
+      { label: "Proof lock", value: `${scaleCandidate.proofObserved}/${scaleCandidate.proofTarget}`, detail: `${scaleCandidate.proofCompletion}% proof completion.` },
+      { label: "Support headroom", value: `${scaleCandidate.supportHeadroom}`, detail: "Negative or zero headroom blocks scale." },
+      { label: "Blockers", value: `${gateBlockers.length}`, detail: "All blockers must be cleared before a larger paid beta wave." }
+    ]
+  };
+}
+
 function marketStrategyConfig() {
   const tracker = buildTrackerConfig();
   const paidGate = MARKET_STRATEGY_SIGNALS.gates.find((gate) => gate.label === "Paid beta");
+  const flywheelScore = Math.round(
+    MARKET_STRATEGY_SIGNALS.flywheel.reduce((sum, step) => sum + step.score, 0) / MARKET_STRATEGY_SIGNALS.flywheel.length
+  );
+  const flywheelNext = MARKET_STRATEGY_SIGNALS.flywheel.reduce(
+    (lowest, step) => step.score < lowest.score ? step : lowest,
+    MARKET_STRATEGY_SIGNALS.flywheel[0]
+  );
   const phaseOneLaunch = Math.round(
     BUILD_TRACKER_PHASES
       .filter((phase) => phase.phase !== "Phase 2")
       .reduce((sum, phase) => sum + phase.launch, 0) /
       BUILD_TRACKER_PHASES.filter((phase) => phase.phase !== "Phase 2").length
   );
-  return {
+  const strategy = {
     ...MARKET_STRATEGY_SIGNALS,
     selectedFundName: selectedFund().name,
     buildScore: tracker.buildProgress,
     launchReadiness: tracker.launchReadiness,
+    flywheelScore,
+    flywheelNext,
     phaseOneLaunch,
     paidGate: paidGate || MARKET_STRATEGY_SIGNALS.gates[0]
+  };
+  const trustToPaidRadar = marketTrustToPaidRadar(strategy);
+  const paidBetaCohortConsole = marketPaidBetaCohortConsole({
+    ...strategy,
+    trustToPaidRadar
+  });
+  const founderInviteWaveRoom = marketFounderInviteWaveRoom({
+    ...strategy,
+    trustToPaidRadar,
+    paidBetaCohortConsole
+  });
+  const paidBetaInviteReceiptLedger = marketPaidBetaInviteReceiptLedger({
+    ...strategy,
+    trustToPaidRadar,
+    paidBetaCohortConsole,
+    founderInviteWaveRoom
+  });
+  const paidBetaObjectionReplayRoom = marketPaidBetaObjectionReplayRoom({
+    ...strategy,
+    trustToPaidRadar,
+    paidBetaCohortConsole,
+    founderInviteWaveRoom,
+    paidBetaInviteReceiptLedger
+  });
+  const paidBetaOfferLab = marketPaidBetaOfferLab({
+    ...strategy,
+    trustToPaidRadar,
+    paidBetaCohortConsole,
+    founderInviteWaveRoom,
+    paidBetaInviteReceiptLedger,
+    paidBetaObjectionReplayRoom
+  });
+  const founderBetaLandingScript = marketFounderBetaLandingScript({
+    ...strategy,
+    trustToPaidRadar,
+    paidBetaCohortConsole,
+    founderInviteWaveRoom,
+    paidBetaInviteReceiptLedger,
+    paidBetaObjectionReplayRoom,
+    paidBetaOfferLab
+  });
+  const founderBetaPagePreview = marketFounderBetaPagePreview({
+    ...strategy,
+    trustToPaidRadar,
+    paidBetaCohortConsole,
+    founderInviteWaveRoom,
+    paidBetaInviteReceiptLedger,
+    paidBetaObjectionReplayRoom,
+    paidBetaOfferLab,
+    founderBetaLandingScript
+  });
+  const founderBetaTrafficRehearsal = marketFounderBetaTrafficRehearsal({
+    ...strategy,
+    trustToPaidRadar,
+    paidBetaCohortConsole,
+    founderInviteWaveRoom,
+    paidBetaInviteReceiptLedger,
+    paidBetaObjectionReplayRoom,
+    paidBetaOfferLab,
+    founderBetaLandingScript,
+    founderBetaPagePreview
+  });
+  const founderBetaExperimentBoard = marketFounderBetaExperimentBoard({
+    ...strategy,
+    trustToPaidRadar,
+    paidBetaCohortConsole,
+    founderInviteWaveRoom,
+    paidBetaInviteReceiptLedger,
+    paidBetaObjectionReplayRoom,
+    paidBetaOfferLab,
+    founderBetaLandingScript,
+    founderBetaPagePreview,
+    founderBetaTrafficRehearsal
+  });
+  const founderBetaLearningLedger = marketFounderBetaLearningLedger({
+    ...strategy,
+    trustToPaidRadar,
+    paidBetaCohortConsole,
+    founderInviteWaveRoom,
+    paidBetaInviteReceiptLedger,
+    paidBetaObjectionReplayRoom,
+    paidBetaOfferLab,
+    founderBetaLandingScript,
+    founderBetaPagePreview,
+    founderBetaTrafficRehearsal,
+    founderBetaExperimentBoard
+  });
+  const founderBetaScaleGate = marketFounderBetaScaleGate({
+    ...strategy,
+    trustToPaidRadar,
+    paidBetaCohortConsole,
+    founderInviteWaveRoom,
+    paidBetaInviteReceiptLedger,
+    paidBetaObjectionReplayRoom,
+    paidBetaOfferLab,
+    founderBetaLandingScript,
+    founderBetaPagePreview,
+    founderBetaTrafficRehearsal,
+    founderBetaExperimentBoard,
+    founderBetaLearningLedger
+  });
+  return {
+    ...strategy,
+    trustToPaidRadar,
+    paidBetaCohortConsole,
+    founderInviteWaveRoom,
+    paidBetaInviteReceiptLedger,
+    paidBetaObjectionReplayRoom,
+    paidBetaOfferLab,
+    founderBetaLandingScript,
+    founderBetaPagePreview,
+    founderBetaTrafficRehearsal,
+    founderBetaExperimentBoard,
+    founderBetaLearningLedger,
+    founderBetaScaleGate
   };
 }
 
@@ -4128,6 +9619,670 @@ function renderMarketStrategyRoom() {
       <span>Monetization posture</span>
       <strong>${escapeHtml(strategy.pricing)}</strong>
       <p>${escapeHtml(strategy.boundary)}</p>
+    </div>
+    <div class="market-flywheel-card">
+      <div class="market-flywheel-head">
+        <div>
+          <span>Market moat flywheel</span>
+          <strong>${strategy.flywheelScore}/100 | ${escapeHtml(strategy.flywheelNext.label)} is the next proof</strong>
+          <p>Turn the product into a habit loop: profile, evidence, memo, paid memory, and consent-safe distributor graduation.</p>
+        </div>
+        <button class="text-button" id="copyMarketMoatFlywheel" type="button">Copy flywheel</button>
+      </div>
+      <div class="market-flywheel-grid">
+        ${strategy.flywheel.map((step, index) => `
+          <article class="${step.score >= 80 ? "ready" : step.score >= 68 ? "watch" : "caution"}">
+            <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(step.metric)}</span>
+            <strong>${escapeHtml(step.label)}</strong>
+            <div class="build-progress-bar"><span style="width:${step.score}%"></span></div>
+            <p>${escapeHtml(step.detail)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(step.route)}">Open proof</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="trust-paid-radar ${escapeHtml(strategy.trustToPaidRadar.tone)}">
+      <div class="trust-paid-head">
+        <div>
+          <span>Trust-to-paid conversion radar</span>
+          <strong>${strategy.trustToPaidRadar.score}/100 | ${escapeHtml(strategy.trustToPaidRadar.status)}</strong>
+          <p>${escapeHtml(strategy.trustToPaidRadar.recommendation)}</p>
+        </div>
+        <button class="text-button" id="copyTrustToPaidRadar" type="button">Copy radar</button>
+      </div>
+      <div class="trust-paid-metric-grid">
+        ${strategy.trustToPaidRadar.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="trust-paid-stage-grid">
+        ${strategy.trustToPaidRadar.stages.map((stage, index) => `
+          <article class="${stage.score >= 82 ? "ready" : stage.score >= 70 ? "watch" : "caution"}">
+            <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(stage.status)}</span>
+            <strong>${escapeHtml(stage.label)}</strong>
+            <div class="build-progress-bar"><span style="width:${stage.score}%"></span></div>
+            <p>${escapeHtml(stage.detail)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(stage.route)}">Open stage</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="trust-paid-blocker-grid">
+        <article>
+          <span>Paid ask</span>
+          <strong>${escapeHtml(strategy.trustToPaidRadar.ask)}</strong>
+          <p>${escapeHtml(strategy.trustToPaidRadar.proofRequirement)}</p>
+        </article>
+        <article>
+          <span>Founder boundary</span>
+          <strong>Earn trust before revenue</strong>
+          <p>${escapeHtml(strategy.trustToPaidRadar.boundary)}</p>
+        </article>
+        ${strategy.trustToPaidRadar.blockers.map((blocker) => `
+          <article class="caution">
+            <span>Weakest conversion node</span>
+            <strong>${escapeHtml(blocker.label)} ${blocker.score}/100</strong>
+            <p>${escapeHtml(blocker.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="paid-beta-cohort-console ${escapeHtml(strategy.paidBetaCohortConsole.tone)}">
+      <div class="paid-beta-cohort-head">
+        <div>
+          <span>First 100 paid beta console</span>
+          <strong>${escapeHtml(strategy.paidBetaCohortConsole.headline)} | ${escapeHtml(strategy.paidBetaCohortConsole.status)}</strong>
+          <p>${escapeHtml(strategy.paidBetaCohortConsole.decision)} ${escapeHtml(strategy.paidBetaCohortConsole.guardrail)}</p>
+        </div>
+        <button class="text-button" id="copyPaidBetaCohortConsole" type="button">Copy beta console</button>
+      </div>
+      <div class="paid-beta-cohort-metric-grid">
+        ${strategy.paidBetaCohortConsole.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="paid-beta-cohort-scenario-grid">
+        ${strategy.paidBetaCohortConsole.scenarios.map((scenario, index) => `
+          <article class="${scenario.invites <= strategy.paidBetaCohortConsole.inviteCap ? "ready" : "watch"}">
+            <span>${String(index + 1).padStart(2, "0")} ${scenario.invites} invites</span>
+            <strong>${escapeHtml(scenario.label)}</strong>
+            <p>${scenario.paidSeats} expected paid seats | ${formatMoney(scenario.cashSignal)} first cash | ${formatMoney(scenario.annualizedSignal)} annualized.</p>
+            <small>${escapeHtml(scenario.detail)}</small>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(scenario.route)}">Open cohort route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="paid-beta-cohort-rule-grid">
+        ${strategy.paidBetaCohortConsole.rules.map((rule) => `
+          <article>
+            <span>Founder rule</span>
+            <strong>${escapeHtml(rule.label)}</strong>
+            <p>${escapeHtml(rule.detail)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(rule.route)}">Open rule</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="founder-invite-wave-room ${escapeHtml(strategy.founderInviteWaveRoom.tone)}">
+      <div class="founder-invite-wave-head">
+        <div>
+          <span>Founder invite wave room</span>
+          <strong>${strategy.founderInviteWaveRoom.inviteScore}/100 | ${escapeHtml(strategy.founderInviteWaveRoom.status)}</strong>
+          <p>${escapeHtml(strategy.founderInviteWaveRoom.decision)}</p>
+        </div>
+        <button class="text-button" id="copyFounderInviteWaveRoom" type="button">Copy invite room</button>
+      </div>
+      <div class="founder-invite-wave-metric-grid">
+        ${strategy.founderInviteWaveRoom.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-invite-wave-grid">
+        ${strategy.founderInviteWaveRoom.waves.map((wave, index) => `
+          <article class="${escapeHtml(wave.tone)}">
+            <span>${String(index + 1).padStart(2, "0")} ${wave.cap} seats</span>
+            <strong>${escapeHtml(wave.label)}</strong>
+            <p>${escapeHtml(wave.ask)}</p>
+            <div class="build-progress-bar"><span style="width:${wave.score}%"></span></div>
+            <small>${escapeHtml(wave.signal)}</small>
+            <p>${escapeHtml(wave.stop)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(wave.route)}">Open wave route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-invite-wave-safeguards">
+        ${strategy.founderInviteWaveRoom.safeguards.map((guard) => `
+          <article>
+            <span>Invite safeguard</span>
+            <strong>${escapeHtml(guard.label)}</strong>
+            <p>${escapeHtml(guard.detail)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(guard.route)}">Open safeguard</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="paid-beta-invite-ledger ${escapeHtml(strategy.paidBetaInviteReceiptLedger.tone)}">
+      <div class="paid-beta-invite-ledger-head">
+        <div>
+          <span>Paid beta invite receipt ledger</span>
+          <strong>${strategy.paidBetaInviteReceiptLedger.ledgerScore}/100 | ${escapeHtml(strategy.paidBetaInviteReceiptLedger.status)}</strong>
+          <p>${escapeHtml(strategy.paidBetaInviteReceiptLedger.decision)}</p>
+        </div>
+        <button class="text-button" id="copyPaidBetaInviteLedger" type="button">Copy invite ledger</button>
+      </div>
+      <div class="paid-beta-invite-ledger-metric-grid">
+        ${strategy.paidBetaInviteReceiptLedger.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="paid-beta-invite-ledger-row-grid">
+        ${strategy.paidBetaInviteReceiptLedger.receiptRows.map((row) => `
+          <article class="${escapeHtml(row.tone)}">
+            <div>
+              <span>${escapeHtml(row.owner)}</span>
+              <strong>${escapeHtml(row.label)}</strong>
+            </div>
+            <b>${row.score}/100</b>
+            <p>${escapeHtml(row.event)}</p>
+            <small>${escapeHtml(row.receiptId)}</small>
+            <p>${escapeHtml(row.required)}</p>
+            <p>${escapeHtml(row.redaction)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(row.route)}">Open receipt route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="paid-beta-invite-ledger-two">
+        <article>
+          <span>Required payload fields</span>
+          <strong>${strategy.paidBetaInviteReceiptLedger.payloadFields.length} receipt fields</strong>
+          <ul>${strategy.paidBetaInviteReceiptLedger.payloadFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}</ul>
+        </article>
+        <article class="${strategy.paidBetaInviteReceiptLedger.openBlockers.length ? "caution" : "ready"}">
+          <span>Next-wave blockers</span>
+          <strong>${strategy.paidBetaInviteReceiptLedger.openBlockers.length ? `${strategy.paidBetaInviteReceiptLedger.openBlockers.length} blockers` : "No receipt blocker"}</strong>
+          <ul>${(strategy.paidBetaInviteReceiptLedger.openBlockers.length ? strategy.paidBetaInviteReceiptLedger.openBlockers.map((row) => row.blocker) : ["Invite receipt rehearsal is clear inside this prototype."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        </article>
+      </div>
+      <div class="paid-beta-invite-ledger-rule-grid">
+        ${strategy.paidBetaInviteReceiptLedger.releaseRules.map((rule) => `
+          <article>
+            <span>Ledger release rule</span>
+            <strong>${escapeHtml(rule.label)}</strong>
+            <p>${escapeHtml(rule.detail)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(rule.route)}">Open rule</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="paid-beta-objection-room ${escapeHtml(strategy.paidBetaObjectionReplayRoom.tone)}">
+      <div class="paid-beta-objection-head">
+        <div>
+          <span>Paid beta objection replay room</span>
+          <strong>${strategy.paidBetaObjectionReplayRoom.replayScore}/100 | ${escapeHtml(strategy.paidBetaObjectionReplayRoom.status)}</strong>
+          <p>${escapeHtml(strategy.paidBetaObjectionReplayRoom.decision)}</p>
+        </div>
+        <button class="text-button" id="copyPaidBetaObjectionReplay" type="button">Copy objection replay</button>
+      </div>
+      <div class="paid-beta-objection-metric-grid">
+        ${strategy.paidBetaObjectionReplayRoom.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="paid-beta-objection-grid">
+        ${strategy.paidBetaObjectionReplayRoom.objections.map((objection, index) => `
+          <article class="${escapeHtml(objection.tone)}">
+            <div>
+              <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(objection.source)}</span>
+              <strong>${escapeHtml(objection.label)}</strong>
+            </div>
+            <b>${objection.score}/100</b>
+            <p>${escapeHtml(objection.signal)}</p>
+            <small>${escapeHtml(objection.replayId)}</small>
+            <p><b>Reply:</b> ${escapeHtml(objection.reply)}</p>
+            <p><b>Copy fix:</b> ${escapeHtml(objection.copyFix)}</p>
+            <p><b>Next ask:</b> ${escapeHtml(objection.nextAsk)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(objection.route)}">Open proof route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="paid-beta-objection-rule-grid">
+        ${strategy.paidBetaObjectionReplayRoom.replayRules.map((rule) => `
+          <article>
+            <span>Replay rule</span>
+            <strong>${escapeHtml(rule.label)}</strong>
+            <p>${escapeHtml(rule.detail)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(rule.route)}">Open rule</button>
+          </article>
+        `).join("")}
+      </div>
+    </div>
+    <div class="paid-beta-offer-lab ${escapeHtml(strategy.paidBetaOfferLab.tone)}">
+      <div class="paid-beta-offer-lab-head">
+        <div>
+          <span>Paid beta offer lab</span>
+          <strong>${strategy.paidBetaOfferLab.offerScore}/100 | ${escapeHtml(strategy.paidBetaOfferLab.status)}</strong>
+          <p>${escapeHtml(strategy.paidBetaOfferLab.decision)}</p>
+        </div>
+        <button class="text-button" id="copyPaidBetaOfferLab" type="button">Copy offer lab</button>
+      </div>
+      <div class="paid-beta-offer-lab-metric-grid">
+        ${strategy.paidBetaOfferLab.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="paid-beta-offer-lab-variant-grid">
+        ${strategy.paidBetaOfferLab.offerVariants.map((offer, index) => `
+          <article class="${escapeHtml(offer.tone)}">
+            <div>
+              <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(offer.price)}</span>
+              <strong>${escapeHtml(offer.label)}</strong>
+            </div>
+            <b>${offer.score}/100</b>
+            <p>${escapeHtml(offer.audience)}</p>
+            <small>${escapeHtml(offer.offerId)}</small>
+            <p><b>Promise:</b> ${escapeHtml(offer.promise)}</p>
+            <p><b>Proof:</b> ${escapeHtml(offer.proof)}</p>
+            <p><b>Objection handled:</b> ${escapeHtml(offer.objectionHandled)}</p>
+            <p><b>CTA:</b> ${escapeHtml(offer.cta)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(offer.route)}">Open offer proof</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="paid-beta-offer-lab-copy-grid">
+        ${strategy.paidBetaOfferLab.copyBlocks.map((block) => `
+          <article>
+            <span>${escapeHtml(block.label)}</span>
+            <strong>${escapeHtml(block.value)}</strong>
+            <p>${escapeHtml(block.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="paid-beta-offer-lab-rule-grid">
+        ${strategy.paidBetaOfferLab.noSellRules.map((rule) => `
+          <article>
+            <span>No-sell rule</span>
+            <strong>${escapeHtml(rule.label)}</strong>
+            <p>${escapeHtml(rule.detail)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(rule.route)}">Open rule</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="paid-beta-offer-lab-blockers ${strategy.paidBetaOfferLab.openBlockers.length ? "caution" : "ready"}">
+        <span>Offer blockers</span>
+        <strong>${strategy.paidBetaOfferLab.openBlockers.length ? `${strategy.paidBetaOfferLab.openBlockers.length} blockers before broad ask` : "Founder offer can be tested carefully"}</strong>
+        <ul>${(strategy.paidBetaOfferLab.openBlockers.length ? strategy.paidBetaOfferLab.openBlockers : ["Keep the offer small, source-labeled, refund-aware, and research-only."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </div>
+    </div>
+    <div class="founder-beta-landing-script ${escapeHtml(strategy.founderBetaLandingScript.tone)}">
+      <div class="founder-beta-landing-head">
+        <div>
+          <span>Founder beta landing script</span>
+          <strong>${strategy.founderBetaLandingScript.landingScore}/100 | ${escapeHtml(strategy.founderBetaLandingScript.status)}</strong>
+          <p>${escapeHtml(strategy.founderBetaLandingScript.decision)}</p>
+        </div>
+        <button class="text-button" id="copyFounderBetaLandingScript" type="button">Copy landing script</button>
+      </div>
+      <div class="founder-beta-landing-metric-grid">
+        ${strategy.founderBetaLandingScript.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-landing-proof-grid">
+        ${strategy.founderBetaLandingScript.proofSteps.map((step, index) => `
+          <article class="${escapeHtml(step.tone)}">
+            <div>
+              <span>${String(index + 1).padStart(2, "0")} Proof step</span>
+              <strong>${escapeHtml(step.label)}</strong>
+            </div>
+            <b>${step.score}/100</b>
+            <p>${escapeHtml(step.detail)}</p>
+            <small>${escapeHtml(step.stepId)}</small>
+            <p><b>Proof:</b> ${escapeHtml(step.proof)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(step.route)}">Open proof step</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-landing-copy-grid">
+        ${strategy.founderBetaLandingScript.copyDeck.map((block) => `
+          <article>
+            <span>${escapeHtml(block.label)}</span>
+            <strong>${escapeHtml(block.copy)}</strong>
+            <p>${escapeHtml(block.reason)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-landing-cta-grid">
+        ${strategy.founderBetaLandingScript.ctaRules.map((rule) => `
+          <article>
+            <span>${escapeHtml(rule.label)}</span>
+            <strong>${escapeHtml(rule.copy)}</strong>
+            <p><b>Trigger:</b> ${escapeHtml(rule.trigger)}</p>
+            <p><b>Block if:</b> ${escapeHtml(rule.blockIf)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(rule.route)}">Open CTA proof</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-landing-trust-grid">
+        ${strategy.founderBetaLandingScript.trustTiles.map((tile) => `
+          <article>
+            <span>${escapeHtml(tile.label)}</span>
+            <strong>${escapeHtml(tile.value)}</strong>
+            <p>${escapeHtml(tile.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-landing-blockers ${strategy.founderBetaLandingScript.blockers.length ? "caution" : "ready"}">
+        <span>Landing blockers</span>
+        <strong>${strategy.founderBetaLandingScript.blockers.length ? `${strategy.founderBetaLandingScript.blockers.length} blockers before public page` : "Founder page can be tested carefully"}</strong>
+        <ul>${(strategy.founderBetaLandingScript.blockers.length ? strategy.founderBetaLandingScript.blockers : ["Keep the landing page founder-only, proof-led, refund-aware, source-labeled, and research-only."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </div>
+    </div>
+    <div class="founder-beta-page-preview ${escapeHtml(strategy.founderBetaPagePreview.tone)}">
+      <div class="founder-beta-page-preview-head">
+        <div>
+          <span>Founder beta page preview</span>
+          <strong>${strategy.founderBetaPagePreview.pageScore}/100 | ${escapeHtml(strategy.founderBetaPagePreview.status)}</strong>
+          <p>${escapeHtml(strategy.founderBetaPagePreview.decision)}</p>
+        </div>
+        <button class="text-button" id="copyFounderBetaPagePreview" type="button">Copy page preview</button>
+      </div>
+      <div class="founder-beta-page-preview-surface">
+        <div>
+          <span>${escapeHtml(strategy.founderBetaPagePreview.hero.eyebrow)}</span>
+          <strong>${escapeHtml(strategy.founderBetaPagePreview.hero.headline)}</strong>
+          <p>${escapeHtml(strategy.founderBetaPagePreview.hero.subhead)}</p>
+          <small>${escapeHtml(strategy.founderBetaPagePreview.hero.boundary)}</small>
+        </div>
+        <div class="founder-beta-page-preview-actions">
+          <b>${escapeHtml(strategy.founderBetaPagePreview.hero.price)}</b>
+          <button class="text-button" type="button" data-market-route="#decision-pack">${escapeHtml(strategy.founderBetaPagePreview.hero.primaryCta)}</button>
+          <button class="text-button" type="button" data-market-route="#evidence">${escapeHtml(strategy.founderBetaPagePreview.hero.secondaryCta)}</button>
+        </div>
+      </div>
+      <div class="founder-beta-page-preview-metric-grid">
+        ${strategy.founderBetaPagePreview.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-page-preview-section-grid">
+        ${strategy.founderBetaPagePreview.pageSections.map((section, index) => `
+          <article class="${escapeHtml(section.tone)}">
+            <div>
+              <span>${String(index + 1).padStart(2, "0")} Page section</span>
+              <strong>${escapeHtml(section.heading)}</strong>
+            </div>
+            <b>${section.score}/100</b>
+            <p>${escapeHtml(section.body)}</p>
+            <small>${escapeHtml(section.sectionId)}</small>
+            <p><b>Proof:</b> ${escapeHtml(section.proof)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(section.route)}">Open section proof</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-page-preview-cta-grid">
+        ${strategy.founderBetaPagePreview.ctaStates.map((state) => `
+          <article>
+            <span>${escapeHtml(state.label)} | ${escapeHtml(state.allowed)}</span>
+            <strong>${escapeHtml(state.cta)}</strong>
+            <p>${escapeHtml(state.detail)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(state.route)}">Open CTA route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-page-preview-checklist-grid">
+        ${strategy.founderBetaPagePreview.launchChecklist.map((item) => `
+          <article>
+            <span>${escapeHtml(item.status)}</span>
+            <strong>${escapeHtml(item.label)}</strong>
+            <p>${escapeHtml(item.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-page-preview-blockers ${strategy.founderBetaPagePreview.blockers.length ? "caution" : "ready"}">
+        <span>Preview blockers</span>
+        <strong>${strategy.founderBetaPagePreview.blockers.length ? `${strategy.founderBetaPagePreview.blockers.length} blockers before traffic` : "Private preview can be tested carefully"}</strong>
+        <ul>${(strategy.founderBetaPagePreview.blockers.length ? strategy.founderBetaPagePreview.blockers : ["Keep the page private, proof-led, founder-capped, refund-aware, and research-only until production gates are ready."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </div>
+    </div>
+    <div class="founder-beta-traffic-rehearsal ${escapeHtml(strategy.founderBetaTrafficRehearsal.tone)}">
+      <div class="founder-beta-traffic-head">
+        <div>
+          <span>Founder beta traffic rehearsal</span>
+          <strong>${strategy.founderBetaTrafficRehearsal.rehearsalScore}/100 | ${escapeHtml(strategy.founderBetaTrafficRehearsal.status)}</strong>
+          <p>${escapeHtml(strategy.founderBetaTrafficRehearsal.decision)}</p>
+        </div>
+        <button class="text-button" id="copyFounderBetaTrafficRehearsal" type="button">Copy traffic rehearsal</button>
+      </div>
+      <div class="founder-beta-traffic-metric-grid">
+        ${strategy.founderBetaTrafficRehearsal.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-traffic-source-grid">
+        ${strategy.founderBetaTrafficRehearsal.trafficSources.map((source, index) => `
+          <article class="${escapeHtml(source.tone)}">
+            <div>
+              <span>${String(index + 1).padStart(2, "0")} Traffic source</span>
+              <strong>${escapeHtml(source.label)}</strong>
+            </div>
+            <b>${source.sourceScore}/100</b>
+            <p><b>Visitors:</b> ${source.visitors} | <b>Proof:</b> ${source.proofActions} | <b>Paid:</b> ${source.paidSeats}</p>
+            <p><b>Support:</b> ${source.supportCases} cases | <b>First cash:</b> ${formatMoney(source.firstCash)}</p>
+            <p>${escapeHtml(source.signal)}</p>
+            <small>${escapeHtml(source.sourceId)}</small>
+            <p><b>Risk:</b> ${escapeHtml(source.risk)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(source.route)}">Open source proof</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-traffic-rule-grid">
+        ${strategy.founderBetaTrafficRehearsal.stopRules.map((rule) => `
+          <article>
+            <span>Stop rule</span>
+            <strong>${escapeHtml(rule.label)}</strong>
+            <p><b>Trigger:</b> ${escapeHtml(rule.trigger)}</p>
+            <p>${escapeHtml(rule.rule)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(rule.route)}">Open rule route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-traffic-blockers ${strategy.founderBetaTrafficRehearsal.blockers.length ? "caution" : "ready"}">
+        <span>Traffic blockers</span>
+        <strong>${strategy.founderBetaTrafficRehearsal.blockers.length ? `${strategy.founderBetaTrafficRehearsal.blockers.length} blockers before traffic` : "Private traffic rehearsal can run carefully"}</strong>
+        <ul>${(strategy.founderBetaTrafficRehearsal.blockers.length ? strategy.founderBetaTrafficRehearsal.blockers : ["Keep the rehearsal private, invite-led, source-labeled, refund-aware, and research-only."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </div>
+    </div>
+    <div class="founder-beta-experiment-board ${escapeHtml(strategy.founderBetaExperimentBoard.tone)}">
+      <div class="founder-beta-experiment-head">
+        <div>
+          <span>Founder beta experiment board</span>
+          <strong>${strategy.founderBetaExperimentBoard.boardScore}/100 | ${escapeHtml(strategy.founderBetaExperimentBoard.status)}</strong>
+          <p>${escapeHtml(strategy.founderBetaExperimentBoard.decision)}</p>
+        </div>
+        <button class="text-button" id="copyFounderBetaExperimentBoard" type="button">Copy experiment board</button>
+      </div>
+      <div class="founder-beta-experiment-metric-grid">
+        ${strategy.founderBetaExperimentBoard.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-experiment-grid">
+        ${strategy.founderBetaExperimentBoard.experiments.map((experiment, index) => `
+          <article class="${escapeHtml(experiment.tone)}">
+            <div>
+              <span>${String(index + 1).padStart(2, "0")} Experiment</span>
+              <strong>${escapeHtml(experiment.label)}</strong>
+              <p>${escapeHtml(experiment.status)}</p>
+            </div>
+            <b>${experiment.learningScore}/100</b>
+            <p><b>Source:</b> ${escapeHtml(experiment.sourceLabel)} | <b>Promise:</b> ${escapeHtml(experiment.promise)}</p>
+            <p><b>CTA:</b> ${escapeHtml(experiment.cta)}</p>
+            <p>${escapeHtml(experiment.hypothesis)}</p>
+            <small>${escapeHtml(experiment.experimentId)}</small>
+            <p><b>Targets:</b> ${experiment.proofTarget} proof actions, ${experiment.paidTarget} paid-intent signals, ${experiment.supportCeiling} support-case ceiling.</p>
+            <p><b>Success:</b> ${escapeHtml(experiment.successMetric)}</p>
+            <p><b>Stop:</b> ${escapeHtml(experiment.stopRule)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(experiment.route)}">Open experiment route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-experiment-rhythm-grid">
+        ${strategy.founderBetaExperimentBoard.reviewCadence.map((item) => `
+          <article>
+            <span>Review rule</span>
+            <strong>${escapeHtml(item.label)}</strong>
+            <p>${escapeHtml(item.detail)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(item.route)}">Open rule route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-experiment-blockers ${strategy.founderBetaExperimentBoard.blockers.length ? "caution" : "ready"}">
+        <span>Experiment blockers</span>
+        <strong>${strategy.founderBetaExperimentBoard.blockers.length ? `${strategy.founderBetaExperimentBoard.blockers.length} blockers before experiments` : "One tiny experiment can run carefully"}</strong>
+        <ul>${(strategy.founderBetaExperimentBoard.blockers.length ? strategy.founderBetaExperimentBoard.blockers : ["Run one experiment at a time, stop on advice confusion, support overload, refund doubt, or source-date weakness."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </div>
+    </div>
+    <div class="founder-beta-learning-ledger ${escapeHtml(strategy.founderBetaLearningLedger.tone)}">
+      <div class="founder-beta-learning-head">
+        <div>
+          <span>Founder beta learning ledger</span>
+          <strong>${strategy.founderBetaLearningLedger.ledgerScore}/100 | ${escapeHtml(strategy.founderBetaLearningLedger.status)}</strong>
+          <p>${escapeHtml(strategy.founderBetaLearningLedger.decision)}</p>
+        </div>
+        <button class="text-button" id="copyFounderBetaLearningLedger" type="button">Copy learning ledger</button>
+      </div>
+      <div class="founder-beta-learning-metric-grid">
+        ${strategy.founderBetaLearningLedger.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-learning-row-grid">
+        ${strategy.founderBetaLearningLedger.learningRows.map((row, index) => `
+          <article class="${escapeHtml(row.tone)}">
+            <div>
+              <span>${String(index + 1).padStart(2, "0")} Learning row</span>
+              <strong>${escapeHtml(row.experimentLabel)}</strong>
+              <p>${escapeHtml(row.verdict)}</p>
+            </div>
+            <b>${row.learningScore}/100</b>
+            <p><b>Source:</b> ${escapeHtml(row.sourceLabel)} | <b>Promise:</b> ${escapeHtml(row.promise)}</p>
+            <small>${escapeHtml(row.learningId)}</small>
+            <p><b>Proof:</b> ${row.proofObserved}/${row.proofTarget} (${row.proofCompletion}%)</p>
+            <p><b>Paid intent:</b> ${row.paidIntentObserved}/${row.paidTarget} (${row.paidIntentCompletion}%)</p>
+            <p><b>Support:</b> ${row.supportObserved}/${row.supportCeiling} | Headroom ${row.supportHeadroom}</p>
+            <p><b>Next:</b> ${escapeHtml(row.nextAction)}</p>
+            <p><b>Stop:</b> ${escapeHtml(row.stopCondition)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(row.route)}">Open learning route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-learning-rule-grid">
+        ${strategy.founderBetaLearningLedger.ledgerRules.map((rule) => `
+          <article>
+            <span>Ledger rule</span>
+            <strong>${escapeHtml(rule.label)}</strong>
+            <p>${escapeHtml(rule.detail)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(rule.route)}">Open rule route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-learning-blockers ${strategy.founderBetaLearningLedger.blockers.length ? "caution" : "ready"}">
+        <span>Learning blockers</span>
+        <strong>${strategy.founderBetaLearningLedger.blockers.length ? `${strategy.founderBetaLearningLedger.blockers.length} blockers before scale` : "Learning can move into one tiny invite wave"}</strong>
+        <ul>${(strategy.founderBetaLearningLedger.blockers.length ? strategy.founderBetaLearningLedger.blockers : ["Keep scale manual, founder-reviewed, proof-led, support-capped, refund-aware, and research-only."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </div>
+    </div>
+    <div class="founder-beta-scale-gate ${escapeHtml(strategy.founderBetaScaleGate.tone)}">
+      <div class="founder-beta-scale-head">
+        <div>
+          <span>Founder beta scale gate</span>
+          <strong>${strategy.founderBetaScaleGate.gateScore}/100 | ${escapeHtml(strategy.founderBetaScaleGate.status)}</strong>
+          <p>${escapeHtml(strategy.founderBetaScaleGate.decision)}</p>
+        </div>
+        <button class="text-button" id="copyFounderBetaScaleGate" type="button">Copy scale gate</button>
+      </div>
+      <div class="founder-beta-scale-metric-grid">
+        ${strategy.founderBetaScaleGate.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-scale-gate-grid">
+        ${strategy.founderBetaScaleGate.gates.map((gate, index) => `
+          <article class="${escapeHtml(gate.tone)}">
+            <div>
+              <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(gate.owner)}</span>
+              <strong>${escapeHtml(gate.label)}</strong>
+            </div>
+            <b>${gate.score}/100</b>
+            <p>${escapeHtml(gate.status)}</p>
+            <div class="build-progress-bar"><span style="width:${gate.score}%"></span></div>
+            <p>${escapeHtml(gate.detail)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(gate.route)}">Open gate route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-scale-action-grid">
+        ${strategy.founderBetaScaleGate.actionPlan.map((action) => `
+          <article>
+            <span>Scale action</span>
+            <strong>${escapeHtml(action.label)}</strong>
+            <p>${escapeHtml(action.detail)}</p>
+            <button class="text-button" type="button" data-market-route="${escapeHtml(action.route)}">Open action route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-beta-scale-blockers ${strategy.founderBetaScaleGate.blockers.length ? "caution" : "ready"}">
+        <span>Scale blockers</span>
+        <strong>${strategy.founderBetaScaleGate.blockers.length ? `${strategy.founderBetaScaleGate.blockers.length} blockers before next wave` : "Tiny manual wave can open"}</strong>
+        <ul>${(strategy.founderBetaScaleGate.blockers.length ? strategy.founderBetaScaleGate.blockers : ["Open only the approved invite cap, watch every support case, and stop on refund, advice, or source-date confusion."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </div>
     </div>
     <div class="market-strategy-competitor-grid">
       ${strategy.competitors.map((item) => `
@@ -4192,6 +10347,116 @@ function makeMarketStrategyBrief() {
     "## Monetization Scenarios",
     ...strategy.economics.map((item) => `- ${item.label}: ${item.value}. ${item.detail}`),
     "",
+    "## Market Moat Flywheel",
+    `Flywheel score: ${strategy.flywheelScore}/100`,
+    `Next proof: ${strategy.flywheelNext.label} -> ${strategy.flywheelNext.route}`,
+    ...strategy.flywheel.map((step, index) => `${index + 1}. ${step.label}: ${step.score}/100 | ${step.metric}. ${step.detail}`),
+    "",
+    "## Trust-to-Paid Conversion Radar",
+    `Radar score: ${strategy.trustToPaidRadar.score}/100`,
+    `Status: ${strategy.trustToPaidRadar.status}`,
+    `Recommendation: ${strategy.trustToPaidRadar.recommendation}`,
+    `Paid ask: ${strategy.trustToPaidRadar.ask}`,
+    `Proof required: ${strategy.trustToPaidRadar.proofRequirement}`,
+    ...strategy.trustToPaidRadar.stages.map((stage, index) => `${index + 1}. ${stage.label}: ${stage.score}/100 | ${stage.status}. ${stage.detail}`),
+    "",
+    "## First 100 Paid Beta Console",
+    `Invite cap: ${strategy.paidBetaCohortConsole.inviteCap}`,
+    `Expected paid seats: ${strategy.paidBetaCohortConsole.expectedPaidSeats}`,
+    `First cash signal: ${formatMoney(strategy.paidBetaCohortConsole.firstCashSignal)}`,
+    `Annualized signal: ${formatMoney(strategy.paidBetaCohortConsole.annualizedSignal)}`,
+    `Support load: ${strategy.paidBetaCohortConsole.supportLoad} cases`,
+    `Guardrail: ${strategy.paidBetaCohortConsole.guardrail}`,
+    ...strategy.paidBetaCohortConsole.scenarios.map((scenario) => `- ${scenario.label}: ${scenario.invites} invites, ${scenario.conversion}% conversion, ${scenario.paidSeats} paid seats, ${formatMoney(scenario.cashSignal)} first cash.`),
+    "",
+    "## Founder Invite Wave Room",
+    `Invite score: ${strategy.founderInviteWaveRoom.inviteScore}/100`,
+    `Status: ${strategy.founderInviteWaveRoom.status}`,
+    `Proof-qualified users: ${strategy.founderInviteWaveRoom.proofQualifiedUsers}`,
+    `Founder wave: ${strategy.founderInviteWaveRoom.founderWave}`,
+    `Expected first-wave paid seats: ${strategy.founderInviteWaveRoom.expectedPaidFromFounderWave}`,
+    `First-wave cash signal: ${formatMoney(strategy.founderInviteWaveRoom.firstWaveCash)}`,
+    ...strategy.founderInviteWaveRoom.waves.map((wave) => `- ${wave.label}: cap ${wave.cap}, ${wave.ask}. ${wave.stop}`),
+    "",
+    "## Paid Beta Invite Receipt Ledger",
+    `Ledger ID: ${strategy.paidBetaInviteReceiptLedger.ledgerId}`,
+    `Ledger score: ${strategy.paidBetaInviteReceiptLedger.ledgerScore}/100`,
+    `Status: ${strategy.paidBetaInviteReceiptLedger.status}`,
+    `Open blockers: ${strategy.paidBetaInviteReceiptLedger.openBlockers.length}`,
+    ...strategy.paidBetaInviteReceiptLedger.receiptRows.map((row) => `- ${row.label}: ${row.score}/100 | ${row.event} | ${row.blocker}`),
+    "",
+    "## Paid Beta Objection Replay Room",
+    `Replay ID: ${strategy.paidBetaObjectionReplayRoom.replayId}`,
+    `Replay score: ${strategy.paidBetaObjectionReplayRoom.replayScore}/100`,
+    `Status: ${strategy.paidBetaObjectionReplayRoom.status}`,
+    `Weakest objection: ${strategy.paidBetaObjectionReplayRoom.nextObjection.label} (${strategy.paidBetaObjectionReplayRoom.nextObjection.score}/100)`,
+    ...strategy.paidBetaObjectionReplayRoom.objections.map((objection) => `- ${objection.label}: ${objection.score}/100 | Reply: ${objection.reply} | Copy fix: ${objection.copyFix} | Next ask: ${objection.nextAsk}`),
+    "",
+    "## Paid Beta Offer Lab",
+    `Offer ID: ${strategy.paidBetaOfferLab.offerId}`,
+    `Offer score: ${strategy.paidBetaOfferLab.offerScore}/100`,
+    `Status: ${strategy.paidBetaOfferLab.status}`,
+    `Primary offer: ${strategy.paidBetaOfferLab.primaryOffer.label} (${strategy.paidBetaOfferLab.primaryOffer.price})`,
+    `Decision: ${strategy.paidBetaOfferLab.decision}`,
+    ...strategy.paidBetaOfferLab.offerVariants.map((offer) => `- ${offer.label}: ${offer.score}/100 | ${offer.promise} | CTA: ${offer.cta}`),
+    "",
+    "## Founder Beta Landing Script",
+    `Script ID: ${strategy.founderBetaLandingScript.scriptId}`,
+    `Landing score: ${strategy.founderBetaLandingScript.landingScore}/100`,
+    `Status: ${strategy.founderBetaLandingScript.status}`,
+    `Decision: ${strategy.founderBetaLandingScript.decision}`,
+    ...strategy.founderBetaLandingScript.copyDeck.map((block) => `- ${block.label}: ${block.copy}. ${block.reason}`),
+    "",
+    "## Founder Beta Page Preview",
+    `Preview ID: ${strategy.founderBetaPagePreview.previewId}`,
+    `Preview score: ${strategy.founderBetaPagePreview.pageScore}/100`,
+    `Status: ${strategy.founderBetaPagePreview.status}`,
+    `Hero: ${strategy.founderBetaPagePreview.hero.headline}`,
+    `Boundary: ${strategy.founderBetaPagePreview.hero.boundary}`,
+    ...strategy.founderBetaPagePreview.pageSections.map((section) => `- ${section.label}: ${section.score}/100 | ${section.heading}. ${section.proof}`),
+    "",
+    "## Founder Beta Traffic Rehearsal",
+    `Rehearsal ID: ${strategy.founderBetaTrafficRehearsal.rehearsalId}`,
+    `Rehearsal score: ${strategy.founderBetaTrafficRehearsal.rehearsalScore}/100`,
+    `Status: ${strategy.founderBetaTrafficRehearsal.status}`,
+    `Visitors: ${strategy.founderBetaTrafficRehearsal.totals.visitors}`,
+    `Proof actions: ${strategy.founderBetaTrafficRehearsal.totals.proofActions}`,
+    `Paid seats: ${strategy.founderBetaTrafficRehearsal.totals.paidSeats}`,
+    `Support cases: ${strategy.founderBetaTrafficRehearsal.totals.supportCases}`,
+    `First cash signal: ${formatMoney(strategy.founderBetaTrafficRehearsal.totals.firstCash)}`,
+    ...strategy.founderBetaTrafficRehearsal.trafficSources.map((source) => `- ${source.label}: ${source.sourceScore}/100 | ${source.visitors} visitors | ${source.proofActions} proof actions | ${source.paidSeats} paid seats | ${source.supportCases} support cases | ${formatMoney(source.firstCash)} first cash. Risk: ${source.risk}`),
+    "",
+    "## Founder Beta Experiment Board",
+    `Board ID: ${strategy.founderBetaExperimentBoard.boardId}`,
+    `Board score: ${strategy.founderBetaExperimentBoard.boardScore}/100`,
+    `Status: ${strategy.founderBetaExperimentBoard.status}`,
+    `Ready tiny tests: ${strategy.founderBetaExperimentBoard.totals.readyExperiments}`,
+    `Proof target: ${strategy.founderBetaExperimentBoard.totals.totalProofTarget}`,
+    `Paid-intent target: ${strategy.founderBetaExperimentBoard.totals.totalPaidTarget}`,
+    `Support ceiling: ${strategy.founderBetaExperimentBoard.totals.totalSupportCeiling}`,
+    ...strategy.founderBetaExperimentBoard.experiments.map((experiment) => `- ${experiment.label}: ${experiment.learningScore}/100 | ${experiment.sourceLabel} | ${experiment.promise} | Success: ${experiment.successMetric} | Stop: ${experiment.stopRule}`),
+    "",
+    "## Founder Beta Learning Ledger",
+    `Ledger ID: ${strategy.founderBetaLearningLedger.ledgerId}`,
+    `Ledger score: ${strategy.founderBetaLearningLedger.ledgerScore}/100`,
+    `Status: ${strategy.founderBetaLearningLedger.status}`,
+    `Scale by hand: ${strategy.founderBetaLearningLedger.totals.scaleRows}`,
+    `Repeat: ${strategy.founderBetaLearningLedger.totals.repeatRows}`,
+    `Stop and repair: ${strategy.founderBetaLearningLedger.totals.stopRows}`,
+    `Proof observed: ${strategy.founderBetaLearningLedger.totals.proofObserved}/${strategy.founderBetaLearningLedger.totals.proofTarget}`,
+    `Paid intent observed: ${strategy.founderBetaLearningLedger.totals.paidIntentObserved}`,
+    `Support headroom: ${strategy.founderBetaLearningLedger.totals.supportHeadroom}`,
+    ...strategy.founderBetaLearningLedger.learningRows.map((row) => `- ${row.experimentLabel}: ${row.learningScore}/100 | ${row.verdict} | Proof ${row.proofObserved}/${row.proofTarget} | Paid intent ${row.paidIntentObserved}/${row.paidTarget} | Support headroom ${row.supportHeadroom}. Next: ${row.nextAction}`),
+    "",
+    "## Founder Beta Scale Gate",
+    `Gate ID: ${strategy.founderBetaScaleGate.gateId}`,
+    `Gate score: ${strategy.founderBetaScaleGate.gateScore}/100`,
+    `Status: ${strategy.founderBetaScaleGate.status}`,
+    `Decision: ${strategy.founderBetaScaleGate.decision}`,
+    `Invite cap: ${strategy.founderBetaScaleGate.inviteCap}`,
+    `Scale candidate: ${strategy.founderBetaScaleGate.scaleCandidate.experimentLabel}`,
+    ...strategy.founderBetaScaleGate.gates.map((gate) => `- ${gate.label}: ${gate.score}/100 | ${gate.status}. ${gate.detail}`),
+    "",
     "## Launch Gates",
     ...strategy.gates.map((gate) => `- ${gate.label}: ${gate.score}/100. ${gate.detail}`),
     "",
@@ -4199,6 +10464,480 @@ function makeMarketStrategyBrief() {
     ...strategy.nextMoves.map((item) => `- ${item}`),
     "",
     "Research workspace and founder strategy only. This is not personalized investment advice, distributor onboarding, execution, or a revenue promise."
+  ].join("\n");
+}
+
+function makePaidBetaInviteLedgerBrief() {
+  const strategy = marketStrategyConfig();
+  const ledger = strategy.paidBetaInviteReceiptLedger;
+  return [
+    "# NiveshNadi Paid Beta Invite Receipt Ledger",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Ledger ID: ${ledger.ledgerId}`,
+    `Ledger score: ${ledger.ledgerScore}/100`,
+    `Status: ${ledger.status}`,
+    `Decision: ${ledger.decision}`,
+    "",
+    "## Receipt Families",
+    ...ledger.receiptRows.map((row) => [
+      `- ${row.label}: ${row.score}/100`,
+      `  Event: ${row.event}`,
+      `  Receipt ID: ${row.receiptId}`,
+      `  Required: ${row.required}`,
+      `  Redaction: ${row.redaction}`,
+      `  Blocker: ${row.blocker}`,
+      `  Route: ${row.route}`
+    ].join("\n")),
+    "",
+    "## Required Payload Fields",
+    ...ledger.payloadFields.map((field) => `- ${field}`),
+    "",
+    "## Ledger Release Rules",
+    ...ledger.releaseRules.map((rule) => `- ${rule.label}: ${rule.detail} Route ${rule.route}`),
+    "",
+    "This ledger is founder operating discipline only. It is not payment certification, investment advice, distributor onboarding, a revenue forecast, or permission to store PAN, folio, CAS, bank, card, UPI, ARN, EUIN, client records, or contact data in the prototype."
+  ].join("\n");
+}
+
+function makePaidBetaObjectionReplayBrief() {
+  const strategy = marketStrategyConfig();
+  const room = strategy.paidBetaObjectionReplayRoom;
+  return [
+    "# NiveshNadi Paid Beta Objection Replay Room",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Replay ID: ${room.replayId}`,
+    `Replay score: ${room.replayScore}/100`,
+    `Status: ${room.status}`,
+    `Decision: ${room.decision}`,
+    `Weakest objection: ${room.nextObjection.label} (${room.nextObjection.score}/100)`,
+    "",
+    "## Objection Replays",
+    ...room.objections.map((objection) => [
+      `- ${objection.label}: ${objection.score}/100`,
+      `  Source: ${objection.source}`,
+      `  Signal: ${objection.signal}`,
+      `  Reply: ${objection.reply}`,
+      `  Copy fix: ${objection.copyFix}`,
+      `  Next ask: ${objection.nextAsk}`,
+      `  Replay ID: ${objection.replayId}`,
+      `  Route: ${objection.route}`
+    ].join("\n")),
+    "",
+    "## Replay Rules",
+    ...room.replayRules.map((rule) => `- ${rule.label}: ${rule.detail} Route ${rule.route}`),
+    "",
+    "Founder monetization discipline only. This replay room is not payment certification, investment advice, a recommendation engine, distributor onboarding, or permission to store PAN, folio, CAS, bank, card, UPI, ARN, EUIN, client records, or contact data in the prototype."
+  ].join("\n");
+}
+
+function makePaidBetaOfferLabBrief() {
+  const strategy = marketStrategyConfig();
+  const lab = strategy.paidBetaOfferLab;
+  return [
+    "# NiveshNadi Paid Beta Offer Lab",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Offer ID: ${lab.offerId}`,
+    `Offer score: ${lab.offerScore}/100`,
+    `Status: ${lab.status}`,
+    `Primary offer: ${lab.primaryOffer.label}`,
+    `Price: ${lab.primaryOffer.price}`,
+    `Decision: ${lab.decision}`,
+    "",
+    "## Offer Variants",
+    ...lab.offerVariants.map((offer) => [
+      `- ${offer.label}: ${offer.score}/100`,
+      `  Price: ${offer.price}`,
+      `  Audience: ${offer.audience}`,
+      `  Promise: ${offer.promise}`,
+      `  Proof: ${offer.proof}`,
+      `  Objection handled: ${offer.objectionHandled}`,
+      `  CTA: ${offer.cta}`,
+      `  Offer ID: ${offer.offerId}`,
+      `  Route: ${offer.route}`
+    ].join("\n")),
+    "",
+    "## Landing Copy Blocks",
+    ...lab.copyBlocks.map((block) => `- ${block.label}: ${block.value}. ${block.detail}`),
+    "",
+    "## No-Sell Rules",
+    ...lab.noSellRules.map((rule) => `- ${rule.label}: ${rule.detail} Route ${rule.route}`),
+    "",
+    "## Blockers Before Broad Ask",
+    ...(lab.openBlockers.length ? lab.openBlockers.map((item) => `- ${item}`) : ["- No broad-ask blocker in this prototype, but founder beta must stay small, source-labeled, refund-aware, and research-only."]),
+    "",
+    "Founder monetization copy only. This offer lab is not investment advice, a recommendation, payment certification, public checkout approval, distributor onboarding, or permission to collect PAN, folio, CAS, bank, card, UPI, ARN, EUIN, contact data, or client records."
+  ].join("\n");
+}
+
+function makeFounderBetaLandingScriptBrief() {
+  const strategy = marketStrategyConfig();
+  const script = strategy.founderBetaLandingScript;
+  return [
+    "# NiveshNadi Founder Beta Landing Script",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Script ID: ${script.scriptId}`,
+    `Landing score: ${script.landingScore}/100`,
+    `Status: ${script.status}`,
+    `Primary offer: ${script.primaryOffer.label} (${script.primaryOffer.price})`,
+    `Decision: ${script.decision}`,
+    "",
+    "## Landing Copy Deck",
+    ...script.copyDeck.map((block) => `- ${block.label}: ${block.copy}. ${block.reason}`),
+    "",
+    "## Proof Order",
+    ...script.proofSteps.map((step) => [
+      `- ${step.label}: ${step.score}/100`,
+      `  Detail: ${step.detail}`,
+      `  Proof: ${step.proof}`,
+      `  Step ID: ${step.stepId}`,
+      `  Route: ${step.route}`
+    ].join("\n")),
+    "",
+    "## CTA Rules",
+    ...script.ctaRules.map((rule) => [
+      `- ${rule.label}: ${rule.copy}`,
+      `  Trigger: ${rule.trigger}`,
+      `  Block if: ${rule.blockIf}`,
+      `  Route: ${rule.route}`
+    ].join("\n")),
+    "",
+    "## Trust Tiles",
+    ...script.trustTiles.map((tile) => `- ${tile.label}: ${tile.value}. ${tile.detail}`),
+    "",
+    "## Landing Blockers",
+    ...(script.blockers.length ? script.blockers.map((item) => `- ${item}`) : ["- No public-page blocker in this prototype, but the landing page must stay founder-only, proof-led, refund-aware, source-labeled, and research-only."]),
+    "",
+    "Founder landing copy only. This script is not investment advice, a recommendation, payment certification, public checkout approval, distributor onboarding, or permission to collect PAN, folio, CAS, bank, card, UPI, ARN, EUIN, contact data, or client records."
+  ].join("\n");
+}
+
+function makeFounderBetaPagePreviewBrief() {
+  const strategy = marketStrategyConfig();
+  const preview = strategy.founderBetaPagePreview;
+  return [
+    "# NiveshNadi Founder Beta Page Preview",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Preview ID: ${preview.previewId}`,
+    `Preview score: ${preview.pageScore}/100`,
+    `Status: ${preview.status}`,
+    `Decision: ${preview.decision}`,
+    "",
+    "## Above-Fold Surface",
+    `Eyebrow: ${preview.hero.eyebrow}`,
+    `Headline: ${preview.hero.headline}`,
+    `Subhead: ${preview.hero.subhead}`,
+    `Price: ${preview.hero.price}`,
+    `Primary CTA: ${preview.hero.primaryCta}`,
+    `Secondary CTA: ${preview.hero.secondaryCta}`,
+    `Boundary: ${preview.hero.boundary}`,
+    "",
+    "## Page Sections",
+    ...preview.pageSections.map((section) => [
+      `- ${section.label}: ${section.score}/100`,
+      `  Heading: ${section.heading}`,
+      `  Body: ${section.body}`,
+      `  Proof: ${section.proof}`,
+      `  Section ID: ${section.sectionId}`,
+      `  Route: ${section.route}`
+    ].join("\n")),
+    "",
+    "## CTA States",
+    ...preview.ctaStates.map((state) => [
+      `- ${state.label}: ${state.cta}`,
+      `  Allowed: ${state.allowed}`,
+      `  Detail: ${state.detail}`,
+      `  Route: ${state.route}`
+    ].join("\n")),
+    "",
+    "## Launch Checklist",
+    ...preview.launchChecklist.map((item) => `- ${item.label}: ${item.status}. ${item.detail}`),
+    "",
+    "## Preview Blockers",
+    ...(preview.blockers.length ? preview.blockers.map((item) => `- ${item}`) : ["- No preview blocker in this prototype, but the page must stay private, proof-led, founder-capped, refund-aware, and research-only until production gates are ready."]),
+    "",
+    "Founder page preview only. This is not investment advice, a recommendation, payment certification, public checkout approval, distributor onboarding, or permission to collect PAN, folio, CAS, bank, card, UPI, ARN, EUIN, contact data, or client records."
+  ].join("\n");
+}
+
+function makeFounderBetaTrafficRehearsalBrief() {
+  const strategy = marketStrategyConfig();
+  const rehearsal = strategy.founderBetaTrafficRehearsal;
+  return [
+    "# NiveshNadi Founder Beta Traffic Rehearsal",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Rehearsal ID: ${rehearsal.rehearsalId}`,
+    `Rehearsal score: ${rehearsal.rehearsalScore}/100`,
+    `Status: ${rehearsal.status}`,
+    `Decision: ${rehearsal.decision}`,
+    "",
+    "## Traffic Totals",
+    `Visitors rehearsed: ${rehearsal.totals.visitors}`,
+    `Proof actions: ${rehearsal.totals.proofActions} (${rehearsal.totals.proofRate}%)`,
+    `Paid seats: ${rehearsal.totals.paidSeats} (${rehearsal.totals.paidRate}% of proof actions)`,
+    `First cash signal: ${formatMoney(rehearsal.totals.firstCash)}`,
+    `Support cases: ${rehearsal.totals.supportCases} (${rehearsal.totals.supportLoad}% support load)`,
+    "",
+    "## Traffic Sources",
+    ...rehearsal.trafficSources.map((source) => [
+      `- ${source.label}: ${source.sourceScore}/100`,
+      `  Source ID: ${source.sourceId}`,
+      `  Visitors: ${source.visitors}`,
+      `  Proof actions: ${source.proofActions}`,
+      `  Paid seats: ${source.paidSeats}`,
+      `  Support cases: ${source.supportCases}`,
+      `  First cash signal: ${formatMoney(source.firstCash)}`,
+      `  Signal: ${source.signal}`,
+      `  Risk: ${source.risk}`,
+      `  Route: ${source.route}`
+    ].join("\n")),
+    "",
+    "## Stop Rules",
+    ...rehearsal.stopRules.map((rule) => [
+      `- ${rule.label}`,
+      `  Trigger: ${rule.trigger}`,
+      `  Rule: ${rule.rule}`,
+      `  Route: ${rule.route}`
+    ].join("\n")),
+    "",
+    "## Traffic Blockers",
+    ...(rehearsal.blockers.length ? rehearsal.blockers.map((item) => `- ${item}`) : ["- No traffic blocker in this prototype, but the rehearsal must stay private, invite-led, source-labeled, refund-aware, and research-only."]),
+    "",
+    "Founder traffic rehearsal only. This is not investment advice, payment certification, public checkout approval, advertising approval, distributor onboarding, or permission to collect PAN, folio, CAS, bank, card, UPI, ARN, EUIN, contact data, or client records."
+  ].join("\n");
+}
+
+function makeFounderBetaExperimentBoardBrief() {
+  const strategy = marketStrategyConfig();
+  const board = strategy.founderBetaExperimentBoard;
+  return [
+    "# NiveshNadi Founder Beta Experiment Board",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Board ID: ${board.boardId}`,
+    `Board score: ${board.boardScore}/100`,
+    `Status: ${board.status}`,
+    `Decision: ${board.decision}`,
+    "",
+    "## Experiment Totals",
+    `Ready tiny tests: ${board.totals.readyExperiments}`,
+    `Proof target: ${board.totals.totalProofTarget}`,
+    `Paid-intent target: ${board.totals.totalPaidTarget}`,
+    `Support ceiling: ${board.totals.totalSupportCeiling}`,
+    `First-cash signal: ${formatMoney(board.totals.firstCashSignal)}`,
+    "",
+    "## Experiments",
+    ...board.experiments.map((experiment) => [
+      `- ${experiment.label}: ${experiment.learningScore}/100`,
+      `  Experiment ID: ${experiment.experimentId}`,
+      `  Status: ${experiment.status}`,
+      `  Source: ${experiment.sourceLabel}`,
+      `  Promise: ${experiment.promise}`,
+      `  CTA: ${experiment.cta}`,
+      `  Hypothesis: ${experiment.hypothesis}`,
+      `  Proof target: ${experiment.proofTarget}`,
+      `  Paid-intent target: ${experiment.paidTarget}`,
+      `  Support ceiling: ${experiment.supportCeiling}`,
+      `  First-cash signal: ${formatMoney(experiment.firstCashSignal)}`,
+      `  Success metric: ${experiment.successMetric}`,
+      `  Stop rule: ${experiment.stopRule}`,
+      `  Route: ${experiment.route}`
+    ].join("\n")),
+    "",
+    "## Review Cadence",
+    ...board.reviewCadence.map((item) => `- ${item.label}: ${item.detail} Route ${item.route}`),
+    "",
+    "## Experiment Blockers",
+    ...(board.blockers.length ? board.blockers.map((item) => `- ${item}`) : ["- No experiment blocker in this prototype, but experiments must stay tiny, private, proof-led, support-aware, refund-aware, and research-only."]),
+    "",
+    "Founder experiment board only. This is not investment advice, payment certification, advertising approval, public checkout approval, distributor onboarding, or permission to collect PAN, folio, CAS, bank, card, UPI, ARN, EUIN, contact data, or client records."
+  ].join("\n");
+}
+
+function makeFounderBetaLearningLedgerBrief() {
+  const strategy = marketStrategyConfig();
+  const ledger = strategy.founderBetaLearningLedger;
+  return [
+    "# NiveshNadi Founder Beta Learning Ledger",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Ledger ID: ${ledger.ledgerId}`,
+    `Ledger score: ${ledger.ledgerScore}/100`,
+    `Status: ${ledger.status}`,
+    `Decision: ${ledger.decision}`,
+    "",
+    "## Learning Totals",
+    `Scale by hand: ${ledger.totals.scaleRows}`,
+    `Repeat with sharper proof: ${ledger.totals.repeatRows}`,
+    `Stop and repair: ${ledger.totals.stopRows}`,
+    `Proof observed: ${ledger.totals.proofObserved}/${ledger.totals.proofTarget}`,
+    `Paid intent observed: ${ledger.totals.paidIntentObserved}`,
+    `Support headroom: ${ledger.totals.supportHeadroom}`,
+    "",
+    "## Learning Rows",
+    ...ledger.learningRows.map((row) => [
+      `- ${row.experimentLabel}: ${row.learningScore}/100`,
+      `  Learning ID: ${row.learningId}`,
+      `  Verdict: ${row.verdict}`,
+      `  Source: ${row.sourceLabel}`,
+      `  Promise: ${row.promise}`,
+      `  Proof observed: ${row.proofObserved}/${row.proofTarget} (${row.proofCompletion}%)`,
+      `  Paid intent observed: ${row.paidIntentObserved}/${row.paidTarget} (${row.paidIntentCompletion}%)`,
+      `  Support observed: ${row.supportObserved}/${row.supportCeiling}`,
+      `  Support headroom: ${row.supportHeadroom}`,
+      `  Next action: ${row.nextAction}`,
+      `  Stop condition: ${row.stopCondition}`,
+      `  Route: ${row.route}`
+    ].join("\n")),
+    "",
+    "## Ledger Rules",
+    ...ledger.ledgerRules.map((rule) => `- ${rule.label}: ${rule.detail} Route ${rule.route}`),
+    "",
+    "## Blockers",
+    ...(ledger.blockers.length ? ledger.blockers.map((item) => `- ${item}`) : ["- No learning blocker in this prototype, but scale must stay manual, founder-reviewed, proof-led, support-capped, refund-aware, and research-only."]),
+    "",
+    "Founder learning ledger only. It is not investment advice, advertising approval, revenue proof, payment certification, public checkout approval, distributor onboarding, or permission to collect PAN, folio, CAS, bank, card, UPI, ARN, EUIN, contact data, or client records."
+  ].join("\n");
+}
+
+function makeFounderBetaScaleGateBrief() {
+  const strategy = marketStrategyConfig();
+  const gate = strategy.founderBetaScaleGate;
+  return [
+    "# NiveshNadi Founder Beta Scale Gate",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Gate ID: ${gate.gateId}`,
+    `Gate score: ${gate.gateScore}/100`,
+    `Status: ${gate.status}`,
+    `Decision: ${gate.decision}`,
+    `Invite cap: ${gate.inviteCap}`,
+    `Scale candidate: ${gate.scaleCandidate.experimentLabel}`,
+    "",
+    "## Gate Metrics",
+    ...gate.metrics.map((metric) => `- ${metric.label}: ${metric.value}. ${metric.detail}`),
+    "",
+    "## Gate Checks",
+    ...gate.gates.map((item) => [
+      `- ${item.label}: ${item.score}/100`,
+      `  Owner: ${item.owner}`,
+      `  Status: ${item.status}`,
+      `  Detail: ${item.detail}`,
+      `  Route: ${item.route}`
+    ].join("\n")),
+    "",
+    "## Action Plan",
+    ...gate.actionPlan.map((action) => `- ${action.label}: ${action.detail} Route ${action.route}`),
+    "",
+    "## Blockers",
+    ...(gate.blockers.length ? gate.blockers.map((item) => `- ${item}`) : ["- No scale blocker in this prototype, but the next wave must stay manual, founder-reviewed, proof-led, support-capped, refund-aware, and research-only."]),
+    "",
+    "Founder beta scale gate only. It is not investment advice, public marketing approval, revenue proof, payment certification, distributor onboarding, or permission to collect PAN, folio, CAS, bank, card, UPI, ARN, EUIN, contact data, or client records."
+  ].join("\n");
+}
+
+function makeFounderInviteWaveBrief() {
+  const strategy = marketStrategyConfig();
+  const room = strategy.founderInviteWaveRoom;
+  return [
+    "# NiveshNadi Founder Invite Wave Room",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Invite score: ${room.inviteScore}/100`,
+    `Status: ${room.status}`,
+    `Decision: ${room.decision}`,
+    "",
+    "## Invite Math",
+    `Proof-qualified users: ${room.proofQualifiedUsers}`,
+    `Founder wave: ${room.founderWave}`,
+    `Expected first-wave paid seats: ${room.expectedPaidFromFounderWave}`,
+    `First-wave cash signal: ${formatMoney(room.firstWaveCash)}`,
+    `Support ceiling: ${room.supportCeiling} cases`,
+    `Stop trigger: ${room.stopTriggerCount} refunds`,
+    "",
+    "## Invite Waves",
+    ...room.waves.map((wave) => `- ${wave.label}: cap ${wave.cap} | ${wave.ask} | ${wave.signal} | Stop rule: ${wave.stop} | Route ${wave.route}`),
+    "",
+    "## Safeguards",
+    ...room.safeguards.map((guard) => `- ${guard.label}: ${guard.detail} Route ${guard.route}`),
+    "",
+    "This room is founder operating discipline only. It is not a revenue forecast, payment certification, investment advice, distributor workflow, or permission to collect PAN, folio, CAS, bank, card, UPI, ARN, EUIN, or client records."
+  ].join("\n");
+}
+
+function makePaidBetaCohortConsoleBrief() {
+  const strategy = marketStrategyConfig();
+  const cohort = strategy.paidBetaCohortConsole;
+  return [
+    "# NiveshNadi First 100 Paid Beta Console",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Status: ${cohort.status}`,
+    `Decision: ${cohort.decision}`,
+    `Guardrail: ${cohort.guardrail}`,
+    "",
+    "## First 100 Signal",
+    `Invite cap: ${cohort.inviteCap}`,
+    `Expected conversion: ${cohort.conversionRate}%`,
+    `Expected paid seats: ${cohort.expectedPaidSeats}`,
+    `Annual seats: ${cohort.annualSeats}`,
+    `Monthly seats: ${cohort.monthlySeats}`,
+    `First cash signal: ${formatMoney(cohort.firstCashSignal)}`,
+    `Annualized signal: ${formatMoney(cohort.annualizedSignal)}`,
+    `Support load: ${cohort.supportLoad} cases`,
+    `Refund buffer: ${cohort.refundBuffer} seats`,
+    "",
+    "## Cohort Scenarios",
+    ...cohort.scenarios.map((scenario) => `- ${scenario.label}: ${scenario.invites} invites | ${scenario.conversion}% conversion | ${scenario.paidSeats} seats | ${formatMoney(scenario.cashSignal)} first cash | ${formatMoney(scenario.annualizedSignal)} annualized | Route ${scenario.route}`),
+    "",
+    "## Stop Rules",
+    ...cohort.rules.map((rule) => `- ${rule.label}: ${rule.detail} Route ${rule.route}`),
+    "",
+    "This console is founder planning only. It is not a revenue guarantee, payment certification, investment recommendation, or permission to launch distributor workflows."
+  ].join("\n");
+}
+
+function makeTrustToPaidRadarBrief() {
+  const strategy = marketStrategyConfig();
+  const radar = strategy.trustToPaidRadar;
+  return [
+    "# NiveshNadi Trust-to-Paid Conversion Radar",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Radar score: ${radar.score}/100`,
+    `Status: ${radar.status}`,
+    `Recommendation: ${radar.recommendation}`,
+    "",
+    "## Pricing Ask",
+    radar.ask,
+    "",
+    "## Proof Required Before Payment",
+    radar.proofRequirement,
+    "",
+    "## Stage Readiness",
+    ...radar.stages.map((stage, index) => `${index + 1}. ${stage.label}: ${stage.score}/100 | ${stage.status} | ${stage.detail} | Route ${stage.route}`),
+    "",
+    "## Weakest Conversion Nodes",
+    ...(radar.blockers.length ? radar.blockers.map((blocker) => `- ${blocker.label}: ${blocker.score}/100. ${blocker.detail}`) : ["- No weak node below the current threshold. Keep watching support, payment, and source receipts."]),
+    "",
+    "## Boundary",
+    radar.boundary,
+    "",
+    "This radar is founder strategy and launch-readiness guidance only. It is not investment advice, payment certification, distributor onboarding approval, or a promise that users will convert."
+  ].join("\n");
+}
+
+function makeMarketMoatFlywheelBrief() {
+  const strategy = marketStrategyConfig();
+  return [
+    "# NiveshNadi Market Moat Flywheel",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Flywheel score: ${strategy.flywheelScore}/100`,
+    `Next proof: ${strategy.flywheelNext.label}`,
+    `Next proof route: ${strategy.flywheelNext.route}`,
+    "",
+    "## Flywheel",
+    ...strategy.flywheel.map((step, index) => `${index + 1}. ${step.label}: ${step.score}/100 | ${step.metric} | ${step.detail} | Route ${step.route}`),
+    "",
+    "## Founder Rule",
+    "- Do not compete as another transaction app or tips channel.",
+    "- Win the research habit first, charge retail gently, and let distributor monetization wait for consent, role, and audit maturity.",
+    "- Keep all claims research-only until live source dates, citation paths, account storage, payments, privacy controls, and reviewer gates are production-ready.",
+    "",
+    "The Market Moat Flywheel is founder strategy and product positioning only. It is not personalized advice, distributor onboarding approval, payment certification, or a revenue guarantee."
   ].join("\n");
 }
 
@@ -37700,6 +44439,84 @@ function bindEvents() {
   });
 
   document.addEventListener("click", (event) => {
+    const copyMarketFlywheel = event.target.closest("#copyMarketMoatFlywheel");
+    if (!copyMarketFlywheel) return;
+    copyText(makeMarketMoatFlywheelBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyTrustToPaidRadar = event.target.closest("#copyTrustToPaidRadar");
+    if (!copyTrustToPaidRadar) return;
+    copyText(makeTrustToPaidRadarBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyPaidBetaCohortConsole = event.target.closest("#copyPaidBetaCohortConsole");
+    if (!copyPaidBetaCohortConsole) return;
+    copyText(makePaidBetaCohortConsoleBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyFounderInviteWaveRoom = event.target.closest("#copyFounderInviteWaveRoom");
+    if (!copyFounderInviteWaveRoom) return;
+    copyText(makeFounderInviteWaveBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyPaidBetaInviteLedger = event.target.closest("#copyPaidBetaInviteLedger");
+    if (!copyPaidBetaInviteLedger) return;
+    copyText(makePaidBetaInviteLedgerBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyPaidBetaObjectionReplay = event.target.closest("#copyPaidBetaObjectionReplay");
+    if (!copyPaidBetaObjectionReplay) return;
+    copyText(makePaidBetaObjectionReplayBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyPaidBetaOfferLab = event.target.closest("#copyPaidBetaOfferLab");
+    if (!copyPaidBetaOfferLab) return;
+    copyText(makePaidBetaOfferLabBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyFounderBetaLandingScript = event.target.closest("#copyFounderBetaLandingScript");
+    if (!copyFounderBetaLandingScript) return;
+    copyText(makeFounderBetaLandingScriptBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyFounderBetaPagePreview = event.target.closest("#copyFounderBetaPagePreview");
+    if (!copyFounderBetaPagePreview) return;
+    copyText(makeFounderBetaPagePreviewBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyFounderBetaTrafficRehearsal = event.target.closest("#copyFounderBetaTrafficRehearsal");
+    if (!copyFounderBetaTrafficRehearsal) return;
+    copyText(makeFounderBetaTrafficRehearsalBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyFounderBetaExperimentBoard = event.target.closest("#copyFounderBetaExperimentBoard");
+    if (!copyFounderBetaExperimentBoard) return;
+    copyText(makeFounderBetaExperimentBoardBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyFounderBetaLearningLedger = event.target.closest("#copyFounderBetaLearningLedger");
+    if (!copyFounderBetaLearningLedger) return;
+    copyText(makeFounderBetaLearningLedgerBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyFounderBetaScaleGate = event.target.closest("#copyFounderBetaScaleGate");
+    if (!copyFounderBetaScaleGate) return;
+    copyText(makeFounderBetaScaleGateBrief());
+  });
+
+  document.addEventListener("click", (event) => {
     const paidBetaRoute = event.target.closest("[data-paid-beta-route]");
     if (!paidBetaRoute) return;
     scrollToHash(paidBetaRoute.dataset.paidBetaRoute, "smooth", true);
@@ -37775,6 +44592,188 @@ function bindEvents() {
     const copyAutopilot = event.target.closest("#copyResearchAutopilot");
     if (!copyAutopilot) return;
     copyText(makeResearchAutopilotNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyLiveDataGate = event.target.closest("#copyLiveDataGate");
+    if (!copyLiveDataGate) return;
+    copyText(makeLiveDataGateNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyClaimPassport = event.target.closest("#copyClaimPassport");
+    if (!copyClaimPassport) return;
+    copyText(makeClaimPassportNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyPassportShareSeal = event.target.closest("#copyPassportShareSeal");
+    if (!copyPassportShareSeal) return;
+    copyText(makePassportShareSealNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraRecoveryShield = event.target.closest("#copyMitraRecoveryShield");
+    if (!copyMitraRecoveryShield) return;
+    copyText(makeMitraRecoveryShieldNote());
+  });
+
+  document.addEventListener("input", (event) => {
+    if (!event.target.closest("#mitraFirewallInput")) return;
+    updateMitraFirewall();
+  });
+
+  document.addEventListener("click", (event) => {
+    const runMitraFirewall = event.target.closest("#runMitraFirewall");
+    if (!runMitraFirewall) return;
+    updateMitraFirewall();
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraFirewall = event.target.closest("#copyMitraFirewall");
+    if (!copyMitraFirewall) return;
+    updateMitraFirewall();
+    copyText(makeMitraFirewallNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraRouteReceipt = event.target.closest("#copyMitraRouteReceipt");
+    if (!copyMitraRouteReceipt) return;
+    updateMitraFirewall();
+    copyText(makeMitraRouteReceiptNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraScamDrill = event.target.closest("#copyMitraScamDrill");
+    if (!copyMitraScamDrill) return;
+    updateMitraFirewall();
+    copyText(makeMitraScamDrillNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraFamilySafeShare = event.target.closest("#copyMitraFamilySafeShare");
+    if (!copyMitraFamilySafeShare) return;
+    updateMitraFirewall();
+    copyText(makeMitraFamilySafeShareNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraOfficialRouteDirectory = event.target.closest("#copyMitraOfficialRouteDirectory");
+    if (!copyMitraOfficialRouteDirectory) return;
+    updateMitraFirewall();
+    copyText(makeMitraOfficialRouteDirectoryNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraInvestorSourceCheck = event.target.closest("#copyMitraInvestorSourceCheck");
+    if (!copyMitraInvestorSourceCheck) return;
+    updateMitraFirewall();
+    copyText(makeMitraInvestorSourceCheckNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraSourceHandshake = event.target.closest("#copyMitraSourceHandshake");
+    if (!copyMitraSourceHandshake) return;
+    updateMitraFirewall();
+    copyText(makeMitraSourceHandshakeNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraSafeReleaseVerdict = event.target.closest("#copyMitraSafeReleaseVerdict");
+    if (!copyMitraSafeReleaseVerdict) return;
+    updateMitraFirewall();
+    copyText(makeMitraSafeReleaseVerdictNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraSafetyStackTimeline = event.target.closest("#copyMitraSafetyStackTimeline");
+    if (!copyMitraSafetyStackTimeline) return;
+    updateMitraFirewall();
+    copyText(makeMitraSafetyStackTimelineNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraSafetyActionRouter = event.target.closest("#copyMitraSafetyActionRouter");
+    if (!copyMitraSafetyActionRouter) return;
+    updateMitraFirewall();
+    copyText(makeMitraSafetyActionRouterNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraRecoveryActionReceipt = event.target.closest("#copyMitraRecoveryActionReceipt");
+    if (!copyMitraRecoveryActionReceipt) return;
+    updateMitraFirewall();
+    copyText(makeMitraRecoveryActionReceiptNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraRecoveryFollowUpRoom = event.target.closest("#copyMitraRecoveryFollowUpRoom");
+    if (!copyMitraRecoveryFollowUpRoom) return;
+    updateMitraFirewall();
+    copyText(makeMitraRecoveryFollowUpRoomNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraRecoveryReminderCard = event.target.closest("#copyMitraRecoveryReminderCard");
+    if (!copyMitraRecoveryReminderCard) return;
+    updateMitraFirewall();
+    copyText(makeMitraRecoveryReminderCardNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraRecoveryRecheckTrail = event.target.closest("#copyMitraRecoveryRecheckTrail");
+    if (!copyMitraRecoveryRecheckTrail) return;
+    updateMitraFirewall();
+    copyText(makeMitraRecoveryRecheckTrailNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMitraRecoveryOutcomeLedger = event.target.closest("#copyMitraRecoveryOutcomeLedger");
+    if (!copyMitraRecoveryOutcomeLedger) return;
+    updateMitraFirewall();
+    copyText(makeMitraRecoveryOutcomeLedgerNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMissionReceipt = event.target.closest("#copyMissionReceipt");
+    if (!copyMissionReceipt) return;
+    copyText(makeAutopilotMissionReceipt());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMissionClock = event.target.closest("#copyMissionClock");
+    if (!copyMissionClock) return;
+    copyText(makeAutopilotMissionClockNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyCommandCard = event.target.closest("#copyAutopilotCommandCard");
+    if (!copyCommandCard) return;
+    copyText(makeAutopilotCommandCard());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyProofGraph = event.target.closest("#copyNadiProofGraph");
+    if (!copyProofGraph) return;
+    copyText(makeNadiProofGraphNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyNoBuyGate = event.target.closest("#copyNoBuyGate");
+    if (!copyNoBuyGate) return;
+    copyText(makeNoBuyGateNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyFomoFirewall = event.target.closest("#copyFomoFirewall");
+    if (!copyFomoFirewall) return;
+    copyText(makeFomoFirewallNote());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyDissentEngine = event.target.closest("#copyDissentEngine");
+    if (!copyDissentEngine) return;
+    copyText(makeDissentEngineNote());
   });
 
   document.addEventListener("click", (event) => {

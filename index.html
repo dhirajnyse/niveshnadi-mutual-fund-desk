@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260520-22">
+    <link rel="stylesheet" href="styles.css?v=20260521-02">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -45,6 +45,7 @@
           </div>
         </div>
         <div class="workspace-command" aria-label="Workspace command">
+          <button class="simple-mode-toggle" id="simpleModeToggle" type="button" aria-pressed="false">Simple view</button>
           <span id="workspaceStatus" class="workspace-status">Discover: Screener</span>
           <label class="workspace-jump">
             <span>Workspace</span>
@@ -191,7 +192,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-            <p class="release-pill">Phase 1 v208</p>
+            <p class="release-pill">Phase 1 v212</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -232,6 +233,17 @@
               <div><span>Universe</span><strong>11 demo funds</strong></div>
               <div><span>Mode</span><strong>Research only</strong></div>
               <div><span>Next</span><strong>Live data</strong></div>
+            </div>
+            <div id="simplicityPath" class="simplicity-path" aria-label="Simple research route">
+              <div>
+                <span>Simple route</span>
+                <strong>Profile / Find / Verify / Memo / Review</strong>
+              </div>
+              <button class="signal-chip" type="button" data-signal-route="#profile-room">Profile</button>
+              <button class="signal-chip" type="button" data-signal-route="#screener">Find</button>
+              <button class="signal-chip" type="button" data-signal-route="#evidence">Verify</button>
+              <button class="signal-chip" type="button" data-signal-route="#decision-pack">Memo</button>
+              <button class="signal-chip" type="button" data-signal-route="#review-vault">Review</button>
             </div>
             <div id="nadiSignalStrip" class="nadi-signal-strip" aria-label="Selected fund signal strip"></div>
             <div id="researchAutopilot" class="research-autopilot" aria-label="Nadi Research Autopilot"></div>
@@ -4428,6 +4440,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260520-22"></script>
+    <script src="app.js?v=20260521-02"></script>
   </body>
 </html>

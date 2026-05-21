@@ -1,8 +1,10 @@
-const DATA_VERSION = "20260520-22";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v208 Market Panic Triage";
+const DATA_VERSION = "20260521-02";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v212 First Screen Focus";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
-const HASH_SETTLE_DELAYS = [0, 80, 180, 360, 720, 1200, 1900, 2800, 4000, 5600];
-const HASH_SETTLE_WINDOW = 6400;
+const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
+const HASH_SETTLE_DELAYS = [0, 80, 180, 360, 720, 1200, 1900, 2800, 4000, 5600, 7600, 9800];
+const HASH_SETTLE_WINDOW = 10800;
+const HASH_LANDING_TOLERANCE = 18;
 
 if ("scrollRestoration" in window.history) {
   window.history.scrollRestoration = "manual";
@@ -924,6 +926,7 @@ const state = {
   rebalanceWeights: {},
   answerSheetHydrated: false,
   hashSettleUntil: 0,
+  simpleMode: true,
   filters: {
     search: "",
     category: "all",
@@ -1083,12 +1086,12 @@ const BUILD_TRACKER_PHASES = [
   {
     phase: "Phase 1A",
     label: "Retail self-research cockpit",
-    progress: 96,
-    launch: 64,
+    progress: 99,
+    launch: 68,
     status: "Done",
     route: "#screener",
-    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab"],
-    next: "Make profile-twin outcomes portable into saved accounts without collecting private identifiers."
+    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "calm header", "first-screen focus"],
+    next: "Keep the default retail journey calm, obvious, short, and free of secondary context until the investor asks for depth."
   },
   {
     phase: "Phase 1B",
@@ -1144,10 +1147,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Market Panic Triage",
+    label: "First Screen Focus",
     status: "Shipping now",
-    route: "#risk-lab",
-    detail: "Add a panic-mode triage layer to the Risk Stress Lab so red-market pressure is separated into allowed research, locked transactions, proof routes, wait windows, and a copyable calm-action receipt."
+    route: "#screener",
+    detail: "Give Simple View one obvious first job: research the selected fund. Market context and expert panels stay available in Full View."
   },
   {
     label: "Portable mission memory",
@@ -7666,8 +7669,9 @@ function buildTrackerConfig() {
     detail: "MFD dashboard, ARN/EUIN, PAN-consent, registered clients, review packs, and handoff audit trail stay planned after Phase 1 retail launch.",
     blockers: ["Phase 1 account model", "consent workflow", "privacy review", "role-based distributor access"]
   };
-  const pace = `v208 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
+  const pace = `v212 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
   const guardrails = [
+    "Every new release must protect UI simplicity: keep the default path clear, move depth behind explicit choices, and avoid forcing expert controls onto first-time investors.",
     "Build Tracker is a project roadmap for this prototype; it is not an investor-facing recommendation or launch promise.",
     "Product build progress and launch readiness are intentionally separate because a prototype can be polished before live data, auth, payments, and legal gates are complete.",
     "Before production launch, live data, auth, privacy, payment, audit logs, disclosures, and legal review must be handled separately."
@@ -7821,7 +7825,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-      <article><span>Prototype version</span><strong>Phase 1 v208</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+      <article><span>Prototype version</span><strong>Phase 1 v212</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -26920,13 +26924,33 @@ function scrollToElement(element, behavior = "smooth") {
   window.scrollTo({ top, behavior: reduceMotion ? "auto" : behavior });
 }
 
+function isElementLanded(element) {
+  if (!element) return false;
+  const top = element.getBoundingClientRect().top;
+  const offset = stickyHeaderOffset();
+  return Math.abs(top - offset) <= HASH_LANDING_TOLERANCE || (top >= offset && top <= offset + HASH_LANDING_TOLERANCE * 2);
+}
+
+function lockHashLanding(hash, behavior = "auto") {
+  const target = targetFromHash(hash);
+  if (!target) return;
+  if (!isElementLanded(target)) {
+    scrollToElement(target, behavior);
+  }
+}
+
 function scrollToHash(hash, behavior = "smooth", updateHash = false) {
   const target = targetFromHash(hash);
   if (!target) return;
+  state.hashSettleUntil = Date.now() + HASH_SETTLE_WINDOW;
+  updateWorkspaceNavigator(hash);
   scrollToElement(target, behavior);
   if (updateHash && window.location.hash !== hash) {
     window.history.pushState(null, "", hash);
   }
+  window.setTimeout(() => {
+    if (window.location.hash === hash) lockHashLanding(hash, "auto");
+  }, 180);
 }
 
 function settleHashNavigation() {
@@ -26936,18 +26960,18 @@ function settleHashNavigation() {
   updateWorkspaceNavigator(hash);
   requestAnimationFrame(() => {
     updateWorkspaceNavigator(hash);
-    scrollToHash(hash, "auto");
+    lockHashLanding(hash, "auto");
     requestAnimationFrame(() => {
       if (window.location.hash !== hash) return;
       updateWorkspaceNavigator(hash);
-      scrollToHash(hash, "auto");
+      lockHashLanding(hash, "auto");
     });
   });
   HASH_SETTLE_DELAYS.forEach((delay) => {
     window.setTimeout(() => {
       if (window.location.hash !== hash) return;
       updateWorkspaceNavigator(hash);
-      scrollToHash(hash, "auto");
+      lockHashLanding(hash, "auto");
     }, delay);
   });
   window.setTimeout(() => {
@@ -27015,6 +27039,43 @@ function syncSearchInputs(value) {
   renderProofGapQueue();
   renderMemoClearanceDesk();
   renderClearanceSprintBoard();
+}
+
+function loadSimpleModePreference() {
+  try {
+    const saved = localStorage.getItem(SIMPLE_MODE_KEY);
+    return saved === null ? true : saved !== "off";
+  } catch (error) {
+    return true;
+  }
+}
+
+function saveSimpleModePreference(enabled) {
+  try {
+    localStorage.setItem(SIMPLE_MODE_KEY, enabled ? "on" : "off");
+  } catch (error) {
+    // Simple view is cosmetic; the workspace still works when storage is blocked.
+  }
+}
+
+function applySimpleMode(enabled, persist = true) {
+  state.simpleMode = enabled;
+  document.body.classList.toggle("simple-mode", enabled);
+  document.body.classList.toggle("full-mode", !enabled);
+  if (els.simpleModeToggle) {
+    els.simpleModeToggle.setAttribute("aria-pressed", enabled ? "true" : "false");
+    els.simpleModeToggle.textContent = enabled ? "Full view" : "Simple view";
+    els.simpleModeToggle.title = enabled ? "Show full workspace depth" : "Show simpler workspace";
+  }
+  if (persist) saveSimpleModePreference(enabled);
+}
+
+function bindSimpleModeToggle() {
+  applySimpleMode(loadSimpleModePreference(), false);
+  els.simpleModeToggle?.addEventListener("click", () => {
+    applySimpleMode(!state.simpleMode);
+    settleHashNavigation();
+  });
 }
 
 function sharedHoldings(funds) {
@@ -45590,6 +45651,7 @@ function cacheElements() {
   Object.assign(els, {
     workspaceJump: qs("#workspaceJump"),
     workspaceStatus: qs("#workspaceStatus"),
+    simpleModeToggle: qs("#simpleModeToggle"),
     navLinks: qsa(".top-nav a[href^='#']"),
     searchInput: qs("#searchInput"),
     categoryFilter: qs("#categoryFilter"),
@@ -46318,6 +46380,7 @@ function cacheElements() {
 
 function init() {
   cacheElements();
+  bindSimpleModeToggle();
   renderCategoryFilter();
   renderWatchFundSelect();
   bindWorkspaceJump();

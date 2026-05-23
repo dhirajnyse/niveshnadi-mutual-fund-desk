@@ -1,10 +1,24 @@
-const DATA_VERSION = "20260521-02";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v212 First Screen Focus";
+const DATA_VERSION = "20260523-06";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v226 One Move Rail";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const HASH_SETTLE_DELAYS = [0, 80, 180, 360, 720, 1200, 1900, 2800, 4000, 5600, 7600, 9800];
 const HASH_SETTLE_WINDOW = 10800;
 const HASH_LANDING_TOLERANCE = 18;
+const SIMPLE_JOURNEY_STEPS = [
+  { number: "01", label: "Profile", value: "#profile-room", detail: "Goal, horizon, SIP comfort, and drawdown comfort." },
+  { number: "02", label: "Find", value: "#screener", detail: "Shortlist the fund and compare at least one peer." },
+  { number: "03", label: "Verify", value: "#evidence", detail: "Check source status before trusting the score." },
+  { number: "04", label: "Memo", value: "#decision-pack", detail: "Write the reason, amount, review date, and guardrail." },
+  { number: "05", label: "Review", value: "#review-vault", detail: "Save the review memory and next check." }
+];
+const SIMPLE_WORKSPACE_ROUTES = [
+  ...SIMPLE_JOURNEY_STEPS.map((step) => ({ label: step.label === "Find" ? "Find funds" : step.label === "Memo" ? "Write memo" : step.label === "Review" ? "Review vault" : step.label, value: step.value })),
+  { label: "Investor record", value: "#investor-record" },
+  { label: "Pricing", value: "#pricing" },
+  { label: "Build tracker", value: "#build-tracker" }
+];
+const SIMPLE_WORKSPACE_ROUTE_SET = new Set(SIMPLE_WORKSPACE_ROUTES.map((route) => route.value));
 
 if ("scrollRestoration" in window.history) {
   window.history.scrollRestoration = "manual";
@@ -927,6 +941,9 @@ const state = {
   answerSheetHydrated: false,
   hashSettleUntil: 0,
   simpleMode: true,
+  investorRecordFocus: false,
+  workspaceJumpFullHtml: "",
+  workspaceOptionIndex: new Map(),
   filters: {
     search: "",
     category: "all",
@@ -1086,11 +1103,11 @@ const BUILD_TRACKER_PHASES = [
   {
     phase: "Phase 1A",
     label: "Retail self-research cockpit",
-    progress: 99,
-    launch: 68,
+    progress: 100,
+    launch: 69,
     status: "Done",
     route: "#screener",
-    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "calm header", "first-screen focus"],
+    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "calm header", "first-screen focus", "guided selector", "live route rail", "one-question gate"],
     next: "Keep the default retail journey calm, obvious, short, and free of secondary context until the investor asks for depth."
   },
   {
@@ -1116,12 +1133,12 @@ const BUILD_TRACKER_PHASES = [
   {
     phase: "Phase 1D",
     label: "Portfolio review and habit layer",
-    progress: 78,
-    launch: 44,
+    progress: 80,
+    launch: 46,
     status: "In progress",
-    route: "#portfolio-review",
-    done: ["X-Ray", "blueprint", "rebalance guard", "review vault", "watchlist", "dossier builder"],
-    next: "Tighten recurring review and saved research packets."
+    route: "#review-vault",
+    done: ["X-Ray", "blueprint", "rebalance guard", "review vault", "watchlist", "dossier builder", "simple review focus"],
+    next: "Keep the Review step focused on one saved-review memory path, with record handoff visible only when intentionally opened."
   },
   {
     phase: "Phase 1E",
@@ -1147,10 +1164,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "First Screen Focus",
+    label: "One Move Rail",
     status: "Shipping now",
     route: "#screener",
-    detail: "Give Simple View one obvious first job: research the selected fund. Market context and expert panels stay available in Full View."
+    detail: "Lift the next action above the route rail as one full-width command, then keep route chips as secondary context."
   },
   {
     label: "Portable mission memory",
@@ -2856,15 +2873,278 @@ function signalStripConfig() {
   };
 }
 
+function simpleJourneyConfig(signal = signalStripConfig()) {
+  const routeToStep = new Map([
+    ["#profile-room", "#profile-room"],
+    ["#investor-passport", "#profile-room"],
+    ["#suitability-passport", "#profile-room"],
+    ["#screener", "#screener"],
+    ["#compare", "#screener"],
+    ["#goal-fit", "#screener"],
+    ["#journey", "#screener"],
+    ["#calculator", "#screener"],
+    ["#evidence", "#evidence"],
+    ["#citation-binder", "#evidence"],
+    ["#risk-lab", "#evidence"],
+    ["#cost-lab", "#evidence"],
+    ["#readiness-gate", "#evidence"],
+    ["#decision-pack", "#decision-pack"],
+    ["#memo-clearance", "#decision-pack"],
+    ["#journal", "#decision-pack"],
+    ["#review-vault", "#review-vault"],
+    ["#investor-record", "#review-vault"],
+    ["#portfolio-review", "#review-vault"],
+    ["#watchlist", "#review-vault"]
+  ]);
+  const suggestedRoute = routeToStep.get(signal.next.route) || "#screener";
+  const activeStepIndex = Math.max(0, SIMPLE_JOURNEY_STEPS.findIndex((step) => step.value === suggestedRoute));
+  const activeStep = SIMPLE_JOURNEY_STEPS[activeStepIndex] || SIMPLE_JOURNEY_STEPS[1];
+  const question = simpleJourneyQuestion(activeStep, signal);
+  return {
+    activeStep,
+    activeStepIndex,
+    next: signal.next,
+    question,
+    steps: SIMPLE_JOURNEY_STEPS,
+    summary: `${signal.next.label}: ${signal.next.reason}`
+  };
+}
+
+function simpleJourneyQuestion(step, signal) {
+  const questionMap = {
+    "#profile-room": {
+      label: "Is the investor context written?",
+      detail: "Confirm goal, horizon, SIP comfort, emergency buffer, and drawdown comfort before comparing funds."
+    },
+    "#screener": {
+      label: signal.compareCount >= 2 ? "Does this fund have a distinct job?" : "Which peer will you compare?",
+      detail: signal.compareCount >= 2
+        ? "Use role, cost, drawdown, and evidence to decide whether this fund deserves shortlist space."
+        : "Add at least one peer so the fund is not judged in isolation."
+    },
+    "#evidence": {
+      label: signal.evidence >= 78 ? "Can the source be cited?" : "Which source date is missing?",
+      detail: signal.evidence >= 78
+        ? "Carry the source date, citation path, and demo/live status into the memo."
+        : "Check AMFI, AMC factsheet, SID/KIM, TER, portfolio, benchmark, and riskometer readiness."
+    },
+    "#decision-pack": {
+      label: "Can the reason survive tomorrow?",
+      detail: "Write why this fund, why this amount, what review date, and what would make you pause."
+    },
+    "#review-vault": {
+      label: "What will trigger the next review?",
+      detail: "Save the review date, score drift, expense change, drawdown trigger, or evidence refresh reminder."
+    }
+  };
+  return questionMap[step.value] || questionMap["#screener"];
+}
+
+function investorTakeaway(signal) {
+  if (signal.evidence < 78) {
+    return "Do not treat this as ready yet. Verify source dates first, then decide whether the fund deserves shortlist space.";
+  }
+  if (signal.stressRequired) {
+    return "This can be researched, but the next real question is whether the drawdown feels acceptable in rupee terms.";
+  }
+  if (signal.costNeedsCheck) {
+    return "This may fit the role, but cost needs a quick rupee check before it earns a memo.";
+  }
+  if (signal.compareCount < 2) {
+    return "Add one peer before judging it. A fund only becomes clear when its job is compared.";
+  }
+  return "This is ready for a written research memo: role, amount, review date, and stop-checks.";
+}
+
+function decisionReadiness(signal) {
+  const memoReady = signal.evidence >= 78 && signal.compareCount >= 2 && !signal.stressRequired && !signal.costNeedsCheck;
+  const checks = [
+    {
+      label: "Evidence",
+      state: signal.evidence >= 78 ? "Ready" : "Blocked",
+      detail: signal.evidence >= 78 ? "Source path can be carried into memo." : "Verify source dates first."
+    },
+    {
+      label: "Peer",
+      state: signal.compareCount >= 2 ? "Ready" : "Needed",
+      detail: signal.compareCount >= 2 ? "At least one comparison is present." : "Add one peer before judging."
+    },
+    {
+      label: "Memo",
+      state: memoReady ? "Ready" : "Not yet",
+      detail: memoReady ? "Write role, amount, review date, and stop-checks." : "Clear the next check before memo."
+    }
+  ];
+  const readyCount = checks.filter((check) => check.state === "Ready").length;
+  const status = readyCount === checks.length ? "Memo-ready" : readyCount >= 2 ? "Almost ready" : "Blocked";
+  return { checks, readyCount, status };
+}
+
+function doNextCue(signal, readiness) {
+  const blocker = readiness.checks.find((check) => check.state !== "Ready");
+  if (!blocker) {
+    return {
+      label: "Do next",
+      title: "Write the decision memo",
+      detail: "Capture role, amount, review date, and stop-checks before any real action.",
+      route: "#decision-pack",
+      button: "Build Pack",
+      tone: "ready"
+    };
+  }
+  if (blocker.label === "Evidence") {
+    return {
+      label: "Do next",
+      title: "Verify evidence first",
+      detail: "Do not judge the fund until source dates and citation paths are clear.",
+      route: "#evidence",
+      button: "Open Evidence",
+      tone: "caution"
+    };
+  }
+  if (blocker.label === "Peer") {
+    return {
+      label: "Do next",
+      title: "Add one fair peer",
+      detail: "Compare role, cost, drawdown, and evidence before deciding shortlist space.",
+      route: "#compare",
+      button: "Compare Role",
+      tone: "watch"
+    };
+  }
+  return {
+    label: "Do next",
+    title: signal.next.label,
+    detail: signal.next.reason,
+    route: signal.next.route,
+    button: signal.next.label,
+    tone: signal.tone
+  };
+}
+
+function threeStepPlan(signal, readiness, nextCue) {
+  const stepOne = {
+    label: "01 Now",
+    title: nextCue.title,
+    detail: nextCue.detail,
+    route: nextCue.route,
+    state: "active"
+  };
+  const evidenceStep = {
+    label: "02 Then",
+    title: "Lock source proof",
+    detail: "Make sure factsheet, TER, holdings, and riskometer dates can be cited.",
+    route: "#evidence",
+    state: readiness.checks[0]?.state === "Ready" ? "ready" : "queued"
+  };
+  const compareStep = {
+    label: "02 Then",
+    title: "Compare one peer",
+    detail: "Check role, cost, drawdown, and evidence against a fair alternative.",
+    route: "#compare",
+    state: signal.compareCount >= 2 ? "ready" : "queued"
+  };
+  const stressStep = {
+    label: "02 Then",
+    title: "Feel the rupee risk",
+    detail: "Turn drawdown into money terms before increasing SIP or switching.",
+    route: "#risk-lab",
+    state: "queued"
+  };
+  const costStep = {
+    label: "02 Then",
+    title: "Check cost drag",
+    detail: "Review TER and lower-cost alternatives before writing a memo.",
+    route: "#cost-lab",
+    state: "queued"
+  };
+  const memoStep = {
+    label: "03 Final",
+    title: "Write memo",
+    detail: "Record reason, amount, review date, and stop-checks before any real action.",
+    route: "#decision-pack",
+    state: "queued"
+  };
+  const reviewStep = {
+    label: "03 Final",
+    title: "Set review rhythm",
+    detail: "Save the review date or trigger so the decision is not forgotten.",
+    route: "#review-vault",
+    state: "queued"
+  };
+  const journalStep = {
+    label: "02 Then",
+    title: "Save the reason",
+    detail: "Put the decision reason in writing before the review rhythm starts.",
+    route: "#journal",
+    state: "queued"
+  };
+
+  let second = compareStep;
+  if (nextCue.route === "#compare") second = evidenceStep;
+  if (nextCue.route === "#risk-lab") second = costStep;
+  if (nextCue.route === "#cost-lab") second = stressStep;
+  if (nextCue.route === "#decision-pack") second = journalStep;
+
+  return [stepOne, second, nextCue.route === "#decision-pack" ? reviewStep : memoStep];
+}
+
+function renderSimplicityPath(signal = signalStripConfig()) {
+  if (!els.simplicityPath) return;
+  const journey = simpleJourneyConfig(signal);
+  els.simplicityPath.innerHTML = `
+    <div class="simplicity-path-copy">
+      <span>Simple route</span>
+      <strong>Step ${escapeHtml(journey.activeStep.number)}: ${escapeHtml(journey.activeStep.label)}</strong>
+      <p>${escapeHtml(journey.summary)}</p>
+    </div>
+    <div class="simplicity-question">
+      <span>One question</span>
+      <strong>${escapeHtml(journey.question.label)}</strong>
+      <p>${escapeHtml(journey.question.detail)}</p>
+    </div>
+    <button class="text-button simplicity-next primary-next-action" type="button" data-signal-route="${escapeHtml(journey.next.route)}" aria-label="Open next action: ${escapeHtml(journey.next.label)}">
+      <span>Next action</span>
+      <strong>${escapeHtml(journey.next.label)}</strong>
+      <em>${escapeHtml(journey.next.reason)}</em>
+    </button>
+    <div class="simplicity-path-actions">
+      ${journey.steps.map((step, index) => {
+        const stateClass = index < journey.activeStepIndex ? " is-done" : index === journey.activeStepIndex ? " is-active" : "";
+        const current = index === journey.activeStepIndex ? ' aria-current="step"' : "";
+        const marker = index === journey.activeStepIndex ? '<em class="step-focus-marker">Current</em>' : "";
+        return `<button class="signal-chip simple-step${stateClass}" type="button" data-signal-route="${escapeHtml(step.value)}"${current}><span>${escapeHtml(step.number)}</span><strong>${escapeHtml(step.label)}</strong>${marker}</button>`;
+      }).join("")}
+    </div>
+  `;
+}
+
 function renderSignalStrip() {
   if (!els.nadiSignalStrip) return;
   const signal = signalStripConfig();
+  const readiness = decisionReadiness(signal);
+  const nextCue = doNextCue(signal, readiness);
+  const planSteps = threeStepPlan(signal, readiness, nextCue);
+  renderSimplicityPath(signal);
   els.nadiSignalStrip.innerHTML = `
     <article class="signal-hero ${escapeHtml(signal.tone)}">
       <div>
         <span>Selected signal</span>
         <strong>${escapeHtml(signal.posture)}</strong>
         <p>${escapeHtml(signal.postureCopy)}</p>
+        <div class="signal-takeaway">
+          <span>Investor takeaway</span>
+          <p>${escapeHtml(investorTakeaway(signal))}</p>
+        </div>
+        <div class="decision-readiness" aria-label="Decision readiness">
+          <span>Decision readiness</span>
+          <strong>${escapeHtml(readiness.status)}</strong>
+          <div>
+            ${readiness.checks.map((check) => `
+              <b class="readiness-pill ${escapeHtml(check.state.toLowerCase().replace(/\s+/g, "-"))}" title="${escapeHtml(check.detail)}">${escapeHtml(check.label)}: ${escapeHtml(check.state)}</b>
+            `).join("")}
+          </div>
+        </div>
       </div>
       <div class="signal-score" style="--score:${signal.score}">
         <b>${signal.score}</b>
@@ -2881,25 +3161,34 @@ function renderSignalStrip() {
       <strong>${signal.evidence}/100 evidence</strong>
       <p>Risk control ${signal.riskControl}/100 | sleeve delta ${signal.sleeveDelta >= 0 ? "+" : ""}${signal.sleeveDelta.toFixed(1)}</p>
     </article>
-    <article>
-      <span>Next check</span>
-      <strong>${escapeHtml(signal.next.label)}</strong>
-      <p>${escapeHtml(signal.next.reason)}</p>
+    <article class="signal-next-action ${escapeHtml(nextCue.tone)}">
+      <span>${escapeHtml(nextCue.label)}</span>
+      <strong>${escapeHtml(nextCue.title)}</strong>
+      <p>${escapeHtml(nextCue.detail)}</p>
+      <button class="text-button" type="button" data-signal-route="${escapeHtml(nextCue.route)}">${escapeHtml(nextCue.button)}</button>
     </article>
-    <article class="signal-actions">
-      <span>Quick jump</span>
-      <div>
-        ${signal.quickRoutes.map((item) => `
-          <button class="signal-chip" type="button" data-signal-route="${escapeHtml(item.route)}">${escapeHtml(item.label)}</button>
+    <article class="signal-actions signal-plan">
+      <span>Simple action path</span>
+      <div class="signal-plan-list">
+        ${planSteps.map((step) => `
+          <button class="signal-plan-step ${escapeHtml(step.state)}" type="button" data-signal-route="${escapeHtml(step.route)}">
+            <b>${escapeHtml(step.label)}</b>
+            <strong>${escapeHtml(step.title)}</strong>
+            <small>${escapeHtml(step.detail)}</small>
+            ${step.state === "active" ? '<em class="step-focus-marker plan-focus-marker">You are here</em>' : ""}
+          </button>
         `).join("")}
       </div>
-      <button class="text-button" id="copySignalStrip" type="button">Copy signal</button>
+      <button class="text-button signal-copy-button" id="copySignalStrip" type="button">Copy signal</button>
     </article>
   `;
 }
 
 function makeSignalStripNote() {
   const signal = signalStripConfig();
+  const readiness = decisionReadiness(signal);
+  const nextCue = doNextCue(signal, readiness);
+  const planSteps = threeStepPlan(signal, readiness, nextCue);
   return [
     `# NiveshNadi Signal Strip - ${signal.fund.name}`,
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -2910,6 +3199,14 @@ function makeSignalStripNote() {
     `Sleeve peer delta: ${signal.sleeveDelta >= 0 ? "+" : ""}${signal.sleeveDelta.toFixed(1)}`,
     `Next check: ${signal.next.label}`,
     `Reason: ${signal.next.reason}`,
+    `Investor takeaway: ${investorTakeaway(signal)}`,
+    `Decision readiness: ${readiness.status} (${readiness.readyCount}/${readiness.checks.length})`,
+    ...readiness.checks.map((check) => `- ${check.label}: ${check.state} - ${check.detail}`),
+    `Do next: ${nextCue.title}`,
+    `Action: ${nextCue.button} (${nextCue.route})`,
+    "",
+    "3-step plan:",
+    ...planSteps.map((step) => `- ${step.label}: ${step.title} (${step.route}) - ${step.detail}`),
     "",
     "Research support only. This signal is not a recommendation, personalized advice, execution instruction, or return guarantee."
   ].join("\n");
@@ -7669,7 +7966,7 @@ function buildTrackerConfig() {
     detail: "MFD dashboard, ARN/EUIN, PAN-consent, registered clients, review packs, and handoff audit trail stay planned after Phase 1 retail launch.",
     blockers: ["Phase 1 account model", "consent workflow", "privacy review", "role-based distributor access"]
   };
-  const pace = `v212 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
+  const pace = `v216 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
   const guardrails = [
     "Every new release must protect UI simplicity: keep the default path clear, move depth behind explicit choices, and avoid forcing expert controls onto first-time investors.",
     "Build Tracker is a project roadmap for this prototype; it is not an investor-facing recommendation or launch promise.",
@@ -7825,7 +8122,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-      <article><span>Prototype version</span><strong>Phase 1 v212</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+      <article><span>Prototype version</span><strong>Phase 1 v226</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -26909,6 +27206,64 @@ function targetFromHash(hash) {
   }
 }
 
+function syncWorkspaceFocusClass(hash = window.location.hash) {
+  const investorRecordFocus = hash === "#investor-record";
+  state.investorRecordFocus = investorRecordFocus;
+  document.body.classList.toggle("investor-record-focus", investorRecordFocus);
+}
+
+function buildWorkspaceOptionIndex() {
+  if (!els.workspaceJump || state.workspaceJumpFullHtml) return;
+  state.workspaceJumpFullHtml = els.workspaceJump.innerHTML;
+  state.workspaceOptionIndex = new Map(
+    Array.from(els.workspaceJump.options)
+      .filter((option) => option.value)
+      .map((option) => [
+        option.value,
+        {
+          label: option.textContent.trim(),
+          group: option.parentElement?.tagName === "OPTGROUP" ? option.parentElement.label : "Workspace"
+        }
+      ])
+  );
+}
+
+function renderWorkspaceJumpForMode(activeHash = window.location.hash) {
+  if (!els.workspaceJump) return;
+  if (!state.workspaceJumpFullHtml) buildWorkspaceOptionIndex();
+  if (!state.simpleMode) {
+    if (state.workspaceJumpFullHtml && els.workspaceJump.innerHTML !== state.workspaceJumpFullHtml) {
+      els.workspaceJump.innerHTML = state.workspaceJumpFullHtml;
+    }
+    return;
+  }
+
+  const pathRoutes = SIMPLE_WORKSPACE_ROUTES.slice(0, 5);
+  const optionalRoutes = SIMPLE_WORKSPACE_ROUTES.slice(5);
+  const groups = [
+    { label: "Simple path", routes: pathRoutes },
+    { label: "Optional", routes: optionalRoutes }
+  ];
+
+  if (activeHash && targetFromHash(activeHash) && !SIMPLE_WORKSPACE_ROUTE_SET.has(activeHash)) {
+    const meta = state.workspaceOptionIndex.get(activeHash);
+    groups.unshift({
+      label: "Current deep link",
+      routes: [{ label: meta?.label || "Current workspace", value: activeHash }]
+    });
+  }
+
+  els.workspaceJump.innerHTML = [
+    '<option value="">Guided steps</option>',
+    ...groups.map((group) => (
+      `<optgroup label="${escapeHtml(group.label)}">` +
+      group.routes.map((route) => `<option value="${escapeHtml(route.value)}">${escapeHtml(route.label)}</option>`).join("") +
+      "</optgroup>"
+    )),
+    '<optgroup label="Full workshop"><option value="" disabled>Switch to Full view for every tool</option></optgroup>'
+  ].join("");
+}
+
 function stickyHeaderOffset() {
   const header = document.querySelector(".app-header");
   if (!header) return 14;
@@ -26943,6 +27298,8 @@ function scrollToHash(hash, behavior = "smooth", updateHash = false) {
   const target = targetFromHash(hash);
   if (!target) return;
   state.hashSettleUntil = Date.now() + HASH_SETTLE_WINDOW;
+  syncWorkspaceFocusClass(hash);
+  renderWorkspaceJumpForMode(hash);
   updateWorkspaceNavigator(hash);
   scrollToElement(target, behavior);
   if (updateHash && window.location.hash !== hash) {
@@ -26955,8 +27312,10 @@ function scrollToHash(hash, behavior = "smooth", updateHash = false) {
 
 function settleHashNavigation() {
   const hash = window.location.hash;
+  syncWorkspaceFocusClass(hash);
   if (!targetFromHash(hash)) return;
   state.hashSettleUntil = Date.now() + HASH_SETTLE_WINDOW;
+  renderWorkspaceJumpForMode(hash);
   updateWorkspaceNavigator(hash);
   requestAnimationFrame(() => {
     updateWorkspaceNavigator(hash);
@@ -26981,7 +27340,15 @@ function settleHashNavigation() {
 
 function workspaceOption(hash) {
   if (!els.workspaceJump || !hash) return null;
-  return Array.from(els.workspaceJump.options).find((option) => option.value === hash) || null;
+  const option = Array.from(els.workspaceJump.options).find((entry) => entry.value === hash);
+  if (option) return option;
+  const meta = state.workspaceOptionIndex.get(hash);
+  if (!meta) return null;
+  return {
+    value: hash,
+    textContent: meta.label,
+    parentElement: { tagName: "OPTGROUP", label: meta.group }
+  };
 }
 
 function workspaceHashFromViewport() {
@@ -27000,6 +27367,7 @@ function workspaceHashFromViewport() {
 }
 
 function updateWorkspaceNavigator(hash = "") {
+  renderWorkspaceJumpForMode(hash || workspaceHashFromViewport());
   const fallbackHash = hash && workspaceOption(hash) ? hash : workspaceHashFromViewport();
   const option = workspaceOption(fallbackHash);
   const activeHash = option ? fallbackHash : "";
@@ -27062,6 +27430,9 @@ function applySimpleMode(enabled, persist = true) {
   state.simpleMode = enabled;
   document.body.classList.toggle("simple-mode", enabled);
   document.body.classList.toggle("full-mode", !enabled);
+  syncWorkspaceFocusClass();
+  renderWorkspaceJumpForMode(window.location.hash || workspaceHashFromViewport());
+  updateWorkspaceNavigator(window.location.hash || workspaceHashFromViewport());
   if (els.simpleModeToggle) {
     els.simpleModeToggle.setAttribute("aria-pressed", enabled ? "true" : "false");
     els.simpleModeToggle.textContent = enabled ? "Full view" : "Simple view";
@@ -44858,7 +45229,8 @@ function bindEvents() {
   document.addEventListener("click", (event) => {
     const signalRoute = event.target.closest("[data-signal-route]");
     if (!signalRoute) return;
-    scrollToHash(signalRoute.dataset.signalRoute, "smooth", true);
+    event.preventDefault();
+    scrollToHash(signalRoute.dataset.signalRoute, "auto", true);
   });
 
   document.addEventListener("click", (event) => {
@@ -45616,6 +45988,8 @@ function bindScrollTopButton() {
 
 function bindWorkspaceJump() {
   if (!els.workspaceJump) return;
+  buildWorkspaceOptionIndex();
+  renderWorkspaceJumpForMode(window.location.hash || "#screener");
   let scrollFrame = 0;
   const syncFromScroll = () => {
     scrollFrame = 0;
@@ -45659,6 +46033,7 @@ function cacheElements() {
     sortSelect: qs("#sortSelect"),
     resetFilters: qs("#resetFilters"),
     copyBrief: qs("#copyBrief"),
+    simplicityPath: qs("#simplicityPath"),
     nadiSignalStrip: qs("#nadiSignalStrip"),
     researchAutopilot: qs("#researchAutopilot"),
     fundGenome: qs("#fundGenome"),

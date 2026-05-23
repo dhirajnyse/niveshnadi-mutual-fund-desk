@@ -501,7 +501,7 @@ main {
 .simplicity-path {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) repeat(5, auto);
+  grid-template-columns: minmax(240px, 0.85fr) minmax(250px, 0.95fr) minmax(0, 1.35fr);
   gap: 8px;
   align-items: center;
   padding: 10px 12px;
@@ -522,6 +522,140 @@ main {
   margin-top: 2px;
   font-size: 15px;
   line-height: 1.25;
+}
+
+.simplicity-path p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.simplicity-question {
+  min-height: 78px;
+  padding: 10px;
+  border: 1px solid rgba(31, 78, 121, 0.14);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.simplicity-question strong {
+  font-size: 14px;
+}
+
+.simplicity-path-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.simplicity-path .simple-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 34px;
+}
+
+.simplicity-path .simple-step strong {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.simplicity-path .simple-step span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 10px;
+}
+
+.simplicity-path .simple-step.is-done {
+  background: var(--mint-soft);
+  border-color: rgba(15, 124, 107, 0.28);
+  color: var(--mint);
+}
+
+.simplicity-path .simple-step.is-active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #ffffff;
+}
+
+.simplicity-path .simple-step.is-active span {
+  color: var(--ink);
+}
+
+.step-focus-marker {
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  min-height: 18px;
+  padding: 2px 6px;
+  border-radius: var(--radius);
+  background: var(--gold-soft);
+  color: #7a4a09;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.simplicity-path .simple-step.is-active .step-focus-marker {
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.simplicity-next {
+  min-height: 34px;
+}
+
+.primary-next-action {
+  order: -1;
+  grid-column: 1 / -1;
+  display: grid;
+  place-items: center;
+  gap: 4px;
+  min-height: 58px;
+  padding: 12px 14px;
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #ffffff;
+  text-align: center;
+}
+
+.primary-next-action span {
+  color: #dbe7ef;
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.primary-next-action strong {
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+.primary-next-action em {
+  max-width: 760px;
+  color: #dbe7ef;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.primary-next-action:hover,
+.primary-next-action:focus-visible {
+  border-color: var(--mint);
+  background: var(--mint);
+  color: #ffffff;
 }
 
 .nadi-signal-strip {
@@ -556,6 +690,77 @@ main {
   line-height: 1.15;
 }
 
+.signal-takeaway {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(15, 124, 107, 0.16);
+}
+
+.signal-takeaway span {
+  color: var(--blue);
+}
+
+.signal-takeaway p {
+  margin-top: 3px;
+  color: var(--ink);
+  font-weight: 850;
+}
+
+.decision-readiness {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(31, 78, 121, 0.12);
+}
+
+.decision-readiness > span {
+  color: var(--mint);
+}
+
+.decision-readiness > strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 14px;
+}
+
+.decision-readiness div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.readiness-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.readiness-pill.ready {
+  border-color: rgba(15, 124, 107, 0.28);
+  background: var(--mint-soft);
+  color: var(--mint);
+}
+
+.readiness-pill.blocked,
+.readiness-pill.not-yet {
+  border-color: rgba(193, 75, 105, 0.22);
+  background: #fff3f5;
+  color: #a43756;
+}
+
+.readiness-pill.needed {
+  border-color: rgba(225, 160, 55, 0.25);
+  background: var(--gold-soft);
+  color: #8c5f13;
+}
+
 .nadi-signal-strip p {
   margin: 0;
   color: var(--muted);
@@ -579,6 +784,27 @@ main {
 
 .signal-hero.caution {
   border-color: rgba(193, 75, 105, 0.38);
+}
+
+.signal-next-action {
+  border-color: rgba(15, 124, 107, 0.24);
+  background: linear-gradient(135deg, rgba(232, 248, 244, 0.8), rgba(255, 255, 255, 0.96));
+}
+
+.signal-next-action.watch {
+  border-color: rgba(225, 160, 55, 0.36);
+  background: linear-gradient(135deg, rgba(255, 246, 226, 0.88), rgba(255, 255, 255, 0.96));
+}
+
+.signal-next-action.caution {
+  border-color: rgba(193, 75, 105, 0.3);
+  background: linear-gradient(135deg, rgba(255, 243, 245, 0.9), rgba(255, 255, 255, 0.96));
+}
+
+.signal-next-action .text-button {
+  width: 100%;
+  min-height: 34px;
+  margin-top: auto;
 }
 
 .signal-score {
@@ -621,6 +847,62 @@ main {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+}
+
+.signal-plan .signal-plan-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.signal-plan-step {
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  min-height: 70px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ink);
+  text-align: left;
+}
+
+.signal-plan-step b {
+  color: var(--mint);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.signal-plan-step strong {
+  font-size: 13px;
+}
+
+.signal-plan-step small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.signal-plan-step.active {
+  border-color: rgba(15, 124, 107, 0.36);
+  background: var(--mint-soft);
+}
+
+.signal-plan-step.ready {
+  border-color: rgba(31, 78, 121, 0.2);
+  background: var(--blue-soft);
+}
+
+.signal-plan-step:hover,
+.signal-plan-step:focus-visible {
+  border-color: rgba(15, 124, 107, 0.44);
+  box-shadow: 0 8px 18px rgba(15, 39, 67, 0.08);
+}
+
+.signal-plan-step.active .plan-focus-marker {
+  margin-top: 3px;
 }
 
 .signal-chip {
@@ -692,15 +974,52 @@ body.simple-mode .desk-stats {
 }
 
 body.simple-mode .nadi-signal-strip {
-  grid-template-columns: minmax(240px, 1.2fr) repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(280px, 1.25fr) minmax(190px, 0.85fr) minmax(220px, 1fr);
+}
+
+body.simple-mode .signal-plan {
+  grid-column: 1 / -1;
+  padding: 12px;
+  border-color: rgba(15, 124, 107, 0.3);
+  background: linear-gradient(135deg, rgba(232, 248, 244, 0.84), rgba(255, 255, 255, 0.96));
+}
+
+body.simple-mode .signal-plan > span {
+  color: var(--mint);
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+body.simple-mode .signal-plan .signal-plan-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+body.simple-mode .signal-plan-step {
+  min-height: 96px;
+  padding: 10px;
+  align-content: start;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+body.simple-mode .signal-plan-step.active {
+  border-color: rgba(15, 124, 107, 0.48);
+  box-shadow: 0 10px 22px rgba(15, 124, 107, 0.12);
+}
+
+body.simple-mode .signal-copy-button {
+  display: none;
 }
 
 body.simple-mode .nadi-signal-strip article:nth-child(3),
-body.simple-mode .nadi-signal-strip article:nth-child(5),
 body.simple-mode .research-autopilot,
 body.simple-mode .fund-genome,
 body.simple-mode .future-shock-map,
 body.simple-mode .memory-capsule {
+  display: none;
+}
+
+body.simple-mode:not(.investor-record-focus) .investor-record-band {
   display: none;
 }
 
@@ -29837,7 +30156,11 @@ a:focus-visible {
   }
 
   .simplicity-path {
-    grid-template-columns: minmax(0, 1fr) repeat(5, auto);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .simplicity-path-actions {
+    justify-content: flex-start;
   }
 
   .nadi-signal-strip {
@@ -30553,6 +30876,14 @@ a:focus-visible {
   .simplicity-path,
   body.simple-mode .nadi-signal-strip {
     grid-template-columns: 1fr;
+  }
+
+  body.simple-mode .signal-plan .signal-plan-list {
+    grid-template-columns: 1fr;
+  }
+
+  body.simple-mode .signal-plan-step {
+    min-height: 78px;
   }
 
   .simplicity-path .signal-chip {

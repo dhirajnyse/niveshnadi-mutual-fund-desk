@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260523-06";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v226 One Move Rail";
+const DATA_VERSION = "20260523-14";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v234 Starter Chip Counts";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const HASH_SETTLE_DELAYS = [0, 80, 180, 360, 720, 1200, 1900, 2800, 4000, 5600, 7600, 9800];
@@ -1164,10 +1164,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "One Move Rail",
+    label: "Single Search First",
     status: "Shipping now",
     route: "#screener",
-    detail: "Lift the next action above the route rail as one full-width command, then keep route chips as secondary context."
+    detail: "In Simple View, keep one search box on the first screen and move category, risk, and sort controls into Full View."
   },
   {
     label: "Portable mission memory",
@@ -8122,7 +8122,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-      <article><span>Prototype version</span><strong>Phase 1 v226</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+      <article><span>Prototype version</span><strong>Phase 1 v234</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -20635,20 +20635,41 @@ function selectedFund() {
   return FUNDS.find((fund) => fund.id === state.selectedId) || FUNDS[0];
 }
 
+function fundSearchText(fund) {
+  return [
+    fund.name,
+    fund.category,
+    fund.sleeve,
+    fund.risk,
+    fund.role,
+    fund.style,
+    ...fund.tags
+  ].join(" ").toLowerCase();
+}
+
+function fundMatchesSearchTerm(fund, term) {
+  const normalized = String(term || "").trim().toLowerCase();
+  return !normalized || fundSearchText(fund).includes(normalized);
+}
+
+function searchPresetCount(term) {
+  return FUNDS.filter((fund) => fundMatchesSearchTerm(fund, term)).length;
+}
+
+function renderSearchPresetCounts() {
+  qsa("[data-search-preset]").forEach((button) => {
+    const label = button.dataset.searchPresetLabel || button.textContent.trim();
+    const count = searchPresetCount(button.dataset.searchPreset || "");
+    button.dataset.searchPresetLabel = label;
+    button.innerHTML = `${escapeHtml(label)} <small>${count}</small>`;
+  });
+}
+
 function filteredFunds() {
   const term = state.filters.search.trim().toLowerCase();
   const items = FUNDS.filter((fund) => {
-    const searchable = [
-      fund.name,
-      fund.category,
-      fund.sleeve,
-      fund.risk,
-      fund.role,
-      fund.style,
-      ...fund.tags
-    ].join(" ").toLowerCase();
     return (
-      (!term || searchable.includes(term)) &&
+      fundMatchesSearchTerm(fund, term) &&
       (state.filters.category === "all" || fund.category === state.filters.category) &&
       (state.filters.risk === "all" || fund.risk === state.filters.risk)
     );
@@ -20680,11 +20701,39 @@ function renderWatchFundSelect() {
 
 function renderFundGrid() {
   const funds = filteredFunds();
+  const term = state.filters.search.trim();
+  const topMatch = funds[0];
   if (els.fundCount) {
     els.fundCount.textContent = `${funds.length} of ${FUNDS.length} funds`;
   }
+  if (els.searchFeedback) {
+    const label = term
+      ? `Showing ${funds.length} of ${FUNDS.length} funds for "${escapeHtml(term)}".`
+      : `Showing all ${FUNDS.length} demo funds.`;
+    els.searchFeedback.innerHTML = `
+      <span>${label}</span>
+      ${term && topMatch ? `<strong class="search-top-match">Top match: ${escapeHtml(topMatch.name)}</strong>` : ""}
+      ${term && topMatch ? `<button class="signal-chip is-primary" type="button" data-open-top-match aria-label="Open top match ${escapeHtml(topMatch.name)}">Open top match</button>` : ""}
+      ${term ? '<button class="signal-chip" type="button" data-clear-search>Clear</button>' : ""}
+    `;
+  }
   if (!funds.length) {
-    els.fundGrid.innerHTML = '<div class="no-results">No funds match this research filter. Reset filters or widen the category.</div>';
+    const hint = term
+      ? `No demo fund matches "${escapeHtml(term)}" yet. Clear it or try a starter search.`
+      : "No funds match this research filter. Clear filters or try a starter search.";
+    els.fundGrid.innerHTML = `
+      <div class="no-results search-rescue">
+        <strong>No match found</strong>
+        <span>${hint}</span>
+        <div class="search-rescue-actions" aria-label="Search recovery actions">
+          <button class="signal-chip" type="button" data-clear-search>Clear search</button>
+          <button class="signal-chip" type="button" data-search-preset="large cap">Large cap</button>
+          <button class="signal-chip" type="button" data-search-preset="debt">Debt</button>
+          <button class="signal-chip" type="button" data-search-preset="tax saver">Tax saver</button>
+        </div>
+      </div>
+    `;
+    renderSearchPresetCounts();
     return;
   }
 
@@ -20736,6 +20785,7 @@ function renderFundGrid() {
       </article>
     `;
   }).join("");
+  renderSearchPresetCounts();
 }
 
 function readProfileRoomConfig() {
@@ -45234,6 +45284,31 @@ function bindEvents() {
   });
 
   document.addEventListener("click", (event) => {
+    const searchPreset = event.target.closest("[data-search-preset]");
+    if (!searchPreset) return;
+    event.preventDefault();
+    syncSearchInputs(searchPreset.dataset.searchPreset || "");
+    els.searchInput?.focus();
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest("[data-open-top-match]")) return;
+    event.preventDefault();
+    const topMatch = filteredFunds()[0];
+    if (!topMatch) return;
+    const inspectButton = Array.from(document.querySelectorAll("[data-select-fund]"))
+      .find((button) => button.dataset.selectFund === topMatch.id);
+    inspectButton?.click();
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest("[data-clear-search]")) return;
+    event.preventDefault();
+    syncSearchInputs("");
+    els.searchInput?.focus();
+  });
+
+  document.addEventListener("click", (event) => {
     const buildRoute = event.target.closest("[data-build-route]");
     if (!buildRoute) return;
     if (buildRoute.dataset.autopilotStep) {
@@ -46028,6 +46103,7 @@ function cacheElements() {
     simpleModeToggle: qs("#simpleModeToggle"),
     navLinks: qsa(".top-nav a[href^='#']"),
     searchInput: qs("#searchInput"),
+    searchFeedback: qs("#searchFeedback"),
     categoryFilter: qs("#categoryFilter"),
     riskFilter: qs("#riskFilter"),
     sortSelect: qs("#sortSelect"),

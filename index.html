@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260523-06">
+    <link rel="stylesheet" href="styles.css?v=20260523-14">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -192,7 +192,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-            <p class="release-pill">Phase 1 v226</p>
+            <p class="release-pill">Phase 1 v234</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -228,11 +228,14 @@
                   </select>
                 </label>
               </div>
-            </div>
-            <div class="desk-stats" aria-label="Desk status">
-              <div><span>Universe</span><strong>11 demo funds</strong></div>
-              <div><span>Mode</span><strong>Research only</strong></div>
-              <div><span>Next</span><strong>Live data</strong></div>
+              <div class="search-starters" aria-label="Starter searches">
+                <span>Try</span>
+                <button class="signal-chip" type="button" data-search-preset="large cap">Large cap</button>
+                <button class="signal-chip" type="button" data-search-preset="debt">Debt</button>
+                <button class="signal-chip" type="button" data-search-preset="low">Low risk</button>
+                <button class="signal-chip" type="button" data-search-preset="tax saver">Tax saver</button>
+              </div>
+              <div id="searchFeedback" class="search-feedback" aria-live="polite"></div>
             </div>
             <div id="simplicityPath" class="simplicity-path" aria-label="Simple research route">
               <div>
@@ -244,6 +247,11 @@
               <button class="signal-chip" type="button" data-signal-route="#evidence">Verify</button>
               <button class="signal-chip" type="button" data-signal-route="#decision-pack">Memo</button>
               <button class="signal-chip" type="button" data-signal-route="#review-vault">Review</button>
+            </div>
+            <div class="desk-stats" aria-label="Desk status">
+              <div><span>Universe</span><strong>11 demo funds</strong></div>
+              <div><span>Mode</span><strong>Research only</strong></div>
+              <div><span>Next</span><strong>Live data</strong></div>
             </div>
             <div id="nadiSignalStrip" class="nadi-signal-strip" aria-label="Selected fund signal strip"></div>
             <div id="researchAutopilot" class="research-autopilot" aria-label="Nadi Research Autopilot"></div>
@@ -4440,6 +4448,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260523-06"></script>
+    <script src="app.js?v=20260523-14"></script>
   </body>
 </html>

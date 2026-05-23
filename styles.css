@@ -969,8 +969,96 @@ body.simple-mode .command-panel {
   width: 100%;
 }
 
+body.simple-mode .control-grid {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 620px;
+}
+
+body.simple-mode .control-grid label:not(:first-child) {
+  display: none;
+}
+
+body.simple-mode .control-grid input[type="search"] {
+  min-height: 44px;
+  font-size: 14px;
+}
+
+.search-starters {
+  display: none;
+}
+
+body.simple-mode .search-starters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  max-width: 620px;
+  margin-top: 8px;
+}
+
+body.simple-mode .search-starters span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+body.simple-mode .search-starters .signal-chip {
+  min-height: 30px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+body.simple-mode .search-starters .signal-chip small,
+.search-rescue-actions .signal-chip small {
+  display: inline-grid;
+  min-width: 18px;
+  min-height: 18px;
+  place-items: center;
+  margin-left: 4px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.search-feedback {
+  display: none;
+}
+
+body.simple-mode .search-feedback {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  max-width: 620px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+body.simple-mode .search-feedback .signal-chip {
+  min-height: 28px;
+  padding: 5px 9px;
+  font-size: 12px;
+}
+
+body.simple-mode .search-feedback .search-top-match {
+  color: var(--ink);
+}
+
+body.simple-mode .search-feedback .signal-chip.is-primary {
+  background: var(--ink);
+  color: #fff;
+}
+
 body.simple-mode .desk-stats {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
+}
+
+body.simple-mode .desk-stats div:not(:first-child) {
+  display: none;
 }
 
 body.simple-mode .nadi-signal-strip {
@@ -29863,6 +29951,33 @@ a:focus-visible {
   border-radius: var(--radius);
   text-align: center;
   padding: 20px;
+}
+
+.search-rescue {
+  align-content: center;
+  gap: 10px;
+}
+
+.search-rescue strong {
+  color: var(--ink);
+  font-size: 18px;
+}
+
+.search-rescue span {
+  max-width: 540px;
+}
+
+.search-rescue-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.search-rescue-actions .signal-chip {
+  min-height: 30px;
+  padding: 6px 10px;
+  font-size: 12px;
 }
 
 .floating-dock {

@@ -218,6 +218,44 @@ a {
   border-left: 1px solid rgba(81, 103, 125, 0.18);
 }
 
+.header-next-action {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  max-width: 178px;
+  padding: 5px 11px;
+  overflow: hidden;
+  border: 1px solid rgba(15, 124, 107, 0.28);
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: #ffffff;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.header-next-action span {
+  margin-right: 7px;
+  color: #dbe7ef;
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.header-next-action strong {
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 950;
+  text-overflow: ellipsis;
+}
+
+.header-next-action:hover,
+.header-next-action:focus-visible {
+  border-color: var(--mint);
+  background: var(--mint);
+}
+
 .top-nav a,
 .text-button,
 .primary-button,
@@ -610,6 +648,43 @@ main {
   color: var(--ink);
 }
 
+.room-focus-note {
+  grid-column: 1 / -1;
+  display: none;
+  grid-template-columns: minmax(190px, 0.8fr) minmax(0, 1.3fr) max-content;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid rgba(31, 78, 121, 0.16);
+  border-radius: var(--radius);
+  background: rgba(245, 249, 252, 0.9);
+}
+
+.room-focus-note span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.room-focus-note strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.room-focus-note p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.room-focus-note .signal-chip {
+  min-width: 142px;
+}
+
 .simplicity-next {
   min-height: 34px;
 }
@@ -945,6 +1020,47 @@ body.simple-mode .workspace-command {
   padding-left: 0;
 }
 
+body.simple-mode .header-next-action:not([hidden]) {
+  display: inline-flex;
+}
+
+body.simple-mode .app-header {
+  grid-template-columns: minmax(230px, 300px) minmax(0, 1fr);
+  gap: 12px;
+  min-height: 60px;
+  padding-block: 6px;
+}
+
+body.simple-mode .brand-lockup {
+  gap: 10px;
+}
+
+body.simple-mode .brand-logo {
+  width: 104px;
+  min-width: 92px;
+}
+
+body.simple-mode .brand-lockup h1 {
+  max-width: 240px;
+  font-size: 18px;
+  line-height: 1.06;
+}
+
+body.simple-mode .eyebrow {
+  margin-bottom: 2px;
+  font-size: 10px;
+}
+
+body.simple-mode .nav-mode-strip a {
+  min-height: 26px;
+  padding: 4px 7px 4px 4px;
+}
+
+body.simple-mode .simple-mode-toggle,
+body.simple-mode .workspace-jump select {
+  min-height: 34px;
+}
+
 body.simple-mode .workspace-jump {
   grid-template-columns: minmax(180px, 230px);
 }
@@ -1108,6 +1224,40 @@ body.simple-mode .memory-capsule {
 }
 
 body.simple-mode:not(.investor-record-focus) .investor-record-band {
+  display: none;
+}
+
+body.simple-mode.simple-room-focus .workspace-band:not(.command-band) {
+  display: none;
+}
+
+body.simple-mode.simple-room-focus .inline-room-focus-note {
+  display: grid;
+}
+
+body.simple-mode.simple-profile-focus #profile-room,
+body.simple-mode.simple-find-focus #screener,
+body.simple-mode.simple-verify-focus #evidence,
+body.simple-mode.simple-memo-focus #decision-pack,
+body.simple-mode.simple-review-focus #review-vault {
+  display: block;
+}
+
+body.simple-mode.simple-profile-focus .memo-clearance-band,
+body.simple-mode.simple-profile-focus .clearance-sprint-band,
+body.simple-mode.simple-profile-focus .journey-timeline-band,
+body.simple-mode.simple-profile-focus .briefing-band,
+body.simple-mode.simple-profile-focus .briefing-vault-band,
+body.simple-mode.simple-profile-focus .research-memory-band,
+body.simple-mode.simple-profile-focus .privacy-control-band,
+body.simple-mode.simple-profile-focus .share-safe-band,
+body.simple-mode.simple-profile-focus .consent-gate-band,
+body.simple-mode.simple-profile-focus .starter-band,
+body.simple-mode.simple-profile-focus .investor-passport-band,
+body.simple-mode.simple-profile-focus .coach-band,
+body.simple-mode.simple-profile-focus .lane-band,
+body.simple-mode.simple-profile-focus .pulse-band,
+body.simple-mode.simple-review-focus .dossier-band {
   display: none;
 }
 
@@ -30966,6 +31116,11 @@ a:focus-visible {
     width: 100%;
   }
 
+  .header-next-action {
+    width: 100%;
+    max-width: none;
+  }
+
   .nav-mode-strip {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -30989,6 +31144,7 @@ a:focus-visible {
   }
 
   .simplicity-path,
+  .room-focus-note,
   body.simple-mode .nadi-signal-strip {
     grid-template-columns: 1fr;
   }
@@ -31002,6 +31158,10 @@ a:focus-visible {
   }
 
   .simplicity-path .signal-chip {
+    width: 100%;
+  }
+
+  .room-focus-note .signal-chip {
     width: 100%;
   }
 

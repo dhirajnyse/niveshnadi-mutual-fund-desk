@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260523-14";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v234 Starter Chip Counts";
+const DATA_VERSION = "20260529-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v240 Room Step Cue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const HASH_SETTLE_DELAYS = [0, 80, 180, 360, 720, 1200, 1900, 2800, 4000, 5600, 7600, 9800];
@@ -12,6 +12,43 @@ const SIMPLE_JOURNEY_STEPS = [
   { number: "04", label: "Memo", value: "#decision-pack", detail: "Write the reason, amount, review date, and guardrail." },
   { number: "05", label: "Review", value: "#review-vault", detail: "Save the review memory and next check." }
 ];
+const SIMPLE_ROOM_CUES = {
+  "#profile-room": {
+    label: "Profile room",
+    title: "Set context before funds",
+    action: "Fill goal, horizon, SIP comfort, emergency buffer, and drawdown comfort.",
+    next: "Next: Find funds",
+    route: "#screener"
+  },
+  "#screener": {
+    label: "Find funds",
+    title: "Build a tiny shortlist",
+    action: "Search one category, inspect the anchor fund, and keep one fair peer.",
+    next: "Next: Verify evidence",
+    route: "#evidence"
+  },
+  "#evidence": {
+    label: "Verify evidence",
+    title: "Trust before score",
+    action: "Check source status, citation path, TER, holdings, benchmark, and riskometer.",
+    next: "Next: Write memo",
+    route: "#decision-pack"
+  },
+  "#decision-pack": {
+    label: "Write memo",
+    title: "Write before action",
+    action: "Record reason, amount, review date, conviction, and pause condition.",
+    next: "Next: Save review",
+    route: "#review-vault"
+  },
+  "#review-vault": {
+    label: "Review memory",
+    title: "Keep the future check visible",
+    action: "Save the review snapshot or record, then set the next trigger.",
+    next: "Next: Return to Profile or Find",
+    route: "#profile-room"
+  }
+};
 const SIMPLE_WORKSPACE_ROUTES = [
   ...SIMPLE_JOURNEY_STEPS.map((step) => ({ label: step.label === "Find" ? "Find funds" : step.label === "Memo" ? "Write memo" : step.label === "Review" ? "Review vault" : step.label, value: step.value })),
   { label: "Investor record", value: "#investor-record" },
@@ -19,6 +56,36 @@ const SIMPLE_WORKSPACE_ROUTES = [
   { label: "Build tracker", value: "#build-tracker" }
 ];
 const SIMPLE_WORKSPACE_ROUTE_SET = new Set(SIMPLE_WORKSPACE_ROUTES.map((route) => route.value));
+const SIMPLE_ROUTE_STEP_BY_HASH = new Map([
+  ["#profile-room", "#profile-room"],
+  ["#investor-passport", "#profile-room"],
+  ["#suitability-passport", "#profile-room"],
+  ["#screener", "#screener"],
+  ["#compare", "#screener"],
+  ["#goal-fit", "#screener"],
+  ["#journey", "#screener"],
+  ["#calculator", "#screener"],
+  ["#evidence", "#evidence"],
+  ["#citation-binder", "#evidence"],
+  ["#risk-lab", "#evidence"],
+  ["#cost-lab", "#evidence"],
+  ["#readiness-gate", "#evidence"],
+  ["#decision-pack", "#decision-pack"],
+  ["#memo-clearance", "#decision-pack"],
+  ["#journal", "#decision-pack"],
+  ["#review-vault", "#review-vault"],
+  ["#investor-record", "#review-vault"],
+  ["#portfolio-review", "#review-vault"],
+  ["#watchlist", "#review-vault"]
+]);
+const SIMPLE_ROOM_FOCUS_CLASS_BY_HASH = new Map([
+  ["#profile-room", "simple-profile-focus"],
+  ["#screener", "simple-find-focus"],
+  ["#evidence", "simple-verify-focus"],
+  ["#decision-pack", "simple-memo-focus"],
+  ["#review-vault", "simple-review-focus"]
+]);
+const SIMPLE_ROOM_FOCUS_CLASSES = Array.from(SIMPLE_ROOM_FOCUS_CLASS_BY_HASH.values());
 
 if ("scrollRestoration" in window.history) {
   window.history.scrollRestoration = "manual";
@@ -941,6 +1008,7 @@ const state = {
   answerSheetHydrated: false,
   hashSettleUntil: 0,
   simpleMode: true,
+  simpleRoomFocus: "",
   investorRecordFocus: false,
   workspaceJumpFullHtml: "",
   workspaceOptionIndex: new Map(),
@@ -2873,31 +2941,15 @@ function signalStripConfig() {
   };
 }
 
-function simpleJourneyConfig(signal = signalStripConfig()) {
-  const routeToStep = new Map([
-    ["#profile-room", "#profile-room"],
-    ["#investor-passport", "#profile-room"],
-    ["#suitability-passport", "#profile-room"],
-    ["#screener", "#screener"],
-    ["#compare", "#screener"],
-    ["#goal-fit", "#screener"],
-    ["#journey", "#screener"],
-    ["#calculator", "#screener"],
-    ["#evidence", "#evidence"],
-    ["#citation-binder", "#evidence"],
-    ["#risk-lab", "#evidence"],
-    ["#cost-lab", "#evidence"],
-    ["#readiness-gate", "#evidence"],
-    ["#decision-pack", "#decision-pack"],
-    ["#memo-clearance", "#decision-pack"],
-    ["#journal", "#decision-pack"],
-    ["#review-vault", "#review-vault"],
-    ["#investor-record", "#review-vault"],
-    ["#portfolio-review", "#review-vault"],
-    ["#watchlist", "#review-vault"]
-  ]);
-  const suggestedRoute = routeToStep.get(signal.next.route) || "#screener";
-  const activeStepIndex = Math.max(0, SIMPLE_JOURNEY_STEPS.findIndex((step) => step.value === suggestedRoute));
+function simpleStepHashFromRoute(hash = "") {
+  return SIMPLE_ROUTE_STEP_BY_HASH.get(hash) || "";
+}
+
+function simpleJourneyConfig(signal = signalStripConfig(), activeHash = window.location.hash || "") {
+  const suggestedRoute = simpleStepHashFromRoute(signal.next.route) || "#screener";
+  const viewedRoute = simpleStepHashFromRoute(activeHash);
+  const activeRoute = viewedRoute || suggestedRoute;
+  const activeStepIndex = Math.max(0, SIMPLE_JOURNEY_STEPS.findIndex((step) => step.value === activeRoute));
   const activeStep = SIMPLE_JOURNEY_STEPS[activeStepIndex] || SIMPLE_JOURNEY_STEPS[1];
   const question = simpleJourneyQuestion(activeStep, signal);
   return {
@@ -2906,7 +2958,9 @@ function simpleJourneyConfig(signal = signalStripConfig()) {
     next: signal.next,
     question,
     steps: SIMPLE_JOURNEY_STEPS,
-    summary: `${signal.next.label}: ${signal.next.reason}`
+    summary: viewedRoute && viewedRoute !== suggestedRoute
+      ? `You are here in ${activeStep.label}. Suggested next move: ${signal.next.label}.`
+      : `${signal.next.label}: ${signal.next.reason}`
   };
 }
 
@@ -3089,9 +3143,11 @@ function threeStepPlan(signal, readiness, nextCue) {
   return [stepOne, second, nextCue.route === "#decision-pack" ? reviewStep : memoStep];
 }
 
-function renderSimplicityPath(signal = signalStripConfig()) {
+function renderSimplicityPath(signal = signalStripConfig(), activeHash = window.location.hash || workspaceHashFromViewport()) {
   if (!els.simplicityPath) return;
-  const journey = simpleJourneyConfig(signal);
+  const journey = simpleJourneyConfig(signal, activeHash);
+  renderHeaderNextAction(journey);
+  renderSimpleRoomCue(journey);
   els.simplicityPath.innerHTML = `
     <div class="simplicity-path-copy">
       <span>Simple route</span>
@@ -3116,6 +3172,50 @@ function renderSimplicityPath(signal = signalStripConfig()) {
         return `<button class="signal-chip simple-step${stateClass}" type="button" data-signal-route="${escapeHtml(step.value)}"${current}><span>${escapeHtml(step.number)}</span><strong>${escapeHtml(step.label)}</strong>${marker}</button>`;
       }).join("")}
     </div>
+  `;
+}
+
+function renderSimpleRoomCue(journey) {
+  if (!els.roomFocusNote || !journey?.activeStep) return;
+  qsa(".inline-room-focus-note").forEach((note) => note.remove());
+  const cue = SIMPLE_ROOM_CUES[journey.activeStep.value] || SIMPLE_ROOM_CUES["#screener"];
+  const cueHtml = `
+    <div>
+      <span>${escapeHtml(cue.label)}</span>
+      <strong>${escapeHtml(cue.title)}</strong>
+    </div>
+    <p>${escapeHtml(cue.action)}</p>
+    <button class="signal-chip" type="button" data-signal-route="${escapeHtml(cue.route)}">
+      ${escapeHtml(cue.next)}
+    </button>
+  `;
+  els.roomFocusNote.hidden = true;
+  els.roomFocusNote.innerHTML = cueHtml;
+
+  const activeRoom = qs(journey.activeStep.value);
+  if (!activeRoom || !document.body.classList.contains("simple-mode")) return;
+  const inlineCue = document.createElement("div");
+  inlineCue.className = "room-focus-note inline-room-focus-note";
+  inlineCue.setAttribute("aria-label", `${cue.label} cue`);
+  inlineCue.innerHTML = cueHtml;
+  const heading = activeRoom.querySelector(":scope > .section-heading");
+  if (heading) {
+    heading.insertAdjacentElement("afterend", inlineCue);
+  } else {
+    activeRoom.prepend(inlineCue);
+  }
+}
+
+function renderHeaderNextAction(journey) {
+  if (!els.headerNextAction || !journey?.next) return;
+  const compactLabel = journey.next.label.replace(/^Open\s+/i, "");
+  els.headerNextAction.hidden = false;
+  els.headerNextAction.dataset.signalRoute = journey.next.route;
+  els.headerNextAction.setAttribute("aria-label", `Open next action: ${journey.next.label}`);
+  els.headerNextAction.title = journey.next.reason;
+  els.headerNextAction.innerHTML = `
+    <span>Next</span>
+    <strong>${escapeHtml(compactLabel)}</strong>
   `;
 }
 
@@ -8122,7 +8222,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-      <article><span>Prototype version</span><strong>Phase 1 v234</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v240</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -27258,8 +27358,14 @@ function targetFromHash(hash) {
 
 function syncWorkspaceFocusClass(hash = window.location.hash) {
   const investorRecordFocus = hash === "#investor-record";
+  const simpleRoomFocus = SIMPLE_ROOM_FOCUS_CLASS_BY_HASH.get(hash) || "";
   state.investorRecordFocus = investorRecordFocus;
+  state.simpleRoomFocus = simpleRoomFocus;
   document.body.classList.toggle("investor-record-focus", investorRecordFocus);
+  document.body.classList.toggle("simple-room-focus", Boolean(simpleRoomFocus));
+  SIMPLE_ROOM_FOCUS_CLASSES.forEach((className) => {
+    document.body.classList.toggle(className, className === simpleRoomFocus);
+  });
 }
 
 function buildWorkspaceOptionIndex() {
@@ -27319,7 +27425,8 @@ function stickyHeaderOffset() {
   if (!header) return 14;
   const headerStyle = window.getComputedStyle(header);
   if (headerStyle.position !== "sticky" && headerStyle.position !== "fixed") return 14;
-  return Math.ceil(header.getBoundingClientRect().height) + 28;
+  const landingGap = document.body.classList.contains("simple-mode") ? 10 : 28;
+  return Math.ceil(header.getBoundingClientRect().height) + landingGap;
 }
 
 function scrollToElement(element, behavior = "smooth") {
@@ -27402,9 +27509,9 @@ function workspaceOption(hash) {
 }
 
 function workspaceHashFromViewport() {
-  const sections = qsa(".workspace-band[id]");
+  const sections = qsa(".workspace-band[id]").filter((section) => section.getClientRects().length);
   if (!sections.length) return "#screener";
-  const offset = stickyHeaderOffset() + 28;
+  const offset = stickyHeaderOffset() + (document.body.classList.contains("simple-mode") ? 12 : 28);
   let active = sections[0];
   for (const section of sections) {
     if (section.getBoundingClientRect().top <= offset) {
@@ -27421,6 +27528,7 @@ function updateWorkspaceNavigator(hash = "") {
   const fallbackHash = hash && workspaceOption(hash) ? hash : workspaceHashFromViewport();
   const option = workspaceOption(fallbackHash);
   const activeHash = option ? fallbackHash : "";
+  renderSimplicityPath(signalStripConfig(), activeHash || fallbackHash);
   if (els.workspaceJump) {
     els.workspaceJump.value = activeHash;
   }
@@ -46101,6 +46209,7 @@ function cacheElements() {
     workspaceJump: qs("#workspaceJump"),
     workspaceStatus: qs("#workspaceStatus"),
     simpleModeToggle: qs("#simpleModeToggle"),
+    headerNextAction: qs("#headerNextAction"),
     navLinks: qsa(".top-nav a[href^='#']"),
     searchInput: qs("#searchInput"),
     searchFeedback: qs("#searchFeedback"),
@@ -46110,6 +46219,7 @@ function cacheElements() {
     resetFilters: qs("#resetFilters"),
     copyBrief: qs("#copyBrief"),
     simplicityPath: qs("#simplicityPath"),
+    roomFocusNote: qs("#roomFocusNote"),
     nadiSignalStrip: qs("#nadiSignalStrip"),
     researchAutopilot: qs("#researchAutopilot"),
     fundGenome: qs("#fundGenome"),

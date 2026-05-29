@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260523-14">
+    <link rel="stylesheet" href="styles.css?v=20260529-01">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -45,6 +45,10 @@
           </div>
         </div>
         <div class="workspace-command" aria-label="Workspace command">
+          <button class="header-next-action" id="headerNextAction" type="button" data-signal-route="#evidence" hidden>
+            <span>Next</span>
+            <strong>Open Evidence</strong>
+          </button>
           <button class="simple-mode-toggle" id="simpleModeToggle" type="button" aria-pressed="false">Simple view</button>
           <span id="workspaceStatus" class="workspace-status">Discover: Screener</span>
           <label class="workspace-jump">
@@ -192,7 +196,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-            <p class="release-pill">Phase 1 v234</p>
+            <p class="release-pill">Phase 1 v240</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -248,6 +252,7 @@
               <button class="signal-chip" type="button" data-signal-route="#decision-pack">Memo</button>
               <button class="signal-chip" type="button" data-signal-route="#review-vault">Review</button>
             </div>
+            <div id="roomFocusNote" class="room-focus-note" aria-label="Simple room cue" hidden></div>
             <div class="desk-stats" aria-label="Desk status">
               <div><span>Universe</span><strong>11 demo funds</strong></div>
               <div><span>Mode</span><strong>Research only</strong></div>
@@ -4448,6 +4453,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260523-14"></script>
+    <script src="app.js?v=20260529-01"></script>
   </body>
 </html>

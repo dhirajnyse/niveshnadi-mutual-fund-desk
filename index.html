@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="styles.css?v=20260530-10">
+    <link rel="stylesheet" href="styles.css?v=20260530-11">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -51,6 +51,16 @@
           </button>
           <button class="simple-mode-toggle" id="simpleModeToggle" type="button" aria-pressed="false">Simple view</button>
           <span id="workspaceStatus" class="workspace-status">Discover: Screener</span>
+          <button class="tool-palette-toggle" id="toolPaletteToggle" type="button" aria-expanded="false" aria-controls="toolPalette">
+            Find tool
+          </button>
+          <div class="tool-palette" id="toolPalette" role="dialog" aria-label="Find workspace tool" hidden>
+            <label class="tool-palette-search">
+              <span>Find tool</span>
+              <input id="toolPaletteSearch" type="search" placeholder="Search workspace">
+            </label>
+            <div class="tool-palette-results" id="toolPaletteResults" role="listbox" aria-label="Workspace matches"></div>
+          </div>
           <label class="workspace-jump">
             <span>Workspace</span>
             <select id="workspaceJump" aria-label="Jump to workspace section">
@@ -196,7 +206,7 @@
         <div class="workspace-grid">
           <div class="command-panel">
             <div class="command-copy">
-            <p class="release-pill">Phase 1 v250</p>
+            <p class="release-pill">Phase 1 v251</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -4453,6 +4463,6 @@
       </button>
     </div>
 
-    <script src="app.js?v=20260530-10"></script>
+    <script src="app.js?v=20260530-11"></script>
   </body>
 </html>

@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v250 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v251 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -55,7 +55,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Nadi Clearance Sprint Board that turns memo blockers into a timed research sprint with first move, total effort, finish line, route buttons, and a copyable sprint brief.
 - Nadi Investor Profile Room with Nadi Investor Twin that turns intent, horizon, monthly SIP comfort, drawdown tolerance, emergency readiness, research confidence, and future-self behavior scenarios into a research route before any fund is treated as suitable.
 - Nadi Journey Timeline that connects Profile, Research, Compare, Evidence, Memo, and Review into one progress rail with next-step routing and a copyable workflow brief.
-- Smart Navigation Shell with a mode-aware Workspace selector: Simple View shows the guided retail path first, while Full View restores the full grouped workshop dropdown.
+- Smart Navigation Shell with a Tool Command Palette and mode-aware Workspace selector: Simple View shows the guided retail path first, Full View restores the grouped workshop dropdown, and the header can search any workspace route without making the user hunt through the long tool map.
 - Nadi Research Briefing that combines selected fund, compare set, Trust Center, Action Planner, Readiness Gate, evidence readiness, watchlist, and review rhythm into one copyable "brief me first" research view.
 - Nadi Briefing Vault that saves browser-local briefing snapshots, compares trust/action/pause-flag deltas, and creates a copyable research-memory brief without storing private notes or identifiers.
 - Nadi Research Memory that combines local vaults, watchlist, alerts, dossiers, investor records, journal metadata, and claim gates into one copyable browser-local research timeline.

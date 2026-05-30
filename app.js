@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260530-10";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v250 Publisher Handoff Kit";
+const DATA_VERSION = "20260530-11";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v251 Tool Command Palette";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_PROGRESS_KEY = "niveshnadi-simple-progress";
@@ -1013,6 +1013,7 @@ const state = {
   simpleMode: true,
   simpleRoomFocus: "",
   investorRecordFocus: false,
+  toolPaletteHost: null,
   workspaceJumpFullHtml: "",
   workspaceOptionIndex: new Map(),
   filters: {
@@ -8215,7 +8216,7 @@ function buildTrackerConfig() {
 
 function publisherHandoffKit() {
   const releaseMatch = RELEASE_LABEL.match(/v\d+/i);
-  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v250";
+  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v251";
   const releaseFolder = `release-${version}`;
   const runtimeFolder = `${releaseFolder}\\github-pages-runtime-only`;
   const zipName = `niveshnadi-github-pages-runtime-${version}.zip`;
@@ -8422,7 +8423,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v250</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v251</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -27775,6 +27776,122 @@ function updateWorkspaceNavigator(hash = "") {
   }
 }
 
+function normalizeToolSearch(value = "") {
+  return String(value).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function workspaceOptionList() {
+  if (!state.workspaceOptionIndex.size) buildWorkspaceOptionIndex();
+  const options = new Map();
+  const pushOption = (value, label, group, priority = 9) => {
+    if (!value || options.has(value) && options.get(value).priority <= priority) return;
+    options.set(value, { value, label, group, priority });
+  };
+  SIMPLE_WORKSPACE_ROUTES.forEach((route, index) => {
+    pushOption(route.value, route.label, index < 5 ? "Guided path" : "Quick routes", index);
+  });
+  state.workspaceOptionIndex.forEach((meta, value) => {
+    pushOption(value, meta.label, meta.group || "Workspace", 10);
+  });
+  return Array.from(options.values());
+}
+
+function toolPaletteMatches(query = "") {
+  const normalized = normalizeToolSearch(query);
+  const options = workspaceOptionList();
+  if (!normalized) {
+    const defaultRoutes = [
+      ...SIMPLE_WORKSPACE_ROUTES.map((route) => route.value),
+      "#compare",
+      "#portfolio",
+      "#research-dossier",
+      "#pricing",
+      "#build-tracker"
+    ];
+    const byRoute = new Map(options.map((option) => [option.value, option]));
+    return defaultRoutes.map((route) => byRoute.get(route)).filter(Boolean).slice(0, 10);
+  }
+  const terms = normalized.split(/\s+/).filter(Boolean);
+  return options
+    .map((option) => {
+      const label = normalizeToolSearch(option.label);
+      const group = normalizeToolSearch(option.group);
+      const route = normalizeToolSearch(option.value.replace(/^#/, ""));
+      const haystack = `${label} ${group} ${route}`;
+      if (!terms.every((term) => haystack.includes(term))) return null;
+      let score = 20;
+      if (label === normalized) score = 0;
+      else if (label.startsWith(normalized)) score = 1;
+      else if (route.startsWith(normalized)) score = 2;
+      else if (group.startsWith(normalized)) score = 3;
+      else score = 5 + terms.reduce((sum, term) => sum + haystack.indexOf(term), 0);
+      return { ...option, score };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.score - b.score || a.priority - b.priority || a.label.localeCompare(b.label))
+    .slice(0, 12);
+}
+
+function renderToolPaletteResults(query = els.toolPaletteSearch?.value || "") {
+  if (!els.toolPaletteResults) return;
+  const matches = toolPaletteMatches(query);
+  if (!matches.length) {
+    els.toolPaletteResults.innerHTML = `
+      <p class="tool-palette-empty">No workspace match. Try evidence, pack, pricing, X-Ray, or account.</p>
+    `;
+    return;
+  }
+  els.toolPaletteResults.innerHTML = matches.map((item, index) => `
+    <button
+      type="button"
+      class="tool-palette-result"
+      data-tool-palette-route="${escapeHtml(item.value)}"
+      role="option"
+      aria-selected="${index === 0 ? "true" : "false"}"
+    >
+      <span>
+        <strong>${escapeHtml(item.label)}</strong>
+        <small>${escapeHtml(item.group)} | ${escapeHtml(item.value.replace(/^#/, ""))}</small>
+      </span>
+      <em>Open</em>
+    </button>
+  `).join("");
+}
+
+function openToolPalette() {
+  if (!els.toolPalette || !els.toolPaletteToggle || !els.toolPaletteSearch) return;
+  state.toolPaletteHost ||= els.toolPalette.parentElement;
+  if (window.innerWidth <= 680 && els.toolPalette.parentElement !== document.body) {
+    document.body.appendChild(els.toolPalette);
+  } else if (window.innerWidth > 680 && state.toolPaletteHost && els.toolPalette.parentElement !== state.toolPaletteHost) {
+    state.toolPaletteHost.insertBefore(els.toolPalette, els.workspaceJump || null);
+  }
+  renderToolPaletteResults();
+  els.toolPalette.hidden = false;
+  els.toolPaletteToggle.setAttribute("aria-expanded", "true");
+  document.body.classList.add("tool-palette-open");
+  window.requestAnimationFrame(() => {
+    els.toolPaletteSearch.focus();
+    els.toolPaletteSearch.select();
+  });
+}
+
+function closeToolPalette(returnFocus = false) {
+  if (!els.toolPalette || !els.toolPaletteToggle) return;
+  els.toolPalette.hidden = true;
+  els.toolPaletteToggle.setAttribute("aria-expanded", "false");
+  document.body.classList.remove("tool-palette-open");
+  if (returnFocus) els.toolPaletteToggle.focus();
+}
+
+function openToolPaletteRoute(hash) {
+  if (!targetFromHash(hash)) return false;
+  closeToolPalette();
+  updateWorkspaceNavigator(hash);
+  scrollToHash(hash, "smooth", true);
+  return true;
+}
+
 window.addEventListener("DOMContentLoaded", settleHashNavigation);
 window.addEventListener("load", settleHashNavigation);
 window.addEventListener("pageshow", settleHashNavigation);
@@ -27818,6 +27935,7 @@ function applySimpleMode(enabled, persist = true) {
   document.body.classList.toggle("full-mode", !enabled);
   syncWorkspaceFocusClass();
   renderWorkspaceJumpForMode(window.location.hash || workspaceHashFromViewport());
+  renderToolPaletteResults();
   updateWorkspaceNavigator(window.location.hash || workspaceHashFromViewport());
   if (els.simpleModeToggle) {
     els.simpleModeToggle.setAttribute("aria-pressed", enabled ? "true" : "false");
@@ -46615,10 +46733,80 @@ function bindScrollTopButton() {
   updateVisibility();
 }
 
+function bindToolPalette() {
+  if (!els.toolPaletteToggle || !els.toolPalette || !els.toolPaletteSearch || !els.toolPaletteResults) return;
+  const focusResult = (step = 1) => {
+    const buttons = Array.from(els.toolPaletteResults.querySelectorAll(".tool-palette-result"));
+    if (!buttons.length) return;
+    const currentIndex = buttons.indexOf(document.activeElement);
+    const nextIndex = currentIndex < 0 ? 0 : (currentIndex + step + buttons.length) % buttons.length;
+    buttons[nextIndex].focus();
+  };
+
+  els.toolPaletteToggle.addEventListener("click", () => {
+    if (els.toolPalette.hidden) openToolPalette();
+    else closeToolPalette(true);
+  });
+
+  els.toolPaletteSearch.addEventListener("input", (event) => {
+    renderToolPaletteResults(event.target.value);
+  });
+
+  els.toolPaletteSearch.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeToolPalette(true);
+    }
+    if (event.key === "Enter") {
+      const firstRoute = els.toolPaletteResults.querySelector(".tool-palette-result")?.dataset.toolPaletteRoute;
+      if (firstRoute) {
+        event.preventDefault();
+        openToolPaletteRoute(firstRoute);
+      }
+    }
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      focusResult(1);
+    }
+  });
+
+  els.toolPaletteResults.addEventListener("click", (event) => {
+    const route = event.target.closest("[data-tool-palette-route]")?.dataset.toolPaletteRoute;
+    if (route) openToolPaletteRoute(route);
+  });
+
+  els.toolPaletteResults.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeToolPalette(true);
+    }
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      focusResult(event.key === "ArrowDown" ? 1 : -1);
+    }
+    if (event.key === "Enter" || event.key === " ") {
+      const route = document.activeElement?.dataset?.toolPaletteRoute;
+      if (route) {
+        event.preventDefault();
+        openToolPaletteRoute(route);
+      }
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (els.toolPalette.hidden || event.target.closest(".workspace-command") || event.target.closest(".tool-palette")) return;
+    closeToolPalette();
+  });
+
+  window.addEventListener("hashchange", () => closeToolPalette());
+  renderToolPaletteResults();
+}
+
 function bindWorkspaceJump() {
   if (!els.workspaceJump) return;
   buildWorkspaceOptionIndex();
   renderWorkspaceJumpForMode(window.location.hash || "#screener");
+  renderToolPaletteResults();
   let scrollFrame = 0;
   const syncFromScroll = () => {
     scrollFrame = 0;
@@ -46656,6 +46844,10 @@ function cacheElements() {
     workspaceStatus: qs("#workspaceStatus"),
     simpleModeToggle: qs("#simpleModeToggle"),
     headerNextAction: qs("#headerNextAction"),
+    toolPaletteToggle: qs("#toolPaletteToggle"),
+    toolPalette: qs("#toolPalette"),
+    toolPaletteSearch: qs("#toolPaletteSearch"),
+    toolPaletteResults: qs("#toolPaletteResults"),
     navLinks: qsa(".top-nav a[href^='#']"),
     searchInput: qs("#searchInput"),
     searchFeedback: qs("#searchFeedback"),
@@ -47391,6 +47583,7 @@ function init() {
   renderCategoryFilter();
   renderWatchFundSelect();
   bindWorkspaceJump();
+  bindToolPalette();
   bindEvents();
   renderAll();
   renderGoalFitCompass();

@@ -1,7 +1,10 @@
-const DATA_VERSION = "20260529-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v240 Room Step Cue";
+const DATA_VERSION = "20260530-10";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v250 Publisher Handoff Kit";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
+const SIMPLE_PROGRESS_KEY = "niveshnadi-simple-progress";
+const SIMPLE_LAST_ROOM_KEY = "niveshnadi-last-simple-room";
+let simpleSessionResumeRoute = "";
 const HASH_SETTLE_DELAYS = [0, 80, 180, 360, 720, 1200, 1900, 2800, 4000, 5600, 7600, 9800];
 const HASH_SETTLE_WINDOW = 10800;
 const HASH_LANDING_TOLERANCE = 18;
@@ -2994,6 +2997,86 @@ function simpleJourneyQuestion(step, signal) {
   return questionMap[step.value] || questionMap["#screener"];
 }
 
+function simpleProgressMemory(activeStep) {
+  const validRoutes = new Set(SIMPLE_JOURNEY_STEPS.map((step) => step.value));
+  let visited = [];
+  try {
+    const saved = JSON.parse(localStorage.getItem(SIMPLE_PROGRESS_KEY) || "[]");
+    if (Array.isArray(saved)) {
+      visited = [...new Set(saved.filter((route) => validRoutes.has(route)))];
+    }
+  } catch (error) {
+    visited = [];
+  }
+
+  if (!simpleSessionResumeRoute) {
+    try {
+      const lastRoom = localStorage.getItem(SIMPLE_LAST_ROOM_KEY) || "";
+      if (validRoutes.has(lastRoom)) {
+        simpleSessionResumeRoute = lastRoom;
+      }
+    } catch (error) {
+      simpleSessionResumeRoute = "";
+    }
+  }
+
+  if (activeStep?.value && validRoutes.has(activeStep.value) && !visited.includes(activeStep.value)) {
+    visited.push(activeStep.value);
+  }
+
+  if (activeStep?.value && validRoutes.has(activeStep.value)) {
+    try {
+      localStorage.setItem(SIMPLE_PROGRESS_KEY, JSON.stringify(visited));
+      localStorage.setItem(SIMPLE_LAST_ROOM_KEY, activeStep.value);
+    } catch (error) {
+      // Progress memory is only a browser-local comfort layer.
+    }
+  }
+
+  const visitedSet = new Set(visited);
+  const visitedCount = visitedSet.size;
+  const activeIndex = Math.max(0, SIMPLE_JOURNEY_STEPS.findIndex((step) => step.value === activeStep?.value));
+  const nextUntouched = SIMPLE_JOURNEY_STEPS.find((step, index) => index > activeIndex && !visitedSet.has(step.value))
+    || SIMPLE_JOURNEY_STEPS.find((step) => !visitedSet.has(step.value));
+  const resumeStep = SIMPLE_JOURNEY_STEPS.find((step) => step.value === simpleSessionResumeRoute && step.value !== activeStep?.value) || null;
+  const isComplete = visitedCount >= SIMPLE_JOURNEY_STEPS.length;
+  const finishStep = SIMPLE_JOURNEY_STEPS.find((step) => step.value === "#review-vault")
+    || SIMPLE_JOURNEY_STEPS[SIMPLE_JOURNEY_STEPS.length - 1];
+  return {
+    activePosition: isComplete ? "Research round" : `Step ${activeStep?.number || "02"} of ${String(SIMPLE_JOURNEY_STEPS.length).padStart(2, "0")}`,
+    label: `${visitedCount}/${SIMPLE_JOURNEY_STEPS.length} rooms touched`,
+    nextMemory: isComplete ? "Complete: save review" : nextUntouched ? `Next untouched: ${nextUntouched.label}` : "All five rooms touched",
+    resumeStep,
+    finishStep: isComplete ? finishStep : null,
+    isComplete,
+    canReset: visitedCount > 1 || Boolean(resumeStep),
+    visitedSet
+  };
+}
+
+function clearSimpleProgressMemory() {
+  simpleSessionResumeRoute = "";
+  try {
+    localStorage.removeItem(SIMPLE_PROGRESS_KEY);
+    localStorage.removeItem(SIMPLE_LAST_ROOM_KEY);
+  } catch (error) {
+    // The reset is only a browser-local comfort layer.
+  }
+}
+
+function resetSimpleProgressMemory() {
+  clearSimpleProgressMemory();
+  renderSimplicityPath(signalStripConfig(), window.location.hash || workspaceHashFromViewport());
+}
+
+function startNextResearchRound() {
+  clearSimpleProgressMemory();
+  scrollToHash("#profile-room", "smooth", true);
+  renderSimplicityPath(signalStripConfig(), "#profile-room");
+  renderReviewVault();
+  toast("Next research round started. Saved reviews are kept.");
+}
+
 function investorTakeaway(signal) {
   if (signal.evidence < 78) {
     return "Do not treat this as ready yet. Verify source dates first, then decide whether the fund deserves shortlist space.";
@@ -3146,13 +3229,20 @@ function threeStepPlan(signal, readiness, nextCue) {
 function renderSimplicityPath(signal = signalStripConfig(), activeHash = window.location.hash || workspaceHashFromViewport()) {
   if (!els.simplicityPath) return;
   const journey = simpleJourneyConfig(signal, activeHash);
+  const progress = simpleProgressMemory(journey.activeStep);
   renderHeaderNextAction(journey);
-  renderSimpleRoomCue(journey);
+  renderSimpleRoomCue(journey, progress);
   els.simplicityPath.innerHTML = `
     <div class="simplicity-path-copy">
       <span>Simple route</span>
       <strong>Step ${escapeHtml(journey.activeStep.number)}: ${escapeHtml(journey.activeStep.label)}</strong>
       <p>${escapeHtml(journey.summary)}</p>
+      ${progress.resumeStep ? `
+        <button class="signal-chip simplicity-resume" type="button" data-signal-route="${escapeHtml(progress.resumeStep.value)}" aria-label="Resume last room: ${escapeHtml(progress.resumeStep.label)}">
+          <span>Resume</span>
+          <strong>${escapeHtml(progress.resumeStep.label)}</strong>
+        </button>
+      ` : ""}
     </div>
     <div class="simplicity-question">
       <span>One question</span>
@@ -3167,27 +3257,56 @@ function renderSimplicityPath(signal = signalStripConfig(), activeHash = window.
     <div class="simplicity-path-actions">
       ${journey.steps.map((step, index) => {
         const stateClass = index < journey.activeStepIndex ? " is-done" : index === journey.activeStepIndex ? " is-active" : "";
+        const memoryClass = progress.visitedSet.has(step.value) ? " is-visited" : "";
         const current = index === journey.activeStepIndex ? ' aria-current="step"' : "";
         const marker = index === journey.activeStepIndex ? '<em class="step-focus-marker">Current</em>' : "";
-        return `<button class="signal-chip simple-step${stateClass}" type="button" data-signal-route="${escapeHtml(step.value)}"${current}><span>${escapeHtml(step.number)}</span><strong>${escapeHtml(step.label)}</strong>${marker}</button>`;
+        return `<button class="signal-chip simple-step${stateClass}${memoryClass}" type="button" data-signal-route="${escapeHtml(step.value)}"${current}><span>${escapeHtml(step.number)}</span><strong>${escapeHtml(step.label)}</strong>${marker}</button>`;
       }).join("")}
     </div>
   `;
 }
 
-function renderSimpleRoomCue(journey) {
+function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.activeStep)) {
   if (!els.roomFocusNote || !journey?.activeStep) return;
   qsa(".inline-room-focus-note").forEach((note) => note.remove());
   const cue = SIMPLE_ROOM_CUES[journey.activeStep.value] || SIMPLE_ROOM_CUES["#screener"];
+  const showCompletionAction = progress.isComplete && progress.finishStep && journey.activeStep.value !== progress.finishStep.value;
   const cueHtml = `
     <div>
       <span>${escapeHtml(cue.label)}</span>
       <strong>${escapeHtml(cue.title)}</strong>
     </div>
     <p>${escapeHtml(cue.action)}</p>
-    <button class="signal-chip" type="button" data-signal-route="${escapeHtml(cue.route)}">
-      ${escapeHtml(cue.next)}
-    </button>
+    <div class="room-progress-meter${progress.isComplete ? " is-complete" : ""}">
+      <span>${escapeHtml(progress.activePosition)}</span>
+      <strong>${escapeHtml(progress.label)}</strong>
+      <em>${escapeHtml(progress.nextMemory)}</em>
+    </div>
+    <div class="room-cue-actions">
+      ${progress.isComplete ? `
+        ${showCompletionAction ? `
+        <button class="signal-chip simplicity-finish" type="button" data-signal-route="${escapeHtml(progress.finishStep.value)}" aria-label="Finish research round: ${escapeHtml(progress.finishStep.label)}">
+          <span>Finish</span>
+          <strong>${escapeHtml(progress.finishStep.label)}</strong>
+        </button>
+        ` : ""}
+      ` : `
+        ${progress.resumeStep ? `
+          <button class="signal-chip simplicity-resume" type="button" data-signal-route="${escapeHtml(progress.resumeStep.value)}" aria-label="Resume last room: ${escapeHtml(progress.resumeStep.label)}">
+            <span>Resume</span>
+            <strong>${escapeHtml(progress.resumeStep.label)}</strong>
+          </button>
+        ` : ""}
+      <button class="signal-chip" type="button" data-signal-route="${escapeHtml(cue.route)}">
+        ${escapeHtml(cue.next)}
+      </button>
+      `}
+      ${progress.canReset ? `
+        <button class="signal-chip simplicity-reset" type="button" data-simple-progress-reset>
+          Fresh start
+        </button>
+      ` : ""}
+    </div>
   `;
   els.roomFocusNote.hidden = true;
   els.roomFocusNote.innerHTML = cueHtml;
@@ -8066,13 +8185,14 @@ function buildTrackerConfig() {
     detail: "MFD dashboard, ARN/EUIN, PAN-consent, registered clients, review packs, and handoff audit trail stay planned after Phase 1 retail launch.",
     blockers: ["Phase 1 account model", "consent workflow", "privacy review", "role-based distributor access"]
   };
-  const pace = `v216 | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
+  const pace = `${publisherHandoffKit().version} | ${BUILD_TRACKER_PHASES.length} lanes | ${doneModules.length} completed or drafted modules | ${launchReadiness}/100 launch readiness`;
   const guardrails = [
     "Every new release must protect UI simplicity: keep the default path clear, move depth behind explicit choices, and avoid forcing expert controls onto first-time investors.",
     "Build Tracker is a project roadmap for this prototype; it is not an investor-facing recommendation or launch promise.",
     "Product build progress and launch readiness are intentionally separate because a prototype can be polished before live data, auth, payments, and legal gates are complete.",
     "Before production launch, live data, auth, privacy, payment, audit logs, disclosures, and legal review must be handled separately."
   ];
+  const publisherHandoff = publisherHandoffKit();
   return {
     active,
     buildProgress,
@@ -8088,7 +8208,36 @@ function buildTrackerConfig() {
     nextMoves,
     pace,
     phases: BUILD_TRACKER_PHASES,
+    publisherHandoff,
     statusCounts
+  };
+}
+
+function publisherHandoffKit() {
+  const releaseMatch = RELEASE_LABEL.match(/v\d+/i);
+  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v250";
+  const releaseFolder = `release-${version}`;
+  const runtimeFolder = `${releaseFolder}\\github-pages-runtime-only`;
+  const zipName = `niveshnadi-github-pages-runtime-${version}.zip`;
+  return {
+    version,
+    runtimeFolder,
+    zipName,
+    githubDesktopFolder: "C:\\Users\\dhiraj\\Documents\\GitHub\\niveshnadi-mutual-fund-desk",
+    pagesUrl: "https://dhirajnyse.github.io/niveshnadi-mutual-fund-desk/",
+    commitMessage: `Release ${version.toUpperCase()} Publisher Handoff Kit`,
+    checks: [
+      "Copy the contents inside github-pages-runtime-only, not the release folder itself.",
+      "Confirm index.html, app.js, styles.css, assets, data, README, SECURITY, manifest, robots, and .nojekyll are present.",
+      "Commit with a release message in GitHub Desktop, then push origin.",
+      "Open GitHub Pages with a fresh cache key and confirm the release pill before sharing."
+    ],
+    steps: [
+      "Open the runtime-only release folder.",
+      "Copy all files and folders into the GitHub Desktop repository folder.",
+      "Review changed files in GitHub Desktop.",
+      "Commit, push, then refresh GitHub Pages."
+    ]
   };
 }
 
@@ -8182,6 +8331,57 @@ function buildMoveGridMarkup(tracker) {
   `;
 }
 
+function publisherHandoffMarkup(kit) {
+  return `
+    <div class="publisher-handoff-card">
+      <div class="publisher-handoff-head">
+        <div>
+          <span>Publisher handoff</span>
+          <strong>GitHub Desktop copy kit for ${escapeHtml(kit.version.toUpperCase())}</strong>
+          <p>One clean founder workflow for copying the runtime build, committing it, pushing it, and checking GitHub Pages after every release.</p>
+        </div>
+        <button class="text-button" type="button" data-copy-publisher-handoff>Copy publisher handoff</button>
+      </div>
+      <div class="publisher-handoff-grid">
+        <article>
+          <span>Copy from</span>
+          <strong>Runtime-only folder</strong>
+          <code>${escapeHtml(kit.runtimeFolder)}</code>
+        </article>
+        <article>
+          <span>Copy to</span>
+          <strong>GitHub Desktop folder</strong>
+          <code>${escapeHtml(kit.githubDesktopFolder)}</code>
+        </article>
+        <article>
+          <span>Commit</span>
+          <strong>${escapeHtml(kit.commitMessage)}</strong>
+          <p>Then push origin from GitHub Desktop.</p>
+        </article>
+        <article>
+          <span>Pages check</span>
+          <strong>Refresh with cache key</strong>
+          <p>${escapeHtml(kit.pagesUrl)}?fresh=${escapeHtml(DATA_VERSION)}#build-tracker</p>
+        </article>
+      </div>
+      <div class="publisher-handoff-steps">
+        <div>
+          <span>Four moves</span>
+          <ol>
+            ${kit.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </div>
+        <div>
+          <span>Release guardrails</span>
+          <ul>
+            ${kit.checks.map((check) => `<li>${escapeHtml(check)}</li>`).join("")}
+          </ul>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function buildGuardrailMarkup(tracker) {
   return `
     <div class="build-tracker-guardrail">
@@ -8222,7 +8422,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v240</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v250</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -8233,6 +8433,7 @@ function renderBuildTracker() {
       <article><span>Next</span><strong>${tracker.statusCounts.next}</strong><p>Launch, accounts, and monetization</p></article>
       <article><span>Later</span><strong>${tracker.statusCounts.later}</strong><p>Phase 2 distributor layer</p></article>
     </div>
+    ${publisherHandoffMarkup(tracker.publisherHandoff)}
     <div class="build-room-bridge">
       <article>
         <span>Roadmap moved</span>
@@ -8292,7 +8493,34 @@ function makeBuildTrackerBrief() {
     "## Current Sprint",
     ...tracker.nextMoves.map((move) => `- ${move.label}: ${move.detail}`),
     "",
+    "## Publisher Handoff",
+    `- Runtime folder: ${tracker.publisherHandoff.runtimeFolder}`,
+    `- Zip: ${tracker.publisherHandoff.zipName}`,
+    `- GitHub Desktop folder: ${tracker.publisherHandoff.githubDesktopFolder}`,
+    `- Commit message: ${tracker.publisherHandoff.commitMessage}`,
+    "",
     "The detailed phase cards, launch gates, completed-module list, Phase 2 preview, and roadmap guardrails now live in the Build Phases Room."
+  ].join("\n");
+}
+
+function makePublisherHandoffBrief() {
+  const kit = publisherHandoffKit();
+  return [
+    "# NiveshNadi Publisher Handoff Kit",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Runtime-only copy source: ${kit.runtimeFolder}`,
+    `Release zip: ${kit.zipName}`,
+    `GitHub Desktop repository folder: ${kit.githubDesktopFolder}`,
+    `Commit message: ${kit.commitMessage}`,
+    `GitHub Pages check: ${kit.pagesUrl}?fresh=${DATA_VERSION}#build-tracker`,
+    "",
+    "## Four Moves",
+    ...kit.steps.map((step, index) => `${index + 1}. ${step}`),
+    "",
+    "## Guardrails",
+    ...kit.checks.map((check) => `- ${check}`),
+    "",
+    "Publisher Handoff is a founder workflow only. It does not change investor research output, advice boundaries, live data posture, payment readiness, or legal launch readiness."
   ].join("\n");
 }
 
@@ -28718,6 +28946,189 @@ function reviewVaultDelta(value, priorValue, suffix = "") {
   return `${delta > 0 ? "+" : ""}${Number.isInteger(delta) ? delta : delta.toFixed(1)}${suffix}`;
 }
 
+function researchRoundReceipt(current, entries = loadReviewVault()) {
+  const validRoutes = new Set(SIMPLE_JOURNEY_STEPS.map((step) => step.value));
+  let visited = [];
+  try {
+    const saved = JSON.parse(localStorage.getItem(SIMPLE_PROGRESS_KEY) || "[]");
+    if (Array.isArray(saved)) {
+      visited = [...new Set(saved.filter((route) => validRoutes.has(route)))];
+    }
+  } catch (error) {
+    visited = [];
+  }
+
+  const visitedSet = new Set(visited);
+  const completedCount = SIMPLE_JOURNEY_STEPS.filter((step) => visitedSet.has(step.value)).length;
+  const isComplete = completedCount >= SIMPLE_JOURNEY_STEPS.length;
+  const latestSaved = entries[0] || null;
+  const nextStep = SIMPLE_JOURNEY_STEPS.find((step) => !visitedSet.has(step.value)) || SIMPLE_JOURNEY_STEPS[SIMPLE_JOURNEY_STEPS.length - 1];
+  const evidenceReady = current.metrics.evidence >= 78;
+  const nextReviewDate = latestSaved?.reviewDate || current.reviewDate || "Not set";
+  const nextReviewDays = daysUntil(nextReviewDate);
+  const nextReviewLabel = nextReviewDays === null
+    ? "Review date not set"
+    : nextReviewDays < 0
+      ? "Review overdue"
+      : nextReviewDays === 0
+        ? "Review today"
+        : `${nextReviewDays} days away`;
+  const nextReviewMode = nextReviewDays === null
+    ? "open"
+    : nextReviewDays <= 7
+      ? "due"
+      : nextReviewDays <= 30
+        ? "watch"
+        : "calm";
+  const nextReviewDetail = latestSaved
+    ? "Saved in this browser. Keep this date as the next calm checkpoint."
+    : "Save the round to lock this checkpoint into local review memory.";
+  const status = isComplete ? latestSaved ? "Round saved" : "Ready to save" : "Round in progress";
+  const nextLabel = isComplete ? latestSaved ? "Review rhythm" : "Save snapshot" : nextStep.label;
+  const nextDetail = isComplete
+    ? latestSaved
+      ? `A local review memory exists. Next review: ${nextReviewDate}.`
+      : "All five rooms are touched. Save one local review snapshot now."
+    : `Open ${nextStep.label} before calling the research round complete.`;
+  const actionKind = isComplete && !latestSaved ? "save" : "route";
+  const actionRoute = isComplete && latestSaved ? "#review-rhythm" : nextStep.value;
+  const actionLabel = actionKind === "save" ? "Save round" : isComplete ? "Open rhythm" : `Open ${nextStep.label}`;
+  const score = clampNumber(Math.round((completedCount / SIMPLE_JOURNEY_STEPS.length) * 64 + (evidenceReady ? 18 : 8) + (latestSaved ? 18 : 0)), 0, 100);
+  return {
+    status,
+    nextLabel,
+    nextDetail,
+    actionKind,
+    actionRoute,
+    actionLabel,
+    score,
+    completedCount,
+    isComplete,
+    evidenceReady,
+    snapshotSaved: Boolean(latestSaved),
+    reviewCue: {
+      date: nextReviewDate,
+      label: nextReviewLabel,
+      mode: nextReviewMode,
+      detail: nextReviewDetail,
+      route: "#review-rhythm"
+    },
+    steps: SIMPLE_JOURNEY_STEPS.map((step) => ({
+      ...step,
+      done: visitedSet.has(step.value)
+    })),
+    metrics: [
+      {
+        label: "Rooms",
+        value: `${completedCount}/${SIMPLE_JOURNEY_STEPS.length}`,
+        detail: isComplete ? "Guided round touched" : `${SIMPLE_JOURNEY_STEPS.length - completedCount} still open`
+      },
+      {
+        label: "Evidence",
+        value: `${current.metrics.evidence}/100`,
+        detail: evidenceReady ? "Source posture stronger" : "Verify source dates"
+      },
+      {
+        label: "Snapshot",
+        value: latestSaved ? "Saved" : "Preview",
+        detail: latestSaved ? `${entries.length} local` : "Use Save snapshot"
+      },
+      {
+        label: "Next",
+        value: nextLabel,
+        detail: nextDetail
+      },
+      {
+        label: "Review cue",
+        value: nextReviewLabel,
+        detail: nextReviewDate
+      }
+    ]
+  };
+}
+
+function renderResearchRoundReceipt(receipt) {
+  return `
+    <div class="review-round-receipt ${receipt.isComplete ? "complete" : "open"}">
+      <div class="review-round-head">
+        <div>
+          <span class="metric-label">Research round receipt</span>
+          <h3>${escapeHtml(receipt.status)}</h3>
+          <p>${escapeHtml(receipt.nextDetail)}</p>
+        </div>
+        <div class="review-round-score" style="--score:${receipt.score}">
+          <b>${receipt.score}</b>
+          <span>Round</span>
+        </div>
+      </div>
+      <div class="review-round-steps" aria-label="Research round steps">
+        ${receipt.steps.map((step) => `
+          <button class="review-round-step ${step.done ? "done" : "open"}" type="button" data-signal-route="${escapeHtml(step.value)}">
+            <span>${escapeHtml(step.number)}</span>
+            <strong>${escapeHtml(step.label)}</strong>
+            <em>${step.done ? "Touched" : "Open"}</em>
+          </button>
+        `).join("")}
+      </div>
+      <div class="review-round-metrics">
+        ${receipt.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      ${receipt.snapshotSaved ? `
+        <div class="review-next-cue ${escapeHtml(receipt.reviewCue.mode)}">
+          <div>
+            <span class="metric-label">Next review cue</span>
+            <strong>${escapeHtml(receipt.reviewCue.label)}</strong>
+            <p>Review date ${escapeHtml(receipt.reviewCue.date)}. ${escapeHtml(receipt.reviewCue.detail)}</p>
+          </div>
+          <button class="text-button review-next-action" type="button" data-signal-route="${escapeHtml(receipt.reviewCue.route)}">
+            Tune rhythm
+          </button>
+        </div>
+      ` : ""}
+      <div class="review-round-actions">
+        ${receipt.actionKind === "save" ? `
+          <button class="text-button review-round-action" type="button" data-review-round-save>
+            ${escapeHtml(receipt.actionLabel)}
+          </button>
+        ` : `
+          <button class="text-button review-round-action" type="button" data-signal-route="${escapeHtml(receipt.actionRoute)}">
+            ${escapeHtml(receipt.actionLabel)}
+          </button>
+        `}
+      </div>
+    </div>
+  `;
+}
+
+function renderReviewFinishLine(snapshot, receipt) {
+  if (!snapshot || !receipt.snapshotSaved) return "";
+  return `
+    <div class="review-finish-line" role="status" aria-live="polite">
+      <div>
+        <span class="metric-label">Review finish line</span>
+        <strong>Saved, dated, and bounded</strong>
+        <p>${escapeHtml(snapshot.score)}/100 local snapshot saved. Next review ${escapeHtml(receipt.reviewCue.date)}. This record is research memory, not an action instruction.</p>
+      </div>
+      <div class="review-finish-side">
+        <div class="review-finish-pills" aria-label="Saved review guardrails">
+          <span>Saved locally</span>
+          <span>${escapeHtml(receipt.reviewCue.label)}</span>
+          <span>No transaction instruction</span>
+        </div>
+        <button class="text-button review-next-round-action" type="button" data-review-next-round>
+          Start next round
+        </button>
+      </div>
+    </div>
+  `;
+}
+
 function reviewSnapshotFromConfig(config) {
   return {
     id: `review-${Date.now()}-${Math.random().toString(16).slice(2)}`,
@@ -28783,6 +29194,7 @@ function renderReviewVault() {
   const current = reviewSnapshotFromConfig(portfolioReviewConfig());
   const latest = entries[0] || null;
   const prior = entries[1] || null;
+  const roundReceipt = researchRoundReceipt(current, entries);
   const scoreDelta = latest ? reviewVaultDelta(latest.score, prior?.score) : "New";
   const driftDelta = latest ? reviewVaultDelta(latest.metrics.drift, prior?.metrics.drift, "%") : "New";
   const evidenceDelta = latest ? reviewVaultDelta(latest.metrics.evidence, prior?.metrics.evidence) : "New";
@@ -28802,6 +29214,7 @@ function renderReviewVault() {
           <span>Now</span>
         </div>
       </div>
+      ${renderResearchRoundReceipt(roundReceipt)}
     `;
     return;
   }
@@ -28818,6 +29231,8 @@ function renderReviewVault() {
         <span>Vault</span>
       </div>
     </div>
+    ${renderResearchRoundReceipt(roundReceipt)}
+    ${renderReviewFinishLine(latest, roundReceipt)}
     <div class="review-vault-metric-grid">
       <div><span>Score delta</span><strong>${escapeHtml(scoreDelta)}</strong></div>
       <div><span>Evidence delta</span><strong>${escapeHtml(evidenceDelta)}</strong></div>
@@ -28872,10 +29287,17 @@ function makeReviewVaultBrief() {
   const current = reviewSnapshotFromConfig(portfolioReviewConfig());
   const latest = entries[0] || current;
   const prior = entries[1] || null;
+  const roundReceipt = researchRoundReceipt(current, entries);
   return [
     "# NiveshNadi Review Vault",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
     `Saved snapshots: ${entries.length}`,
+    `Research round: ${roundReceipt.status}`,
+    `Rooms touched: ${roundReceipt.completedCount}/${SIMPLE_JOURNEY_STEPS.length}`,
+    `Round next action: ${roundReceipt.nextLabel} - ${roundReceipt.nextDetail}`,
+    `Next review cue: ${roundReceipt.reviewCue.label} (${roundReceipt.reviewCue.date})`,
+    `Review finish line: ${roundReceipt.snapshotSaved ? "Saved, dated, and bounded" : "Not saved yet"} - no transaction instruction`,
+    `Start next round: ${roundReceipt.snapshotSaved ? "Available; clears guided-room progress only and keeps saved review history" : "Available after saving one round"}`,
     `Latest score: ${latest.score}/100`,
     `Latest focus: ${latest.focusLabel}`,
     `Latest posture: ${latest.posture}`,
@@ -44909,6 +45331,17 @@ function bindEvents() {
   els.copyPortfolioReview?.addEventListener("click", () => copyText(makePortfolioReviewNote()));
   els.savePortfolioReview?.addEventListener("click", savePortfolioReviewTrigger);
   els.saveReviewSnapshot?.addEventListener("click", saveCurrentReviewSnapshot);
+  document.addEventListener("click", (event) => {
+    const saveRound = event.target.closest("[data-review-round-save]");
+    if (!saveRound) return;
+    saveCurrentReviewSnapshot();
+  });
+  document.addEventListener("click", (event) => {
+    const nextRound = event.target.closest("[data-review-next-round]");
+    if (!nextRound) return;
+    event.preventDefault();
+    startNextResearchRound();
+  });
   els.copyReviewVault?.addEventListener("click", () => copyText(makeReviewVaultBrief()));
   els.clearReviewVault?.addEventListener("click", clearReviewVault);
   els.investorRecordForm?.addEventListener("submit", (event) => {
@@ -45385,6 +45818,12 @@ function bindEvents() {
   });
 
   document.addEventListener("click", (event) => {
+    if (event.target.closest("[data-simple-progress-reset]")) {
+      event.preventDefault();
+      resetSimpleProgressMemory();
+      return;
+    }
+
     const signalRoute = event.target.closest("[data-signal-route]");
     if (!signalRoute) return;
     event.preventDefault();
@@ -45414,6 +45853,13 @@ function bindEvents() {
     event.preventDefault();
     syncSearchInputs("");
     els.searchInput?.focus();
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyPublisher = event.target.closest("[data-copy-publisher-handoff]");
+    if (!copyPublisher) return;
+    event.preventDefault();
+    copyText(makePublisherHandoffBrief());
   });
 
   document.addEventListener("click", (event) => {

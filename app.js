@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260530-11";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v251 Tool Command Palette";
+const DATA_VERSION = "20260531-04";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v255 Calm One-Question Path";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_PROGRESS_KEY = "niveshnadi-simple-progress";
@@ -1236,10 +1236,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Single Search First",
+    label: "Calm One-Question Path",
     status: "Shipping now",
     route: "#screener",
-    detail: "In Simple View, keep one search box on the first screen and move category, risk, and sort controls into Full View."
+    detail: "Make the first screen feel peaceful by reducing the route to one calm question, one next action, and a quiet progress line."
   },
   {
     label: "Portable mission memory",
@@ -3233,11 +3233,17 @@ function renderSimplicityPath(signal = signalStripConfig(), activeHash = window.
   const progress = simpleProgressMemory(journey.activeStep);
   renderHeaderNextAction(journey);
   renderSimpleRoomCue(journey, progress);
+  els.simplicityPath.classList.add("serenity-path");
   els.simplicityPath.innerHTML = `
     <div class="simplicity-path-copy">
-      <span>Simple route</span>
+      <span>Today's quiet path</span>
       <strong>Step ${escapeHtml(journey.activeStep.number)}: ${escapeHtml(journey.activeStep.label)}</strong>
       <p>${escapeHtml(journey.summary)}</p>
+      <div class="serenity-checkline" aria-label="Calm decision posture">
+        <span>Research only</span>
+        <span>Evidence first</span>
+        <span>No rush</span>
+      </div>
       ${progress.resumeStep ? `
         <button class="signal-chip simplicity-resume" type="button" data-signal-route="${escapeHtml(progress.resumeStep.value)}" aria-label="Resume last room: ${escapeHtml(progress.resumeStep.label)}">
           <span>Resume</span>
@@ -3246,12 +3252,12 @@ function renderSimplicityPath(signal = signalStripConfig(), activeHash = window.
       ` : ""}
     </div>
     <div class="simplicity-question">
-      <span>One question</span>
+      <span>Only question now</span>
       <strong>${escapeHtml(journey.question.label)}</strong>
       <p>${escapeHtml(journey.question.detail)}</p>
     </div>
     <button class="text-button simplicity-next primary-next-action" type="button" data-signal-route="${escapeHtml(journey.next.route)}" aria-label="Open next action: ${escapeHtml(journey.next.label)}">
-      <span>Next action</span>
+      <span>Do this next</span>
       <strong>${escapeHtml(journey.next.label)}</strong>
       <em>${escapeHtml(journey.next.reason)}</em>
     </button>
@@ -3352,6 +3358,11 @@ function renderSignalStrip() {
         <span>Selected signal</span>
         <strong>${escapeHtml(signal.posture)}</strong>
         <p>${escapeHtml(signal.postureCopy)}</p>
+        <div class="signal-fund-context">
+          <span>Current fund</span>
+          <strong>${escapeHtml(signal.fund.name)}</strong>
+          <p>${escapeHtml(signal.fund.category)} | ${escapeHtml(signal.fund.risk)} risk | ${signal.compareCount} in compare set</p>
+        </div>
         <div class="signal-takeaway">
           <span>Investor takeaway</span>
           <p>${escapeHtml(investorTakeaway(signal))}</p>
@@ -8216,7 +8227,7 @@ function buildTrackerConfig() {
 
 function publisherHandoffKit() {
   const releaseMatch = RELEASE_LABEL.match(/v\d+/i);
-  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v251";
+  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v255";
   const releaseFolder = `release-${version}`;
   const runtimeFolder = `${releaseFolder}\\github-pages-runtime-only`;
   const zipName = `niveshnadi-github-pages-runtime-${version}.zip`;
@@ -8423,7 +8434,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v251</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v255</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

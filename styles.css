@@ -694,6 +694,38 @@ main {
   background: var(--mint-soft);
 }
 
+.quiet-start-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 14px 0 16px;
+  padding: 10px 12px;
+  border: 1px solid rgba(15, 124, 107, 0.18);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(90deg, rgba(229, 247, 241, 0.82), rgba(255, 243, 220, 0.68)),
+    #ffffff;
+  box-shadow: 0 10px 24px rgba(15, 34, 56, 0.06);
+}
+
+.quiet-start-ribbon span {
+  flex: 0 0 auto;
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.quiet-start-ribbon strong {
+  min-width: 0;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.25;
+}
+
 .desk-stats {
   display: grid;
   gap: 8px;
@@ -32093,6 +32125,14 @@ a:focus-visible {
     min-height: 18px;
     padding-inline: 6px;
     font-size: 8px;
+  }
+
+  .quiet-start-ribbon {
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+    margin: 12px 0 14px;
   }
 
   body.simple-mode .top-nav {

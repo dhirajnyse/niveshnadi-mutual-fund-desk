@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260531-05";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v256 Header Version Badge";
+const DATA_VERSION = "20260531-06";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v257 Quiet Start Ribbon";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_PROGRESS_KEY = "niveshnadi-simple-progress";
@@ -1236,10 +1236,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Header Version Badge",
+    label: "Quiet Start Ribbon",
     status: "Shipping now",
     route: "#screener",
-    detail: "Keep the active release visible in the top brand bar and make the logo a calm home shortcut."
+    detail: "Make the first screen feel calmer with one visible research rule: one fund, one peer, one reason."
   },
   {
     label: "Portable mission memory",
@@ -8227,7 +8227,7 @@ function buildTrackerConfig() {
 
 function publisherHandoffKit() {
   const releaseMatch = RELEASE_LABEL.match(/v\d+/i);
-  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v256";
+  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v257";
   const releaseFolder = `release-${version}`;
   const runtimeFolder = `${releaseFolder}\\github-pages-runtime-only`;
   const zipName = `niveshnadi-github-pages-runtime-${version}.zip`;
@@ -8434,7 +8434,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v256</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v257</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

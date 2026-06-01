@@ -11,7 +11,7 @@
     <meta name="description" content="India mutual fund research desk for SIP, STP, portfolio x-ray, and investor decision support.">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="manifest" href="site.webmanifest">
-  <link rel="stylesheet" href="styles.css?v=20260531-07">
+  <link rel="stylesheet" href="styles.css?v=20260601-01">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to workspace</a>
@@ -23,7 +23,7 @@
         <div>
           <div class="brand-meta-row">
             <p class="eyebrow">India mutual fund desk</p>
-            <span class="version-quick-badge" title="NiveshNadi Phase 1 v258 Calm Next Action">Phase 1 v258</span>
+            <span class="version-quick-badge" title="NiveshNadi Phase 1 v268 Quiet Opening Copy">Phase 1 v268</span>
           </div>
           <h1>Know the fund before you fund it.</h1>
         </div>
@@ -211,7 +211,7 @@
         <div class="workspace-grid">
           <div class="command-panel calm-focus-shell">
             <div class="command-copy">
-            <p class="release-pill">Phase 1 v258</p>
+            <p class="release-pill">Phase 1 v268</p>
               <h2 id="workspace-title">Mutual fund research cockpit</h2>
               <p>
                 Screen categories, compare risk, test SIP/STP assumptions, and record the decision before investing.
@@ -220,6 +220,7 @@
                 <span>Quiet start</span>
                 <strong>One fund. One fair peer. One written reason.</strong>
               </div>
+              <div id="serenityStartSurface" class="serenity-start-surface" aria-label="Serenity start surface"></div>
               <div class="control-grid" aria-label="Research filters">
                 <label>
                   Search
@@ -251,6 +252,9 @@
                   </select>
                 </label>
               </div>
+              <button class="simple-filter-toggle" id="simpleFilterToggle" type="button" aria-expanded="false" aria-controls="categoryFilter riskFilter sortSelect">
+                More filters
+              </button>
               <div class="search-starters" aria-label="Starter searches">
                 <span>Try</span>
                 <button class="signal-chip" type="button" data-search-preset="large cap">Large cap</button>
@@ -260,6 +264,7 @@
               </div>
               <div id="searchFeedback" class="search-feedback" aria-live="polite"></div>
             </div>
+            <div id="calmDecisionGate" class="calm-decision-gate" aria-label="Calm decision gate"></div>
             <div id="simplicityPath" class="simplicity-path serenity-path" aria-label="Simple research route">
               <div>
                 <span>Today's quiet path</span>
@@ -4472,6 +4477,6 @@
       </button>
     </div>
 
-  <script src="app.js?v=20260531-07"></script>
+  <script src="app.js?v=20260601-01"></script>
   </body>
 </html>

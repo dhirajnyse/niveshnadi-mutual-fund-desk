@@ -1,7 +1,9 @@
-const DATA_VERSION = "20260531-07";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v258 Calm Next Action";
+const DATA_VERSION = "20260601-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v268 Quiet Opening Copy";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
+const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
+const SIMPLE_FUND_SHELF_LIMIT = 6;
 const SIMPLE_PROGRESS_KEY = "niveshnadi-simple-progress";
 const SIMPLE_LAST_ROOM_KEY = "niveshnadi-last-simple-room";
 let simpleSessionResumeRoute = "";
@@ -1011,6 +1013,8 @@ const state = {
   answerSheetHydrated: false,
   hashSettleUntil: 0,
   simpleMode: true,
+  simpleFundShelfExpanded: false,
+  simpleFiltersOpen: false,
   simpleRoomFocus: "",
   investorRecordFocus: false,
   toolPaletteHost: null,
@@ -1176,10 +1180,10 @@ const BUILD_TRACKER_PHASES = [
     phase: "Phase 1A",
     label: "Retail self-research cockpit",
     progress: 100,
-    launch: 69,
+    launch: 71,
     status: "Done",
     route: "#screener",
-    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "calm header", "first-screen focus", "guided selector", "live route rail", "one-question gate"],
+    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "calm header", "first-screen focus", "guided selector", "live route rail", "one-question gate", "calm decision gate", "one breath brief", "three minute calm route", "calm decision mantra", "serenity start surface", "one calm start", "quiet opening copy"],
     next: "Keep the default retail journey calm, obvious, short, and free of secondary context until the investor asks for depth."
   },
   {
@@ -1236,10 +1240,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Calm Next Action",
+    label: "Quiet Opening Copy",
     status: "Shipping now",
     route: "#screener",
-    detail: "Soften the first-screen next step so the investor sees a clear path without a heavy command block."
+    detail: "Let Simple View hide the generic intro line and let One Calm Start carry the first-screen guidance."
   },
   {
     label: "Portable mission memory",
@@ -3231,7 +3235,10 @@ function renderSimplicityPath(signal = signalStripConfig(), activeHash = window.
   if (!els.simplicityPath) return;
   const journey = simpleJourneyConfig(signal, activeHash);
   const progress = simpleProgressMemory(journey.activeStep);
+  const readiness = decisionReadiness(signal);
+  const nextCue = doNextCue(signal, readiness);
   renderHeaderNextAction(journey);
+  renderSerenityStartSurface(signal, journey, readiness, nextCue);
   renderSimpleRoomCue(journey, progress);
   els.simplicityPath.classList.add("serenity-path");
   els.simplicityPath.innerHTML = `
@@ -3270,6 +3277,50 @@ function renderSimplicityPath(signal = signalStripConfig(), activeHash = window.
         return `<button class="signal-chip simple-step${stateClass}${memoryClass}" type="button" data-signal-route="${escapeHtml(step.value)}"${current}><span>${escapeHtml(step.number)}</span><strong>${escapeHtml(step.label)}</strong>${marker}</button>`;
       }).join("")}
     </div>
+  `;
+}
+
+function serenityStartSurface(signal, journey, readiness, nextCue) {
+  const blocked = readiness.status !== "Memo-ready";
+  const question = journey?.question?.label || "What proof is missing?";
+  const detail = blocked
+    ? "Keep the decision quiet until evidence, peer, and memo checks are visible."
+    : "The research can move to a written memo, but it is still not an execution instruction.";
+  const rule = "One fund. One fair peer. One written reason.";
+  const boundary = signal.evidence < 78
+    ? "Do not judge before source dates."
+    : signal.compareCount < 2
+      ? "Do not judge before one fair peer."
+      : readiness.status === "Memo-ready"
+        ? "Write before any action."
+        : "Pause before money moves.";
+  return {
+    label: "One calm start",
+    question,
+    detail,
+    rule,
+    context: "Search first. Filters can wait.",
+    boundary,
+    button: nextCue.button,
+    route: nextCue.route
+  };
+}
+
+function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
+  if (!els.serenityStartSurface) return;
+  const start = serenityStartSurface(signal, journey, readiness, nextCue);
+  els.serenityStartSurface.innerHTML = `
+    <div>
+      <span>${escapeHtml(start.label)}</span>
+      <strong>${escapeHtml(start.question)}</strong>
+      <p>${escapeHtml(start.detail)}</p>
+      <em class="serenity-start-rule">${escapeHtml(start.rule)}</em>
+      <small class="serenity-start-hint">${escapeHtml(start.context)}</small>
+    </div>
+    <button class="text-button" type="button" data-signal-route="${escapeHtml(start.route)}">
+      <span>${escapeHtml(start.boundary)}</span>
+      <strong>${escapeHtml(start.button)}</strong>
+    </button>
   `;
 }
 
@@ -3345,6 +3396,191 @@ function renderHeaderNextAction(journey) {
   `;
 }
 
+function oneBreathBrief(signal = signalStripConfig(), readiness = decisionReadiness(signal), nextCue = doNextCue(signal, readiness)) {
+  if (readiness.status === "Memo-ready") {
+    return {
+      cue: "Write slowly",
+      title: `Write the reason for ${signal.fund.name}.`,
+      detail: "One calm move: build the memo, add review date, and keep the record research-only."
+    };
+  }
+  if (signal.evidence < 78) {
+    return {
+      cue: "Evidence first",
+      title: `Verify source dates before judging ${signal.fund.name}.`,
+      detail: `One calm move: ${nextCue.button}. Then decide whether the fund deserves shortlist space.`
+    };
+  }
+  if (signal.compareCount < 2) {
+    return {
+      cue: "One fair peer",
+      title: `Add one fair peer before judging ${signal.fund.name}.`,
+      detail: "One calm move: compare role, cost, drawdown, and evidence side by side."
+    };
+  }
+  if (signal.stressRequired) {
+    return {
+      cue: "Feel the fall",
+      title: `Rehearse the drawdown before trusting ${signal.fund.name}.`,
+      detail: "One calm move: translate the possible fall into rupees before writing the memo."
+    };
+  }
+  if (signal.costNeedsCheck) {
+    return {
+      cue: "Cost clarity",
+      title: `Check the rupee cost before shortlisting ${signal.fund.name}.`,
+      detail: "One calm move: compare TER drag and lower-cost alternatives before the memo."
+    };
+  }
+  return {
+    cue: "Stay calm",
+    title: nextCue.title,
+    detail: nextCue.detail
+  };
+}
+
+function threeMinuteCalmRoute(signal = signalStripConfig(), readiness = decisionReadiness(signal), nextCue = doNextCue(signal, readiness)) {
+  const evidenceReady = signal.evidence >= 78;
+  const memoReady = readiness.status === "Memo-ready";
+  return [
+    {
+      label: "01 Breathe",
+      title: "Name next",
+      detail: "Slow down and name the next blocker.",
+      route: nextCue.route,
+      state: "active"
+    },
+    {
+      label: "02 Verify",
+      title: evidenceReady ? "Source ready" : "Source date",
+      detail: evidenceReady ? "Carry citation into the memo." : "Check AMFI, AMC, TER, holdings.",
+      route: "#evidence",
+      state: evidenceReady ? "ready" : "queued"
+    },
+    {
+      label: "03 Write",
+      title: memoReady ? "Memo reason" : "Wait to memo",
+      detail: memoReady ? "Record reason, amount, and review date." : "Write after evidence and peer checks.",
+      route: "#decision-pack",
+      state: memoReady ? "ready" : "queued"
+    }
+  ];
+}
+
+function calmDecisionMantra(signal = signalStripConfig(), readiness = decisionReadiness(signal), nextCue = doNextCue(signal, readiness)) {
+  const evidenceReady = signal.evidence >= 78;
+  const peerReady = signal.compareCount >= 2;
+  const actionBoundary = readiness.status === "Memo-ready"
+    ? "Research only: write amount, review date, and stop-checks before acting."
+    : "No money move yet: clear evidence, peer, cost, or stress checks first.";
+  return [
+    {
+      label: "Role",
+      title: signal.fund.category,
+      detail: signal.fund.role || signal.postureCopy
+    },
+    {
+      label: "Next",
+      title: nextCue.button,
+      detail: nextCue.detail || signal.next.reason
+    },
+    {
+      label: "Boundary",
+      title: evidenceReady && peerReady ? readiness.status : "Research first",
+      detail: actionBoundary
+    }
+  ];
+}
+
+function renderCalmDecisionGate(signal = signalStripConfig(), readiness = decisionReadiness(signal), nextCue = doNextCue(signal, readiness)) {
+  if (!els.calmDecisionGate) return;
+  const evidenceReady = signal.evidence >= 78;
+  const peerReady = signal.compareCount >= 2;
+  const memoReady = readiness.status === "Memo-ready";
+  const tone = memoReady ? "ready" : evidenceReady && peerReady ? "watch" : "blocked";
+  const title = memoReady ? "Write the memo" : evidenceReady && peerReady ? "Pause and rehearse risk" : "Pause before action";
+  const breath = oneBreathBrief(signal, readiness, nextCue);
+  const calmRoute = threeMinuteCalmRoute(signal, readiness, nextCue);
+  const mantra = calmDecisionMantra(signal, readiness, nextCue);
+  const promise = memoReady
+    ? "Still research only: write role, amount, review date, and stop-checks before any real-world decision."
+    : "No investment action yet. Clear the next blocker and keep the decision calm.";
+  const checks = [
+    {
+      label: "Fund",
+      value: signal.fund.name,
+      state: "Selected",
+      tone: "ready"
+    },
+    {
+      label: "Peer",
+      value: peerReady ? `${signal.compareCount} in compare` : "Add one peer",
+      state: peerReady ? "Ready" : "Needed",
+      tone: peerReady ? "ready" : "watch"
+    },
+    {
+      label: "Evidence",
+      value: `${signal.evidence}/100`,
+      state: evidenceReady ? "Ready" : "Missing",
+      tone: evidenceReady ? "ready" : "blocked"
+    },
+    {
+      label: "Memo",
+      value: readiness.status,
+      state: memoReady ? "Ready" : "Wait",
+      tone: memoReady ? "ready" : "watch"
+    }
+  ];
+  els.calmDecisionGate.innerHTML = `
+    <div class="one-breath-brief ${escapeHtml(tone)}">
+      <div class="one-breath-copy">
+        <span>One breath brief</span>
+        <strong>${escapeHtml(breath.title)}</strong>
+        <div class="calm-route-mini" aria-label="Three minute calm route">
+          ${calmRoute.map((step) => `
+            <button class="${escapeHtml(step.state)}" type="button" data-signal-route="${escapeHtml(step.route)}">
+              <span>${escapeHtml(step.label)}</span>
+              <strong>${escapeHtml(step.title)}</strong>
+              <small>${escapeHtml(step.detail)}</small>
+            </button>
+          `).join("")}
+        </div>
+        <p>${escapeHtml(breath.detail)}</p>
+        <div class="calm-mantra-strip" aria-label="Calm decision mantra">
+          ${mantra.map((item) => `
+            <article>
+              <span>${escapeHtml(item.label)}</span>
+              <strong>${escapeHtml(item.title)}</strong>
+              <p>${escapeHtml(item.detail)}</p>
+            </article>
+          `).join("")}
+        </div>
+      </div>
+      <em>${escapeHtml(breath.cue)}</em>
+    </div>
+    <div class="calm-gate-hero ${escapeHtml(tone)}">
+      <div>
+        <span>Nadi calm gate</span>
+        <strong>${escapeHtml(title)}</strong>
+        <p>${escapeHtml(promise)}</p>
+      </div>
+      <button class="text-button calm-gate-action" type="button" data-signal-route="${escapeHtml(nextCue.route)}">
+        <span>Next</span>
+        <strong>${escapeHtml(nextCue.button)}</strong>
+      </button>
+    </div>
+    <div class="calm-gate-checks">
+      ${checks.map((check) => `
+        <article class="${escapeHtml(check.tone)}">
+          <span>${escapeHtml(check.label)}</span>
+          <strong>${escapeHtml(check.value)}</strong>
+          <p>${escapeHtml(check.state)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
 function renderSignalStrip() {
   if (!els.nadiSignalStrip) return;
   const signal = signalStripConfig();
@@ -3352,6 +3588,7 @@ function renderSignalStrip() {
   const nextCue = doNextCue(signal, readiness);
   const planSteps = threeStepPlan(signal, readiness, nextCue);
   renderSimplicityPath(signal);
+  renderCalmDecisionGate(signal, readiness, nextCue);
   els.nadiSignalStrip.innerHTML = `
     <article class="signal-hero ${escapeHtml(signal.tone)}">
       <div>
@@ -8227,7 +8464,7 @@ function buildTrackerConfig() {
 
 function publisherHandoffKit() {
   const releaseMatch = RELEASE_LABEL.match(/v\d+/i);
-  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v258";
+  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v268";
   const releaseFolder = `release-${version}`;
   const runtimeFolder = `${releaseFolder}\\github-pages-runtime-only`;
   const zipName = `niveshnadi-github-pages-runtime-${version}.zip`;
@@ -8434,7 +8671,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v258</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v268</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -21043,8 +21280,13 @@ function renderFundGrid() {
   const funds = filteredFunds();
   const term = state.filters.search.trim();
   const topMatch = funds[0];
+  const shelfCanCollapse = state.simpleMode && funds.length > SIMPLE_FUND_SHELF_LIMIT;
+  const shelfCollapsed = shelfCanCollapse && !state.simpleFundShelfExpanded;
+  const displayFunds = shelfCollapsed ? funds.slice(0, SIMPLE_FUND_SHELF_LIMIT) : funds;
   if (els.fundCount) {
-    els.fundCount.textContent = `${funds.length} of ${FUNDS.length} funds`;
+    els.fundCount.textContent = shelfCollapsed
+      ? `${displayFunds.length} calm picks of ${funds.length} matches`
+      : `${funds.length} of ${FUNDS.length} funds`;
   }
   if (els.searchFeedback) {
     const label = term
@@ -21077,7 +21319,18 @@ function renderFundGrid() {
     return;
   }
 
-  els.fundGrid.innerHTML = funds.map((fund) => {
+  const shelfFooter = shelfCanCollapse
+    ? `
+      <div class="quiet-fund-shelf" role="note">
+        <span>${shelfCollapsed ? `Showing the first ${displayFunds.length} calm picks from ${funds.length} matches.` : "Full fund shelf open for this view."}</span>
+        <button class="text-button" type="button" data-expand-fund-shelf="${shelfCollapsed ? "true" : "false"}">
+          ${shelfCollapsed ? `Show all ${funds.length}` : "Calm shelf"}
+        </button>
+      </div>
+    `
+    : "";
+
+  els.fundGrid.innerHTML = displayFunds.map((fund) => {
     const score = nadiScore(fund);
     const selected = fund.id === state.selectedId ? " is-selected" : "";
     const checked = state.compare.has(fund.id) ? "checked" : "";
@@ -21124,7 +21377,7 @@ function renderFundGrid() {
         </div>
       </article>
     `;
-  }).join("");
+  }).join("") + shelfFooter;
   renderSearchPresetCounts();
 }
 
@@ -27913,6 +28166,7 @@ document.addEventListener("visibilitychange", () => {
 
 function syncSearchInputs(value) {
   state.filters.search = value;
+  state.simpleFundShelfExpanded = false;
   els.searchInput.value = value;
   if (els.floatingSearchInput) els.floatingSearchInput.value = value;
   renderFundGrid();
@@ -27925,7 +28179,9 @@ function syncSearchInputs(value) {
 
 function loadSimpleModePreference() {
   try {
+    const savedVersion = localStorage.getItem(SIMPLE_MODE_VERSION_KEY);
     const saved = localStorage.getItem(SIMPLE_MODE_KEY);
+    if (savedVersion !== DATA_VERSION) return true;
     return saved === null ? true : saved !== "off";
   } catch (error) {
     return true;
@@ -27935,15 +28191,28 @@ function loadSimpleModePreference() {
 function saveSimpleModePreference(enabled) {
   try {
     localStorage.setItem(SIMPLE_MODE_KEY, enabled ? "on" : "off");
+    localStorage.setItem(SIMPLE_MODE_VERSION_KEY, DATA_VERSION);
   } catch (error) {
     // Simple view is cosmetic; the workspace still works when storage is blocked.
   }
 }
 
+function applySimpleFiltersOpen(open) {
+  state.simpleFiltersOpen = Boolean(open);
+  document.body.classList.toggle("simple-filters-open", state.simpleFiltersOpen);
+  if (els.simpleFilterToggle) {
+    els.simpleFilterToggle.setAttribute("aria-expanded", state.simpleFiltersOpen ? "true" : "false");
+    els.simpleFilterToggle.textContent = state.simpleFiltersOpen ? "Quiet search" : "More filters";
+    els.simpleFilterToggle.title = state.simpleFiltersOpen ? "Return to one-search Simple View" : "Show category, risk, and sort filters";
+  }
+}
+
 function applySimpleMode(enabled, persist = true) {
   state.simpleMode = enabled;
+  if (enabled) state.simpleFundShelfExpanded = false;
   document.body.classList.toggle("simple-mode", enabled);
   document.body.classList.toggle("full-mode", !enabled);
+  applySimpleFiltersOpen(false);
   syncWorkspaceFocusClass();
   renderWorkspaceJumpForMode(window.location.hash || workspaceHashFromViewport());
   renderToolPaletteResults();
@@ -27953,6 +28222,7 @@ function applySimpleMode(enabled, persist = true) {
     els.simpleModeToggle.textContent = enabled ? "Full view" : "Simple view";
     els.simpleModeToggle.title = enabled ? "Show full workspace depth" : "Show simpler workspace";
   }
+  if (els.fundGrid) renderFundGrid();
   if (persist) saveSimpleModePreference(enabled);
 }
 
@@ -27961,6 +28231,9 @@ function bindSimpleModeToggle() {
   els.simpleModeToggle?.addEventListener("click", () => {
     applySimpleMode(!state.simpleMode);
     settleHashNavigation();
+  });
+  els.simpleFilterToggle?.addEventListener("click", () => {
+    applySimpleFiltersOpen(!state.simpleFiltersOpen);
   });
 }
 
@@ -44903,6 +45176,7 @@ function bindEvents() {
   });
   els.categoryFilter.addEventListener("change", (event) => {
     state.filters.category = event.target.value;
+    state.simpleFundShelfExpanded = false;
     renderFundGrid();
     renderSelectionFunnel();
     renderShortlistReasonBoard();
@@ -44912,6 +45186,7 @@ function bindEvents() {
   });
   els.riskFilter.addEventListener("change", (event) => {
     state.filters.risk = event.target.value;
+    state.simpleFundShelfExpanded = false;
     renderFundGrid();
     renderSelectionFunnel();
     renderShortlistReasonBoard();
@@ -44921,6 +45196,7 @@ function bindEvents() {
   });
   els.sortSelect.addEventListener("change", (event) => {
     state.filters.sort = event.target.value;
+    state.simpleFundShelfExpanded = false;
     renderFundGrid();
     renderSelectionFunnel();
     renderShortlistReasonBoard();
@@ -44930,6 +45206,7 @@ function bindEvents() {
   });
   els.resetFilters.addEventListener("click", () => {
     state.filters = { search: "", category: "all", risk: "all", sort: "score" };
+    state.simpleFundShelfExpanded = false;
     if (els.floatingSearchInput) els.floatingSearchInput.value = "";
     els.searchInput.value = "";
     els.categoryFilter.value = "all";
@@ -45985,6 +46262,14 @@ function bindEvents() {
   });
 
   document.addEventListener("click", (event) => {
+    const shelfButton = event.target.closest("[data-expand-fund-shelf]");
+    if (!shelfButton) return;
+    event.preventDefault();
+    state.simpleFundShelfExpanded = shelfButton.dataset.expandFundShelf === "true";
+    renderFundGrid();
+  });
+
+  document.addEventListener("click", (event) => {
     const copyPublisher = event.target.closest("[data-copy-publisher-handoff]");
     if (!copyPublisher) return;
     event.preventDefault();
@@ -46854,6 +47139,7 @@ function cacheElements() {
     workspaceJump: qs("#workspaceJump"),
     workspaceStatus: qs("#workspaceStatus"),
     simpleModeToggle: qs("#simpleModeToggle"),
+    simpleFilterToggle: qs("#simpleFilterToggle"),
     headerNextAction: qs("#headerNextAction"),
     toolPaletteToggle: qs("#toolPaletteToggle"),
     toolPalette: qs("#toolPalette"),
@@ -46867,7 +47153,9 @@ function cacheElements() {
     sortSelect: qs("#sortSelect"),
     resetFilters: qs("#resetFilters"),
     copyBrief: qs("#copyBrief"),
+    serenityStartSurface: qs("#serenityStartSurface"),
     simplicityPath: qs("#simplicityPath"),
+    calmDecisionGate: qs("#calmDecisionGate"),
     roomFocusNote: qs("#roomFocusNote"),
     nadiSignalStrip: qs("#nadiSignalStrip"),
     researchAutopilot: qs("#researchAutopilot"),

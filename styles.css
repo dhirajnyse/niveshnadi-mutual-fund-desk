@@ -830,6 +830,38 @@ main {
   font-size: 10px;
 }
 
+.serenity-commitment-cue {
+  display: grid;
+  gap: 3px;
+  max-width: 520px;
+  margin-top: 9px;
+  padding: 9px 10px;
+  border: 1px solid rgba(15, 124, 107, 0.14);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.serenity-commitment-cue span {
+  color: var(--mint);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.serenity-commitment-cue strong {
+  margin-top: 0;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.serenity-commitment-cue small {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
 .serenity-promise-row {
   display: flex;
   flex-wrap: wrap;

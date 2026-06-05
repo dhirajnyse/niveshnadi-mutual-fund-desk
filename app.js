@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260605-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v271 Serenity Action Path";
+const DATA_VERSION = "20260605-02";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v272 Calm Commitment Cue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1180,10 +1180,10 @@ const BUILD_TRACKER_PHASES = [
     phase: "Phase 1A",
     label: "Retail self-research cockpit",
     progress: 100,
-    launch: 74,
+    launch: 75,
     status: "Done",
     route: "#screener",
-    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "calm header", "first-screen focus", "guided selector", "live route rail", "one-question gate", "calm decision gate", "one breath brief", "three minute calm route", "calm decision mantra", "serenity start surface", "one calm start", "quiet opening copy", "calm promise line", "human trust promise", "serenity action path"],
+    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "calm header", "first-screen focus", "guided selector", "live route rail", "one-question gate", "calm decision gate", "one breath brief", "three minute calm route", "calm decision mantra", "serenity start surface", "one calm start", "quiet opening copy", "calm promise line", "human trust promise", "serenity action path", "calm commitment cue"],
     next: "Keep the default retail journey calm, obvious, short, and free of secondary context until the investor asks for depth."
   },
   {
@@ -1240,10 +1240,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Serenity Action Path",
+    label: "Calm Commitment Cue",
     status: "Shipping now",
     route: "#screener",
-    detail: "Make the first action feel peaceful: pause, verify, and write before the investor moves deeper."
+    detail: "Shrink the first decision into one tiny commitment: three quiet minutes, one source, one peer, one written line."
   },
   {
     label: "Portable mission memory",
@@ -3302,6 +3302,11 @@ function serenityStartSurface(signal, journey, readiness, nextCue) {
     context: "Search first. Filters can wait.",
     plainStart: "Begin with one name, then let the desk slow the decision down.",
     actionPath: ["Pause", "Verify", "Write"],
+    commitment: {
+      label: "Tiny commitment",
+      text: "Give this fund three quiet minutes before any conclusion.",
+      proof: "One source, one peer, one written line."
+    },
     promises: ["Research only", "No rush", "No personal IDs"],
     boundary,
     button: nextCue.button,
@@ -3323,6 +3328,11 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
       <ol class="serenity-action-path" aria-label="Serenity action path">
         ${start.actionPath.map((item, index) => `<li><span>${String(index + 1).padStart(2, "0")}</span><strong>${escapeHtml(item)}</strong></li>`).join("")}
       </ol>
+      <div class="serenity-commitment-cue" aria-label="Tiny research commitment">
+        <span>${escapeHtml(start.commitment.label)}</span>
+        <strong>${escapeHtml(start.commitment.text)}</strong>
+        <small>${escapeHtml(start.commitment.proof)}</small>
+      </div>
       <div class="serenity-promise-row" aria-label="Calm research promise">
         ${start.promises.map((item) => `<b>${escapeHtml(item)}</b>`).join("")}
       </div>
@@ -8474,7 +8484,7 @@ function buildTrackerConfig() {
 
 function publisherHandoffKit() {
   const releaseMatch = RELEASE_LABEL.match(/v\d+/i);
-  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v271";
+  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v272";
   const releaseFolder = `release-${version}`;
   const runtimeFolder = `${releaseFolder}\\github-pages-runtime-only`;
   const zipName = `niveshnadi-github-pages-runtime-${version}.zip`;
@@ -8681,7 +8691,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v271</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v272</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

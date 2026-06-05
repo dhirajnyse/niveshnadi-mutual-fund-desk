@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260601-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v268 Quiet Opening Copy";
+const DATA_VERSION = "20260604-02";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v270 Human Trust Promise";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1180,10 +1180,10 @@ const BUILD_TRACKER_PHASES = [
     phase: "Phase 1A",
     label: "Retail self-research cockpit",
     progress: 100,
-    launch: 71,
+    launch: 73,
     status: "Done",
     route: "#screener",
-    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "calm header", "first-screen focus", "guided selector", "live route rail", "one-question gate", "calm decision gate", "one breath brief", "three minute calm route", "calm decision mantra", "serenity start surface", "one calm start", "quiet opening copy"],
+    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "calm header", "first-screen focus", "guided selector", "live route rail", "one-question gate", "calm decision gate", "one breath brief", "three minute calm route", "calm decision mantra", "serenity start surface", "one calm start", "quiet opening copy", "calm promise line", "human trust promise"],
     next: "Keep the default retail journey calm, obvious, short, and free of secondary context until the investor asks for depth."
   },
   {
@@ -1240,10 +1240,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Quiet Opening Copy",
+    label: "Human Trust Promise",
     status: "Shipping now",
     route: "#screener",
-    detail: "Let Simple View hide the generic intro line and let One Calm Start carry the first-screen guidance."
+    detail: "Replace technical trust wording with plain investor language and add one calm starting sentence."
   },
   {
     label: "Portable mission memory",
@@ -3300,6 +3300,8 @@ function serenityStartSurface(signal, journey, readiness, nextCue) {
     detail,
     rule,
     context: "Search first. Filters can wait.",
+    plainStart: "Begin with one name, then let the desk slow the decision down.",
+    promises: ["Research only", "No rush", "No personal IDs"],
     boundary,
     button: nextCue.button,
     route: nextCue.route
@@ -3316,6 +3318,10 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
       <p>${escapeHtml(start.detail)}</p>
       <em class="serenity-start-rule">${escapeHtml(start.rule)}</em>
       <small class="serenity-start-hint">${escapeHtml(start.context)}</small>
+      <small class="serenity-plain-start">${escapeHtml(start.plainStart)}</small>
+      <div class="serenity-promise-row" aria-label="Calm research promise">
+        ${start.promises.map((item) => `<b>${escapeHtml(item)}</b>`).join("")}
+      </div>
     </div>
     <button class="text-button" type="button" data-signal-route="${escapeHtml(start.route)}">
       <span>${escapeHtml(start.boundary)}</span>
@@ -8464,7 +8470,7 @@ function buildTrackerConfig() {
 
 function publisherHandoffKit() {
   const releaseMatch = RELEASE_LABEL.match(/v\d+/i);
-  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v268";
+  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v270";
   const releaseFolder = `release-${version}`;
   const runtimeFolder = `${releaseFolder}\\github-pages-runtime-only`;
   const zipName = `niveshnadi-github-pages-runtime-${version}.zip`;
@@ -8671,7 +8677,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v268</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v270</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

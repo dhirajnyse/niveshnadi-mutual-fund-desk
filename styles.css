@@ -862,6 +862,110 @@ main {
   line-height: 1.35;
 }
 
+.serenity-shortlist-boundary {
+  display: grid;
+  gap: 3px;
+  max-width: 520px;
+  margin-top: 8px;
+  padding: 8px 10px;
+  border: 1px solid rgba(31, 78, 121, 0.12);
+  border-radius: var(--radius);
+  background: rgba(236, 246, 255, 0.64);
+}
+
+.serenity-shortlist-boundary span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.serenity-shortlist-boundary strong {
+  margin-top: 0;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.serenity-conviction-meter {
+  display: grid;
+  gap: 8px;
+  max-width: 520px;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid rgba(15, 124, 107, 0.16);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(240, 252, 248, 0.82), rgba(255, 252, 242, 0.76));
+}
+
+.serenity-conviction-meter > div {
+  display: grid;
+  gap: 3px;
+}
+
+.serenity-conviction-meter > div > span {
+  color: var(--mint);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.serenity-conviction-meter strong {
+  margin-top: 0;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.serenity-conviction-meter small,
+.serenity-conviction-meter p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.serenity-conviction-meter ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.serenity-conviction-meter li {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 24px;
+  padding: 4px 7px;
+  border: 1px solid rgba(31, 78, 121, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--slate);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.serenity-conviction-meter li i {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(31, 78, 121, 0.22);
+}
+
+.serenity-conviction-meter li.ready i {
+  background: var(--mint);
+}
+
+.serenity-conviction-meter li.waiting i {
+  background: var(--gold);
+}
+
 .serenity-promise-row {
   display: flex;
   flex-wrap: wrap;

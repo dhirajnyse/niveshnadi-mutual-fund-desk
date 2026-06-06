@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v272 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v274 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -10,7 +10,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 
 - 3D-style corporate SVG logo and brand system.
 - Self-research command desk with search, category, risk, and sorting controls.
-- Calm Commitment Cue on the first screen that turns the research start into three quiet minutes, one source, one peer, and one written line before any conclusion.
+- Quiet Conviction Meter on the first screen that keeps confidence calm until evidence, peer, and memo checks are visible.
 - Nadi Build Tracker plus Publisher Handoff Kit and Build Phases Room that separates the compact executive build view from GitHub Desktop publishing steps, runtime-only copy guardrails, detailed phase cards, launch gates, completed modules, roadmap guardrails, and the Phase 2 distributor boundary.
 - Nadi Market Strategy Room that keeps B2C pricing, competitor posture, monetization scenarios, trust moats, founder beta scale gate, founder beta learning ledger, founder beta experiment board, founder beta traffic rehearsal, paid beta gates, and the Phase 2 distributor boundary visible inside the founder workspace.
 - Nadi Paid Beta Evidence Pack that turns the monetization thesis into value proof, source proof, payment proof, account proof, support proof, compliance proof, cohort limits, required receipts, and a founder go/no-go path before the first paid users are invited.

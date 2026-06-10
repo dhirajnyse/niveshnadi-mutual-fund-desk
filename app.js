@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260605-04";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v274 Quiet Conviction Meter";
+const DATA_VERSION = "20260609-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v275 Learning Loop Ledger";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1180,10 +1180,10 @@ const BUILD_TRACKER_PHASES = [
     phase: "Phase 1A",
     label: "Retail self-research cockpit",
     progress: 100,
-    launch: 77,
+    launch: 78,
     status: "Done",
     route: "#screener",
-    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "calm header", "first-screen focus", "guided selector", "live route rail", "one-question gate", "calm decision gate", "one breath brief", "three minute calm route", "calm decision mantra", "serenity start surface", "one calm start", "quiet opening copy", "calm promise line", "human trust promise", "serenity action path", "calm commitment cue", "shortlist boundary line", "quiet conviction meter"],
+    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "calm header", "first-screen focus", "guided selector", "live route rail", "one-question gate", "calm decision gate", "one breath brief", "three minute calm route", "calm decision mantra", "serenity start surface", "one calm start", "quiet opening copy", "calm promise line", "human trust promise", "serenity action path", "calm commitment cue", "shortlist boundary line", "quiet conviction meter", "learning loop ledger"],
     next: "Keep the default retail journey calm, obvious, short, and free of secondary context until the investor asks for depth."
   },
   {
@@ -1240,10 +1240,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Quiet Conviction Meter",
+    label: "Learning Loop Ledger",
     status: "Shipping now",
     route: "#screener",
-    detail: "Show one plain readiness sentence on the first screen so confidence stays calm until evidence, peer, and memo checks are visible."
+    detail: "Show how research actions become privacy-safe learning signals without turning demo data into advice."
   },
   {
     label: "Portable mission memory",
@@ -3313,6 +3313,32 @@ function quietConvictionMeter(readiness) {
   };
 }
 
+function learningLoopLedger(signal, readiness) {
+  const checks = readiness.checks || [];
+  const readyCount = checks.filter((check) => check.state === "Ready").length;
+  const memoReady = readiness.status === "Memo-ready";
+  const posture = memoReady
+    ? "Learning loop ready"
+    : readyCount >= 2
+      ? "Learning loop warming"
+      : "Learning loop observing";
+  const headline = memoReady
+    ? "A reviewed memo can teach the next route."
+    : "Observe, verify, write, review before the desk learns from this action.";
+  return {
+    label: "Closed-loop learning",
+    posture,
+    headline,
+    receipt: ["NN", "LEARNING", "LOOP", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    loops: [
+      { label: "Action signal", state: "Captured" },
+      { label: "Outcome memory", state: memoReady ? "Ready" : "Waiting" },
+      { label: "Privacy filter", state: "On" }
+    ],
+    safeguards: ["Anonymous patterns only", "Human review before release", "No personal IDs"]
+  };
+}
+
 function serenityStartSurface(signal, journey, readiness, nextCue) {
   const blocked = readiness.status !== "Memo-ready";
   const question = journey?.question?.label || "What proof is missing?";
@@ -3345,6 +3371,7 @@ function serenityStartSurface(signal, journey, readiness, nextCue) {
       text: `${signal.fund.name} is being checked for shortlist fit, not chosen today.`
     },
     conviction: quietConvictionMeter(readiness),
+    learningLoop: learningLoopLedger(signal, readiness),
     promises: ["Research only", "No rush", "No personal IDs"],
     boundary,
     button: nextCue.button,
@@ -3385,6 +3412,20 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
           ${start.conviction.steps.map((step) => `<li class="${step.ready ? "ready" : "waiting"}"><i></i><span>${escapeHtml(step.label)}</span></li>`).join("")}
         </ol>
         <p>${escapeHtml(start.conviction.cue)}</p>
+      </div>
+      <div class="serenity-learning-loop" aria-label="Closed-loop learning ledger">
+        <div>
+          <span>${escapeHtml(start.learningLoop.label)}</span>
+          <strong>${escapeHtml(start.learningLoop.posture)}</strong>
+          <small>${escapeHtml(start.learningLoop.headline)}</small>
+        </div>
+        <ol>
+          ${start.learningLoop.loops.map((loop) => `<li><span>${escapeHtml(loop.label)}</span><strong>${escapeHtml(loop.state)}</strong></li>`).join("")}
+        </ol>
+        <p><b>Receipt</b> ${escapeHtml(start.learningLoop.receipt)}</p>
+        <div class="serenity-learning-safeguards">
+          ${start.learningLoop.safeguards.map((item) => `<em>${escapeHtml(item)}</em>`).join("")}
+        </div>
       </div>
       <div class="serenity-promise-row" aria-label="Calm research promise">
         ${start.promises.map((item) => `<b>${escapeHtml(item)}</b>`).join("")}
@@ -8537,7 +8578,7 @@ function buildTrackerConfig() {
 
 function publisherHandoffKit() {
   const releaseMatch = RELEASE_LABEL.match(/v\d+/i);
-  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v274";
+  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v275";
   const releaseFolder = `release-${version}`;
   const runtimeFolder = `${releaseFolder}\\github-pages-runtime-only`;
   const zipName = `niveshnadi-github-pages-runtime-${version}.zip`;
@@ -8744,7 +8785,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v274</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v275</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

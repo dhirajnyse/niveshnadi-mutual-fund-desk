@@ -966,6 +966,104 @@ main {
   background: var(--gold);
 }
 
+.serenity-learning-loop {
+  display: grid;
+  gap: 8px;
+  max-width: 520px;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid rgba(31, 78, 121, 0.12);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(236, 246, 255, 0.74), rgba(241, 253, 248, 0.78)),
+    #ffffff;
+}
+
+.serenity-learning-loop > div:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.serenity-learning-loop > div:first-child > span {
+  color: var(--mint);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.serenity-learning-loop strong {
+  margin-top: 0;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.serenity-learning-loop small,
+.serenity-learning-loop p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.serenity-learning-loop ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.serenity-learning-loop li {
+  min-height: 50px;
+  padding: 7px;
+  border: 1px solid rgba(15, 124, 107, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.serenity-learning-loop li span {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.serenity-learning-loop li strong {
+  font-size: 12px;
+}
+
+.serenity-learning-loop p b {
+  color: var(--mint);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.serenity-learning-safeguards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.serenity-learning-safeguards em {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 7px;
+  border: 1px solid rgba(15, 124, 107, 0.14);
+  border-radius: 999px;
+  background: rgba(231, 248, 243, 0.72);
+  color: var(--mint);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+  line-height: 1;
+}
+
 .serenity-promise-row {
   display: flex;
   flex-wrap: wrap;
@@ -32887,6 +32985,10 @@ body.simple-mode .quiet-fund-shelf {
 
   .serenity-start-surface button {
     min-height: 58px;
+  }
+
+  .serenity-learning-loop ol {
+    grid-template-columns: 1fr;
   }
 
   .simplicity-path,

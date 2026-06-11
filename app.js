@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260611-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v277 Learning Consent Gate";
+const DATA_VERSION = "20260611-02";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v278 Outcome Learning Signal";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,10 +1240,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Learning Consent Gate",
+    label: "Outcome Learning Signal",
     status: "Shipping now",
     route: "#screener",
-    detail: "Keep closed-loop learning org-local until consent, anonymization, and review posture are visible."
+    detail: "Show how a decision, later review, and anonymized lesson become a reusable improvement without exposing investor data."
   },
   {
     label: "Portable mission memory",
@@ -3381,6 +3381,25 @@ function learningConsentGate(signal, readiness) {
   };
 }
 
+function outcomeLearningSignal(signal, readiness) {
+  const memoReady = readiness.status === "Memo-ready";
+  const reviewReady = signal.evidence >= 78 && signal.compareCount >= 2 && memoReady;
+  const posture = reviewReady ? "Lesson can be reviewed" : "Outcome waiting";
+  return {
+    label: "Outcome learning signal",
+    posture,
+    headline: "The desk learns only after a decision is saved, reviewed, and turned into an anonymous lesson.",
+    receipt: ["NN", "OUTCOME", "LEARNING", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    cycle: [
+      { label: "Decision", state: memoReady ? "Written" : "Not ready" },
+      { label: "Review", state: signal.evidence >= 78 ? "Evidence checked" : "Evidence first" },
+      { label: "Lesson", state: reviewReady ? "Reviewable" : "Private draft" }
+    ],
+    reinforcement: "Better prompts, safer gates, and clearer defaults improve from reviewed patterns, not raw notes.",
+    safeguards: ["No return prediction", "No raw investor notes", "Org review before sharing"]
+  };
+}
+
 function serenityStartSurface(signal, journey, readiness, nextCue) {
   const blocked = readiness.status !== "Memo-ready";
   const question = journey?.question?.label || "What proof is missing?";
@@ -3416,6 +3435,7 @@ function serenityStartSurface(signal, journey, readiness, nextCue) {
     learningLoop: learningLoopLedger(signal, readiness),
     federatedLoop: federatedTrustLoop(signal, readiness),
     learningConsent: learningConsentGate(signal, readiness),
+    outcomeLearning: outcomeLearningSignal(signal, readiness),
     promises: ["Research only", "No rush", "No personal IDs"],
     boundary,
     button: nextCue.button,
@@ -3495,6 +3515,21 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
           <p><b>Consent receipt</b> ${escapeHtml(start.learningConsent.receipt)}</p>
           <div class="serenity-consent-safeguards">
             ${start.learningConsent.safeguards.map((item) => `<em>${escapeHtml(item)}</em>`).join("")}
+          </div>
+        </div>
+        <div class="serenity-outcome-signal" aria-label="Outcome learning signal">
+          <div>
+            <span>${escapeHtml(start.outcomeLearning.label)}</span>
+            <strong>${escapeHtml(start.outcomeLearning.posture)}</strong>
+            <small>${escapeHtml(start.outcomeLearning.headline)}</small>
+          </div>
+          <ol>
+            ${start.outcomeLearning.cycle.map((step) => `<li><span>${escapeHtml(step.label)}</span><strong>${escapeHtml(step.state)}</strong></li>`).join("")}
+          </ol>
+          <p><b>Reinforcement</b> ${escapeHtml(start.outcomeLearning.reinforcement)}</p>
+          <p><b>Outcome receipt</b> ${escapeHtml(start.outcomeLearning.receipt)}</p>
+          <div class="serenity-outcome-safeguards">
+            ${start.outcomeLearning.safeguards.map((item) => `<em>${escapeHtml(item)}</em>`).join("")}
           </div>
         </div>
       </div>
@@ -8649,7 +8684,7 @@ function buildTrackerConfig() {
 
 function publisherHandoffKit() {
   const releaseMatch = RELEASE_LABEL.match(/v\d+/i);
-  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v277";
+  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v278";
   const releaseFolder = `release-${version}`;
   const runtimeFolder = `${releaseFolder}\\github-pages-runtime-only`;
   const zipName = `niveshnadi-github-pages-runtime-${version}.zip`;
@@ -8856,7 +8891,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v277</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v278</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

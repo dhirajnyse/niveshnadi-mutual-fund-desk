@@ -1216,6 +1216,91 @@ main {
   line-height: 1;
 }
 
+.serenity-outcome-signal {
+  display: grid;
+  gap: 7px;
+  padding: 9px;
+  border: 1px solid rgba(31, 78, 121, 0.16);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(236, 246, 255, 0.82), rgba(255, 255, 255, 0.88)),
+    #ffffff;
+}
+
+.serenity-outcome-signal > div:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.serenity-outcome-signal > div:first-child > span {
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.serenity-outcome-signal strong {
+  font-size: 13px;
+  line-height: 1.22;
+}
+
+.serenity-outcome-signal small,
+.serenity-outcome-signal p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.serenity-outcome-signal ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.serenity-outcome-signal li {
+  min-width: 0;
+  padding: 6px;
+  border: 1px solid rgba(31, 78, 121, 0.1);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.serenity-outcome-signal li span,
+.serenity-outcome-signal p b {
+  display: block;
+  color: var(--blue);
+  font-size: 9px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.serenity-outcome-safeguards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.serenity-outcome-safeguards em {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 7px;
+  border: 1px solid rgba(31, 78, 121, 0.14);
+  border-radius: 999px;
+  background: rgba(236, 246, 255, 0.72);
+  color: var(--blue);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+  line-height: 1;
+}
+
 .serenity-promise-row {
   display: flex;
   flex-wrap: wrap;
@@ -33140,7 +33225,8 @@ body.simple-mode .quiet-fund-shelf {
   }
 
   .serenity-learning-loop ol,
-  .serenity-consent-gate ol {
+  .serenity-consent-gate ol,
+  .serenity-outcome-signal ol {
     grid-template-columns: 1fr;
   }
 

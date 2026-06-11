@@ -1064,6 +1064,73 @@ main {
   line-height: 1;
 }
 
+.serenity-federated-strip {
+  display: grid;
+  gap: 7px;
+  padding: 9px;
+  border: 1px solid rgba(216, 151, 60, 0.2);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(255, 248, 232, 0.74), rgba(241, 253, 248, 0.78)),
+    #ffffff;
+}
+
+.serenity-federated-strip > span {
+  color: var(--brown);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.serenity-federated-strip strong {
+  font-size: 13px;
+  line-height: 1.22;
+}
+
+.serenity-federated-strip small,
+.serenity-federated-strip p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.serenity-federated-strip > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.serenity-federated-strip > div b,
+.serenity-federated-guardrails em {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 7px;
+  border: 1px solid rgba(31, 78, 121, 0.12);
+  border-radius: 999px;
+  background: rgba(236, 246, 255, 0.72);
+  color: var(--ink);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.serenity-federated-receipt b {
+  color: var(--brown);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.serenity-federated-guardrails em {
+  border-color: rgba(15, 124, 107, 0.14);
+  background: rgba(231, 248, 243, 0.7);
+  color: var(--mint);
+}
+
 .serenity-promise-row {
   display: flex;
   flex-wrap: wrap;

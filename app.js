@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260609-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v275 Learning Loop Ledger";
+const DATA_VERSION = "20260610-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v276 Federated Trust Loop";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,10 +1240,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Learning Loop Ledger",
+    label: "Federated Trust Loop",
     status: "Shipping now",
     route: "#screener",
-    detail: "Show how research actions become privacy-safe learning signals without turning demo data into advice."
+    detail: "Separate local learning, shared pattern learning, and privacy walls so the desk improves without exposing investor data."
   },
   {
     label: "Portable mission memory",
@@ -3339,6 +3339,29 @@ function learningLoopLedger(signal, readiness) {
   };
 }
 
+function federatedTrustLoop(signal, readiness) {
+  const checks = readiness.checks || [];
+  const readyCount = checks.filter((check) => check.state === "Ready").length;
+  const evidenceReady = signal.evidence >= 78;
+  const posture = readyCount >= 3 && evidenceReady
+    ? "Pattern share ready"
+    : readyCount >= 2
+      ? "Local learning only"
+      : "Observe before learning";
+  return {
+    label: "Federated trust loop",
+    posture,
+    headline: "Local actions improve this desk; only anonymous patterns can help other organizations.",
+    receipt: ["NN", "FEDERATED", "TRUST", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    cells: [
+      { label: "Local loop", state: "Learns here" },
+      { label: "Shared pattern", state: evidenceReady ? "Allowed later" : "Blocked" },
+      { label: "Privacy wall", state: "Always on" }
+    ],
+    guardrails: ["No raw notes shared", "No investor identity", "Review before release"]
+  };
+}
+
 function serenityStartSurface(signal, journey, readiness, nextCue) {
   const blocked = readiness.status !== "Memo-ready";
   const question = journey?.question?.label || "What proof is missing?";
@@ -3372,6 +3395,7 @@ function serenityStartSurface(signal, journey, readiness, nextCue) {
     },
     conviction: quietConvictionMeter(readiness),
     learningLoop: learningLoopLedger(signal, readiness),
+    federatedLoop: federatedTrustLoop(signal, readiness),
     promises: ["Research only", "No rush", "No personal IDs"],
     boundary,
     button: nextCue.button,
@@ -3425,6 +3449,18 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
         <p><b>Receipt</b> ${escapeHtml(start.learningLoop.receipt)}</p>
         <div class="serenity-learning-safeguards">
           ${start.learningLoop.safeguards.map((item) => `<em>${escapeHtml(item)}</em>`).join("")}
+        </div>
+        <div class="serenity-federated-strip" aria-label="Federated trust loop">
+          <span>${escapeHtml(start.federatedLoop.label)}</span>
+          <strong>${escapeHtml(start.federatedLoop.posture)}</strong>
+          <small>${escapeHtml(start.federatedLoop.headline)}</small>
+          <div>
+            ${start.federatedLoop.cells.map((cell) => `<b>${escapeHtml(cell.label)}: ${escapeHtml(cell.state)}</b>`).join("")}
+          </div>
+          <p class="serenity-federated-receipt"><b>Trust receipt</b> ${escapeHtml(start.federatedLoop.receipt)}</p>
+          <div class="serenity-federated-guardrails">
+            ${start.federatedLoop.guardrails.map((item) => `<em>${escapeHtml(item)}</em>`).join("")}
+          </div>
         </div>
       </div>
       <div class="serenity-promise-row" aria-label="Calm research promise">
@@ -8578,7 +8614,7 @@ function buildTrackerConfig() {
 
 function publisherHandoffKit() {
   const releaseMatch = RELEASE_LABEL.match(/v\d+/i);
-  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v275";
+  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v276";
   const releaseFolder = `release-${version}`;
   const runtimeFolder = `${releaseFolder}\\github-pages-runtime-only`;
   const zipName = `niveshnadi-github-pages-runtime-${version}.zip`;
@@ -8785,7 +8821,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v275</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v276</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

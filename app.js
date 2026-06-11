@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260610-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v276 Federated Trust Loop";
+const DATA_VERSION = "20260611-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v277 Learning Consent Gate";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,10 +1240,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Federated Trust Loop",
+    label: "Learning Consent Gate",
     status: "Shipping now",
     route: "#screener",
-    detail: "Separate local learning, shared pattern learning, and privacy walls so the desk improves without exposing investor data."
+    detail: "Keep closed-loop learning org-local until consent, anonymization, and review posture are visible."
   },
   {
     label: "Portable mission memory",
@@ -3362,6 +3362,25 @@ function federatedTrustLoop(signal, readiness) {
   };
 }
 
+function learningConsentGate(signal, readiness) {
+  const memoReady = readiness.status === "Memo-ready";
+  const evidenceReady = signal.evidence >= 78;
+  const posture = memoReady && evidenceReady ? "Consent gate ready" : "Consent required";
+  return {
+    label: "Learning consent gate",
+    posture,
+    headline: "Learning is useful only after consent, anonymization, and review are clear.",
+    receipt: ["NN", "LEARNING", "CONSENT", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    checks: [
+      { label: "Consent", state: "Required" },
+      { label: "Anonymized", state: "Pattern only" },
+      { label: "Reviewer", state: memoReady ? "Ready" : "Before release" }
+    ],
+    promise: "No cross-organization learning without consent.",
+    safeguards: ["Org-local first", "Anonymous aggregate only", "Opt-out by design"]
+  };
+}
+
 function serenityStartSurface(signal, journey, readiness, nextCue) {
   const blocked = readiness.status !== "Memo-ready";
   const question = journey?.question?.label || "What proof is missing?";
@@ -3396,6 +3415,7 @@ function serenityStartSurface(signal, journey, readiness, nextCue) {
     conviction: quietConvictionMeter(readiness),
     learningLoop: learningLoopLedger(signal, readiness),
     federatedLoop: federatedTrustLoop(signal, readiness),
+    learningConsent: learningConsentGate(signal, readiness),
     promises: ["Research only", "No rush", "No personal IDs"],
     boundary,
     button: nextCue.button,
@@ -3460,6 +3480,21 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
           <p class="serenity-federated-receipt"><b>Trust receipt</b> ${escapeHtml(start.federatedLoop.receipt)}</p>
           <div class="serenity-federated-guardrails">
             ${start.federatedLoop.guardrails.map((item) => `<em>${escapeHtml(item)}</em>`).join("")}
+          </div>
+        </div>
+        <div class="serenity-consent-gate" aria-label="Learning consent gate">
+          <div>
+            <span>${escapeHtml(start.learningConsent.label)}</span>
+            <strong>${escapeHtml(start.learningConsent.posture)}</strong>
+            <small>${escapeHtml(start.learningConsent.headline)}</small>
+          </div>
+          <ol>
+            ${start.learningConsent.checks.map((check) => `<li><span>${escapeHtml(check.label)}</span><strong>${escapeHtml(check.state)}</strong></li>`).join("")}
+          </ol>
+          <p><b>Boundary</b> ${escapeHtml(start.learningConsent.promise)}</p>
+          <p><b>Consent receipt</b> ${escapeHtml(start.learningConsent.receipt)}</p>
+          <div class="serenity-consent-safeguards">
+            ${start.learningConsent.safeguards.map((item) => `<em>${escapeHtml(item)}</em>`).join("")}
           </div>
         </div>
       </div>
@@ -8614,7 +8649,7 @@ function buildTrackerConfig() {
 
 function publisherHandoffKit() {
   const releaseMatch = RELEASE_LABEL.match(/v\d+/i);
-  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v276";
+  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v277";
   const releaseFolder = `release-${version}`;
   const runtimeFolder = `${releaseFolder}\\github-pages-runtime-only`;
   const zipName = `niveshnadi-github-pages-runtime-${version}.zip`;
@@ -8821,7 +8856,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v276</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v277</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

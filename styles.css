@@ -970,6 +970,93 @@ main {
   background: var(--gold);
 }
 
+.privacy-learning-ledger {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr);
+  gap: 7px;
+  margin-top: 7px;
+  padding: 8px;
+  border: 1px solid rgba(15, 124, 107, 0.16);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(241, 253, 248, 0.82), rgba(255, 250, 238, 0.68)),
+    #ffffff;
+}
+
+.privacy-learning-ledger > div {
+  display: grid;
+  gap: 3px;
+}
+
+.privacy-learning-ledger > div > span,
+.privacy-ledger-grid li span {
+  color: var(--mint);
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.privacy-learning-ledger strong {
+  font-size: 13px;
+  line-height: 1.22;
+}
+
+.privacy-learning-ledger small,
+.privacy-learning-ledger p,
+.privacy-learning-ledger em {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.privacy-learning-ledger p b {
+  color: var(--ink);
+  font-size: 10px;
+  word-break: break-word;
+}
+
+.privacy-learning-ledger em {
+  grid-column: 1 / -1;
+  width: fit-content;
+  padding: 4px 8px;
+  border: 1px solid rgba(15, 124, 107, 0.14);
+  border-radius: 999px;
+  background: rgba(231, 248, 243, 0.72);
+  color: var(--mint);
+  font-weight: 950;
+}
+
+.privacy-learning-ledger > small {
+  grid-column: 1 / -1;
+}
+
+.privacy-ledger-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.privacy-ledger-grid li {
+  min-height: 43px;
+  padding: 6px;
+  border: 1px solid rgba(31, 78, 121, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.privacy-ledger-grid li strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+}
+
 .serenity-learning-loop {
   display: grid;
   gap: 6px;
@@ -33239,6 +33326,8 @@ body.simple-mode .quiet-fund-shelf {
     display: none;
   }
 
+  .privacy-learning-ledger,
+  .privacy-ledger-grid,
   .serenity-learning-loop ol,
   .serenity-consent-gate ol,
   .serenity-outcome-signal ol {

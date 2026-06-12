@@ -2,14 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v279 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v280 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
-- Calm Start Polish on the first screen that shortens the serenity start, turns the evidence action into a compact horizontal cue, and keeps privacy-safe learning signals readable without crowding the hero.
+- Learning Ledger on the first screen that makes the privacy-safe learning loop easy to understand: anonymous route patterns can improve the desk, outcome memory must wait, and personal investor identifiers are blocked.
 - Self-research command desk with search, category, risk, and sorting controls.
 - Quiet Conviction Meter on the first screen that keeps confidence calm until evidence, peer, and memo checks are visible.
 - Learning Loop Ledger on the first screen that shows how research actions become privacy-safe learning signals without turning demo data into advice.

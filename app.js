@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260612-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v279 Calm Start Polish";
+const DATA_VERSION = "20260612-02";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v280 Learning Ledger";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -3400,6 +3400,27 @@ function outcomeLearningSignal(signal, readiness) {
   };
 }
 
+function privacyLearningLedger(signal, readiness, journey) {
+  const memoReady = readiness.status === "Memo-ready";
+  const evidenceReady = signal.evidence >= 78;
+  const posture = evidenceReady && memoReady ? "Ready to review" : "Private learning draft";
+  const roundLabel = journey?.activeStep?.label || "Current route";
+  return {
+    label: "Privacy-safe learning ledger",
+    posture,
+    headline: "Only anonymous patterns can improve the desk.",
+    brief: "Organization learning waits for consent.",
+    receipt: ["NN", "PRIVACY", "LEARNING", "LEDGER", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    cells: [
+      { label: "Can learn", state: "Route patterns" },
+      { label: "Must wait", state: memoReady ? "Saved review" : "Written reason" },
+      { label: "Never learns", state: "Personal IDs" }
+    ],
+    cue: `${roundLabel}: keep learning local until evidence, memo, and review are ready.`,
+    guardrail: "No PAN, folio, CAS, contact, or bank data."
+  };
+}
+
 function serenityStartSurface(signal, journey, readiness, nextCue) {
   const blocked = readiness.status !== "Memo-ready";
   const question = journey?.question?.label || "What proof is missing?";
@@ -3432,6 +3453,7 @@ function serenityStartSurface(signal, journey, readiness, nextCue) {
       text: `${signal.fund.name} is being checked for shortlist fit, not chosen today.`
     },
     conviction: quietConvictionMeter(readiness),
+    privacyLedger: privacyLearningLedger(signal, readiness, journey),
     learningLoop: learningLoopLedger(signal, readiness),
     federatedLoop: federatedTrustLoop(signal, readiness),
     learningConsent: learningConsentGate(signal, readiness),
@@ -3476,6 +3498,19 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
           ${start.conviction.steps.map((step) => `<li class="${step.ready ? "ready" : "waiting"}"><i></i><span>${escapeHtml(step.label)}</span></li>`).join("")}
         </ol>
         <p>${escapeHtml(start.conviction.cue)}</p>
+      </div>
+      <div class="privacy-learning-ledger" aria-label="Privacy-safe learning ledger">
+        <div>
+          <span>${escapeHtml(start.privacyLedger.label)}</span>
+          <strong>${escapeHtml(start.privacyLedger.posture)}</strong>
+          <small>${escapeHtml(start.privacyLedger.headline)}</small>
+        </div>
+        <ol class="privacy-ledger-grid">
+          ${start.privacyLedger.cells.map((cell) => `<li><span>${escapeHtml(cell.label)}</span><strong>${escapeHtml(cell.state)}</strong></li>`).join("")}
+        </ol>
+        <p>${escapeHtml(start.privacyLedger.brief)} <b>${escapeHtml(start.privacyLedger.receipt)}</b></p>
+        <em>${escapeHtml(start.privacyLedger.guardrail)}</em>
+        <small>${escapeHtml(start.privacyLedger.cue)}</small>
       </div>
       <div class="serenity-learning-loop" aria-label="Closed-loop learning ledger">
         <div>
@@ -8684,7 +8719,7 @@ function buildTrackerConfig() {
 
 function publisherHandoffKit() {
   const releaseMatch = RELEASE_LABEL.match(/v\d+/i);
-  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v279";
+  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v280";
   const releaseFolder = `release-${version}`;
   const runtimeFolder = `${releaseFolder}\\github-pages-runtime-only`;
   const zipName = `niveshnadi-github-pages-runtime-${version}.zip`;
@@ -8891,7 +8926,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v279</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v280</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

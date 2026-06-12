@@ -698,17 +698,17 @@ main {
 .quiet-start-ribbon {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   width: fit-content;
   max-width: 100%;
-  margin: 14px 0 16px;
-  padding: 10px 12px;
+  margin: 10px 0 10px;
+  padding: 7px 10px;
   border: 1px solid rgba(15, 124, 107, 0.18);
   border-radius: var(--radius);
   background:
     linear-gradient(90deg, rgba(229, 247, 241, 0.82), rgba(255, 243, 220, 0.68)),
     #ffffff;
-  box-shadow: 0 10px 24px rgba(15, 34, 56, 0.06);
+  box-shadow: 0 8px 18px rgba(15, 34, 56, 0.045);
 }
 
 .quiet-start-ribbon span {
@@ -723,24 +723,28 @@ main {
 .quiet-start-ribbon strong {
   min-width: 0;
   color: var(--ink);
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.25;
 }
 
 .serenity-start-surface {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(168px, 0.34fr);
-  gap: 10px;
-  align-items: stretch;
-  max-width: 720px;
-  margin: 0 0 16px;
-  padding: 12px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  max-width: 680px;
+  margin: 0 0 12px;
+  padding: 11px;
   border: 1px solid rgba(15, 124, 107, 0.16);
   border-radius: var(--radius);
   background:
     linear-gradient(135deg, rgba(246, 252, 250, 0.96), rgba(255, 250, 239, 0.78)),
     #ffffff;
   box-shadow: 0 14px 34px rgba(31, 78, 121, 0.06);
+}
+
+.serenity-start-surface > div {
+  max-width: 660px;
 }
 
 .serenity-start-surface span {
@@ -968,10 +972,10 @@ main {
 
 .serenity-learning-loop {
   display: grid;
-  gap: 8px;
-  max-width: 520px;
-  margin-top: 8px;
-  padding: 10px;
+  gap: 6px;
+  max-width: none;
+  margin-top: 7px;
+  padding: 8px;
   border: 1px solid rgba(31, 78, 121, 0.12);
   border-radius: var(--radius);
   background:
@@ -1017,8 +1021,8 @@ main {
 }
 
 .serenity-learning-loop li {
-  min-height: 50px;
-  padding: 7px;
+  min-height: 44px;
+  padding: 6px;
   border: 1px solid rgba(15, 124, 107, 0.12);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.74);
@@ -1066,8 +1070,8 @@ main {
 
 .serenity-federated-strip {
   display: grid;
-  gap: 7px;
-  padding: 9px;
+  gap: 6px;
+  padding: 8px;
   border: 1px solid rgba(216, 151, 60, 0.2);
   border-radius: var(--radius);
   background:
@@ -1133,8 +1137,8 @@ main {
 
 .serenity-consent-gate {
   display: grid;
-  gap: 7px;
-  padding: 9px;
+  gap: 6px;
+  padding: 8px;
   border: 1px solid rgba(15, 124, 107, 0.18);
   border-radius: var(--radius);
   background:
@@ -1218,8 +1222,8 @@ main {
 
 .serenity-outcome-signal {
   display: grid;
-  gap: 7px;
-  padding: 9px;
+  gap: 6px;
+  padding: 8px;
   border: 1px solid rgba(31, 78, 121, 0.16);
   border-radius: var(--radius);
   background:
@@ -1323,30 +1327,34 @@ main {
 }
 
 .serenity-start-surface button {
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  min-height: 74px;
-  padding: 10px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 11px;
+  text-align: left;
 }
 
 .serenity-start-surface button span {
+  max-width: 60%;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 9px;
   line-height: 1.2;
 }
 
 .serenity-start-surface button strong {
-  margin-top: 4px;
+  margin-top: 0;
   color: var(--blue);
-  font-size: 15px;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
 .serenity-action-button {
   border-color: rgba(15, 124, 107, 0.18);
   background:
-    linear-gradient(135deg, rgba(231, 248, 243, 0.9), rgba(236, 245, 252, 0.86)),
+    linear-gradient(135deg, rgba(236, 246, 255, 0.86), rgba(231, 248, 243, 0.8)),
     #ffffff;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.42);
 }
@@ -17717,8 +17725,8 @@ body.simple-mode .quiet-fund-shelf {
 
 .role-item {
   display: grid;
-  grid-template-columns: minmax(120px, 0.3fr) minmax(0, 0.7fr);
-  gap: 8px 12px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
   align-items: start;
   padding: 9px;
   border: 1px solid var(--line);
@@ -17732,8 +17740,9 @@ body.simple-mode .quiet-fund-shelf {
 }
 
 .role-item p {
-  grid-column: 2;
-  margin: -2px 0 0;
+  grid-column: 1;
+  max-width: 44ch;
+  margin: 0;
 }
 
 .warning-list {
@@ -33150,7 +33159,7 @@ body.simple-mode .quiet-fund-shelf {
     align-items: flex-start;
     flex-direction: column;
     gap: 4px;
-    margin: 12px 0 14px;
+    margin: 8px 0 10px;
   }
 
   body.simple-mode .top-nav {
@@ -33221,7 +33230,13 @@ body.simple-mode .quiet-fund-shelf {
   }
 
   .serenity-start-surface button {
-    min-height: 58px;
+    min-height: 44px;
+  }
+
+  body.simple-mode .serenity-federated-strip,
+  body.simple-mode .serenity-consent-gate,
+  body.simple-mode .serenity-outcome-signal {
+    display: none;
   }
 
   .serenity-learning-loop ol,

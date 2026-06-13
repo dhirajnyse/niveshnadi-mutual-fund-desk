@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260613-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v281 Learning Receipt";
+const DATA_VERSION = "20260613-02";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v282 Calm Review Compass";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -3429,6 +3429,35 @@ function privacyLearningLedger(signal, readiness, journey) {
   };
 }
 
+function calmReviewCompass(signal, readiness, journey) {
+  const roundLabel = journey?.activeStep?.label || "Current route";
+  const memoReady = readiness.status === "Memo-ready";
+  const evidenceReady = signal.evidence >= 78;
+  return {
+    label: "Calm review compass",
+    posture: "Observe, decide, improve",
+    brief: "The desk should learn from a completed research round, not from a rushed click.",
+    cards: [
+      {
+        label: "Observe",
+        state: "One fund, one fair peer, one source date.",
+        detail: `Capture the ${roundLabel.toLowerCase()} signal without judging it.`
+      },
+      {
+        label: "Decide",
+        state: "Keep, watch, or pause only after memo.",
+        detail: memoReady ? "The reason exists; keep the review date visible." : "A written reason keeps excitement from becoming action."
+      },
+      {
+        label: "Improve",
+        state: "Anonymous patterns can train the desk after review.",
+        detail: evidenceReady ? "Learning can wait for consent and release." : "Evidence gaps stay local until source dates are clear."
+      }
+    ],
+    cue: "Closed-loop learning stays useful only when the next action is simple."
+  };
+}
+
 function serenityStartSurface(signal, journey, readiness, nextCue) {
   const blocked = readiness.status !== "Memo-ready";
   const question = journey?.question?.label || "What proof is missing?";
@@ -3462,6 +3491,7 @@ function serenityStartSurface(signal, journey, readiness, nextCue) {
     },
     conviction: quietConvictionMeter(readiness),
     privacyLedger: privacyLearningLedger(signal, readiness, journey),
+    compass: calmReviewCompass(signal, readiness, journey),
     learningLoop: learningLoopLedger(signal, readiness),
     federatedLoop: federatedTrustLoop(signal, readiness),
     learningConsent: learningConsentGate(signal, readiness),
@@ -3528,6 +3558,23 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
         <p>${escapeHtml(start.privacyLedger.brief)} <b>${escapeHtml(start.privacyLedger.receipt)}</b></p>
         <em>${escapeHtml(start.privacyLedger.guardrail)}</em>
         <small>${escapeHtml(start.privacyLedger.cue)}</small>
+      </div>
+      <div class="calm-review-compass" aria-label="Calm review compass">
+        <div>
+          <span>${escapeHtml(start.compass.label)}</span>
+          <strong>${escapeHtml(start.compass.posture)}</strong>
+          <small>${escapeHtml(start.compass.brief)}</small>
+        </div>
+        <ol>
+          ${start.compass.cards.map((card) => `
+            <li>
+              <span>${escapeHtml(card.label)}</span>
+              <strong>${escapeHtml(card.state)}</strong>
+              <small>${escapeHtml(card.detail)}</small>
+            </li>
+          `).join("")}
+        </ol>
+        <p>${escapeHtml(start.compass.cue)}</p>
       </div>
       <div class="serenity-learning-loop" aria-label="Closed-loop learning ledger">
         <div>
@@ -8943,7 +8990,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v281</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v282</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

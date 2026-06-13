@@ -1110,6 +1110,69 @@ main {
   margin-top: 3px;
 }
 
+.calm-review-compass {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 7px;
+  margin-top: 7px;
+  padding: 8px;
+  border: 1px solid rgba(15, 124, 107, 0.16);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(241, 253, 248, 0.86), rgba(236, 246, 255, 0.72)),
+    #ffffff;
+}
+
+.calm-review-compass > div {
+  display: grid;
+  gap: 3px;
+}
+
+.calm-review-compass > div > span,
+.calm-review-compass li span {
+  color: var(--mint);
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.calm-review-compass strong {
+  font-size: 12px;
+  line-height: 1.24;
+}
+
+.calm-review-compass small,
+.calm-review-compass p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.calm-review-compass ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.calm-review-compass li {
+  min-height: 64px;
+  padding: 7px;
+  border: 1px solid rgba(31, 78, 121, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.calm-review-compass li strong {
+  display: block;
+  margin-top: 3px;
+}
+
 .serenity-learning-loop {
   display: grid;
   gap: 6px;
@@ -33382,6 +33445,7 @@ body.simple-mode .quiet-fund-shelf {
   .privacy-learning-ledger,
   .privacy-receipt-strip,
   .privacy-receipt-strip ol,
+  .calm-review-compass ol,
   .privacy-ledger-grid,
   .serenity-learning-loop ol,
   .serenity-consent-gate ol,

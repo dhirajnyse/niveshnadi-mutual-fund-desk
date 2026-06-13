@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260613-03";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v283 Calm Learning Contract";
+const DATA_VERSION = "20260614-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v284 Calm Learning Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -3493,6 +3493,37 @@ function learningFlywheelContract(signal, readiness, journey) {
   };
 }
 
+function calmLearningReceipt(signal, readiness, journey) {
+  const roundLabel = journey?.activeStep?.label || "Current route";
+  const evidenceReady = signal.evidence >= 78;
+  const memoReady = readiness.status === "Memo-ready";
+  const reviewable = evidenceReady && memoReady;
+  return {
+    label: "Calm learning receipt",
+    posture: reviewable ? "Reviewable lesson" : "Draft lesson only",
+    headline: "The desk learns only from reviewed patterns, never from identity.",
+    receipt: ["NN", "CALM", "LEARNING", "RECEIPT", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    canLearn: [
+      { label: "Fund role", state: signal.fund.category },
+      { label: "Source gap", state: evidenceReady ? "Evidence visible" : "Evidence first" },
+      { label: "Memo state", state: memoReady ? "Written" : "Reason pending" },
+      { label: "Review rhythm", state: roundLabel }
+    ],
+    refuses: [
+      "PAN, folio, CAS, contact, or bank data",
+      "Raw private notes",
+      "Action without human review",
+      "Cross-organization learning without consent"
+    ],
+    strip: [
+      { label: "Learning mode", state: "Anonymous pattern" },
+      { label: "Release", state: reviewable ? "Reviewer can approve" : "Local draft" },
+      { label: "Privacy wall", state: "On" }
+    ],
+    cue: "Useful reinforcement begins after evidence, memo, review, and consent."
+  };
+}
+
 function serenityStartSurface(signal, journey, readiness, nextCue) {
   const blocked = readiness.status !== "Memo-ready";
   const question = journey?.question?.label || "What proof is missing?";
@@ -3528,6 +3559,7 @@ function serenityStartSurface(signal, journey, readiness, nextCue) {
     privacyLedger: privacyLearningLedger(signal, readiness, journey),
     compass: calmReviewCompass(signal, readiness, journey),
     learningContract: learningFlywheelContract(signal, readiness, journey),
+    learningReceipt: calmLearningReceipt(signal, readiness, journey),
     learningLoop: learningLoopLedger(signal, readiness),
     federatedLoop: federatedTrustLoop(signal, readiness),
     learningConsent: learningConsentGate(signal, readiness),
@@ -3631,6 +3663,27 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
         <div class="learning-contract-guards">
           ${start.learningContract.guards.map((guard) => `<em>${escapeHtml(guard)}</em>`).join("")}
         </div>
+      </div>
+      <div class="calm-learning-receipt" aria-label="Calm learning receipt">
+        <div>
+          <span>${escapeHtml(start.learningReceipt.label)}</span>
+          <strong>${escapeHtml(start.learningReceipt.posture)}</strong>
+          <small>${escapeHtml(start.learningReceipt.headline)}</small>
+        </div>
+        <ol class="calm-learning-receipt-grid">
+          ${start.learningReceipt.canLearn.map((item) => `<li><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.state)}</strong></li>`).join("")}
+        </ol>
+        <div class="calm-learning-receipt-deny" aria-label="Learning exclusions">
+          <span>Never learns</span>
+          <ul>
+            ${start.learningReceipt.refuses.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </div>
+        <ol class="calm-learning-receipt-strip">
+          ${start.learningReceipt.strip.map((item) => `<li><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.state)}</strong></li>`).join("")}
+        </ol>
+        <p><b>Receipt</b> ${escapeHtml(start.learningReceipt.receipt)}</p>
+        <small>${escapeHtml(start.learningReceipt.cue)}</small>
       </div>
       <div class="serenity-learning-loop" aria-label="Closed-loop learning ledger">
         <div>
@@ -9046,7 +9099,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v283</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v284</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

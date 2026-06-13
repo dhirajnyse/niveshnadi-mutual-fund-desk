@@ -1263,6 +1263,89 @@ main {
   line-height: 1;
 }
 
+.calm-learning-receipt {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 7px;
+  margin-top: 7px;
+  padding: 8px;
+  border: 1px solid rgba(15, 124, 107, 0.16);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(241, 253, 248, 0.84), rgba(236, 246, 255, 0.7)),
+    #ffffff;
+}
+
+.calm-learning-receipt > div:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.calm-learning-receipt > div:first-child > span,
+.calm-learning-receipt-grid li span,
+.calm-learning-receipt-deny > span,
+.calm-learning-receipt-strip li span {
+  color: var(--mint);
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.calm-learning-receipt strong {
+  font-size: 12px;
+  line-height: 1.24;
+}
+
+.calm-learning-receipt small,
+.calm-learning-receipt p,
+.calm-learning-receipt li {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.calm-learning-receipt p {
+  word-break: break-word;
+}
+
+.calm-learning-receipt p b {
+  color: var(--mint);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.calm-learning-receipt-grid,
+.calm-learning-receipt-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.calm-learning-receipt-grid li,
+.calm-learning-receipt-strip li,
+.calm-learning-receipt-deny {
+  padding: 7px;
+  border: 1px solid rgba(31, 78, 121, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.calm-learning-receipt-deny {
+  display: grid;
+  gap: 5px;
+}
+
+.calm-learning-receipt-deny ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
 .serenity-learning-loop {
   display: grid;
   gap: 6px;

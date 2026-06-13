@@ -1173,6 +1173,96 @@ main {
   margin-top: 3px;
 }
 
+.learning-flywheel-contract {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 7px;
+  margin-top: 7px;
+  padding: 8px;
+  border: 1px solid rgba(15, 124, 107, 0.16);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(241, 253, 248, 0.78)),
+    #ffffff;
+}
+
+.learning-flywheel-contract > div {
+  display: grid;
+  gap: 3px;
+}
+
+.learning-flywheel-contract > div > span,
+.learning-contract-rules li span {
+  color: var(--mint);
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.learning-flywheel-contract strong {
+  font-size: 12px;
+  line-height: 1.24;
+}
+
+.learning-flywheel-contract small,
+.learning-flywheel-contract p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.learning-flywheel-contract p b {
+  color: var(--mint);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.learning-contract-rules {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.learning-contract-rules li {
+  min-height: 58px;
+  padding: 7px;
+  border: 1px solid rgba(31, 78, 121, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.learning-contract-rules li strong {
+  display: block;
+  margin-top: 3px;
+}
+
+.learning-contract-guards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.learning-contract-guards em {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 7px;
+  border: 1px solid rgba(15, 124, 107, 0.14);
+  border-radius: 999px;
+  background: rgba(231, 248, 243, 0.72);
+  color: var(--mint);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+  line-height: 1;
+}
+
 .serenity-learning-loop {
   display: grid;
   gap: 6px;
@@ -33446,6 +33536,7 @@ body.simple-mode .quiet-fund-shelf {
   .privacy-receipt-strip,
   .privacy-receipt-strip ol,
   .calm-review-compass ol,
+  .learning-contract-rules,
   .privacy-ledger-grid,
   .serenity-learning-loop ol,
   .serenity-consent-gate ol,

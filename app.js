@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260613-02";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v282 Calm Review Compass";
+const DATA_VERSION = "20260613-03";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v283 Calm Learning Contract";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -3458,6 +3458,41 @@ function calmReviewCompass(signal, readiness, journey) {
   };
 }
 
+function learningFlywheelContract(signal, readiness, journey) {
+  const roundLabel = journey?.activeStep?.label || "Current route";
+  const evidenceReady = signal.evidence >= 78;
+  const memoReady = readiness.status === "Memo-ready";
+  const releaseReady = evidenceReady && memoReady;
+  return {
+    label: "Learning flywheel contract",
+    posture: releaseReady ? "Ready for reviewed learning" : "Learning stays in draft",
+    brief: "Every useful AI loop begins with a tiny human-reviewed action.",
+    receipt: ["NN", "CALM", "LEARNING", "CONTRACT", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    rules: [
+      {
+        label: "Capture",
+        state: "Capture only the research pattern.",
+        detail: `${roundLabel}: fund, peer, source gap, memo state, and next check.`
+      },
+      {
+        label: "Review",
+        state: "Review before the desk learns.",
+        detail: memoReady ? "The memo can be replayed before learning is accepted." : "The memo is still the human gate."
+      },
+      {
+        label: "Improve",
+        state: "Improve only with consent.",
+        detail: evidenceReady ? "Evidence can support a future pattern after release." : "Source gaps keep the pattern local."
+      }
+    ],
+    guards: [
+      "No personal IDs enter the learning loop.",
+      "Human review before release.",
+      "Cross-organization learning waits for explicit consent."
+    ]
+  };
+}
+
 function serenityStartSurface(signal, journey, readiness, nextCue) {
   const blocked = readiness.status !== "Memo-ready";
   const question = journey?.question?.label || "What proof is missing?";
@@ -3492,6 +3527,7 @@ function serenityStartSurface(signal, journey, readiness, nextCue) {
     conviction: quietConvictionMeter(readiness),
     privacyLedger: privacyLearningLedger(signal, readiness, journey),
     compass: calmReviewCompass(signal, readiness, journey),
+    learningContract: learningFlywheelContract(signal, readiness, journey),
     learningLoop: learningLoopLedger(signal, readiness),
     federatedLoop: federatedTrustLoop(signal, readiness),
     learningConsent: learningConsentGate(signal, readiness),
@@ -3575,6 +3611,26 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
           `).join("")}
         </ol>
         <p>${escapeHtml(start.compass.cue)}</p>
+      </div>
+      <div class="learning-flywheel-contract" aria-label="Learning flywheel contract">
+        <div>
+          <span>${escapeHtml(start.learningContract.label)}</span>
+          <strong>${escapeHtml(start.learningContract.posture)}</strong>
+          <small>${escapeHtml(start.learningContract.brief)}</small>
+        </div>
+        <ol class="learning-contract-rules">
+          ${start.learningContract.rules.map((rule) => `
+            <li>
+              <span>${escapeHtml(rule.label)}</span>
+              <strong>${escapeHtml(rule.state)}</strong>
+              <small>${escapeHtml(rule.detail)}</small>
+            </li>
+          `).join("")}
+        </ol>
+        <p><b>Receipt</b> ${escapeHtml(start.learningContract.receipt)}</p>
+        <div class="learning-contract-guards">
+          ${start.learningContract.guards.map((guard) => `<em>${escapeHtml(guard)}</em>`).join("")}
+        </div>
       </div>
       <div class="serenity-learning-loop" aria-label="Closed-loop learning ledger">
         <div>
@@ -8990,7 +9046,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v282</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v283</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

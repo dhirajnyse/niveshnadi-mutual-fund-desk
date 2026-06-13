@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260612-02";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v280 Learning Ledger";
+const DATA_VERSION = "20260613-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v281 Learning Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -3405,16 +3405,24 @@ function privacyLearningLedger(signal, readiness, journey) {
   const evidenceReady = signal.evidence >= 78;
   const posture = evidenceReady && memoReady ? "Ready to review" : "Private learning draft";
   const roundLabel = journey?.activeStep?.label || "Current route";
+  const releaseGate = evidenceReady && memoReady ? "Reviewer can approve" : "Human review pending";
   return {
     label: "Privacy-safe learning ledger",
     posture,
     headline: "Only anonymous patterns can improve the desk.",
     brief: "Organization learning waits for consent.",
     receipt: ["NN", "PRIVACY", "LEARNING", "LEDGER", DATA_VERSION.replace(/-/g, ""), signal.fund.id].join("-").toUpperCase(),
+    receiptLabel: "Learning receipt",
+    receiptHeadline: "This action teaches the desk only after review.",
     cells: [
       { label: "Can learn", state: "Route patterns" },
       { label: "Must wait", state: memoReady ? "Saved review" : "Written reason" },
       { label: "Never learns", state: "Personal IDs" }
+    ],
+    receiptRows: [
+      { label: "Observed", state: `${roundLabel} pattern` },
+      { label: "Shared as", state: "Anonymous signal" },
+      { label: "Release gate", state: releaseGate }
     ],
     cue: `${roundLabel}: keep learning local until evidence, memo, and review are ready.`,
     guardrail: "No PAN, folio, CAS, contact, or bank data."
@@ -3508,6 +3516,15 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
         <ol class="privacy-ledger-grid">
           ${start.privacyLedger.cells.map((cell) => `<li><span>${escapeHtml(cell.label)}</span><strong>${escapeHtml(cell.state)}</strong></li>`).join("")}
         </ol>
+        <div class="privacy-receipt-strip" aria-label="Privacy-safe learning receipt">
+          <div>
+            <span>${escapeHtml(start.privacyLedger.receiptLabel)}</span>
+            <strong>${escapeHtml(start.privacyLedger.receiptHeadline)}</strong>
+          </div>
+          <ol>
+            ${start.privacyLedger.receiptRows.map((row) => `<li><span>${escapeHtml(row.label)}</span><strong>${escapeHtml(row.state)}</strong></li>`).join("")}
+          </ol>
+        </div>
         <p>${escapeHtml(start.privacyLedger.brief)} <b>${escapeHtml(start.privacyLedger.receipt)}</b></p>
         <em>${escapeHtml(start.privacyLedger.guardrail)}</em>
         <small>${escapeHtml(start.privacyLedger.cue)}</small>
@@ -8719,7 +8736,7 @@ function buildTrackerConfig() {
 
 function publisherHandoffKit() {
   const releaseMatch = RELEASE_LABEL.match(/v\d+/i);
-  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v280";
+  const version = releaseMatch ? releaseMatch[0].toLowerCase() : "v281";
   const releaseFolder = `release-${version}`;
   const runtimeFolder = `${releaseFolder}\\github-pages-runtime-only`;
   const zipName = `niveshnadi-github-pages-runtime-${version}.zip`;
@@ -8926,7 +8943,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v280</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v281</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

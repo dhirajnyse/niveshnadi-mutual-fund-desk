@@ -1057,6 +1057,59 @@ main {
   font-size: 11px;
 }
 
+.privacy-receipt-strip {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
+  gap: 7px;
+  padding: 7px;
+  border: 1px solid rgba(31, 78, 121, 0.1);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(236, 246, 255, 0.68)),
+    #ffffff;
+}
+
+.privacy-receipt-strip > div {
+  display: grid;
+  gap: 3px;
+}
+
+.privacy-receipt-strip span {
+  color: var(--mint);
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.privacy-receipt-strip strong {
+  font-size: 11px;
+  line-height: 1.24;
+}
+
+.privacy-receipt-strip ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.privacy-receipt-strip li {
+  min-height: 38px;
+  padding: 6px;
+  border: 1px solid rgba(15, 124, 107, 0.12);
+  border-radius: 8px;
+  background: rgba(241, 253, 248, 0.7);
+}
+
+.privacy-receipt-strip li strong {
+  display: block;
+  margin-top: 3px;
+}
+
 .serenity-learning-loop {
   display: grid;
   gap: 6px;
@@ -33327,6 +33380,8 @@ body.simple-mode .quiet-fund-shelf {
   }
 
   .privacy-learning-ledger,
+  .privacy-receipt-strip,
+  .privacy-receipt-strip ol,
   .privacy-ledger-grid,
   .serenity-learning-loop ol,
   .serenity-consent-gate ol,

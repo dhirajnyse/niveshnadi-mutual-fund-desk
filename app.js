@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260614-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v284 Calm Learning Receipt";
+const DATA_VERSION = "20260614-02";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v285 Calm Improvement Promise";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -3524,6 +3524,28 @@ function calmLearningReceipt(signal, readiness, journey) {
   };
 }
 
+function calmImprovementPromise(signal, readiness, journey) {
+  const roundLabel = journey?.activeStep?.label || "Current route";
+  const evidenceReady = signal.evidence >= 78;
+  const memoReady = readiness.status === "Memo-ready";
+  const nextBenefit = memoReady
+    ? "Clearer review prompts"
+    : evidenceReady
+      ? "Sharper memo gate"
+      : "Quieter first question";
+  return {
+    label: "Calm improvement promise",
+    posture: "Improve the route, not the investor",
+    headline: "Every reviewed lesson should make the next screen quieter.",
+    cells: [
+      { label: "Next user benefit", state: nextBenefit },
+      { label: "What improves", state: `${roundLabel} wording and order` },
+      { label: "What stays private", state: "No identity, private notes, or unreviewed action." }
+    ],
+    cue: "The product learns to reduce confusion, not to push behavior."
+  };
+}
+
 function serenityStartSurface(signal, journey, readiness, nextCue) {
   const blocked = readiness.status !== "Memo-ready";
   const question = journey?.question?.label || "What proof is missing?";
@@ -3560,6 +3582,7 @@ function serenityStartSurface(signal, journey, readiness, nextCue) {
     compass: calmReviewCompass(signal, readiness, journey),
     learningContract: learningFlywheelContract(signal, readiness, journey),
     learningReceipt: calmLearningReceipt(signal, readiness, journey),
+    improvementPromise: calmImprovementPromise(signal, readiness, journey),
     learningLoop: learningLoopLedger(signal, readiness),
     federatedLoop: federatedTrustLoop(signal, readiness),
     learningConsent: learningConsentGate(signal, readiness),
@@ -3684,6 +3707,19 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
         </ol>
         <p><b>Receipt</b> ${escapeHtml(start.learningReceipt.receipt)}</p>
         <small>${escapeHtml(start.learningReceipt.cue)}</small>
+      </div>
+      <div class="calm-improvement-promise" aria-label="Calm improvement promise">
+        <div>
+          <span>${escapeHtml(start.improvementPromise.label)}</span>
+          <strong>${escapeHtml(start.improvementPromise.posture)}</strong>
+          <small>${escapeHtml(start.improvementPromise.headline)}</small>
+        </div>
+        <ol class="calm-improvement-grid">
+          ${start.improvementPromise.cells.map((cell) => `
+            <li><span>${escapeHtml(cell.label)}</span><strong>${escapeHtml(cell.state)}</strong></li>
+          `).join("")}
+        </ol>
+        <p>${escapeHtml(start.improvementPromise.cue)}</p>
       </div>
       <div class="serenity-learning-loop" aria-label="Closed-loop learning ledger">
         <div>
@@ -9099,7 +9135,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v284</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v285</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

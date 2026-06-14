@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v284 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v285 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -13,6 +13,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Calm Learning Contract on the first screen explains how closed-loop AI learning captures only research patterns, requires human review before release, improves only with consent, and blocks personal identifiers.
 - Learning Receipt on the first screen that makes the privacy-safe learning loop easy to understand: anonymous route patterns can improve the desk only after human review, outcome memory must wait, and personal investor identifiers are blocked.
 - Calm Learning Receipt on the first screen turns closed-loop learning into a compact audit trail: what can be learned, what is refused, and when review and consent are required.
+- Calm Improvement Promise on the first screen states that every reviewed lesson should make the next screen quieter, improving wording and route order without using identity, private notes, or unreviewed actions.
 - Self-research command desk with search, category, risk, and sorting controls.
 - Quiet Conviction Meter on the first screen that keeps confidence calm until evidence, peer, and memo checks are visible.
 - Learning Loop Ledger on the first screen that shows how research actions become privacy-safe learning signals without turning demo data into advice.

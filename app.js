@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260614-02";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v285 Calm Improvement Promise";
+const DATA_VERSION = "20260615-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v286 Source-Date Beacon";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -3546,6 +3546,26 @@ function calmImprovementPromise(signal, readiness, journey) {
   };
 }
 
+function calmEvidenceBeacon(signal, readiness, journey) {
+  const roundLabel = journey?.activeStep?.label || "Current route";
+  const evidenceReady = signal.evidence >= 78;
+  const sourceState = evidenceReady ? "Current enough to cite" : "Verify source date";
+  const citationState = evidenceReady ? "Visible enough" : "Missing or demo";
+  const reviewState = readiness.status === "Memo-ready" ? "Memo can review" : `${roundLabel} first`;
+  return {
+    label: "Source-date beacon",
+    posture: "Evidence before confidence",
+    headline: "The desk should stay quiet until source dates, citations, TER, holdings, and riskometer checks are visible.",
+    cells: [
+      { label: "Source date", state: sourceState },
+      { label: "Citation path", state: citationState },
+      { label: "Review gate", state: reviewState }
+    ],
+    guards: ["No PAN", "No push", "Review first"],
+    cue: "Trust the score only after the source trail is visible."
+  };
+}
+
 function serenityStartSurface(signal, journey, readiness, nextCue) {
   const blocked = readiness.status !== "Memo-ready";
   const question = journey?.question?.label || "What proof is missing?";
@@ -3583,6 +3603,7 @@ function serenityStartSurface(signal, journey, readiness, nextCue) {
     learningContract: learningFlywheelContract(signal, readiness, journey),
     learningReceipt: calmLearningReceipt(signal, readiness, journey),
     improvementPromise: calmImprovementPromise(signal, readiness, journey),
+    evidenceBeacon: calmEvidenceBeacon(signal, readiness, journey),
     learningLoop: learningLoopLedger(signal, readiness),
     federatedLoop: federatedTrustLoop(signal, readiness),
     learningConsent: learningConsentGate(signal, readiness),
@@ -3720,6 +3741,22 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
           `).join("")}
         </ol>
         <p>${escapeHtml(start.improvementPromise.cue)}</p>
+      </div>
+      <div class="calm-evidence-beacon" aria-label="Source-date beacon">
+        <div>
+          <span>${escapeHtml(start.evidenceBeacon.label)}</span>
+          <strong>${escapeHtml(start.evidenceBeacon.posture)}</strong>
+          <small>${escapeHtml(start.evidenceBeacon.headline)}</small>
+        </div>
+        <ol class="calm-evidence-beacon-grid">
+          ${start.evidenceBeacon.cells.map((cell) => `
+            <li><span>${escapeHtml(cell.label)}</span><strong>${escapeHtml(cell.state)}</strong></li>
+          `).join("")}
+        </ol>
+        <div class="calm-evidence-beacon-guards">
+          ${start.evidenceBeacon.guards.map((guard) => `<em>${escapeHtml(guard)}</em>`).join("")}
+        </div>
+        <p>${escapeHtml(start.evidenceBeacon.cue)}</p>
       </div>
       <div class="serenity-learning-loop" aria-label="Closed-loop learning ledger">
         <div>
@@ -9135,7 +9172,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v285</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v286</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

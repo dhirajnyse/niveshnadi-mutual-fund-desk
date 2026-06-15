@@ -1404,6 +1404,80 @@ main {
   background: rgba(255, 255, 255, 0.78);
 }
 
+.calm-evidence-beacon {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 7px;
+  margin-top: 7px;
+  padding: 8px;
+  border: 1px solid rgba(31, 78, 121, 0.14);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(236, 246, 255, 0.72), rgba(247, 252, 249, 0.88)),
+    #ffffff;
+}
+
+.calm-evidence-beacon > div:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.calm-evidence-beacon > div:first-child > span,
+.calm-evidence-beacon-grid li span {
+  color: var(--mint);
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.calm-evidence-beacon strong {
+  font-size: 12px;
+  line-height: 1.24;
+}
+
+.calm-evidence-beacon small,
+.calm-evidence-beacon p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.calm-evidence-beacon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.calm-evidence-beacon-grid li {
+  min-height: 45px;
+  padding: 7px;
+  border: 1px solid rgba(31, 78, 121, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.calm-evidence-beacon-guards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.calm-evidence-beacon-guards em {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(226, 247, 240, 0.84);
+  color: var(--mint);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+}
+
 .serenity-learning-loop {
   display: grid;
   gap: 6px;
@@ -33675,6 +33749,7 @@ body.simple-mode .quiet-fund-shelf {
   }
 
   .calm-improvement-grid,
+  .calm-evidence-beacon-grid,
   .privacy-learning-ledger,
   .privacy-receipt-strip,
   .privacy-receipt-strip ol,

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260615-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v286 Source-Date Beacon";
+const DATA_VERSION = "20260615-02";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v287 Quiet Decision Rail";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -3237,6 +3237,7 @@ function renderSimplicityPath(signal = signalStripConfig(), activeHash = window.
   const progress = simpleProgressMemory(journey.activeStep);
   const readiness = decisionReadiness(signal);
   const nextCue = doNextCue(signal, readiness);
+  const quietRail = quietDecisionRail(signal, readiness, journey);
   renderHeaderNextAction(journey);
   renderSerenityStartSurface(signal, journey, readiness, nextCue);
   renderSimpleRoomCue(journey, progress);
@@ -3262,6 +3263,27 @@ function renderSimplicityPath(signal = signalStripConfig(), activeHash = window.
       <span>Only question now</span>
       <strong>${escapeHtml(journey.question.label)}</strong>
       <p>${escapeHtml(journey.question.detail)}</p>
+    </div>
+    <div class="quiet-decision-rail quiet-decision-rail--simple" aria-label="Quiet decision rail">
+      <div class="quiet-decision-rail-copy">
+        <span>${escapeHtml(quietRail.label)}</span>
+        <strong>${escapeHtml(quietRail.headline)}</strong>
+        <small>${escapeHtml(quietRail.cue)}</small>
+      </div>
+      <ol class="quiet-decision-steps">
+        ${quietRail.steps.map((step) => `
+          <li class="${step.ready ? "is-done" : "is-waiting"}">
+            <span>${escapeHtml(step.label)}</span>
+            <strong>${escapeHtml(step.title)}</strong>
+            <small>${escapeHtml(step.detail)}</small>
+          </li>
+        `).join("")}
+      </ol>
+      <div class="quiet-decision-now">
+        <span>Next calm check</span>
+        <strong>${escapeHtml(quietRail.nextTitle)}</strong>
+        <small>${escapeHtml(quietRail.nextDetail)}</small>
+      </div>
     </div>
     <button class="text-button simplicity-next primary-next-action calm-next-action" type="button" data-signal-route="${escapeHtml(journey.next.route)}" aria-label="Open next action: ${escapeHtml(journey.next.label)}">
       <span>Next calm step</span>
@@ -3566,6 +3588,50 @@ function calmEvidenceBeacon(signal, readiness, journey) {
   };
 }
 
+function quietDecisionRail(signal, readiness, journey) {
+  const evidenceReady = signal.evidence >= 78;
+  const peerReady = signal.compareCount >= 2;
+  const memoReady = readiness.status === "Memo-ready";
+  const reviewReady = readiness.score >= 70 && memoReady;
+  const routeLabel = journey?.activeStep?.label || "Current room";
+  const steps = [
+    { label: "Name", title: "One fund in focus", detail: signal.fund.name, ready: true },
+    {
+      label: "Verify",
+      title: evidenceReady ? "Source trail visible" : "Source date missing",
+      detail: evidenceReady ? "Evidence can be cited." : "Open Evidence before confidence.",
+      ready: evidenceReady
+    },
+    {
+      label: "Compare",
+      title: peerReady ? "Fair peer visible" : "Add one fair peer",
+      detail: peerReady ? `${signal.compareCount} funds in context.` : "Keep the shortlist small.",
+      ready: peerReady
+    },
+    {
+      label: "Write",
+      title: memoReady ? "Reason captured" : "Reason not written",
+      detail: memoReady ? "Memo can move to review." : "Write one plain-English reason.",
+      ready: memoReady
+    }
+  ];
+  const nextStep = steps.find((step) => !step.ready) || {
+    label: "Review",
+    title: "Save review rhythm",
+    detail: "Keep the next check visible.",
+    ready: reviewReady
+  };
+  return {
+    label: "Quiet decision rail",
+    headline: "One decision, three calm checks.",
+    cue: `Current room: ${routeLabel}. The desk advances only when the next check is clear.`,
+    nextLabel: nextStep.label,
+    nextTitle: nextStep.title,
+    nextDetail: nextStep.detail,
+    steps
+  };
+}
+
 function serenityStartSurface(signal, journey, readiness, nextCue) {
   const blocked = readiness.status !== "Memo-ready";
   const question = journey?.question?.label || "What proof is missing?";
@@ -3597,6 +3663,7 @@ function serenityStartSurface(signal, journey, readiness, nextCue) {
       label: "Shortlist boundary",
       text: `${signal.fund.name} is being checked for shortlist fit, not chosen today.`
     },
+    decisionRail: quietDecisionRail(signal, readiness, journey),
     conviction: quietConvictionMeter(readiness),
     privacyLedger: privacyLearningLedger(signal, readiness, journey),
     compass: calmReviewCompass(signal, readiness, journey),
@@ -3637,6 +3704,27 @@ function renderSerenityStartSurface(signal, journey, readiness, nextCue) {
       <div class="serenity-shortlist-boundary" aria-label="Shortlist boundary">
         <span>${escapeHtml(start.shortlistBoundary.label)}</span>
         <strong>${escapeHtml(start.shortlistBoundary.text)}</strong>
+      </div>
+      <div class="quiet-decision-rail" aria-label="Quiet decision rail">
+        <div class="quiet-decision-rail-copy">
+          <span>${escapeHtml(start.decisionRail.label)}</span>
+          <strong>${escapeHtml(start.decisionRail.headline)}</strong>
+          <small>${escapeHtml(start.decisionRail.cue)}</small>
+        </div>
+        <ol class="quiet-decision-steps">
+          ${start.decisionRail.steps.map((step) => `
+            <li class="${step.ready ? "is-done" : "is-waiting"}">
+              <span>${escapeHtml(step.label)}</span>
+              <strong>${escapeHtml(step.title)}</strong>
+              <small>${escapeHtml(step.detail)}</small>
+            </li>
+          `).join("")}
+        </ol>
+        <div class="quiet-decision-now">
+          <span>Next calm check</span>
+          <strong>${escapeHtml(start.decisionRail.nextTitle)}</strong>
+          <small>${escapeHtml(start.decisionRail.nextDetail)}</small>
+        </div>
       </div>
       <div class="serenity-conviction-meter" aria-label="Quiet conviction meter">
         <div>
@@ -9172,7 +9260,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v286</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v287</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

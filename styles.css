@@ -892,6 +892,93 @@ main {
   line-height: 1.35;
 }
 
+.quiet-decision-rail {
+  display: grid;
+  gap: 8px;
+  max-width: 620px;
+  margin-top: 9px;
+  padding: 10px;
+  border: 1px solid rgba(15, 124, 107, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.quiet-decision-rail-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.quiet-decision-rail-copy span,
+.quiet-decision-steps span,
+.quiet-decision-now span {
+  color: var(--mint);
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.quiet-decision-rail-copy strong,
+.quiet-decision-now strong {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.quiet-decision-rail-copy small,
+.quiet-decision-steps small,
+.quiet-decision-now small {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.quiet-decision-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.quiet-decision-steps li {
+  display: grid;
+  align-content: start;
+  gap: 3px;
+  min-width: 0;
+  min-height: 70px;
+  padding: 7px;
+  border: 1px solid rgba(31, 78, 121, 0.1);
+  border-radius: 8px;
+  background: rgba(236, 246, 255, 0.62);
+}
+
+.quiet-decision-steps li.is-done {
+  background: rgba(231, 248, 243, 0.74);
+}
+
+.quiet-decision-steps li.is-waiting {
+  border-color: rgba(216, 151, 60, 0.22);
+  background: rgba(255, 248, 232, 0.74);
+}
+
+.quiet-decision-steps strong {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.24;
+}
+
+.quiet-decision-now {
+  display: grid;
+  gap: 3px;
+  padding: 8px 9px;
+  border: 1px solid rgba(15, 124, 107, 0.14);
+  border-radius: 8px;
+  background: rgba(247, 252, 249, 0.88);
+}
+
 .serenity-conviction-meter {
   display: grid;
   gap: 8px;
@@ -3140,6 +3227,22 @@ body.simple-mode .serenity-path .simplicity-question {
 
 body.simple-mode .serenity-path .simplicity-question strong {
   font-size: 16px;
+}
+
+body.simple-mode .serenity-path .quiet-decision-rail {
+  grid-column: 1 / -1;
+  max-width: none;
+  margin-top: 0;
+  background: linear-gradient(135deg, rgba(247, 252, 249, 0.9), rgba(255, 255, 255, 0.94));
+}
+
+body.simple-mode .serenity-path .quiet-decision-steps li {
+  min-height: 64px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+body.simple-mode .serenity-path .quiet-decision-now {
+  border-color: rgba(15, 124, 107, 0.22);
 }
 
 body.simple-mode .serenity-path .primary-next-action {
@@ -33742,6 +33845,12 @@ body.simple-mode .quiet-fund-shelf {
   }
 
   body.simple-mode .calm-learning-receipt,
+  body.simple-mode .privacy-learning-ledger,
+  body.simple-mode .calm-review-compass,
+  body.simple-mode .learning-flywheel-contract,
+  body.simple-mode .calm-improvement-promise,
+  body.simple-mode .calm-evidence-beacon,
+  body.simple-mode .serenity-learning-loop,
   body.simple-mode .serenity-federated-strip,
   body.simple-mode .serenity-consent-gate,
   body.simple-mode .serenity-outcome-signal {
@@ -33750,6 +33859,7 @@ body.simple-mode .quiet-fund-shelf {
 
   .calm-improvement-grid,
   .calm-evidence-beacon-grid,
+  .quiet-decision-steps,
   .privacy-learning-ledger,
   .privacy-receipt-strip,
   .privacy-receipt-strip ol,

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260615-02";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v287 Quiet Decision Rail";
+const DATA_VERSION = "20260627-v288-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v288 Next Operating Move";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,22 +1240,22 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Outcome Learning Signal",
+    label: "Live-data rehearsal spine",
     status: "Shipping now",
-    route: "#screener",
-    detail: "Show how a decision, later review, and anonymized lesson become a reusable improvement without exposing investor data."
+    route: "#live-data-contracts",
+    detail: "Bind AMFI, AMC factsheet, SID/KIM, portfolio disclosure, benchmark, and TER sources to source date, citation path, parser proof, reviewer route, and surface-release rule before any claim looks live."
   },
   {
-    label: "Portable mission memory",
+    label: "Founder beta proof loop",
     status: "Next",
-    route: "#account-vault",
-    detail: "Persist autopilot mission steps, route-open history, replay deltas, capsules, shock maps, genome, flight-recorder, anti-hype, regret, motive, and multiverse verdicts into account vault objects with consent, export, deletion, support redaction, and Phase 2 firewall boundaries."
+    route: "#founder-invite-path",
+    detail: "Turn the first paid cohort into proof-qualified invites, founder-reviewed calls, support headroom, refund clarity, account memory limits, and a stop rule before any public checkout push."
   },
   {
-    label: "MFD preview",
+    label: "Receipt replay before scale",
     status: "Later",
-    route: "#consent-gate",
-    detail: "Keep ARN/EUIN, PAN-consent, client book, and distributor dashboard visible as Phase 2."
+    route: "#receipt-replay-engine",
+    detail: "Make checkout, webhook, entitlement, invoice, refund, settlement, support repair, source import, correction, privacy, and launch-freeze receipts replayable before the first beta wave widens."
   }
 ];
 
@@ -9260,7 +9260,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v287</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v288</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

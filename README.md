@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v287 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v288 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -16,6 +16,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Calm Learning Receipt on the first screen turns closed-loop learning into a compact audit trail: what can be learned, what is refused, and when review and consent are required.
 - Calm Improvement Promise on the first screen states that every reviewed lesson should make the next screen quieter, improving wording and route order without using identity, private notes, or unreviewed actions.
 - Source-Date Beacon on the first screen keeps confidence quiet until source dates, citation path, TER, holdings, and riskometer checks are visible.
+- Next Operating Move on the first screen links live-data source contracts, founder invite proof, and receipt replay into one compact launch path before the paid beta widens.
 - Self-research command desk with search, category, risk, and sorting controls.
 - Quiet Conviction Meter on the first screen that keeps confidence calm until evidence, peer, and memo checks are visible.
 - Learning Loop Ledger on the first screen that shows how research actions become privacy-safe learning signals without turning demo data into advice.
@@ -141,7 +142,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Pricing and monetization preview with Free, Nadi Plus, Founder Circle, and Phase 2 Distributor Desk plans.
 - Phase 2 distributor roadmap for ARN/EUIN/PAN-based client management.
 - Security foundation with `SECURITY.md`, threat model, data classification, release checklist, and automated security audit.
-- Compact v238 product layout with default Simple View, Sticky Next Cue, Compact Simple Header, Live Step Sync, Clean Room Landing, Starter Chip Counts, Top Match Preview, Open Top Match, Search Rescue State, Search Feedback Strip, Starter Search Chips, Single Search First, Action First Fold, One Move Rail, Primary Next Action, Step Focus Marker, Simple Action Path, Simple Plan Priority, Simple Plan Visibility, Three-Step Plan, Do Next Cue, Decision Readiness, Investor Takeaway, One-Question Gate, Live Route Rail, Guided Selector, Review Step Focus, First Screen Focus, Calm Header, Anchor Landing Guard, smart navigation, trust/evidence rooms, review memory, paid beta/account readiness, and a trust-first retail membership model.
+- Compact v288 product layout with default Simple View, Next Operating Move, Sticky Next Cue, Compact Simple Header, Live Step Sync, Clean Room Landing, Starter Chip Counts, Top Match Preview, Open Top Match, Search Rescue State, Search Feedback Strip, Starter Search Chips, Single Search First, Action First Fold, One Move Rail, Primary Next Action, Step Focus Marker, Simple Action Path, Simple Plan Priority, Simple Plan Visibility, Three-Step Plan, Do Next Cue, Decision Readiness, Investor Takeaway, One-Question Gate, Live Route Rail, Guided Selector, Review Step Focus, First Screen Focus, Calm Header, Anchor Landing Guard, smart navigation, trust/evidence rooms, review memory, paid beta/account readiness, and a trust-first retail membership model.
 
 ## Important compliance posture
 

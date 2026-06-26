@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V288 Next Operating Move
+
+V288 adds a compact first-screen operating path that links Live Data Contracts, Founder Invite Proof, and Receipt Replay into one launch sequence. The tracker now treats the next product move as proof-led execution: source dates and citations first, founder-qualified beta second, replayable backend receipts before scale.
+
 ## V239 Simple Focus Lens
 
 V239 makes Simple View behave like one guided room at a time. Opening Profile, Find, Verify, Memo, or Review now hides the adjacent workshop sections until Full View is chosen, reducing page length and keeping the investor focused on the current decision step.

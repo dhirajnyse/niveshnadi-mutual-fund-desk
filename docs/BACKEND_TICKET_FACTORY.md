@@ -1,0 +1,11 @@
+# Nadi Backend Ticket Factory
+
+Phase 1 v145 adds the Backend Ticket Factory between the Paid Pilot Launch Gate and the Entitlement Bridge. The room converts the paid pilot gate into implementation tickets so the founder can see which backend work must be built before live accounts, payments, support, refunds, privacy operations, and evidence release move beyond prototype.
+
+Each ticket has an owner, priority, product lane, route link, event contract, acceptance tests, blocked-data list, release status, and stable ticket ID. The first ticket points to the weakest paid-pilot dependency, while the grid keeps all eight production lanes visible: receipt vault replay, payment provider webhook contract, entitlement unlock service, support and refund casebook, account research vault migration, evidence release and claim freeze, privacy export/delete job, and founder pilot operations queue.
+
+The factory protects the low-fee retail model. Paid access must come from verified backend events, not success URLs, screenshots, manual notes, or browser-local state. The room also repeats the Phase 1 data boundary: no PAN, folio, CAS, bank, UPI, card, OTP, gateway secrets, ARN/EUIN, distributor client records, or private note bodies. Every ticket needs acceptance tests, replay behavior, rollback or freeze rules, and support-safe receipt views before the paid pilot can widen.
+
+Phase 1 v146 now places the Receipt Replay Engine immediately after the ticket factory. The factory identifies receipt vault replay as the first backend implementation ticket, while the replay engine breaks that ticket into testable checkout, duplicate webhook, refund, settlement, support, audit export, and incident-freeze paths. This makes the handoff more actionable: a ticket is not treated as ready until it can describe the event sequence, expected state, acceptance tests, freeze rule, blocked data, and route for repair.
+
+Phase 1 v152 adds Backend Ticket Closeout. The factory now asks whether a ticket can actually close, not only whether it can be written. Each ticket gets closeout gates for acceptance tests, backend receipt proof, launch-freeze posture, rollback notes, blocked-data scan, and owner signoff. P0 tickets stay blocked until the closeout score is high enough and the owner can prove replay, freeze, and rollback behavior without private data.

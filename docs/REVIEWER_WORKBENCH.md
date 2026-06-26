@@ -1,0 +1,9 @@
+# Nadi Reviewer Workbench
+
+The Nadi Reviewer Workbench is the Phase 1 review desk that sits between the Surface Release Queue and the heavier claim release, rollback, and correction workflows. It turns the highest priority mapped surface into a human-readable reviewer handoff so public-facing research claims do not move only because a score or queue item looks healthy.
+
+The workbench lets the operator select the next queue item, a release candidate, a preview proof item, or a freeze fix item. It then applies a reviewer posture: use the queue posture, approve for release gate, hold in preview, freeze and fix, or route into correction review. The evidence lock changes the review discipline between standard evidence pack, strict citation lock, and fast triage.
+
+Each generated handoff includes source receipt, surface status, strictness threshold, reviewer priority, evidence lock, due posture, owner, fallback language, and the next decision route. The output is intentionally product-release control only. It excludes PAN, folio, CAS, bank data, contact data, account credentials, private notes, and distributor client records.
+
+Before launch, this desk should connect to saved reviewer decisions, source-date history, visible citation links, release receipts, rollback logs, and correction notice records. Until that live workflow exists, the workbench remains a transparent prototype layer that shows how review discipline should operate before a public metric, claim, research packet, or trust surface is treated as release-ready.

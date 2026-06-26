@@ -1,0 +1,15 @@
+# Nadi Pilot Receipt Vault
+
+Phase 1 v143 adds the Pilot Receipt Vault after the Payment Provider Pilot Receipt Contract. The contract defines which payment receipt fields must exist; the vault shows where those receipts live, how they replay, who can inspect them, what can be exported, and when checkout, entitlement, refund, or public claims must freeze during an incident.
+
+The vault keeps the first paid pilot backend-owned. Checkout receipts, signed webhook receipts, idempotency replay receipts, entitlement projection logs, invoice and refund ledgers, settlement reconciliation joins, support lookup views, audit export packets, and incident freeze rules must all be durable before the product relies on live payment events. A success URL, browser-local state, screenshot, or manual support note remains insufficient to activate, extend, revoke, refund, or repair paid access.
+
+The room is intentionally identity-light. It allows receipt IDs, event names, provider references, payload hashes, idempotency keys, redacted user hashes, settlement IDs, support case IDs, reviewer IDs, and release scopes. It excludes PAN, folio, CAS, bank details, UPI credentials, raw card data, OTP, gateway secrets, ARN/EUIN, distributor client records, and private investment-note bodies.
+
+The launch rule is simple: do not widen the paid cohort until receipt replay can rebuild active access, duplicate-event handling, refunds, settlement variance, support repair, and incident freeze or resume state. This protects the low retail subscription price from hidden support cost and gives the future Phase 2 distributor product a cleaner audit foundation.
+
+Phase 1 v144 now places the Paid Pilot Launch Gate immediately after this vault. The vault answers whether payment receipts are durable and replayable; the launch gate answers whether that proof is strong enough to charge a tiny founder-reviewed cohort. This bridge keeps the product from moving directly from receipt storage to paid access without checking entitlement, support, account route, evidence safety, privacy, and founder operating capacity.
+
+Phase 1 v145 then adds the Backend Ticket Factory after the launch gate. For the vault, this is the moment where replay proof becomes an implementation ticket: append-only receipt storage, replay projection, audit export, settlement join, support lookup, and incident freeze need acceptance tests and backend ownership before the first paid cohort can widen. The factory keeps the vault from staying as a visual concept by turning the weakest receipt dependency into the next engineering route.
+
+Phase 1 v146 adds the Receipt Replay Engine so vault lanes become replay cases. Clean checkout, duplicate webhook, refund reversal, settlement variance, support repair, audit export, and incident freeze are now separate cases with event sequences, expected outcomes, acceptance tests, and freeze rules. This makes the vault more concrete: the business cannot rely on paid receipts until replay can rebuild entitlement, refund, support, audit, and incident state repeatedly without private data or manual notes.

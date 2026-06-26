@@ -34887,6 +34887,515 @@ body.simple-mode .quiet-fund-shelf {
   }
 }
 
+/* v288 compact desk density */
+:root {
+  --anchor-offset: 92px;
+  --shadow: 0 10px 24px rgba(15, 34, 56, 0.08);
+}
+
+body {
+  font-size: 14px;
+}
+
+.app-header {
+  grid-template-columns: minmax(235px, 300px) minmax(0, 1fr);
+  gap: 12px;
+  min-height: 60px;
+  padding: 6px clamp(14px, 2vw, 30px);
+}
+
+.brand-lockup {
+  gap: 10px;
+}
+
+.brand-logo {
+  width: 102px;
+  min-width: 92px;
+}
+
+.brand-meta-row {
+  gap: 6px;
+  margin-bottom: 1px;
+}
+
+.brand-lockup h1 {
+  max-width: 220px;
+  font-size: 17px;
+  line-height: 1.05;
+}
+
+.eyebrow,
+.release-pill,
+.metric-label {
+  font-size: 10px;
+}
+
+.version-quick-badge {
+  min-height: 19px;
+  padding: 2px 6px;
+  font-size: 9px;
+}
+
+.top-nav {
+  gap: 8px;
+}
+
+.nav-stack {
+  gap: 4px;
+}
+
+.nav-cluster,
+.nav-mode-strip {
+  gap: 4px;
+}
+
+.top-nav a {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.top-nav .nav-mode-strip a {
+  min-height: 26px;
+  padding: 4px 7px 4px 4px;
+}
+
+.top-nav .nav-mode-strip a span {
+  min-width: 20px;
+  min-height: 17px;
+}
+
+.workspace-command {
+  gap: 6px;
+}
+
+.simple-mode-toggle,
+.tool-palette-toggle,
+.workspace-jump select {
+  min-height: 32px;
+  font-size: 12px;
+}
+
+.workspace-jump {
+  grid-template-columns: minmax(170px, 214px);
+  margin-left: 2px;
+}
+
+main {
+  padding-bottom: 30px;
+}
+
+.workspace-band {
+  width: min(1440px, calc(100% - 28px));
+  margin-top: 10px;
+}
+
+.command-band {
+  margin-top: 10px;
+}
+
+.workspace-grid {
+  grid-template-columns: minmax(0, 1.72fr) minmax(250px, 0.55fr);
+  gap: 10px;
+}
+
+.command-panel {
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 10px 12px;
+  padding: 14px;
+}
+
+.command-panel h2 {
+  font-size: 28px;
+  line-height: 1.03;
+}
+
+.command-panel p:not(.release-pill) {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.38;
+}
+
+.release-pill {
+  padding: 5px 8px;
+}
+
+.quiet-start-ribbon {
+  gap: 6px;
+  margin: 6px 0;
+  padding: 5px 8px;
+}
+
+.quiet-start-ribbon strong {
+  font-size: 12px;
+}
+
+.serenity-start-surface {
+  max-width: none;
+  max-height: 620px;
+  margin-bottom: 8px;
+  padding: 10px;
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+.serenity-start-surface > div {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  max-width: none;
+}
+
+.serenity-start-surface > div > span:first-child,
+.serenity-start-surface > div > strong:first-of-type,
+.serenity-start-surface > div > p:first-of-type,
+.serenity-start-rule,
+.serenity-start-hint,
+.serenity-plain-start {
+  grid-column: 1 / -1;
+}
+
+.serenity-start-surface strong {
+  font-size: 14px;
+}
+
+.serenity-start-surface p,
+.serenity-start-surface small,
+.serenity-start-surface li {
+  font-size: 12px;
+  line-height: 1.32;
+}
+
+.serenity-start-surface :is(
+  .serenity-commitment-cue,
+  .serenity-shortlist-boundary,
+  .quiet-decision-rail,
+  .serenity-conviction-meter,
+  .privacy-learning-ledger,
+  .calm-review-compass,
+  .learning-flywheel-contract,
+  .calm-learning-receipt,
+  .calm-improvement-promise,
+  .calm-evidence-beacon,
+  .serenity-learning-loop
+) {
+  padding: 9px;
+}
+
+.serenity-action-path,
+.privacy-ledger-grid,
+.learning-contract-rules,
+.calm-learning-receipt-grid,
+.calm-learning-receipt-strip,
+.serenity-learning-loop ol {
+  gap: 6px;
+}
+
+.control-grid {
+  gap: 8px;
+  margin-top: 2px;
+}
+
+label {
+  gap: 4px;
+}
+
+input,
+select,
+textarea {
+  min-height: 34px;
+  padding: 7px 9px;
+}
+
+.simple-filter-toggle,
+.signal-chip {
+  min-height: 28px;
+}
+
+.search-starters {
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.desk-stats {
+  gap: 6px;
+}
+
+.desk-stats div,
+.market-snapshot div {
+  padding: 9px 10px;
+}
+
+.market-snapshot {
+  gap: 8px;
+}
+
+.market-snapshot div {
+  min-height: 68px;
+}
+
+.market-snapshot strong {
+  font-size: 19px;
+}
+
+.section-heading {
+  gap: 10px;
+  margin-bottom: 7px;
+}
+
+.section-heading h2 {
+  font-size: 23px;
+  line-height: 1.08;
+}
+
+.text-button,
+.primary-button {
+  min-height: 34px;
+  padding: 7px 10px;
+}
+
+.tool-panel,
+.tool-output {
+  padding: 12px;
+}
+
+.fund-grid,
+.tool-grid {
+  gap: 10px;
+}
+
+body.simple-mode .app-header {
+  min-height: 54px;
+  padding-block: 5px;
+}
+
+body.simple-mode .brand-logo {
+  width: 92px;
+  min-width: 84px;
+}
+
+body.simple-mode .brand-lockup h1 {
+  max-width: 210px;
+  font-size: 16px;
+}
+
+body.simple-mode .command-panel {
+  max-width: 1180px;
+  padding: 14px;
+}
+
+body.simple-mode .command-panel h2 {
+  font-size: 26px;
+}
+
+body.simple-mode .command-copy {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(310px, 0.72fr);
+  gap: 8px 12px;
+  max-width: none;
+  align-items: start;
+}
+
+body.simple-mode .command-copy > .release-pill,
+body.simple-mode .command-copy > h2 {
+  grid-column: 1 / -1;
+}
+
+body.simple-mode .serenity-start-surface {
+  grid-column: 1;
+  grid-row: 3 / span 5;
+  max-height: 420px;
+}
+
+body.simple-mode .serenity-start-surface > div {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body.simple-mode .calm-learning-receipt,
+body.simple-mode .privacy-learning-ledger,
+body.simple-mode .calm-review-compass,
+body.simple-mode .learning-flywheel-contract,
+body.simple-mode .calm-improvement-promise,
+body.simple-mode .calm-evidence-beacon,
+body.simple-mode .serenity-learning-loop,
+body.simple-mode .serenity-federated-strip,
+body.simple-mode .serenity-consent-gate,
+body.simple-mode .serenity-outcome-signal {
+  display: none;
+}
+
+body.simple-mode .control-grid input[type="search"] {
+  min-height: 38px;
+  font-size: 14px;
+}
+
+body.simple-mode .control-grid,
+body.simple-mode.simple-filters-open .control-grid {
+  grid-column: 2;
+  grid-row: 3;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: none;
+  margin-top: 0;
+}
+
+body.simple-mode .simple-filter-toggle {
+  grid-column: 2;
+  grid-row: 4;
+  justify-self: start;
+}
+
+body.simple-mode .search-starters {
+  grid-column: 2;
+  grid-row: 5;
+}
+
+body.simple-mode .search-feedback {
+  grid-column: 2;
+  grid-row: 6;
+}
+
+body.simple-mode .search-starters,
+body.simple-mode .search-feedback {
+  margin-top: 6px;
+}
+
+body.simple-mode .search-starters .signal-chip,
+body.simple-mode .search-feedback .signal-chip {
+  min-height: 26px;
+  padding: 4px 8px;
+}
+
+body.simple-mode .calm-decision-gate {
+  gap: 8px;
+  padding: 8px;
+}
+
+body.simple-mode .one-breath-brief {
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 8px;
+  padding: 9px;
+}
+
+body.simple-mode .one-breath-brief strong {
+  font-size: 16px;
+}
+
+body.simple-mode .one-breath-brief p {
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+body.simple-mode .one-breath-brief em {
+  min-width: 84px;
+  min-height: 30px;
+  padding: 5px 8px;
+}
+
+body.simple-mode .simplicity-path {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr) max-content;
+  gap: 8px;
+  padding: 10px;
+}
+
+body.simple-mode .serenity-path .quiet-decision-rail {
+  display: none;
+}
+
+body.simple-mode .serenity-path .simplicity-path-copy,
+body.simple-mode .serenity-path .simplicity-question {
+  min-height: auto;
+}
+
+body.simple-mode .serenity-path .simplicity-question strong {
+  font-size: 14px;
+}
+
+body.simple-mode .serenity-path .primary-next-action {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  min-width: 150px;
+  min-height: auto;
+  padding: 8px 10px;
+}
+
+body.simple-mode .serenity-path .primary-next-action span {
+  min-width: 60px;
+  min-height: 26px;
+  padding: 5px 7px;
+}
+
+body.simple-mode .serenity-path .primary-next-action strong {
+  font-size: 13px;
+}
+
+body.simple-mode .serenity-path .primary-next-action em {
+  display: none;
+}
+
+body.simple-mode .serenity-path .simplicity-path-actions {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1380px) {
+  .app-header {
+    grid-template-columns: minmax(230px, 300px) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 980px) {
+  :root {
+    --anchor-offset: 20px;
+  }
+
+  .app-header {
+    min-height: auto;
+    padding: 8px 14px;
+  }
+
+  .workspace-band {
+    width: min(100% - 20px, 1380px);
+  }
+
+  .command-panel,
+  body.simple-mode .command-panel {
+    padding: 12px;
+  }
+
+  .serenity-start-surface,
+  body.simple-mode .serenity-start-surface {
+    max-height: none;
+    overflow: visible;
+  }
+
+  body.simple-mode .serenity-start-surface {
+    max-height: 440px;
+    overflow: auto;
+    scrollbar-gutter: stable;
+  }
+
+  .serenity-start-surface > div,
+  body.simple-mode .serenity-start-surface > div,
+  body.simple-mode .command-copy,
+  body.simple-mode .simplicity-path {
+    grid-template-columns: 1fr;
+  }
+
+  body.simple-mode .serenity-start-surface,
+  body.simple-mode .control-grid,
+  body.simple-mode.simple-filters-open .control-grid,
+  body.simple-mode .simple-filter-toggle,
+  body.simple-mode .search-starters,
+  body.simple-mode .search-feedback {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  body.simple-mode .serenity-path .primary-next-action {
+    grid-column: 1;
+    grid-row: auto;
+    min-width: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

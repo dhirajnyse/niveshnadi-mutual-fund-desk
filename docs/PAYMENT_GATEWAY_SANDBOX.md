@@ -1,0 +1,23 @@
+# Nadi Payment Gateway Sandbox Route
+
+The Payment Gateway Sandbox Route is the pre-launch rehearsal layer for NiveshNadi paid retail access. It sits between the Payment Wiring Console and the Subscription Backend Blueprint so the team can dry-run hosted checkout, signed webhooks, duplicate events, failed renewals, refunds, invoices, entitlement changes, support repair, incidents, and reconciliation before any real payment rail is switched on.
+
+V113 adds the Founder Paid Beta Runbook. It converts sandbox proof into a small-cohort operating plan with first cohort posture, checkout rehearsal, webhook replay, entitlement repair, billing support, incident closeout, day-by-day rehearsals, and go/no-go rules before widening paid access.
+
+V141 adds the Gateway Decision and Webhook Drill immediately after this sandbox route. The sandbox still rehearses scenarios, while the new drill decides whether the selected provider posture, signed webhook proof, idempotency replay, entitlement projection, invoice/refund handling, settlement reconciliation, and incident rollback are strong enough for a tiny paid pilot. This separation keeps the product from confusing a demo scenario with a launch decision.
+
+V142 adds the Payment Provider Pilot Receipt Contract after the drill. The sandbox rehearses payment behavior, the drill chooses the provider posture, and the new contract names the backend receipts that must exist before a paid pilot can be trusted. This includes checkout session receipts, signed webhook receipts, idempotency replay receipts, entitlement mutation receipts, invoice receipts, refund and cancellation receipts, settlement reconciliation receipts, support repair receipts, and incident closeout receipts.
+
+V143 adds the Pilot Receipt Vault after the contract. The vault checks whether those receipts can be stored append-only, replayed into entitlement and finance state, joined to support and settlement workflows, exported for review, and frozen during incidents. This completes the rehearsal chain: sandbox behavior, provider decision, receipt contract, then receipt storage and replay.
+
+V144 adds the Paid Pilot Launch Gate after the vault. The sandbox can still prove behavior, the contract can still name fields, and the vault can still map storage, but the new gate decides whether the full chain is responsible enough for the first tiny paid cohort. If vault replay, provider proof, entitlement, support, account route, evidence, privacy, or founder capacity is weak, paid launch remains in founder rehearsal.
+
+V150 adds Payment Adapter Repairs inside the Subscription Backend Blueprint. The sandbox remains the behavior rehearsal, while the adapter board names how checkout, signed webhook, duplicate replay, refund, cancellation, entitlement, support repair, settlement, and incident events should repair or roll back without unlocking access from a browser success URL or manual support note.
+
+The route is intentionally provider-neutral. It can model Razorpay-style, Cashfree-style, Stripe-style, or manual founder-beta behavior without claiming that a production integration exists. The live launch gate remains closed until the selected provider is onboarded, webhook secrets are configured server-side, event signatures are verified, and idempotency, replay, timeout, duplicate-event, refund, invoice, and settlement variance tests pass.
+
+Every successful sandbox run should produce a backend audit receipt. At minimum, the receipt should include provider posture, sandbox scenario, gateway event ID, idempotency key, plan ID, amount, currency, entitlement action, invoice or refund reference, reconciliation status, support route, timestamp, release label, and data version. The static prototype displays the workflow and copyable brief only; it does not process payments or store payment credentials.
+
+Security boundaries are strict. NiveshNadi should not collect card data, UPI handles, bank account numbers, PAN, payment passwords, gateway secrets, OTPs, or private support notes in the browser. Hosted checkout keeps sensitive payment entry outside the product. Paid feature unlocks should come only from verified backend events and backend audit receipts, not browser-local state.
+
+The useful launch questions are simple: can the app create a short-lived hosted checkout session, reject unsigned or stale webhooks, ignore duplicate events, handle failed renewals without silently breaking access, reverse entitlement after refunds, produce invoice receipts, reconcile settlement reports, and replay incident events into rollback or correction paths? Until those answers are proven in backend tests, the route should remain a sandbox and not a production payment promise.

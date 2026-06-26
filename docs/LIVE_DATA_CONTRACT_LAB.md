@@ -12,3 +12,5 @@ Every contract should answer four launch questions:
 - What exact public behavior happens when the source is stale, mismatched, blocked by rights, or missing?
 
 The intended path is source discovery, source-date capture, normalized contract schema, validation checks, source receipt, stale-source rule, preview release, and claim-release approval. If a source breaks, NiveshNadi should freeze the narrowest affected field, show demo or stale status clearly, keep rollback receipts, and avoid silent refreshes.
+
+In V289, these contracts feed the Source Intake Pack. The pack reuses each contract's primary key, source date field, validation expectations, citation proof, and failure behavior so reviewers can see whether a source is ready for dry run, reviewer-controlled release, or continued freeze.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v288-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v288 Next Operating Move";
+const DATA_VERSION = "20260627-v289-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v289 Source Intake Pack";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,22 +1240,22 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Live-data rehearsal spine",
+    label: "Live data source intake pack",
     status: "Shipping now",
-    route: "#live-data-contracts",
-    detail: "Bind AMFI, AMC factsheet, SID/KIM, portfolio disclosure, benchmark, and TER sources to source date, citation path, parser proof, reviewer route, and surface-release rule before any claim looks live."
+    route: "#source-intake",
+    detail: "Bind each selected source to a copyable intake pack with source identity, field contract, citation proof, parser validation, reviewer gate, release route, rollback rule, and no-go policy before any public claim looks live."
   },
   {
-    label: "Founder beta proof loop",
+    label: "Reviewer release rehearsal",
     status: "Next",
-    route: "#founder-invite-path",
-    detail: "Turn the first paid cohort into proof-qualified invites, founder-reviewed calls, support headroom, refund clarity, account memory limits, and a stop rule before any public checkout push."
+    route: "#reviewer-workbench",
+    detail: "Move the intake pack through reviewer decision, release binder, claim-release ledger, and rollback posture so source approval becomes a visible release ritual."
   },
   {
-    label: "Receipt replay before scale",
+    label: "Backend source receipt job",
     status: "Later",
-    route: "#receipt-replay-engine",
-    detail: "Make checkout, webhook, entitlement, invoice, refund, settlement, support repair, source import, correction, privacy, and launch-freeze receipts replayable before the first beta wave widens."
+    route: "#backend-audit-receipts",
+    detail: "Turn approved intake packs into scheduled workers, saved import receipts, replay cases, correction receipts, and affected-surface recovery before source imports run unattended."
   }
 ];
 
@@ -9260,7 +9260,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v288</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v289</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -37306,11 +37306,97 @@ function sourceIntakeProductionGate(config = sourceIntakeConfig()) {
   };
 }
 
+function sourceIntakePack(config = sourceIntakeConfig(), productionGate = sourceIntakeProductionGate(config)) {
+  const contract = LIVE_DATA_CONTRACTS.find((item) => item.id === config.pipeline.id) || LIVE_DATA_CONTRACTS[0];
+  const sourceSlug = config.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const packId = ["NN", "SOURCE", "PACK", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const firstBlocker = [...productionGate.blockers, ...config.blockers].find((blocker) => !blocker.startsWith("No active import blocker"))
+    || "Reviewer release, rollback note, and public-surface sign-off before launch.";
+  const releaseRoute = productionGate.status === "Production import ready"
+    ? "#claim-release"
+    : productionGate.status === "Reviewer controlled import"
+      ? "#reviewer-workbench"
+      : "#source-dry-run";
+  const cards = [
+    {
+      label: "01 Source identity",
+      title: config.pipeline.title,
+      value: sourceIntakeChannelLabel(config.channel),
+      detail: `${config.age} day${config.age === 1 ? "" : "s"} old; max ${config.maxAge} day rule.`,
+      route: "#live-data-contracts",
+      routeLabel: "Open contract",
+      tone: config.staleDays ? "caution" : "ready"
+    },
+    {
+      label: "02 Field contract",
+      title: `${config.contractFields.length} mapped fields`,
+      value: contract.primaryKey,
+      detail: `Date field: ${contract.dateField}.`,
+      route: "#source-intake",
+      routeLabel: "Review fields",
+      tone: contract.contractScore >= 70 ? "ready" : "watch"
+    },
+    {
+      label: "03 Citation proof",
+      title: sourceIntakeEvidenceLabel(config.evidence),
+      value: config.evidence === "citation-bound" ? "Bound" : "Blocked",
+      detail: config.citation.citationPath,
+      route: "#source-receipts",
+      routeLabel: "Open receipts",
+      tone: config.evidence === "citation-bound" ? "ready" : "caution"
+    },
+    {
+      label: "04 Validation runbook",
+      title: `${config.validation.length} checks`,
+      value: sourceIntakeFormatLabel(config.format),
+      detail: config.validation.slice(0, 2).join("; "),
+      route: "#source-dry-run",
+      routeLabel: "Run dry run",
+      tone: config.formatScore >= 70 ? "ready" : "watch"
+    },
+    {
+      label: "05 Release rule",
+      title: productionGate.status,
+      value: `${productionGate.productionScore}/100`,
+      detail: firstBlocker,
+      route: releaseRoute,
+      routeLabel: "Open release route",
+      tone: productionGate.tone
+    }
+  ];
+  const readiness = Math.round((config.score + productionGate.productionScore + productionGate.backendScore) / 3);
+  const status = readiness >= 84 && productionGate.status === "Production import ready"
+    ? "Pack ready for reviewer release"
+    : readiness >= 68
+      ? "Pack ready for dry-run rehearsal"
+      : "Pack blocked before launch";
+  const tone = status.includes("reviewer") ? "ready" : status.includes("blocked") ? "caution" : "watch";
+  const noGo = [
+    "No source date, no live-looking claim.",
+    "No citation path, preview only.",
+    "No parser confidence, freeze affected fields.",
+    "No reviewer decision, no public release.",
+    "No personal investor identifiers in source intake."
+  ];
+  return {
+    cards,
+    contract,
+    firstBlocker,
+    noGo,
+    packId,
+    readiness,
+    releaseRoute,
+    status,
+    tone
+  };
+}
+
 function renderSourceIntakeConsole(event) {
   if (event) event.preventDefault();
   if (!els.sourceIntakeOutput || !els.sourceIntakeSummary) return;
   const config = sourceIntakeConfig();
   const productionGate = sourceIntakeProductionGate(config);
+  const intakePack = sourceIntakePack(config, productionGate);
   els.sourceIntakeSummary.textContent = `${productionGate.productionScore}/100 | ${productionGate.status}`;
   els.sourceIntakeOutput.innerHTML = `
     <div class="source-intake-hero ${escapeHtml(config.tone)}">
@@ -37329,6 +37415,43 @@ function renderSourceIntakeConsole(event) {
       <article><span>Format</span><strong>${config.formatScore}/100</strong><p>${escapeHtml(sourceIntakeFormatLabel(config.format))}</p></article>
       <article><span>Evidence</span><strong>${config.evidenceScore}/100</strong><p>${escapeHtml(sourceIntakeEvidenceLabel(config.evidence))}</p></article>
       <article><span>Owner</span><strong>${escapeHtml(config.pipeline.owner)}</strong><p>${escapeHtml(config.pipeline.cadence)} source cadence.</p></article>
+    </div>
+    <div class="source-intake-pack ${escapeHtml(intakePack.tone)}">
+      <div class="source-intake-pack-head">
+        <div>
+          <span>Live data source intake pack</span>
+          <h3>${escapeHtml(intakePack.status)}</h3>
+          <p>Pack ${escapeHtml(intakePack.packId)} turns this source into source identity, field contract, citation proof, validation runbook, and release rule before public claims move.</p>
+        </div>
+        <div class="source-intake-pack-score" style="--score:${intakePack.readiness}">
+          <b>${intakePack.readiness}</b>
+          <span>Pack</span>
+        </div>
+      </div>
+      <div class="source-intake-pack-grid">
+        ${intakePack.cards.map((card) => `
+          <article class="source-intake-pack-card ${escapeHtml(card.tone)}">
+            <span>${escapeHtml(card.label)}</span>
+            <strong>${escapeHtml(card.title)}</strong>
+            <p><b>${escapeHtml(card.value)}</b> ${escapeHtml(card.detail)}</p>
+            <button class="text-button source-intake-pack-route" type="button" data-build-route="${escapeHtml(card.route)}">${escapeHtml(card.routeLabel)}</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="source-intake-pack-foot">
+        <article>
+          <span>First blocker</span>
+          <strong>Fix before launch</strong>
+          <p>${escapeHtml(intakePack.firstBlocker)}</p>
+        </article>
+        <article>
+          <span>Launch no-go rules</span>
+          <strong>${intakePack.noGo.length} hard stops</strong>
+          <ul>
+            ${intakePack.noGo.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="source-import-gate ${escapeHtml(productionGate.tone)}">
       <div class="source-import-head">
@@ -37422,6 +37545,49 @@ function renderSourceIntakeConsole(event) {
       </article>
     </div>
   `;
+}
+
+function makeSourceIntakePackNote() {
+  const config = sourceIntakeConfig();
+  const productionGate = sourceIntakeProductionGate(config);
+  const intakePack = sourceIntakePack(config, productionGate);
+  return [
+    "# NiveshNadi Live Data Source Intake Pack",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Pack ID: ${intakePack.packId}`,
+    `Source family: ${config.pipeline.title}`,
+    `Owner: ${config.pipeline.owner}`,
+    `Fund context: ${config.fund.name}`,
+    `Pack status: ${intakePack.status}`,
+    `Pack readiness: ${intakePack.readiness}/100`,
+    `Intake score: ${config.score}/100`,
+    `Production import score: ${productionGate.productionScore}/100`,
+    `Backend contract score: ${productionGate.backendScore}/100`,
+    `Release route: ${intakePack.releaseRoute}`,
+    "",
+    "## Pack checklist",
+    ...intakePack.cards.map((card) => `- ${card.label}: ${card.title} | ${card.value} | ${card.detail} | route ${card.route}`),
+    "",
+    "## Production gate",
+    `Gate ID: ${productionGate.gateId}`,
+    `Import posture: ${productionGate.status}`,
+    "Import controls:",
+    ...productionGate.importControls.map((control) => `- ${control.label}: ${control.value} | ${control.detail}`),
+    "Job sequence:",
+    ...productionGate.jobSequence.map((step) => `- ${step.step}: ${step.status} | ${step.detail}`),
+    "",
+    "## Launch no-go rules",
+    ...intakePack.noGo.map((rule) => `- ${rule}`),
+    "",
+    "## First blocker",
+    intakePack.firstBlocker,
+    "",
+    "## Source blockers",
+    ...config.blockers.map((blocker) => `- ${blocker}`),
+    "",
+    "## Privacy boundary",
+    "Use official public or licensed source data only. Exclude PAN, folio, CAS, bank data, login credentials, distributor client records, and private investor notes."
+  ].join("\n");
 }
 
 function makeSourceIntakeNote() {
@@ -46548,6 +46714,7 @@ function bindEvents() {
     });
   });
   els.copySourceIntake?.addEventListener("click", () => copyText(makeSourceIntakeNote()));
+  els.copySourceIntakePack?.addEventListener("click", () => copyText(makeSourceIntakePackNote()));
   els.sourceDriftForm?.addEventListener("submit", (event) => {
     renderSourceDriftMonitor(event);
     renderClaimReleaseGate();
@@ -48309,6 +48476,7 @@ function cacheElements() {
     sourceIntakeSummary: qs("#sourceIntakeSummary"),
     sourceIntakeOutput: qs("#sourceIntakeOutput"),
     copySourceIntake: qs("#copySourceIntake"),
+    copySourceIntakePack: qs("#copySourceIntakePack"),
     sourceDriftForm: qs("#sourceDriftForm"),
     sourceDriftSource: qs("#sourceDriftSource"),
     sourceDriftChange: qs("#sourceDriftChange"),

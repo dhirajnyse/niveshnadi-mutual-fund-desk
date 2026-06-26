@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V289 Source Intake Pack
+
+V289 adds a copyable Live Data Source Intake Pack inside the Source Intake Console. The pack turns a selected source into source identity, field contract, citation proof, validation runbook, release route, first blocker, and launch no-go rules so live-data work can move from intake to reviewer rehearsal without adding another heavy room.
+
 ## V288 Next Operating Move
 
 V288 adds a compact first-screen operating path that links Live Data Contracts, Founder Invite Proof, and Receipt Replay into one launch sequence. The tracker now treats the next product move as proof-led execution: source dates and citations first, founder-qualified beta second, replayable backend receipts before scale.

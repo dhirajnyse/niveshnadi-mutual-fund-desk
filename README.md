@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v288 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v289 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -17,6 +17,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Calm Improvement Promise on the first screen states that every reviewed lesson should make the next screen quieter, improving wording and route order without using identity, private notes, or unreviewed actions.
 - Source-Date Beacon on the first screen keeps confidence quiet until source dates, citation path, TER, holdings, and riskometer checks are visible.
 - Next Operating Move on the first screen links live-data source contracts, founder invite proof, and receipt replay into one compact launch path before the paid beta widens.
+- Live Data Source Intake Pack inside the Source Intake Console turns each selected source into a copyable dossier with source identity, field contract, citation proof, validation runbook, release route, first blocker, and launch no-go rules before public claims can move.
 - Self-research command desk with search, category, risk, and sorting controls.
 - Quiet Conviction Meter on the first screen that keeps confidence calm until evidence, peer, and memo checks are visible.
 - Learning Loop Ledger on the first screen that shows how research actions become privacy-safe learning signals without turning demo data into advice.
@@ -109,7 +110,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Evidence Ledger that maps selected fund signals to AMFI, AMC factsheet, SID, KIM, portfolio disclosure, benchmark, riskometer, and TER source readiness.
 - Nadi Citation Binder that binds source date, citation path, extraction confidence, freshness rule, and launch boundary before live-looking research claims are trusted.
 - Nadi Source QA Queue that ranks every live-data source by launch readiness, stale-source pressure, citation visibility, extraction confidence, owner handoff, blockers, and next action.
-- Nadi Source Intake Console with a Production Source Import Gate that prepares official URLs, files, API feeds, field contracts, source dates, citation paths, parser versions, row counts, reviewer decisions, rollback notes, import blockers, release policy, validation checks, and privacy boundaries before a source enters live dry run or production import.
+- Nadi Source Intake Console with a Live Data Source Intake Pack and Production Source Import Gate that prepares official URLs, files, API feeds, field contracts, source dates, citation paths, parser versions, row counts, reviewer decisions, rollback notes, import blockers, release policy, validation checks, and privacy boundaries before a source enters live dry run or production import.
 - Nadi Live Data Contract Lab that maps each official or licensed source to field contract, source date, validation, freshness, citation, failure behavior, and privacy exclusions before live claims.
 - Nadi Source Dry-Run Board that rehearses each source contract against freshness, parser confidence, citation visibility, release surface, freeze rules, reviewer handoff, and rollback readiness.
 - Nadi Source Receipt Vault with Live Data Production Receipts that saves browser-local dry-run source receipts and wraps them into production envelopes covering source date, parser version, citation path, reviewer status, launch surfaces, replay sequence, blockers, and privacy boundaries.
@@ -142,7 +143,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Pricing and monetization preview with Free, Nadi Plus, Founder Circle, and Phase 2 Distributor Desk plans.
 - Phase 2 distributor roadmap for ARN/EUIN/PAN-based client management.
 - Security foundation with `SECURITY.md`, threat model, data classification, release checklist, and automated security audit.
-- Compact v288 product layout with default Simple View, Next Operating Move, Sticky Next Cue, Compact Simple Header, Live Step Sync, Clean Room Landing, Starter Chip Counts, Top Match Preview, Open Top Match, Search Rescue State, Search Feedback Strip, Starter Search Chips, Single Search First, Action First Fold, One Move Rail, Primary Next Action, Step Focus Marker, Simple Action Path, Simple Plan Priority, Simple Plan Visibility, Three-Step Plan, Do Next Cue, Decision Readiness, Investor Takeaway, One-Question Gate, Live Route Rail, Guided Selector, Review Step Focus, First Screen Focus, Calm Header, Anchor Landing Guard, smart navigation, trust/evidence rooms, review memory, paid beta/account readiness, and a trust-first retail membership model.
+- Compact v289 product layout with default Simple View, Next Operating Move, Live Data Source Intake Pack, Sticky Next Cue, Compact Simple Header, Live Step Sync, Clean Room Landing, Starter Chip Counts, Top Match Preview, Open Top Match, Search Rescue State, Search Feedback Strip, Starter Search Chips, Single Search First, Action First Fold, One Move Rail, Primary Next Action, Step Focus Marker, Simple Action Path, Simple Plan Priority, Simple Plan Visibility, Three-Step Plan, Do Next Cue, Decision Readiness, Investor Takeaway, One-Question Gate, Live Route Rail, Guided Selector, Review Step Focus, First Screen Focus, Calm Header, Anchor Landing Guard, smart navigation, trust/evidence rooms, review memory, paid beta/account readiness, and a trust-first retail membership model.
 
 ## Important compliance posture
 

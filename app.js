@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v289-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v289 Source Intake Pack";
+const DATA_VERSION = "20260627-v290-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v290 Reviewer Release Rehearsal";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,22 +1240,22 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Live data source intake pack",
-    status: "Shipping now",
-    route: "#source-intake",
-    detail: "Bind each selected source to a copyable intake pack with source identity, field contract, citation proof, parser validation, reviewer gate, release route, rollback rule, and no-go policy before any public claim looks live."
-  },
-  {
     label: "Reviewer release rehearsal",
-    status: "Next",
+    status: "Shipping now",
     route: "#reviewer-workbench",
-    detail: "Move the intake pack through reviewer decision, release binder, claim-release ledger, and rollback posture so source approval becomes a visible release ritual."
+    detail: "Move the live-data intake pack through reviewer decision, release binder, claim-release gate, rollback or correction route, and launch hard stops before any source-backed claim can move."
   },
   {
     label: "Backend source receipt job",
-    status: "Later",
+    status: "Next",
     route: "#backend-audit-receipts",
-    detail: "Turn approved intake packs into scheduled workers, saved import receipts, replay cases, correction receipts, and affected-surface recovery before source imports run unattended."
+    detail: "Turn approved reviewer release rehearsals into scheduled workers, saved import receipts, replay cases, correction receipts, and affected-surface recovery before source imports run unattended."
+  },
+  {
+    label: "Public recovery publish drill",
+    status: "Later",
+    route: "#correction-notice",
+    detail: "Rehearse public correction wording, freeze recovery, reviewer closeout, and Trust Center status after a source import changes or fails."
   }
 ];
 
@@ -9260,7 +9260,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v289</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v290</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -33112,12 +33112,102 @@ function reviewerWorkbenchConfig() {
   };
 }
 
+function reviewerReleaseRehearsal(config = reviewerWorkbenchConfig()) {
+  const intakeConfig = sourceIntakeConfig();
+  const productionGate = sourceIntakeProductionGate(intakeConfig);
+  const intakePack = sourceIntakePack(intakeConfig, productionGate);
+  const previewDecision = reviewerDecisionSnapshotFromConfig(config);
+  const surfaceValue = reviewerBinderSurfaceValue(previewDecision);
+  const surfaceProfile = claimReleaseSurfaceProfile(surfaceValue);
+  const evidenceValue = reviewerBinderEvidenceValue(previewDecision);
+  const reviewerValue = reviewerBinderReviewerValue(previewDecision);
+  const scopeValue = previewDecision.action === "Approve for release gate" ? "selected-fund" : "preview";
+  const rollbackValue = previewDecision.action === "Approve for release gate" ? "ready" : previewDecision.action === "Hold in preview" ? "draft" : "missing";
+  const sourceScore = previewDecision.source?.score || intakePack.readiness;
+  const surfaceScore = previewDecision.surface?.score || 70;
+  const binderScore = Math.round(clampNumber(
+    previewDecision.score * 0.32 +
+      previewDecision.evidenceScore * 0.22 +
+      sourceScore * 0.16 +
+      surfaceScore * 0.14 +
+      intakePack.readiness * 0.16,
+    18,
+    96
+  ));
+  const claimScore = Math.round(clampNumber(
+    binderScore * 0.32 +
+      productionGate.productionScore * 0.22 +
+      reviewerWorkbenchEvidenceScore(config.evidence) * 0.18 +
+      previewDecision.score * 0.16 +
+      (rollbackValue === "ready" ? 90 : rollbackValue === "draft" ? 62 : 28) * 0.12,
+    18,
+    96
+  ));
+  const hardStops = [
+    ...(intakePack.status === "Pack blocked before launch" ? ["source intake pack is blocked before launch"] : []),
+    ...(productionGate.status !== "Production import ready" ? ["source import stays reviewer-controlled until receipt proof exists"] : []),
+    ...(previewDecision.action !== "Approve for release gate" ? [`reviewer posture is ${previewDecision.action.toLowerCase()}`] : []),
+    ...(config.evidence === "fast" ? ["fast triage cannot publish without standard or strict evidence lock"] : []),
+    ...(rollbackValue !== "ready" ? ["rollback note is not ready"] : []),
+    ...(previewDecision.evidenceScore < 70 ? ["evidence lock below release comfort"] : [])
+  ];
+  const rehearsalScore = Math.round(clampNumber(
+    intakePack.readiness * 0.22 +
+      productionGate.productionScore * 0.18 +
+      previewDecision.score * 0.22 +
+      binderScore * 0.2 +
+      claimScore * 0.18,
+    18,
+    96
+  ));
+  const status = hardStops.length
+    ? rehearsalScore >= 68
+      ? "Rehearsal ready, public release held"
+      : "Rehearsal blocked before release"
+    : "Ready to bind and release";
+  const tone = status === "Ready to bind and release" ? "ready" : status.includes("blocked") ? "caution" : "watch";
+  const rehearsalId = ["NN", "REVIEWER", "REHEARSAL", intakeConfig.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase(), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const fallbackRoute = previewDecision.action === "Correction review"
+    ? "#correction-notice"
+    : previewDecision.action === "Freeze and fix"
+      ? "#claim-rollback"
+      : "#reviewer-release-binder";
+  const lanes = [
+    { label: "01 Intake pack", title: intakePack.status, value: `${intakePack.readiness}/100`, detail: `Pack ${intakePack.packId}; ${productionGate.status}.`, route: "#source-intake", routeLabel: "Open pack", tone: intakePack.tone },
+    { label: "02 Reviewer decision", title: previewDecision.action, value: `${previewDecision.score}/100`, detail: previewDecision.handoff, route: "#reviewer-decision-ledger", routeLabel: "Save review", tone: previewDecision.tone },
+    { label: "03 Release binder", title: "Bind source and surface", value: `${binderScore}/100`, detail: `Surface: ${surfaceProfile.label}. Evidence: ${claimReleaseEvidenceLabel(evidenceValue)}.`, route: "#reviewer-release-binder", routeLabel: "Open binder", tone: binderScore >= 78 ? "ready" : binderScore >= 58 ? "watch" : "caution" },
+    { label: "04 Claim release", title: claimReleaseReviewerLabel(reviewerValue), value: `${claimScore}/100`, detail: `${claimReleaseScopeLabel(scopeValue)}; ${surfaceProfile.question}`, route: "#claim-release", routeLabel: "Open release", tone: claimScore >= 84 && !hardStops.length ? "ready" : claimScore >= 62 ? "watch" : "caution" },
+    { label: "05 Rollback proof", title: claimReleaseRollbackLabel(rollbackValue), value: hardStops.length ? "Hold" : "Ready", detail: hardStops[0] || "Rollback note, reviewer posture, and public surface are aligned for release.", route: fallbackRoute, routeLabel: "Open fallback", tone: hardStops.length ? "caution" : "ready" }
+  ];
+  return {
+    binderScore,
+    claimScore,
+    evidenceValue,
+    hardStops,
+    intakeConfig,
+    intakePack,
+    lanes,
+    previewDecision,
+    productionGate,
+    rehearsalId,
+    rehearsalScore,
+    reviewerValue,
+    rollbackValue,
+    scopeValue,
+    status,
+    surfaceProfile,
+    surfaceValue,
+    tone
+  };
+}
+
 function renderReviewerWorkbench(event) {
   if (event) event.preventDefault();
   if (!els.reviewerWorkbenchOutput || !els.reviewerWorkbenchSummary) return;
   const config = reviewerWorkbenchConfig();
   const task = config.task;
   const decision = config.decision;
+  const rehearsal = reviewerReleaseRehearsal(config);
   els.reviewerWorkbenchSummary.textContent = `${decision.score}/100 | ${decision.action}`;
   els.reviewerWorkbenchOutput.innerHTML = `
     <div class="reviewer-workbench-hero ${escapeHtml(decision.tone)}">
@@ -33136,6 +33226,43 @@ function renderReviewerWorkbench(event) {
       <article><span>Reviewer action</span><strong>${escapeHtml(decision.action)}</strong><p>${escapeHtml(reviewerWorkbenchPostureLabel(config.posture))}</p></article>
       <article><span>Evidence lock</span><strong>${reviewerWorkbenchEvidenceScore(config.evidence)}/100</strong><p>${escapeHtml(reviewerWorkbenchEvidenceLabel(config.evidence))}</p></article>
       <article><span>Surface mix</span><strong>${config.releaseCount}/${config.previewCount}/${config.frozenCount}</strong><p>Release, preview, and freeze items in the mapped set.</p></article>
+    </div>
+    <div class="reviewer-release-rehearsal ${escapeHtml(rehearsal.tone)}">
+      <div class="reviewer-rehearsal-head">
+        <div>
+          <span>Reviewer release rehearsal</span>
+          <h3>${escapeHtml(rehearsal.status)}</h3>
+          <p>Rehearsal ${escapeHtml(rehearsal.rehearsalId)} connects the live data intake pack to reviewer decision, release binder, claim release, and rollback or correction route before public claims move.</p>
+        </div>
+        <div class="reviewer-rehearsal-score" style="--score:${rehearsal.rehearsalScore}">
+          <b>${rehearsal.rehearsalScore}</b>
+          <span>Run</span>
+        </div>
+      </div>
+      <div class="reviewer-rehearsal-lane-grid">
+        ${rehearsal.lanes.map((lane) => `
+          <article class="reviewer-rehearsal-lane ${escapeHtml(lane.tone)}">
+            <span>${escapeHtml(lane.label)}</span>
+            <strong>${escapeHtml(lane.title)}</strong>
+            <p><b>${escapeHtml(lane.value)}</b> ${escapeHtml(lane.detail)}</p>
+            <button class="text-button reviewer-rehearsal-route" type="button" data-build-route="${escapeHtml(lane.route)}">${escapeHtml(lane.routeLabel)}</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="reviewer-rehearsal-foot">
+        <article>
+          <span>Release surface</span>
+          <strong>${escapeHtml(rehearsal.surfaceProfile.label)}</strong>
+          <p>${escapeHtml(rehearsal.surfaceProfile.question)}</p>
+        </article>
+        <article class="${escapeHtml(rehearsal.hardStops.length ? "caution" : "ready")}">
+          <span>Launch hard stops</span>
+          <strong>${rehearsal.hardStops.length || "None"}</strong>
+          <ul>
+            ${(rehearsal.hardStops.length ? rehearsal.hardStops : ["Source pack, reviewer posture, release binder, claim gate, and rollback proof align for this rehearsal."]).map((stop) => `<li>${escapeHtml(stop)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="reviewer-workbench-focus">
       <article>
@@ -33177,6 +33304,39 @@ function renderReviewerWorkbench(event) {
       </article>
     </div>
   `;
+}
+
+function makeReviewerReleaseRehearsalBrief() {
+  const config = reviewerWorkbenchConfig();
+  const rehearsal = reviewerReleaseRehearsal(config);
+  return [
+    "# NiveshNadi Reviewer Release Rehearsal",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Rehearsal ID: ${rehearsal.rehearsalId}`,
+    `Status: ${rehearsal.status}`,
+    `Rehearsal score: ${rehearsal.rehearsalScore}/100`,
+    `Source family: ${rehearsal.intakeConfig.pipeline.title}`,
+    `Intake pack: ${rehearsal.intakePack.packId} | ${rehearsal.intakePack.status} | ${rehearsal.intakePack.readiness}/100`,
+    `Production import gate: ${rehearsal.productionGate.status} | ${rehearsal.productionGate.productionScore}/100`,
+    `Reviewer action: ${rehearsal.previewDecision.action} | ${rehearsal.previewDecision.score}/100`,
+    `Mapped surface: ${rehearsal.surfaceProfile.label}`,
+    `Claim Release Gate evidence: ${claimReleaseEvidenceLabel(rehearsal.evidenceValue)}`,
+    `Claim Release Gate reviewer: ${claimReleaseReviewerLabel(rehearsal.reviewerValue)}`,
+    `Claim Release Gate scope: ${claimReleaseScopeLabel(rehearsal.scopeValue)}`,
+    `Claim Release Gate rollback: ${claimReleaseRollbackLabel(rehearsal.rollbackValue)}`,
+    "",
+    "## Rehearsal lanes",
+    ...rehearsal.lanes.map((lane) => `- ${lane.label}: ${lane.title} | ${lane.value} | ${lane.detail} | route ${lane.route}`),
+    "",
+    "## Launch hard stops",
+    ...(rehearsal.hardStops.length ? rehearsal.hardStops.map((stop) => `- ${stop}`) : ["- No hard stop in this rehearsal. Bind release gate and save release receipt before public movement."]),
+    "",
+    "## Reviewer handoff",
+    rehearsal.previewDecision.handoff,
+    "",
+    "## Privacy boundary",
+    "Reviewer Release Rehearsal handles product claim metadata only. It excludes PAN, folio, CAS, bank data, account credentials, private investor notes, contact data, and distributor client records."
+  ].join("\n");
 }
 
 function makeReviewerWorkbenchBrief() {
@@ -33291,6 +33451,7 @@ function saveCurrentReviewerDecision() {
   const snapshot = reviewerDecisionSnapshotFromConfig();
   const entries = [snapshot, ...loadReviewerDecisionLedger()].slice(0, 30);
   saveReviewerDecisionLedger(entries);
+  renderReviewerWorkbench();
   renderReviewerDecisionLedger();
   renderReviewerReleaseBinder();
   renderResearchMemory();
@@ -33300,6 +33461,7 @@ function saveCurrentReviewerDecision() {
 
 function clearReviewerDecisionLedger() {
   saveReviewerDecisionLedger([]);
+  renderReviewerWorkbench();
   renderReviewerDecisionLedger();
   renderReviewerReleaseBinder();
   renderResearchMemory();
@@ -46676,6 +46838,7 @@ function bindEvents() {
   els.saveReviewerWorkbenchDecision?.addEventListener("click", saveCurrentReviewerDecision);
   els.saveReviewerDecision?.addEventListener("click", saveCurrentReviewerDecision);
   els.openReviewerReleaseGate?.addEventListener("click", openReviewerReleaseGate);
+  els.copyReviewerReleaseRehearsal?.addEventListener("click", () => copyText(makeReviewerReleaseRehearsalBrief()));
   els.copyReviewerWorkbench?.addEventListener("click", () => copyText(makeReviewerWorkbenchBrief()));
   els.copyReviewerDecisionLedger?.addEventListener("click", () => copyText(makeReviewerDecisionLedgerBrief()));
   els.clearReviewerDecisionLedger?.addEventListener("click", clearReviewerDecisionLedger);
@@ -48439,6 +48602,7 @@ function cacheElements() {
     reviewerWorkbenchOutput: qs("#reviewerWorkbenchOutput"),
     saveReviewerWorkbenchDecision: qs("#saveReviewerWorkbenchDecision"),
     openReviewerReleaseGate: qs("#openReviewerReleaseGate"),
+    copyReviewerReleaseRehearsal: qs("#copyReviewerReleaseRehearsal"),
     copyReviewerWorkbench: qs("#copyReviewerWorkbench"),
     reviewerDecisionSummary: qs("#reviewerDecisionSummary"),
     reviewerDecisionOutput: qs("#reviewerDecisionOutput"),

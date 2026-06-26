@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V290 Reviewer Release Rehearsal
+
+V290 adds a compact Reviewer Release Rehearsal inside the Reviewer Workbench. It connects the Source Intake Pack to reviewer decision, release binder, claim-release gate, rollback or correction route, and launch hard stops so a source-backed claim has a visible release ritual before it can move.
+
 ## V289 Source Intake Pack
 
 V289 adds a copyable Live Data Source Intake Pack inside the Source Intake Console. The pack turns a selected source into source identity, field contract, citation proof, validation runbook, release route, first blocker, and launch no-go rules so live-data work can move from intake to reviewer rehearsal without adding another heavy room.

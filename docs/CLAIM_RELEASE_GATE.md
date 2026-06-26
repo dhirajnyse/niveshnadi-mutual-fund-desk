@@ -4,6 +4,8 @@ The Nadi Claim Release Gate is the final trust layer before refreshed source evi
 
 The gate supports screener scores, cost and risk labels, Portfolio X-Ray and holdings, document explanations, receipts, decision packs, dossiers, watchlist triggers, and review prompts. Each run creates a release posture: release selected claim, preview release, reviewer queue, do not release, or keep claims frozen. A broad rollout needs stronger review posture than a single-fund preview because a small data error can create repeated public misunderstanding across many screens.
 
+V290 adds a Reviewer Release Rehearsal before this gate. The rehearsal makes the pre-release chain visible: source intake pack, reviewer decision, release binder, claim-release fields, rollback proof, and launch hard stops. The Claim Release Gate should only receive a source-backed claim after that chain is clear or intentionally held in preview.
+
 The release note should capture old claim, new claim, source family, source date, citation path, evidence status, reviewer status, rollout scope, rollback note, affected surfaces, and gate flags. The tool is intentionally research-only. It does not approve an investment decision, execute a transaction, recommend a fund, or personalize advice.
 
 The privacy boundary is strict. The Claim Release Gate must evaluate product claims and official or licensed source evidence only. It must not require PAN, folio number, CAS data, bank details, account credentials, distributor client files, contact data, or private investor notes.

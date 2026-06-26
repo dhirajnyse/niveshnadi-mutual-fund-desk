@@ -22569,6 +22569,166 @@ body.simple-mode .quiet-fund-shelf {
   background: rgba(255, 250, 240, 0.9);
 }
 
+.reviewer-release-rehearsal {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(31, 78, 121, 0.28);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(234, 242, 251, 0.96), rgba(255, 250, 240, 0.82));
+}
+
+.reviewer-release-rehearsal.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.reviewer-release-rehearsal.watch {
+  border-color: rgba(225, 160, 55, 0.4);
+}
+
+.reviewer-release-rehearsal.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.reviewer-rehearsal-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 14px;
+  align-items: center;
+}
+
+.reviewer-rehearsal-head h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.12;
+}
+
+.reviewer-rehearsal-head p,
+.reviewer-rehearsal-lane p,
+.reviewer-rehearsal-foot p,
+.reviewer-rehearsal-foot li {
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.reviewer-rehearsal-score {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  display: grid;
+  grid-template-rows: 1fr auto auto 1fr;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  color: #ffffff;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  text-align: center;
+}
+
+.reviewer-rehearsal-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.reviewer-rehearsal-score b,
+.reviewer-rehearsal-score span {
+  position: relative;
+}
+
+.reviewer-rehearsal-score b {
+  grid-row: 2;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.reviewer-rehearsal-score span {
+  grid-row: 3;
+  margin-top: 3px;
+  color: #dce7ed;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.reviewer-rehearsal-lane-grid,
+.reviewer-rehearsal-foot {
+  display: grid;
+  gap: 10px;
+}
+
+.reviewer-rehearsal-lane-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.reviewer-rehearsal-foot {
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+}
+
+.reviewer-rehearsal-lane,
+.reviewer-rehearsal-foot article {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.reviewer-rehearsal-lane.ready,
+.reviewer-rehearsal-foot article.ready {
+  border-color: rgba(15, 124, 107, 0.32);
+}
+
+.reviewer-rehearsal-lane.watch {
+  border-color: rgba(225, 160, 55, 0.36);
+}
+
+.reviewer-rehearsal-lane.caution,
+.reviewer-rehearsal-foot article.caution {
+  border-color: rgba(193, 75, 105, 0.32);
+}
+
+.reviewer-release-rehearsal span,
+.reviewer-rehearsal-lane span,
+.reviewer-rehearsal-foot span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.reviewer-rehearsal-lane strong,
+.reviewer-rehearsal-foot strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+}
+
+.reviewer-rehearsal-lane p b {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ink);
+}
+
+.reviewer-rehearsal-route {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.reviewer-rehearsal-foot ul {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
 .reviewer-decision-output {
   display: grid;
   gap: 12px;
@@ -33654,6 +33814,8 @@ body.simple-mode .quiet-fund-shelf {
   .reviewer-workbench-metric-grid,
   .reviewer-workbench-focus,
   .reviewer-workbench-grid,
+  .reviewer-rehearsal-lane-grid,
+  .reviewer-rehearsal-foot,
   .reviewer-decision-metric-grid,
   .reviewer-decision-grid,
   .reviewer-decision-panel-grid,
@@ -34426,6 +34588,8 @@ body.simple-mode .quiet-fund-shelf {
   .reviewer-workbench-metric-grid,
   .reviewer-workbench-focus,
   .reviewer-workbench-grid,
+  .reviewer-rehearsal-lane-grid,
+  .reviewer-rehearsal-foot,
   .reviewer-decision-metric-grid,
   .reviewer-decision-grid,
   .reviewer-decision-panel-grid,
@@ -34746,6 +34910,7 @@ body.simple-mode .quiet-fund-shelf {
   .claim-surface-hero,
   .surface-queue-hero,
   .reviewer-workbench-hero,
+  .reviewer-rehearsal-head,
   .reviewer-decision-empty,
   .reviewer-decision-hero,
   .reviewer-release-hero,
@@ -34813,6 +34978,7 @@ body.simple-mode .quiet-fund-shelf {
   .claim-surface-score,
   .surface-queue-score,
   .reviewer-workbench-score,
+  .reviewer-rehearsal-score,
   .reviewer-decision-score,
   .reviewer-release-score,
   .backend-audit-score,

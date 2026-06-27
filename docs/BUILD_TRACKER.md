@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V296 Backend CI Smoke Harness
+
+V296 adds Backend CI Smoke Harness inside Backend Audit Receipts. It turns implementation handoff and public recovery publish evidence into repeatable release-gate fixtures for scheduler, parser, receipt persistence, alert delivery, failed-run replay, and public recovery closeout, with fixture IDs, command refs, assertion lists, blocked-data checks, receipt fields, no-go rules, and copyable smoke blockers.
+
 ## V295 Public Recovery Publish Drill
 
 V295 adds Public Recovery Publish Drill inside Backend Audit Receipts. It rehearses investor-visible correction wording, Trust Center state, support-safe explanation, freeze or resume proof, reviewer closeout, monitoring window, public no-go rules, and investor-visible recovery receipts before a recovery, correction, hold, rollback, or resume state can be shown publicly.

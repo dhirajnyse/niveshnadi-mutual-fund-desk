@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v295 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v296 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -24,6 +24,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Worker Ticket Closeout Drill inside Backend Audit Receipts rehearses whether each scheduled worker ticket can close with acceptance evidence, failed-run replay, alert delivery proof, reviewer sign-off, rollback evidence, recovery queue state, launch no-go rules, and closeout receipt fields.
 - Backend Implementation Handoff Pack inside Backend Audit Receipts converts worker closeout evidence into engineer-ready API contracts, endpoint notes, payload fields, acceptance tests, owner rules, release dependencies, blocked-data scans, and launch blockers.
 - Public Recovery Publish Drill inside Backend Audit Receipts rehearses investor-visible correction wording, Trust Center state, support-safe explanation, freeze/resume proof, reviewer closeout, monitoring window, public no-go rules, and investor-visible recovery receipts.
+- Backend CI Smoke Harness inside Backend Audit Receipts turns implementation handoff and public publish drill evidence into repeatable smoke fixtures for scheduler, parser, receipt persistence, alert delivery, failed-run replay, and public recovery closeout.
 - Self-research command desk with search, category, risk, and sorting controls.
 - Quiet Conviction Meter on the first screen that keeps confidence calm until evidence, peer, and memo checks are visible.
 - Learning Loop Ledger on the first screen that shows how research actions become privacy-safe learning signals without turning demo data into advice.

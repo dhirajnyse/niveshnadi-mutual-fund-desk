@@ -16,6 +16,8 @@ V294 carries those closeout fields into Backend Implementation Handoff Pack. Sou
 
 V295 carries the same source proof into Public Recovery Publish Drill. Source date, citation path, correction receipt, old wording, corrected wording, monitor window, and investor-visible recovery receipt must agree before a public correction, hold, rollback, or resume state is shown.
 
+V296 uses those intake fields inside Backend CI Smoke Harness. Scheduler, parser, receipt persistence, alert delivery, failed-run replay, and public recovery closeout fixtures now assert source job ID, worker ID, parser/schema versions, accepted and rejected counts, source receipt IDs, replay cursor, and blocked-data attestation before the backend gate can pass.
+
 V119 adds the Production Source Import Gate inside the console. The gate creates a stable import gate ID, combines intake score with live data contract strength and saved source receipt proof, then decides whether the source is production-import ready, reviewer-controlled, or blocked. It also lists the required production controls: source URL or file hash, source date, schema version, parser version, accepted and rejected row counts, citation path, reviewer decision, rollback note, job sequence, release policy, and import blockers.
 
 The gate is intentionally strict. A source can be good enough for a demo dry run but still blocked from production import if it has no saved source receipt, no visible citation path, stale source date, weak field contract, parser QA gap, manual-only import path, or missing reviewer release posture. This keeps public cards, scores, X-Ray outputs, dossiers, and decision packs from silently looking live before the audit trail exists.

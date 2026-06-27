@@ -25457,6 +25457,195 @@ body.simple-mode .quiet-fund-shelf {
   padding-left: 18px;
 }
 
+.ci-smoke-harness {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(31, 78, 121, 0.28);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(245, 249, 252, 0.98), rgba(238, 247, 243, 0.92));
+}
+
+.ci-smoke-harness.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.98), rgba(245, 249, 252, 0.96));
+}
+
+.ci-smoke-harness.watch {
+  border-color: rgba(225, 160, 55, 0.44);
+}
+
+.ci-smoke-harness.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.88), rgba(245, 249, 252, 0.94));
+}
+
+.ci-smoke-harness p,
+.ci-smoke-harness li,
+.ci-smoke-harness small {
+  color: var(--muted);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.ci-smoke-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 12px;
+  align-items: center;
+}
+
+.ci-smoke-head span,
+.ci-smoke-metric-grid span,
+.ci-smoke-fixture-grid span {
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.ci-smoke-head h3 {
+  margin: 3px 0 5px;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.14;
+}
+
+.ci-smoke-head p {
+  margin: 0;
+}
+
+.ci-smoke-score {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--blue) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.ci-smoke-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.ci-smoke-score strong,
+.ci-smoke-score span {
+  position: relative;
+}
+
+.ci-smoke-score strong {
+  color: #ffffff;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.ci-smoke-score span {
+  color: #dce7ed;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.ci-smoke-metric-grid,
+.ci-smoke-fixture-grid,
+.ci-smoke-two {
+  display: grid;
+  gap: 10px;
+}
+
+.ci-smoke-metric-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.ci-smoke-fixture-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ci-smoke-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ci-smoke-metric-grid,
+.ci-smoke-fixture-grid,
+.ci-smoke-two,
+.ci-smoke-metric-grid article,
+.ci-smoke-fixture-grid article,
+.ci-smoke-two article {
+  min-width: 0;
+}
+
+.ci-smoke-metric-grid article,
+.ci-smoke-fixture-grid article,
+.ci-smoke-two article {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.ci-smoke-fixture-grid article.ready,
+.ci-smoke-two article.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+}
+
+.ci-smoke-fixture-grid article.watch,
+.ci-smoke-two article.watch {
+  border-color: rgba(225, 160, 55, 0.36);
+}
+
+.ci-smoke-fixture-grid article.caution,
+.ci-smoke-two article.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+}
+
+.ci-smoke-metric-grid strong,
+.ci-smoke-fixture-grid strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.ci-smoke-two h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.ci-smoke-fixture-grid small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.ci-smoke-fixture-grid small strong {
+  color: var(--ink);
+}
+
+.ci-smoke-route {
+  margin-top: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.ci-smoke-two ul,
+.ci-smoke-two ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
 .source-incident-board {
   display: grid;
   gap: 10px;
@@ -35777,6 +35966,7 @@ body.simple-mode .quiet-fund-shelf {
   .worker-closeout-score,
   .implementation-handoff-score,
   .public-publish-score,
+  .ci-smoke-score,
   .source-job-score,
   .source-worker-score,
   .source-alert-score,
@@ -35987,7 +36177,10 @@ body.simple-mode .quiet-fund-shelf {
   .public-publish-metric-grid,
   .public-publish-copy-grid,
   .public-publish-lane-grid,
-  .public-publish-two {
+  .public-publish-two,
+  .ci-smoke-metric-grid,
+  .ci-smoke-fixture-grid,
+  .ci-smoke-two {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -36012,12 +36205,17 @@ body.simple-mode .quiet-fund-shelf {
   .public-publish-copy-grid,
   .public-publish-lane-grid,
   .public-publish-two,
-  .public-publish-head {
+  .public-publish-head,
+  .ci-smoke-metric-grid,
+  .ci-smoke-fixture-grid,
+  .ci-smoke-two,
+  .ci-smoke-head {
     grid-template-columns: 1fr;
   }
 
   .correction-publish-score,
-  .public-publish-score {
+  .public-publish-score,
+  .ci-smoke-score {
     justify-self: start;
   }
 }

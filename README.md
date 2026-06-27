@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v300 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v301 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -43,7 +43,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Nadi Cohort Receipt Backend that turns founder invite, activation, entitlement, support, pause, refund, privacy, and expansion decisions into backend-owned receipt streams with replay rules and no sensitive investor identifiers.
 - Nadi Cohort Decision Replay that reheats those receipts through activation, duplicate invite, support repair, refund rollback, privacy closeout, and expansion-freeze scenarios before the paid cohort can widen.
 - Nadi Paid Cohort Expansion Gate that converts replay-safe receipts, payment/refund proof, account readiness, support capacity, privacy closeout, compliance wording, live-source posture, and the Phase 2 firewall into a founder go/no-go decision before paid beta grows.
-- Nadi Founder Beta Operating Room that turns the paid cohort gate into weekly owner lanes, invite windows, support capacity, freeze rules, payment drills, privacy/compliance closeout, and a copyable founder operating brief.
+- Nadi Founder Beta Operating Room with Founder Beta War-Room Digest that turns the paid cohort gate into weekly owner lanes, invite windows, support capacity, freeze rules, payment drills, privacy/compliance closeout, deploy posture, incident command, Trust Center proof, beta continuation notes, and copyable founder operating and war-room briefs.
 - Nadi Paid Beta Support Ledger that turns the first paid-user cases into support memory across failed payments, refunds, invoices, entitlement repair, account recovery, research corrections, redaction rules, case closeout, and expansion blockers before the beta cohort widens.
 - Nadi Launch Readiness Board with a Paid Beta Production Gate that turns launch readiness into production blockers, cohort limits, required receipts, release sequence, and a founder go/no-go verdict across live data, source QA, accounts, payments, compliance, security, support, and Phase 2 boundaries.
 - Nadi Payment Readiness Lab that turns Rs. 100/month and Rs. 1,000/year retail pricing into plan, checkout, entitlement, invoice, refund, webhook, support, and reconciliation gates.

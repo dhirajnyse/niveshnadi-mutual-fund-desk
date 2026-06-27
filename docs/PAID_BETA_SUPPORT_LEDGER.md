@@ -4,6 +4,8 @@ The Paid Beta Support Ledger is the V140 support-control layer after the Founder
 
 The ledger is intentionally not a CRM, distributor desk, investment-advice log, or payment gateway. It is a product-operating memory for a very small founder beta. Every case should have a type, owner, due time, support-safe receipt fields, user notice posture, and closeout reason before the next paid cohort is invited.
 
+V301 connects support capacity to the Founder Beta War-Room Digest. The founder review packet now treats support freeze, redacted case closeout, support-safe wording, and first-case capacity as no-go inputs before new invites, backend deploy posture, or beta continuation can move.
+
 V149 connects this support ledger to Account Vault support repair joins. A repair case should point to the entitlement receipt, vault object, audit field, reviewer role, rollback reference, and closeout reason before any saved pack, alert, dossier, export, refresh quota, or support case state changes.
 
 ## What It Controls

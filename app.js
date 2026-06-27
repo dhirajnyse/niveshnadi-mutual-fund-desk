@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v300-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v300 Backend Deploy Runbook Packet";
+const DATA_VERSION = "20260627-v301-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v301 Founder Beta War-Room Digest";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,22 +1240,22 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Backend deploy runbook packet",
-    status: "Shipping now",
-    route: "#backend-audit-receipts",
-    detail: "Package smoke gates and incident command proof into deploy commands, environment checks, rollback contacts, release-note evidence, and hard deployment no-go rules."
-  },
-  {
     label: "Founder beta war-room digest",
-    status: "Next",
+    status: "Shipping now",
     route: "#founder-beta-operating-room",
-    detail: "Summarize deploy and incident command posture into founder weekly operating rhythm, invite decisions, support capacity, and beta continuation notes."
+    detail: "Summarize deploy and incident command posture into founder weekly operating rhythm, invite decisions, support capacity, Trust Center proof, and beta continuation notes."
   },
   {
     label: "Worker endpoint acceptance matrix",
-    status: "Later",
+    status: "Next",
     route: "#backend-ticket-factory",
-    detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, and production monitoring handoffs."
+    detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, monitoring handoffs, and production deploy closeout."
+  },
+  {
+    label: "Production provider deployment receipts",
+    status: "Later",
+    route: "#gateway-webhook",
+    detail: "Connect payment provider pilot proof to deployment receipts, webhook secrets, settlement checks, incident rollback, and support-owner evidence."
   }
 ];
 
@@ -9260,7 +9260,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v300</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v301</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -14103,11 +14103,238 @@ function founderBetaOperatingRoomConfig() {
   };
 }
 
+function founderBetaWarRoomDigest(ops = founderBetaOperatingRoomConfig()) {
+  const config = backendAuditConfig();
+  const sourceImportJobs = productionSourceImportJobs(config);
+  const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config);
+  const alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config);
+  const failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence);
+  const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
+  const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const workerCloseout = workerTicketCloseoutDrill(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract);
+  const implementationHandoff = backendImplementationHandoffPack(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract, workerCloseout);
+  const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
+  const paymentReplay = paymentReconciliationReplay(config);
+  const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
+  const publicPublishDrill = publicRecoveryPublishDrill(config, correctionPublish, recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, freezeAutomation);
+  const ciSmokeHarness = backendCiSmokeHarness(config, implementationHandoff, publicPublishDrill, workerContract, workerCloseout, sourceReceiptJob, recoveryQueue, correctionPublish, failedRunStore, alertDelivery, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenterConfig(), ops);
+  const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
+  const deployRunbook = backendDeployRunbookPacket(config, workerSmokeDashboard, betaIncidentLedger, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs, implementationHandoff, workerCloseout);
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const warRoomId = ["NN", "FOUNDER", "BETA", "WAR", "ROOM", sourceSlug, suffix].join("-").toUpperCase();
+  const digestId = ["NN", "FOUNDER", "BETA", "DIGEST", sourceSlug, suffix].join("-").toUpperCase();
+  const weeklyDecisionId = ["NN", "FOUNDER", "WEEKLY", "DECISION", sourceSlug, suffix].join("-").toUpperCase();
+  const supportCapacityId = ["NN", "FOUNDER", "SUPPORT", "CAPACITY", sourceSlug, suffix].join("-").toUpperCase();
+  const continuationNoteId = ["NN", "BETA", "CONTINUATION", "NOTE", sourceSlug, suffix].join("-").toUpperCase();
+  const deployBlocked = deployRunbook.status === "Deploy packet blocked" || deployRunbook.blocked > 0;
+  const commandHold = betaIncidentLedger.status === "Beta command hold" || betaIncidentLedger.active > 0 || betaIncidentLedger.critical > 0;
+  const supportFrozen = ops.supportCapacity.toLowerCase().includes("freeze") || (ops.support?.score || 0) < 64;
+  const inviteFrozen = ops.posture.startsWith("Freeze") || ops.inviteWindow.toLowerCase().includes("freeze");
+  const readiness = clampNumber(Math.round(
+    ops.operatingScore * 0.22 +
+      deployRunbook.readiness * 0.22 +
+      betaIncidentLedger.readiness * 0.18 +
+      workerSmokeDashboard.readiness * 0.12 +
+      founderRecovery.readiness * 0.12 +
+      (ops.support?.score || 42) * 0.08 +
+      ciSmokeHarness.readiness * 0.06
+  ) - (deployBlocked ? 5 : 0) - (commandHold ? 4 : 0) - (supportFrozen ? 3 : 0), 12, 96);
+  const status = readiness >= 84 && !deployBlocked && !commandHold && !supportFrozen && !inviteFrozen
+    ? "Founder beta war-room clear"
+    : readiness >= 64
+      ? "Founder beta war-room review"
+      : "Founder beta war-room hold";
+  const tone = status === "Founder beta war-room clear" ? "ready" : status === "Founder beta war-room hold" ? "blocked" : "watch";
+  const decisions = [
+    {
+      label: "Invite decision",
+      owner: "Founder",
+      route: "#founder-beta-operating-room",
+      value: commandHold || deployBlocked || inviteFrozen ? "Hold new invites" : ops.inviteWindow,
+      detail: "Invite pacing follows deploy posture, incident command, support capacity, and Friday owner review.",
+      score: ops.operatingScore
+    },
+    {
+      label: "Support capacity",
+      owner: "Support Ops",
+      route: "#paid-beta-support-ledger",
+      value: supportFrozen ? "Support freeze" : ops.supportCapacity,
+      detail: ops.support?.status || "Support posture must stay redacted, receipt-led, and founder-reviewed.",
+      score: ops.support?.score || 42
+    },
+    {
+      label: "Deploy posture",
+      owner: "Release Ops",
+      route: "#backend-audit-receipts",
+      value: deployBlocked ? "No backend deploy" : deployRunbook.status,
+      detail: `${deployRunbook.ready} ready, ${deployRunbook.review} owner-check, ${deployRunbook.blocked} blocked deploy command${deployRunbook.commands.length === 1 ? "" : "s"}.`,
+      score: deployRunbook.readiness
+    },
+    {
+      label: "Incident command",
+      owner: "Founder Ops",
+      route: "#backend-audit-receipts",
+      value: commandHold ? "Command hold" : betaIncidentLedger.status,
+      detail: `${betaIncidentLedger.active} active, ${betaIncidentLedger.ownerCommand} owner command, ${betaIncidentLedger.closed} closed incident${betaIncidentLedger.incidents.length === 1 ? "" : "s"}.`,
+      score: betaIncidentLedger.readiness
+    },
+    {
+      label: "Beta continuation",
+      owner: "Founder + Trust",
+      route: "#trust-center",
+      value: commandHold || deployBlocked ? "Continue rehearsal only" : "Continue controlled beta",
+      detail: `Continuation gate ${betaIncidentLedger.betaContinuationGateId} and founder recovery ${founderRecovery.status}.`,
+      score: Math.round((betaIncidentLedger.readiness + founderRecovery.readiness) / 2)
+    },
+    {
+      label: "Friday decision",
+      owner: "Founder",
+      route: "#build-tracker",
+      value: status === "Founder beta war-room clear" ? "Review tiny wave" : "Hold or repair",
+      detail: `Weekly decision ${weeklyDecisionId} waits for deploy, incident, support, and Trust Center proof.`,
+      score: readiness
+    }
+  ].map((decision) => {
+    const score = clampNumber(decision.score, 12, 96);
+    return {
+      ...decision,
+      score,
+      tone: score >= 78 && !decision.value.toLowerCase().includes("hold") && !decision.value.toLowerCase().includes("freeze") && !decision.value.toLowerCase().includes("no backend") ? "ready" : score < 56 || decision.value.toLowerCase().includes("hold") || decision.value.toLowerCase().includes("freeze") || decision.value.toLowerCase().includes("no backend") ? "blocked" : "watch"
+    };
+  });
+  const operatingMoves = [
+    {
+      day: "Monday",
+      label: "Open founder digest",
+      owner: "Founder",
+      route: "#founder-beta-operating-room",
+      status: ops.posture,
+      proof: warRoomId,
+      detail: "Read invite window, support capacity, deploy posture, incident command, and continuation note before any outreach."
+    },
+    {
+      day: "Tuesday",
+      label: "Close deploy packet blockers",
+      owner: "Release Ops",
+      route: "#backend-audit-receipts",
+      status: deployRunbook.status,
+      proof: deployRunbook.runbookId,
+      detail: "Run only owner-reviewed deploy commands with env checks, rollback contacts, release notes, and no-private-data proof."
+    },
+    {
+      day: "Wednesday",
+      label: "Resolve incident command trail",
+      owner: "Founder Ops",
+      route: "#backend-audit-receipts",
+      status: betaIncidentLedger.status,
+      proof: betaIncidentLedger.commandLedgerId,
+      detail: "Close active command receipts or keep beta continuation in rehearsal-only mode."
+    },
+    {
+      day: "Thursday",
+      label: "Check support and Trust Center notes",
+      owner: "Support + Trust",
+      route: "#trust-center",
+      status: founderRecovery.status,
+      proof: founderRecovery.trustHistoryId,
+      detail: "Bind support-safe wording, monitor window, Trust Center history, and rollback evidence before Friday."
+    },
+    {
+      day: "Friday",
+      label: "Record continuation decision",
+      owner: "Founder",
+      route: "#build-tracker",
+      status,
+      proof: weeklyDecisionId,
+      detail: "Choose hold, repair, or tiny invite review only after deploy, incident, support, and trust proof agree."
+    }
+  ];
+  const founderNotes = [
+    `Founder note: ${status}. ${commandHold || deployBlocked ? "Keep the beta in rehearsal; do not widen invites." : "Review only the smallest invite wave after Friday proof."}`,
+    `Invite note: ${commandHold || deployBlocked || inviteFrozen ? "Hold new invites until deploy packet and incident command are clear." : ops.inviteWindow}`,
+    `Support note: ${supportFrozen ? "Support capacity is frozen; close cases before expansion." : `${ops.supportCapacity} with redacted, receipt-led replies.`}`,
+    `Deploy note: ${deployRunbook.status}; production gate ${deployRunbook.productionGateId}.`,
+    `Continuation note: ${continuationNoteId} links ${betaIncidentLedger.betaContinuationGateId}, ${deployRunbook.runbookId}, and ${founderRecovery.closeoutMemoId}.`
+  ];
+  const blockers = [...new Set([
+    ...deployRunbook.blockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 3),
+    ...betaIncidentLedger.blockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 3),
+    ...founderRecovery.blockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 2),
+    ...ops.laneBlockers.map((lane) => `${lane.owner}: ${lane.label}`).slice(0, 2),
+    ...(supportFrozen ? ["support capacity is frozen or below founder beta threshold"] : []),
+    "real founder outreach, support delivery, incident owners, deploy execution, and Trust Center publishing remain outside this static prototype"
+  ])];
+  const noGoRules = [
+    "No new founder beta invites if deploy packet is blocked, incident command is on hold, or support capacity is frozen.",
+    "No backend worker deploy if founder beta continuation, rollback contacts, release notes, or production gate proof is missing.",
+    "No public recovery or support message if Trust Center history, monitor window, reviewer closeout, and rollback evidence disagree.",
+    "No beta continuation if active command incidents lack owner closeout and support-safe wording.",
+    "No PAN, folio, CAS, bank data, credentials, contact data, private notes, transaction instructions, or distributor client records in founder beta notes."
+  ];
+  const metrics = [
+    { label: "War-room digest", value: warRoomId, detail: `${status}; ${readiness}/100 founder readiness.` },
+    { label: "Digest packet", value: digestId, detail: "Combines deploy, incident, support, invite, Trust Center, and Friday decision proof." },
+    { label: "Support capacity", value: supportCapacityId, detail: supportFrozen ? "Support capacity is frozen." : ops.supportCapacity },
+    { label: "Continuation note", value: continuationNoteId, detail: `${betaIncidentLedger.status}; ${deployRunbook.status}.` }
+  ];
+  const receiptFields = [
+    "founder_beta_war_room_id",
+    "founder_beta_digest_id",
+    "weekly_decision_id",
+    "support_capacity_id",
+    "continuation_note_id",
+    "backend_deploy_runbook_id",
+    "beta_incident_command_ledger_id",
+    "beta_continuation_gate_id",
+    "founder_recovery_closeout_id",
+    "invite_decision",
+    "support_capacity",
+    "deploy_posture",
+    "incident_posture",
+    "trust_center_history_id",
+    "no_private_data_attestation",
+    "decided_at"
+  ];
+
+  return {
+    betaIncidentLedger,
+    blockers,
+    continuationNoteId,
+    decisions,
+    deployRunbook,
+    digestId,
+    founderNotes,
+    founderRecovery,
+    metrics,
+    noGoRules,
+    operatingMoves,
+    readiness,
+    receiptFields,
+    status,
+    supportCapacityId,
+    tone,
+    warRoomId,
+    weeklyDecisionId,
+    workerSmokeDashboard
+  };
+}
+
 function renderFounderBetaOperatingRoom() {
   if (!els.founderBetaOpsOutput) return;
   const ops = founderBetaOperatingRoomConfig();
+  const warRoom = founderBetaWarRoomDigest(ops);
   if (els.founderBetaOpsSummary) {
-    els.founderBetaOpsSummary.textContent = `${ops.operatingScore}/100 | ${ops.posture}`;
+    els.founderBetaOpsSummary.textContent = `${warRoom.readiness}/100 | ${warRoom.status}`;
   }
   els.founderBetaOpsOutput.innerHTML = `
     <div class="founder-beta-ops-hero ${ops.posture.startsWith("Open") ? "ready" : ops.posture.startsWith("Founder") ? "watch" : "blocked"}">
@@ -14129,6 +14356,76 @@ function renderFounderBetaOperatingRoom() {
           <p>${escapeHtml(item.detail)}</p>
         </article>
       `).join("")}
+    </div>
+    <div class="founder-war-room ${escapeHtml(warRoom.tone)}">
+      <div class="founder-war-room-head">
+        <div>
+          <span>V301 founder war-room digest</span>
+          <h3>${escapeHtml(warRoom.status)}</h3>
+          <p>Digest ${escapeHtml(warRoom.digestId)} rolls the backend deploy runbook, beta incident command ledger, support capacity, invite posture, Trust Center proof, and Friday continuation decision into one founder review packet.</p>
+        </div>
+        <div class="founder-war-room-score" style="--score:${warRoom.readiness}">
+          <strong>${warRoom.readiness}</strong>
+          <span>War</span>
+        </div>
+      </div>
+      <div class="founder-war-room-metric-grid">
+        ${warRoom.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-war-room-decision-grid">
+        ${warRoom.decisions.map((decision) => `
+          <article class="${escapeHtml(decision.tone)}">
+            <div class="founder-war-room-card-head">
+              <div>
+                <span>${escapeHtml(decision.label)} | ${escapeHtml(decision.owner)}</span>
+                <strong>${escapeHtml(decision.value)}</strong>
+              </div>
+              <b>${decision.score}</b>
+            </div>
+            <p>${escapeHtml(decision.detail)}</p>
+            <button class="text-button" type="button" data-founder-beta-ops-route="${escapeHtml(decision.route)}">Open proof</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-war-room-action-grid">
+        ${warRoom.operatingMoves.map((move) => `
+          <article>
+            <span>${escapeHtml(move.day)} | ${escapeHtml(move.owner)}</span>
+            <strong>${escapeHtml(move.label)}</strong>
+            <p>${escapeHtml(move.detail)}</p>
+            <small>${escapeHtml(move.status)} | ${escapeHtml(move.proof)}</small>
+            <button class="text-button" type="button" data-founder-beta-ops-route="${escapeHtml(move.route)}">Open move</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-war-room-two">
+        <article>
+          <span>Founder notes</span>
+          <strong>${escapeHtml(warRoom.continuationNoteId)}</strong>
+          <ul>${warRoom.founderNotes.map((note) => `<li>${escapeHtml(note)}</li>`).join("")}</ul>
+        </article>
+        <article class="${warRoom.blockers.length > 1 ? "blocked" : "ready"}">
+          <span>War-room blockers</span>
+          <strong>${warRoom.blockers.length} blocker${warRoom.blockers.length === 1 ? "" : "s"}</strong>
+          <ul>${warRoom.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>No-go rules</span>
+          <strong>No shortcut around proof</strong>
+          <ul>${warRoom.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <strong>${warRoom.receiptFields.length} fields for backend handoff</strong>
+          <ul>${warRoom.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}</ul>
+        </article>
+      </div>
     </div>
     <div class="founder-beta-ops-lane-grid">
       ${ops.lanes.map((lane) => `
@@ -14173,16 +14470,70 @@ function renderFounderBetaOperatingRoom() {
   `;
 }
 
+function makeFounderBetaWarRoomDigestBrief() {
+  const ops = founderBetaOperatingRoomConfig();
+  const warRoom = founderBetaWarRoomDigest(ops);
+  return [
+    "# NiveshNadi Founder Beta War-Room Digest",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `War-room ID: ${warRoom.warRoomId}`,
+    `Digest ID: ${warRoom.digestId}`,
+    `Weekly decision ID: ${warRoom.weeklyDecisionId}`,
+    `Support capacity ID: ${warRoom.supportCapacityId}`,
+    `Continuation note ID: ${warRoom.continuationNoteId}`,
+    `Status: ${warRoom.status}`,
+    `Readiness: ${warRoom.readiness}/100`,
+    `Deploy runbook: ${warRoom.deployRunbook.runbookId} | ${warRoom.deployRunbook.status} | ${warRoom.deployRunbook.readiness}/100`,
+    `Beta incident ledger: ${warRoom.betaIncidentLedger.commandLedgerId} | ${warRoom.betaIncidentLedger.status} | ${warRoom.betaIncidentLedger.readiness}/100`,
+    `Founder recovery: ${warRoom.founderRecovery.rehearsalId} | ${warRoom.founderRecovery.status} | ${warRoom.founderRecovery.readiness}/100`,
+    "",
+    "## Metrics",
+    ...warRoom.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Founder Decisions",
+    ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),
+    "",
+    "## Operating Moves",
+    ...warRoom.operatingMoves.map((move) => `- ${move.day}: ${move.label} | ${move.owner} | ${move.status} | ${move.proof} | ${move.detail}`),
+    "",
+    "## Founder Notes",
+    ...warRoom.founderNotes.map((note) => `- ${note}`),
+    "",
+    "## War-Room Blockers",
+    ...warRoom.blockers.map((blocker) => `- ${blocker}`),
+    "",
+    "## No-Go Rules",
+    ...warRoom.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...warRoom.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Guardrail: War-room digest is operating control only. It does not approve investments, execute transactions, collect sensitive identifiers, or run Phase 2 distributor workflows."
+  ].join("\n");
+}
+
 function makeFounderBetaOperatingBrief() {
   const ops = founderBetaOperatingRoomConfig();
+  const warRoom = founderBetaWarRoomDigest(ops);
   return [
     "# NiveshNadi Founder Beta Operating Room",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
     `Operating score: ${ops.operatingScore}/100`,
+    `War-room score: ${warRoom.readiness}/100`,
     `Posture: ${ops.posture}`,
+    `War-room status: ${warRoom.status}`,
     `Invite window: ${ops.inviteWindow}`,
     `Support capacity: ${ops.supportCapacity}`,
     `Priority lane: ${ops.priorityLane.label} | ${ops.priorityLane.owner} | ${ops.priorityLane.score}/100`,
+    `War-room digest ID: ${warRoom.digestId}`,
+    `Backend deploy runbook: ${warRoom.deployRunbook.runbookId} | ${warRoom.deployRunbook.status}`,
+    `Beta incident ledger: ${warRoom.betaIncidentLedger.commandLedgerId} | ${warRoom.betaIncidentLedger.status}`,
+    "",
+    "## Founder War-Room Digest",
+    ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),
+    ...warRoom.operatingMoves.map((move) => `- War-room move: ${move.day} | ${move.label} | ${move.status} | ${move.proof}`),
+    ...warRoom.founderNotes.map((note) => `- War-room note: ${note}`),
+    ...warRoom.noGoRules.map((rule) => `- War-room no-go: ${rule}`),
     "",
     "## Operating Lanes",
     ...ops.lanes.map((lane) => `- ${lane.day} | ${lane.label}: ${lane.score}/100 | ${lane.owner} | ${lane.task}`),
@@ -49694,6 +50045,7 @@ function bindEvents() {
   els.openPaidExpansionBlocker?.addEventListener("click", openPaidExpansionBlocker);
   els.copyPaidExpansion?.addEventListener("click", () => copyText(makePaidCohortExpansionBrief()));
   els.openFounderBetaOpsPriority?.addEventListener("click", openFounderBetaOpsPriority);
+  els.copyFounderBetaWarRoomDigest?.addEventListener("click", () => copyText(makeFounderBetaWarRoomDigestBrief()));
   els.copyFounderBetaOps?.addEventListener("click", () => copyText(makeFounderBetaOperatingBrief()));
   els.openPaidSupportPriority?.addEventListener("click", openPaidSupportPriority);
   els.copyPaidSupport?.addEventListener("click", () => copyText(makePaidBetaSupportLedgerBrief()));
@@ -51643,6 +51995,7 @@ function cacheElements() {
     founderBetaOpsSummary: qs("#founderBetaOpsSummary"),
     founderBetaOpsOutput: qs("#founderBetaOpsOutput"),
     openFounderBetaOpsPriority: qs("#openFounderBetaOpsPriority"),
+    copyFounderBetaWarRoomDigest: qs("#copyFounderBetaWarRoomDigest"),
     copyFounderBetaOps: qs("#copyFounderBetaOps"),
     paidSupportSummary: qs("#paidSupportSummary"),
     paidSupportOutput: qs("#paidSupportOutput"),

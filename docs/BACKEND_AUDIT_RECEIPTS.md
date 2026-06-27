@@ -22,6 +22,8 @@ V299 adds Beta Incident Command Ledger. Founder recovery, Trust Center history, 
 
 V300 adds Backend Deploy Runbook Packet. Production smoke gates and beta incident command proof now roll into deploy commands, environment checks, rollback contacts, release-note evidence, production gate IDs, deploy timeline, receipt fields, and deployment no-go rules before real backend workers can deploy.
 
+V301 feeds the Founder Beta War-Room Digest. Deploy runbook status, beta incident command posture, production smoke proof, founder recovery rehearsal, rollback contacts, and Trust Center evidence now roll into the Founder Beta Operating Room so invite, support, deploy, and beta continuation decisions can be reviewed together.
+
 V116 adds Payment Reconciliation Replay. It joins gateway payment, invoice, entitlement, refund, support repair, and settlement receipts into one replay batch with an audit ID, ordered replay script, variance checks, storage proof, finance retention posture, and launch blockers.
 
 V120 adds Production Source Import Jobs. Backend Audit Receipts now turns each official source family into a backend-owned job contract with source job ID, import gate ID, source cadence, expected row/object volume, parser and schema version, accepted and rejected row counts, citation path, reviewer decision, rollback reference, event chain, payload fields, rejected-row quarantine policy, and public-surface freeze rules. The board separates demo dry-run readiness from production job readiness so AMFI, AMC factsheet, SID/KIM, portfolio disclosure, benchmark, TER, and riskometer imports cannot silently refresh public research claims.

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V301 Founder Beta War-Room Digest
+
+V301 adds Founder Beta War-Room Digest inside the Founder Beta Operating Room. It rolls backend deploy runbook posture, beta incident command status, support capacity, invite decision, Trust Center proof, and Friday continuation decision into one compact founder review packet with copyable notes and no-go rules.
+
 ## V300 Backend Deploy Runbook Packet
 
 V300 adds Backend Deploy Runbook Packet inside Backend Audit Receipts. It packages production smoke gates and beta incident command proof into deploy commands, environment checks, rollback contacts, release-note evidence, production gate IDs, and hard deployment no-go rules before real backend workers can deploy.

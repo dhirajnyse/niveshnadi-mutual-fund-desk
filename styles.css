@@ -34524,6 +34524,194 @@ body.simple-mode .quiet-fund-shelf {
   padding-left: 18px;
 }
 
+.founder-war-room {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(31, 78, 121, 0.3);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(245, 249, 252, 0.98), rgba(255, 248, 232, 0.86));
+}
+
+.founder-war-room.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.98), rgba(245, 249, 252, 0.96));
+}
+
+.founder-war-room.watch {
+  border-color: rgba(225, 160, 55, 0.42);
+}
+
+.founder-war-room.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.founder-war-room p,
+.founder-war-room li,
+.founder-war-room small {
+  color: var(--muted);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.founder-war-room-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 12px;
+  align-items: center;
+}
+
+.founder-war-room-head span,
+.founder-war-room-metric-grid span,
+.founder-war-room-decision-grid span,
+.founder-war-room-action-grid span,
+.founder-war-room-two span {
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.founder-war-room-head h3 {
+  margin: 3px 0 5px;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.14;
+}
+
+.founder-war-room-head p {
+  margin: 0;
+}
+
+.founder-war-room-score {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.founder-war-room-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.founder-war-room-score strong,
+.founder-war-room-score span {
+  position: relative;
+}
+
+.founder-war-room-score strong {
+  color: #ffffff;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.founder-war-room-score span {
+  color: #dce7ed;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.founder-war-room-metric-grid,
+.founder-war-room-decision-grid,
+.founder-war-room-action-grid,
+.founder-war-room-two {
+  display: grid;
+  gap: 10px;
+}
+
+.founder-war-room-metric-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.founder-war-room-decision-grid,
+.founder-war-room-action-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.founder-war-room-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.founder-war-room-metric-grid,
+.founder-war-room-decision-grid,
+.founder-war-room-action-grid,
+.founder-war-room-two,
+.founder-war-room-metric-grid article,
+.founder-war-room-decision-grid article,
+.founder-war-room-action-grid article,
+.founder-war-room-two article {
+  min-width: 0;
+}
+
+.founder-war-room-metric-grid article,
+.founder-war-room-decision-grid article,
+.founder-war-room-action-grid article,
+.founder-war-room-two article {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.founder-war-room-decision-grid article.ready,
+.founder-war-room-two article.ready {
+  border-color: rgba(15, 124, 107, 0.32);
+  background: rgba(232, 250, 245, 0.72);
+}
+
+.founder-war-room-decision-grid article.watch {
+  border-color: rgba(214, 154, 61, 0.38);
+  background: rgba(255, 245, 223, 0.62);
+}
+
+.founder-war-room-decision-grid article.blocked,
+.founder-war-room-two article.blocked {
+  border-color: rgba(198, 77, 103, 0.32);
+  background: rgba(255, 242, 245, 0.62);
+}
+
+.founder-war-room-metric-grid strong,
+.founder-war-room-decision-grid strong,
+.founder-war-room-action-grid strong,
+.founder-war-room-two strong {
+  display: block;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.founder-war-room-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.founder-war-room-card-head b {
+  color: var(--blue);
+  font-size: 18px;
+}
+
+.founder-war-room-two ol,
+.founder-war-room-two ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
 @media (max-width: 1320px) {
   .founder-beta-ops-readout {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -34533,7 +34721,11 @@ body.simple-mode .quiet-fund-shelf {
 @media (max-width: 1080px) {
   .founder-beta-ops-readout,
   .founder-beta-ops-lane-grid,
-  .founder-beta-ops-two {
+  .founder-beta-ops-two,
+  .founder-war-room-metric-grid,
+  .founder-war-room-decision-grid,
+  .founder-war-room-action-grid,
+  .founder-war-room-two {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -34542,11 +34734,17 @@ body.simple-mode .quiet-fund-shelf {
   .founder-beta-ops-hero,
   .founder-beta-ops-readout,
   .founder-beta-ops-lane-grid,
-  .founder-beta-ops-two {
+  .founder-beta-ops-two,
+  .founder-war-room-head,
+  .founder-war-room-metric-grid,
+  .founder-war-room-decision-grid,
+  .founder-war-room-action-grid,
+  .founder-war-room-two {
     grid-template-columns: 1fr;
   }
 
-  .founder-beta-ops-score {
+  .founder-beta-ops-score,
+  .founder-war-room-score {
     justify-self: start;
   }
 }

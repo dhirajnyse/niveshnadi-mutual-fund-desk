@@ -62,6 +62,10 @@ V311 adds the rollout-approval layer after deploy runbooks. It binds recovery, s
 
 V312 adds the post-deploy drill layer after rollout approval archives. It binds recovery, session retention, vault restore, deletion closeout, and support notice rollout approvals to incident drill replay, evidence retention policy, live support-readiness dashboard, command archive retention, monitor-to-closeout proof, drill closeout, receipt fields, active blockers, and final post-deploy no-go rules before retention enforcement work begins.
 
+## Account Lifecycle Retention Enforcement Dashboard
+
+V313 adds the retention enforcement layer after post-deploy drills. It binds recovery, session retention, vault restore, deletion closeout, and support notice drill receipts to incident command storage, retention-policy rows, support readiness reporting, monitor closeout jobs, command archive audits, enforcement queue IDs, receipt fields, active blockers, and final retention no-go rules before backend retention job fixtures begin.
+
 The route keeps the first account launch deliberately small. A founder account pilot or paid beta cohort is safer than a broad public release because account recovery, saved research migration, entitlement repair, and support redaction can be tested with limited blast radius. The public beta cutover should stay blocked until auth provider selection, account database ownership, backups, export/delete jobs, payment entitlement, audit receipts, rate limits, monitoring, support workflows, and legal/compliance copy are ready.
 
 The key product promise is simple: Phase 1 accounts remember self-research, not investment identity. Allowed data should be limited to email or login identifier, research profile context, saved packs, watchlist, review metadata, dossiers, entitlement state, export receipts, deletion receipts, and redacted support receipts. PAN, folio, CAS, bank data, card data, UPI credentials, nominees, ARN/EUIN, distributor client books, and personalized advisory records stay outside the retail account route.
@@ -85,5 +89,7 @@ V310 then requires a deploy runbook packet. Recovery, session, restore, delete, 
 V311 then requires a rollout approval archive. Recovery, session, restore, delete, and notice workers must have staged rollout approval, live monitoring, release captain signoff, support readiness, rollback approval, command receipt archive, and post-deploy evidence fields before post-deploy incident drills can begin.
 
 V312 then requires a post-deploy evidence drill. Recovery, session, restore, delete, and notice workers must replay incidents, retain command and approval evidence, show support-readiness dashboard state, close monitor windows, and record drill closeout before account widening depends on the lifecycle workers.
+
+V313 then requires retention enforcement. Recovery, session, restore, delete, and notice workers must have incident command storage, policy-table rows, support readiness reporting, monitor closeout jobs, command archive audits, and retention no-go clearance before backend retention jobs are treated as closeable.
 
 The route also protects the Phase 2 roadmap. Mutual fund distributor workflows can come later, but they require separate consent, role-based access, ARN/EUIN handling, PAN-consent boundaries, client-book permissions, distributor audit trails, and regulatory review. The retail self-research launch should not accidentally become a distributor or advisory system.

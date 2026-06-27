@@ -30,6 +30,8 @@ V311 connects those deploy runbooks to Account Lifecycle Rollout Approval Archiv
 
 V312 connects those rollout approvals to Account Lifecycle Post-Deploy Evidence Drill. Vault restore and deletion cannot widen until incident replay, evidence retention, support dashboard readiness, command archive retention, monitor closeout, and drill no-go proof are complete.
 
+V313 connects those post-deploy drills to Account Lifecycle Retention Enforcement Dashboard. Vault restore and deletion cannot widen until incident command storage, retention-policy rows, support readiness reporting, monitor closeout jobs, command archive audits, enforcement queue proof, and retention no-go clearance are complete.
+
 The blueprint intentionally excludes PAN, folio numbers, CAS files, bank details, UPI details, card data, nominee information, tax documents, address data, ARN/EUIN, distributor client books, and private family or tax notes. Those fields belong either outside the product or inside a later Phase 2 consent architecture.
 
 Before launch, each vault collection needs row ownership, encryption, backup rules, retention policy, and redacted support visibility. Paid plan access should be enforced by server-side entitlement state, not by browser flags. Account export should show what is included and what is excluded. Account deletion should clear saved research while leaving only a minimal non-sensitive completion receipt when legally required.

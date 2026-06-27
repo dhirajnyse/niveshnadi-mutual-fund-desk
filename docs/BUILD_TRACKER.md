@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V313 Account Lifecycle Retention Enforcement Dashboard
+
+V313 adds Account Lifecycle Retention Enforcement Dashboard inside the Retail Account Launch Route. It turns post-deploy drill receipts into incident command storage checks, retention-policy table rows, support readiness reporting, monitor closeout jobs, command archive audits, enforcement queue IDs, receipt fields, active blockers, and final retention no-go rules before backend retention job fixtures begin.
+
 ## V312 Account Lifecycle Post-Deploy Evidence Drill
 
 V312 adds Account Lifecycle Post-Deploy Evidence Drill inside the Retail Account Launch Route. It connects rollout approval archives to post-deploy incident replay, evidence retention policy, live support-readiness dashboard, command archive retention, monitor-to-closeout proof, drill closeout IDs, receipt fields, active blockers, and final post-deploy no-go checks before account lifecycle work moves toward backend retention enforcement.

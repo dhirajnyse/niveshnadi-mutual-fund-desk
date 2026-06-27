@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v312-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v312 Account Lifecycle Post-Deploy Evidence Drill";
+const DATA_VERSION = "20260627-v313-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v313 Account Lifecycle Retention Enforcement Dashboard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Connect post-deploy evidence drills to backend incident command storage, retention-policy enforcement, and live support-readiness reporting."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Turn retention enforcement dashboard proof into account lifecycle backend ticket closeout, retention job fixtures, and support readiness SLAs."
   },
   {
     phase: "Phase 2",
@@ -1240,8 +1240,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account lifecycle post-deploy evidence drill",
+    label: "Account lifecycle retention enforcement dashboard",
     status: "Shipping now",
+    route: "#account-launch-route",
+    detail: "Connect post-deploy drill receipts to incident command storage, retention-policy enforcement, support readiness reporting, monitor closeout jobs, and command archive checks."
+  },
+  {
+    label: "Account lifecycle post-deploy evidence drill",
+    status: "Done",
     route: "#account-launch-route",
     detail: "Bind rollout approval archive to incident drill replay, evidence retention policy, support readiness, command archive retention, and monitor-to-closeout proof."
   },
@@ -1306,10 +1312,10 @@ const BUILD_TRACKER_CURRENT_SPRINT = [
     detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, monitoring handoffs, and production deploy closeout."
   },
   {
-    label: "Account lifecycle retention enforcement dashboard",
+    label: "Account lifecycle retention job fixtures",
     status: "Later",
     route: "#backend-audit-receipts",
-    detail: "Connect post-deploy evidence drills to backend incident command storage, retention-policy enforcement, and live support-readiness reporting."
+    detail: "Turn retention enforcement dashboard proof into backend ticket closeout, scheduled retention job fixtures, support SLAs, and command archive audits."
   }
 ];
 
@@ -9314,7 +9320,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v312</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v313</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -22946,6 +22952,228 @@ function accountLifecyclePostDeployEvidenceDrill(route, authDecision, storageDec
   };
 }
 
+function accountLifecycleRetentionEnforcementDashboard(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates, deployRunbook, rolloutArchive, postDeployDrill) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const retentionDashboardId = ["NN", "ACCOUNT", "LIFECYCLE", "RETENTION", "DASHBOARD", suffix, route.cohort].join("-").toUpperCase();
+  const incidentCommandStoreId = ["NN", "ACCOUNT", "LIFECYCLE", "INCIDENT", "COMMAND", "STORE", suffix, route.cutover].join("-").toUpperCase();
+  const retentionPolicyTableId = ["NN", "ACCOUNT", "LIFECYCLE", "RETENTION", "POLICY", "TABLE", suffix, route.data].join("-").toUpperCase();
+  const supportReadinessReportId = ["NN", "ACCOUNT", "LIFECYCLE", "SUPPORT", "READINESS", "REPORT", suffix, route.cohort].join("-").toUpperCase();
+  const monitorCloseoutJobId = ["NN", "ACCOUNT", "LIFECYCLE", "MONITOR", "CLOSEOUT", "JOB", suffix, route.cutover].join("-").toUpperCase();
+  const commandArchiveAuditId = ["NN", "ACCOUNT", "LIFECYCLE", "COMMAND", "ARCHIVE", "AUDIT", suffix, route.auth].join("-").toUpperCase();
+  const enforcementQueueId = ["NN", "ACCOUNT", "LIFECYCLE", "RETENTION", "QUEUE", suffix, route.cutover].join("-").toUpperCase();
+  const finalRetentionNoGoId = ["NN", "ACCOUNT", "LIFECYCLE", "RETENTION", "NOGO", suffix, route.cutover].join("-").toUpperCase();
+  const blockedFields = inviteReceipt.blockedFields || ["PAN", "folio", "CAS", "bank", "card", "UPI", "ARN/EUIN", "distributor client book", "free-form private notes"];
+  const backendStorageReady = route.data !== "browser" && route.data !== "manual";
+  const publicCutover = route.cutover === "public";
+  const enforcementProfiles = {
+    "account-recovery": {
+      policy: "Recovery evidence retention",
+      owner: "Security + Backend",
+      incidentCommandStorage: "Persist recovery incident replay, hold decision, rollback approval, monitor closeout, and support notice metadata in incident command storage.",
+      retentionRule: "Retain recovery command receipts, rollback approvals, redaction attestation, and support-safe notices; purge private request bodies.",
+      supportReport: "Report recovery hold count, support copy version, escalation owner, and unresolved user-safe notice state.",
+      monitorJob: "Run recovery, abuse-rate, support notice, and rollback closeout jobs until quiet-window parity is stored.",
+      commandArchiveCheck: "Audit recovery deploy command receipt, approval archive, post-deploy drill, and retention policy row linkage."
+    },
+    "session-retention": {
+      policy: "Session evidence retention",
+      owner: "Platform + Security",
+      incidentCommandStorage: "Persist token revocation replay, suspicious-login flags, forced logout proof, and session expiry closeout in incident command storage.",
+      retentionRule: "Retain token revoke commands, expiry proof, suspicious-login monitor evidence, and redacted support explanation metadata.",
+      supportReport: "Report session repair queue, suspicious-login explanation version, forced-logout count, and escalation owner.",
+      monitorJob: "Run session issue, revoke, logout, suspicious-login, and expiry closeout jobs until quiet-window proof is stored.",
+      commandArchiveCheck: "Audit session deploy command receipt, approval archive, drill case, and retained evidence hash linkage."
+    },
+    "vault-restore": {
+      policy: "Vault restore evidence retention",
+      owner: "Data + Backend",
+      incidentCommandStorage: "Persist restore mismatch replay, prior-hash pin, rollback bucket state, and restore visibility freeze in incident command storage.",
+      retentionRule: "Retain prior/restored hashes, restore command receipts, entitlement checks, monitor closeout, and redacted support metadata.",
+      supportReport: "Report restore holds, affected saved-research count, reviewed explanation copy, and escalation coverage.",
+      monitorJob: "Run restore, hash-match, entitlement, rollback-bucket, and visibility-freeze closeout jobs until parity is stored.",
+      commandArchiveCheck: "Audit restore deploy command receipt, hash proof, rollout approval, drill case, and retention policy linkage."
+    },
+    "deletion-closeout": {
+      policy: "Deletion retained-proof policy",
+      owner: "Privacy + Backend",
+      incidentCommandStorage: "Persist deletion pause replay, retained-proof review, redaction scan, completion notice, and exception decision in incident command storage.",
+      retentionRule: "Retain non-sensitive completion receipt, retained-proof rationale, redaction attestation, privacy approval, and monitor closeout.",
+      supportReport: "Report deletion closeout state, retained-proof explanation, notice owner, and unresolved privacy escalation.",
+      monitorJob: "Run deletion, retained-proof, redaction, support notice, and exception-closeout jobs until receipt parity is stored.",
+      commandArchiveCheck: "Audit deletion deploy command receipt, privacy approval, drill case, and retained-proof policy row linkage."
+    },
+    "support-notice": {
+      policy: "Support notice retention",
+      owner: "Support + Product Ops",
+      incidentCommandStorage: "Persist notice delivery replay, template rollback, redaction attestation, failed-delivery count, and support closeout in incident command storage.",
+      retentionRule: "Retain template version, delivery attempts, rollback approval, redaction attestation, and support case closeout metadata.",
+      supportReport: "Report notice queue health, failed delivery count, template version, support owner, and closeout state.",
+      monitorJob: "Run notice delivery, redaction, template, support-case, and retry-closeout jobs until quiet-window proof is stored.",
+      commandArchiveCheck: "Audit notice deploy command receipt, template rollback, drill case, and support closeout retention linkage."
+    }
+  };
+  const enforcementLanes = postDeployDrill.drillCases.map((drill, index) => {
+    const key = drill.drillId.includes("SESSIONRETENTION")
+      ? "session-retention"
+      : drill.drillId.includes("VAULTRESTORE")
+        ? "vault-restore"
+        : drill.drillId.includes("DELETIONCLOSEOUT")
+          ? "deletion-closeout"
+          : drill.drillId.includes("SUPPORTNOTICE")
+            ? "support-notice"
+            : "account-recovery";
+    const profile = enforcementProfiles[key];
+    const drillBlockers = drill.blockers.filter((item) => !item.startsWith("No active post-deploy drill")).slice(0, 2);
+    const blockers = [
+      ...drillBlockers,
+      ...(drill.status === "Drill archived" ? [] : [`${drill.status} must close before retention enforcement can be accepted.`]),
+      ...(postDeployDrill.status === "Post-deploy evidence drills archived" ? [] : ["Post-deploy evidence drill is not archived for retention enforcement."]),
+      ...(rolloutArchive.status === "Lifecycle rollout approvals archived" ? [] : ["Rollout approval archive is not closed for retention enforcement."]),
+      ...(backendStorageReady ? [] : ["Retention enforcement needs backend-owned account storage and append-only audit tables."]),
+      ...(supportOps.readiness >= 72 ? [] : ["Support readiness reporting is below retention enforcement threshold."]),
+      ...(workerTickets.readiness >= 64 ? [] : ["Worker acceptance tickets are below retention job fixture threshold."]),
+      ...(publicCutover ? ["Public beta cutover needs legal retention signoff, privacy owner, and support SLA before enforcement can close."] : [])
+    ];
+    const score = clampNumber(Math.round(
+      drill.score * 0.42 +
+        postDeployDrill.readiness * 0.18 +
+        rolloutArchive.readiness * 0.1 +
+        deployRunbook.readiness * 0.08 +
+        workerTickets.readiness * 0.08 +
+        supportOps.readiness * 0.08 +
+        route.score * 0.06 +
+        (drill.status === "Drill archived" ? 10 : drill.status === "Drill review" ? 3 : -8) -
+        blockers.length * 3
+    ), 10, 98);
+    const status = score >= 86 && !blockers.length
+      ? "Enforcement active"
+      : score >= 64
+        ? "Enforcement review"
+        : "Enforcement blocked";
+    const tone = status === "Enforcement active" ? "ready" : status === "Enforcement blocked" ? "blocked" : "draft";
+    return {
+      blockers: blockers.length ? blockers : ["No active retention enforcement blocker in this preview. Keep incident command storage, retention policy rows, support reporting, monitor jobs, and command archive audit before widening."],
+      commandArchiveCheck: profile.commandArchiveCheck,
+      drillId: drill.drillId,
+      enforcementId: ["NN", "ACCOUNT", "LIFECYCLE", "RETENTION", "ENFORCEMENT", String(index + 1).padStart(2, "0"), key.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase(),
+      event: drill.event.replace(/\.post_deploy_evidence_drilled$/, ".retention_enforcement_checked"),
+      incidentCommandStorage: profile.incidentCommandStorage,
+      label: drill.label,
+      monitorJob: profile.monitorJob,
+      owner: profile.owner,
+      policy: profile.policy,
+      retentionRule: profile.retentionRule,
+      route: drill.route,
+      score,
+      status,
+      supportReport: profile.supportReport,
+      tone
+    };
+  });
+  const active = enforcementLanes.filter((lane) => lane.status === "Enforcement active").length;
+  const review = enforcementLanes.filter((lane) => lane.status === "Enforcement review").length;
+  const blocked = enforcementLanes.filter((lane) => lane.status === "Enforcement blocked").length;
+  const enforcementAverage = Math.round(enforcementLanes.reduce((sum, lane) => sum + lane.score, 0) / enforcementLanes.length);
+  const activeBlockers = [...new Set(enforcementLanes
+    .filter((lane) => lane.status !== "Enforcement active")
+    .flatMap((lane) => lane.blockers.filter((blocker) => !blocker.startsWith("No active retention enforcement")).slice(0, 2)))];
+  const readiness = clampNumber(Math.round(
+    enforcementAverage * 0.46 +
+      postDeployDrill.readiness * 0.18 +
+      rolloutArchive.readiness * 0.1 +
+      deployRunbook.readiness * 0.08 +
+      workerTickets.readiness * 0.08 +
+      supportOps.readiness * 0.06 +
+      storageDecision.readiness * 0.04
+  ) - Math.min(activeBlockers.length, 8) * 2, 10, 98);
+  const status = readiness >= 86 && !blocked && activeBlockers.length <= 1
+    ? "Retention enforcement dashboard active"
+    : readiness >= 64
+      ? "Retention enforcement dashboard needs review"
+      : "Retention enforcement dashboard blocked";
+  const tone = status === "Retention enforcement dashboard active" ? "ready" : status === "Retention enforcement dashboard blocked" ? "blocked" : "draft";
+  const metrics = [
+    { label: "Retention dashboard", value: retentionDashboardId, detail: `${active} active, ${review} review, ${blocked} blocked enforcement lane${enforcementLanes.length === 1 ? "" : "s"}.` },
+    { label: "Incident command store", value: incidentCommandStoreId, detail: "Stores incident replay, rollback approval, support closeout, and monitor closeout metadata." },
+    { label: "Retention policy table", value: retentionPolicyTableId, detail: `Enforcement queue ${enforcementQueueId} turns policy rows into closeout jobs.` },
+    { label: "Support readiness report", value: supportReadinessReportId, detail: `Monitor job ${monitorCloseoutJobId}; command audit ${commandArchiveAuditId}.` }
+  ];
+  const enforcementTimeline = [
+    { label: "Store incident command", owner: "Incident Commander", detail: "Persist every drill replay, rollback decision, unresolved no-go, and closeout owner.", proof: incidentCommandStoreId },
+    { label: "Enforce policy row", owner: "Backend", detail: "Map each lifecycle worker to retention class, purge rule, evidence hash, and legal hold posture.", proof: retentionPolicyTableId },
+    { label: "Publish support report", owner: "Support Lead", detail: "Report support readiness, open cases, hold copy, escalation coverage, and SLA status.", proof: supportReadinessReportId },
+    { label: "Run monitor closeout jobs", owner: "Product Ops", detail: "Close monitor jobs only when quiet-window proof and unresolved event counts are stored.", proof: monitorCloseoutJobId },
+    { label: "Audit command archive", owner: "Release Captain", detail: "Check every deploy command, approval archive, and drill case links to retained evidence.", proof: commandArchiveAuditId },
+    { label: "Retention no-go closeout", owner: "Founder", detail: "Record final no-go state and next retention job fixture route before account widening.", proof: finalRetentionNoGoId }
+  ];
+  const policyControls = [
+    { label: "Retention class", value: retentionPolicyTableId, detail: "Every lifecycle worker has a retention class, evidence hash, purge behavior, and legal hold flag." },
+    { label: "Incident command storage", value: incidentCommandStoreId, detail: "Incident command storage retains release metadata, rollback decisions, support-safe copy, and monitor closeout." },
+    { label: "Support readiness reporting", value: supportReadinessReportId, detail: "Support reporting shows cases, hold copy, escalation owner, redaction state, and SLA coverage." },
+    { label: "Monitor job closeout", value: monitorCloseoutJobId, detail: "Monitor jobs require quiet-window proof, unresolved event counts, and stored closeout receipt IDs." },
+    { label: "Command archive audit", value: commandArchiveAuditId, detail: "Command archive audits link deploy commands, rollout approvals, drills, and retention policy rows." }
+  ];
+  const supportReportFields = [
+    "support_readiness_sla_state",
+    "open_case_count_by_lifecycle_worker",
+    "hold_copy_version",
+    "redaction_attestation_status",
+    "escalation_owner",
+    "monitor_closeout_job_state",
+    "retention_exception_count"
+  ];
+  const receiptFields = [
+    "account_lifecycle_retention_dashboard_id",
+    "retention_enforcement_id",
+    "post_deploy_drill_case_id",
+    "incident_command_store_id",
+    "retention_policy_table_id",
+    "support_readiness_report_id",
+    "monitor_closeout_job_id",
+    "command_archive_audit_id",
+    "enforcement_queue_id",
+    "retention_class",
+    "purge_rule",
+    "legal_hold_state",
+    "evidence_hash",
+    "support_sla_state",
+    "final_retention_no_go_id",
+    "enforcement_checked_at"
+  ];
+  const noGoRules = [
+    "No retention enforcement dashboard closes unless incident command storage, retention policy table, support readiness report, monitor closeout job, and command archive audit all have receipt IDs.",
+    "No account cohort widens while any enforcement lane is Enforcement blocked or relies on browser-local state, screenshots, support memory, or manual spreadsheets.",
+    "No retention policy row may retain private note bodies, deleted payloads, credentials, payment secrets, transaction instructions, or sensitive investor identifiers.",
+    "No support readiness report can pass without SLA owner, hold copy version, redaction attestation, open case count, escalation owner, and monitor closeout job state.",
+    `No retention enforcement receipt may include ${blockedFields.join(", ")}.`
+  ];
+  return {
+    active,
+    activeBlockers: activeBlockers.length ? activeBlockers : ["No active retention enforcement blocker in this preview. Keep incident command storage, policy table rows, support readiness reports, monitor closeout jobs, command archive audits, and legal hold posture before widening."],
+    blocked,
+    commandArchiveAuditId,
+    enforcementAverage,
+    enforcementLanes,
+    enforcementQueueId,
+    enforcementTimeline,
+    finalRetentionNoGoId,
+    incidentCommandStoreId,
+    metrics,
+    monitorCloseoutJobId,
+    noGoRules,
+    policyControls,
+    readiness,
+    receiptFields,
+    retentionDashboardId,
+    retentionPolicyTableId,
+    review,
+    status,
+    supportReadinessReportId,
+    supportReportFields,
+    tone
+  };
+}
+
 function renderAccountLaunchRoute(event) {
   if (event) event.preventDefault();
   if (!els.accountRouteOutput) return;
@@ -22968,8 +23196,9 @@ function renderAccountLaunchRoute(event) {
   const deployRunbook = accountLifecycleDeployRunbookPacket(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates);
   const rolloutArchive = accountLifecycleRolloutApprovalArchive(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates, deployRunbook);
   const postDeployDrill = accountLifecyclePostDeployEvidenceDrill(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates, deployRunbook, rolloutArchive);
+  const retentionDashboard = accountLifecycleRetentionEnforcementDashboard(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates, deployRunbook, rolloutArchive, postDeployDrill);
   if (els.accountRouteSummary) {
-    els.accountRouteSummary.textContent = `${postDeployDrill.readiness}/100 | ${postDeployDrill.status}`;
+    els.accountRouteSummary.textContent = `${retentionDashboard.readiness}/100 | ${retentionDashboard.status}`;
   }
   els.accountRouteOutput.innerHTML = `
     <div class="account-route-hero ${escapeHtml(route.tone)}">
@@ -23902,6 +24131,87 @@ function renderAccountLaunchRoute(event) {
         </article>
       </div>
     </div>
+    <div class="account-route-retention ${escapeHtml(retentionDashboard.tone)}">
+      <div class="account-route-retention-head">
+        <div>
+          <span>Account lifecycle retention enforcement dashboard</span>
+          <h3>${escapeHtml(retentionDashboard.status)}</h3>
+          <p>Dashboard ${escapeHtml(retentionDashboard.retentionDashboardId)} binds post-deploy drills to incident command storage, retention-policy rows, support readiness reporting, monitor closeout jobs, and command archive audits.</p>
+        </div>
+        <div class="account-route-retention-score" style="--score:${retentionDashboard.readiness}">
+          <strong>${retentionDashboard.readiness}</strong>
+          <span>retain</span>
+        </div>
+      </div>
+      <div class="account-route-retention-grid">
+        ${retentionDashboard.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-retention-lane-grid">
+        ${retentionDashboard.enforcementLanes.map((lane) => `
+          <article class="${escapeHtml(lane.tone)}">
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(lane.owner)}</span>
+                <strong>${escapeHtml(lane.label)}</strong>
+              </div>
+              <b>${lane.score}/100</b>
+            </div>
+            <p>${escapeHtml(lane.status)} | ${escapeHtml(lane.enforcementId)}</p>
+            <div class="build-progress-bar"><span style="width:${lane.score}%"></span></div>
+            <small><strong>Policy:</strong> ${escapeHtml(lane.policy)}</small>
+            <small><strong>Incident store:</strong> ${escapeHtml(lane.incidentCommandStorage)}</small>
+            <small><strong>Retention:</strong> ${escapeHtml(lane.retentionRule)}</small>
+            <small><strong>Support report:</strong> ${escapeHtml(lane.supportReport)}</small>
+            <small><strong>Monitor job:</strong> ${escapeHtml(lane.monitorJob)}</small>
+            <small><strong>Command audit:</strong> ${escapeHtml(lane.commandArchiveCheck)}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(lane.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button account-route-retention-route" type="button" data-build-route="${escapeHtml(lane.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-retention-timeline">
+        ${retentionDashboard.enforcementTimeline.map((item) => `
+          <article>
+            <span>${escapeHtml(item.owner)}</span>
+            <strong>${escapeHtml(item.label)}</strong>
+            <p>${escapeHtml(item.detail)}</p>
+            <small>${escapeHtml(item.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-retention-two">
+        <article>
+          <span>Policy controls</span>
+          <ul>
+            ${retentionDashboard.policyControls.map((item) => `<li>${escapeHtml(item.label)}: ${escapeHtml(item.value)} | ${escapeHtml(item.detail)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Support report fields</span>
+          <ul>
+            ${retentionDashboard.supportReportFields.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <ul>
+            ${retentionDashboard.receiptFields.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${retentionDashboard.activeBlockers.length > 1 ? "blocked" : "ready"}">
+          <span>Enforcement blockers and no-go</span>
+          <ul>
+            ${[...retentionDashboard.activeBlockers, ...retentionDashboard.noGoRules.slice(0, 3)].map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="account-route-gate-grid">
       ${ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `
         <article>
@@ -23957,6 +24267,7 @@ function makeAccountLaunchRouteBrief() {
   const deployRunbook = accountLifecycleDeployRunbookPacket(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates);
   const rolloutArchive = accountLifecycleRolloutApprovalArchive(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates, deployRunbook);
   const postDeployDrill = accountLifecyclePostDeployEvidenceDrill(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates, deployRunbook, rolloutArchive);
+  const retentionDashboard = accountLifecycleRetentionEnforcementDashboard(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates, deployRunbook, rolloutArchive, postDeployDrill);
   const betaScore = Math.round(betaChecklist.reduce((sum, item) => sum + item.score, 0) / betaChecklist.length);
   return [
     "# NiveshNadi Retail Account Launch Route",
@@ -24169,6 +24480,27 @@ function makeAccountLaunchRouteBrief() {
     ...postDeployDrill.receiptFields.map((item) => `- Post-deploy receipt field: ${item}`),
     ...postDeployDrill.noGoRules.map((item) => `- Post-deploy no-go rule: ${item}`),
     ...postDeployDrill.activeBlockers.map((item) => `- Post-deploy blocker: ${item}`),
+    "",
+    "## Account Lifecycle Retention Enforcement Dashboard",
+    `- Status: ${retentionDashboard.status}`,
+    `- Readiness: ${retentionDashboard.readiness}/100`,
+    `- Retention dashboard: ${retentionDashboard.retentionDashboardId}`,
+    `- Incident command store: ${retentionDashboard.incidentCommandStoreId}`,
+    `- Retention policy table: ${retentionDashboard.retentionPolicyTableId}`,
+    `- Support readiness report: ${retentionDashboard.supportReadinessReportId}`,
+    `- Monitor closeout job: ${retentionDashboard.monitorCloseoutJobId}`,
+    `- Command archive audit: ${retentionDashboard.commandArchiveAuditId}`,
+    `- Enforcement queue: ${retentionDashboard.enforcementQueueId}`,
+    `- Final retention no-go: ${retentionDashboard.finalRetentionNoGoId}`,
+    `- Active/Review/Blocked: ${retentionDashboard.active}/${retentionDashboard.review}/${retentionDashboard.blocked}`,
+    ...retentionDashboard.metrics.map((metric) => `- Retention metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...retentionDashboard.enforcementLanes.map((lane) => `- Retention enforcement: ${lane.enforcementId}: ${lane.label} | ${lane.status} | ${lane.score}/100 | ${lane.owner} | ${lane.policy} | ${lane.event} | ${lane.route}`),
+    ...retentionDashboard.enforcementTimeline.map((item) => `- Enforcement timeline: ${item.label}: ${item.owner} | ${item.detail} | ${item.proof}`),
+    ...retentionDashboard.policyControls.map((item) => `- Policy control: ${item.label}: ${item.value} | ${item.detail}`),
+    ...retentionDashboard.supportReportFields.map((item) => `- Support report field: ${item}`),
+    ...retentionDashboard.receiptFields.map((item) => `- Retention receipt field: ${item}`),
+    ...retentionDashboard.noGoRules.map((item) => `- Retention no-go rule: ${item}`),
+    ...retentionDashboard.activeBlockers.map((item) => `- Retention blocker: ${item}`),
     "",
     "## Launch Gates",
     ...ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `- ${gate.label}: ${gate.score}/100 | ${gate.event} | ${gate.proof} | ${gate.guardrail}`),
@@ -24664,6 +24996,81 @@ function makeAccountLifecyclePostDeployDrillBrief() {
     "",
     "## Guardrail",
     "Account lifecycle post-deploy evidence drills are release and incident-readiness metadata. They must not store PAN, folio, CAS, bank data, card, UPI, OTP, account credentials, gateway secrets, ARN/EUIN, distributor client books, private notes, transaction instructions, deleted payload bodies, or personalized advice content."
+  ].join("\n");
+}
+
+function makeAccountLifecycleRetentionEnforcementBrief() {
+  const route = accountLaunchRouteConfig();
+  const betaChecklist = founderBetaChecklist(route);
+  const authDecision = founderAuthDecisionBoard(route, betaChecklist);
+  const storageDecision = founderStorageDecisionBoard(route, betaChecklist);
+  const inviteGate = founderInviteGate(route, betaChecklist);
+  const inviteReceipt = founderInviteReceipt(route, betaChecklist, inviteGate);
+  const supportDrill = founderSupportDrill(route, betaChecklist, inviteGate, inviteReceipt);
+  const supportCasebook = founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill);
+  const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
+  const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
+  const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
+  const workerSmoke = accountLifecycleWorkerSmokeHarness(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets);
+  const ownerGates = accountLifecycleProductionOwnerGates(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke);
+  const deployRunbook = accountLifecycleDeployRunbookPacket(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates);
+  const rolloutArchive = accountLifecycleRolloutApprovalArchive(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates, deployRunbook);
+  const postDeployDrill = accountLifecyclePostDeployEvidenceDrill(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates, deployRunbook, rolloutArchive);
+  const retentionDashboard = accountLifecycleRetentionEnforcementDashboard(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates, deployRunbook, rolloutArchive, postDeployDrill);
+  return [
+    "# NiveshNadi Account Lifecycle Retention Enforcement Dashboard",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Retention dashboard ID: ${retentionDashboard.retentionDashboardId}`,
+    `Incident command store ID: ${retentionDashboard.incidentCommandStoreId}`,
+    `Retention policy table ID: ${retentionDashboard.retentionPolicyTableId}`,
+    `Support readiness report ID: ${retentionDashboard.supportReadinessReportId}`,
+    `Monitor closeout job ID: ${retentionDashboard.monitorCloseoutJobId}`,
+    `Command archive audit ID: ${retentionDashboard.commandArchiveAuditId}`,
+    `Enforcement queue ID: ${retentionDashboard.enforcementQueueId}`,
+    `Final retention no-go ID: ${retentionDashboard.finalRetentionNoGoId}`,
+    `Status: ${retentionDashboard.status}`,
+    `Readiness: ${retentionDashboard.readiness}/100`,
+    `Enforcement average: ${retentionDashboard.enforcementAverage}/100`,
+    `Active/Review/Blocked: ${retentionDashboard.active}/${retentionDashboard.review}/${retentionDashboard.blocked}`,
+    "",
+    "## Metrics",
+    ...retentionDashboard.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Enforcement Lanes",
+    ...retentionDashboard.enforcementLanes.flatMap((lane) => [
+      `- ${lane.enforcementId}: ${lane.label} | ${lane.status} | ${lane.score}/100 | Owner: ${lane.owner}`,
+      `  Drill: ${lane.drillId}`,
+      `  Event: ${lane.event}`,
+      `  Policy: ${lane.policy}`,
+      `  Incident command storage: ${lane.incidentCommandStorage}`,
+      `  Retention rule: ${lane.retentionRule}`,
+      `  Support report: ${lane.supportReport}`,
+      `  Monitor job: ${lane.monitorJob}`,
+      `  Command archive check: ${lane.commandArchiveCheck}`,
+      `  Route: ${lane.route}`,
+      `  Blockers: ${lane.blockers.join(" | ")}`
+    ]),
+    "",
+    "## Enforcement Timeline",
+    ...retentionDashboard.enforcementTimeline.map((item) => `- ${item.label}: ${item.owner} | ${item.detail} | Proof: ${item.proof}`),
+    "",
+    "## Policy Controls",
+    ...retentionDashboard.policyControls.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Support Readiness Report Fields",
+    ...retentionDashboard.supportReportFields.map((item) => `- ${item}`),
+    "",
+    "## Receipt Fields",
+    ...retentionDashboard.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## Retention No-Go Rules",
+    ...retentionDashboard.noGoRules.map((item) => `- ${item}`),
+    "",
+    "## Active Blockers",
+    ...retentionDashboard.activeBlockers.map((item) => `- ${item}`),
+    "",
+    "## Guardrail",
+    "Account lifecycle retention enforcement dashboards are release and audit-control metadata. They must not store PAN, folio, CAS, bank data, card, UPI, OTP, account credentials, gateway secrets, ARN/EUIN, distributor client books, private notes, transaction instructions, deleted payload bodies, payment secrets, or personalized advice content."
   ].join("\n");
 }
 
@@ -54399,6 +54806,7 @@ function bindEvents() {
   els.copyAccountLifecycleDeploy?.addEventListener("click", () => copyText(makeAccountLifecycleDeployRunbookBrief()));
   els.copyAccountLifecycleRollout?.addEventListener("click", () => copyText(makeAccountLifecycleRolloutArchiveBrief()));
   els.copyAccountLifecyclePostDeploy?.addEventListener("click", () => copyText(makeAccountLifecyclePostDeployDrillBrief()));
+  els.copyAccountLifecycleRetention?.addEventListener("click", () => copyText(makeAccountLifecycleRetentionEnforcementBrief()));
   els.copyAccountRoute?.addEventListener("click", () => copyText(makeAccountLaunchRouteBrief()));
   els.accountLaunchForm?.addEventListener("submit", renderAccountLaunchShell);
   [els.accountLaunchAuth, els.accountLaunchStorage, els.accountLaunchMigration, els.accountLaunchSupport].forEach((input) => {
@@ -56336,6 +56744,7 @@ function cacheElements() {
     copyAccountLifecycleDeploy: qs("#copyAccountLifecycleDeploy"),
     copyAccountLifecycleRollout: qs("#copyAccountLifecycleRollout"),
     copyAccountLifecyclePostDeploy: qs("#copyAccountLifecyclePostDeploy"),
+    copyAccountLifecycleRetention: qs("#copyAccountLifecycleRetention"),
     copyAccountRoute: qs("#copyAccountRoute"),
     accountLaunchForm: qs("#accountLaunchForm"),
     accountLaunchAuth: qs("#accountLaunchAuth"),

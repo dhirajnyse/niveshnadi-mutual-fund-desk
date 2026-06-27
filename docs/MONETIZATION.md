@@ -264,6 +264,10 @@ V312 adds Account Lifecycle Post-Deploy Evidence Drill to the same route. Rollou
 
 Commercially, this protects the INR 100/month and INR 1,000/year account promise after release: lifecycle operations should widen only when incidents can be replayed, evidence can be retained, support can see readiness, and monitor closeout can be proved without founder memory or private data.
 
+V313 adds Account Lifecycle Retention Enforcement Dashboard to the same route. Post-deploy drills now become incident command storage checks, retention-policy table rows, support readiness reports, monitor closeout jobs, command archive audits, enforcement queues, receipt fields, and retention no-go rules.
+
+Commercially, this protects low-price paid accounts from hidden operating cost: lifecycle evidence should be enforced by backend jobs, support reports, and command audits rather than founder memory, screenshots, manual spreadsheets, or private support notes.
+
 ## Payment Adapter Repairs
 
 V150 connects the payment backend to repairable adapter routes. Checkout, webhook, idempotency replay, refund, cancellation, entitlement projection, support repair, settlement, and incident adapters now show the event in, event out, receipt join, repair action, rollback rule, and blockers before real gateway events can unlock paid features.

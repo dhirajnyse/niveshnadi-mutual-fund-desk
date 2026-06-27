@@ -38,6 +38,8 @@ V310 adds Account Lifecycle Deploy Runbook Packet in the Retail Account Launch R
 
 V311 adds Account Lifecycle Rollout Approval Archive in the Retail Account Launch Route. The next backend audit move is to connect those approval archives to post-deploy incident drills, evidence retention policy, live support-readiness dashboard, monitor-to-closeout proof, and command archive retention checks.
 
+V312 adds Account Lifecycle Post-Deploy Evidence Drill in the Retail Account Launch Route. The next backend audit move is to enforce those drill receipts inside backend incident command storage, evidence-retention policy tables, support-readiness reporting, monitor closeout jobs, and command archive retention checks.
+
 V116 adds Payment Reconciliation Replay. It joins gateway payment, invoice, entitlement, refund, support repair, and settlement receipts into one replay batch with an audit ID, ordered replay script, variance checks, storage proof, finance retention posture, and launch blockers.
 
 V120 adds Production Source Import Jobs. Backend Audit Receipts now turns each official source family into a backend-owned job contract with source job ID, import gate ID, source cadence, expected row/object volume, parser and schema version, accepted and rejected row counts, citation path, reviewer decision, rollback reference, event chain, payload fields, rejected-row quarantine policy, and public-surface freeze rules. The board separates demo dry-run readiness from production job readiness so AMFI, AMC factsheet, SID/KIM, portfolio disclosure, benchmark, TER, and riskometer imports cannot silently refresh public research claims.

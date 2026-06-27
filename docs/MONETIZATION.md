@@ -260,6 +260,10 @@ V311 adds Account Lifecycle Rollout Approval Archive to the same route. Deploy r
 
 Commercially, this protects low-price paid accounts from hidden launch risk: recovery, restore, deletion, session, and notice operations should widen only when approval proof, support readiness, rollback authority, and post-deploy evidence are archived before users depend on them.
 
+V312 adds Account Lifecycle Post-Deploy Evidence Drill to the same route. Rollout approvals now become incident drill replay, evidence retention policy, live support-readiness dashboard, command archive retention, monitor-to-closeout proof, receipt fields, and drill no-go checks.
+
+Commercially, this protects the INR 100/month and INR 1,000/year account promise after release: lifecycle operations should widen only when incidents can be replayed, evidence can be retained, support can see readiness, and monitor closeout can be proved without founder memory or private data.
+
 ## Payment Adapter Repairs
 
 V150 connects the payment backend to repairable adapter routes. Checkout, webhook, idempotency replay, refund, cancellation, entitlement projection, support repair, settlement, and incident adapters now show the event in, event out, receipt join, repair action, rollback rule, and blockers before real gateway events can unlock paid features.

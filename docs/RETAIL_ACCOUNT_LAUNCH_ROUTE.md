@@ -58,6 +58,10 @@ V310 adds the deploy-runbook layer after production owner gates. It packages eac
 
 V311 adds the rollout-approval layer after deploy runbooks. It binds recovery, session retention, vault restore, deletion closeout, and support notice deploy steps to staged rollout approvals, live monitor windows, release captain signoff, support readiness, rollback approvals, post-deploy evidence archive, receipt fields, active blockers, and final archive no-go rules before the worker can move into post-deploy incident drills.
 
+## Account Lifecycle Post-Deploy Evidence Drill
+
+V312 adds the post-deploy drill layer after rollout approval archives. It binds recovery, session retention, vault restore, deletion closeout, and support notice rollout approvals to incident drill replay, evidence retention policy, live support-readiness dashboard, command archive retention, monitor-to-closeout proof, drill closeout, receipt fields, active blockers, and final post-deploy no-go rules before retention enforcement work begins.
+
 The route keeps the first account launch deliberately small. A founder account pilot or paid beta cohort is safer than a broad public release because account recovery, saved research migration, entitlement repair, and support redaction can be tested with limited blast radius. The public beta cutover should stay blocked until auth provider selection, account database ownership, backups, export/delete jobs, payment entitlement, audit receipts, rate limits, monitoring, support workflows, and legal/compliance copy are ready.
 
 The key product promise is simple: Phase 1 accounts remember self-research, not investment identity. Allowed data should be limited to email or login identifier, research profile context, saved packs, watchlist, review metadata, dossiers, entitlement state, export receipts, deletion receipts, and redacted support receipts. PAN, folio, CAS, bank data, card data, UPI credentials, nominees, ARN/EUIN, distributor client books, and personalized advisory records stay outside the retail account route.
@@ -79,5 +83,7 @@ V309 then requires production owner gates. Recovery, session, restore, delete, a
 V310 then requires a deploy runbook packet. Recovery, session, restore, delete, and notice workers must have command receipts, server environment checks, rollback contacts, monitor windows, release evidence, support comms, release captain closeout, and final production no-go rules before staged rollout approval can begin.
 
 V311 then requires a rollout approval archive. Recovery, session, restore, delete, and notice workers must have staged rollout approval, live monitoring, release captain signoff, support readiness, rollback approval, command receipt archive, and post-deploy evidence fields before post-deploy incident drills can begin.
+
+V312 then requires a post-deploy evidence drill. Recovery, session, restore, delete, and notice workers must replay incidents, retain command and approval evidence, show support-readiness dashboard state, close monitor windows, and record drill closeout before account widening depends on the lifecycle workers.
 
 The route also protects the Phase 2 roadmap. Mutual fund distributor workflows can come later, but they require separate consent, role-based access, ARN/EUIN handling, PAN-consent boundaries, client-book permissions, distributor audit trails, and regulatory review. The retail self-research launch should not accidentally become a distributor or advisory system.

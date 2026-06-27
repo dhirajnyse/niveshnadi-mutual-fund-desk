@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V312 Account Lifecycle Post-Deploy Evidence Drill
+
+V312 adds Account Lifecycle Post-Deploy Evidence Drill inside the Retail Account Launch Route. It connects rollout approval archives to post-deploy incident replay, evidence retention policy, live support-readiness dashboard, command archive retention, monitor-to-closeout proof, drill closeout IDs, receipt fields, active blockers, and final post-deploy no-go checks before account lifecycle work moves toward backend retention enforcement.
+
 ## V311 Account Lifecycle Rollout Approval Archive
 
 V311 adds Account Lifecycle Rollout Approval Archive inside the Retail Account Launch Route. It binds deploy runbook packets to staged rollout approvals, live monitor windows, release captain signoff, support readiness, rollback approvals, post-deploy evidence archive, receipt fields, active approval blockers, and final archive no-go checks before account lifecycle work can move into post-deploy incident drills.

@@ -13264,6 +13264,230 @@ body.simple-mode.simple-review-focus .dossier-band {
   }
 }
 
+.account-route-postdeploy {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(31, 78, 121, 0.26);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(246, 249, 252, 0.98), rgba(239, 246, 244, 0.92));
+}
+
+.account-route-postdeploy.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.9), rgba(246, 249, 252, 0.96));
+}
+
+.account-route-postdeploy.draft {
+  border-color: rgba(225, 160, 55, 0.42);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.96), rgba(246, 249, 252, 0.96));
+}
+
+.account-route-postdeploy.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(246, 249, 252, 0.96));
+}
+
+.account-route-postdeploy p,
+.account-route-postdeploy li,
+.account-route-postdeploy small {
+  color: var(--muted);
+  line-height: 1.42;
+  overflow-wrap: anywhere;
+}
+
+.account-route-postdeploy-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px;
+  gap: 12px;
+  align-items: center;
+}
+
+.account-route-postdeploy-head span,
+.account-route-postdeploy-grid span,
+.account-route-postdeploy-drill-grid span,
+.account-route-postdeploy-timeline span,
+.account-route-postdeploy-two span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.account-route-postdeploy-head h3 {
+  margin: 3px 0 0;
+  color: var(--ink);
+  font-size: 23px;
+  line-height: 1.12;
+}
+
+.account-route-postdeploy-head p {
+  margin: 7px 0 0;
+}
+
+.account-route-postdeploy-score {
+  position: relative;
+  width: 82px;
+  height: 82px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--blue) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+  text-align: center;
+}
+
+.account-route-postdeploy-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.account-route-postdeploy-score strong,
+.account-route-postdeploy-score span {
+  position: relative;
+}
+
+.account-route-postdeploy-score strong {
+  display: block;
+  font-size: 27px;
+  line-height: 1;
+}
+
+.account-route-postdeploy-score span {
+  color: #dbe7ef;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.account-route-postdeploy-grid,
+.account-route-postdeploy-drill-grid,
+.account-route-postdeploy-timeline,
+.account-route-postdeploy-two {
+  display: grid;
+  gap: 10px;
+}
+
+.account-route-postdeploy-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.account-route-postdeploy-drill-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.account-route-postdeploy-timeline {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.account-route-postdeploy-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.account-route-postdeploy-grid,
+.account-route-postdeploy-drill-grid,
+.account-route-postdeploy-timeline,
+.account-route-postdeploy-two,
+.account-route-postdeploy-grid article,
+.account-route-postdeploy-drill-grid article,
+.account-route-postdeploy-timeline article,
+.account-route-postdeploy-two article {
+  min-width: 0;
+}
+
+.account-route-postdeploy-grid article,
+.account-route-postdeploy-drill-grid article,
+.account-route-postdeploy-timeline article,
+.account-route-postdeploy-two article {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.account-route-postdeploy-drill-grid article.ready,
+.account-route-postdeploy-two article.ready {
+  border-color: rgba(15, 124, 107, 0.3);
+  background: rgba(229, 247, 241, 0.74);
+}
+
+.account-route-postdeploy-drill-grid article.draft,
+.account-route-postdeploy-two article.draft {
+  border-color: rgba(225, 160, 55, 0.34);
+  background: rgba(255, 250, 240, 0.86);
+}
+
+.account-route-postdeploy-drill-grid article.blocked,
+.account-route-postdeploy-two article.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: var(--rose-soft);
+}
+
+.account-route-postdeploy-grid strong,
+.account-route-postdeploy-drill-grid strong,
+.account-route-postdeploy-timeline strong,
+.account-route-postdeploy-two strong {
+  display: block;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.account-route-postdeploy-grid p,
+.account-route-postdeploy-drill-grid p,
+.account-route-postdeploy-timeline p,
+.account-route-postdeploy-two p {
+  margin: 0;
+}
+
+.account-route-postdeploy-drill-grid small,
+.account-route-postdeploy-timeline small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.account-route-postdeploy-route {
+  margin-top: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.account-route-postdeploy-two ul,
+.account-route-postdeploy-two ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+@media (max-width: 980px) {
+  .account-route-postdeploy-grid,
+  .account-route-postdeploy-timeline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .account-route-postdeploy-head,
+  .account-route-postdeploy-grid,
+  .account-route-postdeploy-drill-grid,
+  .account-route-postdeploy-timeline,
+  .account-route-postdeploy-two {
+    grid-template-columns: 1fr;
+  }
+
+  .account-route-postdeploy-score {
+    justify-self: start;
+  }
+}
+
 .account-route-metric-grid article,
 .account-route-map-grid article,
 .account-route-check-grid article,

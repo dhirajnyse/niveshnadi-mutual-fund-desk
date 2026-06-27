@@ -27,6 +27,8 @@ V310 extends those owner gates into Account Lifecycle Deploy Runbook Packet. Acc
 
 V311 extends those deploy packets into Account Lifecycle Rollout Approval Archive. Account access is still not launch-ready until each lifecycle worker has staged rollout approval, live monitor proof, release captain signoff, support readiness, rollback approval, post-deploy evidence, and archive no-go clearance.
 
+V312 extends those rollout approvals into Account Lifecycle Post-Deploy Evidence Drill. Account access is still not launch-ready until each lifecycle worker can replay incidents, retain command and approval evidence, show support-readiness dashboard state, prove monitor closeout, and record drill no-go clearance.
+
 ## Guardrails
 
 The shell intentionally stays research-only. It does not collect PAN, folio, KYC, bank details, distributor ARN/EUIN, client books, or transaction credentials. Before launch, the production implementation must add provider-specific authentication, encrypted storage policies, audit receipts, subscription entitlement checks, deletion workflow evidence, support access logs, and a written Phase 2 firewall for distributor workflows.

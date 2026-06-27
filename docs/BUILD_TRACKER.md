@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V318 Final Signoff Closeout
+
+V318 adds Final Signoff Closeout inside the Launch Readiness Board. It joins payment rail proof, legal and compliance review, security/auth signoff, support coverage, live-source release proof, release-captain decision, closeout IDs, receipt fields, signoff steps, active blockers, and hard final no-go rules before the first paid or public launch can be trusted.
+
 ## V317 Live Source Worker Proof
 
 V317 adds Live Source Worker Proof inside Backend Audit Receipts. It binds the active production source job to scheduler receipt, fetch and source-date proof, parser quarantine, durable receipt persistence, alert delivery, failed-run replay, reviewer signoff, rollback evidence, affected-surface state, receipt fields, blockers, and hard no-go rules before final payment, legal, security, and release signoff closeout.

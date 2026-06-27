@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v317-02";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v317 Live Source Worker Proof";
+const DATA_VERSION = "20260628-v318-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v318 Final Signoff Closeout";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1204,7 +1204,7 @@ const BUILD_TRACKER_PHASES = [
     status: "In progress",
     route: "#backend-audit-receipts",
     done: ["evidence ledger", "citation binder", "data readiness", "live data contract lab", "source dry-run board", "source receipt vault", "live data production receipts", "production source import gate", "production source import jobs", "source import worker blueprint", "live source worker proof", "monitoring alert routing", "alert delivery backend", "failed-run event store", "reviewer sign-off bridge", "rollback evidence store", "public recovery rehearsal", "recovery release queue", "correction publish console", "incident receipt replay", "claim surface map", "surface release queue", "reviewer workbench", "reviewer decision ledger", "reviewer release binder", "backend audit receipts", "source QA", "claim gates", "privacy controls"],
-    next: "Move from live source worker proof into final payment, legal, security, and release signoff closeout."
+    next: "Use final signoff closeout to clear real gateway, legal, security, support, live-source, and release-captain evidence before the first paid cohort."
   },
   {
     phase: "Phase 1D",
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Move from account lifecycle support SLA proof into live source worker proof and launch-gate closeout."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Clear real gateway, legal, security, support, live-source, and release-captain proof before first paid cohort expansion."
   },
   {
     phase: "Phase 2",
@@ -1240,8 +1240,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Live source worker proof",
+    label: "Final signoff closeout",
     status: "Shipping now",
+    route: "#launch-readiness",
+    detail: "Turn payment, legal, security, support, live-source, and release-captain proof into one founder closeout gate before the desk can claim launch readiness."
+  },
+  {
+    label: "Live source worker proof",
+    status: "Done",
     route: "#backend-audit-receipts",
     detail: "Prove scheduled source workers can fetch, quarantine, persist receipts, alert, replay failures, bind reviewer signoff, and recover public surfaces."
   },
@@ -1341,17 +1347,17 @@ const LAUNCH_READINESS_GATES = [
   {
     id: "live-data",
     label: "Live data and citations",
-    score: 80,
-    status: "Critical",
+    score: 84,
+    status: "Watch",
     owner: "Data",
     route: "#reviewer-workbench",
-    blocker: "Live data source contracts, dry-run behavior, source receipts, production import gate, production import jobs, worker blueprint, monitoring alert routing, incident replay, claim surface mapping, queue handoff, reviewer workbench, decision memory, and reviewer release binding are drafted, but real scheduled workers, approvals, and release automation still need implementation.",
-    next: "Bind each live source family to a scheduled worker, saved receipt, routed alert, incident replay receipt, reviewer decision, rollback note, rejected-row policy, and affected public surface before any claim looks live."
+    blocker: "Live data source contracts, dry-run behavior, source receipts, production import gate, jobs, worker blueprint, live source worker proof, monitoring alert routing, incident replay, claim surface mapping, reviewer workbench, decision memory, and release binding are drafted, but real scheduler credentials and release automation still need implementation.",
+    next: "Connect the v317 live source worker proof to a real scheduled worker, durable artifact store, alert transport, reviewer identity, rollback note, and affected public surface before any claim looks live."
   },
   {
     id: "source-qa",
     label: "Source QA and claim release",
-    score: 68,
+    score: 72,
     status: "Critical",
     owner: "Trust",
     route: "#reviewer-workbench",
@@ -1371,7 +1377,7 @@ const LAUNCH_READINESS_GATES = [
   {
     id: "payments",
     label: "Payments and subscriptions",
-    score: 74,
+    score: 76,
     status: "Watch",
     owner: "Commercial",
     route: "#payment-sandbox",
@@ -1381,7 +1387,7 @@ const LAUNCH_READINESS_GATES = [
   {
     id: "compliance",
     label: "Compliance and disclosures",
-    score: 44,
+    score: 48,
     status: "Critical",
     owner: "Compliance",
     route: "#trust-center",
@@ -1391,7 +1397,7 @@ const LAUNCH_READINESS_GATES = [
   {
     id: "security",
     label: "Security release gate",
-    score: 70,
+    score: 72,
     status: "Watch",
     owner: "Security",
     route: "#account-launch-route",
@@ -1401,7 +1407,7 @@ const LAUNCH_READINESS_GATES = [
   {
     id: "support",
     label: "Support and operations",
-    score: 64,
+    score: 66,
     status: "Watch",
     owner: "Ops",
     route: "#account-launch-route",
@@ -9085,15 +9091,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Live source worker proof",
-      status: "Closeout active",
+      status: "Done in v317",
       route: "#source-receipts",
       detail: "Persist scheduled source receipts, fetch proof, parser quarantine, failed-run replay, reviewer sign-off, rollback evidence, and affected-surface proof."
     },
     {
       label: "Payment, legal, security signoff",
-      status: "Final gate",
+      status: "Closeout active",
       route: "#launch-readiness",
-      detail: "Close real gateway checks, legal disclosure review, auth threat model, no-advice copy, and production release signoff."
+      detail: "Close gateway proof, legal disclosure review, auth threat model, support coverage, no-advice copy, release-captain signoff, and production evidence receipts."
     }
   ];
   const productionTarget = releaseVersion
@@ -9320,7 +9326,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v317 is closing live source worker proof from Backend Audit Receipts.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v318 is closing final signoff proof from Launch Readiness.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9449,7 +9455,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v317</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v318</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -15071,14 +15077,16 @@ function launchReadinessBoardConfig() {
     "Security scans, secret handling, auth rules, rate limits, backups, and incident response are documented.",
     "Legal and compliance review confirms research-only language, no personalized advice, and clear risk warnings."
   ];
+  const paidBetaGate = paidBetaProductionGate(gates, tracker.launchReadiness);
 
   return {
     critical,
+    finalSignoff: finalSignoffCloseout(gates, tracker.launchReadiness, paidBetaGate),
     founderMoves,
     gates,
     launchReadiness: tracker.launchReadiness,
     noLaunchUntil,
-    paidBetaGate: paidBetaProductionGate(gates, tracker.launchReadiness),
+    paidBetaGate,
     ready,
     releaseLadder,
     topBlocker,
@@ -15198,12 +15206,199 @@ function paidBetaProductionGate(gates, launchReadiness) {
   };
 }
 
+function finalSignoffCloseout(gates, launchReadiness, betaGate) {
+  const gateById = (id) => gates.find((gate) => gate.id === id) || { score: 0, label: id, next: "Define this launch gate.", route: "#launch-readiness" };
+  const liveData = gateById("live-data");
+  const sourceQa = gateById("source-qa");
+  const accounts = gateById("accounts");
+  const payments = gateById("payments");
+  const compliance = gateById("compliance");
+  const security = gateById("security");
+  const support = gateById("support");
+  const sourceScore = Math.round((liveData.score + sourceQa.score) / 2);
+  const releaseScore = Math.round((launchReadiness + betaGate.readiness + sourceScore + security.score + support.score) / 5);
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const closeoutId = ["NN", "FINAL", "SIGNOFF", "CLOSEOUT", suffix].join("-").toUpperCase();
+  const releasePacketId = ["NN", "RELEASE", "PACKET", "SIGNOFF", suffix].join("-").toUpperCase();
+  const launchNoGoId = ["NN", "FINAL", "LAUNCH", "NO", "GO", suffix].join("-").toUpperCase();
+  const laneTemplates = [
+    {
+      label: "Payment rail",
+      owner: "Commercial",
+      route: "#payment-sandbox",
+      score: payments.score,
+      event: "final_signoff.payment_rail_reviewed",
+      proof: "gateway_event_id, webhook_signature_hash, invoice_id, refund_policy_version, settlement_reconciliation_id",
+      acceptance: "Real gateway onboarding, signed webhook proof, invoice/refund posture, entitlement mutation, and settlement reconciliation are reviewed together.",
+      blockers: [
+        ...(payments.score < 82 ? [payments.next] : []),
+        "real provider credentials, webhook endpoint, invoice/tax approval, and settlement report are outside this static prototype"
+      ]
+    },
+    {
+      label: "Legal and compliance",
+      owner: "Compliance",
+      route: "#trust-center",
+      score: compliance.score,
+      event: "final_signoff.legal_compliance_reviewed",
+      proof: "legal_review_id, no_advice_copy_id, risk_warning_version, disclosure_pack_id, consent_screen_version",
+      acceptance: "Research-only language, no-advice boundary, source disclaimers, risk warnings, consent screens, refund/cancel wording, and conflicts copy are approved.",
+      blockers: [
+        ...(compliance.score < 82 ? [compliance.next] : []),
+        "external legal/compliance review and approved public disclosure pack remain outside this prototype"
+      ]
+    },
+    {
+      label: "Security and auth",
+      owner: "Security",
+      route: "#account-launch-route",
+      score: security.score,
+      event: "final_signoff.security_auth_reviewed",
+      proof: "auth_threat_model_id, secret_scan_id, dependency_scan_id, rate_limit_policy_id, backup_restore_test_id",
+      acceptance: "Auth threat model, secret handling, webhook validation, idempotency, rate limits, backups, monitoring, and incident response are signed off.",
+      blockers: [
+        ...(security.score < 82 ? [security.next] : []),
+        "production auth, secrets, scans, rate limits, backup restore, and incident tooling are outside this static prototype"
+      ]
+    },
+    {
+      label: "Support coverage",
+      owner: "Ops",
+      route: "#account-launch-route",
+      score: support.score,
+      event: "final_signoff.support_coverage_reviewed",
+      proof: "support_inbox_id, support_sla_id, refund_script_id, entitlement_repair_id, correction_notice_route_id",
+      acceptance: "Support inbox, SLA windows, refund/cancel scripts, entitlement repair, redacted lookup, and public correction route are staffed before launch.",
+      blockers: [
+        ...(support.score < 78 ? [support.next] : []),
+        "real support inbox, owner roster, uptime monitoring, and escalation coverage remain outside this prototype"
+      ]
+    },
+    {
+      label: "Live source release",
+      owner: "Data",
+      route: "#backend-audit-receipts",
+      score: sourceScore,
+      event: "final_signoff.live_source_reviewed",
+      proof: "live_source_worker_proof_id, scheduler_receipt_id, parser_quarantine_id, reviewer_signoff_id, rollback_evidence_id",
+      acceptance: "Source workers, source dates, parser quarantine, receipt persistence, alerts, replay, reviewer signoff, rollback, and affected surfaces are launch-reviewed.",
+      blockers: [
+        ...(sourceScore < 86 ? [sourceQa.next] : []),
+        "real scheduler execution, alert transport, reviewer identity, and durable artifact storage remain outside this prototype"
+      ]
+    },
+    {
+      label: "Release captain",
+      owner: "Founder",
+      route: "#build-progress-roadmap",
+      score: releaseScore,
+      event: "final_signoff.release_captain_decision_saved",
+      proof: `${releasePacketId}, ${launchNoGoId}`,
+      acceptance: "Release notes, rollback owner, incident commander, monitoring window, no-go decision, and first-cohort cap are attached before invites.",
+      blockers: [
+        ...(releaseScore < 82 ? ["release captain closeout cannot pass until payment, legal, security, support, and live-source lanes agree"] : []),
+        "production release captain signoff, real deploy notes, and public incident window remain outside this prototype"
+      ]
+    }
+  ];
+  const lanes = laneTemplates.map((lane, index) => {
+    const uniqueBlockers = [...new Set(lane.blockers.filter(Boolean))];
+    const score = clampNumber(Math.round(lane.score - Math.min(uniqueBlockers.length, 4) * 3), 12, 96);
+    const status = score >= 82 && uniqueBlockers.length <= 1
+      ? "Signoff ready"
+      : score >= 64
+        ? "Signoff rehearsal"
+        : "Signoff blocked";
+    return {
+      ...lane,
+      blockers: uniqueBlockers,
+      laneId: ["NN", "FINAL", "SIGNOFF", String(index + 1).padStart(2, "0"), lane.label.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase(),
+      score,
+      status,
+      tone: status === "Signoff ready" ? "ready" : status === "Signoff blocked" ? "caution" : "watch"
+    };
+  });
+  const ready = lanes.filter((lane) => lane.status === "Signoff ready").length;
+  const rehearsal = lanes.filter((lane) => lane.status === "Signoff rehearsal").length;
+  const blocked = lanes.filter((lane) => lane.status === "Signoff blocked").length;
+  const activeBlockers = [...new Set(lanes.filter((lane) => lane.status !== "Signoff ready").flatMap((lane) => lane.blockers.slice(0, 2)))];
+  const readiness = clampNumber(Math.round(
+    payments.score * 0.17 +
+      compliance.score * 0.19 +
+      security.score * 0.17 +
+      support.score * 0.13 +
+      sourceScore * 0.17 +
+      releaseScore * 0.17
+  ) - blocked * 4 - Math.min(activeBlockers.length, 6), 12, 96);
+  const status = readiness >= 84 && blocked === 0 && activeBlockers.length <= 2
+    ? "Final signoff ready"
+    : readiness >= 64 && blocked <= 1
+      ? "Final signoff in rehearsal"
+      : "Final signoff blocked";
+  return {
+    activeBlockers: activeBlockers.length ? activeBlockers : ["No active final signoff blocker in this preview. Keep real external signoffs before launch."],
+    blocked,
+    closeoutId,
+    launchNoGoId,
+    lanes,
+    metrics: [
+      { label: "Closeout ID", value: closeoutId, detail: `${ready} ready, ${rehearsal} rehearsal, ${blocked} blocked signoff lane${lanes.length === 1 ? "" : "s"}.` },
+      { label: "Release packet", value: releasePacketId, detail: "Founder release notes, rollback owner, incident commander, and monitoring window." },
+      { label: "No-go ID", value: launchNoGoId, detail: activeBlockers[0] || "No active no-go in this preview." },
+      { label: "Verdict", value: status, detail: `Launch ${launchReadiness}/100; paid beta ${betaGate.readiness}/100; final signoff ${readiness}/100.` }
+    ],
+    noGoRules: [
+      "No paid or public launch proceeds without payment rail proof, legal/compliance approval, security/auth signoff, support coverage, live-source release proof, and release-captain decision.",
+      "No payment access unlocks from success URL, browser-local state, screenshots, private support notes, or manual memory.",
+      "No public research claim refreshes without source date, citation path, reviewer status, rollback evidence, correction route, and affected-surface proof.",
+      "No support flow may ask for PAN, folio, CAS, bank data, card, UPI, OTP, credentials, transaction instructions, ARN/EUIN, distributor client-book data, or private research-note bodies.",
+      "No Phase 2 distributor/client workflow enters Phase 1 retail signoff before the Phase 2 firewall is approved."
+    ],
+    readiness,
+    ready,
+    receiptFields: [
+      "final_signoff_closeout_id",
+      "final_signoff_lane_id",
+      "release_packet_id",
+      "launch_no_go_id",
+      "payment_gateway_event_id",
+      "webhook_signature_hash",
+      "invoice_policy_version",
+      "legal_review_id",
+      "risk_warning_version",
+      "auth_threat_model_id",
+      "secret_scan_id",
+      "support_sla_id",
+      "entitlement_repair_id",
+      "live_source_worker_proof_id",
+      "scheduler_receipt_id",
+      "reviewer_signoff_id",
+      "rollback_evidence_id",
+      "release_captain_decision",
+      "first_cohort_cap",
+      "closed_at"
+    ],
+    rehearsal,
+    releasePacketId,
+    signoffSteps: [
+      "Attach payment gateway, webhook, invoice, refund, entitlement, and settlement proof to the release packet.",
+      "Attach legal review, no-advice copy, risk warnings, source disclaimers, consent screens, and refund/cancel wording.",
+      "Attach auth threat model, secret scan, dependency scan, webhook validation, idempotency replay, rate limits, backup restore, and incident response.",
+      "Attach support inbox, SLA, refund scripts, entitlement repair, redacted lookup, correction route, and owner roster.",
+      "Attach live source worker proof, reviewer signoff, rollback evidence, affected surfaces, release notes, monitoring window, and release-captain no-go decision."
+    ],
+    status,
+    tone: status === "Final signoff ready" ? "ready" : status === "Final signoff blocked" ? "caution" : "watch"
+  };
+}
+
 function renderLaunchReadinessBoard() {
   if (!els.launchReadinessOutput) return;
   const board = launchReadinessBoardConfig();
   const betaGate = board.paidBetaGate;
+  const finalSignoff = board.finalSignoff;
   if (els.launchReadinessSummary) {
-    els.launchReadinessSummary.textContent = `${board.launchReadiness}/100 | ${betaGate.readiness}/100 paid gate`;
+    els.launchReadinessSummary.textContent = `${board.launchReadiness}/100 | ${finalSignoff.readiness}/100 signoff`;
   }
   els.launchReadinessOutput.innerHTML = `
     <div class="launch-readiness-hero">
@@ -15288,6 +15483,74 @@ function renderLaunchReadinessBoard() {
         </article>
       </div>
     </div>
+    <div class="final-signoff-closeout ${escapeHtml(finalSignoff.tone)}">
+      <div class="final-signoff-head">
+        <div>
+          <span>Final signoff closeout</span>
+          <h3>${escapeHtml(finalSignoff.status)}</h3>
+          <p>Closeout ${escapeHtml(finalSignoff.closeoutId)} joins payment, legal, security, support, live-source, and release-captain proof before any paid or public launch is trusted.</p>
+        </div>
+        <div class="final-signoff-score" style="--score:${finalSignoff.readiness}">
+          <strong>${finalSignoff.readiness}</strong>
+          <span>Signoff</span>
+        </div>
+      </div>
+      <div class="final-signoff-metrics">
+        ${finalSignoff.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="final-signoff-lanes">
+        ${finalSignoff.lanes.map((lane) => `
+          <article class="${escapeHtml(lane.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(lane.owner)}</span>
+                <strong>${escapeHtml(lane.label)}</strong>
+              </div>
+              <b>${lane.score}</b>
+            </div>
+            <p>${escapeHtml(lane.status)} | ${escapeHtml(lane.laneId)}</p>
+            <div class="build-progress-bar launch"><span style="width:${lane.score}%"></span></div>
+            <small><strong>Event:</strong> ${escapeHtml(lane.event)}</small>
+            <small><strong>Proof:</strong> ${escapeHtml(lane.proof)}</small>
+            <small><strong>Accept:</strong> ${escapeHtml(lane.acceptance)}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(lane.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button final-signoff-route" type="button" data-build-route="${escapeHtml(lane.route)}">Open proof</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="final-signoff-two">
+        <article>
+          <h3>Signoff steps</h3>
+          <ol>
+            ${finalSignoff.signoffSteps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${finalSignoff.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Final no-go rules</h3>
+          <ul>
+            ${finalSignoff.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${finalSignoff.activeBlockers.length > 1 ? "caution" : "ready"}">
+          <h3>Active blockers</h3>
+          <ul>
+            ${finalSignoff.activeBlockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="launch-gate-grid">
       ${board.gates.map((gate) => `
         <article class="${escapeHtml(gate.tone)}">
@@ -15368,6 +15631,26 @@ function makeLaunchReadinessBrief() {
     ...board.paidBetaGate.releaseSequence.map((item, index) => `${index + 1}. ${item}`),
     "Beta limits:",
     ...board.paidBetaGate.betaLimits.map((item) => `- ${item}`),
+    "",
+    "## Final Signoff Closeout",
+    `Closeout ID: ${board.finalSignoff.closeoutId}`,
+    `Release packet ID: ${board.finalSignoff.releasePacketId}`,
+    `Launch no-go ID: ${board.finalSignoff.launchNoGoId}`,
+    `Verdict: ${board.finalSignoff.status}`,
+    `Final signoff readiness: ${board.finalSignoff.readiness}/100`,
+    `Ready/Rehearsal/Blocked: ${board.finalSignoff.ready}/${board.finalSignoff.rehearsal}/${board.finalSignoff.blocked}`,
+    "Metrics:",
+    ...board.finalSignoff.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "Signoff lanes:",
+    ...board.finalSignoff.lanes.map((lane) => `- ${lane.laneId}: ${lane.label} | ${lane.owner} | ${lane.status} | ${lane.score}/100 | ${lane.event} | Proof: ${lane.proof}`),
+    "Signoff steps:",
+    ...board.finalSignoff.signoffSteps.map((item, index) => `${index + 1}. ${item}`),
+    "Receipt fields:",
+    ...board.finalSignoff.receiptFields.map((item) => `- ${item}`),
+    "Final no-go rules:",
+    ...board.finalSignoff.noGoRules.map((item) => `- ${item}`),
+    "Active blockers:",
+    ...board.finalSignoff.activeBlockers.map((item) => `- ${item}`),
     "",
     "## Gates",
     ...board.gates.map((gate) => `- ${gate.label}: ${gate.score}/100 | ${gate.status} | Owner: ${gate.owner} | Next: ${gate.next}`),

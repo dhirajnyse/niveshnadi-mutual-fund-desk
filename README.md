@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v317 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v318 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -49,7 +49,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Nadi Paid Cohort Expansion Gate that converts replay-safe receipts, payment/refund proof, account readiness, support capacity, privacy closeout, compliance wording, live-source posture, and the Phase 2 firewall into a founder go/no-go decision before paid beta grows.
 - Nadi Founder Beta Operating Room with Founder Beta War-Room Digest that turns the paid cohort gate into weekly owner lanes, invite windows, support capacity, freeze rules, payment drills, privacy/compliance closeout, deploy posture, incident command, Trust Center proof, beta continuation notes, and copyable founder operating and war-room briefs.
 - Nadi Paid Beta Support Ledger that turns the first paid-user cases into support memory across failed payments, refunds, invoices, entitlement repair, account recovery, research corrections, redaction rules, case closeout, and expansion blockers before the beta cohort widens.
-- Nadi Launch Readiness Board with a Paid Beta Production Gate that turns launch readiness into production blockers, cohort limits, required receipts, release sequence, and a founder go/no-go verdict across live data, source QA, accounts, payments, compliance, security, support, and Phase 2 boundaries.
+- Nadi Launch Readiness Board with a Paid Beta Production Gate and Final Signoff Closeout that turn launch readiness into production blockers, cohort limits, required receipts, release sequence, payment/legal/security/support/live-source/release-captain signoff lanes, final no-go rules, and a founder go/no-go verdict across live data, source QA, accounts, payments, compliance, security, support, and Phase 2 boundaries.
 - Nadi Payment Readiness Lab that turns Rs. 100/month and Rs. 1,000/year retail pricing into plan, checkout, entitlement, invoice, refund, webhook, support, and reconciliation gates.
 - Nadi Payment Wiring Console with a Gateway and Retention Policy board that maps hosted checkout, monthly and annual plans, webhook verification, entitlement activation, invoice posture, refunds, cancellation, duplicate webhooks, settlement reconciliation, retention windows, support ownership, and payment-policy receipts before paid launch.
 - Nadi Payment Gateway Sandbox Route with a Founder Paid Beta Runbook that dry-runs hosted checkout, signed webhooks, duplicate events, failed renewals, refunds, invoices, entitlement activation, support repair, incidents, reconciliation, first-cohort posture, day-by-day rehearsal, and go/no-go rules before any real payment rail is switched on.

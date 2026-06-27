@@ -6,6 +6,8 @@ The board tracks live data and citations, source QA and claim release, account a
 
 V117 adds the Paid Beta Production Gate. It converts the launch board into a founder go/no-go control for the first low-fee retail cohort by joining source evidence, account boundary, payment proof, compliance posture, security/support, and receipt replay. The gate produces a paid-beta readiness score, a gate ID, hard blockers, required receipts, release sequence, and beta limits.
 
+V318 adds Final Signoff Closeout. It turns the last launch question into named signoff lanes for payment rail proof, legal and compliance, security and auth, support coverage, live-source release, and release captain decision. The closeout produces a final signoff readiness score, closeout ID, release packet ID, launch no-go ID, receipt fields, signoff steps, active blockers, and hard no-go rules before any paid or public launch is trusted.
+
 This is intentionally stricter than the product prototype score. A feature can look polished while still being unready for retail launch if the data feed is not source-dated, the account model is not tested, payment flows are missing, compliance copy is not reviewed, or backend security has not been assessed.
 
 The board also creates a release ladder: prototype hardening, private beta, paid retail beta, public retail launch, and Phase 2 distributor preview. The current build remains in prototype hardening until live data dry runs, account storage, payment rails, legal review, support operations, and security release checks move out of blocker status.

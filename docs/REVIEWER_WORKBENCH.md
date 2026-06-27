@@ -24,6 +24,8 @@ V298 carries reviewer closeout and rollback evidence into Production Worker Smok
 
 V299 carries reviewer closeout into Beta Incident Command Ledger. Reviewer sign-off, rollback evidence, Trust Center history, support-safe wording, production smoke posture, and beta continuation decisions now share one command receipt trail before a beta incident can close.
 
+V300 carries reviewer closeout and rollback evidence into Backend Deploy Runbook Packet. Reviewer sign-off, rollback contacts, support-safe release notes, production smoke posture, and incident command proof now become deploy no-go checks before a real backend worker release can proceed.
+
 Each generated handoff includes source receipt, surface status, strictness threshold, reviewer priority, evidence lock, due posture, owner, fallback language, and the next decision route. The output is intentionally product-release control only. It excludes PAN, folio, CAS, bank data, contact data, account credentials, private notes, and distributor client records.
 
 Before launch, this desk should connect to saved reviewer decisions, source-date history, visible citation links, release receipts, rollback logs, and correction notice records. Until that live workflow exists, the workbench remains a transparent prototype layer that shows how review discipline should operate before a public metric, claim, research packet, or trust surface is treated as release-ready.

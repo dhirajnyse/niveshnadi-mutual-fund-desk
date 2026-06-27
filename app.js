@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v299-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v299 Beta Incident Command Ledger";
+const DATA_VERSION = "20260627-v300-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v300 Backend Deploy Runbook Packet";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,22 +1240,22 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta incident command ledger",
+    label: "Backend deploy runbook packet",
     status: "Shipping now",
     route: "#backend-audit-receipts",
-    detail: "Persist founder recovery drills, Trust Center updates, support scripts, monitor windows, production smoke gates, and closeout decisions into one beta incident command history."
-  },
-  {
-    label: "Backend deploy runbook packet",
-    status: "Next",
-    route: "#backend-ticket-factory",
-    detail: "Package smoke dashboard and incident command ledger into deploy commands, environment checks, rollback contacts, and release-note evidence after real workers exist."
+    detail: "Package smoke gates and incident command proof into deploy commands, environment checks, rollback contacts, release-note evidence, and hard deployment no-go rules."
   },
   {
     label: "Founder beta war-room digest",
-    status: "Later",
+    status: "Next",
     route: "#founder-beta-operating-room",
-    detail: "Summarize incident command posture into founder weekly operating rhythm, invite decisions, support capacity, and beta continuation notes."
+    detail: "Summarize deploy and incident command posture into founder weekly operating rhythm, invite decisions, support capacity, and beta continuation notes."
+  },
+  {
+    label: "Worker endpoint acceptance matrix",
+    status: "Later",
+    route: "#backend-ticket-factory",
+    detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, and production monitoring handoffs."
   }
 ];
 
@@ -9260,7 +9260,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v299</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v300</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -37141,6 +37141,267 @@ function betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery
   };
 }
 
+function backendDeployRunbookPacket(config, workerSmokeDashboard, betaIncidentLedger, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs, implementationHandoff, workerCloseout) {
+  config = config || backendAuditConfig();
+  sourceImportJobs = sourceImportJobs || productionSourceImportJobs(config);
+  sourceWorker = sourceWorker || sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const runbookId = ["NN", "BACKEND", "DEPLOY", "RUNBOOK", sourceSlug, suffix].join("-").toUpperCase();
+  const commandPacketId = ["NN", "DEPLOY", "COMMAND", "PACKET", sourceSlug, suffix].join("-").toUpperCase();
+  const environmentChecklistId = ["NN", "DEPLOY", "ENV", "CHECKLIST", sourceSlug, suffix].join("-").toUpperCase();
+  const rollbackContactId = ["NN", "DEPLOY", "ROLLBACK", "CONTACTS", sourceSlug, suffix].join("-").toUpperCase();
+  const releaseNotesId = ["NN", "DEPLOY", "RELEASE", "NOTES", sourceSlug, suffix].join("-").toUpperCase();
+  const productionGateId = ["NN", "DEPLOY", "PRODUCTION", "GATE", sourceSlug, suffix].join("-").toUpperCase();
+  const storageReady = config.storage === "event" || config.storage === "append";
+  const smokeBlocked = workerSmokeDashboard.fail > 0 || workerSmokeDashboard.status === "Production smoke blocked";
+  const commandBlocked = betaIncidentLedger.status === "Beta command hold";
+  const handoffBlocked = implementationHandoff.status === "Implementation blocked";
+  const commands = [
+    {
+      label: "Preflight source worker",
+      owner: "Data Ops",
+      route: "#backend-ticket-factory",
+      command: `npm run smoke -- --gate scheduler --source ${activeJob.jobId}`,
+      proof: workerSmokeDashboard.ownerGates.find((gate) => gate.key === "scheduler")?.fixtureId || workerSmokeDashboard.dashboardId,
+      requiredEnv: "SOURCE_IMPORT_WORKER_URL, SOURCE_RECEIPT_EVENT_STREAM, WORKER_IDEMPOTENCY_SECRET",
+      score: workerSmokeDashboard.ownerGates.find((gate) => gate.key === "scheduler")?.score || workerSmokeDashboard.readiness
+    },
+    {
+      label: "Validate parser quarantine",
+      owner: "Data QA",
+      route: "#source-dry-run",
+      command: `npm run smoke -- --gate parser --source ${activeJob.jobId}`,
+      proof: workerSmokeDashboard.ownerGates.find((gate) => gate.key === "parser")?.fixtureId || workerSmokeDashboard.dashboardId,
+      requiredEnv: "SOURCE_SCHEMA_VERSION, SOURCE_PARSER_VERSION, REJECTED_ROW_STORE",
+      score: workerSmokeDashboard.ownerGates.find((gate) => gate.key === "parser")?.score || workerSmokeDashboard.readiness
+    },
+    {
+      label: "Verify receipt persistence",
+      owner: "Security Ops",
+      route: "#source-receipts",
+      command: `npm run smoke -- --gate receipt-store --source ${activeJob.jobId}`,
+      proof: sourceReceiptJob.receiptFamilyId,
+      requiredEnv: "AUDIT_EVENT_STREAM, RECEIPT_RETENTION_POLICY, REDACTION_ATTESTATION_KEY",
+      score: Math.round((sourceReceiptJob.readiness + workerSmokeDashboard.readiness) / 2)
+    },
+    {
+      label: "Deliver alert and replay",
+      owner: "Release Ops",
+      route: "#backend-audit-receipts",
+      command: `npm run smoke -- --gate alert-delivery --source ${activeJob.jobId} && npm run smoke -- --gate failed-run-replay --source ${activeJob.jobId}`,
+      proof: `${alertDelivery.deliveryId} | ${failedRunStore.replayCursorId}`,
+      requiredEnv: "ALERT_DELIVERY_CHANNEL, REVIEWER_QUEUE_ID, FAILED_RUN_EVENT_STORE",
+      score: Math.round((alertDelivery.readiness + failedRunStore.readiness + incidentReplay.readiness) / 3)
+    },
+    {
+      label: "Attach beta command status",
+      owner: "Founder Ops",
+      route: "#founder-beta-operating-room",
+      command: `npm run release:beta-command -- --ledger ${betaIncidentLedger.commandLedgerId}`,
+      proof: betaIncidentLedger.betaContinuationGateId,
+      requiredEnv: "BETA_COMMAND_LEDGER, TRUST_CENTER_HISTORY_STORE, SUPPORT_SCRIPT_REGISTRY",
+      score: betaIncidentLedger.readiness
+    },
+    {
+      label: "Publish release notes",
+      owner: "Trust Ops",
+      route: "#trust-center",
+      command: `npm run release:notes -- --runbook ${runbookId}`,
+      proof: releaseNotesId,
+      requiredEnv: "RELEASE_NOTES_STORE, TRUST_CENTER_UPDATE_ID, ROLLBACK_CONTACTS",
+      score: Math.round((publicPublishDrill.readiness + correctionPublish.readiness + rollbackEvidence.readiness) / 3)
+    }
+  ].map((command) => {
+    const score = clampNumber(command.score, 12, 96);
+    const blockers = [
+      ...(score < 64 ? [`${command.label} is below deploy command threshold`] : []),
+      ...(storageReady ? [] : ["deploy runbook needs append-only or event-stream receipt storage"]),
+      ...(smokeBlocked && command.label !== "Attach beta command status" ? ["production smoke gates must pass or receive owner closeout before deploy"] : []),
+      ...(commandBlocked && command.label === "Attach beta command status" ? ["beta command ledger is on hold"] : [])
+    ];
+    const status = score >= 84 && blockers.length === 0
+      ? "Command ready"
+      : score >= 64 && storageReady
+        ? "Needs owner check"
+        : "Deploy blocked";
+    return {
+      ...command,
+      blockers: blockers.length ? blockers : ["No active command blocker in this preview. Keep real CI artifact, owner sign-off, env secret, and release receipt before production deploy."],
+      score,
+      status,
+      tone: status === "Command ready" ? "ready" : status === "Deploy blocked" ? "caution" : "watch"
+    };
+  });
+  const environmentChecks = [
+    {
+      label: "Event storage",
+      owner: "Security Ops",
+      value: storageReady ? backendAuditStorageLabel(config.storage) : "Storage blocked",
+      detail: "Audit event stream, retention policy, receipt family, and redaction attestation must exist."
+    },
+    {
+      label: "Worker secrets",
+      owner: "Engineering",
+      value: sourceWorker.workerId,
+      detail: "Worker URL, idempotency secret, parser version, schema version, and retry policy must be configured."
+    },
+    {
+      label: "Alert delivery",
+      owner: "Release Ops",
+      value: alertDelivery.deliveryId,
+      detail: "Ops, reviewer, release, and audit channels must acknowledge alerts and dead-letter behavior."
+    },
+    {
+      label: "Beta command",
+      owner: "Founder Ops",
+      value: betaIncidentLedger.status,
+      detail: "Invite, support, public recovery, and deploy posture follow the incident command ledger."
+    },
+    {
+      label: "Rollback evidence",
+      owner: "Reviewer",
+      value: rollbackEvidence.rollbackEvidenceId,
+      detail: "Rollback contact, monitor window, old state, proposed state, and resume receipt must be attached."
+    },
+    {
+      label: "Release notes",
+      owner: "Trust Ops",
+      value: releaseNotesId,
+      detail: "Release note must cite smoke dashboard, incident ledger, public recovery proof, and no-private-data attestation."
+    }
+  ];
+  const rollbackContacts = [
+    {
+      role: "Release commander",
+      owner: "Release Ops",
+      trigger: "Any deploy command fails, alert delivery fails, or release note evidence is missing.",
+      proof: productionGateId
+    },
+    {
+      role: "Data rollback",
+      owner: "Data Ops",
+      trigger: "Parser quarantine, rejected-row digest, source date, or citation path fails.",
+      proof: sourceReceiptJob.jobContractId
+    },
+    {
+      role: "Reviewer hold",
+      owner: "Reviewer",
+      trigger: "Reviewer sign-off, rollback evidence, correction posture, or public surface state disagrees.",
+      proof: reviewerSignoff.signoffId
+    },
+    {
+      role: "Founder beta pause",
+      owner: "Founder",
+      trigger: "Beta command ledger moves to hold or support capacity freezes.",
+      proof: betaIncidentLedger.betaContinuationGateId
+    }
+  ];
+  const evidenceRows = [
+    { label: "Smoke dashboard", value: workerSmokeDashboard.dashboardId, detail: `${workerSmokeDashboard.pass} pass, ${workerSmokeDashboard.review} review, ${workerSmokeDashboard.fail} fail gates.` },
+    { label: "Incident command", value: betaIncidentLedger.commandLedgerId, detail: `${betaIncidentLedger.active} active command incidents; status ${betaIncidentLedger.status}.` },
+    { label: "Implementation handoff", value: implementationHandoff.handoffId, detail: `${implementationHandoff.packets.length} implementation packets tied to deploy dependencies.` },
+    { label: "Worker closeout", value: workerCloseout.closeoutId, detail: `${workerCloseout.closeouts.length} ticket closeouts feed deploy evidence.` },
+    { label: "Public publish drill", value: publicPublishDrill.publishDrillId, detail: "Trust Center, investor receipt, reviewer closeout, support-safe copy, and monitor proof." },
+    { label: "Rollback evidence", value: rollbackEvidence.rollbackEvidenceId, detail: "Old state, proposed state, correction receipt, resume receipt, and monitor window." }
+  ];
+  const ready = commands.filter((command) => command.status === "Command ready").length;
+  const review = commands.filter((command) => command.status === "Needs owner check").length;
+  const blocked = commands.filter((command) => command.status === "Deploy blocked").length;
+  const blockers = [...new Set([
+    ...workerSmokeDashboard.releaseBlockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 3),
+    ...betaIncidentLedger.blockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 3),
+    ...implementationHandoff.blockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 2),
+    ...(storageReady ? [] : ["deploy runbook cannot execute with browser-local receipt storage"]),
+    ...(blocked ? ["one or more deploy commands are blocked"] : []),
+    ...(handoffBlocked ? ["implementation handoff is still blocked"] : []),
+    "real environment secrets, CI artifact store, production worker endpoint, and incident owner identities remain outside this static prototype"
+  ])];
+  const readiness = clampNumber(Math.round(
+    workerSmokeDashboard.readiness * 0.22 +
+      betaIncidentLedger.readiness * 0.2 +
+      implementationHandoff.readiness * 0.14 +
+      ciSmokeHarness.readiness * 0.12 +
+      incidentReplay.readiness * 0.1 +
+      publicPublishDrill.readiness * 0.08 +
+      sourceReceiptJob.readiness * 0.08 +
+      rollbackEvidence.readiness * 0.06
+  ) - blocked * 3, 12, 96);
+  const status = readiness >= 84 && blocked === 0 && storageReady && !commandBlocked
+    ? "Deploy packet ready"
+    : readiness >= 64 && blocked <= 2
+      ? "Deploy packet review"
+      : "Deploy packet blocked";
+  const tone = status === "Deploy packet ready" ? "ready" : status === "Deploy packet blocked" ? "caution" : "watch";
+  const metrics = [
+    { label: "Deploy runbook", value: runbookId, detail: `${ready} ready, ${review} owner check, ${blocked} blocked command${commands.length === 1 ? "" : "s"}.` },
+    { label: "Command packet", value: commandPacketId, detail: "Deploy commands bind smoke, incident, receipt, alert, rollback, and release-note proof." },
+    { label: "Environment checklist", value: environmentChecklistId, detail: `${environmentChecks.length} env checks before real workers can deploy.` },
+    { label: "Production gate", value: productionGateId, detail: `${status}; beta command status is ${betaIncidentLedger.status}.` }
+  ];
+  const timeline = [
+    "Freeze release scope and collect smoke dashboard, beta incident ledger, implementation handoff, worker closeout, and rollback evidence IDs.",
+    "Run preflight source worker, parser quarantine, receipt persistence, alert delivery, failed-run replay, beta command, and release-note commands.",
+    "Verify environment checklist: event stream, worker secrets, alert routes, beta command store, rollback monitor, and release-note store.",
+    "Confirm rollback contacts and founder beta pause authority before production worker deployment.",
+    "Deploy only after command packet, release notes, Trust Center history, no-private-data attestation, and production gate receipt agree."
+  ];
+  const receiptFields = [
+    "backend_deploy_runbook_id",
+    "deploy_command_packet_id",
+    "environment_checklist_id",
+    "rollback_contact_id",
+    "release_notes_id",
+    "production_gate_id",
+    "source_job_id",
+    "worker_id",
+    "smoke_dashboard_id",
+    "beta_incident_command_ledger_id",
+    "implementation_handoff_id",
+    "worker_closeout_id",
+    "deploy_command_ref",
+    "required_env_keys",
+    "ci_artifact_uri",
+    "rollback_contact_role",
+    "trust_center_update_id",
+    "release_note_evidence_ids",
+    "no_private_data_attestation",
+    "deployed_at"
+  ];
+  const noGoRules = [
+    "No deploy if any deploy command is blocked or missing owner sign-off.",
+    "No deploy if event stream, receipt retention, worker secrets, alert routes, beta command store, rollback monitor, or release-note store is missing.",
+    "No deploy if beta incident command ledger is on hold or production smoke gates fail without closeout.",
+    "No deploy if rollback contacts and founder beta pause authority are not named before execution.",
+    "No deploy if PAN, folio, CAS, bank data, credentials, contact data, private notes, transaction instructions, or distributor client records enter deploy artifacts."
+  ];
+
+  return {
+    blocked,
+    blockers,
+    commandPacketId,
+    commands,
+    environmentChecklistId,
+    environmentChecks,
+    evidenceRows,
+    metrics,
+    noGoRules,
+    productionGateId,
+    readiness,
+    receiptFields,
+    ready,
+    releaseNotesId,
+    review,
+    rollbackContactId,
+    rollbackContacts,
+    runbookId,
+    status,
+    timeline,
+    tone
+  };
+}
+
 function sourceIncidentReceiptReplay(alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
   const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
   const activeRoute = alertRouting.routes.find((route) => route.severity === "High") || alertRouting.routes[0];
@@ -37606,9 +37867,10 @@ function renderBackendAuditReceipts(event) {
   const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenter, founderOps);
   const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
   const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
+  const deployRunbook = backendDeployRunbookPacket(config, workerSmokeDashboard, betaIncidentLedger, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs, implementationHandoff, workerCloseout);
   const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
   const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
-  els.backendAuditSummary.textContent = `${betaIncidentLedger.readiness}/100 | ${betaIncidentLedger.status}`;
+  els.backendAuditSummary.textContent = `${deployRunbook.readiness}/100 | ${deployRunbook.status}`;
   els.backendAuditOutput.innerHTML = `
     <div class="backend-audit-hero ${escapeHtml(config.tone)}">
       <div>
@@ -39026,6 +39288,102 @@ function renderBackendAuditReceipts(event) {
         </article>
       </div>
     </div>
+    <div class="deploy-runbook-packet ${escapeHtml(deployRunbook.tone)}">
+      <div class="deploy-runbook-head">
+        <div>
+          <span>Backend deploy runbook packet</span>
+          <h3>${escapeHtml(deployRunbook.status)}</h3>
+          <p>Runbook ${escapeHtml(deployRunbook.runbookId)} packages smoke gates, beta incident command proof, environment checks, rollback contacts, release-note evidence, and deployment no-go rules before real backend workers can deploy.</p>
+        </div>
+        <div class="deploy-runbook-score" style="--score:${deployRunbook.readiness}">
+          <strong>${deployRunbook.readiness}</strong>
+          <span>Deploy</span>
+        </div>
+      </div>
+      <div class="deploy-runbook-metric-grid">
+        ${deployRunbook.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="deploy-runbook-command-grid">
+        ${deployRunbook.commands.map((command) => `
+          <article class="${escapeHtml(command.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(command.owner)}</span>
+                <strong>${escapeHtml(command.label)}</strong>
+              </div>
+              <b>${command.score}</b>
+            </div>
+            <p>${escapeHtml(command.status)} | ${escapeHtml(command.proof)}</p>
+            <div class="build-progress-bar"><span style="width:${command.score}%"></span></div>
+            <small><strong>Command:</strong> ${escapeHtml(command.command)}</small>
+            <small><strong>Env:</strong> ${escapeHtml(command.requiredEnv)}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(command.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button deploy-runbook-route" type="button" data-build-route="${escapeHtml(command.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="deploy-runbook-env-grid">
+        ${deployRunbook.environmentChecks.map((check) => `
+          <article>
+            <span>${escapeHtml(check.owner)}</span>
+            <strong>${escapeHtml(check.label)}</strong>
+            <p>${escapeHtml(check.value)}</p>
+            <small>${escapeHtml(check.detail)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="deploy-runbook-contact-grid">
+        ${deployRunbook.rollbackContacts.map((contact) => `
+          <article>
+            <span>${escapeHtml(contact.owner)}</span>
+            <strong>${escapeHtml(contact.role)}</strong>
+            <p>${escapeHtml(contact.trigger)}</p>
+            <small>${escapeHtml(contact.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="deploy-runbook-evidence-grid">
+        ${deployRunbook.evidenceRows.map((row) => `
+          <article>
+            <span>${escapeHtml(row.label)}</span>
+            <strong>${escapeHtml(row.value)}</strong>
+            <p>${escapeHtml(row.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="deploy-runbook-two">
+        <article>
+          <h3>Deploy timeline</h3>
+          <ol>
+            ${deployRunbook.timeline.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${deployRunbook.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Deploy no-go rules</h3>
+          <ul>
+            ${deployRunbook.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${deployRunbook.blockers.length > 1 ? "caution" : "ready"}">
+          <h3>Deploy blockers</h3>
+          <ul>
+            ${deployRunbook.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="source-incident-board ${escapeHtml(incidentReplay.tone)}">
       <div class="source-incident-head">
         <div>
@@ -39699,6 +40057,87 @@ function makeBetaIncidentCommandLedgerBrief() {
   ].join("\n");
 }
 
+function makeBackendDeployRunbookPacketBrief() {
+  const config = backendAuditConfig();
+  const paymentReplay = paymentReconciliationReplay(config);
+  const sourceImportJobs = productionSourceImportJobs(config);
+  const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config);
+  const alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config);
+  const failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence);
+  const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
+  const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const workerCloseout = workerTicketCloseoutDrill(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract);
+  const implementationHandoff = backendImplementationHandoffPack(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract, workerCloseout);
+  const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
+  const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
+  const publicPublishDrill = publicRecoveryPublishDrill(config, correctionPublish, recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, freezeAutomation);
+  const ciSmokeHarness = backendCiSmokeHarness(config, implementationHandoff, publicPublishDrill, workerContract, workerCloseout, sourceReceiptJob, recoveryQueue, correctionPublish, failedRunStore, alertDelivery, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenterConfig(), founderBetaOperatingRoomConfig());
+  const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
+  const deployRunbook = backendDeployRunbookPacket(config, workerSmokeDashboard, betaIncidentLedger, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs, implementationHandoff, workerCloseout);
+  return [
+    "# NiveshNadi Backend Deploy Runbook Packet",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Deploy runbook ID: ${deployRunbook.runbookId}`,
+    `Command packet ID: ${deployRunbook.commandPacketId}`,
+    `Environment checklist ID: ${deployRunbook.environmentChecklistId}`,
+    `Rollback contact ID: ${deployRunbook.rollbackContactId}`,
+    `Release notes ID: ${deployRunbook.releaseNotesId}`,
+    `Production gate ID: ${deployRunbook.productionGateId}`,
+    `Status: ${deployRunbook.status}`,
+    `Readiness: ${deployRunbook.readiness}/100`,
+    `Ready commands: ${deployRunbook.ready}`,
+    `Owner-check commands: ${deployRunbook.review}`,
+    `Blocked commands: ${deployRunbook.blocked}`,
+    `Worker smoke dashboard: ${workerSmokeDashboard.dashboardId}`,
+    `Beta incident command ledger: ${betaIncidentLedger.commandLedgerId}`,
+    "",
+    "## Metrics",
+    ...deployRunbook.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Deploy Commands",
+    ...deployRunbook.commands.flatMap((command) => [
+      `- ${command.label}: ${command.status} | ${command.score}/100 | Owner: ${command.owner}`,
+      `  Command: ${command.command}`,
+      `  Env: ${command.requiredEnv}`,
+      `  Proof: ${command.proof}`,
+      `  Route: ${command.route}`,
+      `  Blockers: ${command.blockers.join(" | ")}`
+    ]),
+    "",
+    "## Environment Checks",
+    ...deployRunbook.environmentChecks.map((check) => `- ${check.label}: ${check.value} | ${check.owner} | ${check.detail}`),
+    "",
+    "## Rollback Contacts",
+    ...deployRunbook.rollbackContacts.map((contact) => `- ${contact.role}: ${contact.owner} | Trigger: ${contact.trigger} | Proof: ${contact.proof}`),
+    "",
+    "## Release Evidence",
+    ...deployRunbook.evidenceRows.map((row) => `- ${row.label}: ${row.value} | ${row.detail}`),
+    "",
+    "## Deploy Timeline",
+    ...deployRunbook.timeline.map((step) => `- ${step}`),
+    "",
+    "## Receipt Fields",
+    ...deployRunbook.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## No-Go Rules",
+    ...deployRunbook.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "## Deploy Blockers",
+    ...deployRunbook.blockers.map((blocker) => `- ${blocker}`),
+    "",
+    "## Guardrail",
+    "Backend deploy runbook receipts are release operations metadata. They do not store PAN, folio, CAS, bank data, credentials, contact records, private notes, transaction instructions, distributor client books, or personalized advice content."
+  ].join("\n");
+}
+
 function makeBackendAuditReceiptBrief() {
   const config = backendAuditConfig();
   const paymentReplay = paymentReconciliationReplay(config);
@@ -39723,12 +40162,13 @@ function makeBackendAuditReceiptBrief() {
   const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenterConfig(), founderBetaOperatingRoomConfig());
   const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
   const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
+  const deployRunbook = backendDeployRunbookPacket(config, workerSmokeDashboard, betaIncidentLedger, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs, implementationHandoff, workerCloseout);
   return [
     "# NiveshNadi Backend Audit Receipts",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
     `Stream: ${config.stream.label}`,
-    `Status: ${betaIncidentLedger.status}`,
-    `Score: ${betaIncidentLedger.readiness}/100`,
+    `Status: ${deployRunbook.status}`,
+    `Score: ${deployRunbook.readiness}/100`,
     `Owner: ${config.stream.owner}`,
     `Risk: ${config.stream.risk}`,
     `Mode: ${backendAuditModeLabel(config.mode)}`,
@@ -40020,6 +40460,28 @@ function makeBackendAuditReceiptBrief() {
     ...betaIncidentLedger.receiptFields.map((field) => `- Beta command receipt field: ${field}`),
     ...betaIncidentLedger.noGoRules.map((rule) => `- Beta command no-go rule: ${rule}`),
     ...betaIncidentLedger.blockers.map((blocker) => `- Beta command blocker: ${blocker}`),
+    "",
+    "## Backend Deploy Runbook Packet",
+    `- Deploy runbook status: ${deployRunbook.status}`,
+    `- Deploy runbook readiness: ${deployRunbook.readiness}/100`,
+    `- Deploy runbook ID: ${deployRunbook.runbookId}`,
+    `- Command packet ID: ${deployRunbook.commandPacketId}`,
+    `- Environment checklist ID: ${deployRunbook.environmentChecklistId}`,
+    `- Rollback contact ID: ${deployRunbook.rollbackContactId}`,
+    `- Release notes ID: ${deployRunbook.releaseNotesId}`,
+    `- Production gate ID: ${deployRunbook.productionGateId}`,
+    `- Ready commands: ${deployRunbook.ready}`,
+    `- Owner-check commands: ${deployRunbook.review}`,
+    `- Blocked commands: ${deployRunbook.blocked}`,
+    ...deployRunbook.metrics.map((metric) => `- Deploy metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...deployRunbook.commands.map((command) => `- Deploy command: ${command.label}: ${command.status} | ${command.score}/100 | ${command.owner} | ${command.command} | Env: ${command.requiredEnv} | Proof: ${command.proof} | ${command.route}`),
+    ...deployRunbook.environmentChecks.map((check) => `- Deploy env check: ${check.label}: ${check.value} | ${check.owner} | ${check.detail}`),
+    ...deployRunbook.rollbackContacts.map((contact) => `- Deploy rollback contact: ${contact.role}: ${contact.owner} | ${contact.trigger} | ${contact.proof}`),
+    ...deployRunbook.evidenceRows.map((row) => `- Deploy evidence: ${row.label}: ${row.value} | ${row.detail}`),
+    ...deployRunbook.timeline.map((step) => `- Deploy timeline: ${step}`),
+    ...deployRunbook.receiptFields.map((field) => `- Deploy receipt field: ${field}`),
+    ...deployRunbook.noGoRules.map((rule) => `- Deploy no-go rule: ${rule}`),
+    ...deployRunbook.blockers.map((blocker) => `- Deploy blocker: ${blocker}`),
     "",
     "## Incident Receipt Replay",
     `- Replay status: ${incidentReplay.status}`,
@@ -49902,6 +50364,7 @@ function bindEvents() {
   els.copyFounderBetaRecoveryRehearsal?.addEventListener("click", () => copyText(makeFounderBetaRecoveryRehearsalBrief()));
   els.copyProductionWorkerSmokeDashboard?.addEventListener("click", () => copyText(makeProductionWorkerSmokeDashboardBrief()));
   els.copyBetaIncidentCommandLedger?.addEventListener("click", () => copyText(makeBetaIncidentCommandLedgerBrief()));
+  els.copyBackendDeployRunbookPacket?.addEventListener("click", () => copyText(makeBackendDeployRunbookPacketBrief()));
   els.copyBackendAudit?.addEventListener("click", () => copyText(makeBackendAuditReceiptBrief()));
   els.sourceQueueForm?.addEventListener("submit", renderSourceQaQueue);
   [els.sourceQueueMode, els.sourceQueuePriority, els.sourceQueueOwner].forEach((input) => {
@@ -51691,6 +52154,7 @@ function cacheElements() {
     copyFounderBetaRecoveryRehearsal: qs("#copyFounderBetaRecoveryRehearsal"),
     copyProductionWorkerSmokeDashboard: qs("#copyProductionWorkerSmokeDashboard"),
     copyBetaIncidentCommandLedger: qs("#copyBetaIncidentCommandLedger"),
+    copyBackendDeployRunbookPacket: qs("#copyBackendDeployRunbookPacket"),
     copyBackendAudit: qs("#copyBackendAudit"),
     sourceQueueForm: qs("#sourceQueueForm"),
     sourceQueueMode: qs("#sourceQueueMode"),

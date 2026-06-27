@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V300 Backend Deploy Runbook Packet
+
+V300 adds Backend Deploy Runbook Packet inside Backend Audit Receipts. It packages production smoke gates and beta incident command proof into deploy commands, environment checks, rollback contacts, release-note evidence, production gate IDs, and hard deployment no-go rules before real backend workers can deploy.
+
 ## V299 Beta Incident Command Ledger
 
 V299 adds Beta Incident Command Ledger inside Backend Audit Receipts. It persists founder recovery, Trust Center history, support scripts, production smoke gates, monitor windows, owner command receipts, severity, beta continuation decisions, and command no-go rules into one incident command trail before founder beta invites, support posture, public recovery updates, or deploy decisions can continue.

@@ -24,6 +24,8 @@ V298 carries source job, parser, receipt, alert, replay, reviewer, and closeout 
 
 V299 carries source import incidents into Beta Incident Command Ledger. Source job, failed-run replay, production smoke gate, Trust Center history, support script, monitor window, rollback evidence, and beta continuation decision now share one command receipt trail when a source-backed beta recovery is active.
 
+V300 carries source import proof into Backend Deploy Runbook Packet. Source job IDs, parser/schema versions, accepted and rejected counts, failed-run replay, receipt persistence, alert delivery, and release evidence now become deploy command proof and environment checks before a source worker can move toward production.
+
 V119 adds the Production Source Import Gate inside the console. The gate creates a stable import gate ID, combines intake score with live data contract strength and saved source receipt proof, then decides whether the source is production-import ready, reviewer-controlled, or blocked. It also lists the required production controls: source URL or file hash, source date, schema version, parser version, accepted and rejected row counts, citation path, reviewer decision, rollback note, job sequence, release policy, and import blockers.
 
 The gate is intentionally strict. A source can be good enough for a demo dry run but still blocked from production import if it has no saved source receipt, no visible citation path, stale source date, weak field contract, parser QA gap, manual-only import path, or missing reviewer release posture. This keeps public cards, scores, X-Ray outputs, dossiers, and decision packs from silently looking live before the audit trail exists.

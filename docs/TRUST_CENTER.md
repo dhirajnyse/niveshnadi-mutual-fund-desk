@@ -6,6 +6,8 @@ It is designed to answer a practical product question: can this research surface
 
 V299 connects Trust Center history to the Beta Incident Command Ledger in Backend Audit Receipts. Trust history rows, support-safe wording, monitor windows, reviewer closeout, rollback evidence, production smoke posture, and beta continuation decisions now become command evidence before a beta incident can close.
 
+V300 connects Trust Center history to the Backend Deploy Runbook Packet in Backend Audit Receipts. Trust updates, investor-visible recovery receipts, support-safe release notes, monitor windows, and rollback proof now become release-note evidence and deploy no-go checks before backend workers can ship.
+
 ## Inputs
 
 The Trust Center reads the current selected fund, compare set, evidence readiness, claim release gate, claim release ledger, claim rollback console, correction notice builder, and correction notice ledger.

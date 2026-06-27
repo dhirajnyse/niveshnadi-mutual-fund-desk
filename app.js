@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v308-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v308 Account Lifecycle Worker Smoke Harness";
+const DATA_VERSION = "20260627-v309-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v309 Account Lifecycle Production Owner Gates";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Bind account lifecycle worker smoke fixtures to production owner gates, deploy command refs, and incident rollback closeout."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Package account lifecycle owner gates into deploy runbook packets, environment checks, rollback contacts, release-note evidence, and production closeout."
   },
   {
     phase: "Phase 2",
@@ -1240,8 +1240,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account lifecycle worker smoke harness",
+    label: "Account lifecycle production owner gates",
     status: "Shipping now",
+    route: "#account-launch-route",
+    detail: "Promote smoke fixture results into owner pass/fail gates, deploy command refs, incident rollback posture, support-safe release notes, and production closeout."
+  },
+  {
+    label: "Account lifecycle worker smoke harness",
+    status: "Done",
     route: "#account-launch-route",
     detail: "Turn lifecycle worker tickets into CI smoke fixtures, queue commands, monitor assertions, owner closeout, and deployment no-go checks."
   },
@@ -1282,10 +1288,10 @@ const BUILD_TRACKER_CURRENT_SPRINT = [
     detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, monitoring handoffs, and production deploy closeout."
   },
   {
-    label: "Account lifecycle production owner gates",
+    label: "Account lifecycle deploy runbook packet",
     status: "Later",
     route: "#backend-audit-receipts",
-    detail: "Promote smoke fixture results into owner pass/fail gates, deploy command refs, incident rollback, and release closeout."
+    detail: "Package owner gates into deploy commands, environment checks, rollback contacts, release notes, and production no-go closeout."
   }
 ];
 
@@ -9290,7 +9296,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v308</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v309</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -22062,6 +22068,203 @@ function accountLifecycleWorkerSmokeHarness(route, authDecision, storageDecision
   };
 }
 
+function accountLifecycleProductionOwnerGates(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const ownerGateId = ["NN", "ACCOUNT", "LIFECYCLE", "OWNER", "GATES", suffix, route.cohort].join("-").toUpperCase();
+  const deployGateId = ["NN", "ACCOUNT", "LIFECYCLE", "DEPLOY", "GATE", suffix, route.cutover].join("-").toUpperCase();
+  const rollbackRunbookId = ["NN", "ACCOUNT", "LIFECYCLE", "ROLLBACK", "RUNBOOK", suffix, route.data].join("-").toUpperCase();
+  const releaseNoteId = ["NN", "ACCOUNT", "LIFECYCLE", "RELEASE", "NOTES", suffix, route.auth].join("-").toUpperCase();
+  const supportCloseoutId = ["NN", "ACCOUNT", "LIFECYCLE", "SUPPORT", "CLOSEOUT", suffix, route.cohort].join("-").toUpperCase();
+  const blockedFields = inviteReceipt.blockedFields || ["PAN", "folio", "CAS", "bank", "card", "UPI", "ARN/EUIN", "distributor client book", "free-form private notes"];
+  const backendStorageReady = route.data !== "browser" && route.data !== "manual";
+  const routePublic = route.cutover === "public";
+  const gateProfiles = {
+    "auth-recovery": {
+      deployWorker: "account-recovery",
+      owner: "Security",
+      ownerSlug: "security",
+      incidentRollback: "Disable recovery links, freeze support escalation, keep active sessions unchanged, and publish a support-safe recovery hold.",
+      releaseNote: "Recovery worker deploys with provider proof, expiry state, rate-limit evidence, redaction scan, and support notice receipt.",
+      supportCloseout: "Support can explain recovery state with receipt reference, expiry posture, and no access to credentials or investment identity.",
+      noGo: "No owner pass if recovery can restore access without provider proof, expiry state, rate-limit state, and support-safe notice.",
+      productionProof: "Recovery request, closure receipt, redaction attestation, and monitor alert must share one idempotency key."
+    },
+    "session-retention": {
+      deployWorker: "session-retention",
+      owner: "Platform",
+      ownerSlug: "platform",
+      incidentRollback: "Revoke new refresh tokens, keep existing logout receipts, and force retention policy to conservative expiry.",
+      releaseNote: "Session retention deploys with refresh, logout, expiry, suspicious-login, and device-state proof tied to one policy ID.",
+      supportCloseout: "Support can confirm session state without exposing device metadata, OTP, credentials, or private research content.",
+      noGo: "No owner pass if refresh, logout, expiry, suspicious-login, or device-state retention cannot be replayed.",
+      productionProof: "Session issue, refresh, suspicious-login, logout, expiry, and retention receipts replay in sequence."
+    },
+    "vault-restore": {
+      deployWorker: "vault-restore",
+      owner: "Data",
+      ownerSlug: "data",
+      incidentRollback: "Pause restore jobs, pin prior state hashes, and require owner approval before any restored record becomes visible.",
+      releaseNote: "Vault restore deploys with prior hash, restored hash, rollback reference, entitlement check, and deleted-state guard.",
+      supportCloseout: "Support sees restore status, prior hash reference, and user notice without private notes or investment identifiers.",
+      noGo: "No owner pass if restore revives deleted records, private notes, stale entitlement, or missing rollback proof.",
+      productionProof: "Restore request, prior hash, restored hash, entitlement state, and rollback reference all reconcile."
+    },
+    "deletion-closeout": {
+      deployWorker: "deletion-closeout",
+      owner: "Privacy",
+      ownerSlug: "privacy",
+      incidentRollback: "Stop delete processors, preserve non-sensitive completion receipt, and escalate retained-proof exceptions to privacy owner.",
+      releaseNote: "Deletion closeout deploys with scoped request, retained-proof explanation, redaction scan, and support-safe completion notice.",
+      supportCloseout: "Support can explain what was deleted and what minimal receipt remains without opening user research content.",
+      noGo: "No owner pass if delete closeout lacks scoped request, retained-proof explanation, support-safe notice, or redaction scan.",
+      productionProof: "Deletion request, completion receipt, retained metadata proof, and redaction scan are attached to closeout."
+    },
+    "support-notice": {
+      deployWorker: "support-notice",
+      owner: "Support",
+      ownerSlug: "support",
+      incidentRollback: "Freeze notice sending, keep case receipt open, and swap to reviewed template until delivery evidence is clean.",
+      releaseNote: "Support notice deploys with template version, delivery state, redaction attestation, case receipt, and user-safe copy.",
+      supportCloseout: "Support can send and close lifecycle notices with delivery proof, redaction evidence, and reviewed copy.",
+      noGo: "No owner pass if support notice can close without template version, delivery state, redaction attestation, and case receipt.",
+      productionProof: "Notice send, delivery acknowledgement, redaction attestation, and case closeout write one receipt family."
+    }
+  };
+  const gates = workerSmoke.fixtures.map((fixture, index) => {
+    const profile = gateProfiles[fixture.key] || gateProfiles["support-notice"];
+    const fixtureBlockers = fixture.blockers.filter((item) => !item.startsWith("No active lifecycle smoke")).slice(0, 2);
+    const blockers = [
+      ...fixtureBlockers,
+      ...(fixture.status === "Smoke pass" ? [] : [`${fixture.status} must close before production owner pass.`]),
+      ...(workerSmoke.status === "Lifecycle smoke release-ready" ? [] : ["Smoke harness rollup is not release-ready yet."]),
+      ...(backendStorageReady ? [] : ["Production owner gate needs backend-owned account storage before deploy."]),
+      ...(routePublic ? ["Public cutover needs incident commander, support owner, and rollback contact signoff."] : []),
+      ...(authDecision.readiness >= 70 ? [] : ["Auth decision board is below owner-gate threshold."]),
+      ...(storageDecision.readiness >= 70 ? [] : ["Storage decision board is below owner-gate threshold."]),
+      ...(supportOps.readiness >= 70 ? [] : ["Support operations handoff is below owner-gate threshold."])
+    ];
+    const score = clampNumber(Math.round(
+      fixture.score * 0.5 +
+        workerSmoke.readiness * 0.2 +
+        route.score * 0.08 +
+        supportOps.readiness * 0.08 +
+        storageDecision.readiness * 0.04 +
+        authDecision.readiness * 0.04 +
+        (fixture.status === "Smoke pass" ? 10 : fixture.status === "Owner review" ? 4 : -8) -
+        blockers.length * 4
+    ), 10, 98);
+    const status = score >= 86 && !blockers.length
+      ? "Owner pass"
+      : score >= 64
+        ? "Owner review"
+        : "Owner blocked";
+    const tone = status === "Owner pass" ? "ready" : status === "Owner blocked" ? "blocked" : "draft";
+    const gateId = ["NN", "ACCOUNT", "LIFECYCLE", "OWNER", "GATE", String(index + 1).padStart(2, "0"), profile.deployWorker.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase();
+    return {
+      artifact: fixture.artifact,
+      blockers: blockers.length ? blockers : ["No active production owner-gate blocker in this preview. Keep real deploy identity, incident commander, support owner, rollback contact, release-note evidence, and backend audit storage before production."],
+      deployCommand: `npm run deploy:account-lifecycle -- --worker ${profile.deployWorker} --gate ${fixture.fixtureId} --owner ${profile.ownerSlug}`,
+      event: fixture.event.replace(/\.smoke_checked$/, ".owner_gate_signed"),
+      fixtureId: fixture.fixtureId,
+      gateId,
+      incidentRollback: profile.incidentRollback,
+      label: fixture.label,
+      monitor: fixture.monitor,
+      noGo: profile.noGo,
+      owner: profile.owner,
+      proof: `${profile.productionProof} Smoke artifact ${fixture.artifact}; ticket ${fixture.ticketId}.`,
+      releaseNote: profile.releaseNote,
+      route: fixture.route,
+      score,
+      service: fixture.service,
+      status,
+      supportCloseout: profile.supportCloseout,
+      ticketId: fixture.ticketId,
+      tone
+    };
+  });
+  const pass = gates.filter((gate) => gate.status === "Owner pass").length;
+  const review = gates.filter((gate) => gate.status === "Owner review").length;
+  const blocked = gates.filter((gate) => gate.status === "Owner blocked").length;
+  const gateAverage = Math.round(gates.reduce((sum, gate) => sum + gate.score, 0) / gates.length);
+  const activeBlockers = [...new Set(gates
+    .filter((gate) => gate.status !== "Owner pass")
+    .flatMap((gate) => gate.blockers.filter((item) => !item.startsWith("No active production owner-gate")).slice(0, 2)))];
+  const readiness = clampNumber(Math.round(
+    gateAverage * 0.5 +
+      workerSmoke.readiness * 0.18 +
+      workerTickets.readiness * 0.12 +
+      recoveryRetention.readiness * 0.08 +
+      supportOps.readiness * 0.06 +
+      route.score * 0.06
+  ) - Math.min(activeBlockers.length, 6) * 2, 10, 98);
+  const status = readiness >= 86 && !blocked && activeBlockers.length <= 1
+    ? "Lifecycle owner gates release-ready"
+    : readiness >= 64
+      ? "Lifecycle owner gates need review"
+      : "Lifecycle owner gates blocked";
+  const tone = status === "Lifecycle owner gates release-ready" ? "ready" : status === "Lifecycle owner gates blocked" ? "blocked" : "draft";
+  const metrics = [
+    { label: "Owner gate packet", value: ownerGateId, detail: `${pass} pass, ${review} review, ${blocked} blocked owner gate${gates.length === 1 ? "" : "s"}.` },
+    { label: "Deploy gate", value: deployGateId, detail: `${gates.length} deploy command refs must attach command receipts and owner identity.` },
+    { label: "Rollback runbook", value: rollbackRunbookId, detail: "Recovery, session, restore, deletion, and notice rollback posture is captured before production deploy." },
+    { label: "Release closeout", value: releaseNoteId, detail: `Release notes and support closeout flow into ${supportCloseoutId}.` }
+  ];
+  const deploymentSequence = [
+    "Freeze account invite expansion and confirm support capacity before lifecycle deploy.",
+    "Run each deploy command with production identity, command receipt, fixture artifact, and monitor window attached.",
+    "Hold release if any owner gate is Owner review or Owner blocked without explicit incident commander approval.",
+    "Publish support-safe release notes with rollback posture, user-facing notice language, and blocked-data exclusions.",
+    "Close the deploy only after owner pass, monitor quiet window, rollback contact acknowledgement, and support closeout receipt."
+  ];
+  const receiptFields = [
+    "account_lifecycle_owner_gate_id",
+    "deploy_gate_id",
+    "owner_gate_id",
+    "smoke_fixture_id",
+    "worker_ticket_id",
+    "deploy_command_ref",
+    "command_receipt_id",
+    "owner_identity_ref",
+    "artifact_uri",
+    "monitor_event",
+    "incident_rollback_ref",
+    "release_note_id",
+    "support_closeout_id",
+    "blocked_data_scan",
+    "owner_decision",
+    "deployment_no_go_id",
+    "closed_at"
+  ];
+  const noGoRules = [
+    "No lifecycle production deploy if any owner gate is Owner blocked or lacks deploy command ref, command receipt, owner identity, artifact URI, monitor event, release note, and rollback posture.",
+    "No recovery or session deploy if auth proof, expiry behavior, rate-limit state, suspicious-login replay, logout state, or support notice receipt is unresolved.",
+    "No restore or deletion deploy if state hashes, retained-proof explanation, redaction scan, rollback reference, or support-safe completion notice is missing.",
+    "No support notice deploy if template version, delivery acknowledgement, redaction attestation, reviewed copy, or support case closeout is missing.",
+    `No production owner gate may ship payloads containing ${blockedFields.join(", ")}.`
+  ];
+  return {
+    activeBlockers: activeBlockers.length ? activeBlockers : ["No active production owner-gate blocker in this preview. Keep real deploy credentials, owner signoff, incident commander, rollback contact, support closeout, monitor alerts, and backend audit storage before production."],
+    blocked,
+    deployGateId,
+    deploymentSequence,
+    gateAverage,
+    gates,
+    metrics,
+    noGoRules,
+    ownerGateId,
+    pass,
+    readiness,
+    receiptFields,
+    releaseNoteId,
+    review,
+    rollbackRunbookId,
+    status,
+    supportCloseoutId,
+    tone
+  };
+}
+
 function renderAccountLaunchRoute(event) {
   if (event) event.preventDefault();
   if (!els.accountRouteOutput) return;
@@ -22080,8 +22283,9 @@ function renderAccountLaunchRoute(event) {
   const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
   const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
   const workerSmoke = accountLifecycleWorkerSmokeHarness(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets);
+  const ownerGates = accountLifecycleProductionOwnerGates(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke);
   if (els.accountRouteSummary) {
-    els.accountRouteSummary.textContent = `${workerSmoke.readiness}/100 | ${workerSmoke.status}`;
+    els.accountRouteSummary.textContent = `${ownerGates.readiness}/100 | ${ownerGates.status}`;
   }
   els.accountRouteOutput.innerHTML = `
     <div class="account-route-hero ${escapeHtml(route.tone)}">
@@ -22693,6 +22897,77 @@ function renderAccountLaunchRoute(event) {
         </article>
       </div>
     </div>
+    <div class="account-route-owner ${escapeHtml(ownerGates.tone)}">
+      <div class="account-route-owner-head">
+        <div>
+          <span>Account lifecycle production owner gates</span>
+          <h3>${escapeHtml(ownerGates.status)}</h3>
+          <p>Owner gate ${escapeHtml(ownerGates.ownerGateId)} promotes smoke fixture proof into production pass/fail decisions with deploy command refs, incident rollback posture, support-safe release notes, and closeout receipts.</p>
+        </div>
+        <div class="account-route-owner-score" style="--score:${ownerGates.readiness}">
+          <strong>${ownerGates.readiness}</strong>
+          <span>owner</span>
+        </div>
+      </div>
+      <div class="account-route-owner-grid">
+        ${ownerGates.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-owner-gate-grid">
+        ${ownerGates.gates.map((gate) => `
+          <article class="${escapeHtml(gate.tone)}">
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(gate.owner)}</span>
+                <strong>${escapeHtml(gate.label)}</strong>
+              </div>
+              <b>${gate.score}/100</b>
+            </div>
+            <p>${escapeHtml(gate.status)} | ${escapeHtml(gate.gateId)}</p>
+            <div class="build-progress-bar"><span style="width:${gate.score}%"></span></div>
+            <small><strong>Deploy:</strong> ${escapeHtml(gate.deployCommand)}</small>
+            <small><strong>Event:</strong> ${escapeHtml(gate.event)}</small>
+            <small><strong>Artifact:</strong> ${escapeHtml(gate.artifact)} | ${escapeHtml(gate.monitor)}</small>
+            <small><strong>Rollback:</strong> ${escapeHtml(gate.incidentRollback)}</small>
+            <small><strong>Release note:</strong> ${escapeHtml(gate.releaseNote)}</small>
+            <small><strong>No-go:</strong> ${escapeHtml(gate.noGo)}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(gate.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button account-route-owner-route" type="button" data-build-route="${escapeHtml(gate.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-owner-two">
+        <article>
+          <span>Deployment sequence</span>
+          <ol>
+            ${ownerGates.deploymentSequence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <ul>
+            ${ownerGates.receiptFields.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Production no-go rules</span>
+          <ul>
+            ${ownerGates.noGoRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${ownerGates.activeBlockers.length > 1 ? "blocked" : "ready"}">
+          <span>Owner blockers</span>
+          <ul>
+            ${ownerGates.activeBlockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="account-route-gate-grid">
       ${ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `
         <article>
@@ -22744,6 +23019,7 @@ function makeAccountLaunchRouteBrief() {
   const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
   const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
   const workerSmoke = accountLifecycleWorkerSmokeHarness(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets);
+  const ownerGates = accountLifecycleProductionOwnerGates(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke);
   const betaScore = Math.round(betaChecklist.reduce((sum, item) => sum + item.score, 0) / betaChecklist.length);
   return [
     "# NiveshNadi Retail Account Launch Route",
@@ -22877,6 +23153,22 @@ function makeAccountLaunchRouteBrief() {
     ...workerSmoke.receiptFields.map((item) => `- Smoke receipt field: ${item}`),
     ...workerSmoke.noGoRules.map((item) => `- Smoke no-go rule: ${item}`),
     ...workerSmoke.activeBlockers.map((item) => `- Smoke blocker: ${item}`),
+    "",
+    "## Account Lifecycle Production Owner Gates",
+    `- Status: ${ownerGates.status}`,
+    `- Readiness: ${ownerGates.readiness}/100`,
+    `- Owner gate packet: ${ownerGates.ownerGateId}`,
+    `- Deploy gate: ${ownerGates.deployGateId}`,
+    `- Rollback runbook: ${ownerGates.rollbackRunbookId}`,
+    `- Release notes: ${ownerGates.releaseNoteId}`,
+    `- Support closeout: ${ownerGates.supportCloseoutId}`,
+    `- Pass/Review/Blocked: ${ownerGates.pass}/${ownerGates.review}/${ownerGates.blocked}`,
+    ...ownerGates.metrics.map((metric) => `- Owner metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...ownerGates.gates.map((gate) => `- Owner gate: ${gate.gateId}: ${gate.label} | ${gate.status} | ${gate.score}/100 | ${gate.owner} | ${gate.deployCommand} | ${gate.event} | ${gate.artifact} | ${gate.route}`),
+    ...ownerGates.deploymentSequence.map((item) => `- Deployment sequence: ${item}`),
+    ...ownerGates.receiptFields.map((item) => `- Owner receipt field: ${item}`),
+    ...ownerGates.noGoRules.map((item) => `- Owner no-go rule: ${item}`),
+    ...ownerGates.activeBlockers.map((item) => `- Owner blocker: ${item}`),
     "",
     "## Launch Gates",
     ...ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `- ${gate.label}: ${gate.score}/100 | ${gate.event} | ${gate.proof} | ${gate.guardrail}`),
@@ -23082,6 +23374,72 @@ function makeAccountLifecycleSmokeBrief() {
     "",
     "## Guardrail",
     "Account lifecycle smoke fixtures are release-gate metadata. They must not store PAN, folio, CAS, bank data, card, UPI, OTP, account credentials, gateway secrets, ARN/EUIN, distributor client books, private notes, transaction instructions, or personalized advice content."
+  ].join("\n");
+}
+
+function makeAccountLifecycleOwnerBrief() {
+  const route = accountLaunchRouteConfig();
+  const betaChecklist = founderBetaChecklist(route);
+  const authDecision = founderAuthDecisionBoard(route, betaChecklist);
+  const storageDecision = founderStorageDecisionBoard(route, betaChecklist);
+  const inviteGate = founderInviteGate(route, betaChecklist);
+  const inviteReceipt = founderInviteReceipt(route, betaChecklist, inviteGate);
+  const supportDrill = founderSupportDrill(route, betaChecklist, inviteGate, inviteReceipt);
+  const supportCasebook = founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill);
+  const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
+  const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
+  const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
+  const workerSmoke = accountLifecycleWorkerSmokeHarness(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets);
+  const ownerGates = accountLifecycleProductionOwnerGates(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke);
+  return [
+    "# NiveshNadi Account Lifecycle Production Owner Gates",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Owner gate packet ID: ${ownerGates.ownerGateId}`,
+    `Deploy gate ID: ${ownerGates.deployGateId}`,
+    `Rollback runbook ID: ${ownerGates.rollbackRunbookId}`,
+    `Release note ID: ${ownerGates.releaseNoteId}`,
+    `Support closeout ID: ${ownerGates.supportCloseoutId}`,
+    `Status: ${ownerGates.status}`,
+    `Readiness: ${ownerGates.readiness}/100`,
+    `Gate average: ${ownerGates.gateAverage}/100`,
+    `Pass/Review/Blocked: ${ownerGates.pass}/${ownerGates.review}/${ownerGates.blocked}`,
+    "",
+    "## Metrics",
+    ...ownerGates.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Production Owner Gates",
+    ...ownerGates.gates.flatMap((gate) => [
+      `- ${gate.gateId}: ${gate.label} | ${gate.status} | ${gate.score}/100 | Owner: ${gate.owner}`,
+      `  Ticket: ${gate.ticketId}`,
+      `  Smoke fixture: ${gate.fixtureId}`,
+      `  Service: ${gate.service}`,
+      `  Deploy command: ${gate.deployCommand}`,
+      `  Event: ${gate.event}`,
+      `  Monitor: ${gate.monitor}`,
+      `  Artifact: ${gate.artifact}`,
+      `  Production proof: ${gate.proof}`,
+      `  Incident rollback: ${gate.incidentRollback}`,
+      `  Release note: ${gate.releaseNote}`,
+      `  Support closeout: ${gate.supportCloseout}`,
+      `  Production no-go: ${gate.noGo}`,
+      `  Route: ${gate.route}`,
+      `  Blockers: ${gate.blockers.join(" | ")}`
+    ]),
+    "",
+    "## Deployment Sequence",
+    ...ownerGates.deploymentSequence.map((item) => `- ${item}`),
+    "",
+    "## Receipt Fields",
+    ...ownerGates.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## Production No-Go Rules",
+    ...ownerGates.noGoRules.map((item) => `- ${item}`),
+    "",
+    "## Active Blockers",
+    ...ownerGates.activeBlockers.map((item) => `- ${item}`),
+    "",
+    "## Guardrail",
+    "Account lifecycle production owner gates are deployment control metadata. They must not store PAN, folio, CAS, bank data, card, UPI, OTP, account credentials, gateway secrets, ARN/EUIN, distributor client books, private notes, transaction instructions, or personalized advice content."
   ].join("\n");
 }
 
@@ -52813,6 +53171,7 @@ function bindEvents() {
   els.copyAccountRecoveryRetention?.addEventListener("click", () => copyText(makeAccountRecoveryRetentionBrief()));
   els.copyAccountLifecycleWorkers?.addEventListener("click", () => copyText(makeAccountLifecycleWorkerBrief()));
   els.copyAccountLifecycleSmoke?.addEventListener("click", () => copyText(makeAccountLifecycleSmokeBrief()));
+  els.copyAccountLifecycleOwners?.addEventListener("click", () => copyText(makeAccountLifecycleOwnerBrief()));
   els.copyAccountRoute?.addEventListener("click", () => copyText(makeAccountLaunchRouteBrief()));
   els.accountLaunchForm?.addEventListener("submit", renderAccountLaunchShell);
   [els.accountLaunchAuth, els.accountLaunchStorage, els.accountLaunchMigration, els.accountLaunchSupport].forEach((input) => {
@@ -54746,6 +55105,7 @@ function cacheElements() {
     copyAccountRecoveryRetention: qs("#copyAccountRecoveryRetention"),
     copyAccountLifecycleWorkers: qs("#copyAccountLifecycleWorkers"),
     copyAccountLifecycleSmoke: qs("#copyAccountLifecycleSmoke"),
+    copyAccountLifecycleOwners: qs("#copyAccountLifecycleOwners"),
     copyAccountRoute: qs("#copyAccountRoute"),
     accountLaunchForm: qs("#accountLaunchForm"),
     accountLaunchAuth: qs("#accountLaunchAuth"),

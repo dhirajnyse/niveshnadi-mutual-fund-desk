@@ -248,6 +248,10 @@ V308 adds Account Lifecycle Worker Smoke Harness to the account route. Each life
 
 Commercially, this keeps account recovery, restore, deletion, and support notices from becoming hidden founder labor. Paid account operations should pass repeatable release-gate proof before the next cohort depends on them.
 
+V309 adds Account Lifecycle Production Owner Gates to the same route. Each recovery, session, restore, deletion, and support notice smoke fixture now rolls into an owner pass/fail gate with deploy command ref, incident rollback posture, release-note evidence, support closeout, and production no-go rules.
+
+Commercially, this keeps low-price account operations honest: a paid cohort should not widen until the team can prove who owns each lifecycle deploy, how it rolls back, what support tells users, and which no-go rule blocks unsafe release.
+
 ## Payment Adapter Repairs
 
 V150 connects the payment backend to repairable adapter routes. Checkout, webhook, idempotency replay, refund, cancellation, entitlement projection, support repair, settlement, and incident adapters now show the event in, event out, receipt join, repair action, rollback rule, and blockers before real gateway events can unlock paid features.

@@ -21,6 +21,8 @@ V307 extends those receipts into Lifecycle Worker Acceptance Tickets. Account ac
 
 V308 extends those worker tickets into Account Lifecycle Worker Smoke Harness. Account access is still not launch-ready until recovery, session, restore, deletion, and support notice workers have command-backed smoke fixtures, artifact URIs, seed events, assertion checks, replay proof, monitor events, owner review states, and deployment no-go rules.
 
+V309 extends those smoke fixtures into Account Lifecycle Production Owner Gates. Account access is still not launch-ready until each lifecycle worker has an owner pass/fail gate, deploy command ref, incident rollback posture, support-safe release note, support closeout receipt, and hard production no-go rule.
+
 ## Guardrails
 
 The shell intentionally stays research-only. It does not collect PAN, folio, KYC, bank details, distributor ARN/EUIN, client books, or transaction credentials. Before launch, the production implementation must add provider-specific authentication, encrypted storage policies, audit receipts, subscription entitlement checks, deletion workflow evidence, support access logs, and a written Phase 2 firewall for distributor workflows.

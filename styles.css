@@ -12598,6 +12598,220 @@ body.simple-mode.simple-review-focus .dossier-band {
   }
 }
 
+.account-route-owner {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(31, 78, 121, 0.26);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(246, 248, 250, 0.98), rgba(236, 246, 244, 0.9));
+}
+
+.account-route-owner.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.88), rgba(246, 248, 250, 0.96));
+}
+
+.account-route-owner.draft {
+  border-color: rgba(225, 160, 55, 0.42);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.96), rgba(246, 248, 250, 0.96));
+}
+
+.account-route-owner.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(246, 248, 250, 0.96));
+}
+
+.account-route-owner p,
+.account-route-owner li,
+.account-route-owner small {
+  color: var(--muted);
+  line-height: 1.42;
+  overflow-wrap: anywhere;
+}
+
+.account-route-owner-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px;
+  gap: 12px;
+  align-items: center;
+}
+
+.account-route-owner-head span,
+.account-route-owner-grid span,
+.account-route-owner-gate-grid span,
+.account-route-owner-two span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.account-route-owner-head h3 {
+  margin: 3px 0 0;
+  color: var(--ink);
+  font-size: 23px;
+  line-height: 1.12;
+}
+
+.account-route-owner-head p {
+  margin: 7px 0 0;
+}
+
+.account-route-owner-score {
+  position: relative;
+  width: 82px;
+  height: 82px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+  text-align: center;
+}
+
+.account-route-owner-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.account-route-owner-score strong,
+.account-route-owner-score span {
+  position: relative;
+}
+
+.account-route-owner-score strong {
+  display: block;
+  font-size: 27px;
+  line-height: 1;
+}
+
+.account-route-owner-score span {
+  color: #dbe7ef;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.account-route-owner-grid,
+.account-route-owner-gate-grid,
+.account-route-owner-two {
+  display: grid;
+  gap: 10px;
+}
+
+.account-route-owner-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.account-route-owner-gate-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.account-route-owner-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.account-route-owner-grid,
+.account-route-owner-gate-grid,
+.account-route-owner-two,
+.account-route-owner-grid article,
+.account-route-owner-gate-grid article,
+.account-route-owner-two article {
+  min-width: 0;
+}
+
+.account-route-owner-grid article,
+.account-route-owner-gate-grid article,
+.account-route-owner-two article {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.account-route-owner-gate-grid article.ready,
+.account-route-owner-two article.ready {
+  border-color: rgba(15, 124, 107, 0.3);
+  background: rgba(229, 247, 241, 0.74);
+}
+
+.account-route-owner-gate-grid article.draft,
+.account-route-owner-two article.draft {
+  border-color: rgba(225, 160, 55, 0.34);
+  background: rgba(255, 250, 240, 0.86);
+}
+
+.account-route-owner-gate-grid article.blocked,
+.account-route-owner-two article.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: var(--rose-soft);
+}
+
+.account-route-owner-grid strong,
+.account-route-owner-gate-grid strong,
+.account-route-owner-two strong {
+  display: block;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.account-route-owner-grid p,
+.account-route-owner-gate-grid p,
+.account-route-owner-two p {
+  margin: 0;
+}
+
+.account-route-owner-gate-grid small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.account-route-owner-gate-grid small strong {
+  color: var(--ink);
+}
+
+.account-route-owner-route {
+  margin-top: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.account-route-owner-two ul,
+.account-route-owner-two ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+@media (max-width: 980px) {
+  .account-route-owner-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .account-route-owner-head,
+  .account-route-owner-grid,
+  .account-route-owner-gate-grid,
+  .account-route-owner-two {
+    grid-template-columns: 1fr;
+  }
+
+  .account-route-owner-score {
+    justify-self: start;
+  }
+}
+
 .account-route-metric-grid article,
 .account-route-map-grid article,
 .account-route-check-grid article,

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V309 Account Lifecycle Production Owner Gates
+
+V309 adds Account Lifecycle Production Owner Gates inside the Retail Account Launch Route. It promotes recovery, session retention, vault restore, deletion closeout, and support notice smoke fixtures into owner-scoped production pass/fail gates with deploy command refs, incident rollback posture, release-note evidence, support-safe closeout, receipt fields, and hard production no-go checks before account lifecycle workers can move toward deploy runbooks.
+
 ## V308 Account Lifecycle Worker Smoke Harness
 
 V308 adds Account Lifecycle Worker Smoke Harness inside the Retail Account Launch Route. It converts recovery, session retention, vault restore, deletion closeout, and support notice worker tickets into CI-style smoke fixtures with command refs, artifact URIs, deterministic seed events, assertion checks, replay expectations, payload scans, monitor events, owner review states, deployment no-go rules, and a copyable smoke packet before account lifecycle workers can move toward release gates.

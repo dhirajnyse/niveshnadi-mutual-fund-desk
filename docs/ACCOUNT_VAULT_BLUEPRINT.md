@@ -20,6 +20,8 @@ V306 connects the vault to Account Recovery and Retention Receipts in the Retail
 
 V307 connects those lifecycle receipts to worker acceptance tickets. Vault restore and deletion cannot move into implementation until their workers have endpoint contracts, payload fields, request and receipt logs, replay or retained-proof behavior, redaction logs, monitor events, owner acknowledgement, and closeout no-go rules.
 
+V308 connects those worker tickets to Account Lifecycle Worker Smoke Harness. Vault restore and deletion cannot move toward release until their smoke fixtures prove command refs, artifact URIs, deterministic seed events, state-hash assertions, replay or retained-proof behavior, redaction scans, monitor events, owner review, and deployment no-go rules.
+
 The blueprint intentionally excludes PAN, folio numbers, CAS files, bank details, UPI details, card data, nominee information, tax documents, address data, ARN/EUIN, distributor client books, and private family or tax notes. Those fields belong either outside the product or inside a later Phase 2 consent architecture.
 
 Before launch, each vault collection needs row ownership, encryption, backup rules, retention policy, and redacted support visibility. Paid plan access should be enforced by server-side entitlement state, not by browser flags. Account export should show what is included and what is excluded. Account deletion should clear saved research while leaving only a minimal non-sensitive completion receipt when legally required.

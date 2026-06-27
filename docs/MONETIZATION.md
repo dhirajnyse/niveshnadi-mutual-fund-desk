@@ -244,6 +244,10 @@ V307 adds Lifecycle Worker Acceptance Tickets to the same route. Each recovery, 
 
 Commercially, this keeps the Rs. 100/month and Rs. 1,000/year product from relying on optimistic account operations. Lifecycle work should become queueable, replayable, monitored backend behavior before paid accounts widen.
 
+V308 adds Account Lifecycle Worker Smoke Harness to the account route. Each lifecycle worker ticket now needs command-backed smoke fixtures with artifact URIs, seed events, assertion checks, payload scans, replay proof, monitor events, owner review, and deployment no-go rules.
+
+Commercially, this keeps account recovery, restore, deletion, and support notices from becoming hidden founder labor. Paid account operations should pass repeatable release-gate proof before the next cohort depends on them.
+
 ## Payment Adapter Repairs
 
 V150 connects the payment backend to repairable adapter routes. Checkout, webhook, idempotency replay, refund, cancellation, entitlement projection, support repair, settlement, and incident adapters now show the event in, event out, receipt join, repair action, rollback rule, and blockers before real gateway events can unlock paid features.

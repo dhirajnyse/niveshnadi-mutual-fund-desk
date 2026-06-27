@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V308 Account Lifecycle Worker Smoke Harness
+
+V308 adds Account Lifecycle Worker Smoke Harness inside the Retail Account Launch Route. It converts recovery, session retention, vault restore, deletion closeout, and support notice worker tickets into CI-style smoke fixtures with command refs, artifact URIs, deterministic seed events, assertion checks, replay expectations, payload scans, monitor events, owner review states, deployment no-go rules, and a copyable smoke packet before account lifecycle workers can move toward release gates.
+
 ## V307 Lifecycle Worker Acceptance Tickets
 
 V307 adds Lifecycle Worker Acceptance Tickets inside the Retail Account Launch Route. It converts account recovery, session retention, vault restore, deletion closeout, and support notice receipt lanes into backend worker tickets with endpoint methods and paths, services, queues, payload fields, logs, monitor events, acceptance tests, closeout rules, owner routes, blocked-data scans, and a copyable worker-ticket packet before account lifecycle work can move into implementation.

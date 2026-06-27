@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v307-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v307 Lifecycle Worker Acceptance Tickets";
+const DATA_VERSION = "20260627-v308-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v308 Account Lifecycle Worker Smoke Harness";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Bind lifecycle worker acceptance tickets to queue runbooks, CI smoke fixtures, and production owner closeout."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Bind account lifecycle worker smoke fixtures to production owner gates, deploy command refs, and incident rollback closeout."
   },
   {
     phase: "Phase 2",
@@ -1240,8 +1240,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Lifecycle worker acceptance tickets",
+    label: "Account lifecycle worker smoke harness",
     status: "Shipping now",
+    route: "#account-launch-route",
+    detail: "Turn lifecycle worker tickets into CI smoke fixtures, queue commands, monitor assertions, owner closeout, and deployment no-go checks."
+  },
+  {
+    label: "Lifecycle worker acceptance tickets",
+    status: "Done",
     route: "#account-launch-route",
     detail: "Turn account lifecycle receipt lanes into backend worker endpoints, payload contracts, logs, monitor events, and closeout tests."
   },
@@ -1276,10 +1282,10 @@ const BUILD_TRACKER_CURRENT_SPRINT = [
     detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, monitoring handoffs, and production deploy closeout."
   },
   {
-    label: "Account lifecycle worker smoke harness",
+    label: "Account lifecycle production owner gates",
     status: "Later",
     route: "#backend-audit-receipts",
-    detail: "Turn lifecycle worker tickets into CI smoke fixtures, queue commands, owner closeout, and deployment no-go checks."
+    detail: "Promote smoke fixture results into owner pass/fail gates, deploy command refs, incident rollback, and release closeout."
   }
 ];
 
@@ -9284,7 +9290,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v307</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v308</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -21847,6 +21853,215 @@ function accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDec
   };
 }
 
+function accountLifecycleWorkerSmokeHarness(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const smokeHarnessId = ["NN", "ACCOUNT", "LIFECYCLE", "SMOKE", "HARNESS", suffix, route.cohort].join("-").toUpperCase();
+  const fixtureBatchId = ["NN", "ACCOUNT", "LIFECYCLE", "SMOKE", "FIXTURES", suffix, route.auth].join("-").toUpperCase();
+  const releaseGateId = ["NN", "ACCOUNT", "LIFECYCLE", "SMOKE", "GATE", suffix, route.cutover].join("-").toUpperCase();
+  const monitorSuiteId = ["NN", "ACCOUNT", "LIFECYCLE", "MONITOR", "SUITE", suffix, route.data].join("-").toUpperCase();
+  const deploymentNoGoId = ["NN", "ACCOUNT", "LIFECYCLE", "DEPLOY", "NOGO", suffix, route.cutover].join("-").toUpperCase();
+  const blockedFields = inviteReceipt.blockedFields || ["PAN", "folio", "CAS", "bank", "card", "UPI", "ARN/EUIN", "distributor client book", "free-form private notes"];
+  const storageReady = route.data !== "browser" && route.data !== "manual";
+  const routePublic = route.cutover === "public";
+  const fixtureProfiles = {
+    "auth-recovery": {
+      artifact: "artifacts/account/recovery-smoke.json",
+      commandKey: "account-recovery",
+      gate: "Recovery closeout",
+      noGo: "No deploy if recovery can restore access without provider proof, expiry state, rate-limit state, and support-safe notice.",
+      primaryAssertion: "expired recovery closes without account state change",
+      replay: "Replay recovery.requested to recovery.closed and prove support notice delivery is linked.",
+      seed: "expired_recovery_request"
+    },
+    "session-retention": {
+      artifact: "artifacts/account/session-retention-smoke.json",
+      commandKey: "session-retention",
+      gate: "Session retention",
+      noGo: "No deploy if refresh, logout, expiry, suspicious-login, or device-state retention cannot be replayed.",
+      primaryAssertion: "expired refresh cannot revive closed session",
+      replay: "Replay issue, refresh, suspicious-login, logout, and expiry with one retention policy ID.",
+      seed: "suspicious_login_session"
+    },
+    "vault-restore": {
+      artifact: "artifacts/account/vault-restore-smoke.json",
+      commandKey: "vault-restore",
+      gate: "Vault restore replay",
+      noGo: "No deploy if restore revives deleted records, private notes, stale entitlement, or missing rollback proof.",
+      primaryAssertion: "prior and restored hashes match rollback reference",
+      replay: "Replay restore request from account vault events and compare prior and restored state hashes.",
+      seed: "saved_research_restore"
+    },
+    "deletion-closeout": {
+      artifact: "artifacts/account/deletion-closeout-smoke.json",
+      commandKey: "deletion-closeout",
+      gate: "Deletion closeout",
+      noGo: "No deploy if delete closeout lacks scoped request, retained-proof explanation, support-safe notice, or redaction scan.",
+      primaryAssertion: "deleted research state is absent while retained receipt metadata remains",
+      replay: "Replay delete request to completion receipt and prove retained metadata excludes blocked fields.",
+      seed: "scoped_delete_request"
+    },
+    "support-notice": {
+      artifact: "artifacts/account/support-notice-smoke.json",
+      commandKey: "support-notice",
+      gate: "Support notice delivery",
+      noGo: "No deploy if support notice can close without template version, delivery state, redaction attestation, and case receipt.",
+      primaryAssertion: "notice payload excludes blocked data and writes delivery receipt",
+      replay: "Replay notice send, delivery acknowledgement, redaction attestation, and support case closeout.",
+      seed: "support_notice_delivery"
+    }
+  };
+  const fixtures = workerTickets.tickets.map((ticket, index) => {
+    const key = ticket.ticketId.includes("AUTHRECOVERY")
+      ? "auth-recovery"
+      : ticket.ticketId.includes("SESSIONRETENTION")
+        ? "session-retention"
+        : ticket.ticketId.includes("VAULTRESTORE")
+          ? "vault-restore"
+          : ticket.ticketId.includes("DELETIONCLOSEOUT")
+            ? "deletion-closeout"
+            : "support-notice";
+    const profile = fixtureProfiles[key];
+    const ticketBlockers = ticket.blockers.filter((item) => !item.startsWith("No active worker-ticket")).slice(0, 2);
+    const monitorReady = ticket.monitor && ticket.logs.some((log) => log.includes("monitor"));
+    const replayReady = ticket.logs.some((log) => log.includes("replay"));
+    const redactionReady = ticket.logs.some((log) => log.includes("redaction"));
+    const assertionCount = ticket.acceptanceTests.length + 3;
+    const blockers = [
+      ...ticketBlockers,
+      ...(storageReady ? [] : ["smoke fixture needs backend-owned account storage before release gating"]),
+      ...(ticket.status === "Ticket blocked" ? ["worker ticket is blocked before smoke harness can pass"] : []),
+      ...(routePublic ? ["public cutover needs production monitor owner before lifecycle smoke can pass"] : []),
+      ...(monitorReady ? [] : ["monitor event log is missing"]),
+      ...(replayReady ? [] : ["replay log is missing"]),
+      ...(redactionReady ? [] : ["redaction log is missing"])
+    ];
+    const score = clampNumber(Math.round(
+      ticket.score * 0.46 +
+        workerTickets.readiness * 0.18 +
+        recoveryRetention.readiness * 0.12 +
+        (storageReady ? 82 : 28) * 0.1 +
+        (monitorReady ? 84 : 42) * 0.06 +
+        (replayReady ? 82 : 42) * 0.04 +
+        (redactionReady ? 84 : 42) * 0.04 -
+        blockers.length * 3
+    ), 12, 96);
+    const status = score >= 82 && !blockers.length
+      ? "Smoke pass"
+      : score >= 62
+        ? "Owner review"
+        : "Smoke blocked";
+    const tone = status === "Smoke pass" ? "ready" : status === "Smoke blocked" ? "blocked" : "draft";
+    return {
+      artifact: profile.artifact,
+      assertions: [
+        profile.primaryAssertion,
+        `payload scan excludes ${blockedFields.slice(0, 4).join(", ")}`,
+        "request, receipt, replay, redaction, and monitor logs share one idempotency key",
+        ...ticket.acceptanceTests
+      ],
+      blockers: blockers.length ? blockers : ["No active lifecycle smoke blocker in this preview. Keep real CI runner, backend database, queue, monitor, and owner identity before production."],
+      closeout: ticket.closeout,
+      command: `npm run smoke:account-lifecycle -- --fixture ${profile.commandKey} --ticket ${ticket.ticketId}`,
+      deploymentNoGo: profile.noGo,
+      event: ticket.event.replace(/\./g, "_") + ".smoke_checked",
+      fixtureId: ["NN", "ACCOUNT", "LIFECYCLE", "SMOKE", String(index + 1).padStart(2, "0"), profile.commandKey.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase(),
+      gate: profile.gate,
+      key,
+      label: profile.gate,
+      monitor: ticket.monitor,
+      owner: ticket.owner,
+      payloadScan: ticket.payloadFields.slice(0, 12),
+      replay: profile.replay,
+      route: ticket.route,
+      score,
+      seed: profile.seed,
+      service: ticket.service,
+      status,
+      ticketId: ticket.ticketId,
+      tone
+    };
+  });
+  const pass = fixtures.filter((fixture) => fixture.status === "Smoke pass").length;
+  const review = fixtures.filter((fixture) => fixture.status === "Owner review").length;
+  const blocked = fixtures.filter((fixture) => fixture.status === "Smoke blocked").length;
+  const fixtureAverage = Math.round(fixtures.reduce((sum, fixture) => sum + fixture.score, 0) / fixtures.length);
+  const activeBlockers = [...new Set(fixtures
+    .filter((fixture) => fixture.status !== "Smoke pass")
+    .flatMap((fixture) => fixture.blockers.filter((item) => !item.startsWith("No active lifecycle smoke")).slice(0, 2)))];
+  const readiness = clampNumber(Math.round(
+    fixtureAverage * 0.52 +
+      workerTickets.readiness * 0.22 +
+      recoveryRetention.readiness * 0.12 +
+      supportOps.readiness * 0.08 +
+      route.score * 0.06
+  ) - Math.min(activeBlockers.length, 6) * 2, 12, 96);
+  const status = readiness >= 84 && !blocked && activeBlockers.length <= 1
+    ? "Lifecycle smoke release-ready"
+    : readiness >= 64
+      ? "Lifecycle smoke owner review"
+      : "Lifecycle smoke blocked";
+  const tone = status === "Lifecycle smoke release-ready" ? "ready" : status === "Lifecycle smoke blocked" ? "blocked" : "draft";
+  const metrics = [
+    { label: "Smoke harness", value: smokeHarnessId, detail: `${pass} pass, ${review} owner review, ${blocked} blocked fixture${fixtures.length === 1 ? "" : "s"}.` },
+    { label: "Fixture batch", value: fixtureBatchId, detail: `${fixtures.length} lifecycle fixtures generated from ${workerTickets.ticketBatchId}.` },
+    { label: "Monitor suite", value: monitorSuiteId, detail: "Recovery, session, restore, deletion, and notice monitor events must agree with receipt logs." },
+    { label: "Release gate", value: releaseGateId, detail: `${status}; deploy no-go ${deploymentNoGoId}.` }
+  ];
+  const runbook = [
+    "Build fixture batch from lifecycle worker tickets, payload schemas, queue names, and receipt logs.",
+    "Run recovery, session, restore, deletion, and support notice smoke commands in CI with deterministic seed events.",
+    "Persist command ref, artifact URI, assertion results, request log, receipt log, replay log, redaction log, and monitor event for every fixture.",
+    "Fail the gate if any fixture relies on browser-local state, screenshot proof, manual notes, missing monitor, or blocked-data payload.",
+    "Attach smoke harness receipt, fixture batch, monitor suite, owner closeout, deployment no-go, and support-safe summary to release notes."
+  ];
+  const receiptFields = [
+    "account_lifecycle_smoke_harness_id",
+    "fixture_batch_id",
+    "fixture_id",
+    "worker_ticket_id",
+    "command_ref",
+    "artifact_uri",
+    "seed_event",
+    "assertion_result",
+    "request_log_id",
+    "receipt_log_id",
+    "replay_log_id",
+    "redaction_log_id",
+    "monitor_event",
+    "monitor_suite_id",
+    "owner_review_state",
+    "deployment_no_go_id",
+    "closed_at"
+  ];
+  const noGoRules = [
+    "No lifecycle worker deploy if any smoke fixture is Smoke blocked or lacks command ref, artifact URI, assertion result, logs, monitor event, and owner review state.",
+    "No recovery or session deploy if expiry, rate-limit, logout, suspicious-login, device, support-safe notice, or retention assertions fail.",
+    "No restore or deletion deploy if replay can revive deleted state, private notes, stale entitlement, or blocked investment identity fields.",
+    "No support notice deploy if template version, delivery acknowledgement, redaction attestation, support case receipt, or user-safe copy is missing.",
+    `No lifecycle smoke artifact may include ${blockedFields.join(", ")}.`
+  ];
+  return {
+    activeBlockers: activeBlockers.length ? activeBlockers : ["No active lifecycle smoke blocker in this preview. Keep real CI runner, backend storage, queues, monitor alerts, owner identities, and deployment controls before production."],
+    blocked,
+    deploymentNoGoId,
+    fixtureAverage,
+    fixtureBatchId,
+    fixtures,
+    metrics,
+    monitorSuiteId,
+    noGoRules,
+    pass,
+    readiness,
+    receiptFields,
+    releaseGateId,
+    review,
+    runbook,
+    smokeHarnessId,
+    status,
+    tone
+  };
+}
+
 function renderAccountLaunchRoute(event) {
   if (event) event.preventDefault();
   if (!els.accountRouteOutput) return;
@@ -21864,8 +22079,9 @@ function renderAccountLaunchRoute(event) {
   const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
   const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
   const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
+  const workerSmoke = accountLifecycleWorkerSmokeHarness(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets);
   if (els.accountRouteSummary) {
-    els.accountRouteSummary.textContent = `${workerTickets.readiness}/100 | ${workerTickets.status}`;
+    els.accountRouteSummary.textContent = `${workerSmoke.readiness}/100 | ${workerSmoke.status}`;
   }
   els.accountRouteOutput.innerHTML = `
     <div class="account-route-hero ${escapeHtml(route.tone)}">
@@ -22406,6 +22622,77 @@ function renderAccountLaunchRoute(event) {
         </article>
       </div>
     </div>
+    <div class="account-route-smoke ${escapeHtml(workerSmoke.tone)}">
+      <div class="account-route-smoke-head">
+        <div>
+          <span>Account lifecycle worker smoke harness</span>
+          <h3>${escapeHtml(workerSmoke.status)}</h3>
+          <p>Harness ${escapeHtml(workerSmoke.smokeHarnessId)} turns lifecycle worker tickets into repeatable CI fixtures with command refs, artifacts, assertions, monitor events, owner closeout, and deployment no-go checks.</p>
+        </div>
+        <div class="account-route-smoke-score" style="--score:${workerSmoke.readiness}">
+          <strong>${workerSmoke.readiness}</strong>
+          <span>smoke</span>
+        </div>
+      </div>
+      <div class="account-route-smoke-grid">
+        ${workerSmoke.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-smoke-fixture-grid">
+        ${workerSmoke.fixtures.map((fixture) => `
+          <article class="${escapeHtml(fixture.tone)}">
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(fixture.owner)}</span>
+                <strong>${escapeHtml(fixture.label)}</strong>
+              </div>
+              <b>${fixture.score}/100</b>
+            </div>
+            <p>${escapeHtml(fixture.status)} | ${escapeHtml(fixture.fixtureId)}</p>
+            <div class="build-progress-bar"><span style="width:${fixture.score}%"></span></div>
+            <small><strong>Command:</strong> ${escapeHtml(fixture.command)}</small>
+            <small><strong>Event:</strong> ${escapeHtml(fixture.event)}</small>
+            <small><strong>Artifact:</strong> ${escapeHtml(fixture.artifact)}</small>
+            <small><strong>Assert:</strong> ${escapeHtml(fixture.assertions.slice(0, 4).join(" | "))}</small>
+            <small><strong>Replay:</strong> ${escapeHtml(fixture.replay)}</small>
+            <small><strong>No-go:</strong> ${escapeHtml(fixture.deploymentNoGo)}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(fixture.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button account-route-smoke-route" type="button" data-build-route="${escapeHtml(fixture.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-smoke-two">
+        <article>
+          <span>Smoke runbook</span>
+          <ol>
+            ${workerSmoke.runbook.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <ul>
+            ${workerSmoke.receiptFields.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Deployment no-go rules</span>
+          <ul>
+            ${workerSmoke.noGoRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${workerSmoke.activeBlockers.length > 1 ? "blocked" : "ready"}">
+          <span>Smoke blockers</span>
+          <ul>
+            ${workerSmoke.activeBlockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="account-route-gate-grid">
       ${ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `
         <article>
@@ -22456,6 +22743,7 @@ function makeAccountLaunchRouteBrief() {
   const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
   const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
   const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
+  const workerSmoke = accountLifecycleWorkerSmokeHarness(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets);
   const betaScore = Math.round(betaChecklist.reduce((sum, item) => sum + item.score, 0) / betaChecklist.length);
   return [
     "# NiveshNadi Retail Account Launch Route",
@@ -22573,6 +22861,22 @@ function makeAccountLaunchRouteBrief() {
     ...workerTickets.receiptFields.map((item) => `- Worker receipt field: ${item}`),
     ...workerTickets.noGoRules.map((item) => `- Worker no-go rule: ${item}`),
     ...workerTickets.activeBlockers.map((item) => `- Worker blocker: ${item}`),
+    "",
+    "## Account Lifecycle Worker Smoke Harness",
+    `- Status: ${workerSmoke.status}`,
+    `- Readiness: ${workerSmoke.readiness}/100`,
+    `- Smoke harness: ${workerSmoke.smokeHarnessId}`,
+    `- Fixture batch: ${workerSmoke.fixtureBatchId}`,
+    `- Release gate: ${workerSmoke.releaseGateId}`,
+    `- Monitor suite: ${workerSmoke.monitorSuiteId}`,
+    `- Deployment no-go: ${workerSmoke.deploymentNoGoId}`,
+    `- Pass/Review/Blocked: ${workerSmoke.pass}/${workerSmoke.review}/${workerSmoke.blocked}`,
+    ...workerSmoke.metrics.map((metric) => `- Smoke metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...workerSmoke.fixtures.map((fixture) => `- Smoke fixture: ${fixture.fixtureId}: ${fixture.label} | ${fixture.status} | ${fixture.score}/100 | ${fixture.owner} | ${fixture.command} | ${fixture.event} | ${fixture.artifact} | ${fixture.route}`),
+    ...workerSmoke.runbook.map((item) => `- Smoke runbook: ${item}`),
+    ...workerSmoke.receiptFields.map((item) => `- Smoke receipt field: ${item}`),
+    ...workerSmoke.noGoRules.map((item) => `- Smoke no-go rule: ${item}`),
+    ...workerSmoke.activeBlockers.map((item) => `- Smoke blocker: ${item}`),
     "",
     "## Launch Gates",
     ...ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `- ${gate.label}: ${gate.score}/100 | ${gate.event} | ${gate.proof} | ${gate.guardrail}`),
@@ -22713,6 +23017,71 @@ function makeAccountLifecycleWorkerBrief() {
     "",
     "## Guardrail",
     "Lifecycle worker tickets are backend acceptance metadata. They must not store PAN, folio, CAS, bank data, card, UPI, OTP, account credentials, gateway secrets, ARN/EUIN, distributor client books, private notes, transaction instructions, or personalized advice content."
+  ].join("\n");
+}
+
+function makeAccountLifecycleSmokeBrief() {
+  const route = accountLaunchRouteConfig();
+  const betaChecklist = founderBetaChecklist(route);
+  const authDecision = founderAuthDecisionBoard(route, betaChecklist);
+  const storageDecision = founderStorageDecisionBoard(route, betaChecklist);
+  const inviteGate = founderInviteGate(route, betaChecklist);
+  const inviteReceipt = founderInviteReceipt(route, betaChecklist, inviteGate);
+  const supportDrill = founderSupportDrill(route, betaChecklist, inviteGate, inviteReceipt);
+  const supportCasebook = founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill);
+  const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
+  const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
+  const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
+  const workerSmoke = accountLifecycleWorkerSmokeHarness(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets);
+  return [
+    "# NiveshNadi Account Lifecycle Worker Smoke Harness",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Smoke harness ID: ${workerSmoke.smokeHarnessId}`,
+    `Fixture batch ID: ${workerSmoke.fixtureBatchId}`,
+    `Release gate ID: ${workerSmoke.releaseGateId}`,
+    `Monitor suite ID: ${workerSmoke.monitorSuiteId}`,
+    `Deployment no-go ID: ${workerSmoke.deploymentNoGoId}`,
+    `Status: ${workerSmoke.status}`,
+    `Readiness: ${workerSmoke.readiness}/100`,
+    `Fixture average: ${workerSmoke.fixtureAverage}/100`,
+    `Pass/Review/Blocked: ${workerSmoke.pass}/${workerSmoke.review}/${workerSmoke.blocked}`,
+    "",
+    "## Metrics",
+    ...workerSmoke.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Smoke Fixtures",
+    ...workerSmoke.fixtures.flatMap((fixture) => [
+      `- ${fixture.fixtureId}: ${fixture.label} | ${fixture.status} | ${fixture.score}/100 | Owner: ${fixture.owner}`,
+      `  Ticket: ${fixture.ticketId}`,
+      `  Service: ${fixture.service}`,
+      `  Command: ${fixture.command}`,
+      `  Event: ${fixture.event}`,
+      `  Monitor: ${fixture.monitor}`,
+      `  Artifact: ${fixture.artifact}`,
+      `  Seed: ${fixture.seed}`,
+      `  Payload scan: ${fixture.payloadScan.join(", ")}`,
+      `  Assertions: ${fixture.assertions.join(" | ")}`,
+      `  Replay: ${fixture.replay}`,
+      `  Closeout: ${fixture.closeout}`,
+      `  Deployment no-go: ${fixture.deploymentNoGo}`,
+      `  Route: ${fixture.route}`,
+      `  Blockers: ${fixture.blockers.join(" | ")}`
+    ]),
+    "",
+    "## Smoke Runbook",
+    ...workerSmoke.runbook.map((item) => `- ${item}`),
+    "",
+    "## Receipt Fields",
+    ...workerSmoke.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## Deployment No-Go Rules",
+    ...workerSmoke.noGoRules.map((item) => `- ${item}`),
+    "",
+    "## Active Blockers",
+    ...workerSmoke.activeBlockers.map((item) => `- ${item}`),
+    "",
+    "## Guardrail",
+    "Account lifecycle smoke fixtures are release-gate metadata. They must not store PAN, folio, CAS, bank data, card, UPI, OTP, account credentials, gateway secrets, ARN/EUIN, distributor client books, private notes, transaction instructions, or personalized advice content."
   ].join("\n");
 }
 
@@ -52443,6 +52812,7 @@ function bindEvents() {
   els.openAccountRouteBlocker?.addEventListener("click", openAccountRouteBlocker);
   els.copyAccountRecoveryRetention?.addEventListener("click", () => copyText(makeAccountRecoveryRetentionBrief()));
   els.copyAccountLifecycleWorkers?.addEventListener("click", () => copyText(makeAccountLifecycleWorkerBrief()));
+  els.copyAccountLifecycleSmoke?.addEventListener("click", () => copyText(makeAccountLifecycleSmokeBrief()));
   els.copyAccountRoute?.addEventListener("click", () => copyText(makeAccountLaunchRouteBrief()));
   els.accountLaunchForm?.addEventListener("submit", renderAccountLaunchShell);
   [els.accountLaunchAuth, els.accountLaunchStorage, els.accountLaunchMigration, els.accountLaunchSupport].forEach((input) => {
@@ -54375,6 +54745,7 @@ function cacheElements() {
     openAccountRouteBlocker: qs("#openAccountRouteBlocker"),
     copyAccountRecoveryRetention: qs("#copyAccountRecoveryRetention"),
     copyAccountLifecycleWorkers: qs("#copyAccountLifecycleWorkers"),
+    copyAccountLifecycleSmoke: qs("#copyAccountLifecycleSmoke"),
     copyAccountRoute: qs("#copyAccountRoute"),
     accountLaunchForm: qs("#accountLaunchForm"),
     accountLaunchAuth: qs("#accountLaunchAuth"),

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V306 Account Recovery and Retention Receipts
+
+V306 adds Account Recovery and Retention Receipts inside the Retail Account Launch Route. It binds auth recovery, session retention, vault restore, deletion closeout, and support notices into lifecycle receipt lanes with receipt IDs, event names, proof fields, retention windows, owner routes, no-go rules, blocked-data guardrails, and a copyable lifecycle brief before paid account access can widen.
+
 ## V305 Production Account and Payment Smoke
 
 V305 adds Production Account and Payment Smoke inside Backend Audit Receipts. It rolls account-vault migration, provider webhook deployment, entitlement-vault joins, receipt replay, privacy export/delete, support repair, and payment reconciliation into one smoke run with fixture IDs, command refs, assertion lists, route buttons, owner review status, release blockers, receipt fields, and hard no-go rules before the next paid account cohort can widen.

@@ -236,6 +236,10 @@ V305 adds Production Account and Payment Smoke in Backend Audit Receipts. The sm
 
 Commercially, this keeps the low-price model disciplined: account storage, payment access, refunds, support repair, privacy closeout, and settlement reconciliation must pass repeatable fixture checks instead of becoming manual founder work.
 
+V306 adds Account Recovery and Retention Receipts to the Retail Account Launch Route. Recovery, session retention, vault restore, deletion closeout, and support notice receipts now need proof fields, retention windows, owner routes, and no-go rules before account access can widen.
+
+Commercially, this protects paid retention without creating hidden support debt: users can recover access, restore saved research, close deletion requests, and receive support-safe notices through repeatable lifecycle receipts rather than manual founder fixes.
+
 ## Payment Adapter Repairs
 
 V150 connects the payment backend to repairable adapter routes. Checkout, webhook, idempotency replay, refund, cancellation, entitlement projection, support repair, settlement, and incident adapters now show the event in, event out, receipt join, repair action, rollback rule, and blockers before real gateway events can unlock paid features.

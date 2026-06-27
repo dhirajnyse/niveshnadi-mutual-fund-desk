@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v305-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v305 Production Account and Payment Smoke";
+const DATA_VERSION = "20260627-v306-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v306 Account Recovery and Retention Receipts";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Bind account recovery, session retention, vault restore, deletion closeout, and support notices into account lifecycle receipts."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Turn lifecycle recovery, retention, restore, deletion, and support notice receipts into backend worker acceptance tickets."
   },
   {
     phase: "Phase 2",
@@ -1240,8 +1240,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Production account and payment smoke",
+    label: "Account recovery and retention receipts",
     status: "Shipping now",
+    route: "#account-launch-route",
+    detail: "Bind recovery, session retention, vault restore, account deletion, and support notices into account lifecycle receipts."
+  },
+  {
+    label: "Production account and payment smoke",
+    status: "Done",
     route: "#backend-audit-receipts",
     detail: "Run production smoke for account, entitlement, provider webhook, receipt replay, privacy export/delete, support repair, and reconciliation."
   },
@@ -1264,10 +1270,10 @@ const BUILD_TRACKER_CURRENT_SPRINT = [
     detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, monitoring handoffs, and production deploy closeout."
   },
   {
-    label: "Account recovery and retention receipts",
+    label: "Lifecycle worker acceptance tickets",
     status: "Later",
-    route: "#account-launch-route",
-    detail: "Bind recovery, session retention, vault restore, account deletion, and support notices into account lifecycle receipts."
+    route: "#backend-ticket-factory",
+    detail: "Turn account lifecycle receipt lanes into backend worker endpoints, payload contracts, logs, monitor events, and closeout tests."
   }
 ];
 
@@ -9272,7 +9278,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v305</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v306</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -21385,6 +21391,202 @@ function supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCas
   };
 }
 
+function accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const lifecycleReceiptId = ["NN", "ACCOUNT", "LIFECYCLE", "RECEIPTS", suffix, route.cohort].join("-").toUpperCase();
+  const recoveryReceiptId = ["NN", "ACCOUNT", "RECOVERY", "RECEIPT", suffix, route.auth].join("-").toUpperCase();
+  const retentionPolicyId = ["NN", "SESSION", "RETENTION", "POLICY", suffix, route.auth].join("-").toUpperCase();
+  const restoreReceiptId = ["NN", "VAULT", "RESTORE", "RECEIPT", suffix, route.data].join("-").toUpperCase();
+  const deletionCloseoutId = ["NN", "DELETE", "CLOSEOUT", "RECEIPT", suffix, route.cutover].join("-").toUpperCase();
+  const supportNoticeId = ["NN", "SUPPORT", "NOTICE", "RECEIPT", suffix, route.cohort].join("-").toUpperCase();
+  const blockedFields = inviteReceipt.blockedFields || ["PAN", "folio", "CAS", "bank", "card", "UPI", "ARN/EUIN", "distributor client book", "free-form private notes"];
+  const routeLaneScore = (label) => route.lanes.find((lane) => lane.label === label)?.score || route.score;
+  const storageBlocked = route.data === "browser" || route.data === "manual";
+  const publicCutover = route.cutover === "public";
+  const scoreLane = (...scores) => clampNumber(Math.round(scores.reduce((sum, score) => sum + score, 0) / Math.max(scores.length, 1)), 12, 96);
+  const laneTemplates = [
+    {
+      key: "auth-recovery",
+      label: "Auth recovery receipt",
+      owner: "Security",
+      route: "#account-launch-route",
+      event: "account_recovery.requested",
+      receiptId: recoveryReceiptId,
+      score: scoreLane(authDecision.readiness, routeLaneScore("Identity"), route.auth === "undecided" ? 18 : 78),
+      proof: "recovery_request_id, account_id_hash, provider_ref, recovery_channel, expiry_state, rate_limit_state",
+      action: "Recover account access through provider proof, expired-link handling, rate limit, and support-safe closeout.",
+      blockers: [
+        ...(route.auth === "undecided" ? ["auth provider must be selected before account recovery can launch"] : []),
+        ...(publicCutover ? ["public beta recovery needs abuse monitoring and escalation before opening"] : [])
+      ]
+    },
+    {
+      key: "session-retention",
+      label: "Session retention policy",
+      owner: "Security Ops",
+      route: "#account-launch",
+      event: "account_session.retention_applied",
+      receiptId: retentionPolicyId,
+      score: scoreLane(authDecision.readiness, routeLaneScore("Identity"), route.cutover === "public" ? 54 : 74),
+      proof: "session_id_hash, issued_at, expires_at, refresh_state, logout_state, suspicious_login_state",
+      action: "Set session expiry, refresh, logout, device, and suspicious-login receipts before the beta widens.",
+      blockers: [
+        ...(route.auth === "undecided" ? ["session retention depends on a chosen auth provider"] : []),
+        ...(publicCutover ? ["public beta needs session telemetry, device policy, and alert owner"] : [])
+      ]
+    },
+    {
+      key: "vault-restore",
+      label: "Vault restore proof",
+      owner: "Account Ops",
+      route: "#account-vault",
+      event: "account_vault.restore.proved",
+      receiptId: restoreReceiptId,
+      score: scoreLane(storageDecision.readiness, routeLaneScore("Vault"), storageBlocked ? 22 : 78),
+      proof: "restore_request_id, vault_object_id, prior_state_hash, restored_state_hash, rollback_ref, owner_ack",
+      action: "Restore a saved research object without reviving deleted records, private notes, or stale entitlement.",
+      blockers: [
+        ...(storageBlocked ? ["vault restore proof cannot close while account storage is browser-local or manual"] : []),
+        ...(storageDecision.blockers || []).filter((item) => !item.startsWith("No storage")).slice(0, 2)
+      ]
+    },
+    {
+      key: "deletion-closeout",
+      label: "Deletion closeout",
+      owner: "Privacy",
+      route: "#privacy-control",
+      event: "account_deletion.closeout_written",
+      receiptId: deletionCloseoutId,
+      score: scoreLane(storageDecision.readiness, routeLaneScore("Privacy"), route.cutover === "migration" ? 66 : 58),
+      proof: "delete_request_id, scope, confirmation_hash, retained_receipt_ref, retention_exception, completed_at",
+      action: "Close deletion with scoped request, retained-proof explanation, completion receipt, and support-safe notice.",
+      blockers: [
+        ...(storageBlocked ? ["account deletion closeout needs backend-owned storage and delete job proof"] : []),
+        ...(route.cutover === "public" ? ["public beta cannot open until deletion closeout is operational"] : [])
+      ]
+    },
+    {
+      key: "support-notice",
+      label: "Support notice receipt",
+      owner: "Support",
+      route: "#account-launch-route",
+      event: "support.account_notice.sent",
+      receiptId: supportNoticeId,
+      score: scoreLane(supportOps.readiness, routeLaneScore("Support"), route.cutover === "support" ? 76 : 58),
+      proof: "support_notice_id, case_id, lifecycle_event, template_version, delivery_state, redaction_attestation",
+      action: "Send support-safe notices for recovery, restore, deletion, retention exception, and entitlement repair states.",
+      blockers: [
+        ...(supportOps.blockers || []).filter((item) => !item.startsWith("No support")).slice(0, 2),
+        ...(route.cohort === "distributorPreview" ? ["Phase 2 distributor support notices need separate consent and role design"] : [])
+      ]
+    }
+  ];
+  const lanes = laneTemplates.map((lane) => {
+    const activeBlockers = lane.blockers.filter(Boolean);
+    const status = lane.score >= 78 && !activeBlockers.length
+      ? "Receipt ready"
+      : lane.score >= 58
+        ? "Dry-run receipt"
+        : "Receipt blocked";
+    return {
+      ...lane,
+      blockers: activeBlockers.length ? activeBlockers : ["No active lifecycle blocker in this preview. Keep backend auth, queue, retention, and notice delivery proof before launch."],
+      status,
+      tone: status === "Receipt ready" ? "ready" : status === "Receipt blocked" ? "blocked" : "draft"
+    };
+  });
+  const ready = lanes.filter((lane) => lane.status === "Receipt ready").length;
+  const dryRun = lanes.filter((lane) => lane.status === "Dry-run receipt").length;
+  const blocked = lanes.filter((lane) => lane.status === "Receipt blocked").length;
+  const activeBlockers = [...new Set([
+    ...lanes.filter((lane) => lane.status !== "Receipt ready").flatMap((lane) => lane.blockers.slice(0, 2)),
+    ...(storageBlocked ? ["account lifecycle receipts cannot launch from browser-local or manual storage"] : []),
+    ...(route.auth === "undecided" ? ["account lifecycle receipts need a chosen auth and recovery provider"] : []),
+    "real auth provider, account database, retention job, deletion worker, notice delivery, and owner identity are outside this static prototype"
+  ])];
+  const average = Math.round(lanes.reduce((sum, lane) => sum + lane.score, 0) / lanes.length);
+  const readiness = clampNumber(Math.round(
+    average * 0.44 +
+      authDecision.readiness * 0.18 +
+      storageDecision.readiness * 0.18 +
+      supportOps.readiness * 0.14 +
+      route.score * 0.06
+  ) - blocked * 5 - Math.min(activeBlockers.length, 6), 12, 96);
+  const status = readiness >= 82 && blocked === 0 && activeBlockers.length <= 1
+    ? "Lifecycle receipts ready"
+    : readiness >= 62
+      ? "Lifecycle receipts dry-run"
+      : "Lifecycle receipts blocked";
+  const tone = status === "Lifecycle receipts ready" ? "ready" : status === "Lifecycle receipts blocked" ? "blocked" : "draft";
+  const metrics = [
+    { label: "Lifecycle receipt", value: lifecycleReceiptId, detail: `${ready} ready, ${dryRun} dry-run, ${blocked} blocked lifecycle receipt${lanes.length === 1 ? "" : "s"}.` },
+    { label: "Recovery receipt", value: recoveryReceiptId, detail: "Auth recovery must prove provider, expiry, rate limit, and support-safe closeout." },
+    { label: "Retention policy", value: retentionPolicyId, detail: "Session, restore, delete, and support notices need explicit retention windows." },
+    { label: "Support notice", value: supportNoticeId, detail: `${status}; blocked fields remain ${blockedFields.slice(0, 4).join(", ")}.` }
+  ];
+  const retentionWindows = [
+    { label: "Recovery request", value: "Short security window", detail: "Keep request metadata, expiry state, and abuse signal only." },
+    { label: "Session event", value: "Operational window", detail: "Retain hashed session events long enough for abuse and support review." },
+    { label: "Restore proof", value: "Account lifecycle", detail: "Keep restore receipt and hashes while the related research object exists." },
+    { label: "Deletion closeout", value: "Minimal proof", detail: "Keep completion receipt and retention exception only when required." },
+    { label: "Support notice", value: "Support case window", detail: "Keep notice template version, delivery state, and redaction attestation." }
+  ];
+  const sequence = [
+    "Start account recovery with provider proof, expiry state, rate limit, and support-safe receipt.",
+    "Apply session retention policy before issuing refresh, logout, suspicious-login, or device-state events.",
+    "Run vault restore proof with prior state hash, restored state hash, rollback reference, and owner acknowledgement.",
+    "Close account deletion with scoped request, retained-proof explanation, completion receipt, and support notice.",
+    "Attach lifecycle receipt, retention windows, blocked-data scan, support notice, and owner closeout before paid account widening."
+  ];
+  const receiptFields = [
+    "account_lifecycle_receipt_id",
+    "recovery_receipt_id",
+    "session_retention_policy_id",
+    "vault_restore_receipt_id",
+    "delete_closeout_receipt_id",
+    "support_notice_receipt_id",
+    "account_id_hash",
+    "lifecycle_event",
+    "retention_window",
+    "object_family",
+    "prior_state_hash",
+    "new_state_hash",
+    "confirmation_hash",
+    "redaction_attestation",
+    "owner_ack",
+    "closed_at"
+  ];
+  const noGoRules = [
+    "No account recovery launch while auth provider, recovery expiry, rate limit, or support-safe closeout is missing.",
+    "No session issuance without expiry, refresh, logout, device, suspicious-login, and retention receipts.",
+    "No vault restore without prior state hash, restored state hash, rollback reference, and owner acknowledgement.",
+    "No deletion closeout without scoped request, completion receipt, retained-proof explanation, and support-safe notice.",
+    `No lifecycle receipt may contain ${blockedFields.join(", ")}.`
+  ];
+  return {
+    activeBlockers,
+    average,
+    blocked,
+    deletionCloseoutId,
+    dryRun,
+    lanes,
+    lifecycleReceiptId,
+    metrics,
+    noGoRules,
+    readiness,
+    receiptFields,
+    recoveryReceiptId,
+    ready,
+    restoreReceiptId,
+    retentionPolicyId,
+    retentionWindows,
+    sequence,
+    status,
+    supportNoticeId,
+    tone
+  };
+}
+
 function renderAccountLaunchRoute(event) {
   if (event) event.preventDefault();
   if (!els.accountRouteOutput) return;
@@ -21400,8 +21602,9 @@ function renderAccountLaunchRoute(event) {
   const supportDrill = founderSupportDrill(route, betaChecklist, inviteGate, inviteReceipt);
   const supportCasebook = founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill);
   const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
+  const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
   if (els.accountRouteSummary) {
-    els.accountRouteSummary.textContent = `${route.score}/100 | ${authDecision.status}`;
+    els.accountRouteSummary.textContent = `${recoveryRetention.readiness}/100 | ${recoveryRetention.status}`;
   }
   els.accountRouteOutput.innerHTML = `
     <div class="account-route-hero ${escapeHtml(route.tone)}">
@@ -21786,6 +21989,83 @@ function renderAccountLaunchRoute(event) {
         </article>
       </div>
     </div>
+    <div class="account-route-lifecycle ${escapeHtml(recoveryRetention.tone)}">
+      <div class="account-route-lifecycle-head">
+        <div>
+          <span>Account recovery and retention receipts</span>
+          <h3>${escapeHtml(recoveryRetention.status)}</h3>
+          <p>Lifecycle ${escapeHtml(recoveryRetention.lifecycleReceiptId)} binds account recovery, session retention, vault restore, deletion closeout, and support notices before paid account access widens.</p>
+        </div>
+        <div class="account-route-lifecycle-score" style="--score:${recoveryRetention.readiness}">
+          <strong>${recoveryRetention.readiness}</strong>
+          <span>life</span>
+        </div>
+      </div>
+      <div class="account-route-lifecycle-grid">
+        ${recoveryRetention.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-lifecycle-lane-grid">
+        ${recoveryRetention.lanes.map((lane) => `
+          <article class="${escapeHtml(lane.tone)}">
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(lane.owner)}</span>
+                <strong>${escapeHtml(lane.label)}</strong>
+              </div>
+              <b>${lane.score}/100</b>
+            </div>
+            <p>${escapeHtml(lane.status)} | ${escapeHtml(lane.receiptId)}</p>
+            <div class="build-progress-bar"><span style="width:${lane.score}%"></span></div>
+            <small><strong>Event:</strong> ${escapeHtml(lane.event)}</small>
+            <small><strong>Proof:</strong> ${escapeHtml(lane.proof)}</small>
+            <small><strong>Action:</strong> ${escapeHtml(lane.action)}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(lane.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button account-route-lifecycle-route" type="button" data-build-route="${escapeHtml(lane.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-lifecycle-window-grid">
+        ${recoveryRetention.retentionWindows.map((window) => `
+          <article>
+            <span>${escapeHtml(window.label)}</span>
+            <strong>${escapeHtml(window.value)}</strong>
+            <p>${escapeHtml(window.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-lifecycle-two">
+        <article>
+          <span>Lifecycle sequence</span>
+          <ol>
+            ${recoveryRetention.sequence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <ul>
+            ${recoveryRetention.receiptFields.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>No-go rules</span>
+          <ul>
+            ${recoveryRetention.noGoRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${recoveryRetention.activeBlockers.length > 1 ? "blocked" : "ready"}">
+          <span>Lifecycle blockers</span>
+          <ul>
+            ${recoveryRetention.activeBlockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="account-route-gate-grid">
       ${ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `
         <article>
@@ -21834,6 +22114,7 @@ function makeAccountLaunchRouteBrief() {
   const supportDrill = founderSupportDrill(route, betaChecklist, inviteGate, inviteReceipt);
   const supportCasebook = founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill);
   const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
+  const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
   const betaScore = Math.round(betaChecklist.reduce((sum, item) => sum + item.score, 0) / betaChecklist.length);
   return [
     "# NiveshNadi Retail Account Launch Route",
@@ -21918,6 +22199,24 @@ function makeAccountLaunchRouteBrief() {
     ...supportOps.blockers.map((item) => `- Blocker: ${item}`),
     ...supportOps.guardrails.map((item) => `- Guardrail: ${item}`),
     "",
+    "## Account Recovery and Retention Receipts",
+    `- Status: ${recoveryRetention.status}`,
+    `- Readiness: ${recoveryRetention.readiness}/100`,
+    `- Lifecycle receipt: ${recoveryRetention.lifecycleReceiptId}`,
+    `- Recovery receipt: ${recoveryRetention.recoveryReceiptId}`,
+    `- Retention policy: ${recoveryRetention.retentionPolicyId}`,
+    `- Restore receipt: ${recoveryRetention.restoreReceiptId}`,
+    `- Deletion closeout: ${recoveryRetention.deletionCloseoutId}`,
+    `- Support notice: ${recoveryRetention.supportNoticeId}`,
+    `- Ready/Dry-run/Blocked: ${recoveryRetention.ready}/${recoveryRetention.dryRun}/${recoveryRetention.blocked}`,
+    ...recoveryRetention.metrics.map((metric) => `- Lifecycle metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...recoveryRetention.lanes.map((lane) => `- Lifecycle lane: ${lane.receiptId}: ${lane.label} | ${lane.status} | ${lane.score}/100 | ${lane.owner} | ${lane.event} | ${lane.proof} | ${lane.route}`),
+    ...recoveryRetention.retentionWindows.map((item) => `- Retention window: ${item.label}: ${item.value} | ${item.detail}`),
+    ...recoveryRetention.sequence.map((item) => `- Lifecycle sequence: ${item}`),
+    ...recoveryRetention.receiptFields.map((item) => `- Lifecycle receipt field: ${item}`),
+    ...recoveryRetention.noGoRules.map((item) => `- Lifecycle no-go rule: ${item}`),
+    ...recoveryRetention.activeBlockers.map((item) => `- Lifecycle blocker: ${item}`),
+    "",
     "## Launch Gates",
     ...ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `- ${gate.label}: ${gate.score}/100 | ${gate.event} | ${gate.proof} | ${gate.guardrail}`),
     "",
@@ -21929,6 +22228,64 @@ function makeAccountLaunchRouteBrief() {
     "",
     "## Guardrail",
     "Retail Account Launch Route is pre-launch planning only. Phase 1 retail accounts should store minimal research state, entitlement references, privacy receipts, and support-safe audit posture. They should not collect PAN, folio, CAS, bank, card, UPI, ARN/EUIN, distributor client records, or personalized advisory records."
+  ].join("\n");
+}
+
+function makeAccountRecoveryRetentionBrief() {
+  const route = accountLaunchRouteConfig();
+  const betaChecklist = founderBetaChecklist(route);
+  const authDecision = founderAuthDecisionBoard(route, betaChecklist);
+  const storageDecision = founderStorageDecisionBoard(route, betaChecklist);
+  const inviteGate = founderInviteGate(route, betaChecklist);
+  const inviteReceipt = founderInviteReceipt(route, betaChecklist, inviteGate);
+  const supportDrill = founderSupportDrill(route, betaChecklist, inviteGate, inviteReceipt);
+  const supportCasebook = founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill);
+  const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
+  const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
+  return [
+    "# NiveshNadi Account Recovery and Retention Receipts",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Lifecycle receipt ID: ${recoveryRetention.lifecycleReceiptId}`,
+    `Recovery receipt ID: ${recoveryRetention.recoveryReceiptId}`,
+    `Session retention policy ID: ${recoveryRetention.retentionPolicyId}`,
+    `Vault restore receipt ID: ${recoveryRetention.restoreReceiptId}`,
+    `Deletion closeout ID: ${recoveryRetention.deletionCloseoutId}`,
+    `Support notice ID: ${recoveryRetention.supportNoticeId}`,
+    `Status: ${recoveryRetention.status}`,
+    `Readiness: ${recoveryRetention.readiness}/100`,
+    `Average lane score: ${recoveryRetention.average}/100`,
+    `Ready/Dry-run/Blocked: ${recoveryRetention.ready}/${recoveryRetention.dryRun}/${recoveryRetention.blocked}`,
+    "",
+    "## Metrics",
+    ...recoveryRetention.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Lifecycle Receipt Lanes",
+    ...recoveryRetention.lanes.flatMap((lane) => [
+      `- ${lane.receiptId}: ${lane.label} | ${lane.status} | ${lane.score}/100 | Owner: ${lane.owner}`,
+      `  Event: ${lane.event}`,
+      `  Proof: ${lane.proof}`,
+      `  Action: ${lane.action}`,
+      `  Route: ${lane.route}`,
+      `  Blockers: ${lane.blockers.join(" | ")}`
+    ]),
+    "",
+    "## Retention Windows",
+    ...recoveryRetention.retentionWindows.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Lifecycle Sequence",
+    ...recoveryRetention.sequence.map((item) => `- ${item}`),
+    "",
+    "## Receipt Fields",
+    ...recoveryRetention.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## No-Go Rules",
+    ...recoveryRetention.noGoRules.map((item) => `- ${item}`),
+    "",
+    "## Active Blockers",
+    ...recoveryRetention.activeBlockers.map((item) => `- ${item}`),
+    "",
+    "## Guardrail",
+    "Account recovery and retention receipts are lifecycle operations metadata. They do not store PAN, folio, CAS, bank data, card, UPI, OTP, account credentials, gateway secrets, ARN/EUIN, distributor client books, private notes, transaction instructions, or personalized advice content."
   ].join("\n");
 }
 
@@ -51657,6 +52014,7 @@ function bindEvents() {
     });
   });
   els.openAccountRouteBlocker?.addEventListener("click", openAccountRouteBlocker);
+  els.copyAccountRecoveryRetention?.addEventListener("click", () => copyText(makeAccountRecoveryRetentionBrief()));
   els.copyAccountRoute?.addEventListener("click", () => copyText(makeAccountLaunchRouteBrief()));
   els.accountLaunchForm?.addEventListener("submit", renderAccountLaunchShell);
   [els.accountLaunchAuth, els.accountLaunchStorage, els.accountLaunchMigration, els.accountLaunchSupport].forEach((input) => {
@@ -53587,6 +53945,7 @@ function cacheElements() {
     accountRouteSummary: qs("#accountRouteSummary"),
     accountRouteOutput: qs("#accountRouteOutput"),
     openAccountRouteBlocker: qs("#openAccountRouteBlocker"),
+    copyAccountRecoveryRetention: qs("#copyAccountRecoveryRetention"),
     copyAccountRoute: qs("#copyAccountRoute"),
     accountLaunchForm: qs("#accountLaunchForm"),
     accountLaunchAuth: qs("#accountLaunchAuth"),

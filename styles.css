@@ -11931,6 +11931,232 @@ body.simple-mode.simple-review-focus .dossier-band {
   padding-left: 18px;
 }
 
+.account-route-lifecycle {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(31, 78, 121, 0.24);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(245, 249, 252, 0.96), rgba(239, 246, 243, 0.92));
+}
+
+.account-route-lifecycle.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.84), rgba(245, 249, 252, 0.95));
+}
+
+.account-route-lifecycle.draft {
+  border-color: rgba(225, 160, 55, 0.4);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(245, 249, 252, 0.95));
+}
+
+.account-route-lifecycle.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.95));
+}
+
+.account-route-lifecycle p,
+.account-route-lifecycle li,
+.account-route-lifecycle small {
+  color: var(--muted);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.account-route-lifecycle-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px;
+  gap: 12px;
+  align-items: center;
+}
+
+.account-route-lifecycle-head span,
+.account-route-lifecycle-grid span,
+.account-route-lifecycle-lane-grid span,
+.account-route-lifecycle-window-grid span,
+.account-route-lifecycle-two span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.account-route-lifecycle-head h3 {
+  margin: 3px 0 0;
+  color: var(--ink);
+  font-size: 23px;
+  line-height: 1.12;
+}
+
+.account-route-lifecycle-head p {
+  margin: 7px 0 0;
+}
+
+.account-route-lifecycle-score {
+  position: relative;
+  width: 82px;
+  height: 82px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--blue) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+  text-align: center;
+}
+
+.account-route-lifecycle-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.account-route-lifecycle-score strong,
+.account-route-lifecycle-score span {
+  position: relative;
+}
+
+.account-route-lifecycle-score strong {
+  display: block;
+  font-size: 27px;
+  line-height: 1;
+}
+
+.account-route-lifecycle-score span {
+  color: #dbe7ef;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.account-route-lifecycle-grid,
+.account-route-lifecycle-lane-grid,
+.account-route-lifecycle-window-grid,
+.account-route-lifecycle-two {
+  display: grid;
+  gap: 10px;
+}
+
+.account-route-lifecycle-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.account-route-lifecycle-lane-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.account-route-lifecycle-window-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.account-route-lifecycle-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.account-route-lifecycle-grid,
+.account-route-lifecycle-lane-grid,
+.account-route-lifecycle-window-grid,
+.account-route-lifecycle-two,
+.account-route-lifecycle-grid article,
+.account-route-lifecycle-lane-grid article,
+.account-route-lifecycle-window-grid article,
+.account-route-lifecycle-two article {
+  min-width: 0;
+}
+
+.account-route-lifecycle-grid article,
+.account-route-lifecycle-lane-grid article,
+.account-route-lifecycle-window-grid article,
+.account-route-lifecycle-two article {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.account-route-lifecycle-lane-grid article.ready,
+.account-route-lifecycle-two article.ready {
+  border-color: rgba(15, 124, 107, 0.3);
+  background: rgba(229, 247, 241, 0.74);
+}
+
+.account-route-lifecycle-lane-grid article.draft,
+.account-route-lifecycle-two article.draft {
+  border-color: rgba(225, 160, 55, 0.34);
+  background: rgba(255, 250, 240, 0.86);
+}
+
+.account-route-lifecycle-lane-grid article.blocked,
+.account-route-lifecycle-two article.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: var(--rose-soft);
+}
+
+.account-route-lifecycle-grid strong,
+.account-route-lifecycle-lane-grid strong,
+.account-route-lifecycle-window-grid strong,
+.account-route-lifecycle-two strong {
+  display: block;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.account-route-lifecycle-grid p,
+.account-route-lifecycle-lane-grid p,
+.account-route-lifecycle-window-grid p,
+.account-route-lifecycle-two p {
+  margin: 0;
+}
+
+.account-route-lifecycle-lane-grid small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.account-route-lifecycle-lane-grid small strong {
+  color: var(--ink);
+}
+
+.account-route-lifecycle-route {
+  margin-top: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.account-route-lifecycle-two ul,
+.account-route-lifecycle-two ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+@media (max-width: 980px) {
+  .account-route-lifecycle-window-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .account-route-lifecycle-head,
+  .account-route-lifecycle-grid,
+  .account-route-lifecycle-lane-grid,
+  .account-route-lifecycle-window-grid,
+  .account-route-lifecycle-two {
+    grid-template-columns: 1fr;
+  }
+
+  .account-route-lifecycle-score {
+    justify-self: start;
+  }
+}
+
 .account-route-metric-grid article,
 .account-route-map-grid article,
 .account-route-check-grid article,

@@ -34,6 +34,10 @@ V106 turns the support drill into a first-case operating artifact. It creates a 
 
 V111 binds the support drill and casebook into a launch handoff. It shows support intake, redaction gate, support receipt, escalation ladder, pause rule, and support tooling readiness so founder-supervised support can move from manual judgement to receipt-bound operations before paid retail accounts widen.
 
+## Account Recovery and Retention Receipts
+
+V306 adds the account lifecycle layer after support operations. It turns auth recovery, session retention, vault restore, deletion closeout, and support notices into receipt lanes with event names, receipt IDs, proof fields, retention windows, owner routes, blocked-data guardrails, no-go rules, and a copyable lifecycle brief before paid account access can widen.
+
 The route keeps the first account launch deliberately small. A founder account pilot or paid beta cohort is safer than a broad public release because account recovery, saved research migration, entitlement repair, and support redaction can be tested with limited blast radius. The public beta cutover should stay blocked until auth provider selection, account database ownership, backups, export/delete jobs, payment entitlement, audit receipts, rate limits, monitoring, support workflows, and legal/compliance copy are ready.
 
 The key product promise is simple: Phase 1 accounts remember self-research, not investment identity. Allowed data should be limited to email or login identifier, research profile context, saved packs, watchlist, review metadata, dossiers, entitlement state, export receipts, deletion receipts, and redacted support receipts. PAN, folio, CAS, bank data, card data, UPI credentials, nominees, ARN/EUIN, distributor client books, and personalized advisory records stay outside the retail account route.
@@ -43,5 +47,7 @@ Every launch route dry run should produce account audit receipts. Important rece
 V304 connects this route to Account Vault Endpoint Contracts. Account launch remains blocked until migration, restore, entitlement join, export, deletion, support repair, and audit export endpoints have payload contracts, receipt logs, replay or rollback proof, monitor events, owner acknowledgement, and blocked-data scans.
 
 V305 connects the route to Production Account and Payment Smoke. The first paid account widening should wait until account-vault endpoints, provider webhooks, entitlement joins, receipt replay, privacy export/delete, support repair, and payment reconciliation all have smoke fixture proof and release no-go checks inside Backend Audit Receipts.
+
+V306 then requires account lifecycle receipts. Recovery, session issuance, saved-research restore, deletion closeout, and support notices must produce backend-owned proof before the first paid account cohort treats account access as operational.
 
 The route also protects the Phase 2 roadmap. Mutual fund distributor workflows can come later, but they require separate consent, role-based access, ARN/EUIN handling, PAN-consent boundaries, client-book permissions, distributor audit trails, and regulatory review. The retail self-research launch should not accidentally become a distributor or advisory system.

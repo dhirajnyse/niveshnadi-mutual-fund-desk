@@ -17,6 +17,8 @@ The app now models seven account launch states: account shell created, session i
 
 V306 extends the launch route with Account Recovery and Retention Receipts. Account access is not launch-ready until recovery, session retention, vault restore, deletion closeout, and support notice receipts have explicit event names, proof fields, retention windows, blocked-data scans, and no-go rules.
 
+V307 extends those receipts into Lifecycle Worker Acceptance Tickets. Account access is still not launch-ready until recovery, session, restore, deletion, and support notice workers have endpoint contracts, payload scans, queue names, logs, monitor events, acceptance tests, owner acknowledgement, and closeout rules.
+
 ## Guardrails
 
 The shell intentionally stays research-only. It does not collect PAN, folio, KYC, bank details, distributor ARN/EUIN, client books, or transaction credentials. Before launch, the production implementation must add provider-specific authentication, encrypted storage policies, audit receipts, subscription entitlement checks, deletion workflow evidence, support access logs, and a written Phase 2 firewall for distributor workflows.

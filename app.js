@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v306-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v306 Account Recovery and Retention Receipts";
+const DATA_VERSION = "20260627-v307-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v307 Lifecycle Worker Acceptance Tickets";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Turn lifecycle recovery, retention, restore, deletion, and support notice receipts into backend worker acceptance tickets."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Bind lifecycle worker acceptance tickets to queue runbooks, CI smoke fixtures, and production owner closeout."
   },
   {
     phase: "Phase 2",
@@ -1240,8 +1240,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account recovery and retention receipts",
+    label: "Lifecycle worker acceptance tickets",
     status: "Shipping now",
+    route: "#account-launch-route",
+    detail: "Turn account lifecycle receipt lanes into backend worker endpoints, payload contracts, logs, monitor events, and closeout tests."
+  },
+  {
+    label: "Account recovery and retention receipts",
+    status: "Done",
     route: "#account-launch-route",
     detail: "Bind recovery, session retention, vault restore, account deletion, and support notices into account lifecycle receipts."
   },
@@ -1270,10 +1276,10 @@ const BUILD_TRACKER_CURRENT_SPRINT = [
     detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, monitoring handoffs, and production deploy closeout."
   },
   {
-    label: "Lifecycle worker acceptance tickets",
+    label: "Account lifecycle worker smoke harness",
     status: "Later",
-    route: "#backend-ticket-factory",
-    detail: "Turn account lifecycle receipt lanes into backend worker endpoints, payload contracts, logs, monitor events, and closeout tests."
+    route: "#backend-audit-receipts",
+    detail: "Turn lifecycle worker tickets into CI smoke fixtures, queue commands, owner closeout, and deployment no-go checks."
   }
 ];
 
@@ -9278,7 +9284,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v306</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v307</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -21587,6 +21593,260 @@ function accountRecoveryRetentionReceipts(route, authDecision, storageDecision, 
   };
 }
 
+function accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const ticketBatchId = ["NN", "ACCOUNT", "LIFECYCLE", "WORKER", "TICKETS", suffix, route.cohort].join("-").toUpperCase();
+  const acceptancePackId = ["NN", "ACCOUNT", "LIFECYCLE", "ACCEPTANCE", suffix, route.auth].join("-").toUpperCase();
+  const queueRunbookId = ["NN", "ACCOUNT", "LIFECYCLE", "QUEUE", "RUNBOOK", suffix, route.data].join("-").toUpperCase();
+  const releaseCloseoutId = ["NN", "ACCOUNT", "LIFECYCLE", "WORKER", "CLOSEOUT", suffix, route.cutover].join("-").toUpperCase();
+  const blockedFields = inviteReceipt.blockedFields || ["PAN", "folio", "CAS", "bank", "card", "UPI", "ARN/EUIN", "distributor client book", "free-form private notes"];
+  const storageReady = route.data !== "browser" && route.data !== "manual";
+  const authReady = route.auth !== "undecided";
+  const normalizeField = (field) => field.trim().replace(/[^a-z0-9_]+/gi, "_").replace(/^_+|_+$/g, "").toLowerCase();
+  const basePayloadFields = [
+    "request_id",
+    "idempotency_key",
+    "account_id_hash",
+    "actor_role",
+    "worker_ticket_id",
+    "lifecycle_receipt_id",
+    "lifecycle_event",
+    "blocked_data_scan",
+    "owner_ack",
+    "created_at"
+  ];
+  const supportBlockers = (supportOps.blockers || []).filter((item) => !item.startsWith("No support")).slice(0, 1);
+  const ticketTemplates = {
+    "auth-recovery": {
+      acceptanceTests: [
+        "Expired recovery request returns closed receipt without account state change.",
+        "Repeated recovery attempts hit rate-limit receipt and support-safe escalation.",
+        "Provider reference, expiry state, and support notice are persisted together."
+      ],
+      closeout: "Provider proof, expiry, rate limit, and support-safe notice agree before access is restored.",
+      endpoint: "POST /api/accounts/recovery/:recovery_request_id/closeout",
+      extraBlockers: authReady ? [] : ["auth provider must be selected before recovery worker acceptance"],
+      monitor: "account_recovery.worker.closed",
+      priority: "P0",
+      queue: "account.lifecycle.security",
+      readiness: authDecision.readiness,
+      route: "#account-launch-route",
+      service: "account-recovery-worker"
+    },
+    "session-retention": {
+      acceptanceTests: [
+        "Session issue, refresh, logout, suspicious-login, and expiry events use the same retention policy ID.",
+        "Suspicious-login event creates monitor alert without exposing credentials or OTP.",
+        "Logout and expired refresh cannot revive a closed session."
+      ],
+      closeout: "Session retention policy, refresh state, logout state, and suspicious-login monitor agree.",
+      endpoint: "POST /api/accounts/sessions/:session_id/retention",
+      extraBlockers: authReady ? [] : ["session retention worker depends on selected auth provider"],
+      monitor: "account_session.retention.applied",
+      priority: "P1",
+      queue: "account.lifecycle.security",
+      readiness: authDecision.readiness,
+      route: "#account-launch",
+      service: "session-retention-worker"
+    },
+    "vault-restore": {
+      acceptanceTests: [
+        "Restore writes prior and restored state hashes plus rollback reference.",
+        "Deleted records, private notes, and stale entitlement are not revived.",
+        "Restore replay rebuilds the receipt from durable account vault events."
+      ],
+      closeout: "Prior hash, restored hash, rollback reference, and owner acknowledgement agree.",
+      endpoint: "POST /api/account-vault/restore/:restore_request_id",
+      extraBlockers: storageReady ? [] : ["vault restore worker needs backend-owned account storage"],
+      monitor: "account_vault.restore.proved",
+      priority: "P1",
+      queue: "account.lifecycle.vault",
+      readiness: storageDecision.readiness,
+      route: "#account-vault",
+      service: "account-vault-restore-worker"
+    },
+    "deletion-closeout": {
+      acceptanceTests: [
+        "Delete closeout stores scoped request, retained-proof explanation, completion time, and support-safe notice.",
+        "Delete replay proves retained receipt metadata without reviving user research state.",
+        "Retention exception cannot contain blocked investment identity fields."
+      ],
+      closeout: "Scoped request, completion receipt, retention exception, and support-safe notice agree.",
+      endpoint: "POST /api/privacy/account-deletion/:delete_request_id/closeout",
+      extraBlockers: storageReady ? [] : ["deletion closeout worker needs backend-owned delete job proof"],
+      monitor: "account_deletion.closeout_written",
+      priority: "P0",
+      queue: "account.lifecycle.privacy",
+      readiness: storageDecision.readiness,
+      route: "#privacy-control",
+      service: "account-deletion-worker"
+    },
+    "support-notice": {
+      acceptanceTests: [
+        "Recovery, restore, deletion, retention exception, and entitlement repair notices use approved templates.",
+        "Delivery state and redaction attestation are logged before a support case can close.",
+        "Notice payload excludes PAN, folio, CAS, payment credentials, private notes, and advice content."
+      ],
+      closeout: "Template version, delivery state, redaction attestation, and support case receipt agree.",
+      endpoint: "POST /api/support/notices/:support_notice_id/send",
+      extraBlockers: supportBlockers,
+      monitor: "support.account_notice.sent",
+      priority: "P1",
+      queue: "account.lifecycle.support",
+      readiness: supportOps.readiness,
+      route: "#account-launch-route",
+      service: "support-notice-worker"
+    }
+  };
+  const tickets = recoveryRetention.lanes.map((lane, index) => {
+    const template = ticketTemplates[lane.key] || ticketTemplates["support-notice"];
+    const proofFields = lane.proof.split(",").map(normalizeField).filter(Boolean);
+    const payloadFields = [...new Set([
+      ...basePayloadFields,
+      "receipt_id",
+      "retention_window",
+      ...proofFields,
+      "closed_at"
+    ])];
+    const logs = [
+      `${template.service}.request_log`,
+      `${template.service}.receipt_log`,
+      `${template.service}.replay_log`,
+      `${template.service}.redaction_log`,
+      `${template.service}.monitor_log`
+    ];
+    const laneBlockers = lane.blockers.filter((item) => item && !item.startsWith("No active lifecycle blocker"));
+    const blockers = [...new Set([...laneBlockers, ...template.extraBlockers].filter(Boolean))];
+    const score = clampNumber(Math.round(
+      lane.score * 0.46 +
+        template.readiness * 0.24 +
+        recoveryRetention.readiness * 0.16 +
+        route.score * 0.08 +
+        Math.min(payloadFields.length, 16) * 0.6 -
+        blockers.length * 6
+    ), 14, 96);
+    const status = score >= 82 && !blockers.length
+      ? "Implementation-ready ticket"
+      : score >= 60
+        ? "Acceptance dry-run ticket"
+        : "Ticket blocked";
+    const tone = status === "Implementation-ready ticket" ? "ready" : status === "Ticket blocked" ? "blocked" : "draft";
+    const priority = score < 60 ? "P0" : template.priority;
+    return {
+      acceptanceTests: template.acceptanceTests,
+      blockers: blockers.length ? blockers : ["No active worker-ticket blocker in this preview. Keep queue, durable receipt store, monitor alert, CI fixture, and owner signoff before production."],
+      closeout: template.closeout,
+      closeoutId: ["NN", "ACCOUNT", "LIFECYCLE", "CLOSEOUT", String(index + 1).padStart(2, "0"), lane.key.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase(),
+      endpoint: template.endpoint,
+      event: lane.event,
+      label: lane.label.replace(" receipt", "").replace(" policy", "") + " worker",
+      logs,
+      monitor: template.monitor,
+      owner: lane.owner,
+      payloadFields,
+      priority,
+      proof: lane.proof,
+      queue: template.queue,
+      receiptId: lane.receiptId,
+      route: template.route,
+      score,
+      service: template.service,
+      status,
+      ticketId: ["NN", "ACCOUNT", "LIFECYCLE", "TICKET", String(index + 1).padStart(2, "0"), lane.key.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase(),
+      tone
+    };
+  });
+  const ready = tickets.filter((ticket) => ticket.status === "Implementation-ready ticket").length;
+  const dryRun = tickets.filter((ticket) => ticket.status === "Acceptance dry-run ticket").length;
+  const blocked = tickets.filter((ticket) => ticket.status === "Ticket blocked").length;
+  const average = Math.round(tickets.reduce((sum, ticket) => sum + ticket.score, 0) / tickets.length);
+  const activeBlockers = [...new Set(tickets
+    .filter((ticket) => ticket.status !== "Implementation-ready ticket")
+    .flatMap((ticket) => ticket.blockers.filter((item) => !item.startsWith("No active worker-ticket")).slice(0, 2)))];
+  const readiness = clampNumber(Math.round(
+    average * 0.5 +
+      recoveryRetention.readiness * 0.2 +
+      authDecision.readiness * 0.1 +
+      storageDecision.readiness * 0.1 +
+      supportOps.readiness * 0.1
+  ) - Math.min(activeBlockers.length, 6) * 2, 14, 96);
+  const status = readiness >= 82 && !blocked && activeBlockers.length <= 1
+    ? "Worker acceptance ready"
+    : readiness >= 62
+      ? "Worker acceptance dry-run"
+      : "Worker acceptance blocked";
+  const tone = status === "Worker acceptance ready" ? "ready" : status === "Worker acceptance blocked" ? "blocked" : "draft";
+  const payloadFields = [...new Set(tickets.flatMap((ticket) => ticket.payloadFields))];
+  const logs = [...new Set(tickets.flatMap((ticket) => ticket.logs))];
+  const queueHandoff = tickets.map((ticket) => ({
+    detail: `${ticket.event} to ${ticket.monitor}`,
+    label: ticket.label,
+    value: `${ticket.queue} | ${ticket.service}`
+  }));
+  const metrics = [
+    { label: "Ticket batch", value: ticketBatchId, detail: `${ready} ready, ${dryRun} dry-run, ${blocked} blocked worker ticket${tickets.length === 1 ? "" : "s"}.` },
+    { label: "Acceptance pack", value: acceptancePackId, detail: "Endpoint contracts, payload scans, logs, monitors, replay tests, and owner closeout." },
+    { label: "Queue runbook", value: queueRunbookId, detail: `${tickets.length} lifecycle queues mapped from recovery, retention, restore, deletion, and notice lanes.` },
+    { label: "Release closeout", value: releaseCloseoutId, detail: `${status}; no account worker can close on screenshots or browser-local state.` }
+  ];
+  const closeoutTests = [
+    "Endpoint contract test proves method, path, service owner, auth boundary, and idempotency key.",
+    "Payload scan proves only account_id_hash, lifecycle metadata, proof hashes, and approved receipt fields are present.",
+    "Receipt log and replay log rebuild the lifecycle state without browser-local state or manual notes.",
+    "Redaction log proves blocked investment identity, payment credentials, distributor records, and private notes are absent.",
+    "Monitor event, queue state, retry count, dead-letter state, and owner acknowledgement are visible before closeout.",
+    "Support-safe notice or retained-proof explanation is attached when recovery, restore, deletion, or retention exception affects a user."
+  ];
+  const receiptFields = [
+    "account_lifecycle_worker_ticket_batch_id",
+    "worker_ticket_id",
+    "acceptance_pack_id",
+    "queue_runbook_id",
+    "release_closeout_id",
+    "endpoint_method",
+    "endpoint_path",
+    "service_owner",
+    "queue_name",
+    "monitor_event",
+    "request_log_id",
+    "receipt_log_id",
+    "replay_log_id",
+    "redaction_log_id",
+    "dead_letter_state",
+    "owner_acknowledged_at",
+    "closeout_status"
+  ];
+  const noGoRules = [
+    "No lifecycle worker ships without endpoint contract, payload schema, request log, receipt log, replay log, redaction log, monitor event, and owner acknowledgement.",
+    "No recovery or session worker ships before auth provider, expiry, rate limit, logout, suspicious-login, and support-safe closeout proof exist.",
+    "No restore or deletion worker ships before backend-owned account storage, durable receipt replay, rollback or retained-proof explanation, and privacy closeout exist.",
+    "No support notice worker ships before delivery state, redaction attestation, template version, and support-safe case receipt exist.",
+    `No worker payload may include ${blockedFields.join(", ")}.`
+  ];
+  return {
+    acceptancePackId,
+    activeBlockers: activeBlockers.length ? activeBlockers : ["No active lifecycle worker ticket blocker in this preview. Keep real worker runtime, queue, database, monitor alert, CI fixture, and owner identity before production."],
+    average,
+    blocked,
+    closeoutTests,
+    dryRun,
+    logs,
+    metrics,
+    noGoRules,
+    payloadFields,
+    queueHandoff,
+    queueRunbookId,
+    readiness,
+    receiptFields,
+    ready,
+    releaseCloseoutId,
+    status,
+    ticketBatchId,
+    tickets,
+    tone
+  };
+}
+
 function renderAccountLaunchRoute(event) {
   if (event) event.preventDefault();
   if (!els.accountRouteOutput) return;
@@ -21603,8 +21863,9 @@ function renderAccountLaunchRoute(event) {
   const supportCasebook = founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill);
   const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
   const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
+  const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
   if (els.accountRouteSummary) {
-    els.accountRouteSummary.textContent = `${recoveryRetention.readiness}/100 | ${recoveryRetention.status}`;
+    els.accountRouteSummary.textContent = `${workerTickets.readiness}/100 | ${workerTickets.status}`;
   }
   els.accountRouteOutput.innerHTML = `
     <div class="account-route-hero ${escapeHtml(route.tone)}">
@@ -22066,6 +22327,85 @@ function renderAccountLaunchRoute(event) {
         </article>
       </div>
     </div>
+    <div class="account-route-worker ${escapeHtml(workerTickets.tone)}">
+      <div class="account-route-worker-head">
+        <div>
+          <span>Lifecycle worker acceptance tickets</span>
+          <h3>${escapeHtml(workerTickets.status)}</h3>
+          <p>Ticket batch ${escapeHtml(workerTickets.ticketBatchId)} converts recovery, retention, restore, deletion, and support notice receipts into backend worker endpoints, queues, logs, monitors, and closeout tests.</p>
+        </div>
+        <div class="account-route-worker-score" style="--score:${workerTickets.readiness}">
+          <strong>${workerTickets.readiness}</strong>
+          <span>work</span>
+        </div>
+      </div>
+      <div class="account-route-worker-grid">
+        ${workerTickets.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-worker-ticket-grid">
+        ${workerTickets.tickets.map((ticket) => `
+          <article class="${escapeHtml(ticket.tone)}">
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(ticket.priority)} | ${escapeHtml(ticket.owner)}</span>
+                <strong>${escapeHtml(ticket.label)}</strong>
+              </div>
+              <b>${ticket.score}/100</b>
+            </div>
+            <p>${escapeHtml(ticket.status)} | ${escapeHtml(ticket.ticketId)}</p>
+            <div class="build-progress-bar"><span style="width:${ticket.score}%"></span></div>
+            <small><strong>Endpoint:</strong> ${escapeHtml(ticket.endpoint)}</small>
+            <small><strong>Service:</strong> ${escapeHtml(ticket.service)} | ${escapeHtml(ticket.queue)}</small>
+            <small><strong>Monitor:</strong> ${escapeHtml(ticket.monitor)}</small>
+            <small><strong>Payload:</strong> ${escapeHtml(ticket.payloadFields.slice(0, 9).join(", "))}</small>
+            <small><strong>Acceptance:</strong> ${escapeHtml(ticket.acceptanceTests[0])}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(ticket.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button account-route-worker-route" type="button" data-build-route="${escapeHtml(ticket.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-worker-handoff-grid">
+        ${workerTickets.queueHandoff.map((item) => `
+          <article>
+            <span>${escapeHtml(item.label)}</span>
+            <strong>${escapeHtml(item.value)}</strong>
+            <p>${escapeHtml(item.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-worker-two">
+        <article>
+          <span>Closeout tests</span>
+          <ol>
+            ${workerTickets.closeoutTests.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <ul>
+            ${workerTickets.receiptFields.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>No-go rules</span>
+          <ul>
+            ${workerTickets.noGoRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${workerTickets.activeBlockers.length > 1 ? "blocked" : "ready"}">
+          <span>Worker blockers</span>
+          <ul>
+            ${workerTickets.activeBlockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="account-route-gate-grid">
       ${ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `
         <article>
@@ -22115,6 +22455,7 @@ function makeAccountLaunchRouteBrief() {
   const supportCasebook = founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill);
   const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
   const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
+  const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
   const betaScore = Math.round(betaChecklist.reduce((sum, item) => sum + item.score, 0) / betaChecklist.length);
   return [
     "# NiveshNadi Retail Account Launch Route",
@@ -22217,6 +22558,22 @@ function makeAccountLaunchRouteBrief() {
     ...recoveryRetention.noGoRules.map((item) => `- Lifecycle no-go rule: ${item}`),
     ...recoveryRetention.activeBlockers.map((item) => `- Lifecycle blocker: ${item}`),
     "",
+    "## Lifecycle Worker Acceptance Tickets",
+    `- Status: ${workerTickets.status}`,
+    `- Readiness: ${workerTickets.readiness}/100`,
+    `- Ticket batch: ${workerTickets.ticketBatchId}`,
+    `- Acceptance pack: ${workerTickets.acceptancePackId}`,
+    `- Queue runbook: ${workerTickets.queueRunbookId}`,
+    `- Release closeout: ${workerTickets.releaseCloseoutId}`,
+    `- Ready/Dry-run/Blocked: ${workerTickets.ready}/${workerTickets.dryRun}/${workerTickets.blocked}`,
+    ...workerTickets.metrics.map((metric) => `- Worker metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...workerTickets.tickets.map((ticket) => `- Worker ticket: ${ticket.ticketId}: ${ticket.label} | ${ticket.status} | ${ticket.score}/100 | ${ticket.priority} | ${ticket.owner} | ${ticket.endpoint} | ${ticket.service} | ${ticket.queue} | ${ticket.monitor}`),
+    ...workerTickets.queueHandoff.map((item) => `- Queue handoff: ${item.label}: ${item.value} | ${item.detail}`),
+    ...workerTickets.closeoutTests.map((item) => `- Closeout test: ${item}`),
+    ...workerTickets.receiptFields.map((item) => `- Worker receipt field: ${item}`),
+    ...workerTickets.noGoRules.map((item) => `- Worker no-go rule: ${item}`),
+    ...workerTickets.activeBlockers.map((item) => `- Worker blocker: ${item}`),
+    "",
     "## Launch Gates",
     ...ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `- ${gate.label}: ${gate.score}/100 | ${gate.event} | ${gate.proof} | ${gate.guardrail}`),
     "",
@@ -22286,6 +22643,76 @@ function makeAccountRecoveryRetentionBrief() {
     "",
     "## Guardrail",
     "Account recovery and retention receipts are lifecycle operations metadata. They do not store PAN, folio, CAS, bank data, card, UPI, OTP, account credentials, gateway secrets, ARN/EUIN, distributor client books, private notes, transaction instructions, or personalized advice content."
+  ].join("\n");
+}
+
+function makeAccountLifecycleWorkerBrief() {
+  const route = accountLaunchRouteConfig();
+  const betaChecklist = founderBetaChecklist(route);
+  const authDecision = founderAuthDecisionBoard(route, betaChecklist);
+  const storageDecision = founderStorageDecisionBoard(route, betaChecklist);
+  const inviteGate = founderInviteGate(route, betaChecklist);
+  const inviteReceipt = founderInviteReceipt(route, betaChecklist, inviteGate);
+  const supportDrill = founderSupportDrill(route, betaChecklist, inviteGate, inviteReceipt);
+  const supportCasebook = founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill);
+  const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
+  const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
+  const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
+  return [
+    "# NiveshNadi Account Lifecycle Worker Acceptance Tickets",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Ticket batch ID: ${workerTickets.ticketBatchId}`,
+    `Acceptance pack ID: ${workerTickets.acceptancePackId}`,
+    `Queue runbook ID: ${workerTickets.queueRunbookId}`,
+    `Release closeout ID: ${workerTickets.releaseCloseoutId}`,
+    `Status: ${workerTickets.status}`,
+    `Readiness: ${workerTickets.readiness}/100`,
+    `Average ticket score: ${workerTickets.average}/100`,
+    `Ready/Dry-run/Blocked: ${workerTickets.ready}/${workerTickets.dryRun}/${workerTickets.blocked}`,
+    "",
+    "## Metrics",
+    ...workerTickets.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Worker Tickets",
+    ...workerTickets.tickets.flatMap((ticket) => [
+      `- ${ticket.ticketId}: ${ticket.label} | ${ticket.status} | ${ticket.score}/100 | ${ticket.priority} | Owner: ${ticket.owner}`,
+      `  Endpoint: ${ticket.endpoint}`,
+      `  Service: ${ticket.service}`,
+      `  Queue: ${ticket.queue}`,
+      `  Monitor: ${ticket.monitor}`,
+      `  Receipt: ${ticket.receiptId}`,
+      `  Event: ${ticket.event}`,
+      `  Payload fields: ${ticket.payloadFields.join(", ")}`,
+      `  Logs: ${ticket.logs.join(", ")}`,
+      `  Acceptance tests: ${ticket.acceptanceTests.join(" | ")}`,
+      `  Closeout: ${ticket.closeout}`,
+      `  Route: ${ticket.route}`,
+      `  Blockers: ${ticket.blockers.join(" | ")}`
+    ]),
+    "",
+    "## Queue Handoff",
+    ...workerTickets.queueHandoff.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Shared Payload Fields",
+    ...workerTickets.payloadFields.map((item) => `- ${item}`),
+    "",
+    "## Shared Logs",
+    ...workerTickets.logs.map((item) => `- ${item}`),
+    "",
+    "## Closeout Tests",
+    ...workerTickets.closeoutTests.map((item) => `- ${item}`),
+    "",
+    "## Receipt Fields",
+    ...workerTickets.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## No-Go Rules",
+    ...workerTickets.noGoRules.map((item) => `- ${item}`),
+    "",
+    "## Active Blockers",
+    ...workerTickets.activeBlockers.map((item) => `- ${item}`),
+    "",
+    "## Guardrail",
+    "Lifecycle worker tickets are backend acceptance metadata. They must not store PAN, folio, CAS, bank data, card, UPI, OTP, account credentials, gateway secrets, ARN/EUIN, distributor client books, private notes, transaction instructions, or personalized advice content."
   ].join("\n");
 }
 
@@ -52015,6 +52442,7 @@ function bindEvents() {
   });
   els.openAccountRouteBlocker?.addEventListener("click", openAccountRouteBlocker);
   els.copyAccountRecoveryRetention?.addEventListener("click", () => copyText(makeAccountRecoveryRetentionBrief()));
+  els.copyAccountLifecycleWorkers?.addEventListener("click", () => copyText(makeAccountLifecycleWorkerBrief()));
   els.copyAccountRoute?.addEventListener("click", () => copyText(makeAccountLaunchRouteBrief()));
   els.accountLaunchForm?.addEventListener("submit", renderAccountLaunchShell);
   [els.accountLaunchAuth, els.accountLaunchStorage, els.accountLaunchMigration, els.accountLaunchSupport].forEach((input) => {
@@ -53946,6 +54374,7 @@ function cacheElements() {
     accountRouteOutput: qs("#accountRouteOutput"),
     openAccountRouteBlocker: qs("#openAccountRouteBlocker"),
     copyAccountRecoveryRetention: qs("#copyAccountRecoveryRetention"),
+    copyAccountLifecycleWorkers: qs("#copyAccountLifecycleWorkers"),
     copyAccountRoute: qs("#copyAccountRoute"),
     accountLaunchForm: qs("#accountLaunchForm"),
     accountLaunchAuth: qs("#accountLaunchAuth"),

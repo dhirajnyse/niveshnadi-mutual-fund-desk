@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V307 Lifecycle Worker Acceptance Tickets
+
+V307 adds Lifecycle Worker Acceptance Tickets inside the Retail Account Launch Route. It converts account recovery, session retention, vault restore, deletion closeout, and support notice receipt lanes into backend worker tickets with endpoint methods and paths, services, queues, payload fields, logs, monitor events, acceptance tests, closeout rules, owner routes, blocked-data scans, and a copyable worker-ticket packet before account lifecycle work can move into implementation.
+
 ## V306 Account Recovery and Retention Receipts
 
 V306 adds Account Recovery and Retention Receipts inside the Retail Account Launch Route. It binds auth recovery, session retention, vault restore, deletion closeout, and support notices into lifecycle receipt lanes with receipt IDs, event names, proof fields, retention windows, owner routes, no-go rules, blocked-data guardrails, and a copyable lifecycle brief before paid account access can widen.

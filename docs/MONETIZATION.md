@@ -240,6 +240,10 @@ V306 adds Account Recovery and Retention Receipts to the Retail Account Launch R
 
 Commercially, this protects paid retention without creating hidden support debt: users can recover access, restore saved research, close deletion requests, and receive support-safe notices through repeatable lifecycle receipts rather than manual founder fixes.
 
+V307 adds Lifecycle Worker Acceptance Tickets to the same route. Each recovery, session, restore, deletion, and notice receipt now maps to a backend worker endpoint, queue, payload contract, logs, monitor event, acceptance tests, and closeout rule before engineering implementation begins.
+
+Commercially, this keeps the Rs. 100/month and Rs. 1,000/year product from relying on optimistic account operations. Lifecycle work should become queueable, replayable, monitored backend behavior before paid accounts widen.
+
 ## Payment Adapter Repairs
 
 V150 connects the payment backend to repairable adapter routes. Checkout, webhook, idempotency replay, refund, cancellation, entitlement projection, support repair, settlement, and incident adapters now show the event in, event out, receipt join, repair action, rollback rule, and blockers before real gateway events can unlock paid features.

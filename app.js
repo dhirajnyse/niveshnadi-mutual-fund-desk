@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v319-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v319 Founder Beta Launch Command Center";
+const DATA_VERSION = "20260628-v320-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v320 First Cohort Rehearsal Daybook";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Use the founder launch command center to decide freeze, rehearse, or open the first paid cohort after real signoff owners close proof."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Run the first cohort rehearsal daybook until payment, legal, security, support, live-source, and release-captain owners can close real proof."
   },
   {
     phase: "Phase 2",
@@ -1240,10 +1240,16 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Founder beta launch command center",
+    label: "First cohort rehearsal daybook",
     status: "Shipping now",
     route: "#founder-beta-operating-room",
-    detail: "Turn v318 final signoff lanes into a daily founder command center that shows what closes today, who owns it, which proof is missing, and whether the first paid cohort stays frozen, rehearses, or opens."
+    detail: "Turn the v319 launch command center into a day-by-day founder rehearsal for payment, legal, security, support, live-source, and release-captain proof before any first paid cohort opens."
+  },
+  {
+    label: "Founder beta launch command center",
+    status: "Done",
+    route: "#founder-beta-operating-room",
+    detail: "Turn final signoff lanes into a daily founder command center that shows what closes today, who owns it, which proof is missing, and whether the first paid cohort stays frozen, rehearses, or opens."
   },
   {
     label: "Final signoff closeout",
@@ -9109,9 +9115,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Founder beta launch command center",
-      status: "Closeout active",
+      status: "Done in v319",
       route: "#founder-beta-operating-room",
       detail: "Use final signoff lanes to show today's owner command, missing proof, no-go reason, and the freeze, rehearse, or open decision for the first paid cohort."
+    },
+    {
+      label: "First cohort rehearsal daybook",
+      status: "Closeout active",
+      route: "#founder-beta-operating-room",
+      detail: "Run a day-by-day founder rehearsal across payment, legal, security, support, live-source, and release-captain owners before any first paid cohort opens."
     }
   ];
   const productionTarget = releaseVersion
@@ -9338,7 +9350,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v319 turns final signoff proof into the founder beta launch command center.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v320 turns the launch command center into a first cohort rehearsal daybook.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9467,7 +9479,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v319</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v320</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -14768,13 +14780,191 @@ function founderBetaLaunchCommandCenter(ops = founderBetaOperatingRoomConfig(), 
   };
 }
 
+function founderFirstCohortRehearsalDaybook(ops = founderBetaOperatingRoomConfig(), warRoom = founderBetaWarRoomDigest(ops), commandCenter = founderBetaLaunchCommandCenter(ops, warRoom)) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const daybookId = ["NN", "FIRST", "COHORT", "REHEARSAL", "DAYBOOK", suffix].join("-").toUpperCase();
+  const rehearsalRunId = ["NN", "FIRST", "COHORT", "REHEARSAL", "RUN", suffix].join("-").toUpperCase();
+  const dryRunWindowId = ["NN", "FIRST", "COHORT", "DRY", "RUN", "WINDOW", suffix].join("-").toUpperCase();
+  const founderDecisionId = ["NN", "FIRST", "COHORT", "FOUNDER", "DECISION", suffix].join("-").toUpperCase();
+  const cleanBlocker = (item) => {
+    const text = String(item || "").trim();
+    return text && !text.startsWith("No active") && !text.startsWith("No hard blocker");
+  };
+  const laneByLabel = (label) => commandCenter.lanes.find((lane) => lane.label === label) || commandCenter.lanes[0];
+  const weakestLane = [...commandCenter.lanes].sort((a, b) => a.score - b.score)[0];
+  const activeBlockers = commandCenter.blockers.filter(cleanBlocker);
+  const readiness = clampNumber(Math.round(
+    commandCenter.readiness * 0.42 +
+      warRoom.readiness * 0.18 +
+      ops.operatingScore * 0.16 +
+      commandCenter.finalSignoff.readiness * 0.14 +
+      commandCenter.paidBetaGate.readiness * 0.1
+  ) - Math.min(activeBlockers.length, 8) * 2, 12, 96);
+  const status = commandCenter.status.startsWith("Open") && readiness >= 78
+    ? "Ready to rehearse tiny paid cohort"
+    : commandCenter.status.startsWith("Freeze") || activeBlockers.length
+      ? "Rehearsal only: no paid invites"
+      : "First cohort rehearsal week";
+  const tone = status.startsWith("Ready") ? "ready" : status.startsWith("Rehearsal only") ? "blocked" : "watch";
+  const dayTemplates = [
+    {
+      day: "Day 0",
+      label: "Freeze line and owner room",
+      owner: "Founder",
+      lane: weakestLane,
+      route: "#founder-beta-operating-room",
+      start: "Open the launch command center and name the weakest owner lane before any invite copy leaves the desk.",
+      close: "Save the freeze, rehearsal, or open posture with first cohort cap and blocked-data attestation.",
+      proof: commandCenter.todayCommandId,
+      event: "first_cohort_rehearsal.freeze_line_saved"
+    },
+    {
+      day: "Day 1",
+      label: "Payment rail dry run",
+      owner: "Commercial",
+      lane: laneByLabel("Payment rail"),
+      route: "#payment-sandbox",
+      start: "Run hosted checkout, signed webhook, invoice, refund, entitlement, and settlement proof for one synthetic user hash.",
+      close: "No browser-local success URL, screenshot, or manual note may unlock paid access.",
+      proof: commandCenter.paidBetaGate.gateId,
+      event: "first_cohort_rehearsal.payment_dry_run_closed"
+    },
+    {
+      day: "Day 2",
+      label: "Legal wording and invite copy",
+      owner: "Compliance",
+      lane: laneByLabel("Legal and compliance"),
+      route: "#trust-center",
+      start: "Read every invite, pricing, refund, support, and research claim as research-only copy.",
+      close: "Attach no-advice wording, risk warning, source disclaimer, refund/cancel wording, and consent screen version.",
+      proof: commandCenter.finalSignoff.releasePacketId,
+      event: "first_cohort_rehearsal.legal_copy_closed"
+    },
+    {
+      day: "Day 3",
+      label: "Security and support drill",
+      owner: "Security + Ops",
+      lane: laneByLabel("Security and auth"),
+      route: "#account-launch-route",
+      start: "Run auth, secret, rate-limit, backup, incident response, support inbox, SLA, refund, and entitlement repair checks together.",
+      close: "Support must answer with redacted lookup only and a clear escalation owner.",
+      proof: dryRunWindowId,
+      event: "first_cohort_rehearsal.security_support_closed"
+    },
+    {
+      day: "Day 4",
+      label: "Live source release drill",
+      owner: "Data",
+      lane: laneByLabel("Live source release"),
+      route: "#backend-audit-receipts",
+      start: "Close scheduler receipt, source date, parser quarantine, durable receipt, alert, replay, reviewer signoff, and rollback evidence.",
+      close: "No public research claim refreshes unless source proof and affected-surface state agree.",
+      proof: commandCenter.proofQueueId,
+      event: "first_cohort_rehearsal.live_source_closed"
+    },
+    {
+      day: "Day 5",
+      label: "Founder cohort decision",
+      owner: "Founder",
+      lane: laneByLabel("Release captain"),
+      route: "#build-progress-roadmap",
+      start: "Compare all owner closeouts, blocker count, support capacity, refund path, incident rollback, and Trust Center proof.",
+      close: "Record freeze, rehearse, or open decision; keep the cap at 25 paid users or lower.",
+      proof: founderDecisionId,
+      event: "first_cohort_rehearsal.founder_decision_saved"
+    }
+  ];
+  const days = dayTemplates.map((item) => {
+    const lane = item.lane || weakestLane;
+    const laneBlocker = lane?.missingProof || lane?.blockers?.find(cleanBlocker) || activeBlockers[0] || "No blocker in this preview; keep real owner proof before launch.";
+    const score = clampNumber(Math.round((lane?.score || readiness) * 0.64 + readiness * 0.36) - (cleanBlocker(laneBlocker) ? 2 : 0), 12, 96);
+    const state = score >= 80 && !cleanBlocker(laneBlocker)
+      ? "Ready for founder rehearsal"
+      : score < 60 || commandCenter.status.startsWith("Freeze")
+        ? "Keep in rehearsal"
+        : "Owner closeout needed";
+    return {
+      ...item,
+      acceptance: lane?.acceptance || item.close,
+      blocker: laneBlocker,
+      laneId: lane?.laneId || commandCenter.proofQueueId,
+      proof: item.proof,
+      score,
+      state,
+      tone: state === "Ready for founder rehearsal" ? "ready" : state === "Keep in rehearsal" ? "blocked" : "watch"
+    };
+  });
+  const blocked = days.filter((day) => day.tone === "blocked").length;
+  const ownerCloseout = days.filter((day) => day.tone === "watch").length;
+  const ready = days.filter((day) => day.tone === "ready").length;
+  const metrics = [
+    { label: "Daybook ID", value: daybookId, detail: `${status}; ${readiness}/100 rehearsal readiness.` },
+    { label: "Rehearsal run", value: rehearsalRunId, detail: `${ready} ready, ${ownerCloseout} owner closeout, ${blocked} rehearsal hold day${days.length === 1 ? "" : "s"}.` },
+    { label: "Cohort cap", value: commandCenter.cohortCap, detail: "Never widen beyond founder-reviewed support, refund, incident, and source correction capacity." },
+    { label: "Next owner", value: weakestLane?.owner || "Founder", detail: weakestLane ? `${weakestLane.label}: ${weakestLane.missingProof}` : "No owner lane available." }
+  ];
+  const operatorScript = [
+    `Start: Open ${commandCenter.commandCenterId} and read the active blocker count before any invite move.`,
+    "Ask each owner for one proof artifact, one no-go reason, and one recovery owner.",
+    "Run payment, support, source, and incident drills with synthetic user hashes only.",
+    `Decision: save ${founderDecisionId} with freeze, rehearse, or open posture and cohort cap.`,
+    "Stop immediately if any flow asks for PAN, folio, CAS, bank, card, UPI, OTP, credentials, ARN/EUIN, distributor client records, or private notes."
+  ];
+  const goNoGoChecks = [
+    "Go only if all daybook days are ready or owner-approved with attached proof.",
+    "Hold if any payment, legal, security, support, live-source, or release-captain lane has unresolved external proof.",
+    "Freeze if support capacity is frozen, incident rollback is unclear, source correction cannot publish, or refund/entitlement repair is manual-only.",
+    "Rehearse again if the founder cannot explain the no-go reason and next owner in one sentence.",
+    "Keep the Build Tracker below production-ready 100% until the daybook closes with real evidence, not demo copy."
+  ];
+  const receiptFields = [
+    "first_cohort_rehearsal_daybook_id",
+    "first_cohort_rehearsal_run_id",
+    "first_cohort_day_id",
+    "founder_command_center_id",
+    "founder_cohort_decision_id",
+    "dry_run_window_id",
+    "owner_lane_id",
+    "owner_name",
+    "route",
+    "proof_artifact_id",
+    "acceptance_state",
+    "blocker_reason",
+    "cohort_cap",
+    "decision_posture",
+    "blocked_data_attestation",
+    "closed_at"
+  ];
+
+  return {
+    activeBlockerCount: activeBlockers.length,
+    blockers: activeBlockers.length ? activeBlockers : ["No active daybook blocker in this preview. Keep real owner proof before opening paid invites."],
+    blocked,
+    daybookId,
+    days,
+    dryRunWindowId,
+    founderDecisionId,
+    goNoGoChecks,
+    metrics,
+    operatorScript,
+    ownerCloseout,
+    readiness,
+    ready,
+    receiptFields,
+    rehearsalRunId,
+    status,
+    tone
+  };
+}
+
 function renderFounderBetaOperatingRoom() {
   if (!els.founderBetaOpsOutput) return;
   const ops = founderBetaOperatingRoomConfig();
   const warRoom = founderBetaWarRoomDigest(ops);
   const commandCenter = founderBetaLaunchCommandCenter(ops, warRoom);
+  const daybook = founderFirstCohortRehearsalDaybook(ops, warRoom, commandCenter);
   if (els.founderBetaOpsSummary) {
-    els.founderBetaOpsSummary.textContent = `${commandCenter.readiness}/100 | ${commandCenter.status}`;
+    els.founderBetaOpsSummary.textContent = `${daybook.readiness}/100 | ${daybook.status}`;
   }
   els.founderBetaOpsOutput.innerHTML = `
     <div class="founder-beta-ops-hero ${ops.posture.startsWith("Open") ? "ready" : ops.posture.startsWith("Founder") ? "watch" : "blocked"}">
@@ -14859,6 +15049,69 @@ function renderFounderBetaOperatingRoom() {
         </article>
       </div>
       <a class="text-button founder-command-route" href="#build-progress-roadmap">Open overall progress path</a>
+    </div>
+    <div class="first-cohort-daybook ${escapeHtml(daybook.tone)}">
+      <div class="first-cohort-daybook-head">
+        <div>
+          <span>V320 first cohort rehearsal daybook</span>
+          <h3>${escapeHtml(daybook.status)}</h3>
+          <p>Daybook ${escapeHtml(daybook.daybookId)} turns the launch command center into a founder rehearsal week across payment, legal, security, support, live-source, and release-captain proof before paid invites open.</p>
+        </div>
+        <div class="first-cohort-daybook-score" style="--score:${daybook.readiness}">
+          <strong>${daybook.readiness}</strong>
+          <span>Day</span>
+        </div>
+      </div>
+      <div class="first-cohort-daybook-metrics">
+        ${daybook.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="first-cohort-daybook-days">
+        ${daybook.days.map((day) => `
+          <article class="${escapeHtml(day.tone)}">
+            <div class="first-cohort-daybook-card-head">
+              <div>
+                <span>${escapeHtml(day.day)} | ${escapeHtml(day.owner)}</span>
+                <strong>${escapeHtml(day.label)}</strong>
+              </div>
+              <b>${day.score}</b>
+            </div>
+            <div class="build-progress-bar launch"><span style="width:${day.score}%"></span></div>
+            <p><b>Start:</b> ${escapeHtml(day.start)}</p>
+            <p><b>Close:</b> ${escapeHtml(day.close)}</p>
+            <small>${escapeHtml(day.state)} | ${escapeHtml(day.event)}</small>
+            <p><b>Blocker:</b> ${escapeHtml(day.blocker)}</p>
+            <button class="text-button" type="button" data-founder-beta-ops-route="${escapeHtml(day.route)}">Open day proof</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="first-cohort-daybook-two">
+        <article>
+          <span>Operator script</span>
+          <strong>${escapeHtml(daybook.rehearsalRunId)}</strong>
+          <ol>${daybook.operatorScript.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}</ol>
+        </article>
+        <article>
+          <span>Go/no-go checks</span>
+          <strong>${escapeHtml(daybook.founderDecisionId)}</strong>
+          <ul>${daybook.goNoGoChecks.map((check) => `<li>${escapeHtml(check)}</li>`).join("")}</ul>
+        </article>
+        <article class="${daybook.activeBlockerCount ? "blocked" : "ready"}">
+          <span>Daybook blockers</span>
+          <strong>${daybook.activeBlockerCount} blocker${daybook.activeBlockerCount === 1 ? "" : "s"}</strong>
+          <ul>${daybook.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <strong>${daybook.receiptFields.length} fields</strong>
+          <ul>${daybook.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}</ul>
+        </article>
+      </div>
     </div>
     <div class="founder-war-room ${escapeHtml(warRoom.tone)}">
       <div class="founder-war-room-head">
@@ -14977,12 +15230,16 @@ function makeFounderBetaWarRoomDigestBrief() {
   const ops = founderBetaOperatingRoomConfig();
   const warRoom = founderBetaWarRoomDigest(ops);
   const commandCenter = founderBetaLaunchCommandCenter(ops, warRoom);
+  const daybook = founderFirstCohortRehearsalDaybook(ops, warRoom, commandCenter);
   return [
     "# NiveshNadi Founder Beta War-Room Digest",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
     `Launch command center ID: ${commandCenter.commandCenterId}`,
     `Launch command status: ${commandCenter.status}`,
     `Launch command readiness: ${commandCenter.readiness}/100`,
+    `First cohort daybook ID: ${daybook.daybookId}`,
+    `First cohort daybook status: ${daybook.status}`,
+    `First cohort daybook readiness: ${daybook.readiness}/100`,
     `Cohort decision ID: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `War-room ID: ${warRoom.warRoomId}`,
@@ -15002,6 +15259,11 @@ function makeFounderBetaWarRoomDigestBrief() {
     "## Founder Launch Command Center",
     ...commandCenter.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
     ...commandCenter.lanes.map((lane) => `- ${lane.label}: ${lane.commandStatus} | ${lane.owner} | ${lane.score}/100 | Today: ${lane.commandToday} | Missing: ${lane.missingProof}`),
+    "",
+    "## First Cohort Rehearsal Daybook",
+    ...daybook.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...daybook.days.map((day) => `- ${day.day}: ${day.label} | ${day.owner} | ${day.state} | ${day.score}/100 | Proof: ${day.proof} | Blocker: ${day.blocker}`),
+    ...daybook.goNoGoChecks.map((check) => `- Go/no-go: ${check}`),
     "",
     "## Founder Decisions",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),
@@ -15029,12 +15291,16 @@ function makeFounderBetaOperatingBrief() {
   const ops = founderBetaOperatingRoomConfig();
   const warRoom = founderBetaWarRoomDigest(ops);
   const commandCenter = founderBetaLaunchCommandCenter(ops, warRoom);
+  const daybook = founderFirstCohortRehearsalDaybook(ops, warRoom, commandCenter);
   return [
     "# NiveshNadi Founder Beta Operating Room",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
     `Launch command center: ${commandCenter.commandCenterId}`,
     `Launch command status: ${commandCenter.status}`,
     `Launch command readiness: ${commandCenter.readiness}/100`,
+    `First cohort daybook: ${daybook.daybookId}`,
+    `First cohort daybook status: ${daybook.status}`,
+    `First cohort daybook readiness: ${daybook.readiness}/100`,
     `Cohort decision: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `Operating score: ${ops.operatingScore}/100`,
@@ -15054,6 +15320,13 @@ function makeFounderBetaOperatingBrief() {
     ...commandCenter.dailyMoves.map((move) => `- Command move: ${move.label} | ${move.owner} | ${move.proof} | ${move.detail}`),
     ...commandCenter.decisionRules.map((rule) => `- Decision rule: ${rule}`),
     ...commandCenter.receiptFields.map((field) => `- Command receipt field: ${field}`),
+    "",
+    "## First Cohort Rehearsal Daybook",
+    ...daybook.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...daybook.days.map((day) => `- ${day.day}: ${day.label} | ${day.owner} | ${day.state} | ${day.score}/100 | Event: ${day.event} | Proof: ${day.proof}`),
+    ...daybook.operatorScript.map((line) => `- Operator script: ${line}`),
+    ...daybook.goNoGoChecks.map((check) => `- Daybook go/no-go: ${check}`),
+    ...daybook.receiptFields.map((field) => `- Daybook receipt field: ${field}`),
     "",
     "## Founder War-Room Digest",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),

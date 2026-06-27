@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V320 First Cohort Rehearsal Daybook
+
+V320 adds the First Cohort Rehearsal Daybook inside the Founder Beta Operating Room. It reads the V319 Founder Beta Launch Command Center, then turns payment rail, legal/compliance, security/support, live-source, and release-captain proof into a day-by-day founder rehearsal with owner routes, start and close commands, proof IDs, blockers, operator script, go/no-go checks, and receipt fields before the first paid cohort opens.
+
 ## V319 Founder Beta Launch Command Center
 
 V319 adds the Founder Beta Launch Command Center inside the Founder Beta Operating Room. It reads the V318 Final Signoff Closeout and Paid Beta Production Gate, then turns payment, legal, security, support, live-source, and release-captain lanes into daily founder commands, missing proof, blocker count, cohort cap, freeze/rehearse/open decision rules, and command-center receipt fields before the first paid cohort can move beyond rehearsal.

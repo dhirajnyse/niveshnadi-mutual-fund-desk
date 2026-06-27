@@ -10,6 +10,10 @@ V149 adds Support Repair Joins. The vault now shows how each limit joins to a su
 
 V109 adds a backend handoff layer for the vault. It does not create a production database; it makes the cutover contract visible before implementation. The board requires account row ownership, migration batch ID, handoff receipt, backup and restore proof, export bundle, deletion receipt, support redaction, entitlement join, and rollback marker before saved research can be treated as backend-owned.
 
+## Account Vault Endpoint Contracts
+
+V304 adds endpoint contracts after the backend storage handoff. The vault now names the backend routes that must exist before saved research can leave browser-local storage: migration, restore proof, entitlement join, account export, account deletion, support repair mutation, and audit export. Each endpoint carries method, path, service, owner, payload fields, request log, receipt log, replay or rollback log, monitor event, acceptance rule, no-go rule, and closeout receipt fields.
+
 The blueprint intentionally excludes PAN, folio numbers, CAS files, bank details, UPI details, card data, nominee information, tax documents, address data, ARN/EUIN, distributor client books, and private family or tax notes. Those fields belong either outside the product or inside a later Phase 2 consent architecture.
 
 Before launch, each vault collection needs row ownership, encryption, backup rules, retention policy, and redacted support visibility. Paid plan access should be enforced by server-side entitlement state, not by browser flags. Account export should show what is included and what is excluded. Account deletion should clear saved research while leaving only a minimal non-sensitive completion receipt when legally required.

@@ -226,6 +226,12 @@ V149 connects the account-vault limits to support-safe repair joins. Every saved
 
 Commercially, this protects the low-price retail model because support cases can become expensive quickly. A Rs. 100/month plan only works if failed payments, refund closeouts, expired access, alert pauses, export issues, and saved-research restores can be handled through repeatable receipts rather than founder memory. Support repair joins turn exceptions into controlled product learning before the paid cohort widens.
 
+## Account Vault Endpoint Contracts
+
+V304 turns account vault planning into backend endpoint contracts. Migration, restore, entitlement join, export, deletion, support repair, and audit export each need method, path, service, payload fields, request and receipt logs, monitor events, owner closeout, and no-go rules before paid account storage can ship.
+
+Commercially, this protects the INR 100/month and INR 1,000/year plan from invisible storage and support cost. Saved research is valuable only if it can be migrated, restored, exported, deleted, repaired, and audited without private identifiers, support guesswork, or manual database edits.
+
 ## Payment Adapter Repairs
 
 V150 connects the payment backend to repairable adapter routes. Checkout, webhook, idempotency replay, refund, cancellation, entitlement projection, support repair, settlement, and incident adapters now show the event in, event out, receipt join, repair action, rollback rule, and blockers before real gateway events can unlock paid features.

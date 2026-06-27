@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V304 Account Vault Endpoint Contracts
+
+V304 adds Account Vault Endpoint Contracts inside the Account Vault Blueprint. It turns saved research migration, restore proof, entitlement-vault join, account export, account deletion, support repair mutation, and audit export into concrete backend endpoints with method, path, service, payload fields, request logs, receipt logs, replay or rollback logs, monitor events, owner rules, no-go rules, blocked-data scans, and closeout receipt fields before paid account storage can ship.
+
 ## V303 Production Provider Deployment Receipts
 
 V303 adds Production Provider Deployment Receipts inside the Payment Provider Pilot Receipt Contract. It connects the provider twin to production provider selection, server-only secret references, webhook endpoint deployment, settlement import checks, rollback receipts, monitoring signals, owner acknowledgements, no-go rules, and support closeout before any real payment provider traffic can open.

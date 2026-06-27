@@ -40,4 +40,6 @@ The key product promise is simple: Phase 1 accounts remember self-research, not 
 
 Every launch route dry run should produce account audit receipts. Important receipts include auth provider selection, session policy, account shell creation, research vault migration, entitlement join, export request, delete request, support redacted view, recovery request, and Phase 2 firewall validation. These receipts should be backend-owned in a future implementation and should not rely on browser-local state as the source of truth.
 
+V304 connects this route to Account Vault Endpoint Contracts. Account launch remains blocked until migration, restore, entitlement join, export, deletion, support repair, and audit export endpoints have payload contracts, receipt logs, replay or rollback proof, monitor events, owner acknowledgement, and blocked-data scans.
+
 The route also protects the Phase 2 roadmap. Mutual fund distributor workflows can come later, but they require separate consent, role-based access, ARN/EUIN handling, PAN-consent boundaries, client-book permissions, distributor audit trails, and regulatory review. The retail self-research launch should not accidentally become a distributor or advisory system.

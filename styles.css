@@ -12687,6 +12687,212 @@ body.simple-mode.simple-review-focus .dossier-band {
   padding-left: 18px;
 }
 
+.account-vault-endpoint-board {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(31, 78, 121, 0.28);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(234, 242, 251, 0.94), rgba(229, 247, 241, 0.82));
+}
+
+.account-vault-endpoint-board.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.9), rgba(245, 249, 252, 0.95));
+}
+
+.account-vault-endpoint-board.draft {
+  border-color: rgba(225, 160, 55, 0.38);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.9), rgba(245, 249, 252, 0.95));
+}
+
+.account-vault-endpoint-board.blocked {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.88), rgba(245, 249, 252, 0.95));
+}
+
+.account-vault-endpoint-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px;
+  gap: 12px;
+  align-items: center;
+}
+
+.account-vault-endpoint-head h3 {
+  margin: 3px 0 0;
+  color: var(--ink);
+  font-size: 23px;
+  line-height: 1.12;
+}
+
+.account-vault-endpoint-head p {
+  margin: 7px 0 0;
+}
+
+.account-vault-endpoint-score {
+  position: relative;
+  width: 82px;
+  height: 82px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--blue) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+  text-align: center;
+}
+
+.account-vault-endpoint-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.account-vault-endpoint-score strong,
+.account-vault-endpoint-score span {
+  position: relative;
+}
+
+.account-vault-endpoint-score strong {
+  display: block;
+  font-size: 27px;
+  line-height: 1;
+}
+
+.account-vault-endpoint-score span {
+  color: #dbe7ef;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.account-vault-endpoint-metrics,
+.account-vault-endpoint-grid,
+.account-vault-endpoint-lists,
+.account-vault-endpoint-two {
+  display: grid;
+  gap: 10px;
+}
+
+.account-vault-endpoint-metrics {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.account-vault-endpoint-grid,
+.account-vault-endpoint-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.account-vault-endpoint-lists {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.account-vault-endpoint-metrics article,
+.account-vault-endpoint-grid article,
+.account-vault-endpoint-two article,
+.account-vault-endpoint-lists > div {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.account-vault-endpoint-grid article.ready,
+.account-vault-endpoint-two article.ready {
+  border-color: rgba(15, 124, 107, 0.32);
+  background: rgba(232, 250, 245, 0.72);
+}
+
+.account-vault-endpoint-grid article.draft {
+  border-color: rgba(225, 160, 55, 0.36);
+  background: rgba(255, 245, 223, 0.64);
+}
+
+.account-vault-endpoint-grid article.blocked,
+.account-vault-endpoint-two article.blocked {
+  border-color: rgba(173, 77, 87, 0.32);
+  background: rgba(255, 242, 245, 0.62);
+}
+
+.account-vault-endpoint-head span,
+.account-vault-endpoint-metrics span,
+.account-vault-endpoint-grid span,
+.account-vault-endpoint-two span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.account-vault-endpoint-metrics strong,
+.account-vault-endpoint-grid strong,
+.account-vault-endpoint-two strong {
+  display: block;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.account-vault-endpoint-head p,
+.account-vault-endpoint-metrics p,
+.account-vault-endpoint-grid p,
+.account-vault-endpoint-grid li,
+.account-vault-endpoint-grid small,
+.account-vault-endpoint-two p,
+.account-vault-endpoint-two li {
+  color: var(--muted);
+  line-height: 1.42;
+  overflow-wrap: anywhere;
+}
+
+.account-vault-endpoint-grid p,
+.account-vault-endpoint-metrics p,
+.account-vault-endpoint-two p {
+  margin: 0;
+}
+
+.account-vault-endpoint-grid small {
+  display: block;
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.account-vault-endpoint-lists ul,
+.account-vault-endpoint-two ul,
+.account-vault-endpoint-two ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.account-vault-endpoint-grid .text-button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+@media (max-width: 1180px) {
+  .account-vault-endpoint-metrics,
+  .account-vault-endpoint-grid,
+  .account-vault-endpoint-two {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .account-vault-endpoint-head,
+  .account-vault-endpoint-lists {
+    grid-template-columns: 1fr;
+  }
+
+  .account-vault-endpoint-score {
+    justify-self: start;
+  }
+}
+
 .account-vault-collection-grid ul,
 .account-vault-flow-grid ul,
 .account-vault-flow-grid ol {

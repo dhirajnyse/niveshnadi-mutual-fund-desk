@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v303-04";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v303 Production Provider Deployment Receipts";
+const DATA_VERSION = "20260627-v304-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v304 Account Vault Endpoint Contracts";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Bind production provider deployment receipts to live gateway onboarding, secret rotation, webhook worker implementation, settlement imports, rollback evidence, and support-owner closeout."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Run production account and payment smoke across account vault endpoints, entitlement joins, export/delete jobs, provider webhook, receipt replay, and support repair."
   },
   {
     phase: "Phase 2",
@@ -1240,8 +1240,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Production provider deployment receipts",
+    label: "Account vault endpoint contracts",
     status: "Shipping now",
+    route: "#account-vault",
+    detail: "Turn account migration, export, delete, support repair, restore, entitlement join, and saved research vault work into endpoint contracts with closeout receipts."
+  },
+  {
+    label: "Production provider deployment receipts",
+    status: "Done",
     route: "#provider-pilot-receipt",
     detail: "Connect payment provider pilot proof to deploy receipts, webhook secrets, settlement checks, incident rollback, monitoring, and support-owner evidence."
   },
@@ -1252,16 +1258,16 @@ const BUILD_TRACKER_CURRENT_SPRINT = [
     detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, monitoring handoffs, and production deploy closeout."
   },
   {
-    label: "Account vault endpoint contracts",
-    status: "Next",
-    route: "#account-launch-route",
-    detail: "Turn account migration, export, delete, support repair, and saved research vault work into endpoint contracts with closeout receipts."
-  },
-  {
     label: "Production account and payment smoke",
-    status: "Later",
+    status: "Next",
     route: "#backend-audit-receipts",
     detail: "Run production smoke for account, entitlement, provider webhook, receipt replay, privacy export/delete, and support repair."
+  },
+  {
+    label: "Account recovery and retention receipts",
+    status: "Later",
+    route: "#account-launch-route",
+    detail: "Bind recovery, session retention, vault restore, account deletion, and support notices into account lifecycle receipts."
   }
 ];
 
@@ -9266,7 +9272,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v303</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v304</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -22538,11 +22544,238 @@ function backendStorageHandoffBoard(vault) {
   };
 }
 
+function accountVaultEndpointContracts(vault) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const endpointContractId = ["NN", "ACCOUNT", "VAULT", "ENDPOINTS", suffix].join("-").toUpperCase();
+  const migrationBatchId = ["NN", "VAULT", "MIGRATION", "BATCH", suffix].join("-").toUpperCase();
+  const privacyJobId = ["NN", "VAULT", "PRIVACY", "JOB", suffix].join("-").toUpperCase();
+  const supportRepairId = ["NN", "VAULT", "SUPPORT", "REPAIR", suffix].join("-").toUpperCase();
+  const collectionScore = (label) => vault.collections.find((item) => item.label === label)?.score || vault.collectionScore;
+  const controlScore = (label) => vault.controls.find((item) => item.label === label)?.score || vault.controlScore;
+  const handoffScore = vault.handoff?.readiness || 0;
+  const repairScore = vault.supportRepair?.score || 0;
+  const scoreEndpoint = (base, penalty = 0) => clampNumber(Math.round(
+    base * 0.42 + handoffScore * 0.24 + vault.vaultScore * 0.18 + repairScore * 0.16
+  ) - penalty, 16, 96);
+  const endpointTemplates = [
+    {
+      label: "Research vault migration",
+      method: "POST",
+      path: "/api/account-vault/migrations",
+      service: "account-vault-worker",
+      owner: "Account Storage",
+      monitorEvent: "account_vault.migration.receipted",
+      base: Math.round((collectionScore("Saved research packs") + controlScore("Row ownership")) / 2),
+      route: "#account-launch-route",
+      payloadFields: ["migration_batch_id", "account_id_hash", "source_artifact_ids", "object_types", "entitlement_snapshot", "rollback_marker"],
+      logReceipts: ["request_log", "migration_receipt", "restore_probe_log", "redaction_scan"],
+      acceptance: "Migrate selected browser-local research objects into owned rows with rollback marker and no private identifiers.",
+      noGo: "No migration while row ownership, backup, restore, or blocked-data scan is missing."
+    },
+    {
+      label: "Vault restore proof",
+      method: "POST",
+      path: "/api/account-vault/restores",
+      service: "account-vault-worker",
+      owner: "Account Ops",
+      monitorEvent: "account_vault.restore.proved",
+      base: Math.round((handoffScore + controlScore("Row ownership")) / 2),
+      route: "#account-launch-route",
+      payloadFields: ["restore_request_id", "account_id_hash", "object_id", "source_version", "prior_state_hash", "restored_state_hash"],
+      logReceipts: ["request_log", "restore_receipt", "diff_log", "rollback_log"],
+      acceptance: "Restore one saved research object and prove prior state, restored state, and rollback state agree.",
+      noGo: "No restore without prior state hash, owner acknowledgement, and support-safe user notice."
+    },
+    {
+      label: "Entitlement vault join",
+      method: "POST",
+      path: "/api/account-vault/entitlement-joins",
+      service: "entitlement-vault-worker",
+      owner: "Entitlement",
+      monitorEvent: "account_vault.entitlement.joined",
+      base: Math.round((controlScore("Entitlement guard") + vault.limitScore) / 2),
+      route: "#entitlement-bridge",
+      payloadFields: ["join_id", "account_id_hash", "plan_id", "payment_receipt_id", "feature_key", "limit_state", "lifecycle_state"],
+      logReceipts: ["request_log", "entitlement_join_receipt", "limit_projection_log", "replay_log"],
+      acceptance: "Project plan limits into vault writes from verified entitlement receipts, not browser flags.",
+      noGo: "No paid vault mutation without verified payment receipt, lifecycle state, and replay proof."
+    },
+    {
+      label: "Account export request",
+      method: "POST",
+      path: "/api/account-vault/exports",
+      service: "privacy-export-worker",
+      owner: "Privacy",
+      monitorEvent: "account_vault.export.completed",
+      base: Math.round((controlScore("Export bundle") + collectionScore("Export and delete queue")) / 2),
+      route: "#privacy-control",
+      payloadFields: ["export_request_id", "account_id_hash", "included_collections", "excluded_fields", "format", "requested_at"],
+      logReceipts: ["request_log", "export_job_receipt", "exclusion_log", "download_receipt"],
+      acceptance: "Generate readable account export with included collections and excluded sensitive fields visible.",
+      noGo: "No export if PAN, folio, CAS, bank, card, UPI, ARN/EUIN, or private note bodies appear."
+    },
+    {
+      label: "Account deletion job",
+      method: "POST",
+      path: "/api/account-vault/deletions",
+      service: "privacy-delete-worker",
+      owner: "Privacy Ops",
+      monitorEvent: "account_vault.delete.completed",
+      base: Math.round((controlScore("Deletion job") + collectionScore("Export and delete queue")) / 2),
+      route: "#privacy-control",
+      payloadFields: ["delete_request_id", "account_id_hash", "scope", "confirmation_state", "completion_receipt_id", "retention_exception"],
+      logReceipts: ["request_log", "delete_job_receipt", "retention_exception_log", "completion_receipt"],
+      acceptance: "Delete saved research scope and keep only minimal non-sensitive completion proof.",
+      noGo: "No deletion closeout without irreversible warning, scoped job receipt, and retained-proof explanation."
+    },
+    {
+      label: "Support repair mutation",
+      method: "POST",
+      path: "/api/account-vault/support-repairs",
+      service: "support-repair-worker",
+      owner: "Support Lead",
+      monitorEvent: "account_vault.support.repaired",
+      base: repairScore,
+      route: "#paid-beta-support-ledger",
+      payloadFields: ["support_case_id", "account_id_hash", "vault_object_id", "prior_state", "proposed_state", "reviewer_role", "rollback_ref"],
+      logReceipts: ["request_log", "repair_receipt", "reviewer_ack_log", "rollback_log"],
+      acceptance: "Repair account-vault state only through entitlement receipt, reviewer role, user-safe notice, and rollback ref.",
+      noGo: "No support mutation from raw notes, private identifiers, manual payment records, or unreviewed entitlement changes."
+    },
+    {
+      label: "Vault audit export",
+      method: "POST",
+      path: "/api/account-vault/audit-exports",
+      service: "audit-export-worker",
+      owner: "Audit",
+      monitorEvent: "account_vault.audit_export.written",
+      base: Math.round((collectionScore("Audit events") + controlScore("Redacted support")) / 2),
+      route: "#backend-audit-receipts",
+      payloadFields: ["audit_export_id", "account_id_hash", "event_range", "receipt_refs", "redaction_version", "reviewer_ack"],
+      logReceipts: ["request_log", "audit_export_receipt", "redaction_log", "reviewer_ack_log"],
+      acceptance: "Export redacted account-vault receipt history for review without private note bodies or regulated identifiers.",
+      noGo: "No audit export if redaction version, reviewer acknowledgement, or receipt range is missing."
+    }
+  ];
+  const endpoints = endpointTemplates.map((endpoint, index) => {
+    const routePenalty = endpoint.base < 50 ? 8 : endpoint.base < 58 ? 4 : 0;
+    const latePenalty = index > 4 ? 2 : 0;
+    const score = scoreEndpoint(endpoint.base, routePenalty + latePenalty);
+    const blockers = [
+      ...(score < 64 ? [`${endpoint.label} needs ${endpoint.acceptance.toLowerCase()}`] : []),
+      ...(endpoint.label.includes("Export") || endpoint.label.includes("deletion") ? (controlScore("Deletion job") < 45 ? ["privacy job closeout is below endpoint threshold"] : []) : []),
+      ...(endpoint.label.includes("Support") && vault.supportRepair.blockers.length ? [vault.supportRepair.blockers[0].check] : [])
+    ];
+    return {
+      ...endpoint,
+      endpointId: ["NN", "VAULT", "ENDPOINT", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      blockers,
+      score,
+      status: score >= 74 && !blockers.length ? "Endpoint contract ready" : score < 56 ? "Endpoint blocked" : "Endpoint rehearsal",
+      tone: score >= 74 && !blockers.length ? "ready" : score < 56 ? "blocked" : "draft"
+    };
+  });
+  const endpointBlockers = endpoints.flatMap((endpoint) => endpoint.blockers);
+  const releaseBlockers = [
+    ...endpointBlockers,
+    ...(vault.handoff.status.includes("blocked") ? vault.handoff.blockers.slice(0, 4) : []),
+    "production auth provider, database credentials, encryption keys, queue credentials, and support identity must stay outside this static browser"
+  ];
+  const average = Math.round(endpoints.reduce((sum, endpoint) => sum + endpoint.score, 0) / endpoints.length);
+  const readiness = clampNumber(Math.round(average * 0.5 + handoffScore * 0.22 + vault.vaultScore * 0.16 + repairScore * 0.12) - Math.min(releaseBlockers.length, 12), 18, 96);
+  const accepted = readiness >= 82 && releaseBlockers.length <= 1;
+  const status = accepted
+    ? "Vault endpoint contracts ready"
+    : readiness >= 62
+      ? "Vault endpoint contracts rehearsal"
+      : "Vault endpoint contracts blocked";
+  const tone = accepted ? "ready" : status === "Vault endpoint contracts blocked" ? "blocked" : "draft";
+  const weakest = [...endpoints].sort((a, b) => a.score - b.score)[0];
+  const metrics = [
+    {
+      label: "Endpoint contract",
+      value: endpointContractId,
+      detail: "One contract family covers migration, restore, entitlement, export, delete, support repair, and audit export."
+    },
+    {
+      label: "Readiness",
+      value: `${readiness}/100`,
+      detail: status
+    },
+    {
+      label: "Endpoints",
+      value: `${endpoints.length}/7`,
+      detail: "Every account-vault mutation has method, path, service, payload, logs, and no-go rule."
+    },
+    {
+      label: "Weakest endpoint",
+      value: weakest.label,
+      detail: `${weakest.score}/100 | ${weakest.noGo}`
+    }
+  ];
+  const releaseSequence = [
+    "Freeze account-vault schema, row ownership, object types, and migration batch fields.",
+    "Deploy migration and restore endpoints before any browser-local research is copied into account storage.",
+    "Bind vault writes to entitlement receipts, plan limits, lifecycle state, and replay logs.",
+    "Deploy export and delete jobs with excluded-field proof, completion receipts, and retention exceptions.",
+    "Deploy support repair mutation with reviewer acknowledgement, user notice, rollback reference, and redaction logs.",
+    "Run audit export, monitor window, endpoint no-go rules, and owner closeout before first paid account cohort."
+  ];
+  const noGoRules = [
+    "No account-vault endpoint can accept PAN, folio, CAS, bank, card, UPI, OTP, nominee, tax, ARN/EUIN, distributor client-book, or private note bodies.",
+    "No paid vault mutation without verified entitlement receipt, lifecycle state, idempotency key, replay log, and owner acknowledgement.",
+    "No migration or restore without source artifact IDs, rollback marker, restore proof, and blocked-data scan.",
+    "No export or deletion closeout without scoped request, excluded-field proof, completion receipt, and support-safe notice.",
+    "No support repair mutation without support case ID, reviewer role, prior state, proposed state, rollback reference, and audit receipt."
+  ];
+  const receiptFields = [
+    "endpoint_contract_id",
+    "migration_batch_id",
+    "account_id_hash",
+    "vault_object_id",
+    "idempotency_key",
+    "entitlement_receipt_id",
+    "privacy_job_id",
+    "support_repair_id",
+    "audit_export_id",
+    "redaction_version",
+    "owner_ack",
+    "closed_at"
+  ];
+  const monitoring = [
+    "account_vault_migration_success_rate",
+    "account_vault_restore_variance_count",
+    "vault_entitlement_join_lag_ms",
+    "privacy_export_delete_completion_state",
+    "support_repair_rollback_count",
+    "audit_export_redaction_failures"
+  ];
+  return {
+    accepted,
+    blockers: [...new Set(releaseBlockers)],
+    endpointContractId,
+    endpoints,
+    migrationBatchId,
+    monitoring,
+    noGoRules,
+    privacyJobId,
+    readiness,
+    receiptFields,
+    releaseSequence,
+    status,
+    supportRepairId,
+    tone,
+    weakest,
+    metrics
+  };
+}
+
 function renderAccountVaultBlueprint() {
   if (!els.accountVaultOutput) return;
   const vault = accountVaultBlueprintConfig();
+  const endpoints = accountVaultEndpointContracts(vault);
   if (els.accountVaultSummary) {
-    els.accountVaultSummary.textContent = `${vault.handoff.readiness}/100 | ${vault.handoff.status}`;
+    els.accountVaultSummary.textContent = `${endpoints.readiness}/100 | ${endpoints.status}`;
   }
   els.accountVaultOutput.innerHTML = `
     <div class="account-vault-hero">
@@ -22710,6 +22943,86 @@ function renderAccountVaultBlueprint() {
         </article>
       </div>
     </div>
+    <div class="account-vault-endpoint-board ${escapeHtml(endpoints.tone)}">
+      <div class="account-vault-endpoint-head">
+        <div>
+          <span>Account vault endpoint contracts</span>
+          <h3>${escapeHtml(endpoints.status)}</h3>
+          <p>Turn migration, restore, entitlement join, export, deletion, support repair, and audit export into backend endpoints with payloads, logs, monitors, owners, and closeout receipts.</p>
+        </div>
+        <div class="account-vault-endpoint-score" style="--score:${endpoints.readiness}">
+          <strong>${endpoints.readiness}</strong>
+          <span>endpoints</span>
+        </div>
+      </div>
+      <div class="account-vault-endpoint-metrics">
+        ${endpoints.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-vault-endpoint-grid">
+        ${endpoints.endpoints.map((endpoint) => `
+          <article class="${escapeHtml(endpoint.tone)}">
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(endpoint.owner)}</span>
+                <strong>${escapeHtml(endpoint.label)}</strong>
+              </div>
+              <b>${endpoint.score}/100</b>
+            </div>
+            <p><b>${escapeHtml(endpoint.method)}</b> ${escapeHtml(endpoint.path)}</p>
+            <p>${escapeHtml(endpoint.service)} | ${escapeHtml(endpoint.monitorEvent)}</p>
+            <div class="build-progress-bar launch"><span style="width:${endpoint.score}%"></span></div>
+            <div class="account-vault-endpoint-lists">
+              <div>
+                <span>Payload</span>
+                <ul>
+                  ${endpoint.payloadFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+                </ul>
+              </div>
+              <div>
+                <span>Logs</span>
+                <ul>
+                  ${endpoint.logReceipts.map((log) => `<li>${escapeHtml(log)}</li>`).join("")}
+                </ul>
+              </div>
+            </div>
+            <small>${escapeHtml(endpoint.acceptance)}</small>
+            <small>No-go: ${escapeHtml(endpoint.noGo)}</small>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(endpoint.route)}">Open endpoint source</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-vault-endpoint-two">
+        <article>
+          <span>Release sequence</span>
+          <ol>
+            ${endpoints.releaseSequence.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${endpoints.blockers.length ? "blocked" : "ready"}">
+          <span>Endpoint blockers</span>
+          <ul>
+            ${(endpoints.blockers.length ? endpoints.blockers : ["No active endpoint blocker in this preview. Keep final deployment behind backend smoke."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Monitoring</span>
+          <p>${endpoints.monitoring.map((item) => escapeHtml(item)).join(" | ")}</p>
+        </article>
+        <article>
+          <span>Receipt fields and no-go</span>
+          <p>${endpoints.receiptFields.map((item) => escapeHtml(item)).join(" | ")}</p>
+          <ul>
+            ${endpoints.noGoRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="account-vault-collection-grid">
       ${vault.collections.map((collection) => `
         <article class="${escapeHtml(collection.tone)}">
@@ -22769,6 +23082,7 @@ function renderAccountVaultBlueprint() {
 
 function makeAccountVaultBrief() {
   const vault = accountVaultBlueprintConfig();
+  const endpoints = accountVaultEndpointContracts(vault);
   return [
     "# NiveshNadi Account Vault Blueprint",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -22777,6 +23091,8 @@ function makeAccountVaultBrief() {
     `Control readiness: ${vault.controlScore}/100`,
     `Limit readiness: ${vault.limitScore}/100`,
     `Support repair readiness: ${vault.supportRepairScore}/100`,
+    `Endpoint readiness: ${endpoints.readiness}/100 | ${endpoints.status}`,
+    `Endpoint contract ID: ${endpoints.endpointContractId}`,
     `Entitlement source: ${entitlementBridgePlanLabel(vault.entitlementBridge.plan)} | ${entitlementBridgeLifecycleLabel(vault.entitlementBridge.lifecycle)} | ${entitlementBridgeReceiptLabel(vault.entitlementBridge.receipt)}`,
     `Next blocker: ${vault.nextBlocker.label} (${vault.nextBlocker.score}/100)`,
     "",
@@ -22801,6 +23117,21 @@ function makeAccountVaultBrief() {
     ...vault.handoff.sequence.map((step) => `- Sequence: ${step}`),
     ...vault.handoff.blockers.map((blocker) => `- Blocker: ${blocker}`),
     "",
+    "## Account Vault Endpoint Contracts",
+    `- Status: ${endpoints.status}`,
+    `- Readiness: ${endpoints.readiness}/100`,
+    `- Contract: ${endpoints.endpointContractId}`,
+    `- Migration batch: ${endpoints.migrationBatchId}`,
+    `- Privacy job: ${endpoints.privacyJobId}`,
+    `- Support repair: ${endpoints.supportRepairId}`,
+    ...endpoints.metrics.map((metric) => `- Metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...endpoints.endpoints.map((endpoint) => `- Endpoint: ${endpoint.label}: ${endpoint.score}/100 | ${endpoint.method} ${endpoint.path} | ${endpoint.service} | Owner: ${endpoint.owner} | Payload: ${endpoint.payloadFields.join(", ")} | Logs: ${endpoint.logReceipts.join(", ")} | No-go: ${endpoint.noGo}`),
+    ...endpoints.releaseSequence.map((step) => `- Sequence: ${step}`),
+    ...endpoints.monitoring.map((item) => `- Monitor: ${item}`),
+    ...endpoints.receiptFields.map((item) => `- Receipt field: ${item}`),
+    ...endpoints.noGoRules.map((item) => `- No-go: ${item}`),
+    ...endpoints.blockers.map((blocker) => `- Blocker: ${blocker}`),
+    "",
     "## Vault Collections",
     ...vault.collections.map((item) => [
       `- ${item.label}: ${item.score}/100 | ${item.status}`,
@@ -22817,6 +23148,45 @@ function makeAccountVaultBrief() {
     ...vault.launchBlockers.map((item) => `- ${item}`),
     "",
     "Phase 1 account vault excludes PAN, folio, CAS, bank, card, UPI, nominee, tax, address, ARN/EUIN, and distributor client-book records."
+  ].join("\n");
+}
+
+function makeAccountVaultEndpointContractsBrief() {
+  const vault = accountVaultBlueprintConfig();
+  const endpoints = accountVaultEndpointContracts(vault);
+  return [
+    "# NiveshNadi Account Vault Endpoint Contracts",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Readiness: ${endpoints.readiness}/100`,
+    `Status: ${endpoints.status}`,
+    `Endpoint contract ID: ${endpoints.endpointContractId}`,
+    `Migration batch ID: ${endpoints.migrationBatchId}`,
+    `Privacy job ID: ${endpoints.privacyJobId}`,
+    `Support repair ID: ${endpoints.supportRepairId}`,
+    "",
+    "## Metrics",
+    ...endpoints.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Endpoints",
+    ...endpoints.endpoints.map((endpoint) => `- ${endpoint.label}: ${endpoint.score}/100 | ${endpoint.method} ${endpoint.path} | Service: ${endpoint.service} | Owner: ${endpoint.owner} | Monitor: ${endpoint.monitorEvent} | Payload: ${endpoint.payloadFields.join(", ")} | Logs: ${endpoint.logReceipts.join(", ")} | Acceptance: ${endpoint.acceptance} | No-go: ${endpoint.noGo}`),
+    "",
+    "## Release Sequence",
+    ...endpoints.releaseSequence.map((step) => `- ${step}`),
+    "",
+    "## Monitoring",
+    ...endpoints.monitoring.map((item) => `- ${item}`),
+    "",
+    "## Receipt Fields",
+    ...endpoints.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## No-Go Rules",
+    ...endpoints.noGoRules.map((item) => `- ${item}`),
+    "",
+    "## Blockers",
+    ...(endpoints.blockers.length ? endpoints.blockers.map((item) => `- ${item}`) : ["- No active account-vault endpoint blocker in this preview."]),
+    "",
+    "## Guardrail",
+    "Account vault endpoint contracts are backend implementation metadata only. They must not contain PAN, folio, CAS, bank, card, UPI, OTP, nominee, tax, address, ARN/EUIN, distributor client-book data, private note bodies, auth secrets, database credentials, or encryption keys."
   ].join("\n");
 }
 
@@ -50858,6 +51228,7 @@ function bindEvents() {
   els.openAccountLaunchBlocker?.addEventListener("click", openAccountLaunchBlocker);
   els.copyAccountLaunch?.addEventListener("click", () => copyText(makeAccountLaunchBrief()));
   els.openAccountVaultBlocker?.addEventListener("click", openAccountVaultBlocker);
+  els.copyAccountVaultEndpoints?.addEventListener("click", () => copyText(makeAccountVaultEndpointContractsBrief()));
   els.copyAccountVault?.addEventListener("click", () => copyText(makeAccountVaultBrief()));
   els.openDailyPriority?.addEventListener("click", openDailyPriority);
   els.copyDailyCommand?.addEventListener("click", () => copyText(makeDailyCommandBrief()));
@@ -52791,6 +53162,7 @@ function cacheElements() {
     accountVaultSummary: qs("#accountVaultSummary"),
     accountVaultOutput: qs("#accountVaultOutput"),
     openAccountVaultBlocker: qs("#openAccountVaultBlocker"),
+    copyAccountVaultEndpoints: qs("#copyAccountVaultEndpoints"),
     copyAccountVault: qs("#copyAccountVault"),
     profileRoomForm: qs("#profileRoomForm"),
     profileIntent: qs("#profileIntent"),

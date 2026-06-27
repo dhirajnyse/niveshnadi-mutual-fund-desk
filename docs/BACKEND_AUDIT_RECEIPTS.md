@@ -2,6 +2,8 @@
 
 Backend Audit Receipts are the Phase 1 v93 bridge from browser-local prototype workflow into launch-grade server accountability. The workspace converts reviewer release, source ingestion, saved research, payment entitlement, privacy consent, and support events into explicit backend receipt contracts before production data leaves the browser.
 
+V291 adds Backend Source Receipt Job. The board now promotes the active source family into a copyable backend job contract that binds source intake, production import gate, source job, scheduled worker, durable event store, alert delivery, reviewer sign-off, rollback evidence, correction receipt, affected surfaces, handoff rules, and launch blockers. This turns the v289 intake pack and v290 reviewer rehearsal into the next implementable backend artifact.
+
 V116 adds Payment Reconciliation Replay. It joins gateway payment, invoice, entitlement, refund, support repair, and settlement receipts into one replay batch with an audit ID, ordered replay script, variance checks, storage proof, finance retention posture, and launch blockers.
 
 V120 adds Production Source Import Jobs. Backend Audit Receipts now turns each official source family into a backend-owned job contract with source job ID, import gate ID, source cadence, expected row/object volume, parser and schema version, accepted and rejected row counts, citation path, reviewer decision, rollback reference, event chain, payload fields, rejected-row quarantine policy, and public-surface freeze rules. The board separates demo dry-run readiness from production job readiness so AMFI, AMC factsheet, SID/KIM, portfolio disclosure, benchmark, TER, and riskometer imports cannot silently refresh public research claims.
@@ -28,7 +30,7 @@ V131 adds Correction Publish Console. Queued recovery work now becomes a publish
 
 V151 adds Launch Freeze Automation. Backend Audit Receipts now binds live claim freezes, payment entitlement freezes, support repair freezes, privacy action freezes, reviewer release freezes, and launch route freezes into one automation board with trigger IDs, resume rules, receipt fields, owner lanes, rollback posture, and blocker proof. The purpose is to make "pause launch" a controlled system state rather than a founder memory note.
 
-The import job layer should eventually map directly to scheduled workers, parser logs, append-only audit tables, monitoring alerts, incident receipts, failed-run replay, and reviewer-release queues. Until then, the prototype shows what each backend job, worker, alert route, and incident replay must prove before a source import becomes launch-grade.
+The import job layer should eventually map directly to scheduled workers, parser logs, append-only audit tables, monitoring alerts, incident receipts, failed-run replay, and reviewer-release queues. V291 makes that handoff more explicit by collecting the active source job, worker, receipt store, alert route, reviewer sign-off, and rollback evidence into one source receipt job contract before implementation tickets are written.
 
 Each receipt stream defines event names, required payload fields, owner, source route, risk band, retention posture, and launch blockers. The standard contract expects a receipt ID, event name, actor role, hashed actor reference, request ID, idempotency key, creation time, data class, and retention policy. Stream-specific fields then add source dates, reviewer decisions, entitlement state, support case references, privacy request IDs, or saved research IDs as needed.
 

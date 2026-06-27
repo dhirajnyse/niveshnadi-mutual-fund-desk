@@ -6,6 +6,8 @@ The workbench lets the operator select the next queue item, a release candidate,
 
 V290 adds Reviewer Release Rehearsal inside the workbench. The rehearsal shows the operating path from Source Intake Pack to reviewer decision, release binder, claim-release gate, and rollback or correction route. It also exposes launch hard stops so a reviewer can see why a source-backed claim remains rehearsal-only, held, or ready to bind.
 
+V291 connects the rehearsal to Backend Source Receipt Job. Backend Audit Receipts now reads the rehearsal posture alongside source intake, import job, worker, alert delivery, failed-run store, reviewer sign-off, and rollback evidence so a source-backed claim can become an implementation-ready backend job only after the human review path is visible.
+
 Each generated handoff includes source receipt, surface status, strictness threshold, reviewer priority, evidence lock, due posture, owner, fallback language, and the next decision route. The output is intentionally product-release control only. It excludes PAN, folio, CAS, bank data, contact data, account credentials, private notes, and distributor client records.
 
 Before launch, this desk should connect to saved reviewer decisions, source-date history, visible citation links, release receipts, rollback logs, and correction notice records. Until that live workflow exists, the workbench remains a transparent prototype layer that shows how review discipline should operate before a public metric, claim, research packet, or trust surface is treated as release-ready.

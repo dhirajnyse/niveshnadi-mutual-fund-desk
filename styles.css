@@ -29136,6 +29136,203 @@ body.simple-mode .quiet-fund-shelf {
   padding-left: 18px;
 }
 
+.retention-job-fixtures {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(31, 78, 121, 0.3);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(245, 249, 252, 0.98), rgba(238, 248, 244, 0.9));
+}
+
+.retention-job-fixtures.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.98), rgba(245, 249, 252, 0.96));
+}
+
+.retention-job-fixtures.watch {
+  border-color: rgba(225, 160, 55, 0.44);
+  background: linear-gradient(135deg, rgba(255, 248, 232, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.retention-job-fixtures.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.retention-job-fixtures p,
+.retention-job-fixtures li,
+.retention-job-fixtures small {
+  color: var(--muted);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.retention-job-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 12px;
+  align-items: center;
+}
+
+.retention-job-head span,
+.retention-job-metric-grid span,
+.retention-job-fixture-grid span,
+.retention-job-sla-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.retention-job-head h3 {
+  margin: 3px 0 5px;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.14;
+}
+
+.retention-job-head p {
+  margin: 0;
+}
+
+.retention-job-score {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.retention-job-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.retention-job-score strong,
+.retention-job-score span {
+  position: relative;
+}
+
+.retention-job-score strong {
+  color: #ffffff;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.retention-job-score span {
+  color: #dce7ed;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.retention-job-metric-grid,
+.retention-job-fixture-grid,
+.retention-job-sla-grid,
+.retention-job-two {
+  display: grid;
+  gap: 10px;
+}
+
+.retention-job-metric-grid,
+.retention-job-sla-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.retention-job-fixture-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.retention-job-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.retention-job-metric-grid,
+.retention-job-fixture-grid,
+.retention-job-sla-grid,
+.retention-job-two,
+.retention-job-metric-grid article,
+.retention-job-fixture-grid article,
+.retention-job-sla-grid article,
+.retention-job-two article {
+  min-width: 0;
+}
+
+.retention-job-metric-grid article,
+.retention-job-fixture-grid article,
+.retention-job-sla-grid article,
+.retention-job-two article {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.retention-job-fixture-grid article.ready,
+.retention-job-two article.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+}
+
+.retention-job-fixture-grid article.watch,
+.retention-job-two article.watch {
+  border-color: rgba(225, 160, 55, 0.36);
+}
+
+.retention-job-fixture-grid article.caution,
+.retention-job-two article.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+}
+
+.retention-job-metric-grid strong,
+.retention-job-fixture-grid strong,
+.retention-job-sla-grid strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.retention-job-fixture-grid small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.retention-job-fixture-grid small strong {
+  color: var(--ink);
+}
+
+.retention-job-two h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.retention-job-route {
+  margin-top: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.retention-job-two ul,
+.retention-job-two ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
 .source-incident-board {
   display: grid;
   gap: 10px;
@@ -39934,7 +40131,11 @@ body.simple-mode .quiet-fund-shelf {
   .deploy-runbook-env-grid,
   .deploy-runbook-contact-grid,
   .deploy-runbook-evidence-grid,
-  .deploy-runbook-two {
+  .deploy-runbook-two,
+  .retention-job-metric-grid,
+  .retention-job-fixture-grid,
+  .retention-job-sla-grid,
+  .retention-job-two {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -39990,7 +40191,12 @@ body.simple-mode .quiet-fund-shelf {
   .deploy-runbook-contact-grid,
   .deploy-runbook-evidence-grid,
   .deploy-runbook-two,
-  .deploy-runbook-head {
+  .deploy-runbook-head,
+  .retention-job-metric-grid,
+  .retention-job-fixture-grid,
+  .retention-job-sla-grid,
+  .retention-job-two,
+  .retention-job-head {
     grid-template-columns: 1fr;
   }
 
@@ -40001,7 +40207,8 @@ body.simple-mode .quiet-fund-shelf {
   .worker-smoke-score,
   .account-payment-smoke-score,
   .beta-incident-score,
-  .deploy-runbook-score {
+  .deploy-runbook-score,
+  .retention-job-score {
     justify-self: start;
   }
 }

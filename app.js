@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v314-16";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v314 Build Progress Link";
+const DATA_VERSION = "20260628-v315-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v315 Retention Job Fixtures";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Turn retention enforcement dashboard proof into account lifecycle backend ticket closeout, retention job fixtures, and support readiness SLAs."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Turn retention job fixture proof into support readiness SLAs, monitor closeout evidence, and account lifecycle backend ticket closeout."
   },
   {
     phase: "Phase 2",
@@ -1240,8 +1240,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Build progress hyperlink and 100% path",
+    label: "Account lifecycle retention job fixtures",
     status: "Shipping now",
+    route: "#backend-audit-receipts",
+    detail: "Turn retention enforcement dashboard proof into scheduled job fixtures, support SLA checks, command archive audits, and closeout no-go rules."
+  },
+  {
+    label: "Build progress hyperlink and 100% path",
+    status: "Done",
     route: "#build-progress-roadmap",
     detail: "Expose overall build progress, where the desk has reached, and the closeout path to production-ready 100% from the Build tab."
   },
@@ -1316,12 +1322,6 @@ const BUILD_TRACKER_CURRENT_SPRINT = [
     status: "Done",
     route: "#backend-ticket-factory",
     detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, monitoring handoffs, and production deploy closeout."
-  },
-  {
-    label: "Account lifecycle retention job fixtures",
-    status: "Later",
-    route: "#backend-audit-receipts",
-    detail: "Turn retention enforcement dashboard proof into backend ticket closeout, scheduled retention job fixtures, support SLAs, and command archive audits."
   }
 ];
 
@@ -9061,9 +9061,9 @@ function buildTrackerConfig() {
   const productionPath = [
     {
       label: "Retention job fixtures",
-      status: "Next closeout",
+      status: "Closeout active",
       route: "#backend-audit-receipts",
-      detail: "Turn the retention dashboard into backend fixture evidence, scheduled job proof, and command archive audits."
+      detail: "Turn the retention dashboard into backend fixture evidence, scheduled job proof, support SLA checks, and command archive audits."
     },
     {
       label: "Support SLA proof",
@@ -9308,7 +9308,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; the v314 link now makes progress visible from Build.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v315 is closing the first 100% path gate from Backend Audit Receipts.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9437,7 +9437,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v314</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v315</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -42842,6 +42842,174 @@ function launchFreezeAutomation(config, paymentReplay, incidentReplay, correctio
   };
 }
 
+function accountLifecycleRetentionJobFixtures(config = backendAuditConfig()) {
+  config = config || backendAuditConfig();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const route = accountLaunchRouteConfig();
+  const betaChecklist = founderBetaChecklist(route);
+  const authDecision = founderAuthDecisionBoard(route, betaChecklist);
+  const storageDecision = founderStorageDecisionBoard(route, betaChecklist);
+  const inviteGate = founderInviteGate(route, betaChecklist);
+  const inviteReceipt = founderInviteReceipt(route, betaChecklist, inviteGate);
+  const supportDrill = founderSupportDrill(route, betaChecklist, inviteGate, inviteReceipt);
+  const supportCasebook = founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill);
+  const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
+  const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
+  const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
+  const workerSmoke = accountLifecycleWorkerSmokeHarness(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets);
+  const ownerGates = accountLifecycleProductionOwnerGates(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke);
+  const deployRunbook = accountLifecycleDeployRunbookPacket(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates);
+  const rolloutArchive = accountLifecycleRolloutApprovalArchive(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates, deployRunbook);
+  const postDeployDrill = accountLifecyclePostDeployEvidenceDrill(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates, deployRunbook, rolloutArchive);
+  const retentionDashboard = accountLifecycleRetentionEnforcementDashboard(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates, deployRunbook, rolloutArchive, postDeployDrill);
+  const fixtureBatchId = ["NN", "ACCOUNT", "LIFECYCLE", "RETENTION", "FIXTURE", "BATCH", suffix].join("-").toUpperCase();
+  const scheduledSuiteId = ["NN", "ACCOUNT", "LIFECYCLE", "RETENTION", "SCHEDULED", "SUITE", suffix].join("-").toUpperCase();
+  const supportSlaId = ["NN", "ACCOUNT", "LIFECYCLE", "RETENTION", "SUPPORT", "SLA", suffix].join("-").toUpperCase();
+  const closeoutId = ["NN", "ACCOUNT", "LIFECYCLE", "RETENTION", "FIXTURE", "CLOSEOUT", suffix].join("-").toUpperCase();
+  const storageReady = config.storage === "event" || config.storage === "append";
+  const retentionReady = config.retention !== "minimal";
+  const clean = (items = []) => [...new Set(items.filter(Boolean).filter((item) => !String(item).startsWith("No active")))];
+  const profiles = {
+    "account-recovery": ["account-retention-recovery-closeout", "account.lifecycle.retention.recovery", "Daily 02:10 IST", "account_recovery.retention_window_closed", "2h support ack, 1d recovery copy review", "Retain recovery command metadata and support-safe notice; purge request bodies.", "No recovery fixture closes while rollback approval, support notice, abuse monitor, or redaction proof is missing."],
+    "session-retention": ["account-retention-session-expiry", "account.lifecycle.retention.session", "Hourly plus daily audit sweep", "session_retention.expiry_window_closed", "2h forced-logout owner, 1d suspicious-login copy review", "Retain revoke and expiry metadata only; no token body or credential material.", "No session fixture closes while revoke proof, expiry receipt, support explanation, or monitor quiet window is missing."],
+    "vault-restore": ["account-retention-vault-restore-proof", "account.lifecycle.retention.vault_restore", "Daily 03:00 IST", "vault_restore.retention_window_closed", "4h restore hold owner, 1d restore explanation review", "Retain prior/restored hashes and entitlement proof; exclude saved research note bodies.", "No restore fixture closes while hash parity, entitlement check, rollback bucket, or support copy is unresolved."],
+    "deletion-closeout": ["account-retention-deletion-proof", "account.lifecycle.retention.deletion", "Daily 04:00 IST", "account_deletion.retention_exception_reviewed", "2h privacy owner ack, 1d completion notice closeout", "Retain completion receipt and retained-proof rationale only; no deleted payload body.", "No deletion fixture closes without privacy approval, retained-proof rationale, redaction scan, and notice receipt."],
+    "support-notice": ["account-retention-support-notice-closeout", "account.lifecycle.retention.support_notice", "Every 30 minutes plus daily template audit", "support_notice.delivery_retention_closed", "2h failed-notice owner, 1d template rollback copy review", "Retain template version, delivery state, and redaction attestation; no private support-note body.", "No notice fixture closes while delivery attempts, template version, redaction attestation, or case closeout is missing."]
+  };
+  const fixtures = retentionDashboard.enforcementLanes.map((lane, index) => {
+    const key = lane.enforcementId.includes("SESSIONRETENTION")
+      ? "session-retention"
+      : lane.enforcementId.includes("VAULTRESTORE")
+        ? "vault-restore"
+        : lane.enforcementId.includes("DELETIONCLOSEOUT")
+          ? "deletion-closeout"
+          : lane.enforcementId.includes("SUPPORTNOTICE")
+            ? "support-notice"
+            : "account-recovery";
+    const [worker, queue, schedule, seedEvent, supportSla, acceptance, noGo] = profiles[key];
+    const blockers = clean([
+      ...clean(lane.blockers).slice(0, 2),
+      ...(retentionDashboard.status === "Retention enforcement dashboard active" ? [] : ["retention enforcement dashboard must be active before fixture closeout"]),
+      ...(storageReady ? [] : ["retention job fixtures need append-only or event-stream receipt storage"]),
+      ...(retentionReady ? [] : ["minimal retention mode cannot close lifecycle fixture proof"]),
+      "real scheduled retention workers, owner identities, queue credentials, and durable artifact storage remain outside this static prototype"
+    ]);
+    const score = clampNumber(Math.round(
+      lane.score * 0.44 +
+        retentionDashboard.readiness * 0.22 +
+        config.score * 0.18 +
+        supportOps.readiness * 0.08 +
+        (storageReady ? 8 : -14) +
+        (retentionReady ? 5 : -8) -
+        Math.min(blockers.length, 5) * 3
+    ), 12, 96);
+    const status = score >= 84 && blockers.length <= 1 ? "Fixture ready" : score >= 64 ? "Fixture rehearsal" : "Fixture blocked";
+    return {
+      acceptance,
+      blockers: blockers.length ? blockers : ["No active retention job fixture blocker in this preview. Keep scheduled worker proof, support SLA, monitor closeout, and command archive audit before launch."],
+      command: `npm run fixture -- --account-retention ${key} --batch ${fixtureBatchId}`,
+      event: lane.event.replace(/\.retention_enforcement_checked$/, ".retention_job_fixture_rehearsed"),
+      fixtureId: ["NN", "ACCOUNT", "RETENTION", "FIXTURE", String(index + 1).padStart(2, "0"), key.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase(),
+      label: lane.label,
+      noGo,
+      owner: lane.owner,
+      proof: `${lane.enforcementId} + ${retentionDashboard.monitorCloseoutJobId}`,
+      queue,
+      route: lane.route,
+      schedule,
+      score,
+      seedEvent,
+      status,
+      supportSla,
+      tone: status === "Fixture ready" ? "ready" : status === "Fixture blocked" ? "caution" : "watch",
+      worker
+    };
+  });
+  const ready = fixtures.filter((fixture) => fixture.status === "Fixture ready").length;
+  const review = fixtures.filter((fixture) => fixture.status === "Fixture rehearsal").length;
+  const blocked = fixtures.filter((fixture) => fixture.status === "Fixture blocked").length;
+  const fixtureAverage = Math.round(fixtures.reduce((sum, fixture) => sum + fixture.score, 0) / fixtures.length);
+  const activeBlockers = [...new Set(fixtures.filter((fixture) => fixture.status !== "Fixture ready").flatMap((fixture) => clean(fixture.blockers).slice(0, 2)))];
+  const releaseBlockers = [...new Set([
+    ...activeBlockers,
+    ...(storageReady ? [] : ["retention fixture batch cannot close with browser-local receipt storage"]),
+    ...(retentionReady ? [] : ["retention fixture batch needs strict, user-controlled, or finance retention mode"]),
+    "real scheduled retention workers, owner identities, queue credentials, and durable artifact storage remain outside this static prototype"
+  ])];
+  const readiness = clampNumber(Math.round(
+    fixtureAverage * 0.5 +
+      retentionDashboard.readiness * 0.24 +
+      config.score * 0.14 +
+      supportOps.readiness * 0.12
+  ) - blocked * 4 - Math.min(activeBlockers.length, 6), 12, 96);
+  const status = readiness >= 84 && blocked === 0 && releaseBlockers.length <= 1
+    ? "Retention job fixtures ready"
+    : readiness >= 64 && blocked <= 1
+      ? "Retention job fixtures in rehearsal"
+      : "Retention job fixtures blocked";
+  return {
+    activeBlockers: activeBlockers.length ? activeBlockers : ["No active retention fixture blocker in this preview. Keep real scheduled jobs and owner closeout before production launch."],
+    blocked,
+    closeoutId,
+    fixtureAverage,
+    fixtureBatchId,
+    fixtures,
+    metrics: [
+      { label: "Fixture batch", value: fixtureBatchId, detail: `${ready} ready, ${review} rehearsal, ${blocked} blocked fixture${fixtures.length === 1 ? "" : "s"}.` },
+      { label: "Scheduled suite", value: scheduledSuiteId, detail: `${backendAuditStorageLabel(config.storage)} with ${backendAuditRetentionLabel(config.retention)}.` },
+      { label: "Support SLA", value: supportSlaId, detail: "Owner acknowledgement, reviewed support copy, escalation coverage, and closeout timing." },
+      { label: "Command archive", value: retentionDashboard.commandArchiveAuditId, detail: `Monitor ${retentionDashboard.monitorCloseoutJobId}; closeout ${closeoutId}.` }
+    ],
+    noGoRules: [
+      "No lifecycle retention job fixture closes without retention enforcement proof, scheduled worker ID, deterministic seed event, support SLA state, monitor closeout job, and command archive audit.",
+      "No fixture can depend on browser-local memory, screenshots, manual spreadsheets, support recollection, or unowned queue credentials.",
+      "No retention fixture may retain private note bodies, deleted payloads, credentials, payment secrets, transaction instructions, PAN, folio, CAS, bank, card, UPI, ARN/EUIN, or distributor client-book data.",
+      "No account cohort widens while any recovery, session, restore, deletion, or support notice fixture is Fixture blocked.",
+      "No Phase 2 distributor/client workflow enters these fixture receipts before the retail account launch firewall is approved."
+    ],
+    readiness,
+    ready,
+    receiptFields: [
+      "account_lifecycle_retention_fixture_batch_id",
+      "account_lifecycle_retention_job_fixture_id",
+      "retention_enforcement_id",
+      "scheduled_suite_id",
+      "worker_name",
+      "queue_name",
+      "schedule_window",
+      "seed_event_name",
+      "fixture_run_id",
+      "support_sla_id",
+      "support_sla_state",
+      "monitor_closeout_job_id",
+      "command_archive_audit_id",
+      "blocked_data_scan_state",
+      "artifact_uri",
+      "fixture_decision",
+      "fixture_closed_at"
+    ],
+    releaseBlockers,
+    review,
+    scheduledSuiteId,
+    sequence: [
+      "Load retention enforcement lane, policy row, incident command store, monitor job, support report, and command archive audit IDs.",
+      "Seed each scheduled retention fixture with a deterministic lifecycle event and queue name.",
+      "Run the fixture against redacted metadata only; reject private note bodies, deleted payloads, credentials, payment secrets, transaction instructions, and sensitive investor identifiers.",
+      "Attach support SLA state, monitor quiet-window proof, command archive link, blocked-data scan, and owner closeout.",
+      "Close fixture batch only after every no-go rule has a stored decision and the Phase 2 distributor boundary remains excluded."
+    ],
+    status,
+    supportSlaId,
+    supportSlaRules: [
+      { label: "Acknowledgement", value: "2 hours", detail: "Every lifecycle support notice needs a named owner and user-safe first response state." },
+      { label: "Closeout copy", value: "1 business day", detail: "Recovery, session, restore, deletion, and notice copy must be reviewed before fixture closeout." },
+      { label: "Quiet window", value: "3 days", detail: "Monitor closeout jobs need quiet-window proof and unresolved-event count before widening." },
+      { label: "Escalation", value: "Same day", detail: "Privacy, security, support, and release captain escalations must have command archive links." }
+    ],
+    tone: status === "Retention job fixtures ready" ? "ready" : status === "Retention job fixtures blocked" ? "caution" : "watch"
+  };
+}
+
 function renderBackendAuditReceipts(event) {
   if (event) event.preventDefault();
   if (!els.backendAuditOutput || !els.backendAuditSummary) return;
@@ -42872,6 +43040,7 @@ function renderBackendAuditReceipts(event) {
   const accountPaymentSmoke = productionAccountPaymentSmoke(config, workerSmokeDashboard);
   const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
   const deployRunbook = backendDeployRunbookPacket(config, workerSmokeDashboard, betaIncidentLedger, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs, implementationHandoff, workerCloseout);
+  const retentionJobFixtures = accountLifecycleRetentionJobFixtures(config);
   const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
   const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
   els.backendAuditSummary.textContent = `${accountPaymentSmoke.readiness}/100 | ${accountPaymentSmoke.status}`;
@@ -44467,6 +44636,85 @@ function renderBackendAuditReceipts(event) {
         </article>
       </div>
     </div>
+    <div class="retention-job-fixtures ${escapeHtml(retentionJobFixtures.tone)}">
+      <div class="retention-job-head">
+        <div>
+          <span>Account lifecycle retention job fixtures</span>
+          <h3>${escapeHtml(retentionJobFixtures.status)}</h3>
+          <p>Fixture batch ${escapeHtml(retentionJobFixtures.fixtureBatchId)} turns account retention enforcement into scheduled recovery, session, restore, deletion, and support-notice job proof before account widening.</p>
+        </div>
+        <div class="retention-job-score" style="--score:${retentionJobFixtures.readiness}">
+          <strong>${retentionJobFixtures.readiness}</strong>
+          <span>Jobs</span>
+        </div>
+      </div>
+      <div class="retention-job-metric-grid">
+        ${retentionJobFixtures.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="retention-job-fixture-grid">
+        ${retentionJobFixtures.fixtures.map((fixture) => `
+          <article class="${escapeHtml(fixture.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(fixture.owner)}</span>
+                <strong>${escapeHtml(fixture.label)}</strong>
+              </div>
+              <b>${fixture.score}</b>
+            </div>
+            <p>${escapeHtml(fixture.status)} | ${escapeHtml(fixture.fixtureId)}</p>
+            <div class="build-progress-bar"><span style="width:${fixture.score}%"></span></div>
+            <small><strong>Worker:</strong> ${escapeHtml(fixture.worker)}</small>
+            <small><strong>Schedule:</strong> ${escapeHtml(fixture.schedule)}</small>
+            <small><strong>Seed:</strong> ${escapeHtml(fixture.seedEvent)}</small>
+            <small><strong>Support SLA:</strong> ${escapeHtml(fixture.supportSla)}</small>
+            <small><strong>Proof:</strong> ${escapeHtml(fixture.proof)}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(fixture.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button retention-job-route" type="button" data-build-route="${escapeHtml(fixture.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="retention-job-sla-grid">
+        ${retentionJobFixtures.supportSlaRules.map((rule) => `
+          <article>
+            <span>${escapeHtml(rule.label)}</span>
+            <strong>${escapeHtml(rule.value)}</strong>
+            <p>${escapeHtml(rule.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="retention-job-two">
+        <article>
+          <h3>Fixture sequence</h3>
+          <ol>
+            ${retentionJobFixtures.sequence.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${retentionJobFixtures.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Fixture no-go rules</h3>
+          <ul>
+            ${retentionJobFixtures.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${retentionJobFixtures.releaseBlockers.length > 1 ? "caution" : "ready"}">
+          <h3>Fixture blockers</h3>
+          <ul>
+            ${retentionJobFixtures.releaseBlockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="source-incident-board ${escapeHtml(incidentReplay.tone)}">
       <div class="source-incident-head">
         <div>
@@ -45297,6 +45545,7 @@ function makeBackendAuditReceiptBrief() {
   const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
   const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
   const deployRunbook = backendDeployRunbookPacket(config, workerSmokeDashboard, betaIncidentLedger, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs, implementationHandoff, workerCloseout);
+  const retentionJobFixtures = accountLifecycleRetentionJobFixtures(config);
   return [
     "# NiveshNadi Backend Audit Receipts",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -45358,6 +45607,22 @@ function makeBackendAuditReceiptBrief() {
     ...implementationHandoff.releaseDependencies.map((dependency) => `- Handoff dependency: ${dependency}`),
     ...implementationHandoff.ownerRules.map((rule) => `- Handoff owner rule: ${rule}`),
     ...implementationHandoff.blockers.map((blocker) => `- Handoff blocker: ${blocker}`),
+    "",
+    "## Account Lifecycle Retention Job Fixtures",
+    `- Status: ${retentionJobFixtures.status}`,
+    `- Readiness: ${retentionJobFixtures.readiness}/100`,
+    `- Fixture batch ID: ${retentionJobFixtures.fixtureBatchId}`,
+    `- Scheduled suite ID: ${retentionJobFixtures.scheduledSuiteId}`,
+    `- Support SLA ID: ${retentionJobFixtures.supportSlaId}`,
+    `- Fixture closeout ID: ${retentionJobFixtures.closeoutId}`,
+    `- Ready/Rehearsal/Blocked: ${retentionJobFixtures.ready}/${retentionJobFixtures.review}/${retentionJobFixtures.blocked}`,
+    ...retentionJobFixtures.metrics.map((metric) => `- Retention fixture metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...retentionJobFixtures.fixtures.map((fixture) => `- Retention fixture: ${fixture.fixtureId}: ${fixture.label} | ${fixture.status} | ${fixture.score}/100 | ${fixture.worker} | ${fixture.queue} | ${fixture.schedule} | ${fixture.seedEvent}`),
+    ...retentionJobFixtures.supportSlaRules.map((rule) => `- Support SLA: ${rule.label}: ${rule.value} | ${rule.detail}`),
+    ...retentionJobFixtures.sequence.map((step) => `- Fixture sequence: ${step}`),
+    ...retentionJobFixtures.receiptFields.map((field) => `- Retention fixture receipt field: ${field}`),
+    ...retentionJobFixtures.noGoRules.map((rule) => `- Retention fixture no-go rule: ${rule}`),
+    ...retentionJobFixtures.releaseBlockers.map((blocker) => `- Retention fixture blocker: ${blocker}`),
     "",
     "## Event Contract",
     ...config.stream.eventTypes.map((item) => `- ${item}`),

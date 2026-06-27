@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V315 Account Lifecycle Retention Job Fixtures
+
+V315 adds Account Lifecycle Retention Job Fixtures inside Backend Audit Receipts. It turns the account retention enforcement dashboard into scheduled recovery, session, restore, deletion, and support-notice fixture rows with deterministic seed events, support SLA checks, monitor closeout proof, command archive audit links, receipt fields, release blockers, and hard fixture no-go rules before support SLA proof becomes the next closeout gate.
+
 ## V314 Build Progress Link
 
 V314 adds an Overall Progress hyperlink to the Build Tracker toolbar. It jumps to a compact progress panel showing overall build progress, where the desk has reached, launch readiness, and the gate-based path to production-ready 100% across retention fixtures, support SLA proof, live source workers, payments, legal, security, and release signoff.

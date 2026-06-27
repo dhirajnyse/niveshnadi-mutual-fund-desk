@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v314 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v315 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -30,6 +30,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Production Account and Payment Smoke inside Backend Audit Receipts checks account-vault endpoints, provider webhooks, entitlement joins, receipt replay, privacy export/delete, support repair, and payment reconciliation as one copyable release gate before the next paid account cohort widens.
 - Beta Incident Command Ledger inside Backend Audit Receipts persists founder recovery, Trust Center history, support scripts, production smoke gates, monitor windows, owner command receipts, and beta continuation decisions into one command trail.
 - Backend Deploy Runbook Packet inside Backend Audit Receipts packages smoke gates and incident command proof into deploy commands, environment checks, rollback contacts, release-note evidence, and hard deployment no-go rules before real backend workers can deploy.
+- Account Lifecycle Retention Job Fixtures inside Backend Audit Receipts turn retention enforcement proof into scheduled recovery, session, restore, deletion, and support-notice fixture rows with deterministic seed events, support SLA checks, command archive proof, receipt fields, and fixture no-go rules.
 - Self-research command desk with search, category, risk, and sorting controls.
 - Quiet Conviction Meter on the first screen that keeps confidence calm until evidence, peer, and memo checks are visible.
 - Learning Loop Ledger on the first screen that shows how research actions become privacy-safe learning signals without turning demo data into advice.

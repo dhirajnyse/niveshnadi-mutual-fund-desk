@@ -37962,6 +37962,192 @@ body.simple-mode .quiet-fund-shelf {
   padding-left: 18px;
 }
 
+.founder-command-center {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(31, 78, 121, 0.32);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(245, 249, 252, 0.98), rgba(232, 250, 245, 0.82));
+}
+
+.founder-command-center.ready {
+  border-color: rgba(15, 124, 107, 0.36);
+  background: linear-gradient(135deg, rgba(232, 250, 245, 0.96), rgba(255, 255, 255, 0.94));
+}
+
+.founder-command-center.watch {
+  border-color: rgba(214, 154, 61, 0.42);
+  background: linear-gradient(135deg, rgba(255, 248, 232, 0.92), rgba(245, 249, 252, 0.96));
+}
+
+.founder-command-center.blocked {
+  border-color: rgba(193, 75, 105, 0.36);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.96));
+}
+
+.founder-command-center p,
+.founder-command-center li,
+.founder-command-center small {
+  color: var(--muted);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.founder-command-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 12px;
+  align-items: center;
+}
+
+.founder-command-head span,
+.founder-command-metrics span,
+.founder-command-lanes span,
+.founder-command-two span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.founder-command-head h3 {
+  margin: 3px 0 5px;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.14;
+}
+
+.founder-command-head p {
+  margin: 0;
+}
+
+.founder-command-score {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.founder-command-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.founder-command-score strong,
+.founder-command-score span {
+  position: relative;
+}
+
+.founder-command-score strong {
+  color: #ffffff;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.founder-command-score span {
+  color: #dce7ed;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.founder-command-metrics,
+.founder-command-lanes,
+.founder-command-two {
+  display: grid;
+  gap: 10px;
+}
+
+.founder-command-metrics {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.founder-command-lanes {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.founder-command-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.founder-command-metrics,
+.founder-command-lanes,
+.founder-command-two,
+.founder-command-metrics article,
+.founder-command-lanes article,
+.founder-command-two article {
+  min-width: 0;
+}
+
+.founder-command-metrics article,
+.founder-command-lanes article,
+.founder-command-two article {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.founder-command-lanes article.ready,
+.founder-command-two article.ready {
+  border-color: rgba(15, 124, 107, 0.32);
+  background: rgba(232, 250, 245, 0.72);
+}
+
+.founder-command-lanes article.watch {
+  border-color: rgba(214, 154, 61, 0.38);
+  background: rgba(255, 245, 223, 0.62);
+}
+
+.founder-command-lanes article.blocked,
+.founder-command-two article.blocked {
+  border-color: rgba(198, 77, 103, 0.32);
+  background: rgba(255, 242, 245, 0.62);
+}
+
+.founder-command-metrics strong,
+.founder-command-lanes strong,
+.founder-command-two strong {
+  display: block;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.founder-command-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.founder-command-card-head b {
+  color: var(--blue);
+  font-size: 18px;
+}
+
+.founder-command-two ol,
+.founder-command-two ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.founder-command-route {
+  justify-self: start;
+}
+
 .founder-war-room {
   display: grid;
   gap: 10px;
@@ -38160,6 +38346,9 @@ body.simple-mode .quiet-fund-shelf {
   .founder-beta-ops-readout,
   .founder-beta-ops-lane-grid,
   .founder-beta-ops-two,
+  .founder-command-metrics,
+  .founder-command-lanes,
+  .founder-command-two,
   .founder-war-room-metric-grid,
   .founder-war-room-decision-grid,
   .founder-war-room-action-grid,
@@ -38173,6 +38362,10 @@ body.simple-mode .quiet-fund-shelf {
   .founder-beta-ops-readout,
   .founder-beta-ops-lane-grid,
   .founder-beta-ops-two,
+  .founder-command-head,
+  .founder-command-metrics,
+  .founder-command-lanes,
+  .founder-command-two,
   .founder-war-room-head,
   .founder-war-room-metric-grid,
   .founder-war-room-decision-grid,
@@ -38182,6 +38375,7 @@ body.simple-mode .quiet-fund-shelf {
   }
 
   .founder-beta-ops-score,
+  .founder-command-score,
   .founder-war-room-score {
     justify-self: start;
   }

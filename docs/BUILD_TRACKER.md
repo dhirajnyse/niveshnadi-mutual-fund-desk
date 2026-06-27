@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V319 Founder Beta Launch Command Center
+
+V319 adds the Founder Beta Launch Command Center inside the Founder Beta Operating Room. It reads the V318 Final Signoff Closeout and Paid Beta Production Gate, then turns payment, legal, security, support, live-source, and release-captain lanes into daily founder commands, missing proof, blocker count, cohort cap, freeze/rehearse/open decision rules, and command-center receipt fields before the first paid cohort can move beyond rehearsal.
+
 ## V318 Final Signoff Closeout
 
 V318 adds Final Signoff Closeout inside the Launch Readiness Board. It joins payment rail proof, legal and compliance review, security/auth signoff, support coverage, live-source release proof, release-captain decision, closeout IDs, receipt fields, signoff steps, active blockers, and hard final no-go rules before the first paid or public launch can be trusted.

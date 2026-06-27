@@ -12,6 +12,8 @@ V143 adds the Pilot Receipt Vault after the contract. The vault checks whether t
 
 V144 adds the Paid Pilot Launch Gate after the vault. The sandbox can still prove behavior, the contract can still name fields, and the vault can still map storage, but the new gate decides whether the full chain is responsible enough for the first tiny paid cohort. If vault replay, provider proof, entitlement, support, account route, evidence, privacy, or founder capacity is weak, paid launch remains in founder rehearsal.
 
+V303 adds Production Provider Deployment Receipts inside the provider contract. The sandbox and provider twin can rehearse behavior, but the deploy receipts decide whether the real provider account, server-only secret references, webhook endpoint, settlement import, rollback switch, monitoring, and support-owner closeout have enough proof for production traffic.
+
 V150 adds Payment Adapter Repairs inside the Subscription Backend Blueprint. The sandbox remains the behavior rehearsal, while the adapter board names how checkout, signed webhook, duplicate replay, refund, cancellation, entitlement, support repair, settlement, and incident events should repair or roll back without unlocking access from a browser success URL or manual support note.
 
 The route is intentionally provider-neutral. It can model Razorpay-style, Cashfree-style, Stripe-style, or manual founder-beta behavior without claiming that a production integration exists. The live launch gate remains closed until the selected provider is onboarded, webhook secrets are configured server-side, event signatures are verified, and idempotency, replay, timeout, duplicate-event, refund, invoice, and settlement variance tests pass.

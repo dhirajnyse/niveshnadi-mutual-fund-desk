@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V303 Production Provider Deployment Receipts
+
+V303 adds Production Provider Deployment Receipts inside the Payment Provider Pilot Receipt Contract. It connects the provider twin to production provider selection, server-only secret references, webhook endpoint deployment, settlement import checks, rollback receipts, monitoring signals, owner acknowledgements, no-go rules, and support closeout before any real payment provider traffic can open.
+
 ## V302 Worker Endpoint Acceptance Matrix
 
 V302 adds Worker Endpoint Acceptance Matrix inside the Backend Ticket Factory. It maps every backend ticket to method, path, service, payload schema, request/receipt/replay/redaction logs, monitoring handoff, owner acknowledgement, no-go rules, and release closeout evidence before production workers can ship.

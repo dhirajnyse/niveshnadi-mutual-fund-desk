@@ -11,3 +11,5 @@ Launch rule: paid features must unlock only from verified backend gateway events
 Phase 1 v142 follows this drill with the Payment Provider Pilot Receipt Contract. The drill answers whether the provider posture is good enough to consider; the contract answers what exact backend receipts must be written for checkout, webhook, idempotency, entitlement, invoice, refund, reconciliation, support repair, and incident closeout before a live paid pilot is allowed.
 
 Phase 1 v143 follows the contract with the Pilot Receipt Vault. The vault answers whether the named receipts are durable and replayable enough to support access, refunds, support repair, reconciliation, audit export, and incident freeze decisions without relying on browser-local state.
+
+Phase 1 v303 extends the provider contract with Production Provider Deployment Receipts. The deploy receipts answer whether production provider account choice, server-only secret references, webhook endpoint implementation, settlement import, rollback proof, monitoring, and support-owner closeout are ready before the first real provider traffic opens.

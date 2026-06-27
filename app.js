@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v302-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v302 Worker Endpoint Acceptance Matrix";
+const DATA_VERSION = "20260627-v303-04";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v303 Production Provider Deployment Receipts";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Turn the payment provider twin into production provider selection, sandbox credentials, webhook endpoint implementation, and deployment receipts."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Bind production provider deployment receipts to live gateway onboarding, secret rotation, webhook worker implementation, settlement imports, rollback evidence, and support-owner closeout."
   },
   {
     phase: "Phase 2",
@@ -1240,28 +1240,28 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Founder beta war-room digest",
+    label: "Production provider deployment receipts",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Summarize deploy and incident command posture into founder weekly operating rhythm, invite decisions, support capacity, Trust Center proof, and beta continuation notes."
+    route: "#provider-pilot-receipt",
+    detail: "Connect payment provider pilot proof to deploy receipts, webhook secrets, settlement checks, incident rollback, monitoring, and support-owner evidence."
   },
   {
     label: "Worker endpoint acceptance matrix",
-    status: "Shipping now",
+    status: "Done",
     route: "#backend-ticket-factory",
     detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, monitoring handoffs, and production deploy closeout."
   },
   {
-    label: "Production provider deployment receipts",
-    status: "Next",
-    route: "#gateway-webhook",
-    detail: "Connect payment provider pilot proof to deployment receipts, webhook secrets, settlement checks, incident rollback, and support-owner evidence."
-  },
-  {
     label: "Account vault endpoint contracts",
-    status: "Later",
+    status: "Next",
     route: "#account-launch-route",
     detail: "Turn account migration, export, delete, support repair, and saved research vault work into endpoint contracts with closeout receipts."
+  },
+  {
+    label: "Production account and payment smoke",
+    status: "Later",
+    route: "#backend-audit-receipts",
+    detail: "Run production smoke for account, entitlement, provider webhook, receipt replay, privacy export/delete, and support repair."
   }
 ];
 
@@ -9266,7 +9266,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v302</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v303</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -16774,12 +16774,213 @@ function providerPaymentTwin(contract) {
   };
 }
 
+function productionProviderDeploymentReceipts(contract, twin) {
+  const sandbox = contract.drill.sandbox;
+  const wiring = contract.drill.wiring;
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const deploymentId = ["NN", "PROVIDER", "DEPLOY", "RECEIPT", suffix, sandbox.provider].join("-").toUpperCase();
+  const secretReceiptId = ["NN", "WEBHOOK", "SECRET", "ROTATION", suffix].join("-").toUpperCase();
+  const settlementReceiptId = ["NN", "SETTLEMENT", "IMPORT", "CHECK", suffix].join("-").toUpperCase();
+  const rollbackReceiptId = ["NN", "PAYMENT", "ROLLBACK", "RUN", suffix].join("-").toUpperCase();
+  const fieldByEvent = Object.fromEntries(contract.fields.map((field) => [field.event, field]));
+  const flowByEvent = Object.fromEntries(twin.flows.map((flow) => [flow.event, flow]));
+  const eventScore = (event) => fieldByEvent[event]?.score || contract.readiness;
+  const flowScore = (event) => flowByEvent[event]?.score || twin.readiness;
+  const scoreLane = (event, base = contract.readiness, penalty = 0) => clampNumber(Math.round(
+    eventScore(event) * 0.38 + flowScore(event) * 0.28 + contract.readiness * 0.18 + twin.readiness * 0.16
+  ) - penalty, 16, 96);
+  const deployTemplates = [
+    {
+      label: "Provider production decision",
+      owner: "Founder",
+      event: "provider.production_selected",
+      sourceEvent: "checkout.session_created",
+      route: "#gateway-webhook-drill",
+      evidence: "provider account, pricing plan, settlement owner, production boundary",
+      receiptFields: ["deployment_id", "provider", "environment", "pricing_plan", "settlement_owner", "approved_at"],
+      noGo: "No paid cohort opens while provider is manual, undecided, or owned only by browser copy."
+    },
+    {
+      label: "Secret and credential boundary",
+      owner: "Backend",
+      event: "provider.secret_rotation_receipted",
+      sourceEvent: "webhook.signature_verified",
+      route: "#backend-ticket-factory",
+      evidence: "signing secret ref, rotation date, server-only storage, blocked browser scan",
+      receiptFields: ["secret_receipt_id", "secret_ref", "rotation_ref", "blocked_data_scan", "owner_ack"],
+      noGo: "No gateway secret, signing key, card, UPI, bank, OTP, PAN, folio, or CAS can enter browser state."
+    },
+    {
+      label: "Webhook endpoint deploy",
+      owner: "Platform",
+      event: "payment.webhook_endpoint_deployed",
+      sourceEvent: "webhook.idempotency_checked",
+      route: "#backend-ticket-factory",
+      evidence: "method, path, service, signature check, idempotency lock, replay test",
+      receiptFields: ["method", "path", "service", "signature_status", "idempotency_key", "replay_result"],
+      noGo: "Reject stale, unsigned, malformed, duplicate, and unsupported events before entitlement changes."
+    },
+    {
+      label: "Settlement import check",
+      owner: "Finance",
+      event: "provider.settlement_import_checked",
+      sourceEvent: "settlement.reconciled",
+      route: "#pilot-receipt-vault",
+      evidence: "settlement file, gateway total, app total, refund total, variance state",
+      receiptFields: ["settlement_receipt_id", "gateway_total", "app_total", "refund_total", "variance_state", "reviewer"],
+      noGo: "Do not count revenue as launch-ready until provider settlement and app receipts agree."
+    },
+    {
+      label: "Incident rollback switch",
+      owner: "Ops",
+      event: "payment.rollback_switch_receipted",
+      sourceEvent: "payment.incident_closed",
+      route: "#backend-audit-receipts",
+      evidence: "pause switch, rollback owner, affected receipts, resume rule, notice path",
+      receiptFields: ["rollback_receipt_id", "affected_receipts", "pause_state", "resume_rule", "notice_id", "closed_at"],
+      noGo: "No incident resume without replay proof, affected-user scope, rollback note, and owner signoff."
+    },
+    {
+      label: "Support owner closeout",
+      owner: "Support",
+      event: "provider.support_owner_closed",
+      sourceEvent: "refund.or_cancel.saved",
+      route: "#paid-beta-support-ledger",
+      evidence: "refund path, failed payment script, invoice route, entitlement repair, support SLA",
+      receiptFields: ["support_owner", "case_route", "refund_ref", "invoice_ref", "repair_ref", "acknowledged_at"],
+      noGo: "No provider launch while support cannot close failed payment, refund, invoice, and entitlement cases."
+    }
+  ];
+  const lanes = deployTemplates.map((lane, index) => {
+    const providerPenalty = sandbox.provider === "manual" && index < 3 ? 12 : 0;
+    const secretPenalty = lane.label.includes("Secret") && sandbox.evidence === "manual" ? 10 : 0;
+    const settlementPenalty = lane.label.includes("Settlement") && sandbox.scenario !== "reconcile" && sandbox.mode !== "finance" ? 5 : 0;
+    const supportPenalty = lane.label.includes("Support") && wiring.invoice !== "invoiceReady" ? 6 : 0;
+    const score = scoreLane(lane.sourceEvent, contract.readiness, providerPenalty + secretPenalty + settlementPenalty + supportPenalty);
+    return {
+      ...lane,
+      score,
+      status: score >= 74 ? "Deploy receipt ready" : score < 56 ? "Deploy blocker" : "Deploy rehearsal",
+      tone: score >= 74 ? "ready" : score < 56 ? "blocked" : "draft"
+    };
+  });
+  const weakest = [...lanes].sort((a, b) => a.score - b.score)[0];
+  const laneBlockers = lanes
+    .filter((lane) => lane.score < 64)
+    .map((lane) => `${lane.label} needs ${lane.evidence} before payment provider deployment can proceed`);
+  const blockers = [...new Set([
+    ...laneBlockers,
+    ...(sandbox.provider === "manual" ? ["manual payment posture cannot produce production provider deployment receipts"] : []),
+    ...(wiring.gateway === "hosted" ? [] : ["hosted provider onboarding and server-created checkout are required before live deployment"]),
+    ...(sandbox.evidence === "signed" || sandbox.evidence === "idempotent" ? [] : ["webhook deployment still needs signed or idempotent evidence before production"]),
+    ...(wiring.invoice === "invoiceReady" ? [] : ["invoice, refund, cancellation, and tax support owner must sign off before deployment"]),
+    "production credentials, webhook secrets, card, UPI, bank, OTP, PAN, folio, CAS, ARN/EUIN, and private support-note bodies must never enter the static browser"
+  ])];
+  const average = Math.round(lanes.reduce((sum, lane) => sum + lane.score, 0) / lanes.length);
+  const readiness = clampNumber(Math.round(
+    average * 0.44 + contract.readiness * 0.2 + twin.readiness * 0.2 + contract.drill.score * 0.16
+  ) - Math.min(blockers.length, 12), 18, 96);
+  const accepted = readiness >= 84 && blockers.length <= 1;
+  const status = accepted
+    ? "Provider deployment receipts ready"
+    : readiness >= 64
+      ? "Provider deployment rehearsal"
+      : "Provider deployment blocked";
+  const tone = accepted ? "ready" : status === "Provider deployment blocked" ? "blocked" : "draft";
+  const metrics = [
+    {
+      label: "Deploy receipt",
+      value: deploymentId,
+      detail: "One deploy receipt binds provider, webhook, settlement, rollback, and support owner proof."
+    },
+    {
+      label: "Readiness",
+      value: `${readiness}/100`,
+      detail: status
+    },
+    {
+      label: "Weakest lane",
+      value: weakest.label,
+      detail: `${weakest.score}/100 | ${weakest.noGo}`
+    },
+    {
+      label: "Receipts blocked",
+      value: String(blockers.length),
+      detail: accepted ? "Only final production verification remains." : "Close blockers before any real provider traffic."
+    }
+  ];
+  const ownerAcknowledgements = [
+    { owner: "Founder", proof: "provider account, pricing plan, settlement account, paid-cohort cap", receipt: deploymentId },
+    { owner: "Backend", proof: "server checkout, webhook path, signature verifier, secret rotation ref", receipt: secretReceiptId },
+    { owner: "Finance", proof: "settlement import, invoice/refund policy, variance reviewer", receipt: settlementReceiptId },
+    { owner: "Support", proof: "failed payment, refund, invoice, entitlement repair, support script", receipt: "NN-SUPPORT-PROVIDER-CLOSEOUT-" + suffix },
+    { owner: "Ops", proof: "pause switch, rollback owner, incident notice, resume rule", receipt: rollbackReceiptId }
+  ];
+  const monitoringReceipts = [
+    "payment_webhook_delivery_rate",
+    "webhook_signature_reject_count",
+    "idempotency_duplicate_seen_count",
+    "settlement_variance_state",
+    "entitlement_projection_lag_ms",
+    "refund_support_sla_state"
+  ];
+  const releaseSequence = [
+    "Confirm production provider account, pricing plan, settlement owner, and paid-cohort cap.",
+    "Create server-only checkout and webhook configuration with secret references, not secret values.",
+    "Deploy webhook endpoint with signature, timestamp, schema, idempotency, and replay checks.",
+    "Run settlement import against provider report, app receipt ledger, invoices, refunds, and entitlement state.",
+    "Rehearse failed payment, refund, invoice, entitlement repair, pause, rollback, and resume cases.",
+    "Capture owner acknowledgements, monitor window, rollback receipt, support closeout, and no-go decision."
+  ];
+  const noGoRules = [
+    "No live provider traffic while payment credentials or gateway secrets appear in browser state or support notes.",
+    "No entitlement mutation without signed webhook verification, idempotency receipt, and replay-safe projection.",
+    "No expansion while provider settlement, app ledger, refunds, invoices, or entitlement counts disagree.",
+    "No incident resume without rollback receipt, support script, affected receipt scope, and founder closeout.",
+    "No public payment ask until support owner can close failed payment, refund, invoice, and entitlement repair cases."
+  ];
+  const receiptFields = [
+    "deployment_id",
+    "provider",
+    "environment",
+    "checkout_endpoint_ref",
+    "webhook_endpoint_ref",
+    "secret_receipt_id",
+    "settlement_receipt_id",
+    "rollback_receipt_id",
+    "support_owner_ack",
+    "monitor_window",
+    "blocked_data_scan",
+    "deployed_at"
+  ];
+  return {
+    accepted,
+    blockers,
+    deploymentId,
+    lanes,
+    metrics,
+    monitoringReceipts,
+    noGoRules,
+    ownerAcknowledgements,
+    readiness,
+    receiptFields,
+    releaseSequence,
+    rollbackReceiptId,
+    secretReceiptId,
+    settlementReceiptId,
+    status,
+    tone,
+    weakest
+  };
+}
+
 function renderProviderPilotReceiptContract() {
   if (!els.providerPilotOutput) return;
   const contract = providerPilotReceiptContractConfig();
   const twin = providerPaymentTwin(contract);
+  const deployment = productionProviderDeploymentReceipts(contract, twin);
   if (els.providerPilotSummary) {
-    els.providerPilotSummary.textContent = `${contract.readiness}/100 | ${contract.status} | Twin ${twin.readiness}/100`;
+    els.providerPilotSummary.textContent = `${contract.readiness}/100 | ${contract.status} | Deploy ${deployment.readiness}/100`;
   }
   els.providerPilotOutput.innerHTML = `
     <div class="provider-pilot-hero ${escapeHtml(contract.tone)}">
@@ -16882,6 +17083,71 @@ function renderProviderPilotReceiptContract() {
         </article>
       </div>
     </div>
+    <div class="provider-deploy-board ${escapeHtml(deployment.tone)}">
+      <div class="provider-deploy-head">
+        <div>
+          <span class="metric-label">Production provider deployment receipts</span>
+          <h3>${escapeHtml(deployment.status)}</h3>
+          <p>Before real provider traffic opens, deployment proof must bind provider selection, server-only secrets, webhook endpoint behavior, settlement import, rollback, monitoring, and support-owner closeout.</p>
+        </div>
+        <div class="provider-deploy-score" style="--score:${deployment.readiness}">
+          <b>${deployment.readiness}</b>
+          <span>Deploy</span>
+        </div>
+      </div>
+      <div class="provider-deploy-metrics">
+        ${deployment.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="provider-deploy-lane-grid">
+        ${deployment.lanes.map((lane) => `
+          <article class="${escapeHtml(lane.tone)}">
+            <div class="provider-pilot-card-head">
+              <div>
+                <span>${escapeHtml(lane.owner)}</span>
+                <strong>${escapeHtml(lane.label)}</strong>
+              </div>
+              <b>${lane.score}</b>
+            </div>
+            <p>${escapeHtml(lane.event)}</p>
+            <div class="build-progress-bar"><span style="width:${lane.score}%"></span></div>
+            <small>${escapeHtml(lane.status)} | Evidence: ${escapeHtml(lane.evidence)}</small>
+            <small>No-go: ${escapeHtml(lane.noGo)}</small>
+            <small>Fields: ${lane.receiptFields.map((item) => escapeHtml(item)).join(" | ")}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="provider-deploy-two">
+        <article>
+          <span>Release sequence</span>
+          <ol>
+            ${deployment.releaseSequence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${deployment.blockers.length ? "blocked" : "ready"}">
+          <span>Deployment blockers</span>
+          <ul>
+            ${(deployment.blockers.length ? deployment.blockers : ["No active provider deployment blocker in this preview. Keep final credentials server-side."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Owner acknowledgements</span>
+          <ul>
+            ${deployment.ownerAcknowledgements.map((item) => `<li>${escapeHtml(item.owner)}: ${escapeHtml(item.proof)} | ${escapeHtml(item.receipt)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Monitoring and fields</span>
+          <p>${deployment.monitoringReceipts.map((item) => escapeHtml(item)).join(" | ")}</p>
+          <p>${deployment.receiptFields.map((item) => escapeHtml(item)).join(" | ")}</p>
+        </article>
+      </div>
+    </div>
     <div class="provider-pilot-two">
       <article>
         <span>Event chain</span>
@@ -16912,6 +17178,7 @@ function renderProviderPilotReceiptContract() {
 function makeProviderPilotReceiptBrief() {
   const contract = providerPilotReceiptContractConfig();
   const twin = providerPaymentTwin(contract);
+  const deployment = productionProviderDeploymentReceipts(contract, twin);
   return [
     "# NiveshNadi Payment Provider Pilot Receipt Contract",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -16921,6 +17188,8 @@ function makeProviderPilotReceiptBrief() {
     `Provider posture: ${contract.drill.selectedProvider}`,
     `Payment Provider Twin: ${twin.readiness}/100 | ${twin.status}`,
     `Twin ID: ${twin.twinId}`,
+    `Production Provider Deployment Receipts: ${deployment.readiness}/100 | ${deployment.status}`,
+    `Deployment ID: ${deployment.deploymentId}`,
     "",
     "## Metrics",
     ...contract.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
@@ -16940,6 +17209,30 @@ function makeProviderPilotReceiptBrief() {
     "## Twin Guardrails",
     ...twin.guardrails.map((item) => `- ${item}`),
     "",
+    "## Production Provider Deployment Receipts",
+    ...deployment.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Deployment Lanes",
+    ...deployment.lanes.map((lane) => `- ${lane.label}: ${lane.score}/100 | Event: ${lane.event} | Owner: ${lane.owner} | Evidence: ${lane.evidence} | No-go: ${lane.noGo}`),
+    "",
+    "## Deployment Release Sequence",
+    ...deployment.releaseSequence.map((item) => `- ${item}`),
+    "",
+    "## Deployment Owner Acknowledgements",
+    ...deployment.ownerAcknowledgements.map((item) => `- ${item.owner}: ${item.proof} | Receipt: ${item.receipt}`),
+    "",
+    "## Deployment Monitoring Receipts",
+    ...deployment.monitoringReceipts.map((item) => `- ${item}`),
+    "",
+    "## Deployment No-Go Rules",
+    ...deployment.noGoRules.map((item) => `- ${item}`),
+    "",
+    "## Deployment Receipt Fields",
+    ...deployment.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## Deployment Blockers",
+    ...(deployment.blockers.length ? deployment.blockers.map((item) => `- ${item}`) : ["- No active provider deployment blocker in this preview."]),
+    "",
     "## Receipt Fields",
     ...contract.fields.map((field) => `- ${field.label}: ${field.score}/100 | Event: ${field.event} | Owner: ${field.owner} | Required: ${field.required.join(", ")} | Blocker: ${field.blocker}`),
     "",
@@ -16954,6 +17247,49 @@ function makeProviderPilotReceiptBrief() {
     "",
     "## Release Rules",
     ...contract.releaseRules.map((item) => `- ${item}`)
+  ].join("\n");
+}
+
+function makeProductionProviderDeploymentReceiptsBrief() {
+  const contract = providerPilotReceiptContractConfig();
+  const twin = providerPaymentTwin(contract);
+  const deployment = productionProviderDeploymentReceipts(contract, twin);
+  return [
+    "# NiveshNadi Production Provider Deployment Receipts",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Readiness: ${deployment.readiness}/100`,
+    `Status: ${deployment.status}`,
+    `Deployment ID: ${deployment.deploymentId}`,
+    `Secret receipt: ${deployment.secretReceiptId}`,
+    `Settlement receipt: ${deployment.settlementReceiptId}`,
+    `Rollback receipt: ${deployment.rollbackReceiptId}`,
+    "",
+    "## Metrics",
+    ...deployment.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Deployment Lanes",
+    ...deployment.lanes.map((lane) => `- ${lane.label}: ${lane.score}/100 | Event: ${lane.event} | Owner: ${lane.owner} | Evidence: ${lane.evidence} | Fields: ${lane.receiptFields.join(", ")} | No-go: ${lane.noGo}`),
+    "",
+    "## Release Sequence",
+    ...deployment.releaseSequence.map((item) => `- ${item}`),
+    "",
+    "## Owner Acknowledgements",
+    ...deployment.ownerAcknowledgements.map((item) => `- ${item.owner}: ${item.proof} | Receipt: ${item.receipt}`),
+    "",
+    "## Monitoring Receipts",
+    ...deployment.monitoringReceipts.map((item) => `- ${item}`),
+    "",
+    "## No-Go Rules",
+    ...deployment.noGoRules.map((item) => `- ${item}`),
+    "",
+    "## Receipt Fields",
+    ...deployment.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## Blockers",
+    ...(deployment.blockers.length ? deployment.blockers.map((item) => `- ${item}`) : ["- No active provider deployment blocker in this preview."]),
+    "",
+    "## Guardrail",
+    "Provider deployment receipts are production-readiness metadata only. They must never contain gateway secrets, raw card data, UPI, bank, OTP, PAN, folio, CAS, ARN/EUIN, distributor client records, or free-form private support-note bodies."
   ].join("\n");
 }
 
@@ -50445,6 +50781,11 @@ function bindEvents() {
   els.copyGatewayWebhook?.addEventListener("click", () => copyText(makeGatewayWebhookBrief()));
   els.openProviderPilotBlocker?.addEventListener("click", openProviderPilotBlocker);
   els.copyProviderPilot?.addEventListener("click", () => copyText(makeProviderPilotReceiptBrief()));
+  document.addEventListener("click", (event) => {
+    if (event.target instanceof Element && event.target.closest("#copyProviderDeployment")) {
+      copyText(makeProductionProviderDeploymentReceiptsBrief());
+    }
+  });
   els.openPilotReceiptVaultBlocker?.addEventListener("click", openPilotReceiptVaultBlocker);
   els.copyPilotReceiptVault?.addEventListener("click", () => copyText(makePilotReceiptVaultBrief()));
   els.openPaidPilotLaunchBlocker?.addEventListener("click", openPaidPilotLaunchBlocker);
@@ -52380,6 +52721,7 @@ function cacheElements() {
     providerPilotOutput: qs("#providerPilotOutput"),
     openProviderPilotBlocker: qs("#openProviderPilotBlocker"),
     copyProviderPilot: qs("#copyProviderPilot"),
+    copyProviderDeployment: qs("#copyProviderDeployment"),
     pilotReceiptVaultSummary: qs("#pilotReceiptVaultSummary"),
     pilotReceiptVaultOutput: qs("#pilotReceiptVaultOutput"),
     openPilotReceiptVaultBlocker: qs("#openPilotReceiptVaultBlocker"),

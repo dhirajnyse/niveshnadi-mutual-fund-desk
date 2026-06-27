@@ -172,6 +172,12 @@ V153 adds a Payment Provider Twin inside the provider contract so the first real
 
 Commercially, this protects the INR 100/month and INR 1,000/year retail plan from manual payment firefighting. Before a real gateway goes live, the founder can see which flow would break margin, confuse access, create refund pain, or require support judgment. That keeps the product brave in the market but boring in operations.
 
+## Production Provider Deployment Receipts
+
+V303 adds Production Provider Deployment Receipts to the provider contract so payment launch has deploy proof, not only rehearsal proof. The receipts bind provider production decision, server-only secret references, webhook endpoint deployment, settlement import, rollback switch, monitoring signals, support owner acknowledgement, no-go rules, and blocked-data scan into one provider deployment packet.
+
+Commercially, this is the bridge from "the provider twin behaves correctly" to "a real payment rail can be operated at low price." INR 100/month only works if webhook failures, duplicate events, settlement variance, refunds, invoice questions, and support repair can close from receipts without exposing payment credentials or relying on founder memory.
+
 ## Pilot Receipt Vault
 
 V143 adds the Pilot Receipt Vault so the payment contract becomes an operating artifact. The vault turns payment receipts into append-only storage, replay index, entitlement projection log, invoice/refund ledger, settlement join, support lookup, audit export, and incident freeze rules. This keeps paid access from depending on success URLs, browser state, screenshots, or scattered support notes.

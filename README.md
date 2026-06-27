@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v302 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v303 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -50,7 +50,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Nadi Payment Wiring Console with a Gateway and Retention Policy board that maps hosted checkout, monthly and annual plans, webhook verification, entitlement activation, invoice posture, refunds, cancellation, duplicate webhooks, settlement reconciliation, retention windows, support ownership, and payment-policy receipts before paid launch.
 - Nadi Payment Gateway Sandbox Route with a Founder Paid Beta Runbook that dry-runs hosted checkout, signed webhooks, duplicate events, failed renewals, refunds, invoices, entitlement activation, support repair, incidents, reconciliation, first-cohort posture, day-by-day rehearsal, and go/no-go rules before any real payment rail is switched on.
 - Nadi Gateway Decision and Webhook Drill that converts sandbox proof into a provider choice, signed webhook gate, idempotency replay, entitlement projection, invoice/refund route, reconciliation, incident rollback script, blocked-data list, and copyable launch decision packet before retail billing moves beyond rehearsal.
-- Nadi Payment Provider Pilot Receipt Contract with a Payment Provider Twin that turns the provider decision into backend-owned checkout, webhook, idempotency, entitlement, invoice, refund, reconciliation, support repair, incident receipt fields, and synthetic gateway rehearsal before a live paid pilot is trusted.
+- Nadi Payment Provider Pilot Receipt Contract with a Payment Provider Twin and Production Provider Deployment Receipts that turn the provider decision into backend-owned checkout, webhook, idempotency, entitlement, invoice, refund, reconciliation, support repair, incident receipt fields, synthetic gateway rehearsal, provider deployment proof, server-only secret receipts, settlement checks, rollback proof, monitoring, and support-owner closeout before a live paid pilot is trusted.
 - Nadi Pilot Receipt Vault that shows how provider pilot receipts are stored, replayed, audited, exported, used by support, joined to settlement, and frozen during incidents before paid access relies on payment events.
 - Nadi Paid Pilot Launch Gate that converts receipt vault replay, payment provider proof, entitlement enforcement, support and refund handling, account route readiness, evidence safety, privacy controls, and founder operating capacity into a go, hold, or no-go decision before opening the first tiny paid cohort.
 - Nadi Backend Ticket Factory with Backend Ticket Closeout and Worker Endpoint Acceptance Matrix that converts paid pilot gate blockers into owner-scoped backend tickets with event contracts, acceptance tests, blocked-data boundaries, route links, release dependencies, closeout gates, receipt proof, freeze posture, rollback notes, owner signoff, endpoint methods/paths, payload schemas, logs, monitoring handoffs, and production closeout gates before implementation begins or ships.

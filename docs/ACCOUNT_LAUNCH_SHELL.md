@@ -25,6 +25,8 @@ V309 extends those smoke fixtures into Account Lifecycle Production Owner Gates.
 
 V310 extends those owner gates into Account Lifecycle Deploy Runbook Packet. Account access is still not launch-ready until each lifecycle worker has a command receipt, environment checklist, rollback contact, monitor window, release evidence, support comms, production closeout, and final no-go rule.
 
+V311 extends those deploy packets into Account Lifecycle Rollout Approval Archive. Account access is still not launch-ready until each lifecycle worker has staged rollout approval, live monitor proof, release captain signoff, support readiness, rollback approval, post-deploy evidence, and archive no-go clearance.
+
 ## Guardrails
 
 The shell intentionally stays research-only. It does not collect PAN, folio, KYC, bank details, distributor ARN/EUIN, client books, or transaction credentials. Before launch, the production implementation must add provider-specific authentication, encrypted storage policies, audit receipts, subscription entitlement checks, deletion workflow evidence, support access logs, and a written Phase 2 firewall for distributor workflows.

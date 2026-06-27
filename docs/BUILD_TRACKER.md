@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V311 Account Lifecycle Rollout Approval Archive
+
+V311 adds Account Lifecycle Rollout Approval Archive inside the Retail Account Launch Route. It binds deploy runbook packets to staged rollout approvals, live monitor windows, release captain signoff, support readiness, rollback approvals, post-deploy evidence archive, receipt fields, active approval blockers, and final archive no-go checks before account lifecycle work can move into post-deploy incident drills.
+
 ## V310 Account Lifecycle Deploy Runbook Packet
 
 V310 adds Account Lifecycle Deploy Runbook Packet inside the Retail Account Launch Route. It packages recovery, session retention, vault restore, deletion closeout, and support notice owner gates into deploy steps with command receipts, environment checks, rollback contacts, monitor windows, release-note evidence, support comms, production closeout IDs, final no-go rules, and a copyable deploy-runbook packet before lifecycle workers move toward staged rollout approval.

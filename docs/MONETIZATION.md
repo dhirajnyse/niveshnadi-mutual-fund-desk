@@ -256,6 +256,10 @@ V310 adds Account Lifecycle Deploy Runbook Packet to the same route. Owner gates
 
 Commercially, this protects the INR 100/month and INR 1,000/year account promise from release chaos: lifecycle operations should widen only when deploy proof, rollback ownership, support wording, and monitor evidence are packaged before users rely on them.
 
+V311 adds Account Lifecycle Rollout Approval Archive to the same route. Deploy runbooks now become staged rollout approvals with live monitor windows, release captain signoff, support readiness, rollback approvals, post-deploy evidence archive, receipt fields, approval blockers, and archive no-go rules.
+
+Commercially, this protects low-price paid accounts from hidden launch risk: recovery, restore, deletion, session, and notice operations should widen only when approval proof, support readiness, rollback authority, and post-deploy evidence are archived before users depend on them.
+
 ## Payment Adapter Repairs
 
 V150 connects the payment backend to repairable adapter routes. Checkout, webhook, idempotency replay, refund, cancellation, entitlement projection, support repair, settlement, and incident adapters now show the event in, event out, receipt join, repair action, rollback rule, and blockers before real gateway events can unlock paid features.

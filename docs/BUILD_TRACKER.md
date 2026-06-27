@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V295 Public Recovery Publish Drill
+
+V295 adds Public Recovery Publish Drill inside Backend Audit Receipts. It rehearses investor-visible correction wording, Trust Center state, support-safe explanation, freeze or resume proof, reviewer closeout, monitoring window, public no-go rules, and investor-visible recovery receipts before a recovery, correction, hold, rollback, or resume state can be shown publicly.
+
 ## V294 Backend Implementation Handoff Pack
 
 V294 adds Backend Implementation Handoff Pack inside Backend Audit Receipts. It converts worker closeout evidence into engineer-ready packets with API endpoints, event names, payload fields, acceptance tests, service owners, release dependencies, blocked-data scans, and launch blockers before the backend work moves from prototype contract to build ticket.

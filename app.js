@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v294-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v294 Backend Implementation Handoff Pack";
+const DATA_VERSION = "20260627-v295-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v295 Public Recovery Publish Drill";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,22 +1240,22 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Backend implementation handoff pack",
+    label: "Public recovery publish drill",
     status: "Shipping now",
     route: "#backend-audit-receipts",
-    detail: "Convert closeout-ready worker tickets into engineering handoff packets with API contracts, event payloads, acceptance tests, owners, dependencies, and launch no-go blockers."
-  },
-  {
-    label: "Public recovery publish drill",
-    status: "Next",
-    route: "#correction-notice",
-    detail: "Rehearse public correction wording, freeze recovery, reviewer closeout, and Trust Center status after a source import changes or fails."
+    detail: "Rehearse investor-visible correction wording, Trust Center update, support-safe explanation, freeze/resume proof, reviewer closeout, monitoring, and publish blockers."
   },
   {
     label: "Backend CI smoke harness",
-    status: "Later",
+    status: "Next",
     route: "#backend-ticket-factory",
-    detail: "Turn implementation handoff packets into CI smoke fixtures for scheduler, parser, receipt persistence, alert delivery, replay, and recovery closeout."
+    detail: "Turn implementation handoff and recovery publish packets into CI smoke fixtures for scheduler, parser, receipt persistence, alert delivery, replay, and recovery closeout."
+  },
+  {
+    label: "Founder beta recovery rehearsal",
+    status: "Later",
+    route: "#trust-center",
+    detail: "Bind the public recovery drill to founder beta communications, Trust Center history, support queue, and post-publish monitoring before paid beta grows."
   }
 ];
 
@@ -9260,7 +9260,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v294</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v295</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -36034,6 +36034,181 @@ function sourceCorrectionPublishConsole(recoveryQueue = sourceRecoveryReleaseQue
   };
 }
 
+function publicRecoveryPublishDrill(config = backendAuditConfig(), correctionPublish = sourceCorrectionPublishConsole(), recoveryQueue = sourceRecoveryReleaseQueue(), publicRecovery = sourcePublicRecoveryRehearsal(), rollbackEvidence = sourceRollbackEvidenceStore(), reviewerSignoff = sourceReviewerSignoffBridge(), alertDelivery = sourceAlertDeliveryBackend(), alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), freezeAutomation = launchFreezeAutomation(config, paymentReconciliationReplay(config), sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config), correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker)) {
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const publishDrillId = ["NN", "PUBLIC", "PUBLISH", "DRILL", sourceSlug, suffix].join("-").toUpperCase();
+  const trustCenterUpdateId = ["NN", "TRUST", "CENTER", "UPDATE", sourceSlug, suffix].join("-").toUpperCase();
+  const supportScriptId = ["NN", "SUPPORT", "PUBLIC", "RECOVERY", sourceSlug, suffix].join("-").toUpperCase();
+  const reviewerCloseoutId = ["NN", "REVIEWER", "PUBLIC", "CLOSEOUT", sourceSlug, suffix].join("-").toUpperCase();
+  const investorReceiptId = ["NN", "INVESTOR", "VISIBLE", "RECOVERY", sourceSlug, suffix].join("-").toUpperCase();
+  const monitorWindowId = ["NN", "PUBLIC", "RECOVERY", "MONITOR", sourceSlug, suffix].join("-").toUpperCase();
+  const storageReady = config.storage === "event" || config.storage === "append";
+  const queueBlockers = recoveryQueue.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const publishBlockers = correctionPublish.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const freezeBlockers = freezeAutomation.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const drillLanes = [
+    {
+      label: "Investor notice",
+      owner: "Product Ops",
+      event: "public_recovery.investor_notice_previewed",
+      proof: "investor_visible_receipt_id, correction_notice_id, public_wording_hash, visible_status",
+      route: "#correction-notice",
+      score: correctionPublish.readiness,
+      text: correctionPublish.wording.investorSummary
+    },
+    {
+      label: "Trust Center update",
+      owner: "Trust Ops",
+      event: "trust_center.recovery_status_prepared",
+      proof: "trust_center_update_id, public_recovery_plan_id, monitor_window_id, current_status",
+      route: "#trust-center",
+      score: Math.round((publicRecovery.readiness + correctionPublish.readiness) / 2),
+      text: "Show source refresh state, correction posture, reviewer approval, monitoring window, and latest visible status."
+    },
+    {
+      label: "Support-safe script",
+      owner: "Support",
+      event: "support.public_recovery_script_bound",
+      proof: "support_script_id, support_safe_summary_id, blocked_data_classes, response_script_version",
+      route: "#subscription-ops",
+      score: recoveryQueue.readiness - 1,
+      text: correctionPublish.wording.supportSummary
+    },
+    {
+      label: "Freeze or resume proof",
+      owner: "Release Ops",
+      event: "public_recovery.freeze_resume_proof_checked",
+      proof: "freeze_resume_id, launch_freeze_id, rollback_hold_id, resume_receipt_id",
+      route: "#backend-audit-receipts",
+      score: freezeAutomation.readiness,
+      text: "Public surface remains frozen, corrected, rolled back, or resumed only after release queue and reviewer state agree."
+    },
+    {
+      label: "Reviewer closeout",
+      owner: "Reviewer",
+      event: "public_recovery.reviewer_closeout_signed",
+      proof: "reviewer_closeout_id, reviewer_signoff_id, evidence_lock_id, release_scope_id",
+      route: "#reviewer-workbench",
+      score: reviewerSignoff.readiness,
+      text: "Reviewer confirms old wording, corrected wording, evidence lock, release scope, and support-safe summary before publish."
+    },
+    {
+      label: "Post-publish monitor",
+      owner: "Security Ops",
+      event: "public_recovery.monitor_window_started",
+      proof: "monitor_window_id, alert_route_id, delivery_attempt_id, retry_policy",
+      route: "#trust-center",
+      score: alertDelivery.readiness,
+      text: "Monitoring starts before investor-visible correction, hold, rollback, or resume state is shown."
+    }
+  ].map((lane) => {
+    const score = clampNumber(Math.round(lane.score), 18, 96);
+    return {
+      ...lane,
+      score,
+      tone: score >= 78 ? "ready" : score < 56 ? "caution" : "watch"
+    };
+  });
+  const copyBlocks = [
+    { label: "Before", value: correctionPublish.wording.before, tone: "old" },
+    { label: "After", value: correctionPublish.wording.corrected, tone: "corrected" },
+    { label: "Investor notice", value: correctionPublish.wording.investorSummary, tone: "notice" },
+    { label: "Trust Center state", value: `${correctionPublish.wording.publishPosture}; monitor ${monitorWindowId}.`, tone: "trust" },
+    { label: "Support-safe explanation", value: correctionPublish.wording.supportSummary, tone: "support" },
+    { label: "Reviewer closeout", value: `${reviewerSignoff.status}; ${reviewerCloseoutId}.`, tone: "review" }
+  ];
+  const ready = drillLanes.filter((lane) => lane.tone === "ready").length;
+  const blocked = drillLanes.filter((lane) => lane.tone === "caution").length;
+  const readiness = clampNumber(Math.round(
+    correctionPublish.readiness * 0.24 +
+      recoveryQueue.readiness * 0.16 +
+      publicRecovery.readiness * 0.14 +
+      reviewerSignoff.readiness * 0.14 +
+      rollbackEvidence.readiness * 0.1 +
+      alertDelivery.readiness * 0.08 +
+      freezeAutomation.readiness * 0.08 +
+      (storageReady ? 88 : 24) * 0.06
+  ) - blocked * 3, 12, 96);
+  const blockers = [...new Set([
+    ...publishBlockers.slice(0, 4),
+    ...queueBlockers.slice(0, 3),
+    ...freezeBlockers.slice(0, 2),
+    ...(storageReady ? [] : ["public recovery publish drill cannot launch with browser-local correction receipts"]),
+    ...(blocked ? ["one or more public publish lanes are below launch threshold"] : []),
+    "real Trust Center publishing, notification delivery, and investor-visible receipt persistence are still outside this static prototype"
+  ])];
+  const status = readiness >= 84 && blocked === 0 && storageReady
+    ? "Public publish ready"
+    : readiness >= 64
+      ? "Public publish rehearsal"
+      : "Public publish blocked";
+  const tone = status === "Public publish ready" ? "ready" : status === "Public publish blocked" ? "caution" : "watch";
+  const metrics = [
+    { label: "Publish drill", value: publishDrillId, detail: `${ready}/${drillLanes.length} publish lanes are launch-ready.` },
+    { label: "Trust Center", value: trustCenterUpdateId, detail: "Recovery state, correction posture, and monitor window become visible only after reviewer closeout." },
+    { label: "Investor receipt", value: investorReceiptId, detail: "Investor-visible receipt stays separate from private source evidence." },
+    { label: "Readiness", value: `${readiness}/100`, detail: `${status}; monitor ${monitorWindowId}.` }
+  ];
+  const publishSequence = [
+    "Confirm affected surface, old wording, corrected wording, source receipt, and correction receipt.",
+    "Preview investor notice, Trust Center update, and support-safe script in one review pass.",
+    "Verify reviewer closeout, rollback hold, freeze/resume state, and recovery queue task state agree.",
+    "Choose publish, hold, rollback, or resume with approver role, reason, and monitor window.",
+    "Publish only after investor-visible receipt, Trust Center update, support script, and monitoring are stored.",
+    "Close the drill only when post-publish monitor and reviewer closeout agree with public surface state."
+  ];
+  const receiptFields = [
+    "public_publish_drill_id",
+    "trust_center_update_id",
+    "investor_visible_recovery_receipt_id",
+    "correction_notice_id",
+    "publication_attempt_id",
+    "public_wording_hash",
+    "support_script_id",
+    "reviewer_closeout_id",
+    "reviewer_signoff_id",
+    "rollback_hold_id",
+    "freeze_resume_id",
+    "affected_surface_ids",
+    "visible_status",
+    "publish_posture",
+    "monitor_window_id",
+    "support_safe_summary_id",
+    "no_private_data_attestation",
+    "approver_role",
+    "published_at",
+    "retention_policy"
+  ];
+  const noGoRules = [
+    "No public correction if old wording, corrected wording, reviewer state, and release scope are not visible together.",
+    "No Trust Center update if source receipt, correction receipt, rollback hold, or monitor window is missing.",
+    "No support script if it asks for PAN, folio, CAS, bank details, credentials, contact data, or private notes.",
+    "No resume if freeze state, recovery queue, reviewer closeout, and affected surface state disagree.",
+    "No publish if investor-visible receipt cannot be replayed without private backend evidence."
+  ];
+  return {
+    blocked,
+    blockers,
+    copyBlocks,
+    drillLanes,
+    investorReceiptId,
+    metrics,
+    monitorWindowId,
+    noGoRules,
+    publishDrillId,
+    publishSequence,
+    readiness,
+    receiptFields,
+    reviewerCloseoutId,
+    status,
+    supportScriptId,
+    tone,
+    trustCenterUpdateId
+  };
+}
+
 function sourceIncidentReceiptReplay(alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
   const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
   const activeRoute = alertRouting.routes.find((route) => route.severity === "High") || alertRouting.routes[0];
@@ -36492,9 +36667,10 @@ function renderBackendAuditReceipts(event) {
   const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
   const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
+  const publicPublishDrill = publicRecoveryPublishDrill(config, correctionPublish, recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, freezeAutomation);
   const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
   const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
-  els.backendAuditSummary.textContent = `${implementationHandoff.readiness}/100 | ${implementationHandoff.status}`;
+  els.backendAuditSummary.textContent = `${publicPublishDrill.readiness}/100 | ${publicPublishDrill.status}`;
   els.backendAuditOutput.innerHTML = `
     <div class="backend-audit-hero ${escapeHtml(config.tone)}">
       <div>
@@ -37533,6 +37709,80 @@ function renderBackendAuditReceipts(event) {
         </article>
       </div>
     </div>
+    <div class="public-publish-drill ${escapeHtml(publicPublishDrill.tone)}">
+      <div class="public-publish-head">
+        <div>
+          <span>Public recovery publish drill</span>
+          <h3>${escapeHtml(publicPublishDrill.status)}</h3>
+          <p>Drill ${escapeHtml(publicPublishDrill.publishDrillId)} rehearses the investor-visible recovery path: correction wording, Trust Center update, support-safe script, freeze or resume proof, reviewer closeout, monitoring, and launch blockers.</p>
+        </div>
+        <div class="public-publish-score" style="--score:${publicPublishDrill.readiness}">
+          <strong>${publicPublishDrill.readiness}</strong>
+          <span>Public</span>
+        </div>
+      </div>
+      <div class="public-publish-metric-grid">
+        ${publicPublishDrill.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="public-publish-copy-grid">
+        ${publicPublishDrill.copyBlocks.map((block) => `
+          <article class="${escapeHtml(block.tone)}">
+            <span>${escapeHtml(block.label)}</span>
+            <p>${escapeHtml(block.value)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="public-publish-lane-grid">
+        ${publicPublishDrill.drillLanes.map((lane) => `
+          <article class="${escapeHtml(lane.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(lane.owner)}</span>
+                <strong>${escapeHtml(lane.label)}</strong>
+              </div>
+              <b>${lane.score}</b>
+            </div>
+            <p>${escapeHtml(lane.text)}</p>
+            <div class="build-progress-bar"><span style="width:${lane.score}%"></span></div>
+            <small><strong>Event:</strong> ${escapeHtml(lane.event)}</small>
+            <small><strong>Proof:</strong> ${escapeHtml(lane.proof)}</small>
+            <button class="text-button public-publish-route" type="button" data-build-route="${escapeHtml(lane.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="public-publish-two">
+        <article>
+          <h3>Publish sequence</h3>
+          <ol>
+            ${publicPublishDrill.publishSequence.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${publicPublishDrill.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Public no-go rules</h3>
+          <ul>
+            ${publicPublishDrill.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${publicPublishDrill.blockers.length > 1 ? "caution" : "ready"}">
+          <h3>Publish blockers</h3>
+          <ul>
+            ${publicPublishDrill.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="source-incident-board ${escapeHtml(incidentReplay.tone)}">
       <div class="source-incident-head">
         <div>
@@ -37882,6 +38132,59 @@ function makeBackendImplementationHandoffPackBrief() {
   ].join("\n");
 }
 
+function makePublicRecoveryPublishDrillBrief() {
+  const config = backendAuditConfig();
+  const paymentReplay = paymentReconciliationReplay(config);
+  const sourceImportJobs = productionSourceImportJobs(config);
+  const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config);
+  const alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config);
+  const failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
+  const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
+  const publicPublishDrill = publicRecoveryPublishDrill(config, correctionPublish, recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, freezeAutomation);
+  return [
+    "# NiveshNadi Public Recovery Publish Drill",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Publish drill ID: ${publicPublishDrill.publishDrillId}`,
+    `Trust Center update ID: ${publicPublishDrill.trustCenterUpdateId}`,
+    `Investor receipt ID: ${publicPublishDrill.investorReceiptId}`,
+    `Reviewer closeout ID: ${publicPublishDrill.reviewerCloseoutId}`,
+    `Monitor window ID: ${publicPublishDrill.monitorWindowId}`,
+    `Status: ${publicPublishDrill.status}`,
+    `Readiness: ${publicPublishDrill.readiness}/100`,
+    "",
+    "## Metrics",
+    ...publicPublishDrill.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Public Copy Blocks",
+    ...publicPublishDrill.copyBlocks.map((block) => `- ${block.label}: ${block.value}`),
+    "",
+    "## Publish Lanes",
+    ...publicPublishDrill.drillLanes.map((lane) => `- ${lane.label}: ${lane.score}/100 | ${lane.owner} | ${lane.event} | Proof: ${lane.proof} | Route: ${lane.route} | ${lane.text}`),
+    "",
+    "## Publish Sequence",
+    ...publicPublishDrill.publishSequence.map((step) => `- ${step}`),
+    "",
+    "## Receipt Fields",
+    ...publicPublishDrill.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## No-Go Rules",
+    ...publicPublishDrill.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "## Publish Blockers",
+    ...publicPublishDrill.blockers.map((blocker) => `- ${blocker}`),
+    "",
+    "## Guardrail",
+    "Public recovery publish receipts are investor-visible operations metadata. They do not store PAN, folio, CAS, bank data, credentials, contact records, private notes, transaction instructions, distributor client books, or personalized advice content."
+  ].join("\n");
+}
+
 function makeBackendAuditReceiptBrief() {
   const config = backendAuditConfig();
   const paymentReplay = paymentReconciliationReplay(config);
@@ -37901,6 +38204,7 @@ function makeBackendAuditReceiptBrief() {
   const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
   const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
+  const publicPublishDrill = publicRecoveryPublishDrill(config, correctionPublish, recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, freezeAutomation);
   return [
     "# NiveshNadi Backend Audit Receipts",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -38118,6 +38422,22 @@ function makeBackendAuditReceiptBrief() {
     ...correctionPublish.receiptFields.map((field) => `- Correction publish receipt field: ${field}`),
     ...correctionPublish.approvalChecks.map((check) => `- Correction publish approval check: ${check}`),
     ...correctionPublish.blockers.map((blocker) => `- Correction publish blocker: ${blocker}`),
+    "",
+    "## Public Recovery Publish Drill",
+    `- Publish drill status: ${publicPublishDrill.status}`,
+    `- Publish drill readiness: ${publicPublishDrill.readiness}/100`,
+    `- Publish drill ID: ${publicPublishDrill.publishDrillId}`,
+    `- Trust Center update ID: ${publicPublishDrill.trustCenterUpdateId}`,
+    `- Investor receipt ID: ${publicPublishDrill.investorReceiptId}`,
+    `- Reviewer closeout ID: ${publicPublishDrill.reviewerCloseoutId}`,
+    `- Monitor window ID: ${publicPublishDrill.monitorWindowId}`,
+    ...publicPublishDrill.metrics.map((metric) => `- Public publish metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...publicPublishDrill.copyBlocks.map((block) => `- Public copy block: ${block.label}: ${block.value}`),
+    ...publicPublishDrill.drillLanes.map((lane) => `- Public publish lane: ${lane.label}: ${lane.score}/100 | ${lane.owner} | ${lane.event} | ${lane.proof} | ${lane.route}`),
+    ...publicPublishDrill.publishSequence.map((step) => `- Public publish sequence: ${step}`),
+    ...publicPublishDrill.receiptFields.map((field) => `- Public publish receipt field: ${field}`),
+    ...publicPublishDrill.noGoRules.map((rule) => `- Public publish no-go rule: ${rule}`),
+    ...publicPublishDrill.blockers.map((blocker) => `- Public publish blocker: ${blocker}`),
     "",
     "## Incident Receipt Replay",
     `- Replay status: ${incidentReplay.status}`,
@@ -47995,6 +48315,7 @@ function bindEvents() {
   els.copyScheduledWorkerContract?.addEventListener("click", () => copyText(makeScheduledWorkerReceiptContractBrief()));
   els.copyWorkerCloseoutDrill?.addEventListener("click", () => copyText(makeWorkerTicketCloseoutDrillBrief()));
   els.copyBackendImplementationHandoff?.addEventListener("click", () => copyText(makeBackendImplementationHandoffPackBrief()));
+  els.copyPublicRecoveryPublishDrill?.addEventListener("click", () => copyText(makePublicRecoveryPublishDrillBrief()));
   els.copyBackendAudit?.addEventListener("click", () => copyText(makeBackendAuditReceiptBrief()));
   els.sourceQueueForm?.addEventListener("submit", renderSourceQaQueue);
   [els.sourceQueueMode, els.sourceQueuePriority, els.sourceQueueOwner].forEach((input) => {
@@ -49779,6 +50100,7 @@ function cacheElements() {
     copyScheduledWorkerContract: qs("#copyScheduledWorkerContract"),
     copyWorkerCloseoutDrill: qs("#copyWorkerCloseoutDrill"),
     copyBackendImplementationHandoff: qs("#copyBackendImplementationHandoff"),
+    copyPublicRecoveryPublishDrill: qs("#copyPublicRecoveryPublishDrill"),
     copyBackendAudit: qs("#copyBackendAudit"),
     sourceQueueForm: qs("#sourceQueueForm"),
     sourceQueueMode: qs("#sourceQueueMode"),

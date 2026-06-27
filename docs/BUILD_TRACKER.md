@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V293 Worker Ticket Closeout Drill
+
+V293 adds Worker Ticket Closeout Drill inside Backend Audit Receipts. It rehearses whether each scheduled worker ticket can close with acceptance evidence, failed-run replay, alert delivery proof, reviewer sign-off, rollback evidence, recovery queue state, launch no-go rules, and closeout receipt fields before the backend lane moves into implementation handoff.
+
 ## V292 Scheduled Worker Receipt Contract
 
 V292 adds Scheduled Worker Receipt Contract inside Backend Audit Receipts. It turns the v291 backend source receipt job into implementation-ready worker tickets for scheduler binding, fetch receipt, parser quarantine, receipt persistence, alert fan-out, and release recovery, with ticket IDs, owners, event names, proof fields, acceptance rules, and launch blockers.

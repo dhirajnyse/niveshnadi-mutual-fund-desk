@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v292-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v292 Scheduled Worker Receipt Contract";
+const DATA_VERSION = "20260627-v293-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v293 Worker Ticket Closeout Drill";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,16 +1240,16 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Scheduled worker receipt contract",
+    label: "Worker ticket closeout drill",
     status: "Shipping now",
     route: "#backend-audit-receipts",
-    detail: "Turn the backend source receipt job into implementation-ready worker tickets for scheduler, fetch, parser, quarantine, receipt persistence, alert fan-out, and release recovery."
+    detail: "Rehearse closing scheduled worker tickets with acceptance evidence, failed-run replay, alert delivery proof, reviewer sign-off, recovery queue state, and launch no-go blockers."
   },
   {
-    label: "Worker ticket closeout drill",
+    label: "Backend implementation handoff pack",
     status: "Next",
-    route: "#backend-audit-receipts",
-    detail: "Rehearse closing the worker tickets with acceptance evidence, failed-run replay, alert delivery proof, reviewer sign-off, and recovery queue state."
+    route: "#backend-ticket-factory",
+    detail: "Convert closeout-ready worker tickets into engineering handoff packets with owners, acceptance tests, release dependencies, and blocked-data boundaries."
   },
   {
     label: "Public recovery publish drill",
@@ -9260,7 +9260,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v292</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v293</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -34545,6 +34545,139 @@ function scheduledWorkerReceiptContract(config = backendAuditConfig(), sourceImp
   };
 }
 
+function workerTicketCloseoutDrill(config = backendAuditConfig(), sourceImportJobs = productionSourceImportJobs(config), sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config), alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config), alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config), failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config), reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config), rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config), publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config), recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config), sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence), workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore)) {
+  const activeJob = sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const closeoutId = ["NN", "WORKER", "CLOSEOUT", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const evidencePackId = ["NN", "WORKER", "EVIDENCE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const launchNoGoId = ["NN", "WORKER", "NOGO", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const storageReady = config.storage === "event" || config.storage === "append";
+  const replayReady = failedRunStore.readiness >= 64;
+  const deliveryReady = alertDelivery.readiness >= 64;
+  const reviewerReady = reviewerSignoff.readiness >= 64;
+  const recoveryReady = recoveryQueue.readiness >= 64;
+  const proofWeights = {
+    "Scheduler binding": { acceptance: 0.34, replay: 0.22, delivery: 0.08, reviewer: 0.1, recovery: 0.08, storage: 0.18 },
+    "Fetch receipt": { acceptance: 0.3, replay: 0.24, delivery: 0.08, reviewer: 0.12, recovery: 0.08, storage: 0.18 },
+    "Parser quarantine": { acceptance: 0.28, replay: 0.3, delivery: 0.06, reviewer: 0.1, recovery: 0.08, storage: 0.18 },
+    "Receipt persistence": { acceptance: 0.24, replay: 0.22, delivery: 0.08, reviewer: 0.1, recovery: 0.08, storage: 0.28 },
+    "Alert fan-out": { acceptance: 0.22, replay: 0.12, delivery: 0.34, reviewer: 0.12, recovery: 0.08, storage: 0.12 },
+    "Release recovery": { acceptance: 0.2, replay: 0.16, delivery: 0.1, reviewer: 0.24, recovery: 0.2, storage: 0.1 }
+  };
+  const closeouts = workerContract.tickets.map((ticket, index) => {
+    const weights = proofWeights[ticket.label] || proofWeights["Scheduler binding"];
+    const evidenceScore = clampNumber(Math.round(
+      ticket.score * weights.acceptance +
+        failedRunStore.readiness * weights.replay +
+        alertDelivery.readiness * weights.delivery +
+        reviewerSignoff.readiness * weights.reviewer +
+        recoveryQueue.readiness * weights.recovery +
+        (storageReady ? 88 : 24) * weights.storage
+    ), 14, 96);
+    const blockers = [
+      ...(ticket.score < 58 ? [ticket.blocker] : []),
+      ...(storageReady ? [] : ["append-only or event-stream storage is required before closeout"]),
+      ...(replayReady ? [] : ["failed-run replay must rebuild the ticket state"]),
+      ...(ticket.label === "Alert fan-out" && !deliveryReady ? ["alert delivery attempt and dead-letter proof must close first"] : []),
+      ...(ticket.label === "Release recovery" && !reviewerReady ? ["reviewer sign-off must close before release recovery"] : []),
+      ...(ticket.label === "Release recovery" && !recoveryReady ? ["recovery queue state must agree with affected public surfaces"] : [])
+    ];
+    const status = evidenceScore >= 84 && blockers.length === 0
+      ? "Closeout ready"
+      : evidenceScore >= 66 && storageReady
+        ? "Closeout rehearsal"
+        : "Closeout blocked";
+    return {
+      blockers: blockers.length ? blockers : ["No active closeout blocker in this preview. Keep real CI, durable receipts, reviewer identity, and alert delivery before production."],
+      closeoutReceiptId: ["NN", "WORKER", "CLOSEOUT", String(index + 1).padStart(2, "0"), sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      evidenceScore,
+      event: ticket.event.replace("source_worker.", "source_worker.closeout_"),
+      owner: ticket.owner,
+      proof: ticket.proof,
+      releaseCheck: ticket.label === "Release recovery"
+        ? "Affected public surfaces stay frozen until recovery queue, rollback evidence, and reviewer closeout agree."
+        : ticket.label === "Alert fan-out"
+          ? "Alert delivery, acknowledgement, reviewer queue, and dead-letter receipt agree."
+          : "Acceptance proof, failed-run replay, idempotency, and storage receipt agree.",
+      status,
+      ticket,
+      tone: status === "Closeout ready" ? "ready" : status === "Closeout blocked" ? "caution" : "watch"
+    };
+  });
+  const ready = closeouts.filter((item) => item.status === "Closeout ready").length;
+  const rehearsal = closeouts.filter((item) => item.status === "Closeout rehearsal").length;
+  const blocked = closeouts.filter((item) => item.status === "Closeout blocked").length;
+  const readiness = clampNumber(Math.round(
+    workerContract.readiness * 0.22 +
+      sourceReceiptJob.readiness * 0.12 +
+      failedRunStore.readiness * 0.18 +
+      alertDelivery.readiness * 0.14 +
+      reviewerSignoff.readiness * 0.14 +
+      rollbackEvidence.readiness * 0.1 +
+      recoveryQueue.readiness * 0.1
+  ) - blocked * 3, 14, 96);
+  const blockers = [...new Set([
+    ...workerContract.blockers.filter((blocker) => !blocker.startsWith("No active scheduled")).slice(0, 4),
+    ...closeouts.flatMap((item) => item.blockers).filter((blocker) => !blocker.startsWith("No active closeout")).slice(0, 6),
+    ...(storageReady ? [] : ["worker closeout cannot rely on browser-local storage"]),
+    ...(blocked ? ["one or more worker tickets cannot close with current evidence"] : [])
+  ])];
+  const status = readiness >= 84 && !blockers.length
+    ? "Worker closeout ready"
+    : readiness >= 66 && storageReady
+      ? "Worker closeout rehearsal"
+      : "Worker closeout blocked";
+  const tone = status === "Worker closeout ready" ? "ready" : status === "Worker closeout blocked" ? "caution" : "watch";
+  const metrics = [
+    { label: "Closeout drill", value: closeoutId, detail: `${ready} ready, ${rehearsal} rehearsal, ${blocked} blocked worker ticket closeouts.` },
+    { label: "Evidence pack", value: evidencePackId, detail: "Every ticket needs acceptance, replay, delivery, reviewer, recovery, and storage proof." },
+    { label: "Launch no-go", value: launchNoGoId, detail: blockers.length ? `${blockers.length} no-go signal${blockers.length === 1 ? "" : "s"} active.` : "No active no-go signal in this preview." },
+    { label: "Readiness", value: `${readiness}/100`, detail: `${status}; ${workerContract.ticketBatchId}.` }
+  ];
+  const receiptFields = [
+    "worker_closeout_id",
+    "worker_ticket_id",
+    "closeout_receipt_id",
+    "acceptance_pack_id",
+    "acceptance_status",
+    "acceptance_evidence_hash",
+    "failed_run_replay_id",
+    "delivery_attempt_id",
+    "reviewer_signoff_id",
+    "rollback_evidence_id",
+    "recovery_queue_id",
+    "affected_surface_ids",
+    "launch_no_go_id",
+    "closed_by_role",
+    "closed_at",
+    "retention_policy"
+  ];
+  const noGoRules = [
+    "No closeout if acceptance proof is a screenshot, manual note, or browser-local state only.",
+    "No closeout if failed-run replay cannot rebuild fetch, parser, receipt, alert, reviewer, and recovery state.",
+    "No closeout if alert delivery, acknowledgement, reviewer queue, or dead-letter proof is missing.",
+    "No closeout if reviewer sign-off, rollback evidence, correction posture, and affected public surfaces disagree.",
+    "No closeout if any private investor identifier enters the worker receipt trail."
+  ];
+
+  return {
+    blocked,
+    blockers: blockers.length ? blockers : ["No active worker closeout blocker in this preview. Keep real CI, append-only storage, alert delivery, reviewer identity, and recovery queue proof before launch."],
+    closeoutId,
+    closeouts,
+    evidencePackId,
+    launchNoGoId,
+    metrics,
+    noGoRules,
+    readiness,
+    ready,
+    receiptFields,
+    rehearsal,
+    status,
+    tone
+  };
+}
+
 function sourceWorkerAlertRouting(sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
   const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
   const activeBlockers = sourceWorker.blockers.filter((blocker) => !blocker.startsWith("No active worker blocker"));
@@ -36177,12 +36310,13 @@ function renderBackendAuditReceipts(event) {
   const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
   const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const workerCloseout = workerTicketCloseoutDrill(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract);
   const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
   const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
   const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
   const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
-  els.backendAuditSummary.textContent = `${workerContract.readiness}/100 | ${workerContract.status}`;
+  els.backendAuditSummary.textContent = `${workerCloseout.readiness}/100 | ${workerCloseout.status}`;
   els.backendAuditOutput.innerHTML = `
     <div class="backend-audit-hero ${escapeHtml(config.tone)}">
       <div>
@@ -36317,6 +36451,66 @@ function renderBackendAuditReceipts(event) {
           <h3>Worker blockers</h3>
           <ul>
             ${workerContract.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="worker-closeout-drill ${escapeHtml(workerCloseout.tone)}">
+      <div class="worker-closeout-head">
+        <div>
+          <span>Worker ticket closeout drill</span>
+          <h3>${escapeHtml(workerCloseout.status)}</h3>
+          <p>Closeout ${escapeHtml(workerCloseout.closeoutId)} rehearses whether scheduled worker tickets can close with acceptance evidence, failed-run replay, alert delivery proof, reviewer sign-off, rollback evidence, and recovery queue state.</p>
+        </div>
+        <div class="worker-closeout-score" style="--score:${workerCloseout.readiness}">
+          <strong>${workerCloseout.readiness}</strong>
+          <span>Close</span>
+        </div>
+      </div>
+      <div class="worker-closeout-metric-grid">
+        ${workerCloseout.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="worker-closeout-ticket-grid">
+        ${workerCloseout.closeouts.map((item) => `
+          <article class="${escapeHtml(item.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(item.owner)}</span>
+                <strong>${escapeHtml(item.ticket.label)}</strong>
+              </div>
+              <b>${item.evidenceScore}</b>
+            </div>
+            <p>${escapeHtml(item.closeoutReceiptId)}</p>
+            <div class="build-progress-bar"><span style="width:${item.evidenceScore}%"></span></div>
+            <small><strong>Status:</strong> ${escapeHtml(item.status)}</small>
+            <small><strong>Event:</strong> ${escapeHtml(item.event)}</small>
+            <small><strong>Release:</strong> ${escapeHtml(item.releaseCheck)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="worker-closeout-two">
+        <article>
+          <h3>Closeout receipt fields</h3>
+          <ul>
+            ${workerCloseout.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Launch no-go rules</h3>
+          <ol>
+            ${workerCloseout.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${workerCloseout.blockers.some((item) => item.startsWith("No active worker closeout")) ? "ready" : "caution"}">
+          <h3>Closeout blockers</h3>
+          <ul>
+            ${workerCloseout.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
           </ul>
         </article>
       </div>
@@ -37326,6 +37520,52 @@ function makeScheduledWorkerReceiptContractBrief() {
   ].join("\n");
 }
 
+function makeWorkerTicketCloseoutDrillBrief() {
+  const config = backendAuditConfig();
+  const sourceImportJobs = productionSourceImportJobs(config);
+  const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config);
+  const alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config);
+  const failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence);
+  const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
+  const workerCloseout = workerTicketCloseoutDrill(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract);
+  return [
+    "# NiveshNadi Worker Ticket Closeout Drill",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Closeout ID: ${workerCloseout.closeoutId}`,
+    `Evidence pack ID: ${workerCloseout.evidencePackId}`,
+    `Launch no-go ID: ${workerCloseout.launchNoGoId}`,
+    `Status: ${workerCloseout.status}`,
+    `Readiness: ${workerCloseout.readiness}/100`,
+    `Ticket batch: ${workerContract.ticketBatchId}`,
+    `Worker contract: ${workerContract.contractId}`,
+    `Source receipt job: ${sourceReceiptJob.jobContractId}`,
+    "",
+    "## Closeout Metrics",
+    ...workerCloseout.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Ticket Closeouts",
+    ...workerCloseout.closeouts.map((item) => `- ${item.closeoutReceiptId}: ${item.ticket.label} | ${item.status} | ${item.evidenceScore}/100 | ${item.event} | ${item.releaseCheck}`),
+    "",
+    "## Closeout Receipt Fields",
+    ...workerCloseout.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## Launch No-Go Rules",
+    ...workerCloseout.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "## Closeout Blockers",
+    ...workerCloseout.blockers.map((blocker) => `- ${blocker}`),
+    "",
+    "## Guardrail",
+    "Worker closeout receipts are backend operations metadata. They do not store PAN, folio, CAS, bank data, credentials, contact records, private notes, transaction instructions, distributor client books, or personalized advice content."
+  ].join("\n");
+}
+
 function makeBackendAuditReceiptBrief() {
   const config = backendAuditConfig();
   const paymentReplay = paymentReconciliationReplay(config);
@@ -37340,6 +37580,7 @@ function makeBackendAuditReceiptBrief() {
   const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
   const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const workerCloseout = workerTicketCloseoutDrill(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract);
   const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
   const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
@@ -37377,6 +37618,18 @@ function makeBackendAuditReceiptBrief() {
     ...workerContract.receiptFields.map((field) => `- Worker receipt field: ${field}`),
     ...workerContract.acceptanceRules.map((rule) => `- Worker acceptance rule: ${rule}`),
     ...workerContract.blockers.map((blocker) => `- Worker blocker: ${blocker}`),
+    "",
+    "## Worker Ticket Closeout Drill",
+    `- Closeout status: ${workerCloseout.status}`,
+    `- Closeout readiness: ${workerCloseout.readiness}/100`,
+    `- Closeout ID: ${workerCloseout.closeoutId}`,
+    `- Evidence pack ID: ${workerCloseout.evidencePackId}`,
+    `- Launch no-go ID: ${workerCloseout.launchNoGoId}`,
+    ...workerCloseout.metrics.map((metric) => `- Closeout metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...workerCloseout.closeouts.map((item) => `- Ticket closeout: ${item.closeoutReceiptId}: ${item.ticket.label} | ${item.status} | ${item.evidenceScore}/100 | ${item.event} | ${item.releaseCheck}`),
+    ...workerCloseout.receiptFields.map((field) => `- Closeout receipt field: ${field}`),
+    ...workerCloseout.noGoRules.map((rule) => `- Closeout no-go rule: ${rule}`),
+    ...workerCloseout.blockers.map((blocker) => `- Closeout blocker: ${blocker}`),
     "",
     "## Event Contract",
     ...config.stream.eventTypes.map((item) => `- ${item}`),
@@ -47408,6 +47661,7 @@ function bindEvents() {
   els.openBackendAuditRoute?.addEventListener("click", openBackendAuditRoute);
   els.copyBackendSourceReceiptJob?.addEventListener("click", () => copyText(makeBackendSourceReceiptJobBrief()));
   els.copyScheduledWorkerContract?.addEventListener("click", () => copyText(makeScheduledWorkerReceiptContractBrief()));
+  els.copyWorkerCloseoutDrill?.addEventListener("click", () => copyText(makeWorkerTicketCloseoutDrillBrief()));
   els.copyBackendAudit?.addEventListener("click", () => copyText(makeBackendAuditReceiptBrief()));
   els.sourceQueueForm?.addEventListener("submit", renderSourceQaQueue);
   [els.sourceQueueMode, els.sourceQueuePriority, els.sourceQueueOwner].forEach((input) => {
@@ -49190,6 +49444,7 @@ function cacheElements() {
     openBackendAuditRoute: qs("#openBackendAuditRoute"),
     copyBackendSourceReceiptJob: qs("#copyBackendSourceReceiptJob"),
     copyScheduledWorkerContract: qs("#copyScheduledWorkerContract"),
+    copyWorkerCloseoutDrill: qs("#copyWorkerCloseoutDrill"),
     copyBackendAudit: qs("#copyBackendAudit"),
     sourceQueueForm: qs("#sourceQueueForm"),
     sourceQueueMode: qs("#sourceQueueMode"),

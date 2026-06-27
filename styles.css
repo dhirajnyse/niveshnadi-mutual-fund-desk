@@ -23158,6 +23158,9 @@ body.simple-mode .quiet-fund-shelf {
 .scheduled-worker-contract p,
 .scheduled-worker-contract li,
 .scheduled-worker-contract small,
+.worker-closeout-drill p,
+.worker-closeout-drill li,
+.worker-closeout-drill small,
 .source-failed-board p,
 .source-failed-board li,
 .source-failed-board small,
@@ -23238,6 +23241,9 @@ body.simple-mode .quiet-fund-shelf {
 .scheduled-worker-metric-grid,
 .scheduled-worker-ticket-grid,
 .scheduled-worker-two,
+.worker-closeout-metric-grid,
+.worker-closeout-ticket-grid,
+.worker-closeout-two,
 .source-job-metric-grid,
 .source-job-active-grid,
 .source-job-grid,
@@ -23282,6 +23288,7 @@ body.simple-mode .quiet-fund-shelf {
 .launch-freeze-metric-grid,
 .backend-source-job-metric-grid,
 .scheduled-worker-metric-grid,
+.worker-closeout-metric-grid,
 .source-job-metric-grid,
 .source-job-active-grid,
 .source-worker-metric-grid,
@@ -23314,6 +23321,7 @@ body.simple-mode .quiet-fund-shelf {
 .launch-freeze-trigger-grid,
 .backend-source-job-lane-grid,
 .scheduled-worker-ticket-grid,
+.worker-closeout-ticket-grid,
 .source-delivery-channel-grid,
 .source-delivery-flow-grid,
 .source-failed-event-grid,
@@ -23328,6 +23336,7 @@ body.simple-mode .quiet-fund-shelf {
 .launch-freeze-two,
 .backend-source-job-two,
 .scheduled-worker-two,
+.worker-closeout-two,
 .source-delivery-two,
 .source-failed-two,
 .source-signoff-two,
@@ -23359,6 +23368,9 @@ body.simple-mode .quiet-fund-shelf {
 .scheduled-worker-metric-grid article,
 .scheduled-worker-ticket-grid article,
 .scheduled-worker-two article,
+.worker-closeout-metric-grid article,
+.worker-closeout-ticket-grid article,
+.worker-closeout-two article,
 .source-job-metric-grid article,
 .source-job-active-grid article,
 .source-job-grid article,
@@ -23407,6 +23419,8 @@ body.simple-mode .quiet-fund-shelf {
 .backend-source-job-two article.ready,
 .scheduled-worker-ticket-grid article.ready,
 .scheduled-worker-two article.ready,
+.worker-closeout-ticket-grid article.ready,
+.worker-closeout-two article.ready,
 .source-job-grid article.ready,
 .source-job-two article.ready,
 .source-worker-alert-grid article.ready,
@@ -23440,6 +23454,8 @@ body.simple-mode .quiet-fund-shelf {
 .backend-source-job-two article.watch,
 .scheduled-worker-ticket-grid article.watch,
 .scheduled-worker-two article.watch,
+.worker-closeout-ticket-grid article.watch,
+.worker-closeout-two article.watch,
 .source-job-grid article.watch,
 .source-job-two article.watch,
 .source-worker-alert-grid article.watch,
@@ -23473,6 +23489,8 @@ body.simple-mode .quiet-fund-shelf {
 .backend-source-job-two article.caution,
 .scheduled-worker-ticket-grid article.caution,
 .scheduled-worker-two article.caution,
+.worker-closeout-ticket-grid article.caution,
+.worker-closeout-two article.caution,
 .source-job-grid article.caution,
 .source-job-two article.caution,
 .source-worker-alert-grid article.caution,
@@ -23509,6 +23527,9 @@ body.simple-mode .quiet-fund-shelf {
 .scheduled-worker-head span,
 .scheduled-worker-metric-grid span,
 .scheduled-worker-ticket-grid span,
+.worker-closeout-head span,
+.worker-closeout-metric-grid span,
+.worker-closeout-ticket-grid span,
 .source-job-head span,
 .source-job-metric-grid span,
 .source-job-active-grid span,
@@ -23556,6 +23577,8 @@ body.simple-mode .quiet-fund-shelf {
 .backend-source-job-lane-grid strong,
 .scheduled-worker-metric-grid strong,
 .scheduled-worker-ticket-grid strong,
+.worker-closeout-metric-grid strong,
+.worker-closeout-ticket-grid strong,
 .source-job-metric-grid strong,
 .source-job-active-grid strong,
 .source-job-two strong,
@@ -23591,6 +23614,7 @@ body.simple-mode .quiet-fund-shelf {
 .launch-freeze-two h3,
 .backend-source-job-two h3,
 .scheduled-worker-two h3,
+.worker-closeout-two h3,
 .source-job-two h3,
 .source-worker-runbook-grid h3,
 .source-alert-two h3,
@@ -23829,6 +23853,120 @@ body.simple-mode .quiet-fund-shelf {
 
 .scheduled-worker-two ul,
 .scheduled-worker-two ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.worker-closeout-drill {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(31, 78, 121, 0.28);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(245, 249, 252, 0.98), rgba(255, 247, 229, 0.9));
+}
+
+.worker-closeout-drill.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.96), rgba(245, 249, 252, 0.96));
+}
+
+.worker-closeout-drill.watch {
+  border-color: rgba(225, 160, 55, 0.42);
+}
+
+.worker-closeout-drill.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.worker-closeout-drill p,
+.worker-closeout-drill li,
+.worker-closeout-drill small {
+  overflow-wrap: anywhere;
+}
+
+.worker-closeout-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 12px;
+  align-items: center;
+}
+
+.worker-closeout-head h3 {
+  margin: 3px 0 5px;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.14;
+}
+
+.worker-closeout-head p {
+  margin: 0;
+}
+
+.worker-closeout-score {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--rose) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.worker-closeout-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.worker-closeout-score strong,
+.worker-closeout-score span {
+  position: relative;
+}
+
+.worker-closeout-score strong {
+  color: #ffffff;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.worker-closeout-score span {
+  color: #dce7ed;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.worker-closeout-ticket-grid,
+.worker-closeout-two,
+.worker-closeout-ticket-grid article,
+.worker-closeout-two article {
+  min-width: 0;
+}
+
+.worker-closeout-ticket-grid small {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.worker-closeout-ticket-grid small strong {
+  color: var(--ink);
+}
+
+.worker-closeout-two {
+  grid-template-columns: 1.15fr 1fr 1fr;
+}
+
+.worker-closeout-two ul,
+.worker-closeout-two ol {
   margin: 8px 0 0;
   padding-left: 18px;
 }
@@ -34091,6 +34229,9 @@ body.simple-mode .quiet-fund-shelf {
   .scheduled-worker-metric-grid,
   .scheduled-worker-ticket-grid,
   .scheduled-worker-two,
+  .worker-closeout-metric-grid,
+  .worker-closeout-ticket-grid,
+  .worker-closeout-two,
   .source-job-metric-grid,
   .source-job-active-grid,
   .source-job-grid,
@@ -34871,6 +35012,9 @@ body.simple-mode .quiet-fund-shelf {
   .scheduled-worker-metric-grid,
   .scheduled-worker-ticket-grid,
   .scheduled-worker-two,
+  .worker-closeout-metric-grid,
+  .worker-closeout-ticket-grid,
+  .worker-closeout-two,
   .source-job-metric-grid,
   .source-job-active-grid,
   .source-job-grid,
@@ -35185,6 +35329,7 @@ body.simple-mode .quiet-fund-shelf {
   .launch-freeze-head,
   .backend-source-job-head,
   .scheduled-worker-head,
+  .worker-closeout-head,
   .source-job-head,
   .source-worker-head,
   .source-alert-head,
@@ -35254,6 +35399,7 @@ body.simple-mode .quiet-fund-shelf {
   .launch-freeze-score,
   .backend-source-job-score,
   .scheduled-worker-score,
+  .worker-closeout-score,
   .source-job-score,
   .source-worker-score,
   .source-alert-score,

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v313-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v313 Account Lifecycle Retention Enforcement Dashboard";
+const DATA_VERSION = "20260628-v314-16";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v314 Build Progress Link";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1173,7 +1173,7 @@ const BUILD_TRACKER_PHASES = [
     launch: 100,
     status: "Done",
     route: "#build-tracker",
-    done: ["NiveshNadi brand system", "static GitHub Pages app", "security headers and release checks", "Build Phases Room"],
+    done: ["NiveshNadi brand system", "static GitHub Pages app", "security headers and release checks", "Build Phases Room", "Build Progress Link"],
     next: "Keep release packaging clean and keep the executive tracker compact."
   },
   {
@@ -1240,8 +1240,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account lifecycle retention enforcement dashboard",
+    label: "Build progress hyperlink and 100% path",
     status: "Shipping now",
+    route: "#build-progress-roadmap",
+    detail: "Expose overall build progress, where the desk has reached, and the closeout path to production-ready 100% from the Build tab."
+  },
+  {
+    label: "Account lifecycle retention enforcement dashboard",
+    status: "Done",
     route: "#account-launch-route",
     detail: "Connect post-deploy drill receipts to incident command storage, retention-policy enforcement, support readiness reporting, monitor closeout jobs, and command archive checks."
   },
@@ -9043,6 +9049,54 @@ function buildTrackerConfig() {
     item
   })));
   const nextMoves = BUILD_TRACKER_CURRENT_SPRINT;
+  const phaseOnePhases = BUILD_TRACKER_PHASES.filter((phase) => phase.phase !== "Phase 2");
+  const phaseOneProgress = Math.round(
+    phaseOnePhases.reduce((sum, phase) => sum + phase.progress, 0) / phaseOnePhases.length
+  );
+  const phaseOneLaunch = Math.round(
+    phaseOnePhases.reduce((sum, phase) => sum + phase.launch, 0) / phaseOnePhases.length
+  );
+  const currentMove = nextMoves[0];
+  const releaseVersion = Number((RELEASE_LABEL.match(/v(\d+)/i) || [])[1] || 0);
+  const productionPath = [
+    {
+      label: "Retention job fixtures",
+      status: "Next closeout",
+      route: "#backend-audit-receipts",
+      detail: "Turn the retention dashboard into backend fixture evidence, scheduled job proof, and command archive audits."
+    },
+    {
+      label: "Support SLA proof",
+      status: "Next closeout",
+      route: "#account-launch-route",
+      detail: "Close support readiness fields, incident owner rules, repair joins, and live beta response timing."
+    },
+    {
+      label: "Live source worker proof",
+      status: "Critical gate",
+      route: "#source-receipts",
+      detail: "Persist scheduled source receipts, failed-run replay, reviewer sign-off, rollback evidence, and affected-surface proof."
+    },
+    {
+      label: "Payment, legal, security signoff",
+      status: "Final gate",
+      route: "#launch-readiness",
+      detail: "Close real gateway checks, legal disclosure review, auth threat model, no-advice copy, and production release signoff."
+    }
+  ];
+  const productionTarget = releaseVersion
+    ? `v${releaseVersion + 1}-v${releaseVersion + productionPath.length} closeout path`
+    : "next four closeout releases";
+  const progressSummary = {
+    currentMove,
+    launchReadiness,
+    overall: buildProgress,
+    path: productionPath,
+    phaseOneLaunch,
+    phaseOneProgress,
+    reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
+    targetWindow: `${productionTarget}; 100% only after all production gates read complete.`
+  };
   const launchGates = [
     {
       label: "Live data",
@@ -9106,6 +9160,7 @@ function buildTrackerConfig() {
     nextMoves,
     pace,
     phases: BUILD_TRACKER_PHASES,
+    progressSummary,
     publisherHandoff,
     statusCounts
   };
@@ -9229,6 +9284,59 @@ function buildMoveGridMarkup(tracker) {
   `;
 }
 
+function buildProgressRoadmapMarkup(tracker) {
+  const summary = tracker.progressSummary;
+  return `
+    <span class="build-progress-anchor" id="build-progress-roadmap" tabindex="-1" aria-hidden="true"></span>
+    <section class="build-progress-roadmap" aria-labelledby="build-progress-roadmap-title">
+      <div class="build-progress-roadmap-head">
+        <div>
+          <span>Progress link target</span>
+          <strong id="build-progress-roadmap-title">Overall progress and 100% path</strong>
+          <p>${escapeHtml(summary.reached)}. ${escapeHtml(summary.targetWindow)}</p>
+        </div>
+        <a class="text-button build-progress-route" href="#launch-readiness">Open launch board</a>
+      </div>
+      <div class="build-progress-roadmap-grid">
+        <article>
+          <span>Overall progress</span>
+          <strong>${summary.overall}/100</strong>
+          <div class="build-progress-bar"><span style="width:${summary.overall}%"></span></div>
+          <p>All tracked lanes, including the Phase 2 distributor boundary.</p>
+        </article>
+        <article>
+          <span>Where we reached</span>
+          <strong>${escapeHtml(summary.currentMove.label)}</strong>
+          <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; the v314 link now makes progress visible from Build.</p>
+        </article>
+        <article>
+          <span>Launch readiness</span>
+          <strong>${summary.launchReadiness}/100</strong>
+          <div class="build-progress-bar launch"><span style="width:${summary.launchReadiness}%"></span></div>
+          <p>Launch stays lower until live data, account, payment, legal, security, and support gates close.</p>
+        </article>
+        <article>
+          <span>When 100%</span>
+          <strong>${escapeHtml(summary.targetWindow)}</strong>
+          <div class="build-progress-bar launch"><span style="width:${summary.phaseOneLaunch}%"></span></div>
+          <p>Production-ready 100% is gate-based, not a date promise.</p>
+        </article>
+      </div>
+      <div class="build-progress-path">
+        ${summary.path.map((gate, index) => `
+          <article>
+            <span>${String(index + 1).padStart(2, "0")} ${escapeHtml(gate.status)}</span>
+            <strong>${escapeHtml(gate.label)}</strong>
+            <p>${escapeHtml(gate.detail)}</p>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(gate.route)}">Open gate</button>
+          </article>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
 function publisherHandoffMarkup(kit) {
   return `
     <div class="publisher-handoff-card">
@@ -9297,6 +9405,14 @@ function renderBuildTracker() {
   if (els.buildTrackerSummary) {
     els.buildTrackerSummary.textContent = `Build ${tracker.buildProgress}/100 | Launch ${tracker.launchReadiness}/100`;
   }
+  if (els.buildProgressLink) {
+    els.buildProgressLink.textContent = `Overall progress ${tracker.buildProgress}/100`;
+    els.buildProgressLink.title = `${tracker.progressSummary.reached}. ${tracker.progressSummary.targetWindow}`;
+    els.buildProgressLink.setAttribute(
+      "aria-label",
+      `Open overall progress. Build ${tracker.buildProgress} of 100. Launch readiness ${tracker.launchReadiness} of 100.`
+    );
+  }
   els.buildTrackerOutput.innerHTML = `
     <div class="build-tracker-hero">
       <div>
@@ -9309,6 +9425,7 @@ function renderBuildTracker() {
         <span>Build</span>
       </div>
     </div>
+    ${buildProgressRoadmapMarkup(tracker)}
     <div class="build-sprint-strip">
       ${tracker.nextMoves.map((move, index) => `
         <article class="${index === 0 ? "current" : move.status.toLowerCase().replaceAll(" ", "-")}">
@@ -9320,7 +9437,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v313</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v314</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -9386,7 +9503,13 @@ function makeBuildTrackerBrief() {
     `Current phase: ${tracker.current.phase} - ${tracker.current.label}`,
     `Active lanes: ${tracker.active.length}`,
     `Next lane: ${tracker.nextLane.phase} - ${tracker.nextLane.label}`,
+    `Where reached: ${tracker.progressSummary.reached}`,
+    `100% path: ${tracker.progressSummary.targetWindow}`,
     `Build Phases Room: #build-phases`,
+    "",
+    "## Overall Progress Link",
+    `- Open #build-progress-roadmap from the Build tab for overall progress, current reached point, and the path to 100%.`,
+    ...tracker.progressSummary.path.map((gate) => `- ${gate.label}: ${gate.status} | ${gate.detail}`),
     "",
     "## Current Sprint",
     ...tracker.nextMoves.map((move) => `- ${move.label}: ${move.detail}`),
@@ -9451,6 +9574,30 @@ function makeBuildPhasesBrief() {
     "",
     "Project roadmap only. Completion percentages are build estimates, not launch readiness certifications."
   ].join("\n");
+}
+
+function openBuildProgressRoadmap(event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  const target = qs("#build-progress-roadmap");
+  if (!target) return;
+  const header = qs(".app-header");
+  const headerStyle = header ? window.getComputedStyle(header) : null;
+  const headerOffset = header && (headerStyle.position === "sticky" || headerStyle.position === "fixed")
+    ? Math.ceil(header.getBoundingClientRect().bottom) + 12
+    : 14;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - headerOffset);
+  state.hashSettleUntil = Date.now() + HASH_SETTLE_WINDOW;
+  syncWorkspaceFocusClass("#build-tracker");
+  renderWorkspaceJumpForMode("#build-tracker");
+  updateWorkspaceNavigator("#build-tracker");
+  window.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
+  if (window.location.hash !== "#build-progress-roadmap") {
+    window.history.pushState(null, "", "#build-progress-roadmap");
+  }
 }
 
 function openBuildNextLane() {
@@ -33061,6 +33208,19 @@ function scrollToElement(element, behavior = "smooth") {
   window.scrollTo({ top, behavior: reduceMotion ? "auto" : behavior });
 }
 
+function landBuildProgressRoadmap(behavior = "auto") {
+  const title = qs("#build-progress-roadmap-title");
+  if (!title) return;
+  const header = qs(".app-header");
+  const headerStyle = header ? window.getComputedStyle(header) : null;
+  const headerBottom = header && (headerStyle.position === "sticky" || headerStyle.position === "fixed")
+    ? Math.ceil(header.getBoundingClientRect().bottom) + 12
+    : 20;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const top = Math.max(0, window.scrollY + title.getBoundingClientRect().top - headerBottom);
+  window.scrollTo({ top, behavior: reduceMotion ? "auto" : behavior });
+}
+
 function isElementLanded(element) {
   if (!element) return false;
   const top = element.getBoundingClientRect().top;
@@ -33101,20 +33261,30 @@ function settleHashNavigation() {
   updateWorkspaceNavigator(hash);
   requestAnimationFrame(() => {
     updateWorkspaceNavigator(hash);
-    lockHashLanding(hash, "auto");
+    if (hash === "#build-progress-roadmap") landBuildProgressRoadmap("auto");
+    else lockHashLanding(hash, "auto");
     requestAnimationFrame(() => {
       if (window.location.hash !== hash) return;
       updateWorkspaceNavigator(hash);
-      lockHashLanding(hash, "auto");
+      if (hash === "#build-progress-roadmap") landBuildProgressRoadmap("auto");
+      else lockHashLanding(hash, "auto");
     });
   });
   HASH_SETTLE_DELAYS.forEach((delay) => {
     window.setTimeout(() => {
       if (window.location.hash !== hash) return;
       updateWorkspaceNavigator(hash);
-      lockHashLanding(hash, "auto");
+      if (hash === "#build-progress-roadmap") landBuildProgressRoadmap("auto");
+      else lockHashLanding(hash, "auto");
     }, delay);
   });
+  if (hash === "#build-progress-roadmap") {
+    [0, 220, 520].forEach((delay) => {
+      window.setTimeout(() => {
+        if (window.location.hash === "#build-progress-roadmap") landBuildProgressRoadmap("auto");
+      }, delay);
+    });
+  }
   window.setTimeout(() => {
     updateWorkspaceNavigator(hash);
   }, HASH_SETTLE_WINDOW + 100);
@@ -55718,6 +55888,11 @@ function bindEvents() {
   document.addEventListener("click", (event) => {
     const buildRoute = event.target.closest("[data-build-route]");
     if (!buildRoute) return;
+    event.preventDefault();
+    if (buildRoute.dataset.buildRoute === "#build-progress-roadmap") {
+      window.location.hash = "#build-progress-roadmap";
+      return;
+    }
     if (buildRoute.dataset.autopilotStep) {
       rememberAutopilotRoute(buildRoute.dataset.buildRoute, buildRoute.dataset.autopilotStep);
     }
@@ -56603,6 +56778,7 @@ function cacheElements() {
     memoryCapsule: qs("#memoryCapsule"),
     buildTrackerSummary: qs("#buildTrackerSummary"),
     buildTrackerOutput: qs("#buildTrackerOutput"),
+    buildProgressLink: qs("#openBuildProgress"),
     openBuildNext: qs("#openBuildNext"),
     copyBuildTracker: qs("#copyBuildTracker"),
     buildPhasesSummary: qs("#buildPhasesSummary"),

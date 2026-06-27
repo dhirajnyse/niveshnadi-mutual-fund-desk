@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V314 Build Progress Link
+
+V314 adds an Overall Progress hyperlink to the Build Tracker toolbar. It jumps to a compact progress panel showing overall build progress, where the desk has reached, launch readiness, and the gate-based path to production-ready 100% across retention fixtures, support SLA proof, live source workers, payments, legal, security, and release signoff.
+
 ## V313 Account Lifecycle Retention Enforcement Dashboard
 
 V313 adds Account Lifecycle Retention Enforcement Dashboard inside the Retail Account Launch Route. It turns post-deploy drill receipts into incident command storage checks, retention-policy table rows, support readiness reporting, monitor closeout jobs, command archive audits, enforcement queue IDs, receipt fields, active blockers, and final retention no-go rules before backend retention job fixtures begin.

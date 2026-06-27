@@ -6333,6 +6333,8 @@ body.simple-mode.simple-review-focus .dossier-band {
 }
 
 .build-tracker-metrics,
+.build-progress-roadmap-grid,
+.build-progress-path,
 .build-sprint-strip,
 .build-status-grid,
 .build-room-bridge,
@@ -6346,6 +6348,8 @@ body.simple-mode.simple-review-focus .dossier-band {
 }
 
 .build-tracker-metrics,
+.build-progress-roadmap-grid,
+.build-progress-path,
 .build-sprint-strip,
 .build-status-grid,
 .build-room-bridge,
@@ -6375,6 +6379,9 @@ body.simple-mode.simple-review-focus .dossier-band {
 }
 
 .build-tracker-metrics article,
+.build-progress-roadmap,
+.build-progress-roadmap-grid article,
+.build-progress-path article,
 .build-sprint-strip article,
 .build-status-grid article,
 .build-room-bridge article,
@@ -6393,6 +6400,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 }
 
 .build-sprint-strip article,
+.build-progress-path article,
 .build-room-bridge article,
 .build-phase-grid article,
 .build-readiness-grid article,
@@ -6403,9 +6411,97 @@ body.simple-mode.simple-review-focus .dossier-band {
 }
 
 .build-sprint-strip article.current,
+.build-progress-path article:first-child,
 .build-phase-grid article.done {
   border-color: rgba(15, 124, 107, 0.28);
   background: var(--mint-soft);
+}
+
+.build-progress-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.build-progress-anchor {
+  display: block;
+  height: 0;
+  margin-bottom: 0;
+}
+
+.build-progress-roadmap {
+  scroll-margin-top: calc(var(--anchor-offset) + 12px);
+  display: grid;
+  gap: 12px;
+  border-color: rgba(31, 78, 121, 0.22);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(234, 242, 251, 0.82));
+}
+
+.build-progress-roadmap:focus {
+  outline: 3px solid rgba(216, 151, 60, 0.32);
+  outline-offset: 2px;
+}
+
+.build-progress-roadmap:target {
+  padding-top: 112px;
+}
+
+.build-progress-roadmap-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.build-progress-roadmap-head span,
+.build-progress-roadmap-grid span,
+.build-progress-path span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.build-progress-roadmap-head strong,
+.build-progress-roadmap-grid strong,
+.build-progress-path strong {
+  display: block;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.build-progress-roadmap-head strong {
+  font-size: 20px;
+}
+
+.build-progress-roadmap-head p,
+.build-progress-roadmap-grid p,
+.build-progress-path p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.build-progress-roadmap-grid article,
+.build-progress-path article {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.build-progress-roadmap-grid .build-progress-bar {
+  width: 100%;
+}
+
+.build-progress-route {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .build-phase-grid article.in-progress {
@@ -38139,6 +38235,8 @@ body.simple-mode .quiet-fund-shelf {
   .clearance-sprint-metrics,
   .clearance-sprint-move-grid,
   .build-tracker-metrics,
+  .build-progress-roadmap-grid,
+  .build-progress-path,
   .build-sprint-strip,
   .build-status-grid,
   .build-room-bridge,
@@ -38937,6 +39035,8 @@ body.simple-mode .quiet-fund-shelf {
   .proof-gap-task-grid,
   .proof-gap-lane-grid,
   .build-tracker-metrics,
+  .build-progress-roadmap-grid,
+  .build-progress-path,
   .build-sprint-strip,
   .build-status-grid,
   .build-phase-grid,
@@ -39733,6 +39833,36 @@ body.simple-mode .quiet-fund-shelf {
 
   .fund-card-top {
     grid-template-columns: minmax(0, 1fr) 56px;
+  }
+
+  .build-progress-roadmap-head {
+    grid-template-columns: 1fr;
+    position: sticky;
+    top: 10px;
+    z-index: 2;
+    padding: 8px;
+    margin: -8px -8px 0;
+    border-bottom: 1px solid rgba(215, 227, 235, 0.86);
+    background: rgba(255, 255, 255, 0.96);
+  }
+
+  .build-progress-roadmap {
+    scroll-margin-top: 80px;
+  }
+
+  .build-progress-anchor {
+    height: 260px;
+    margin-bottom: -260px;
+  }
+
+  .build-progress-roadmap:target {
+    padding-top: 20px;
+  }
+
+  .build-progress-route {
+    justify-content: center;
+    justify-self: start;
+    width: 100%;
   }
 
   .section-heading {

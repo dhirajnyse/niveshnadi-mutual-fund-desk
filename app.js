@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v309-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v309 Account Lifecycle Production Owner Gates";
+const DATA_VERSION = "20260627-v310-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v310 Account Lifecycle Deploy Runbook Packet";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Package account lifecycle owner gates into deploy runbook packets, environment checks, rollback contacts, release-note evidence, and production closeout."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Bind account lifecycle deploy runbook packets to staged rollout approvals, live monitor windows, release captain signoff, and post-deploy evidence archive."
   },
   {
     phase: "Phase 2",
@@ -1240,8 +1240,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account lifecycle production owner gates",
+    label: "Account lifecycle deploy runbook packet",
     status: "Shipping now",
+    route: "#account-launch-route",
+    detail: "Package owner gates into deploy timeline, environment checks, rollback contacts, release-note evidence, command receipts, support closeout, and final production no-go checks."
+  },
+  {
+    label: "Account lifecycle production owner gates",
+    status: "Done",
     route: "#account-launch-route",
     detail: "Promote smoke fixture results into owner pass/fail gates, deploy command refs, incident rollback posture, support-safe release notes, and production closeout."
   },
@@ -1288,10 +1294,10 @@ const BUILD_TRACKER_CURRENT_SPRINT = [
     detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, monitoring handoffs, and production deploy closeout."
   },
   {
-    label: "Account lifecycle deploy runbook packet",
+    label: "Account lifecycle rollout approval archive",
     status: "Later",
     route: "#backend-audit-receipts",
-    detail: "Package owner gates into deploy commands, environment checks, rollback contacts, release notes, and production no-go closeout."
+    detail: "Bind deploy runbooks to staged rollout approvals, live monitor windows, release captain signoff, and post-deploy evidence archive."
   }
 ];
 
@@ -9296,7 +9302,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v309</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v310</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -22265,6 +22271,234 @@ function accountLifecycleProductionOwnerGates(route, authDecision, storageDecisi
   };
 }
 
+function accountLifecycleDeployRunbookPacket(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const deployRunbookId = ["NN", "ACCOUNT", "LIFECYCLE", "DEPLOY", "RUNBOOK", suffix, route.cohort].join("-").toUpperCase();
+  const commandPacketId = ["NN", "ACCOUNT", "LIFECYCLE", "COMMAND", "PACKET", suffix, route.cutover].join("-").toUpperCase();
+  const envChecklistId = ["NN", "ACCOUNT", "LIFECYCLE", "ENV", "CHECKLIST", suffix, route.data].join("-").toUpperCase();
+  const rollbackContactsId = ["NN", "ACCOUNT", "LIFECYCLE", "ROLLBACK", "CONTACTS", suffix, route.auth].join("-").toUpperCase();
+  const releaseEvidenceId = ["NN", "ACCOUNT", "LIFECYCLE", "RELEASE", "EVIDENCE", suffix, route.cutover].join("-").toUpperCase();
+  const productionCloseoutId = ["NN", "ACCOUNT", "LIFECYCLE", "PROD", "CLOSEOUT", suffix, route.cohort].join("-").toUpperCase();
+  const finalNoGoId = ["NN", "ACCOUNT", "LIFECYCLE", "FINAL", "NOGO", suffix, route.cutover].join("-").toUpperCase();
+  const supportCommsId = ["NN", "ACCOUNT", "LIFECYCLE", "SUPPORT", "COMMS", suffix, route.cohort].join("-").toUpperCase();
+  const blockedFields = inviteReceipt.blockedFields || ["PAN", "folio", "CAS", "bank", "card", "UPI", "ARN/EUIN", "distributor client book", "free-form private notes"];
+  const backendStorageReady = route.data !== "browser" && route.data !== "manual";
+  const routePublic = route.cutover === "public";
+  const profiles = {
+    "account-recovery": {
+      envCheck: "AUTH_PROVIDER_REF, RECOVERY_LINK_SECRET_REF, RECOVERY_RATE_LIMIT_TABLE, SUPPORT_NOTICE_TEMPLATE, and RECOVERY_MONITOR_CHANNEL are set.",
+      rollbackContact: "Security owner plus support incident commander can disable recovery links and hold support escalation.",
+      releaseEvidence: "Provider proof, expiry replay, rate-limit evidence, redaction scan, and support-safe recovery note are attached.",
+      closeout: "Recovery deploy closes only after command receipt, monitor quiet window, and support-safe hold or proceed note.",
+      monitorWindow: "30-minute recovery.requested, recovery.closed, rate_limit.hit, and support_notice.sent monitor window.",
+      envKey: "recovery_env",
+      rollbackKey: "security_recovery_rollback"
+    },
+    "session-retention": {
+      envCheck: "SESSION_POLICY_ID, REFRESH_TOKEN_SECRET_REF, LOGOUT_RECEIPT_STREAM, SUSPICIOUS_LOGIN_ALERT, and DEVICE_STATE_RETENTION are set.",
+      rollbackContact: "Platform owner can revoke new refresh tokens, force conservative expiry, and preserve logout receipts.",
+      releaseEvidence: "Refresh, logout, expiry, suspicious-login, and device-state replay evidence share one retention policy.",
+      closeout: "Session deploy closes only after no stale refresh token can revive a closed session.",
+      monitorWindow: "30-minute session.issued, session.refreshed, suspicious_login.flagged, logout.receipted, and session.expired monitor window.",
+      envKey: "session_env",
+      rollbackKey: "platform_session_rollback"
+    },
+    "vault-restore": {
+      envCheck: "VAULT_RESTORE_QUEUE, STATE_HASH_STORE, ENTITLEMENT_CHECK_REF, RESTORE_ROLLBACK_BUCKET, and RESTORE_MONITOR_CHANNEL are set.",
+      rollbackContact: "Data owner can pause restore jobs, pin prior hashes, and require approval before restored records become visible.",
+      releaseEvidence: "Prior hash, restored hash, entitlement state, rollback reference, and deleted-state guard are attached.",
+      closeout: "Restore deploy closes only after prior and restored hashes reconcile without private notes or stale entitlement.",
+      monitorWindow: "45-minute restore.requested, restore.proved, hash.matched, entitlement.checked, and rollback.ready monitor window.",
+      envKey: "restore_env",
+      rollbackKey: "data_restore_rollback"
+    },
+    "deletion-closeout": {
+      envCheck: "DELETE_JOB_QUEUE, RETAINED_RECEIPT_STORE, REDACTION_SCAN_REF, PRIVACY_OWNER_ACK, and DELETE_MONITOR_CHANNEL are set.",
+      rollbackContact: "Privacy owner can stop delete processors, preserve non-sensitive completion receipts, and review retained-proof exceptions.",
+      releaseEvidence: "Scoped request, retained-proof explanation, redaction scan, completion receipt, and support-safe deletion notice are attached.",
+      closeout: "Deletion deploy closes only after deleted research state is absent and retained metadata is non-sensitive.",
+      monitorWindow: "45-minute deletion.requested, deletion.completed, retained_proof.written, redaction.passed, and notice.sent monitor window.",
+      envKey: "delete_env",
+      rollbackKey: "privacy_delete_rollback"
+    },
+    "support-notice": {
+      envCheck: "SUPPORT_TEMPLATE_VERSION, NOTICE_DELIVERY_PROVIDER, REDACTION_ATTESTATION_STREAM, CASE_RECEIPT_STORE, and NOTICE_MONITOR_CHANNEL are set.",
+      rollbackContact: "Support owner can freeze notice sending, keep case receipt open, and switch to reviewed template copy.",
+      releaseEvidence: "Template version, delivery acknowledgement, redaction attestation, reviewed copy, and case closeout are attached.",
+      closeout: "Support notice deploy closes only after delivery proof and redaction evidence are visible to support.",
+      monitorWindow: "30-minute notice.queued, notice.sent, notice.delivered, redaction.attested, and support_case.closed monitor window.",
+      envKey: "notice_env",
+      rollbackKey: "support_notice_rollback"
+    }
+  };
+  const runbookSteps = ownerGates.gates.map((gate, index) => {
+    const commandKey = gate.deployCommand.includes("session-retention")
+      ? "session-retention"
+      : gate.deployCommand.includes("vault-restore")
+        ? "vault-restore"
+        : gate.deployCommand.includes("deletion-closeout")
+          ? "deletion-closeout"
+          : gate.deployCommand.includes("support-notice")
+            ? "support-notice"
+            : "account-recovery";
+    const profile = profiles[commandKey];
+    const gateBlockers = gate.blockers.filter((item) => !item.startsWith("No active production owner-gate")).slice(0, 2);
+    const blockers = [
+      ...gateBlockers,
+      ...(gate.status === "Owner pass" ? [] : [`${gate.status} must be explicitly accepted before deploy runbook closeout.`]),
+      ...(ownerGates.status === "Lifecycle owner gates release-ready" ? [] : ["Owner gate packet is not release-ready yet."]),
+      ...(backendStorageReady ? [] : ["Deploy runbook needs backend-owned account storage, not browser-local or manual storage."]),
+      ...(routePublic ? ["Public beta deploy needs release captain, incident commander, support lead, and rollback contact approval."] : []),
+      ...(supportOps.readiness >= 70 ? [] : ["Support operations handoff is below deploy-runbook threshold."]),
+      ...(authDecision.readiness >= 70 ? [] : ["Auth decision board is below deploy-runbook threshold."]),
+      ...(storageDecision.readiness >= 70 ? [] : ["Storage decision board is below deploy-runbook threshold."])
+    ];
+    const score = clampNumber(Math.round(
+      gate.score * 0.44 +
+        ownerGates.readiness * 0.18 +
+        workerSmoke.readiness * 0.1 +
+        workerTickets.readiness * 0.08 +
+        recoveryRetention.readiness * 0.06 +
+        supportOps.readiness * 0.06 +
+        route.score * 0.08 +
+        (gate.status === "Owner pass" ? 12 : gate.status === "Owner review" ? 5 : -10) -
+        blockers.length * 3
+    ), 10, 98);
+    const status = score >= 86 && !blockers.length
+      ? "Runbook ready"
+      : score >= 64
+        ? "Runbook review"
+        : "Runbook blocked";
+    const tone = status === "Runbook ready" ? "ready" : status === "Runbook blocked" ? "blocked" : "draft";
+    const stepId = ["NN", "ACCOUNT", "LIFECYCLE", "DEPLOY", "STEP", String(index + 1).padStart(2, "0"), commandKey.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase();
+    const commandReceiptId = ["NN", "ACCOUNT", "LIFECYCLE", "COMMAND", "RECEIPT", String(index + 1).padStart(2, "0"), commandKey.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase();
+    return {
+      blockers: blockers.length ? blockers : ["No active deploy runbook blocker in this preview. Keep live credentials, command receipts, monitor windows, rollback contacts, release captain signoff, and audit storage before production."],
+      closeout: profile.closeout,
+      commandReceiptId,
+      deployCommand: `${gate.deployCommand} --runbook ${deployRunbookId} --command-receipt ${commandReceiptId}`,
+      envCheck: profile.envCheck,
+      envKey: profile.envKey,
+      event: gate.event.replace(/\.owner_gate_signed$/, ".deploy_runbook_ready"),
+      gateId: gate.gateId,
+      label: gate.label,
+      monitorWindow: profile.monitorWindow,
+      noGo: gate.noGo,
+      owner: gate.owner,
+      releaseEvidence: profile.releaseEvidence,
+      rollbackContact: profile.rollbackContact,
+      rollbackKey: profile.rollbackKey,
+      route: gate.route,
+      score,
+      status,
+      stepId,
+      supportCloseout: gate.supportCloseout,
+      tone
+    };
+  });
+  const ready = runbookSteps.filter((step) => step.status === "Runbook ready").length;
+  const review = runbookSteps.filter((step) => step.status === "Runbook review").length;
+  const blocked = runbookSteps.filter((step) => step.status === "Runbook blocked").length;
+  const stepAverage = Math.round(runbookSteps.reduce((sum, step) => sum + step.score, 0) / runbookSteps.length);
+  const activeBlockers = [...new Set(runbookSteps
+    .filter((step) => step.status !== "Runbook ready")
+    .flatMap((step) => step.blockers.filter((item) => !item.startsWith("No active deploy runbook")).slice(0, 2)))];
+  const readiness = clampNumber(Math.round(
+    stepAverage * 0.46 +
+      ownerGates.readiness * 0.2 +
+      workerSmoke.readiness * 0.1 +
+      supportOps.readiness * 0.08 +
+      authDecision.readiness * 0.06 +
+      storageDecision.readiness * 0.06 +
+      route.score * 0.04
+  ) - Math.min(activeBlockers.length, 7) * 2, 10, 98);
+  const status = readiness >= 86 && !blocked && activeBlockers.length <= 1
+    ? "Lifecycle deploy runbook ready"
+    : readiness >= 64
+      ? "Lifecycle deploy runbook needs review"
+      : "Lifecycle deploy runbook blocked";
+  const tone = status === "Lifecycle deploy runbook ready" ? "ready" : status === "Lifecycle deploy runbook blocked" ? "blocked" : "draft";
+  const metrics = [
+    { label: "Deploy runbook", value: deployRunbookId, detail: `${ready} ready, ${review} review, ${blocked} blocked deploy step${runbookSteps.length === 1 ? "" : "s"}.` },
+    { label: "Command packet", value: commandPacketId, detail: `${runbookSteps.length} deploy command receipts bind owner gate, fixture, monitor, and rollback evidence.` },
+    { label: "Environment checklist", value: envChecklistId, detail: "Auth, session, restore, deletion, and support notice env refs must be server-owned before deploy." },
+    { label: "Production closeout", value: productionCloseoutId, detail: `Release evidence ${releaseEvidenceId}; final no-go ${finalNoGoId}.` }
+  ];
+  const rolloutTimeline = [
+    { label: "T-60 freeze", owner: "Founder", detail: "Freeze account invite expansion, confirm support coverage, and snapshot active lifecycle blockers.", proof: deployRunbookId },
+    { label: "T-45 env check", owner: "Release Ops", detail: "Verify server-only env refs, queue names, monitor channels, rollback stores, and redaction streams.", proof: envChecklistId },
+    { label: "T-30 command receipts", owner: "Backend", detail: "Run each lifecycle deploy command with owner identity, command receipt ID, smoke artifact, and monitor window.", proof: commandPacketId },
+    { label: "T-15 rollback contacts", owner: "Incident Commander", detail: "Confirm rollback contact, escalation path, user-safe hold copy, and support handoff for every lifecycle worker.", proof: rollbackContactsId },
+    { label: "T+30 monitor quiet", owner: "Product Ops", detail: "Hold deploy closeout until monitor windows, redaction checks, support notices, and receipt joins stay quiet.", proof: releaseEvidenceId },
+    { label: "T+60 closeout", owner: "Release Captain", detail: "Attach release notes, support closeout, command receipts, active no-go resolution, and production evidence archive.", proof: productionCloseoutId }
+  ];
+  const environmentChecks = [
+    { label: "Auth and recovery", value: "server refs", detail: "Auth provider, recovery secret refs, rate limits, and abuse monitor exist outside browser-local state." },
+    { label: "Queues and workers", value: "named queues", detail: "Recovery, session, restore, deletion, and support notice queues have owner, retry, and dead-letter policy." },
+    { label: "Audit receipts", value: "append-only", detail: "Command, request, receipt, replay, redaction, monitor, rollback, and closeout receipts persist server-side." },
+    { label: "Monitor windows", value: "armed", detail: "Each lifecycle worker has a named monitor channel, alert owner, and quiet-window duration." },
+    { label: "Rollback stores", value: "ready", detail: "State hashes, retained receipts, recovery holds, notice templates, and rollback refs are available before deploy." },
+    { label: "Support closeout", value: supportCommsId, detail: "Support-safe wording, user notice copy, and redacted case closeout are attached before release." }
+  ];
+  const rollbackContacts = [
+    { label: "Security", value: "recovery and session", detail: "Disable recovery links, revoke refresh tokens, and keep access-state receipts auditable." },
+    { label: "Data", value: "restore", detail: "Pause restore jobs, pin prior state hashes, and review restored visibility before users see changes." },
+    { label: "Privacy", value: "deletion", detail: "Stop delete processors, preserve non-sensitive closeout, and review retained-proof exceptions." },
+    { label: "Support", value: "notices", detail: "Freeze notice sending, keep case receipts open, and swap to reviewed support copy." }
+  ];
+  const receiptFields = [
+    "account_lifecycle_deploy_runbook_id",
+    "command_packet_id",
+    "deploy_step_id",
+    "owner_gate_id",
+    "command_receipt_id",
+    "deploy_command_ref",
+    "environment_checklist_id",
+    "rollback_contacts_id",
+    "release_evidence_id",
+    "support_comms_id",
+    "monitor_window_id",
+    "release_captain_signoff",
+    "incident_commander_ack",
+    "support_closeout_id",
+    "final_no_go_id",
+    "production_closeout_id",
+    "closed_at"
+  ];
+  const noGoRules = [
+    "No lifecycle deploy runbook closes if any runbook step is Runbook blocked or lacks command receipt, owner gate, env check, monitor window, rollback contact, release evidence, and support closeout.",
+    "No command packet runs if account storage is browser-local, manual, missing append-only receipts, or missing server-only secret references.",
+    "No public beta cutover proceeds without release captain signoff, incident commander acknowledgement, support lead coverage, and monitor quiet-window evidence.",
+    "No lifecycle deploy can be marked closed while owner gates remain in review without explicit no-go override and rollback contact acknowledgement.",
+    `No deploy runbook packet may include ${blockedFields.join(", ")}.`
+  ];
+  return {
+    activeBlockers: activeBlockers.length ? activeBlockers : ["No active deploy runbook blocker in this preview. Keep real CI/CD identity, server env refs, command receipts, monitor windows, rollback contacts, release captain signoff, and production audit storage before deploy."],
+    blocked,
+    commandPacketId,
+    deployRunbookId,
+    envChecklistId,
+    environmentChecks,
+    finalNoGoId,
+    metrics,
+    noGoRules,
+    productionCloseoutId,
+    readiness,
+    receiptFields,
+    ready,
+    releaseEvidenceId,
+    review,
+    rollbackContacts,
+    rollbackContactsId,
+    rolloutTimeline,
+    runbookSteps,
+    status,
+    stepAverage,
+    supportCommsId,
+    tone
+  };
+}
+
 function renderAccountLaunchRoute(event) {
   if (event) event.preventDefault();
   if (!els.accountRouteOutput) return;
@@ -22284,8 +22518,9 @@ function renderAccountLaunchRoute(event) {
   const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
   const workerSmoke = accountLifecycleWorkerSmokeHarness(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets);
   const ownerGates = accountLifecycleProductionOwnerGates(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke);
+  const deployRunbook = accountLifecycleDeployRunbookPacket(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates);
   if (els.accountRouteSummary) {
-    els.accountRouteSummary.textContent = `${ownerGates.readiness}/100 | ${ownerGates.status}`;
+    els.accountRouteSummary.textContent = `${deployRunbook.readiness}/100 | ${deployRunbook.status}`;
   }
   els.accountRouteOutput.innerHTML = `
     <div class="account-route-hero ${escapeHtml(route.tone)}">
@@ -22968,6 +23203,94 @@ function renderAccountLaunchRoute(event) {
         </article>
       </div>
     </div>
+    <div class="account-route-deploy ${escapeHtml(deployRunbook.tone)}">
+      <div class="account-route-deploy-head">
+        <div>
+          <span>Account lifecycle deploy runbook packet</span>
+          <h3>${escapeHtml(deployRunbook.status)}</h3>
+          <p>Runbook ${escapeHtml(deployRunbook.deployRunbookId)} packages owner gates into deploy timeline, command receipts, environment checks, rollback contacts, release evidence, support closeout, and final production no-go checks.</p>
+        </div>
+        <div class="account-route-deploy-score" style="--score:${deployRunbook.readiness}">
+          <strong>${deployRunbook.readiness}</strong>
+          <span>deploy</span>
+        </div>
+      </div>
+      <div class="account-route-deploy-grid">
+        ${deployRunbook.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-deploy-step-grid">
+        ${deployRunbook.runbookSteps.map((step) => `
+          <article class="${escapeHtml(step.tone)}">
+            <div class="account-route-card-head">
+              <div>
+                <span>${escapeHtml(step.owner)}</span>
+                <strong>${escapeHtml(step.label)}</strong>
+              </div>
+              <b>${step.score}/100</b>
+            </div>
+            <p>${escapeHtml(step.status)} | ${escapeHtml(step.stepId)}</p>
+            <div class="build-progress-bar"><span style="width:${step.score}%"></span></div>
+            <small><strong>Command:</strong> ${escapeHtml(step.deployCommand)}</small>
+            <small><strong>Receipt:</strong> ${escapeHtml(step.commandReceiptId)}</small>
+            <small><strong>Env:</strong> ${escapeHtml(step.envCheck)}</small>
+            <small><strong>Monitor:</strong> ${escapeHtml(step.monitorWindow)}</small>
+            <small><strong>Rollback:</strong> ${escapeHtml(step.rollbackContact)}</small>
+            <small><strong>Release evidence:</strong> ${escapeHtml(step.releaseEvidence)}</small>
+            <small><strong>Closeout:</strong> ${escapeHtml(step.closeout)}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(step.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button account-route-deploy-route" type="button" data-build-route="${escapeHtml(step.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-deploy-timeline">
+        ${deployRunbook.rolloutTimeline.map((item) => `
+          <article>
+            <span>${escapeHtml(item.owner)}</span>
+            <strong>${escapeHtml(item.label)}</strong>
+            <p>${escapeHtml(item.detail)}</p>
+            <small>${escapeHtml(item.proof)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-route-deploy-two">
+        <article>
+          <span>Environment checks</span>
+          <ul>
+            ${deployRunbook.environmentChecks.map((item) => `<li>${escapeHtml(item.label)}: ${escapeHtml(item.value)} | ${escapeHtml(item.detail)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Rollback contacts</span>
+          <ul>
+            ${deployRunbook.rollbackContacts.map((item) => `<li>${escapeHtml(item.label)}: ${escapeHtml(item.value)} | ${escapeHtml(item.detail)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <ul>
+            ${deployRunbook.receiptFields.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <span>Final no-go rules</span>
+          <ul>
+            ${deployRunbook.noGoRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${deployRunbook.activeBlockers.length > 1 ? "blocked" : "ready"}">
+          <span>Runbook blockers</span>
+          <ul>
+            ${deployRunbook.activeBlockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="account-route-gate-grid">
       ${ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `
         <article>
@@ -23020,6 +23343,7 @@ function makeAccountLaunchRouteBrief() {
   const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
   const workerSmoke = accountLifecycleWorkerSmokeHarness(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets);
   const ownerGates = accountLifecycleProductionOwnerGates(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke);
+  const deployRunbook = accountLifecycleDeployRunbookPacket(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates);
   const betaScore = Math.round(betaChecklist.reduce((sum, item) => sum + item.score, 0) / betaChecklist.length);
   return [
     "# NiveshNadi Retail Account Launch Route",
@@ -23169,6 +23493,27 @@ function makeAccountLaunchRouteBrief() {
     ...ownerGates.receiptFields.map((item) => `- Owner receipt field: ${item}`),
     ...ownerGates.noGoRules.map((item) => `- Owner no-go rule: ${item}`),
     ...ownerGates.activeBlockers.map((item) => `- Owner blocker: ${item}`),
+    "",
+    "## Account Lifecycle Deploy Runbook Packet",
+    `- Status: ${deployRunbook.status}`,
+    `- Readiness: ${deployRunbook.readiness}/100`,
+    `- Deploy runbook: ${deployRunbook.deployRunbookId}`,
+    `- Command packet: ${deployRunbook.commandPacketId}`,
+    `- Environment checklist: ${deployRunbook.envChecklistId}`,
+    `- Rollback contacts: ${deployRunbook.rollbackContactsId}`,
+    `- Release evidence: ${deployRunbook.releaseEvidenceId}`,
+    `- Support comms: ${deployRunbook.supportCommsId}`,
+    `- Final no-go: ${deployRunbook.finalNoGoId}`,
+    `- Production closeout: ${deployRunbook.productionCloseoutId}`,
+    `- Ready/Review/Blocked: ${deployRunbook.ready}/${deployRunbook.review}/${deployRunbook.blocked}`,
+    ...deployRunbook.metrics.map((metric) => `- Deploy metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...deployRunbook.runbookSteps.map((step) => `- Deploy step: ${step.stepId}: ${step.label} | ${step.status} | ${step.score}/100 | ${step.owner} | ${step.deployCommand} | ${step.commandReceiptId} | ${step.event} | ${step.route}`),
+    ...deployRunbook.rolloutTimeline.map((item) => `- Timeline: ${item.label}: ${item.owner} | ${item.detail} | ${item.proof}`),
+    ...deployRunbook.environmentChecks.map((item) => `- Environment check: ${item.label}: ${item.value} | ${item.detail}`),
+    ...deployRunbook.rollbackContacts.map((item) => `- Rollback contact: ${item.label}: ${item.value} | ${item.detail}`),
+    ...deployRunbook.receiptFields.map((item) => `- Deploy receipt field: ${item}`),
+    ...deployRunbook.noGoRules.map((item) => `- Deploy no-go rule: ${item}`),
+    ...deployRunbook.activeBlockers.map((item) => `- Deploy blocker: ${item}`),
     "",
     "## Launch Gates",
     ...ACCOUNT_LAUNCH_ROUTE_GATES.map((gate) => `- ${gate.label}: ${gate.score}/100 | ${gate.event} | ${gate.proof} | ${gate.guardrail}`),
@@ -23440,6 +23785,81 @@ function makeAccountLifecycleOwnerBrief() {
     "",
     "## Guardrail",
     "Account lifecycle production owner gates are deployment control metadata. They must not store PAN, folio, CAS, bank data, card, UPI, OTP, account credentials, gateway secrets, ARN/EUIN, distributor client books, private notes, transaction instructions, or personalized advice content."
+  ].join("\n");
+}
+
+function makeAccountLifecycleDeployRunbookBrief() {
+  const route = accountLaunchRouteConfig();
+  const betaChecklist = founderBetaChecklist(route);
+  const authDecision = founderAuthDecisionBoard(route, betaChecklist);
+  const storageDecision = founderStorageDecisionBoard(route, betaChecklist);
+  const inviteGate = founderInviteGate(route, betaChecklist);
+  const inviteReceipt = founderInviteReceipt(route, betaChecklist, inviteGate);
+  const supportDrill = founderSupportDrill(route, betaChecklist, inviteGate, inviteReceipt);
+  const supportCasebook = founderSupportCasebook(route, inviteGate, inviteReceipt, supportDrill);
+  const supportOps = supportOperationsHandoff(route, inviteReceipt, supportDrill, supportCasebook);
+  const recoveryRetention = accountRecoveryRetentionReceipts(route, authDecision, storageDecision, inviteReceipt, supportOps);
+  const workerTickets = accountLifecycleWorkerAcceptanceTickets(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention);
+  const workerSmoke = accountLifecycleWorkerSmokeHarness(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets);
+  const ownerGates = accountLifecycleProductionOwnerGates(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke);
+  const deployRunbook = accountLifecycleDeployRunbookPacket(route, authDecision, storageDecision, inviteReceipt, supportOps, recoveryRetention, workerTickets, workerSmoke, ownerGates);
+  return [
+    "# NiveshNadi Account Lifecycle Deploy Runbook Packet",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Deploy runbook ID: ${deployRunbook.deployRunbookId}`,
+    `Command packet ID: ${deployRunbook.commandPacketId}`,
+    `Environment checklist ID: ${deployRunbook.envChecklistId}`,
+    `Rollback contacts ID: ${deployRunbook.rollbackContactsId}`,
+    `Release evidence ID: ${deployRunbook.releaseEvidenceId}`,
+    `Support comms ID: ${deployRunbook.supportCommsId}`,
+    `Final no-go ID: ${deployRunbook.finalNoGoId}`,
+    `Production closeout ID: ${deployRunbook.productionCloseoutId}`,
+    `Status: ${deployRunbook.status}`,
+    `Readiness: ${deployRunbook.readiness}/100`,
+    `Step average: ${deployRunbook.stepAverage}/100`,
+    `Ready/Review/Blocked: ${deployRunbook.ready}/${deployRunbook.review}/${deployRunbook.blocked}`,
+    "",
+    "## Metrics",
+    ...deployRunbook.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Deploy Runbook Steps",
+    ...deployRunbook.runbookSteps.flatMap((step) => [
+      `- ${step.stepId}: ${step.label} | ${step.status} | ${step.score}/100 | Owner: ${step.owner}`,
+      `  Owner gate: ${step.gateId}`,
+      `  Command receipt: ${step.commandReceiptId}`,
+      `  Deploy command: ${step.deployCommand}`,
+      `  Event: ${step.event}`,
+      `  Environment check: ${step.envCheck}`,
+      `  Monitor window: ${step.monitorWindow}`,
+      `  Rollback contact: ${step.rollbackContact}`,
+      `  Release evidence: ${step.releaseEvidence}`,
+      `  Support closeout: ${step.supportCloseout}`,
+      `  Production closeout: ${step.closeout}`,
+      `  No-go: ${step.noGo}`,
+      `  Route: ${step.route}`,
+      `  Blockers: ${step.blockers.join(" | ")}`
+    ]),
+    "",
+    "## Rollout Timeline",
+    ...deployRunbook.rolloutTimeline.map((item) => `- ${item.label}: ${item.owner} | ${item.detail} | Proof: ${item.proof}`),
+    "",
+    "## Environment Checks",
+    ...deployRunbook.environmentChecks.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Rollback Contacts",
+    ...deployRunbook.rollbackContacts.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Receipt Fields",
+    ...deployRunbook.receiptFields.map((item) => `- ${item}`),
+    "",
+    "## Final No-Go Rules",
+    ...deployRunbook.noGoRules.map((item) => `- ${item}`),
+    "",
+    "## Active Blockers",
+    ...deployRunbook.activeBlockers.map((item) => `- ${item}`),
+    "",
+    "## Guardrail",
+    "Account lifecycle deploy runbook packets are release-control metadata. They must not store PAN, folio, CAS, bank data, card, UPI, OTP, account credentials, gateway secrets, ARN/EUIN, distributor client books, private notes, transaction instructions, or personalized advice content."
   ].join("\n");
 }
 
@@ -53172,6 +53592,7 @@ function bindEvents() {
   els.copyAccountLifecycleWorkers?.addEventListener("click", () => copyText(makeAccountLifecycleWorkerBrief()));
   els.copyAccountLifecycleSmoke?.addEventListener("click", () => copyText(makeAccountLifecycleSmokeBrief()));
   els.copyAccountLifecycleOwners?.addEventListener("click", () => copyText(makeAccountLifecycleOwnerBrief()));
+  els.copyAccountLifecycleDeploy?.addEventListener("click", () => copyText(makeAccountLifecycleDeployRunbookBrief()));
   els.copyAccountRoute?.addEventListener("click", () => copyText(makeAccountLaunchRouteBrief()));
   els.accountLaunchForm?.addEventListener("submit", renderAccountLaunchShell);
   [els.accountLaunchAuth, els.accountLaunchStorage, els.accountLaunchMigration, els.accountLaunchSupport].forEach((input) => {
@@ -55106,6 +55527,7 @@ function cacheElements() {
     copyAccountLifecycleWorkers: qs("#copyAccountLifecycleWorkers"),
     copyAccountLifecycleSmoke: qs("#copyAccountLifecycleSmoke"),
     copyAccountLifecycleOwners: qs("#copyAccountLifecycleOwners"),
+    copyAccountLifecycleDeploy: qs("#copyAccountLifecycleDeploy"),
     copyAccountRoute: qs("#copyAccountRoute"),
     accountLaunchForm: qs("#accountLaunchForm"),
     accountLaunchAuth: qs("#accountLaunchAuth"),

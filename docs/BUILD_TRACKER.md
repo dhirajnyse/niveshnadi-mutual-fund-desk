@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V310 Account Lifecycle Deploy Runbook Packet
+
+V310 adds Account Lifecycle Deploy Runbook Packet inside the Retail Account Launch Route. It packages recovery, session retention, vault restore, deletion closeout, and support notice owner gates into deploy steps with command receipts, environment checks, rollback contacts, monitor windows, release-note evidence, support comms, production closeout IDs, final no-go rules, and a copyable deploy-runbook packet before lifecycle workers move toward staged rollout approval.
+
 ## V309 Account Lifecycle Production Owner Gates
 
 V309 adds Account Lifecycle Production Owner Gates inside the Retail Account Launch Route. It promotes recovery, session retention, vault restore, deletion closeout, and support notice smoke fixtures into owner-scoped production pass/fail gates with deploy command refs, incident rollback posture, release-note evidence, support-safe closeout, receipt fields, and hard production no-go checks before account lifecycle workers can move toward deploy runbooks.

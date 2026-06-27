@@ -50,6 +50,10 @@ V308 adds the release rehearsal layer after worker acceptance tickets. It turns 
 
 V309 adds the production owner-gate layer after smoke fixtures. It promotes each recovery, session retention, vault restore, deletion closeout, and support notice smoke result into an owner pass/fail gate with deploy command ref, production event, artifact, monitor proof, incident rollback posture, release-note evidence, support closeout, receipt fields, active blockers, and hard production no-go rules.
 
+## Account Lifecycle Deploy Runbook Packet
+
+V310 adds the deploy-runbook layer after production owner gates. It packages each lifecycle owner gate into a deploy step with command receipt ID, environment checklist, rollback contact, monitor window, release evidence, support closeout, rollout timeline, final no-go rule, and copyable deploy packet before the worker can move toward staged rollout approval.
+
 The route keeps the first account launch deliberately small. A founder account pilot or paid beta cohort is safer than a broad public release because account recovery, saved research migration, entitlement repair, and support redaction can be tested with limited blast radius. The public beta cutover should stay blocked until auth provider selection, account database ownership, backups, export/delete jobs, payment entitlement, audit receipts, rate limits, monitoring, support workflows, and legal/compliance copy are ready.
 
 The key product promise is simple: Phase 1 accounts remember self-research, not investment identity. Allowed data should be limited to email or login identifier, research profile context, saved packs, watchlist, review metadata, dossiers, entitlement state, export receipts, deletion receipts, and redacted support receipts. PAN, folio, CAS, bank data, card data, UPI credentials, nominees, ARN/EUIN, distributor client books, and personalized advisory records stay outside the retail account route.
@@ -67,5 +71,7 @@ V307 then requires worker acceptance tickets. Recovery, session, restore, delete
 V308 then requires lifecycle smoke fixtures. Recovery, session, restore, delete, and notice workers must pass command-backed smoke assertions with request logs, receipt logs, replay logs, redaction logs, monitor events, owner review, artifact proof, and deployment no-go checks before a production owner gate can treat them as release candidates.
 
 V309 then requires production owner gates. Recovery, session, restore, delete, and notice workers must have named owner pass/fail decisions, deploy command refs, rollback posture, release-note evidence, support closeout receipts, and hard production no-go checks before they can move into a deploy runbook packet.
+
+V310 then requires a deploy runbook packet. Recovery, session, restore, delete, and notice workers must have command receipts, server environment checks, rollback contacts, monitor windows, release evidence, support comms, release captain closeout, and final production no-go rules before staged rollout approval can begin.
 
 The route also protects the Phase 2 roadmap. Mutual fund distributor workflows can come later, but they require separate consent, role-based access, ARN/EUIN handling, PAN-consent boundaries, client-book permissions, distributor audit trails, and regulatory review. The retail self-research launch should not accidentally become a distributor or advisory system.

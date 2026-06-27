@@ -252,6 +252,10 @@ V309 adds Account Lifecycle Production Owner Gates to the same route. Each recov
 
 Commercially, this keeps low-price account operations honest: a paid cohort should not widen until the team can prove who owns each lifecycle deploy, how it rolls back, what support tells users, and which no-go rule blocks unsafe release.
 
+V310 adds Account Lifecycle Deploy Runbook Packet to the same route. Owner gates now become deploy steps with command receipts, server environment checks, rollback contacts, monitor windows, release-note evidence, support comms, production closeout, and final no-go rules.
+
+Commercially, this protects the INR 100/month and INR 1,000/year account promise from release chaos: lifecycle operations should widen only when deploy proof, rollback ownership, support wording, and monitor evidence are packaged before users rely on them.
+
 ## Payment Adapter Repairs
 
 V150 connects the payment backend to repairable adapter routes. Checkout, webhook, idempotency replay, refund, cancellation, entitlement projection, support repair, settlement, and incident adapters now show the event in, event out, receipt join, repair action, rollback rule, and blockers before real gateway events can unlock paid features.

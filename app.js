@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v320-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v320 First Cohort Rehearsal Daybook";
+const DATA_VERSION = "20260628-v321-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v321 Real Proof Closeout Board";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Run the first cohort rehearsal daybook until payment, legal, security, support, live-source, and release-captain owners can close real proof."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Close real proof slots for payment, legal, security, support, live-source, and release-captain owners before the first paid cohort opens."
   },
   {
     phase: "Phase 2",
@@ -1240,10 +1240,16 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "First cohort rehearsal daybook",
+    label: "Real proof closeout board",
     status: "Shipping now",
     route: "#founder-beta-operating-room",
-    detail: "Turn the v319 launch command center into a day-by-day founder rehearsal for payment, legal, security, support, live-source, and release-captain proof before any first paid cohort opens."
+    detail: "Give every first cohort rehearsal day an owner evidence slot, closeout state, missing artifact, and no-go reason before any paid invite can move."
+  },
+  {
+    label: "First cohort rehearsal daybook",
+    status: "Done",
+    route: "#founder-beta-operating-room",
+    detail: "Turn the launch command center into a day-by-day founder rehearsal for payment, legal, security, support, live-source, and release-captain proof before any first paid cohort opens."
   },
   {
     label: "Founder beta launch command center",
@@ -9121,9 +9127,15 @@ function buildTrackerConfig() {
     },
     {
       label: "First cohort rehearsal daybook",
-      status: "Closeout active",
+      status: "Done in v320",
       route: "#founder-beta-operating-room",
       detail: "Run a day-by-day founder rehearsal across payment, legal, security, support, live-source, and release-captain owners before any first paid cohort opens."
+    },
+    {
+      label: "Real proof closeout board",
+      status: "Closeout active",
+      route: "#founder-beta-operating-room",
+      detail: "Attach evidence-slot status, owner blocker, accepted artifact, and no-go reason to every first cohort rehearsal day."
     }
   ];
   const productionTarget = releaseVersion
@@ -9350,7 +9362,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v320 turns the launch command center into a first cohort rehearsal daybook.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v321 turns the first cohort daybook into real proof closeout slots.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9479,7 +9491,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v320</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v321</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -14957,14 +14969,156 @@ function founderFirstCohortRehearsalDaybook(ops = founderBetaOperatingRoomConfig
   };
 }
 
+function founderRealProofCloseoutBoard(ops = founderBetaOperatingRoomConfig(), warRoom = founderBetaWarRoomDigest(ops), commandCenter = founderBetaLaunchCommandCenter(ops, warRoom), daybook = founderFirstCohortRehearsalDaybook(ops, warRoom, commandCenter)) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const closeoutBoardId = ["NN", "REAL", "PROOF", "CLOSEOUT", "BOARD", suffix].join("-").toUpperCase();
+  const evidenceVaultId = ["NN", "REAL", "PROOF", "EVIDENCE", "VAULT", suffix].join("-").toUpperCase();
+  const ownerAttestationId = ["NN", "REAL", "PROOF", "OWNER", "ATTESTATION", suffix].join("-").toUpperCase();
+  const launchNoGoMemoId = ["NN", "REAL", "PROOF", "LAUNCH", "NO", "GO", suffix].join("-").toUpperCase();
+  const closeoutBatchId = ["NN", "REAL", "PROOF", "CLOSEOUT", "BATCH", suffix].join("-").toUpperCase();
+  const cleanBlocker = (item) => {
+    const text = String(item || "").trim();
+    return text && !text.startsWith("No active") && !text.startsWith("No hard blocker") && !text.startsWith("No blocker") && !text.startsWith("No active daybook");
+  };
+  const artifactMap = {
+    "Freeze line and owner room": {
+      required: "Dated founder freeze/rehearsal/open note with first cohort cap, blocked-data attestation, and named weakest owner.",
+      source: commandCenter.commandCenterId
+    },
+    "Payment rail dry run": {
+      required: "Gateway onboarding proof, signed webhook event, invoice policy, refund script, entitlement mutation, and settlement reconciliation.",
+      source: commandCenter.paidBetaGate.gateId
+    },
+    "Legal wording and invite copy": {
+      required: "External legal review, no-advice public copy, risk warning, source disclaimer, consent screen, and refund/cancel wording.",
+      source: commandCenter.finalSignoff.releasePacketId
+    },
+    "Security and support drill": {
+      required: "Auth threat model, secret scan, dependency scan, rate-limit policy, backup restore proof, support SLA, and escalation owner.",
+      source: daybook.dryRunWindowId
+    },
+    "Live source release drill": {
+      required: "Scheduler receipt, source-date proof, parser quarantine, durable receipt, alert/replay proof, reviewer signoff, and rollback evidence.",
+      source: commandCenter.proofQueueId
+    },
+    "Founder cohort decision": {
+      required: "Founder decision memo, release notes, no-go reason, rollback owner, incident commander, monitor window, and cohort cap.",
+      source: daybook.founderDecisionId
+    }
+  };
+  const slots = daybook.days.map((day, index) => {
+    const artifact = artifactMap[day.label] || { required: day.close, source: day.proof };
+    const blocker = cleanBlocker(day.blocker) ? day.blocker : "";
+    const missingBecause = blocker || (day.state !== "Ready for founder rehearsal" ? day.close : "");
+    const evidenceScore = clampNumber(Math.round(
+      day.score * 0.52 +
+        commandCenter.readiness * 0.18 +
+        daybook.readiness * 0.18 +
+        warRoom.readiness * 0.12
+    ) - (missingBecause ? 7 : 0), 8, 96);
+    const closeoutState = evidenceScore >= 82 && !missingBecause && !commandCenter.status.startsWith("Freeze")
+      ? "Owner closed"
+      : evidenceScore >= 62 && !commandCenter.status.startsWith("Freeze")
+        ? "Evidence review"
+        : "Proof blocked";
+    return {
+      artifactSource: artifact.source,
+      closeoutState,
+      day: day.day,
+      evidenceScore,
+      evidenceSlotId: ["NN", "REAL", "PROOF", "SLOT", String(index + 1).padStart(2, "0"), day.label.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase(),
+      event: `real_proof_closeout.${day.event.replace(/^first_cohort_rehearsal\./, "")}`,
+      label: day.label,
+      missingBecause: missingBecause || "No missing artifact in this preview; keep owner attestation before paid invites.",
+      owner: day.owner,
+      requiredArtifact: artifact.required,
+      route: day.route,
+      sourceProof: day.proof,
+      tone: closeoutState === "Owner closed" ? "ready" : closeoutState === "Proof blocked" ? "blocked" : "watch"
+    };
+  });
+  const closed = slots.filter((slot) => slot.closeoutState === "Owner closed").length;
+  const review = slots.filter((slot) => slot.closeoutState === "Evidence review").length;
+  const blocked = slots.filter((slot) => slot.closeoutState === "Proof blocked").length;
+  const activeSlot = [...slots].sort((a, b) => a.evidenceScore - b.evidenceScore)[0];
+  const readiness = clampNumber(Math.round(
+    slots.reduce((sum, slot) => sum + slot.evidenceScore, 0) / slots.length * 0.58 +
+      daybook.readiness * 0.2 +
+      commandCenter.readiness * 0.14 +
+      ops.operatingScore * 0.08
+  ) - blocked * 3, 8, 96);
+  const status = closed === slots.length && readiness >= 84
+    ? "Real proof closeout ready"
+    : blocked > 0 || commandCenter.status.startsWith("Freeze")
+      ? "Real proof still blocked"
+      : "Real proof owner review";
+  const tone = status === "Real proof closeout ready" ? "ready" : status === "Real proof still blocked" ? "blocked" : "watch";
+  const blockers = [...new Set([
+    ...slots.filter((slot) => slot.closeoutState !== "Owner closed").map((slot) => `${slot.owner}: ${slot.missingBecause}`),
+    ...daybook.blockers.filter(cleanBlocker)
+  ])];
+  const metrics = [
+    { label: "Closeout board", value: closeoutBoardId, detail: `${status}; ${readiness}/100 real proof readiness.` },
+    { label: "Evidence vault", value: evidenceVaultId, detail: `${closed} closed, ${review} review, ${blocked} blocked evidence slot${slots.length === 1 ? "" : "s"}.` },
+    { label: "Owner attestation", value: ownerAttestationId, detail: "Every slot needs owner name, artifact source, acceptance state, and blocked-data attestation." },
+    { label: "Next proof", value: activeSlot?.label || "No proof slot", detail: activeSlot ? `${activeSlot.owner}: ${activeSlot.requiredArtifact}` : "No active proof slot." }
+  ];
+  const closeoutRules = [
+    "Do not mark a slot owner closed from screenshots, browser-local state, oral confirmation, or demo copy.",
+    "Do not open paid invites until payment, legal, security/support, live-source, and founder decision slots are owner-attested.",
+    "Freeze the cohort if any slot remains proof blocked, if a no-go reason lacks an owner, or if support/refund/incident recovery is unclear.",
+    "Every artifact must avoid PAN, folio, CAS, bank, card, UPI, OTP, credentials, ARN/EUIN, distributor client records, and private research-note bodies.",
+    "Build progress reaches production-ready 100% only after the real proof board closes with external evidence."
+  ];
+  const receiptFields = [
+    "real_proof_closeout_board_id",
+    "real_proof_closeout_batch_id",
+    "real_proof_evidence_slot_id",
+    "first_cohort_rehearsal_daybook_id",
+    "founder_command_center_id",
+    "evidence_vault_id",
+    "owner_attestation_id",
+    "launch_no_go_memo_id",
+    "required_artifact",
+    "artifact_source_id",
+    "owner_name",
+    "route",
+    "closeout_state",
+    "missing_reason",
+    "blocked_data_attestation",
+    "accepted_at"
+  ];
+
+  return {
+    activeSlot,
+    blocked,
+    blockers: blockers.length ? blockers : ["No active real proof blocker in this preview. Keep real external owner evidence before opening paid invites."],
+    closeoutBatchId,
+    closeoutBoardId,
+    closeoutRules,
+    closed,
+    evidenceVaultId,
+    launchNoGoMemoId,
+    metrics,
+    ownerAttestationId,
+    readiness,
+    receiptFields,
+    review,
+    slots,
+    status,
+    tone
+  };
+}
+
 function renderFounderBetaOperatingRoom() {
   if (!els.founderBetaOpsOutput) return;
   const ops = founderBetaOperatingRoomConfig();
   const warRoom = founderBetaWarRoomDigest(ops);
   const commandCenter = founderBetaLaunchCommandCenter(ops, warRoom);
   const daybook = founderFirstCohortRehearsalDaybook(ops, warRoom, commandCenter);
+  const realProof = founderRealProofCloseoutBoard(ops, warRoom, commandCenter, daybook);
   if (els.founderBetaOpsSummary) {
-    els.founderBetaOpsSummary.textContent = `${daybook.readiness}/100 | ${daybook.status}`;
+    els.founderBetaOpsSummary.textContent = `${realProof.readiness}/100 | ${realProof.status}`;
   }
   els.founderBetaOpsOutput.innerHTML = `
     <div class="founder-beta-ops-hero ${ops.posture.startsWith("Open") ? "ready" : ops.posture.startsWith("Founder") ? "watch" : "blocked"}">
@@ -15113,6 +15267,69 @@ function renderFounderBetaOperatingRoom() {
         </article>
       </div>
     </div>
+    <div class="real-proof-closeout ${escapeHtml(realProof.tone)}">
+      <div class="real-proof-closeout-head">
+        <div>
+          <span>V321 real proof closeout board</span>
+          <h3>${escapeHtml(realProof.status)}</h3>
+          <p>Board ${escapeHtml(realProof.closeoutBoardId)} turns every first cohort rehearsal day into an owner evidence slot with required artifact, missing reason, closeout state, and launch no-go memory.</p>
+        </div>
+        <div class="real-proof-closeout-score" style="--score:${realProof.readiness}">
+          <strong>${realProof.readiness}</strong>
+          <span>Proof</span>
+        </div>
+      </div>
+      <div class="real-proof-closeout-metrics">
+        ${realProof.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="real-proof-closeout-slots">
+        ${realProof.slots.map((slot) => `
+          <article class="${escapeHtml(slot.tone)}">
+            <div class="real-proof-closeout-card-head">
+              <div>
+                <span>${escapeHtml(slot.day)} | ${escapeHtml(slot.owner)}</span>
+                <strong>${escapeHtml(slot.label)}</strong>
+              </div>
+              <b>${slot.evidenceScore}</b>
+            </div>
+            <div class="build-progress-bar launch"><span style="width:${slot.evidenceScore}%"></span></div>
+            <p><b>Required:</b> ${escapeHtml(slot.requiredArtifact)}</p>
+            <small>${escapeHtml(slot.closeoutState)} | ${escapeHtml(slot.event)}</small>
+            <p><b>Missing:</b> ${escapeHtml(slot.missingBecause)}</p>
+            <p><b>Source:</b> ${escapeHtml(slot.artifactSource)}</p>
+            <button class="text-button" type="button" data-founder-beta-ops-route="${escapeHtml(slot.route)}">Open evidence route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="real-proof-closeout-two">
+        <article>
+          <span>Closeout rules</span>
+          <strong>${escapeHtml(realProof.closeoutBatchId)}</strong>
+          <ol>${realProof.closeoutRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}</ol>
+        </article>
+        <article class="${realProof.blocked ? "blocked" : "ready"}">
+          <span>Active blockers</span>
+          <strong>${realProof.blocked} blocked slot${realProof.blocked === 1 ? "" : "s"}</strong>
+          <ul>${realProof.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>No-go memo</span>
+          <strong>${escapeHtml(realProof.launchNoGoMemoId)}</strong>
+          <p>Keep the first paid cohort closed until the evidence vault, owner attestation, and daybook decision agree.</p>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <strong>${realProof.receiptFields.length} fields</strong>
+          <ul>${realProof.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}</ul>
+        </article>
+      </div>
+    </div>
     <div class="founder-war-room ${escapeHtml(warRoom.tone)}">
       <div class="founder-war-room-head">
         <div>
@@ -15231,6 +15448,7 @@ function makeFounderBetaWarRoomDigestBrief() {
   const warRoom = founderBetaWarRoomDigest(ops);
   const commandCenter = founderBetaLaunchCommandCenter(ops, warRoom);
   const daybook = founderFirstCohortRehearsalDaybook(ops, warRoom, commandCenter);
+  const realProof = founderRealProofCloseoutBoard(ops, warRoom, commandCenter, daybook);
   return [
     "# NiveshNadi Founder Beta War-Room Digest",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -15240,6 +15458,9 @@ function makeFounderBetaWarRoomDigestBrief() {
     `First cohort daybook ID: ${daybook.daybookId}`,
     `First cohort daybook status: ${daybook.status}`,
     `First cohort daybook readiness: ${daybook.readiness}/100`,
+    `Real proof closeout board ID: ${realProof.closeoutBoardId}`,
+    `Real proof status: ${realProof.status}`,
+    `Real proof readiness: ${realProof.readiness}/100`,
     `Cohort decision ID: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `War-room ID: ${warRoom.warRoomId}`,
@@ -15264,6 +15485,11 @@ function makeFounderBetaWarRoomDigestBrief() {
     ...daybook.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
     ...daybook.days.map((day) => `- ${day.day}: ${day.label} | ${day.owner} | ${day.state} | ${day.score}/100 | Proof: ${day.proof} | Blocker: ${day.blocker}`),
     ...daybook.goNoGoChecks.map((check) => `- Go/no-go: ${check}`),
+    "",
+    "## Real Proof Closeout Board",
+    ...realProof.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...realProof.slots.map((slot) => `- ${slot.evidenceSlotId}: ${slot.label} | ${slot.owner} | ${slot.closeoutState} | ${slot.evidenceScore}/100 | Required: ${slot.requiredArtifact} | Missing: ${slot.missingBecause}`),
+    ...realProof.closeoutRules.map((rule) => `- Closeout rule: ${rule}`),
     "",
     "## Founder Decisions",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),
@@ -15292,6 +15518,7 @@ function makeFounderBetaOperatingBrief() {
   const warRoom = founderBetaWarRoomDigest(ops);
   const commandCenter = founderBetaLaunchCommandCenter(ops, warRoom);
   const daybook = founderFirstCohortRehearsalDaybook(ops, warRoom, commandCenter);
+  const realProof = founderRealProofCloseoutBoard(ops, warRoom, commandCenter, daybook);
   return [
     "# NiveshNadi Founder Beta Operating Room",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -15301,6 +15528,9 @@ function makeFounderBetaOperatingBrief() {
     `First cohort daybook: ${daybook.daybookId}`,
     `First cohort daybook status: ${daybook.status}`,
     `First cohort daybook readiness: ${daybook.readiness}/100`,
+    `Real proof closeout board: ${realProof.closeoutBoardId}`,
+    `Real proof status: ${realProof.status}`,
+    `Real proof readiness: ${realProof.readiness}/100`,
     `Cohort decision: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `Operating score: ${ops.operatingScore}/100`,
@@ -15327,6 +15557,12 @@ function makeFounderBetaOperatingBrief() {
     ...daybook.operatorScript.map((line) => `- Operator script: ${line}`),
     ...daybook.goNoGoChecks.map((check) => `- Daybook go/no-go: ${check}`),
     ...daybook.receiptFields.map((field) => `- Daybook receipt field: ${field}`),
+    "",
+    "## Real Proof Closeout Board",
+    ...realProof.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...realProof.slots.map((slot) => `- ${slot.evidenceSlotId}: ${slot.label} | ${slot.owner} | ${slot.closeoutState} | ${slot.evidenceScore}/100 | Event: ${slot.event} | Source: ${slot.artifactSource}`),
+    ...realProof.closeoutRules.map((rule) => `- Real proof closeout rule: ${rule}`),
+    ...realProof.receiptFields.map((field) => `- Real proof receipt field: ${field}`),
     "",
     "## Founder War-Room Digest",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),

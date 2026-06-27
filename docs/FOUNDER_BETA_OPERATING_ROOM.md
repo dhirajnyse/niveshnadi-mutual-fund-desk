@@ -10,4 +10,6 @@ V319 adds Founder Beta Launch Command Center. The room now reads Final Signoff C
 
 V320 adds First Cohort Rehearsal Daybook. The room now turns the launch command center into a founder-operable rehearsal week: freeze line, payment dry run, legal wording, security/support drill, live-source release drill, and founder cohort decision. Each day has an owner, route, start command, close command, proof ID, blocker, go/no-go rule, and receipt fields so the first paid cohort cannot open from enthusiasm alone.
 
+V321 adds Real Proof Closeout Board. The room now gives every rehearsal day an evidence slot with required artifact, source proof, owner attestation, closeout state, missing reason, active blocker, no-go memo, and receipt fields. This keeps the first paid cohort closed until real payment, legal, security/support, live-source, and founder decision proof is attached, not merely described.
+
 This room protects monetization discipline. Low retail pricing can work only if hidden support, refund, evidence, and account costs are visible before the product invites more users. It also preserves the Phase 1 boundary: no advice, no execution, no PAN, folio, CAS, bank, UPI, card, OTP, ARN, EUIN, distributor client book, or Phase 2 workflow belongs inside the founder beta operating rhythm.

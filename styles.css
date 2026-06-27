@@ -23155,6 +23155,9 @@ body.simple-mode .quiet-fund-shelf {
 .backend-source-receipt-job p,
 .backend-source-receipt-job li,
 .backend-source-receipt-job small,
+.scheduled-worker-contract p,
+.scheduled-worker-contract li,
+.scheduled-worker-contract small,
 .source-failed-board p,
 .source-failed-board li,
 .source-failed-board small,
@@ -23232,6 +23235,9 @@ body.simple-mode .quiet-fund-shelf {
 .backend-source-job-metric-grid,
 .backend-source-job-lane-grid,
 .backend-source-job-two,
+.scheduled-worker-metric-grid,
+.scheduled-worker-ticket-grid,
+.scheduled-worker-two,
 .source-job-metric-grid,
 .source-job-active-grid,
 .source-job-grid,
@@ -23275,6 +23281,7 @@ body.simple-mode .quiet-fund-shelf {
 .backend-audit-control-grid,
 .launch-freeze-metric-grid,
 .backend-source-job-metric-grid,
+.scheduled-worker-metric-grid,
 .source-job-metric-grid,
 .source-job-active-grid,
 .source-worker-metric-grid,
@@ -23306,6 +23313,7 @@ body.simple-mode .quiet-fund-shelf {
 .source-alert-route-grid,
 .launch-freeze-trigger-grid,
 .backend-source-job-lane-grid,
+.scheduled-worker-ticket-grid,
 .source-delivery-channel-grid,
 .source-delivery-flow-grid,
 .source-failed-event-grid,
@@ -23319,6 +23327,7 @@ body.simple-mode .quiet-fund-shelf {
 .source-alert-two,
 .launch-freeze-two,
 .backend-source-job-two,
+.scheduled-worker-two,
 .source-delivery-two,
 .source-failed-two,
 .source-signoff-two,
@@ -23347,6 +23356,9 @@ body.simple-mode .quiet-fund-shelf {
 .backend-source-job-metric-grid article,
 .backend-source-job-lane-grid article,
 .backend-source-job-two article,
+.scheduled-worker-metric-grid article,
+.scheduled-worker-ticket-grid article,
+.scheduled-worker-two article,
 .source-job-metric-grid article,
 .source-job-active-grid article,
 .source-job-grid article,
@@ -23393,6 +23405,8 @@ body.simple-mode .quiet-fund-shelf {
 .launch-freeze-two article.ready,
 .backend-source-job-lane-grid article.ready,
 .backend-source-job-two article.ready,
+.scheduled-worker-ticket-grid article.ready,
+.scheduled-worker-two article.ready,
 .source-job-grid article.ready,
 .source-job-two article.ready,
 .source-worker-alert-grid article.ready,
@@ -23424,6 +23438,8 @@ body.simple-mode .quiet-fund-shelf {
 .launch-freeze-two article.watch,
 .backend-source-job-lane-grid article.watch,
 .backend-source-job-two article.watch,
+.scheduled-worker-ticket-grid article.watch,
+.scheduled-worker-two article.watch,
 .source-job-grid article.watch,
 .source-job-two article.watch,
 .source-worker-alert-grid article.watch,
@@ -23455,6 +23471,8 @@ body.simple-mode .quiet-fund-shelf {
 .launch-freeze-two article.caution,
 .backend-source-job-lane-grid article.caution,
 .backend-source-job-two article.caution,
+.scheduled-worker-ticket-grid article.caution,
+.scheduled-worker-two article.caution,
 .source-job-grid article.caution,
 .source-job-two article.caution,
 .source-worker-alert-grid article.caution,
@@ -23488,6 +23506,9 @@ body.simple-mode .quiet-fund-shelf {
 .backend-source-job-head span,
 .backend-source-job-metric-grid span,
 .backend-source-job-lane-grid span,
+.scheduled-worker-head span,
+.scheduled-worker-metric-grid span,
+.scheduled-worker-ticket-grid span,
 .source-job-head span,
 .source-job-metric-grid span,
 .source-job-active-grid span,
@@ -23533,6 +23554,8 @@ body.simple-mode .quiet-fund-shelf {
 .launch-freeze-metric-grid strong,
 .backend-source-job-metric-grid strong,
 .backend-source-job-lane-grid strong,
+.scheduled-worker-metric-grid strong,
+.scheduled-worker-ticket-grid strong,
 .source-job-metric-grid strong,
 .source-job-active-grid strong,
 .source-job-two strong,
@@ -23567,6 +23590,7 @@ body.simple-mode .quiet-fund-shelf {
 .backend-audit-panel-grid h3,
 .launch-freeze-two h3,
 .backend-source-job-two h3,
+.scheduled-worker-two h3,
 .source-job-two h3,
 .source-worker-runbook-grid h3,
 .source-alert-two h3,
@@ -23700,6 +23724,111 @@ body.simple-mode .quiet-fund-shelf {
 
 .backend-source-job-two ul,
 .backend-source-job-two ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.scheduled-worker-contract {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(31, 78, 121, 0.28);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(234, 242, 251, 0.98), rgba(255, 250, 240, 0.9));
+}
+
+.scheduled-worker-contract.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.96), rgba(245, 249, 252, 0.96));
+}
+
+.scheduled-worker-contract.watch {
+  border-color: rgba(225, 160, 55, 0.42);
+}
+
+.scheduled-worker-contract.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.scheduled-worker-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 12px;
+  align-items: center;
+}
+
+.scheduled-worker-head h3 {
+  margin: 3px 0 5px;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.14;
+}
+
+.scheduled-worker-head p {
+  margin: 0;
+}
+
+.scheduled-worker-score {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--gold) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.scheduled-worker-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.scheduled-worker-score strong,
+.scheduled-worker-score span {
+  position: relative;
+}
+
+.scheduled-worker-score strong {
+  color: #ffffff;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.scheduled-worker-score span {
+  color: #dce7ed;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.scheduled-worker-ticket-grid small {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+.scheduled-worker-ticket-grid small strong {
+  color: var(--ink);
+}
+
+.scheduled-worker-route {
+  margin-top: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.scheduled-worker-two {
+  grid-template-columns: 1.15fr 1fr 1fr;
+}
+
+.scheduled-worker-two ul,
+.scheduled-worker-two ol {
   margin: 8px 0 0;
   padding-left: 18px;
 }
@@ -33959,6 +34088,9 @@ body.simple-mode .quiet-fund-shelf {
   .backend-source-job-metric-grid,
   .backend-source-job-lane-grid,
   .backend-source-job-two,
+  .scheduled-worker-metric-grid,
+  .scheduled-worker-ticket-grid,
+  .scheduled-worker-two,
   .source-job-metric-grid,
   .source-job-active-grid,
   .source-job-grid,
@@ -34736,6 +34868,9 @@ body.simple-mode .quiet-fund-shelf {
   .backend-source-job-metric-grid,
   .backend-source-job-lane-grid,
   .backend-source-job-two,
+  .scheduled-worker-metric-grid,
+  .scheduled-worker-ticket-grid,
+  .scheduled-worker-two,
   .source-job-metric-grid,
   .source-job-active-grid,
   .source-job-grid,
@@ -35049,6 +35184,7 @@ body.simple-mode .quiet-fund-shelf {
   .backend-audit-hero,
   .launch-freeze-head,
   .backend-source-job-head,
+  .scheduled-worker-head,
   .source-job-head,
   .source-worker-head,
   .source-alert-head,
@@ -35117,6 +35253,7 @@ body.simple-mode .quiet-fund-shelf {
   .backend-audit-score,
   .launch-freeze-score,
   .backend-source-job-score,
+  .scheduled-worker-score,
   .source-job-score,
   .source-worker-score,
   .source-alert-score,

@@ -8,6 +8,8 @@ V289 adds the Live Data Source Intake Pack inside the console. The pack creates 
 
 V291 routes that pack into Backend Source Receipt Job. The backend job uses the intake pack, production import gate, source job, worker, alert, reviewer, and rollback state to decide whether the source is ready for a backend dry-run ticket or still blocked before unattended import.
 
+V292 extends that handoff into Scheduled Worker Receipt Contract. Intake fields such as source URL or file hash, source date, parser version, schema version, accepted/rejected counts, citation path, and rollback posture now become required proof fields for worker implementation tickets.
+
 V119 adds the Production Source Import Gate inside the console. The gate creates a stable import gate ID, combines intake score with live data contract strength and saved source receipt proof, then decides whether the source is production-import ready, reviewer-controlled, or blocked. It also lists the required production controls: source URL or file hash, source date, schema version, parser version, accepted and rejected row counts, citation path, reviewer decision, rollback note, job sequence, release policy, and import blockers.
 
 The gate is intentionally strict. A source can be good enough for a demo dry run but still blocked from production import if it has no saved source receipt, no visible citation path, stale source date, weak field contract, parser QA gap, manual-only import path, or missing reviewer release posture. This keeps public cards, scores, X-Ray outputs, dossiers, and decision packs from silently looking live before the audit trail exists.

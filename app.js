@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v291-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v291 Backend Source Receipt Job";
+const DATA_VERSION = "20260627-v292-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v292 Scheduled Worker Receipt Contract";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,16 +1240,16 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Backend source receipt job",
+    label: "Scheduled worker receipt contract",
     status: "Shipping now",
     route: "#backend-audit-receipts",
-    detail: "Turn the live-data intake pack and reviewer rehearsal into a backend-owned source receipt job with scheduler, worker, durable receipt, alert, reviewer, and recovery proof."
+    detail: "Turn the backend source receipt job into implementation-ready worker tickets for scheduler, fetch, parser, quarantine, receipt persistence, alert fan-out, and release recovery."
   },
   {
-    label: "Scheduled worker receipt contract",
+    label: "Worker ticket closeout drill",
     status: "Next",
     route: "#backend-audit-receipts",
-    detail: "Convert the source receipt job into implementation-ready worker tickets for fetch, parser, quarantine, alert fan-out, failed-run replay, and release queue recovery."
+    detail: "Rehearse closing the worker tickets with acceptance evidence, failed-run replay, alert delivery proof, reviewer sign-off, and recovery queue state."
   },
   {
     label: "Public recovery publish drill",
@@ -9260,7 +9260,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v291</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v292</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -34379,6 +34379,172 @@ function backendSourceReceiptJob(config = backendAuditConfig(), sourceImportJobs
   };
 }
 
+function scheduledWorkerReceiptContract(config = backendAuditConfig(), sourceImportJobs = productionSourceImportJobs(config), sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config), sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker), alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config), alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config), failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config)) {
+  const activeJob = sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const contractId = ["NN", "WORKER", "CONTRACT", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const ticketBatchId = ["NN", "WORKER", "TICKETS", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const acceptanceId = ["NN", "WORKER", "ACCEPTANCE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const storageReady = config.storage === "event" || config.storage === "append";
+  const sourceBlockers = sourceReceiptJob.blockers.filter((blocker) => !blocker.startsWith("No active backend"));
+  const workerBlockers = sourceWorker.blockers.filter((blocker) => !blocker.startsWith("No active worker"));
+  const routeBlockers = alertRouting.blockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 2);
+  const ticketTemplates = [
+    {
+      acceptance: "Worker can be paused, resumed, retried, and replayed by source job ID without duplicate imports.",
+      blocker: "scheduler pause and retry state is not backed by durable receipt events",
+      detail: `Bind cadence ${activeJob.pipeline.cadence} to ${sourceWorker.workerId}.`,
+      event: "source_worker.schedule_bound",
+      label: "Scheduler binding",
+      owner: "Data Ops",
+      proof: "worker_id, source_job_id, runbook_id, cadence, pause_state",
+      route: "#backend-ticket-factory",
+      score: sourceWorker.readiness + (storageReady ? 4 : -12)
+    },
+    {
+      acceptance: "Fetch stores source URL or file hash, checksum, source date, response status, and duplicate-batch decision.",
+      blocker: "source fetch proof is incomplete until checksum, source date, and duplicate policy exist",
+      detail: `Fetch ${activeJob.pipeline.title} before parser work begins.`,
+      event: "source_worker.fetch_receipt_written",
+      label: "Fetch receipt",
+      owner: "Data Engineering",
+      proof: "source_url_hash, checksum, source_date, http_status, duplicate_batch_flag",
+      route: "#source-intake",
+      score: activeJob.gateScore
+    },
+    {
+      acceptance: "Parser run emits parser version, schema version, accepted count, rejected count, and rejected-row digest.",
+      blocker: "parser quarantine needs accepted/rejected row counts and digest replay",
+      detail: `Validate primary key ${activeJob.contract.primaryKey} and date field ${activeJob.contract.dateField}.`,
+      event: "source_worker.parser_quarantine_completed",
+      label: "Parser quarantine",
+      owner: "Data QA",
+      proof: "parser_version, schema_version, accepted_row_count, rejected_row_count, rejected_row_digest_id",
+      route: "#source-dry-run",
+      score: Math.round((sourceImportJobs.readiness + failedRunStore.readiness) / 2)
+    },
+    {
+      acceptance: "Source receipt is appended before claim surfaces queue, with idempotency key and retention rule.",
+      blocker: "source receipt persistence cannot rely on browser-local state",
+      detail: `Persist ${sourceReceiptJob.receiptFamilyId} before release queue moves.`,
+      event: "source_worker.source_receipt_appended",
+      label: "Receipt persistence",
+      owner: "Security Ops",
+      proof: "source_receipt_id, idempotency_key, retention_policy, event_sequence",
+      route: "#source-receipts",
+      score: failedRunStore.readiness + (storageReady ? 4 : -18)
+    },
+    {
+      acceptance: "High alerts fan out to Ops, Reviewer, Release Ops, and audit stream with delivery attempt IDs.",
+      blocker: "real notification channel and dead-letter queue remain outside the static prototype",
+      detail: `${alertRouting.routes.length} alert routes and ${alertDelivery.channels.length} delivery channels mapped.`,
+      event: "source_worker.alert_delivery_bound",
+      label: "Alert fan-out",
+      owner: "Release Ops",
+      proof: "alert_route_id, delivery_attempt_id, reviewer_queue_id, dead_letter_id",
+      route: "#backend-audit-receipts",
+      score: Math.round((alertRouting.readiness + alertDelivery.readiness) / 2)
+    },
+    {
+      acceptance: "Recovery queue stays frozen until reviewer sign-off, rollback evidence, correction receipt, and surface state agree.",
+      blocker: "public surface recovery still needs reviewer and rollback closeout proof",
+      detail: "Bind failed-run replay to reviewer closeout and affected-surface recovery.",
+      event: "source_worker.release_recovery_ready",
+      label: "Release recovery",
+      owner: "Reviewer",
+      proof: "failed_run_event_store_id, reviewer_signoff_id, rollback_evidence_id, affected_surface_ids",
+      route: "#reviewer-workbench",
+      score: Math.round((sourceReceiptJob.readiness + failedRunStore.readiness) / 2)
+    }
+  ];
+  const tickets = ticketTemplates.map((ticket, index) => {
+    const score = clampNumber(Math.round(ticket.score - sourceBlockers.length * 2 - (index > 2 && !storageReady ? 4 : 0)), 14, 96);
+    return {
+      ...ticket,
+      score,
+      ticketId: ["NN", "WORKER", "TICKET", String(index + 1).padStart(2, "0"), sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      tone: score >= 78 ? "ready" : score < 58 ? "caution" : "watch"
+    };
+  });
+  const readiness = clampNumber(Math.round(
+    sourceReceiptJob.readiness * 0.24 +
+      sourceWorker.readiness * 0.22 +
+      sourceImportJobs.readiness * 0.16 +
+      alertRouting.readiness * 0.12 +
+      alertDelivery.readiness * 0.1 +
+      failedRunStore.readiness * 0.16
+  ) - Math.max(0, sourceBlockers.length + workerBlockers.length - 2) * 2, 14, 96);
+  const blockers = [...new Set([
+    ...sourceBlockers.slice(0, 4),
+    ...workerBlockers.slice(0, 4),
+    ...routeBlockers,
+    ...(storageReady ? [] : ["scheduled worker contract needs event stream or append-only receipt storage"]),
+    ...(tickets.some((ticket) => ticket.score < 58) ? ["one or more worker tickets are below implementation threshold"] : [])
+  ])];
+  const status = readiness >= 84 && !blockers.length
+    ? "Worker tickets implementation-ready"
+    : readiness >= 66 && storageReady
+      ? "Worker tickets need dry-run"
+      : "Worker tickets blocked";
+  const tone = status === "Worker tickets implementation-ready" ? "ready" : status === "Worker tickets blocked" ? "caution" : "watch";
+  const metrics = [
+    { label: "Worker contract", value: contractId, detail: `${tickets.length} implementation tickets for ${activeJob.pipeline.title}.` },
+    { label: "Ticket batch", value: ticketBatchId, detail: `${tickets.filter((ticket) => ticket.tone === "ready").length} ready, ${tickets.filter((ticket) => ticket.tone === "watch").length} dry-run, ${tickets.filter((ticket) => ticket.tone === "caution").length} blocked.` },
+    { label: "Acceptance pack", value: acceptanceId, detail: "Acceptance evidence must close every worker ticket before launch." },
+    { label: "Readiness", value: `${readiness}/100`, detail: `${status}; storage is ${backendAuditStorageLabel(config.storage)}.` }
+  ];
+  const receiptFields = [
+    "worker_contract_id",
+    "worker_ticket_batch_id",
+    "worker_ticket_id",
+    "source_receipt_job_id",
+    "source_job_id",
+    "import_gate_id",
+    "worker_id",
+    "runbook_id",
+    "event_name",
+    "idempotency_key",
+    "pause_state",
+    "retry_count",
+    "source_url_hash",
+    "checksum",
+    "source_date",
+    "parser_version",
+    "schema_version",
+    "accepted_row_count",
+    "rejected_row_count",
+    "rejected_row_digest_id",
+    "alert_route_id",
+    "delivery_attempt_id",
+    "reviewer_queue_id",
+    "failed_run_event_store_id",
+    "rollback_evidence_id",
+    "affected_surface_ids",
+    "acceptance_status"
+  ];
+  const acceptanceRules = [
+    "Every ticket must name one event, one owner, one proof field set, and one rollback or pause condition.",
+    "No worker ticket closes from a screenshot, browser-local state, or manual note without append-only receipt proof.",
+    "Parser tickets must prove both accepted and rejected counts and keep rejected-row digest replayable.",
+    "Alert tickets must prove delivery attempt, acknowledgement path, reviewer queue, and dead-letter behavior.",
+    "Release recovery tickets must keep public surfaces frozen until reviewer, rollback, correction, and surface state agree."
+  ];
+
+  return {
+    acceptanceId,
+    acceptanceRules,
+    blockers: blockers.length ? blockers : ["No active scheduled worker ticket blocker in this preview. Keep real scheduler, CI job, storage, alert delivery, and reviewer identity before production."],
+    contractId,
+    metrics,
+    readiness,
+    receiptFields,
+    status,
+    ticketBatchId,
+    tickets,
+    tone
+  };
+}
+
 function sourceWorkerAlertRouting(sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
   const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
   const activeBlockers = sourceWorker.blockers.filter((blocker) => !blocker.startsWith("No active worker blocker"));
@@ -36008,6 +36174,7 @@ function renderBackendAuditReceipts(event) {
   const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence);
+  const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
   const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
@@ -36015,7 +36182,7 @@ function renderBackendAuditReceipts(event) {
   const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
   const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
   const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
-  els.backendAuditSummary.textContent = `${sourceReceiptJob.readiness}/100 | ${sourceReceiptJob.status}`;
+  els.backendAuditSummary.textContent = `${workerContract.readiness}/100 | ${workerContract.status}`;
   els.backendAuditOutput.innerHTML = `
     <div class="backend-audit-hero ${escapeHtml(config.tone)}">
       <div>
@@ -36089,6 +36256,67 @@ function renderBackendAuditReceipts(event) {
           <h3>Job blockers</h3>
           <ul>
             ${sourceReceiptJob.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="scheduled-worker-contract ${escapeHtml(workerContract.tone)}">
+      <div class="scheduled-worker-head">
+        <div>
+          <span>Scheduled worker receipt contract</span>
+          <h3>${escapeHtml(workerContract.status)}</h3>
+          <p>Contract ${escapeHtml(workerContract.contractId)} turns the source receipt job into implementation tickets with event names, owners, proof fields, acceptance rules, pause conditions, and launch blockers.</p>
+        </div>
+        <div class="scheduled-worker-score" style="--score:${workerContract.readiness}">
+          <strong>${workerContract.readiness}</strong>
+          <span>Work</span>
+        </div>
+      </div>
+      <div class="scheduled-worker-metric-grid">
+        ${workerContract.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="scheduled-worker-ticket-grid">
+        ${workerContract.tickets.map((ticket) => `
+          <article class="${escapeHtml(ticket.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(ticket.owner)}</span>
+                <strong>${escapeHtml(ticket.label)}</strong>
+              </div>
+              <b>${ticket.score}</b>
+            </div>
+            <p>${escapeHtml(ticket.ticketId)}</p>
+            <div class="build-progress-bar"><span style="width:${ticket.score}%"></span></div>
+            <small><strong>Event:</strong> ${escapeHtml(ticket.event)}</small>
+            <small><strong>Proof:</strong> ${escapeHtml(ticket.proof)}</small>
+            <small><strong>Accept:</strong> ${escapeHtml(ticket.acceptance)}</small>
+            <button class="text-button scheduled-worker-route" type="button" data-build-route="${escapeHtml(ticket.route)}">Open ticket route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="scheduled-worker-two">
+        <article>
+          <h3>Required receipt fields</h3>
+          <ul>
+            ${workerContract.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Acceptance rules</h3>
+          <ol>
+            ${workerContract.acceptanceRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="${workerContract.blockers.some((item) => item.startsWith("No active scheduled")) ? "ready" : "caution"}">
+          <h3>Worker blockers</h3>
+          <ul>
+            ${workerContract.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
           </ul>
         </article>
       </div>
@@ -37054,6 +37282,50 @@ function makeBackendSourceReceiptJobBrief() {
   ].join("\n");
 }
 
+function makeScheduledWorkerReceiptContractBrief() {
+  const config = backendAuditConfig();
+  const sourceImportJobs = productionSourceImportJobs(config);
+  const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config);
+  const alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config);
+  const failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence);
+  const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
+  return [
+    "# NiveshNadi Scheduled Worker Receipt Contract",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Contract ID: ${workerContract.contractId}`,
+    `Ticket batch ID: ${workerContract.ticketBatchId}`,
+    `Acceptance pack ID: ${workerContract.acceptanceId}`,
+    `Status: ${workerContract.status}`,
+    `Readiness: ${workerContract.readiness}/100`,
+    `Source receipt job: ${sourceReceiptJob.jobContractId}`,
+    `Active worker: ${sourceWorker.workerId}`,
+    `Runbook: ${sourceWorker.runbookId}`,
+    `Storage: ${backendAuditStorageLabel(config.storage)}`,
+    "",
+    "## Contract Metrics",
+    ...workerContract.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Worker Tickets",
+    ...workerContract.tickets.map((ticket) => `- ${ticket.ticketId}: ${ticket.label} | ${ticket.owner} | ${ticket.score}/100 | ${ticket.event} | Proof: ${ticket.proof} | Accept: ${ticket.acceptance} | Blocker: ${ticket.blocker}`),
+    "",
+    "## Required Receipt Fields",
+    ...workerContract.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## Acceptance Rules",
+    ...workerContract.acceptanceRules.map((rule) => `- ${rule}`),
+    "",
+    "## Worker Blockers",
+    ...workerContract.blockers.map((blocker) => `- ${blocker}`),
+    "",
+    "## Guardrail",
+    "Scheduled worker receipts are backend operations metadata. They do not store PAN, folio, CAS, bank data, credentials, contact records, private notes, transaction instructions, distributor client books, or personalized advice content."
+  ].join("\n");
+}
+
 function makeBackendAuditReceiptBrief() {
   const config = backendAuditConfig();
   const paymentReplay = paymentReconciliationReplay(config);
@@ -37065,6 +37337,7 @@ function makeBackendAuditReceiptBrief() {
   const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence);
+  const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
   const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
@@ -37092,6 +37365,18 @@ function makeBackendAuditReceiptBrief() {
     ...sourceReceiptJob.receiptFields.map((field) => `- Source job receipt field: ${field}`),
     ...sourceReceiptJob.handoffRules.map((rule) => `- Source job handoff rule: ${rule}`),
     ...sourceReceiptJob.blockers.map((blocker) => `- Source job blocker: ${blocker}`),
+    "",
+    "## Scheduled Worker Receipt Contract",
+    `- Worker contract status: ${workerContract.status}`,
+    `- Worker contract readiness: ${workerContract.readiness}/100`,
+    `- Worker contract ID: ${workerContract.contractId}`,
+    `- Worker ticket batch ID: ${workerContract.ticketBatchId}`,
+    `- Worker acceptance pack ID: ${workerContract.acceptanceId}`,
+    ...workerContract.metrics.map((metric) => `- Worker contract metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...workerContract.tickets.map((ticket) => `- Worker ticket: ${ticket.ticketId}: ${ticket.label} | ${ticket.owner} | ${ticket.score}/100 | ${ticket.event} | ${ticket.proof} | Accept: ${ticket.acceptance}`),
+    ...workerContract.receiptFields.map((field) => `- Worker receipt field: ${field}`),
+    ...workerContract.acceptanceRules.map((rule) => `- Worker acceptance rule: ${rule}`),
+    ...workerContract.blockers.map((blocker) => `- Worker blocker: ${blocker}`),
     "",
     "## Event Contract",
     ...config.stream.eventTypes.map((item) => `- ${item}`),
@@ -47122,6 +47407,7 @@ function bindEvents() {
   });
   els.openBackendAuditRoute?.addEventListener("click", openBackendAuditRoute);
   els.copyBackendSourceReceiptJob?.addEventListener("click", () => copyText(makeBackendSourceReceiptJobBrief()));
+  els.copyScheduledWorkerContract?.addEventListener("click", () => copyText(makeScheduledWorkerReceiptContractBrief()));
   els.copyBackendAudit?.addEventListener("click", () => copyText(makeBackendAuditReceiptBrief()));
   els.sourceQueueForm?.addEventListener("submit", renderSourceQaQueue);
   [els.sourceQueueMode, els.sourceQueuePriority, els.sourceQueueOwner].forEach((input) => {
@@ -48903,6 +49189,7 @@ function cacheElements() {
     backendAuditOutput: qs("#backendAuditOutput"),
     openBackendAuditRoute: qs("#openBackendAuditRoute"),
     copyBackendSourceReceiptJob: qs("#copyBackendSourceReceiptJob"),
+    copyScheduledWorkerContract: qs("#copyScheduledWorkerContract"),
     copyBackendAudit: qs("#copyBackendAudit"),
     sourceQueueForm: qs("#sourceQueueForm"),
     sourceQueueMode: qs("#sourceQueueMode"),

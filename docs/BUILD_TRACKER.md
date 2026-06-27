@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V292 Scheduled Worker Receipt Contract
+
+V292 adds Scheduled Worker Receipt Contract inside Backend Audit Receipts. It turns the v291 backend source receipt job into implementation-ready worker tickets for scheduler binding, fetch receipt, parser quarantine, receipt persistence, alert fan-out, and release recovery, with ticket IDs, owners, event names, proof fields, acceptance rules, and launch blockers.
+
 ## V291 Backend Source Receipt Job
 
 V291 adds a compact Backend Source Receipt Job inside Backend Audit Receipts. It turns the live-data source intake pack and reviewer release rehearsal into one backend-owned job contract with source receipt job ID, receipt family ID, import gate, worker, durable event store, alert delivery, reviewer sign-off, rollback evidence, affected surfaces, required receipt fields, handoff rules, and launch blockers.

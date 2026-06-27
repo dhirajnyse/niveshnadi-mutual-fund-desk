@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V305 Production Account and Payment Smoke
+
+V305 adds Production Account and Payment Smoke inside Backend Audit Receipts. It rolls account-vault migration, provider webhook deployment, entitlement-vault joins, receipt replay, privacy export/delete, support repair, and payment reconciliation into one smoke run with fixture IDs, command refs, assertion lists, route buttons, owner review status, release blockers, receipt fields, and hard no-go rules before the next paid account cohort can widen.
+
 ## V304 Account Vault Endpoint Contracts
 
 V304 adds Account Vault Endpoint Contracts inside the Account Vault Blueprint. It turns saved research migration, restore proof, entitlement-vault join, account export, account deletion, support repair mutation, and audit export into concrete backend endpoints with method, path, service, payload fields, request logs, receipt logs, replay or rollback logs, monitor events, owner rules, no-go rules, blocked-data scans, and closeout receipt fields before paid account storage can ship.

@@ -232,6 +232,10 @@ V304 turns account vault planning into backend endpoint contracts. Migration, re
 
 Commercially, this protects the INR 100/month and INR 1,000/year plan from invisible storage and support cost. Saved research is valuable only if it can be migrated, restored, exported, deleted, repaired, and audited without private identifiers, support guesswork, or manual database edits.
 
+V305 adds Production Account and Payment Smoke in Backend Audit Receipts. The smoke gate checks account-vault endpoints, provider webhook deployment, entitlement joins, receipt replay, privacy export/delete, support repair, and payment reconciliation together before the next paid account cohort can widen.
+
+Commercially, this keeps the low-price model disciplined: account storage, payment access, refunds, support repair, privacy closeout, and settlement reconciliation must pass repeatable fixture checks instead of becoming manual founder work.
+
 ## Payment Adapter Repairs
 
 V150 connects the payment backend to repairable adapter routes. Checkout, webhook, idempotency replay, refund, cancellation, entitlement projection, support repair, settlement, and incident adapters now show the event in, event out, receipt join, repair action, rollback rule, and blockers before real gateway events can unlock paid features.

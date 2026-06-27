@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v304-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v304 Account Vault Endpoint Contracts";
+const DATA_VERSION = "20260627-v305-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v305 Production Account and Payment Smoke";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Run production account and payment smoke across account vault endpoints, entitlement joins, export/delete jobs, provider webhook, receipt replay, and support repair."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Bind account recovery, session retention, vault restore, deletion closeout, and support notices into account lifecycle receipts."
   },
   {
     phase: "Phase 2",
@@ -1240,8 +1240,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account vault endpoint contracts",
+    label: "Production account and payment smoke",
     status: "Shipping now",
+    route: "#backend-audit-receipts",
+    detail: "Run production smoke for account, entitlement, provider webhook, receipt replay, privacy export/delete, support repair, and reconciliation."
+  },
+  {
+    label: "Account vault endpoint contracts",
+    status: "Done",
     route: "#account-vault",
     detail: "Turn account migration, export, delete, support repair, restore, entitlement join, and saved research vault work into endpoint contracts with closeout receipts."
   },
@@ -1256,12 +1262,6 @@ const BUILD_TRACKER_CURRENT_SPRINT = [
     status: "Done",
     route: "#backend-ticket-factory",
     detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, monitoring handoffs, and production deploy closeout."
-  },
-  {
-    label: "Production account and payment smoke",
-    status: "Next",
-    route: "#backend-audit-receipts",
-    detail: "Run production smoke for account, entitlement, provider webhook, receipt replay, privacy export/delete, and support repair."
   },
   {
     label: "Account recovery and retention receipts",
@@ -9272,7 +9272,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v304</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v305</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -38314,6 +38314,296 @@ function productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery,
   };
 }
 
+function productionAccountPaymentSmoke(config, workerSmokeDashboard) {
+  config = config || backendAuditConfig();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const paymentStream = BACKEND_AUDIT_STREAMS.find((stream) => stream.id === "payment-entitlement") || config.stream;
+  const paymentConfig = {
+    ...config,
+    stream: paymentStream,
+    storage: config.storage === "browser" ? "browser" : "event",
+    retention: config.retention === "minimal" ? "finance" : config.retention,
+    mode: config.mode === "dry" ? "launch" : config.mode,
+    blockers: [
+      ...(config.storage === "browser" ? ["browser-local storage is not acceptable for account/payment smoke receipts"] : []),
+      ...(config.mode === "stress" ? ["rollback and failed-write scenarios must stay in the smoke replay before launch"] : [])
+    ]
+  };
+  const paymentReplay = paymentReconciliationReplay(paymentConfig);
+  const providerContract = providerPilotReceiptContractConfig();
+  const providerTwin = providerPaymentTwin(providerContract);
+  const providerDeploy = productionProviderDeploymentReceipts(providerContract, providerTwin);
+  const entitlement = entitlementBridgeConfig();
+  const replayEngine = receiptReplayEngineConfig();
+  const privacy = privacyControlConfig();
+  const vault = accountVaultBlueprintConfig();
+  const vaultEndpoints = accountVaultEndpointContracts(vault);
+  const storageReady = config.storage === "event" || config.storage === "append";
+  const workerSignal = workerSmokeDashboard || {
+    dashboardId: ["NN", "PROD", "WORKER", "SMOKE", "ACCOUNT", suffix].join("-").toUpperCase(),
+    readiness: config.score,
+    releaseBlockers: []
+  };
+  const smokeRunId = ["NN", "ACCOUNT", "PAYMENT", "SMOKE", suffix].join("-").toUpperCase();
+  const fixtureBatchId = ["NN", "ACCOUNT", "PAYMENT", "FIXTURES", suffix].join("-").toUpperCase();
+  const releaseGateId = ["NN", "ACCOUNT", "PAYMENT", "GATE", suffix].join("-").toUpperCase();
+  const closeoutId = ["NN", "ACCOUNT", "PAYMENT", "CLOSEOUT", suffix].join("-").toUpperCase();
+  const endpointByLabel = (label) => vaultEndpoints.endpoints.find((endpoint) => endpoint.label === label) || vaultEndpoints.weakest;
+  const providerLaneByLabel = (label) => providerDeploy.lanes.find((lane) => lane.label === label) || providerDeploy.weakest;
+  const replayCaseByLabel = (label) => replayEngine.cases.find((item) => item.label.includes(label)) || replayEngine.weakest;
+  const paymentLegByLabel = (label) => paymentReplay.legs.find((leg) => leg.label === label) || paymentReplay.legs[0];
+  const activeBlockers = (items) => (items || []).filter((item) => {
+    if (!item) return false;
+    const text = String(item);
+    return text && !text.startsWith("No active") && !text.startsWith("No backend");
+  });
+  const scoreFixture = (...scores) => clampNumber(Math.round(scores.reduce((sum, score) => sum + score, 0) / Math.max(scores.length, 1)) - (storageReady ? 0 : 10), 12, 96);
+  const migrationEndpoint = endpointByLabel("Research vault migration");
+  const entitlementEndpoint = endpointByLabel("Entitlement vault join");
+  const exportEndpoint = endpointByLabel("Account export request");
+  const deletionEndpoint = endpointByLabel("Account deletion job");
+  const supportEndpoint = endpointByLabel("Support repair mutation");
+  const auditEndpoint = endpointByLabel("Vault audit export");
+  const providerWebhook = providerLaneByLabel("Webhook endpoint deploy");
+  const settlementLane = providerLaneByLabel("Settlement import check");
+  const replayDuplicate = replayCaseByLabel("Duplicate webhook");
+  const replaySupport = replayCaseByLabel("Support repair");
+  const replayIncident = replayCaseByLabel("Payment incident");
+  const supportLeg = paymentLegByLabel("Support repair");
+  const settlementLeg = paymentLegByLabel("Settlement close");
+  const invoiceLeg = paymentLegByLabel("Invoice ledger");
+  const fixtureTemplates = [
+    {
+      key: "account-vault-migration",
+      label: "Account vault migration",
+      owner: "Account Storage",
+      route: migrationEndpoint.route,
+      command: `npm run smoke -- --gate account-vault-migration --batch ${vaultEndpoints.migrationBatchId}`,
+      event: migrationEndpoint.monitorEvent,
+      score: scoreFixture(migrationEndpoint.score, vaultEndpoints.readiness, vault.handoff.readiness, workerSignal.readiness),
+      evidence: migrationEndpoint.logReceipts.join(", "),
+      assertions: migrationEndpoint.payloadFields.slice(0, 5),
+      blockers: [...migrationEndpoint.blockers, ...activeBlockers(vaultEndpoints.blockers).slice(0, 2)],
+      noGo: migrationEndpoint.noGo
+    },
+    {
+      key: "provider-webhook",
+      label: "Provider webhook",
+      owner: "Platform",
+      route: providerWebhook.route,
+      command: `npm run smoke -- --gate provider-webhook --deployment ${providerDeploy.deploymentId}`,
+      event: providerWebhook.event,
+      score: scoreFixture(providerWebhook.score, providerDeploy.readiness, providerContract.readiness, providerTwin.readiness),
+      evidence: providerWebhook.evidence,
+      assertions: providerWebhook.receiptFields.slice(0, 5),
+      blockers: [...activeBlockers(providerDeploy.blockers).slice(0, 3)],
+      noGo: providerWebhook.noGo
+    },
+    {
+      key: "entitlement-join",
+      label: "Entitlement join",
+      owner: "Entitlement",
+      route: entitlementEndpoint.route,
+      command: `npm run smoke -- --gate entitlement-vault-join --contract ${vaultEndpoints.endpointContractId}`,
+      event: entitlementEndpoint.monitorEvent,
+      score: scoreFixture(entitlementEndpoint.score, entitlement.score, paymentReplay.readiness, replayEngine.score),
+      evidence: entitlementEndpoint.logReceipts.join(", "),
+      assertions: entitlementEndpoint.payloadFields.slice(0, 5),
+      blockers: [...entitlementEndpoint.blockers, ...activeBlockers(entitlement.blockers).slice(0, 2)],
+      noGo: entitlementEndpoint.noGo
+    },
+    {
+      key: "receipt-replay",
+      label: "Receipt replay",
+      owner: "Backend",
+      route: "#receipt-replay-engine",
+      command: `npm run smoke -- --gate receipt-replay --engine ${replayEngine.engineId}`,
+      event: "receipt_replay.account_payment.projected",
+      score: scoreFixture(replayEngine.score, replayDuplicate.score, replaySupport.score, replayIncident.score, paymentReplay.readiness),
+      evidence: replayEngine.requiredFields.slice(0, 6).join(", "),
+      assertions: replayEngine.stateModel.slice(0, 5),
+      blockers: [...activeBlockers(replayEngine.blockers).slice(0, 3)],
+      noGo: "No account/payment launch if duplicate, refund, support repair, settlement, or incident replay cannot rebuild the same entitlement state."
+    },
+    {
+      key: "privacy-export-delete",
+      label: "Privacy export/delete",
+      owner: "Privacy Ops",
+      route: "#privacy-control",
+      command: `npm run smoke -- --gate privacy-export-delete --job ${vaultEndpoints.privacyJobId}`,
+      event: "account_vault.privacy_smoke.completed",
+      score: scoreFixture(exportEndpoint.score, deletionEndpoint.score, privacy.execution.readiness, vaultEndpoints.readiness),
+      evidence: [exportEndpoint.monitorEvent, deletionEndpoint.monitorEvent, privacy.execution.receiptId].join(", "),
+      assertions: [...exportEndpoint.payloadFields.slice(0, 3), ...deletionEndpoint.payloadFields.slice(0, 3)],
+      blockers: [...exportEndpoint.blockers, ...deletionEndpoint.blockers, ...activeBlockers(privacy.execution.blockers).slice(0, 2)],
+      noGo: "No export/delete closeout without scoped request, excluded-field proof, completion receipt, and support-safe notice."
+    },
+    {
+      key: "support-repair",
+      label: "Support repair",
+      owner: "Support Lead",
+      route: supportEndpoint.route,
+      command: `npm run smoke -- --gate support-repair --case ${vaultEndpoints.supportRepairId}`,
+      event: supportEndpoint.monitorEvent,
+      score: scoreFixture(supportEndpoint.score, supportLeg.score, replaySupport.score, vault.supportRepair.score),
+      evidence: supportEndpoint.logReceipts.join(", "),
+      assertions: supportEndpoint.payloadFields.slice(0, 5),
+      blockers: [...supportEndpoint.blockers, ...activeBlockers(vault.supportRepair.blockers.map((blocker) => blocker.check)).slice(0, 2)],
+      noGo: supportEndpoint.noGo
+    },
+    {
+      key: "payment-reconciliation",
+      label: "Payment reconciliation",
+      owner: "Finance Ops",
+      route: "#backend-audit-receipts",
+      command: `npm run smoke -- --gate payment-reconciliation --replay ${paymentReplay.replayId}`,
+      event: "payment_reconciliation.account_smoke.closed",
+      score: scoreFixture(paymentReplay.readiness, settlementLeg.score, invoiceLeg.score, settlementLane.score, auditEndpoint.score),
+      evidence: paymentReplay.varianceChecks.join(", "),
+      assertions: paymentReplay.replaySteps.slice(0, 5),
+      blockers: [...activeBlockers(paymentReplay.blockers).slice(0, 3), ...activeBlockers(providerDeploy.blockers).slice(0, 1)],
+      noGo: "No paid cohort expansion while gateway, invoice, refund, support repair, settlement, and entitlement projections disagree."
+    }
+  ];
+  const fixtures = fixtureTemplates.map((fixture, index) => {
+    const blockers = [
+      ...fixture.blockers,
+      ...(storageReady ? [] : ["account/payment smoke needs append-only or event-stream backend receipts"]),
+      ...(fixture.score < 64 ? [fixture.noGo] : [])
+    ].filter(Boolean);
+    const active = activeBlockers(blockers);
+    const status = fixture.score >= 82 && active.length === 0
+      ? "Smoke pass"
+      : fixture.score >= 62
+        ? "Owner review"
+        : "Smoke blocked";
+    return {
+      ...fixture,
+      blockers: blockers.length ? [...new Set(blockers)] : ["No active account/payment smoke blocker in this preview. Keep real backend CI, provider credentials, account auth, and owner closeout before launch."],
+      fixtureId: ["NN", "ACCOUNT", "PAY", "SMOKE", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      status,
+      tone: status === "Smoke pass" ? "ready" : status === "Smoke blocked" ? "caution" : "watch"
+    };
+  });
+  const pass = fixtures.filter((fixture) => fixture.status === "Smoke pass").length;
+  const review = fixtures.filter((fixture) => fixture.status === "Owner review").length;
+  const blocked = fixtures.filter((fixture) => fixture.status === "Smoke blocked").length;
+  const dependencyAverage = Math.round([
+    providerDeploy.readiness,
+    vaultEndpoints.readiness,
+    entitlement.score,
+    replayEngine.score,
+    privacy.execution.readiness,
+    paymentReplay.readiness,
+    workerSignal.readiness
+  ].reduce((sum, score) => sum + score, 0) / 7);
+  const fixtureAverage = Math.round(fixtures.reduce((sum, fixture) => sum + fixture.score, 0) / fixtures.length);
+  const releaseBlockers = [...new Set([
+    ...fixtures.filter((fixture) => fixture.status !== "Smoke pass").flatMap((fixture) => fixture.blockers.slice(0, 2)),
+    ...activeBlockers(workerSignal.releaseBlockers || []).slice(0, 3),
+    ...(storageReady ? [] : ["production account/payment smoke cannot close with browser-local receipt storage"]),
+    "real account auth, payment provider secrets, queue workers, database credentials, and owner identities remain outside this static prototype"
+  ])];
+  const readiness = clampNumber(Math.round(
+    fixtureAverage * 0.46 +
+      dependencyAverage * 0.28 +
+      vaultEndpoints.readiness * 0.1 +
+      providerDeploy.readiness * 0.08 +
+      paymentReplay.readiness * 0.08
+  ) - blocked * 4 - Math.min(activeBlockers(releaseBlockers).length, 6), 12, 96);
+  const status = readiness >= 84 && blocked === 0 && activeBlockers(releaseBlockers).length <= 1
+    ? "Account payment smoke pass"
+    : readiness >= 64 && blocked <= 1
+      ? "Account payment smoke review"
+      : "Account payment smoke blocked";
+  const tone = status === "Account payment smoke pass" ? "ready" : status === "Account payment smoke blocked" ? "caution" : "watch";
+  const metrics = [
+    { label: "Smoke run", value: smokeRunId, detail: `${pass} pass, ${review} review, ${blocked} blocked fixture${fixtures.length === 1 ? "" : "s"}.` },
+    { label: "Fixture batch", value: fixtureBatchId, detail: "Account, provider, entitlement, replay, privacy, support, and finance smoke fixtures." },
+    { label: "Release gate", value: releaseGateId, detail: `${status}; storage is ${backendAuditStorageLabel(config.storage)}.` },
+    { label: "Dependency score", value: `${dependencyAverage}/100`, detail: `Links ${vaultEndpoints.endpointContractId}, ${providerDeploy.deploymentId}, and ${paymentReplay.replayId}.` }
+  ];
+  const evidencePanels = [
+    {
+      label: "Account endpoint contract",
+      owner: "Account Storage",
+      value: `${vaultEndpoints.readiness}/100`,
+      detail: `${vaultEndpoints.endpointContractId} covers ${vaultEndpoints.endpoints.length} mutation endpoints.`
+    },
+    {
+      label: "Provider deployment",
+      owner: "Platform",
+      value: `${providerDeploy.readiness}/100`,
+      detail: `${providerDeploy.deploymentId} keeps webhook, settlement, rollback, and support owner proof together.`
+    },
+    {
+      label: "Replay and privacy",
+      owner: "Privacy Ops",
+      value: `${Math.round((replayEngine.score + privacy.execution.readiness) / 2)}/100`,
+      detail: `${replayEngine.engineId} and ${privacy.execution.receiptId} prove replay, export, delete, and redaction paths.`
+    },
+    {
+      label: "Finance reconciliation",
+      owner: "Finance Ops",
+      value: `${paymentReplay.readiness}/100`,
+      detail: `${paymentReplay.replayId} compares gateway, invoice, refund, support, settlement, and entitlement state.`
+    }
+  ];
+  const sequence = [
+    "Load account endpoint, provider deployment, entitlement, receipt replay, privacy execution, payment reconciliation, and worker smoke IDs.",
+    "Run each smoke fixture with command ref, event name, route, assertions, evidence field list, and blocked-data scan.",
+    "Project account vault writes only from entitlement receipts and replay logs, not browser flags or manual support notes.",
+    "Close privacy export/delete, support repair, and payment reconciliation fixtures before any paid cohort widens.",
+    "Attach smoke run, fixture batch, release gate, closeout ID, owner review state, and no-go decision to Backend Audit Receipts."
+  ];
+  const receiptFields = [
+    "account_payment_smoke_run_id",
+    "fixture_batch_id",
+    "fixture_id",
+    "release_gate_id",
+    "account_vault_endpoint_contract_id",
+    "provider_deployment_receipt_id",
+    "receipt_replay_engine_id",
+    "payment_reconciliation_replay_id",
+    "privacy_job_id",
+    "support_repair_id",
+    "owner_role",
+    "command_ref",
+    "assertion_result",
+    "blocked_data_scan",
+    "closeout_id",
+    "closed_at"
+  ];
+  const noGoRules = [
+    "No paid account cohort widens if any account/payment smoke fixture is Smoke blocked or lacks owner closeout.",
+    "No account-vault mutation without account hash, idempotency key, entitlement receipt, replay log, and rollback marker.",
+    "No provider webhook launch without signature verification, timestamp window, idempotency lock, and replay proof.",
+    "No privacy export/delete closeout without excluded-field proof, completion receipt, retention exception, and support-safe notice.",
+    "No support repair or payment reconciliation from raw support notes, manual payment records, PAN, folio, CAS, bank, card, UPI, OTP, ARN/EUIN, or distributor client-book data."
+  ];
+  return {
+    blocked,
+    closeoutId,
+    dependencyAverage,
+    evidencePanels,
+    fixtureAverage,
+    fixtureBatchId,
+    fixtures,
+    metrics,
+    noGoRules,
+    pass,
+    readiness,
+    receiptFields,
+    releaseBlockers,
+    releaseGateId,
+    review,
+    sequence,
+    smokeRunId,
+    status,
+    tone
+  };
+}
+
 function betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs) {
   config = config || backendAuditConfig();
   sourceImportJobs = sourceImportJobs || productionSourceImportJobs(config);
@@ -39267,11 +39557,12 @@ function renderBackendAuditReceipts(event) {
   const founderOps = founderBetaOperatingRoomConfig();
   const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenter, founderOps);
   const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const accountPaymentSmoke = productionAccountPaymentSmoke(config, workerSmokeDashboard);
   const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
   const deployRunbook = backendDeployRunbookPacket(config, workerSmokeDashboard, betaIncidentLedger, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs, implementationHandoff, workerCloseout);
   const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
   const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
-  els.backendAuditSummary.textContent = `${deployRunbook.readiness}/100 | ${deployRunbook.status}`;
+  els.backendAuditSummary.textContent = `${accountPaymentSmoke.readiness}/100 | ${accountPaymentSmoke.status}`;
   els.backendAuditOutput.innerHTML = `
     <div class="backend-audit-hero ${escapeHtml(config.tone)}">
       <div>
@@ -40611,6 +40902,85 @@ function renderBackendAuditReceipts(event) {
         </article>
       </div>
     </div>
+    <div class="account-payment-smoke ${escapeHtml(accountPaymentSmoke.tone)}">
+      <div class="account-payment-smoke-head">
+        <div>
+          <span>Production account and payment smoke</span>
+          <h3>${escapeHtml(accountPaymentSmoke.status)}</h3>
+          <p>Smoke run ${escapeHtml(accountPaymentSmoke.smokeRunId)} checks account-vault endpoints, provider webhooks, entitlement joins, receipt replay, privacy export/delete, support repair, and payment reconciliation before the next paid cohort widens.</p>
+        </div>
+        <div class="account-payment-smoke-score" style="--score:${accountPaymentSmoke.readiness}">
+          <strong>${accountPaymentSmoke.readiness}</strong>
+          <span>Smoke</span>
+        </div>
+      </div>
+      <div class="account-payment-smoke-metric-grid">
+        ${accountPaymentSmoke.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-payment-smoke-fixture-grid">
+        ${accountPaymentSmoke.fixtures.map((fixture) => `
+          <article class="${escapeHtml(fixture.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(fixture.owner)}</span>
+                <strong>${escapeHtml(fixture.label)}</strong>
+              </div>
+              <b>${fixture.score}</b>
+            </div>
+            <p>${escapeHtml(fixture.status)} | ${escapeHtml(fixture.fixtureId)}</p>
+            <div class="build-progress-bar"><span style="width:${fixture.score}%"></span></div>
+            <small><strong>Command:</strong> ${escapeHtml(fixture.command)}</small>
+            <small><strong>Event:</strong> ${escapeHtml(fixture.event)}</small>
+            <small><strong>Evidence:</strong> ${escapeHtml(fixture.evidence)}</small>
+            <small><strong>Assert:</strong> ${escapeHtml(fixture.assertions.slice(0, 5).join(", "))}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(fixture.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button account-payment-smoke-route" type="button" data-build-route="${escapeHtml(fixture.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-payment-smoke-panel-grid">
+        ${accountPaymentSmoke.evidencePanels.map((panel) => `
+          <article>
+            <span>${escapeHtml(panel.owner)}</span>
+            <strong>${escapeHtml(panel.label)}</strong>
+            <p>${escapeHtml(panel.value)}</p>
+            <small>${escapeHtml(panel.detail)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="account-payment-smoke-two">
+        <article>
+          <h3>Smoke sequence</h3>
+          <ol>
+            ${accountPaymentSmoke.sequence.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${accountPaymentSmoke.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>No-go rules</h3>
+          <ul>
+            ${accountPaymentSmoke.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${accountPaymentSmoke.releaseBlockers.length > 1 ? "caution" : "ready"}">
+          <h3>Smoke blockers</h3>
+          <ul>
+            ${accountPaymentSmoke.releaseBlockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="beta-incident-ledger ${escapeHtml(betaIncidentLedger.tone)}">
       <div class="beta-incident-head">
         <div>
@@ -41384,6 +41754,56 @@ function makeProductionWorkerSmokeDashboardBrief() {
   ].join("\n");
 }
 
+function makeProductionAccountPaymentSmokeBrief() {
+  const config = backendAuditConfig();
+  const accountPaymentSmoke = productionAccountPaymentSmoke(config);
+  return [
+    "# NiveshNadi Production Account and Payment Smoke",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Smoke run ID: ${accountPaymentSmoke.smokeRunId}`,
+    `Fixture batch ID: ${accountPaymentSmoke.fixtureBatchId}`,
+    `Release gate ID: ${accountPaymentSmoke.releaseGateId}`,
+    `Closeout ID: ${accountPaymentSmoke.closeoutId}`,
+    `Status: ${accountPaymentSmoke.status}`,
+    `Readiness: ${accountPaymentSmoke.readiness}/100`,
+    `Fixture average: ${accountPaymentSmoke.fixtureAverage}/100`,
+    `Dependency average: ${accountPaymentSmoke.dependencyAverage}/100`,
+    `Pass/review/blocked: ${accountPaymentSmoke.pass}/${accountPaymentSmoke.review}/${accountPaymentSmoke.blocked}`,
+    "",
+    "## Metrics",
+    ...accountPaymentSmoke.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Smoke Fixtures",
+    ...accountPaymentSmoke.fixtures.flatMap((fixture) => [
+      `- ${fixture.fixtureId}: ${fixture.label} | ${fixture.status} | ${fixture.score}/100 | Owner: ${fixture.owner}`,
+      `  Event: ${fixture.event}`,
+      `  Command: ${fixture.command}`,
+      `  Evidence: ${fixture.evidence}`,
+      `  Assertions: ${fixture.assertions.join(", ")}`,
+      `  Route: ${fixture.route}`,
+      `  Blockers: ${fixture.blockers.join(" | ")}`
+    ]),
+    "",
+    "## Evidence Panels",
+    ...accountPaymentSmoke.evidencePanels.map((panel) => `- ${panel.label}: ${panel.value} | ${panel.owner} | ${panel.detail}`),
+    "",
+    "## Smoke Sequence",
+    ...accountPaymentSmoke.sequence.map((step) => `- ${step}`),
+    "",
+    "## Receipt Fields",
+    ...accountPaymentSmoke.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## No-Go Rules",
+    ...accountPaymentSmoke.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "## Release Blockers",
+    ...accountPaymentSmoke.releaseBlockers.map((blocker) => `- ${blocker}`),
+    "",
+    "## Guardrail",
+    "Production account and payment smoke receipts are release operations metadata. They do not store PAN, folio, CAS, bank data, card, UPI, OTP, gateway secrets, credentials, contact records, private notes, transaction instructions, distributor client books, or personalized advice content."
+  ].join("\n");
+}
+
 function makeBetaIncidentCommandLedgerBrief() {
   const config = backendAuditConfig();
   const paymentReplay = paymentReconciliationReplay(config);
@@ -41481,6 +41901,7 @@ function makeBackendDeployRunbookPacketBrief() {
   const ciSmokeHarness = backendCiSmokeHarness(config, implementationHandoff, publicPublishDrill, workerContract, workerCloseout, sourceReceiptJob, recoveryQueue, correctionPublish, failedRunStore, alertDelivery, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
   const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenterConfig(), founderBetaOperatingRoomConfig());
   const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const accountPaymentSmoke = productionAccountPaymentSmoke(config, workerSmokeDashboard);
   const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
   const deployRunbook = backendDeployRunbookPacket(config, workerSmokeDashboard, betaIncidentLedger, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs, implementationHandoff, workerCloseout);
   return [
@@ -41842,6 +42263,22 @@ function makeBackendAuditReceiptBrief() {
     ...workerSmokeDashboard.receiptFields.map((field) => `- Production receipt field: ${field}`),
     ...workerSmokeDashboard.noGoRules.map((rule) => `- Production no-go rule: ${rule}`),
     ...workerSmokeDashboard.releaseBlockers.map((blocker) => `- Production release blocker: ${blocker}`),
+    "",
+    "## Production Account and Payment Smoke",
+    `- Account/payment smoke status: ${accountPaymentSmoke.status}`,
+    `- Account/payment smoke readiness: ${accountPaymentSmoke.readiness}/100`,
+    `- Smoke run ID: ${accountPaymentSmoke.smokeRunId}`,
+    `- Fixture batch ID: ${accountPaymentSmoke.fixtureBatchId}`,
+    `- Release gate ID: ${accountPaymentSmoke.releaseGateId}`,
+    `- Closeout ID: ${accountPaymentSmoke.closeoutId}`,
+    `- Pass/review/blocked: ${accountPaymentSmoke.pass}/${accountPaymentSmoke.review}/${accountPaymentSmoke.blocked}`,
+    ...accountPaymentSmoke.metrics.map((metric) => `- Account/payment smoke metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...accountPaymentSmoke.fixtures.map((fixture) => `- Account/payment fixture: ${fixture.fixtureId}: ${fixture.label} | ${fixture.status} | ${fixture.score}/100 | ${fixture.owner} | ${fixture.event} | ${fixture.command} | ${fixture.route}`),
+    ...accountPaymentSmoke.evidencePanels.map((panel) => `- Account/payment evidence: ${panel.label}: ${panel.value} | ${panel.owner} | ${panel.detail}`),
+    ...accountPaymentSmoke.sequence.map((step) => `- Account/payment smoke sequence: ${step}`),
+    ...accountPaymentSmoke.receiptFields.map((field) => `- Account/payment smoke receipt field: ${field}`),
+    ...accountPaymentSmoke.noGoRules.map((rule) => `- Account/payment smoke no-go rule: ${rule}`),
+    ...accountPaymentSmoke.releaseBlockers.map((blocker) => `- Account/payment smoke blocker: ${blocker}`),
     "",
     "## Beta Incident Command Ledger",
     `- Beta command status: ${betaIncidentLedger.status}`,
@@ -51772,6 +52209,7 @@ function bindEvents() {
   els.copyBackendCiSmokeHarness?.addEventListener("click", () => copyText(makeBackendCiSmokeHarnessBrief()));
   els.copyFounderBetaRecoveryRehearsal?.addEventListener("click", () => copyText(makeFounderBetaRecoveryRehearsalBrief()));
   els.copyProductionWorkerSmokeDashboard?.addEventListener("click", () => copyText(makeProductionWorkerSmokeDashboardBrief()));
+  els.copyProductionAccountPaymentSmoke?.addEventListener("click", () => copyText(makeProductionAccountPaymentSmokeBrief()));
   els.copyBetaIncidentCommandLedger?.addEventListener("click", () => copyText(makeBetaIncidentCommandLedgerBrief()));
   els.copyBackendDeployRunbookPacket?.addEventListener("click", () => copyText(makeBackendDeployRunbookPacketBrief()));
   els.copyBackendAudit?.addEventListener("click", () => copyText(makeBackendAuditReceiptBrief()));
@@ -53566,6 +54004,7 @@ function cacheElements() {
     copyBackendCiSmokeHarness: qs("#copyBackendCiSmokeHarness"),
     copyFounderBetaRecoveryRehearsal: qs("#copyFounderBetaRecoveryRehearsal"),
     copyProductionWorkerSmokeDashboard: qs("#copyProductionWorkerSmokeDashboard"),
+    copyProductionAccountPaymentSmoke: qs("#copyProductionAccountPaymentSmoke"),
     copyBetaIncidentCommandLedger: qs("#copyBetaIncidentCommandLedger"),
     copyBackendDeployRunbookPacket: qs("#copyBackendDeployRunbookPacket"),
     copyBackendAudit: qs("#copyBackendAudit"),

@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v304 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v305 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -27,6 +27,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Backend CI Smoke Harness inside Backend Audit Receipts turns implementation handoff and public publish drill evidence into repeatable smoke fixtures for scheduler, parser, receipt persistence, alert delivery, failed-run replay, and public recovery closeout.
 - Founder Beta Recovery Rehearsal inside Backend Audit Receipts binds CI smoke proof, public recovery copy, Trust Center history, support-safe founder communication, post-publish monitoring, and Friday closeout before founder beta users see a recovery state.
 - Production Worker Smoke Dashboard inside Backend Audit Receipts turns CI fixtures and founder recovery rehearsal into owner-scoped production gates with pass/fail status, deploy command refs, release blockers, closeout proof, and deployment no-go rules.
+- Production Account and Payment Smoke inside Backend Audit Receipts checks account-vault endpoints, provider webhooks, entitlement joins, receipt replay, privacy export/delete, support repair, and payment reconciliation as one copyable release gate before the next paid account cohort widens.
 - Beta Incident Command Ledger inside Backend Audit Receipts persists founder recovery, Trust Center history, support scripts, production smoke gates, monitor windows, owner command receipts, and beta continuation decisions into one command trail.
 - Backend Deploy Runbook Packet inside Backend Audit Receipts packages smoke gates and incident command proof into deploy commands, environment checks, rollback contacts, release-note evidence, and hard deployment no-go rules before real backend workers can deploy.
 - Self-research command desk with search, category, risk, and sorting controls.

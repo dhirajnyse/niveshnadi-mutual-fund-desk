@@ -42,4 +42,6 @@ Every launch route dry run should produce account audit receipts. Important rece
 
 V304 connects this route to Account Vault Endpoint Contracts. Account launch remains blocked until migration, restore, entitlement join, export, deletion, support repair, and audit export endpoints have payload contracts, receipt logs, replay or rollback proof, monitor events, owner acknowledgement, and blocked-data scans.
 
+V305 connects the route to Production Account and Payment Smoke. The first paid account widening should wait until account-vault endpoints, provider webhooks, entitlement joins, receipt replay, privacy export/delete, support repair, and payment reconciliation all have smoke fixture proof and release no-go checks inside Backend Audit Receipts.
+
 The route also protects the Phase 2 roadmap. Mutual fund distributor workflows can come later, but they require separate consent, role-based access, ARN/EUIN handling, PAN-consent boundaries, client-book permissions, distributor audit trails, and regulatory review. The retail self-research launch should not accidentally become a distributor or advisory system.

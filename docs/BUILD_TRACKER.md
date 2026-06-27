@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V316 Account Lifecycle Support SLA Proof
+
+V316 adds Account Lifecycle Support SLA Proof inside Backend Audit Receipts. It turns retention fixture support windows into acknowledgement receipts, reviewed support-safe copy, escalation ownership, monitor handoff, receipt fields, active blockers, and hard SLA no-go rules before live source worker proof becomes the next closeout gate.
+
 ## V315 Account Lifecycle Retention Job Fixtures
 
 V315 adds Account Lifecycle Retention Job Fixtures inside Backend Audit Receipts. It turns the account retention enforcement dashboard into scheduled recovery, session, restore, deletion, and support-notice fixture rows with deterministic seed events, support SLA checks, monitor closeout proof, command archive audit links, receipt fields, release blockers, and hard fixture no-go rules before support SLA proof becomes the next closeout gate.

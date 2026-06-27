@@ -29333,6 +29333,196 @@ body.simple-mode .quiet-fund-shelf {
   padding-left: 18px;
 }
 
+.support-sla-proof {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(31, 78, 121, 0.3);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(245, 249, 252, 0.98), rgba(232, 241, 255, 0.9));
+}
+
+.support-sla-proof.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.98), rgba(245, 249, 252, 0.96));
+}
+
+.support-sla-proof.watch {
+  border-color: rgba(225, 160, 55, 0.44);
+  background: linear-gradient(135deg, rgba(255, 248, 232, 0.94), rgba(245, 249, 252, 0.96));
+}
+
+.support-sla-proof.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.94));
+}
+
+.support-sla-proof p,
+.support-sla-proof li,
+.support-sla-proof small {
+  color: var(--muted);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.support-sla-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 12px;
+  align-items: center;
+}
+
+.support-sla-head span,
+.support-sla-metric-grid span,
+.support-sla-proof-grid span {
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.support-sla-head h3 {
+  margin: 3px 0 5px;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.14;
+}
+
+.support-sla-head p {
+  margin: 0;
+}
+
+.support-sla-score {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--blue) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.support-sla-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.support-sla-score strong,
+.support-sla-score span {
+  position: relative;
+}
+
+.support-sla-score strong {
+  color: #ffffff;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.support-sla-score span {
+  color: #dce7ed;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.support-sla-metric-grid,
+.support-sla-proof-grid,
+.support-sla-two {
+  display: grid;
+  gap: 10px;
+}
+
+.support-sla-metric-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.support-sla-proof-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.support-sla-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.support-sla-metric-grid,
+.support-sla-proof-grid,
+.support-sla-two,
+.support-sla-metric-grid article,
+.support-sla-proof-grid article,
+.support-sla-two article {
+  min-width: 0;
+}
+
+.support-sla-metric-grid article,
+.support-sla-proof-grid article,
+.support-sla-two article {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.support-sla-proof-grid article.ready,
+.support-sla-two article.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+}
+
+.support-sla-proof-grid article.watch,
+.support-sla-two article.watch {
+  border-color: rgba(225, 160, 55, 0.36);
+}
+
+.support-sla-proof-grid article.caution,
+.support-sla-two article.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+}
+
+.support-sla-metric-grid strong,
+.support-sla-proof-grid strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.support-sla-proof-grid small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.support-sla-proof-grid small strong {
+  color: var(--ink);
+}
+
+.support-sla-two h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.support-sla-route {
+  margin-top: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.support-sla-two ul,
+.support-sla-two ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
 .source-incident-board {
   display: grid;
   gap: 10px;
@@ -40135,7 +40325,10 @@ body.simple-mode .quiet-fund-shelf {
   .retention-job-metric-grid,
   .retention-job-fixture-grid,
   .retention-job-sla-grid,
-  .retention-job-two {
+  .retention-job-two,
+  .support-sla-metric-grid,
+  .support-sla-proof-grid,
+  .support-sla-two {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -40196,7 +40389,11 @@ body.simple-mode .quiet-fund-shelf {
   .retention-job-fixture-grid,
   .retention-job-sla-grid,
   .retention-job-two,
-  .retention-job-head {
+  .retention-job-head,
+  .support-sla-metric-grid,
+  .support-sla-proof-grid,
+  .support-sla-two,
+  .support-sla-head {
     grid-template-columns: 1fr;
   }
 
@@ -40208,7 +40405,8 @@ body.simple-mode .quiet-fund-shelf {
   .account-payment-smoke-score,
   .beta-incident-score,
   .deploy-runbook-score,
-  .retention-job-score {
+  .retention-job-score,
+  .support-sla-score {
     justify-self: start;
   }
 }

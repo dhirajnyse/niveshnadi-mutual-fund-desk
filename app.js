@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v315-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v315 Retention Job Fixtures";
+const DATA_VERSION = "20260628-v316-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v316 Support SLA Proof";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1223,8 +1223,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Turn retention job fixture proof into support readiness SLAs, monitor closeout evidence, and account lifecycle backend ticket closeout."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Move from account lifecycle support SLA proof into live source worker proof and launch-gate closeout."
   },
   {
     phase: "Phase 2",
@@ -1240,8 +1240,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account lifecycle retention job fixtures",
+    label: "Account lifecycle support SLA proof",
     status: "Shipping now",
+    route: "#backend-audit-receipts",
+    detail: "Turn retention fixture support windows into acknowledgement proof, reviewed response copy, escalation ownership, monitor handoff, and closeout receipts."
+  },
+  {
+    label: "Account lifecycle retention job fixtures",
+    status: "Done",
     route: "#backend-audit-receipts",
     detail: "Turn retention enforcement dashboard proof into scheduled job fixtures, support SLA checks, command archive audits, and closeout no-go rules."
   },
@@ -9061,15 +9067,15 @@ function buildTrackerConfig() {
   const productionPath = [
     {
       label: "Retention job fixtures",
-      status: "Closeout active",
+      status: "Done in v315",
       route: "#backend-audit-receipts",
       detail: "Turn the retention dashboard into backend fixture evidence, scheduled job proof, support SLA checks, and command archive audits."
     },
     {
       label: "Support SLA proof",
-      status: "Next closeout",
+      status: "Closeout active",
       route: "#account-launch-route",
-      detail: "Close support readiness fields, incident owner rules, repair joins, and live beta response timing."
+      detail: "Close acknowledgement windows, reviewed response copy, escalation owner rules, monitor handoff, and live beta response timing."
     },
     {
       label: "Live source worker proof",
@@ -9308,7 +9314,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v315 is closing the first 100% path gate from Backend Audit Receipts.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v316 is closing support SLA proof from Backend Audit Receipts.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9437,7 +9443,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v315</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v316</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -43010,6 +43016,185 @@ function accountLifecycleRetentionJobFixtures(config = backendAuditConfig()) {
   };
 }
 
+function accountLifecycleSupportSlaProof(config = backendAuditConfig(), retentionJobFixtures = accountLifecycleRetentionJobFixtures(config)) {
+  config = config || backendAuditConfig();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const slaProofId = ["NN", "ACCOUNT", "LIFECYCLE", "SUPPORT", "SLA", "PROOF", suffix].join("-").toUpperCase();
+  const responseLedgerId = ["NN", "ACCOUNT", "LIFECYCLE", "SUPPORT", "RESPONSE", "LEDGER", suffix].join("-").toUpperCase();
+  const escalationMatrixId = ["NN", "ACCOUNT", "LIFECYCLE", "SUPPORT", "ESCALATION", "MATRIX", suffix].join("-").toUpperCase();
+  const monitorHandoffId = ["NN", "ACCOUNT", "LIFECYCLE", "SUPPORT", "MONITOR", "HANDOFF", suffix].join("-").toUpperCase();
+  const closeoutId = ["NN", "ACCOUNT", "LIFECYCLE", "SUPPORT", "SLA", "CLOSEOUT", suffix].join("-").toUpperCase();
+  const storageReady = config.storage === "event" || config.storage === "append";
+  const clean = (items = []) => [...new Set(items.filter(Boolean).filter((item) => !String(item).startsWith("No active")))];
+  const profiles = {
+    "account-recovery": {
+      ack: "2h recovery owner acknowledgement",
+      response: "Recovery hold and rollback explanation reviewed within 1 business day",
+      escalation: "Security + Support Lead",
+      script: "recovery_hold_support_safe_v1",
+      handoff: "Recovery, abuse-rate, rollback, and notice monitors must hand off quiet-window proof.",
+      noGo: "No recovery SLA proof closes while recovery hold copy, rollback owner, abuse monitor, or redaction attestation is missing."
+    },
+    "session-retention": {
+      ack: "2h forced-logout owner acknowledgement",
+      response: "Suspicious-login and forced-logout copy reviewed within 1 business day",
+      escalation: "Platform + Security Lead",
+      script: "session_forced_logout_support_safe_v1",
+      handoff: "Session revoke, logout, suspicious-login, and expiry monitors must hand off quiet-window proof.",
+      noGo: "No session SLA proof closes while forced-logout copy, suspicious-login explanation, revoke proof, or expiry monitor is missing."
+    },
+    "vault-restore": {
+      ack: "4h restore hold owner acknowledgement",
+      response: "Restore mismatch explanation reviewed within 1 business day",
+      escalation: "Data + Support Lead",
+      script: "vault_restore_hold_support_safe_v1",
+      handoff: "Restore, hash-match, entitlement, rollback-bucket, and visibility monitors must hand off parity proof.",
+      noGo: "No restore SLA proof closes while hash parity, entitlement check, restore hold copy, or rollback bucket proof is missing."
+    },
+    "deletion-closeout": {
+      ack: "2h privacy owner acknowledgement",
+      response: "Deletion completion and retained-proof copy reviewed within 1 business day",
+      escalation: "Privacy + Backend Lead",
+      script: "deletion_retained_proof_support_safe_v1",
+      handoff: "Deletion, retained-proof, redaction, support notice, and exception monitors must hand off closeout proof.",
+      noGo: "No deletion SLA proof closes while privacy approval, retained-proof rationale, redaction scan, or completion notice is missing."
+    },
+    "support-notice": {
+      ack: "2h failed-notice owner acknowledgement",
+      response: "Template rollback and notice recovery copy reviewed within 1 business day",
+      escalation: "Support + Product Ops Lead",
+      script: "support_notice_recovery_support_safe_v1",
+      handoff: "Notice delivery, template, redaction, retry, and support-case monitors must hand off delivery proof.",
+      noGo: "No support notice SLA proof closes while delivery attempts, template version, redaction attestation, or case closeout is missing."
+    }
+  };
+  const proofs = retentionJobFixtures.fixtures.map((fixture, index) => {
+    const key = fixture.fixtureId.includes("SESSIONRETENTION")
+      ? "session-retention"
+      : fixture.fixtureId.includes("VAULTRESTORE")
+        ? "vault-restore"
+        : fixture.fixtureId.includes("DELETIONCLOSEOUT")
+          ? "deletion-closeout"
+          : fixture.fixtureId.includes("SUPPORTNOTICE")
+            ? "support-notice"
+            : "account-recovery";
+    const profile = profiles[key];
+    const blockers = clean([
+      ...clean(fixture.blockers).slice(0, 2),
+      ...(fixture.status === "Fixture blocked" ? ["retention job fixture must leave blocked state before SLA proof can close"] : []),
+      ...(storageReady ? [] : ["support SLA proof needs append-only or event-stream receipt storage"]),
+      "real support desk identity, notification delivery, and case management integration remain outside this static prototype"
+    ]);
+    const score = clampNumber(Math.round(
+      fixture.score * 0.48 +
+        retentionJobFixtures.readiness * 0.2 +
+        config.score * 0.14 +
+        (storageReady ? 10 : -14) +
+        (fixture.status === "Fixture ready" ? 10 : fixture.status === "Fixture rehearsal" ? 3 : -8) -
+        Math.min(blockers.length, 5) * 3
+    ), 12, 96);
+    const status = score >= 84 && blockers.length <= 1
+      ? "SLA proof ready"
+      : score >= 64
+        ? "SLA proof review"
+        : "SLA proof blocked";
+    return {
+      acknowledgement: profile.ack,
+      blockers: blockers.length ? blockers : ["No active support SLA blocker in this preview. Keep real support tooling, owner identity, and notification receipts before launch."],
+      closeoutProof: `${fixture.fixtureId} + ${responseLedgerId}`,
+      escalation: profile.escalation,
+      fixtureId: fixture.fixtureId,
+      label: fixture.label,
+      monitorHandoff: profile.handoff,
+      noGo: profile.noGo,
+      owner: fixture.owner,
+      proofId: ["NN", "ACCOUNT", "SUPPORT", "SLA", "PROOF", String(index + 1).padStart(2, "0"), key.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase(),
+      responseCopy: profile.response,
+      route: fixture.route,
+      score,
+      scriptVersion: profile.script,
+      status,
+      tone: status === "SLA proof ready" ? "ready" : status === "SLA proof blocked" ? "caution" : "watch"
+    };
+  });
+  const ready = proofs.filter((proof) => proof.status === "SLA proof ready").length;
+  const review = proofs.filter((proof) => proof.status === "SLA proof review").length;
+  const blocked = proofs.filter((proof) => proof.status === "SLA proof blocked").length;
+  const proofAverage = Math.round(proofs.reduce((sum, proof) => sum + proof.score, 0) / proofs.length);
+  const activeBlockers = [...new Set(proofs.filter((proof) => proof.status !== "SLA proof ready").flatMap((proof) => clean(proof.blockers).slice(0, 2)))];
+  const releaseBlockers = [...new Set([
+    ...activeBlockers,
+    ...(storageReady ? [] : ["support SLA proof cannot close with browser-local receipt storage"]),
+    "real support desk identity, notification delivery, and case management integration remain outside this static prototype"
+  ])];
+  const readiness = clampNumber(Math.round(
+    proofAverage * 0.52 +
+      retentionJobFixtures.readiness * 0.22 +
+      config.score * 0.14 +
+      (storageReady ? 88 : 24) * 0.12
+  ) - blocked * 4 - Math.min(activeBlockers.length, 6), 12, 96);
+  const status = readiness >= 84 && blocked === 0 && releaseBlockers.length <= 1
+    ? "Support SLA proof ready"
+    : readiness >= 64 && blocked <= 1
+      ? "Support SLA proof in review"
+      : "Support SLA proof blocked";
+  return {
+    activeBlockers: activeBlockers.length ? activeBlockers : ["No active support SLA proof blocker in this preview. Keep real support tooling and notification receipts before production launch."],
+    blocked,
+    closeoutId,
+    escalationMatrixId,
+    metrics: [
+      { label: "SLA proof", value: slaProofId, detail: `${ready} ready, ${review} review, ${blocked} blocked SLA proof row${proofs.length === 1 ? "" : "s"}.` },
+      { label: "Response ledger", value: responseLedgerId, detail: "Reviewed support-safe copy, acknowledgement windows, and first-response receipts." },
+      { label: "Escalation matrix", value: escalationMatrixId, detail: "Security, platform, data, privacy, support, and product-owner escalations." },
+      { label: "Monitor handoff", value: monitorHandoffId, detail: `Closeout ${closeoutId}; fixture batch ${retentionJobFixtures.fixtureBatchId}.` }
+    ],
+    monitorHandoffId,
+    noGoRules: [
+      "No support SLA proof closes without acknowledgement receipt, reviewed support-safe copy, escalation owner, monitor handoff, and closeout receipt.",
+      "No lifecycle support reply may ask for PAN, folio, CAS, bank data, card, UPI, OTP, credentials, transaction instructions, ARN/EUIN, distributor client-book data, or private research note bodies.",
+      "No account cohort widens while any recovery, session, restore, deletion, or support notice SLA proof is blocked.",
+      "No support SLA proof can depend on manual memory, screenshots, private support notes, or unowned notification channels.",
+      "No Phase 2 distributor/client support workflow enters retail account SLA receipts before the Phase 2 firewall is approved."
+    ],
+    proofAverage,
+    proofs,
+    readiness,
+    ready,
+    receiptFields: [
+      "account_lifecycle_support_sla_proof_id",
+      "support_sla_proof_row_id",
+      "retention_fixture_id",
+      "response_ledger_id",
+      "escalation_matrix_id",
+      "monitor_handoff_id",
+      "acknowledgement_window",
+      "acknowledgement_receipt_id",
+      "support_safe_script_version",
+      "reviewed_response_copy_id",
+      "escalation_owner",
+      "monitor_handoff_state",
+      "blocked_data_scan_state",
+      "sla_decision",
+      "support_sla_closeout_id",
+      "closed_at"
+    ],
+    releaseBlockers,
+    responseLedgerId,
+    review,
+    sequence: [
+      "Load each retention fixture, support SLA window, owner route, response copy version, and monitor handoff state.",
+      "Record acknowledgement receipt before support promises a recovery, session, restore, deletion, or notice outcome.",
+      "Review support-safe copy against blocked-data rules and attach response ledger proof.",
+      "Assign escalation owner and monitor handoff before any lifecycle case can close.",
+      "Close support SLA proof only after the fixture row, response ledger, escalation matrix, monitor handoff, and no-go decision agree."
+    ],
+    slaProofId,
+    status,
+    tone: status === "Support SLA proof ready" ? "ready" : status === "Support SLA proof blocked" ? "caution" : "watch"
+  };
+}
+
 function renderBackendAuditReceipts(event) {
   if (event) event.preventDefault();
   if (!els.backendAuditOutput || !els.backendAuditSummary) return;
@@ -43041,6 +43226,7 @@ function renderBackendAuditReceipts(event) {
   const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
   const deployRunbook = backendDeployRunbookPacket(config, workerSmokeDashboard, betaIncidentLedger, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs, implementationHandoff, workerCloseout);
   const retentionJobFixtures = accountLifecycleRetentionJobFixtures(config);
+  const supportSlaProof = accountLifecycleSupportSlaProof(config, retentionJobFixtures);
   const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
   const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
   els.backendAuditSummary.textContent = `${accountPaymentSmoke.readiness}/100 | ${accountPaymentSmoke.status}`;
@@ -44715,6 +44901,76 @@ function renderBackendAuditReceipts(event) {
         </article>
       </div>
     </div>
+    <div class="support-sla-proof ${escapeHtml(supportSlaProof.tone)}">
+      <div class="support-sla-head">
+        <div>
+          <span>Account lifecycle support SLA proof</span>
+          <h3>${escapeHtml(supportSlaProof.status)}</h3>
+          <p>Proof ${escapeHtml(supportSlaProof.slaProofId)} turns retention fixture support windows into acknowledgement receipts, reviewed response copy, escalation owners, monitor handoff, and closeout proof.</p>
+        </div>
+        <div class="support-sla-score" style="--score:${supportSlaProof.readiness}">
+          <strong>${supportSlaProof.readiness}</strong>
+          <span>SLA</span>
+        </div>
+      </div>
+      <div class="support-sla-metric-grid">
+        ${supportSlaProof.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="support-sla-proof-grid">
+        ${supportSlaProof.proofs.map((proof) => `
+          <article class="${escapeHtml(proof.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(proof.owner)}</span>
+                <strong>${escapeHtml(proof.label)}</strong>
+              </div>
+              <b>${proof.score}</b>
+            </div>
+            <p>${escapeHtml(proof.status)} | ${escapeHtml(proof.proofId)}</p>
+            <div class="build-progress-bar"><span style="width:${proof.score}%"></span></div>
+            <small><strong>Ack:</strong> ${escapeHtml(proof.acknowledgement)}</small>
+            <small><strong>Copy:</strong> ${escapeHtml(proof.responseCopy)}</small>
+            <small><strong>Escalation:</strong> ${escapeHtml(proof.escalation)}</small>
+            <small><strong>Script:</strong> ${escapeHtml(proof.scriptVersion)}</small>
+            <small><strong>Monitor:</strong> ${escapeHtml(proof.monitorHandoff)}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(proof.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button support-sla-route" type="button" data-build-route="${escapeHtml(proof.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="support-sla-two">
+        <article>
+          <h3>SLA closeout sequence</h3>
+          <ol>
+            ${supportSlaProof.sequence.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${supportSlaProof.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>SLA no-go rules</h3>
+          <ul>
+            ${supportSlaProof.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${supportSlaProof.releaseBlockers.length > 1 ? "caution" : "ready"}">
+          <h3>SLA blockers</h3>
+          <ul>
+            ${supportSlaProof.releaseBlockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="source-incident-board ${escapeHtml(incidentReplay.tone)}">
       <div class="source-incident-head">
         <div>
@@ -45546,6 +45802,7 @@ function makeBackendAuditReceiptBrief() {
   const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
   const deployRunbook = backendDeployRunbookPacket(config, workerSmokeDashboard, betaIncidentLedger, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs, implementationHandoff, workerCloseout);
   const retentionJobFixtures = accountLifecycleRetentionJobFixtures(config);
+  const supportSlaProof = accountLifecycleSupportSlaProof(config, retentionJobFixtures);
   return [
     "# NiveshNadi Backend Audit Receipts",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -45623,6 +45880,22 @@ function makeBackendAuditReceiptBrief() {
     ...retentionJobFixtures.receiptFields.map((field) => `- Retention fixture receipt field: ${field}`),
     ...retentionJobFixtures.noGoRules.map((rule) => `- Retention fixture no-go rule: ${rule}`),
     ...retentionJobFixtures.releaseBlockers.map((blocker) => `- Retention fixture blocker: ${blocker}`),
+    "",
+    "## Account Lifecycle Support SLA Proof",
+    `- Status: ${supportSlaProof.status}`,
+    `- Readiness: ${supportSlaProof.readiness}/100`,
+    `- SLA proof ID: ${supportSlaProof.slaProofId}`,
+    `- Response ledger ID: ${supportSlaProof.responseLedgerId}`,
+    `- Escalation matrix ID: ${supportSlaProof.escalationMatrixId}`,
+    `- Monitor handoff ID: ${supportSlaProof.monitorHandoffId}`,
+    `- Support SLA closeout ID: ${supportSlaProof.closeoutId}`,
+    `- Ready/Review/Blocked: ${supportSlaProof.ready}/${supportSlaProof.review}/${supportSlaProof.blocked}`,
+    ...supportSlaProof.metrics.map((metric) => `- Support SLA metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...supportSlaProof.proofs.map((proof) => `- Support SLA proof: ${proof.proofId}: ${proof.label} | ${proof.status} | ${proof.score}/100 | ${proof.acknowledgement} | ${proof.responseCopy} | Escalation: ${proof.escalation}`),
+    ...supportSlaProof.sequence.map((step) => `- Support SLA sequence: ${step}`),
+    ...supportSlaProof.receiptFields.map((field) => `- Support SLA receipt field: ${field}`),
+    ...supportSlaProof.noGoRules.map((rule) => `- Support SLA no-go rule: ${rule}`),
+    ...supportSlaProof.releaseBlockers.map((blocker) => `- Support SLA blocker: ${blocker}`),
     "",
     "## Event Contract",
     ...config.stream.eventTypes.map((item) => `- ${item}`),

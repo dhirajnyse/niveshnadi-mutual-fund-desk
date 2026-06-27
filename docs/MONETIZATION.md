@@ -200,6 +200,8 @@ This is central to keeping the retail price low. A subscription at INR 100/month
 
 V152 adds closeout discipline to the backend ticket lane. A ticket can be drafted with owner, route, event contract, and acceptance tests, but it cannot close until tests, receipt proof, freeze posture, rollback note, blocked-data scan, and owner signoff are all visible. This prevents the product from monetizing on optimistic tickets that are not yet safe for real paid users.
 
+V302 adds Worker Endpoint Acceptance Matrix to the same lane. Each backend ticket now has a concrete endpoint method, path, service, payload schema, logs, monitor event, owner acknowledgement, blocked-data scan, and release closeout proof. This keeps monetization honest because payment, entitlement, support, account, evidence, privacy, and founder operations cannot widen until the endpoints that change state are testable and observable.
+
 ## Entitlement Access Matrix
 
 V147 upgrades the Entitlement Bridge into a feature access matrix. The product can now show what Free Starter, Nadi Plus Monthly, Nadi Plus Annual, Founder Beta, and future Phase 2 users can access across core screener, saved packs, watchlist alerts, dossier builder, share-safe export, live refresh, and support repair. Each row names the receipt gate, audit field, lifecycle effect, and replay proof.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v301-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v301 Founder Beta War-Room Digest";
+const DATA_VERSION = "20260627-v302-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v302 Worker Endpoint Acceptance Matrix";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1247,15 +1247,21 @@ const BUILD_TRACKER_CURRENT_SPRINT = [
   },
   {
     label: "Worker endpoint acceptance matrix",
-    status: "Next",
+    status: "Shipping now",
     route: "#backend-ticket-factory",
     detail: "Map each future backend worker endpoint to acceptance payloads, logs, release owners, monitoring handoffs, and production deploy closeout."
   },
   {
     label: "Production provider deployment receipts",
-    status: "Later",
+    status: "Next",
     route: "#gateway-webhook",
     detail: "Connect payment provider pilot proof to deployment receipts, webhook secrets, settlement checks, incident rollback, and support-owner evidence."
+  },
+  {
+    label: "Account vault endpoint contracts",
+    status: "Later",
+    route: "#account-launch-route",
+    detail: "Turn account migration, export, delete, support repair, and saved research vault work into endpoint contracts with closeout receipts."
   }
 ];
 
@@ -9260,7 +9266,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v301</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v302</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -17550,12 +17556,196 @@ function backendTicketCloseout(factory) {
   };
 }
 
+function workerEndpointAcceptanceMatrix(factory = backendTicketFactoryConfig(), closeout = backendTicketCloseout(factory)) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const endpointMatrixId = ["NN", "WORKER", "ENDPOINT", "MATRIX", suffix].join("-").toUpperCase();
+  const acceptanceBatchId = ["NN", "ENDPOINT", "ACCEPTANCE", "BATCH", suffix].join("-").toUpperCase();
+  const monitorHandoffId = ["NN", "ENDPOINT", "MONITOR", "HANDOFF", suffix].join("-").toUpperCase();
+  const releaseCloseoutId = ["NN", "ENDPOINT", "RELEASE", "CLOSEOUT", suffix].join("-").toUpperCase();
+  const endpointMap = {
+    "Receipt vault replay": { method: "POST", path: "/api/receipts/replay", service: "receipt-replay-worker", monitor: "receipt_replay.worker.completed" },
+    "Payment provider webhook contract": { method: "POST", path: "/api/payments/webhooks/:provider", service: "payment-webhook-worker", monitor: "payment_webhook.worker.verified" },
+    "Entitlement unlock service": { method: "POST", path: "/api/entitlements/project", service: "entitlement-worker", monitor: "entitlement.worker.projected" },
+    "Support and refund casebook": { method: "POST", path: "/api/support/cases/:case_id/closeout", service: "support-refund-worker", monitor: "support_case.worker.closed" },
+    "Account research vault migration": { method: "POST", path: "/api/account-vault/migrations", service: "account-vault-worker", monitor: "account_vault.worker.migrated" },
+    "Evidence release and claim freeze": { method: "POST", path: "/api/claims/:claim_id/release-state", service: "claim-release-worker", monitor: "claim_release.worker.frozen_or_released" },
+    "Privacy export/delete job": { method: "POST", path: "/api/privacy/requests/:privacy_request_id/run", service: "privacy-job-worker", monitor: "privacy_job.worker.completed" },
+    "Founder pilot operations queue": { method: "POST", path: "/api/founder-beta/ops-queue/:queue_id/review", service: "founder-ops-worker", monitor: "founder_ops.worker.reviewed" }
+  };
+  const closeoutByTitle = Object.fromEntries(closeout.tickets.map((ticket) => [ticket.title, ticket]));
+  const endpoints = factory.tickets.map((ticket, index) => {
+    const closeoutTicket = closeoutByTitle[ticket.title] || ticket;
+    const endpoint = endpointMap[ticket.title] || { method: "POST", path: `/api/workers/${ticket.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`, service: "worker-endpoint", monitor: "worker.endpoint.accepted" };
+    const payloadFields = [...new Set([
+      "request_id",
+      "idempotency_key",
+      "actor_role",
+      "ticket_id",
+      "closeout_id",
+      ...ticket.eventContract,
+      "blocked_data_scan",
+      "created_at"
+    ])];
+    const logs = [
+      `${endpoint.service}.request_log`,
+      `${endpoint.service}.receipt_log`,
+      `${endpoint.service}.replay_log`,
+      `${endpoint.service}.redaction_log`
+    ];
+    const monitorFields = [
+      "latency_ms",
+      "delivery_state",
+      "retry_count",
+      "dead_letter_state",
+      "owner_acknowledged_at"
+    ];
+    const acceptanceScore = clampNumber(Math.round(
+      closeoutTicket.score * 0.42 +
+        ticket.score * 0.22 +
+        Math.min(payloadFields.length, 12) * 2 +
+        ticket.acceptance.length * 4 +
+        (ticket.priority === "P0" ? -6 : ticket.priority === "P1" ? 0 : 4)
+    ) - closeoutTicket.blockers.length * 2, 18, 96);
+    const blockers = [
+      ...closeoutTicket.blockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 3),
+      ...(payloadFields.length < 8 ? ["endpoint payload needs required receipt, actor, idempotency, and closeout fields"] : []),
+      ...(logs.length < 4 ? ["endpoint needs request, receipt, replay, and redaction logs"] : []),
+      ...(ticket.priority === "P0" && acceptanceScore < 82 ? ["P0 endpoint cannot accept release until score reaches 82/100"] : [])
+    ];
+    const status = blockers.length
+      ? "Endpoint blocked"
+      : acceptanceScore >= 82
+        ? "Endpoint accepted"
+        : "Owner acceptance";
+    return {
+      ...ticket,
+      acceptanceScore,
+      blockers: blockers.length ? blockers : ["No active endpoint blocker in this preview. Keep real CI, endpoint auth, audit storage, monitor delivery, and owner signoff before production."],
+      closeoutId: closeoutTicket.closeoutId,
+      endpointAcceptanceId: ["NN", "ENDPOINT", "ACCEPT", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      logs,
+      method: endpoint.method,
+      monitorEvent: endpoint.monitor,
+      monitorFields,
+      path: endpoint.path,
+      payloadFields,
+      service: endpoint.service,
+      status,
+      tone: status === "Endpoint accepted" ? "ready" : status === "Endpoint blocked" ? "blocked" : "draft"
+    };
+  });
+  const accepted = endpoints.filter((endpoint) => endpoint.status === "Endpoint accepted").length;
+  const review = endpoints.filter((endpoint) => endpoint.status === "Owner acceptance").length;
+  const blocked = endpoints.filter((endpoint) => endpoint.status === "Endpoint blocked").length;
+  const readiness = clampNumber(Math.round(
+    endpoints.reduce((sum, endpoint) => sum + endpoint.acceptanceScore, 0) / endpoints.length * 0.72 +
+      closeout.readiness * 0.18 +
+      factory.score * 0.1
+  ) - blocked * 2, 18, 96);
+  const status = blocked
+    ? "Endpoint acceptance blocked"
+    : readiness >= 84
+      ? "Endpoint matrix ready"
+      : "Endpoint owner review";
+  const tone = status === "Endpoint matrix ready" ? "ready" : status === "Endpoint acceptance blocked" ? "blocked" : "draft";
+  const metrics = [
+    { label: "Endpoint matrix", value: endpointMatrixId, detail: `${accepted} accepted, ${review} owner review, ${blocked} blocked endpoint${endpoints.length === 1 ? "" : "s"}.` },
+    { label: "Acceptance batch", value: acceptanceBatchId, detail: `${endpoints.reduce((sum, endpoint) => sum + endpoint.payloadFields.length, 0)} payload fields mapped across ${endpoints.length} workers.` },
+    { label: "Monitor handoff", value: monitorHandoffId, detail: "Every endpoint carries request, receipt, replay, redaction, retry, and dead-letter observability." },
+    { label: "Release closeout", value: releaseCloseoutId, detail: `${status}; closeout source ${closeout.closeoutId}.` }
+  ];
+  const handoffs = [
+    {
+      label: "Request logging",
+      owner: "Platform",
+      value: "request_id + idempotency_key",
+      detail: "Every endpoint writes request metadata before business state changes."
+    },
+    {
+      label: "Receipt persistence",
+      owner: "Backend",
+      value: "append-only receipt",
+      detail: "Endpoint success is not trusted until receipt proof is saved."
+    },
+    {
+      label: "Replay monitor",
+      owner: "Release Ops",
+      value: "replay + retry",
+      detail: "Retry, duplicate, replay, and dead-letter states stay observable."
+    },
+    {
+      label: "Redaction scan",
+      owner: "Compliance",
+      value: "blocked-data proof",
+      detail: "Payloads and logs fail if sensitive investor, payment, or distributor data appears."
+    }
+  ];
+  const releaseSequence = [
+    "Freeze endpoint scope and match each ticket to method, path, service, payload, logs, monitor event, and owner.",
+    "Run schema tests for request ID, idempotency key, actor role, ticket ID, closeout ID, and event contract fields.",
+    "Run replay tests for duplicate webhook, refund reversal, entitlement projection, support repair, migration, evidence freeze, privacy job, and founder queue cases.",
+    "Attach request, receipt, replay, redaction, retry, dead-letter, and owner acknowledgement logs to the acceptance batch.",
+    "Close only when endpoint matrix, backend ticket closeout, monitoring handoff, redaction proof, and release owner signoff agree."
+  ];
+  const noGoRules = [
+    "No endpoint release if request ID, idempotency key, ticket ID, closeout ID, or actor role is missing.",
+    "No endpoint release if request, receipt, replay, redaction, retry, dead-letter, or owner acknowledgement logs are missing.",
+    "No P0 endpoint release below 82/100 acceptance score.",
+    "No endpoint release if support, refund, entitlement, privacy, evidence, account, or payment state can change from browser-local state.",
+    "No endpoint release if PAN, folio, CAS, bank data, UPI, card data, OTP, gateway secrets, contact data, private notes, ARN/EUIN, or distributor client records enter payloads or logs."
+  ];
+  const receiptFields = [
+    "endpoint_matrix_id",
+    "endpoint_acceptance_id",
+    "acceptance_batch_id",
+    "monitor_handoff_id",
+    "release_closeout_id",
+    "ticket_id",
+    "closeout_id",
+    "method",
+    "path",
+    "service",
+    "payload_schema_version",
+    "request_log_id",
+    "receipt_log_id",
+    "replay_log_id",
+    "redaction_log_id",
+    "monitor_event",
+    "owner_acknowledgement",
+    "blocked_data_scan",
+    "released_at"
+  ];
+  const blockers = blocked
+    ? endpoints.filter((endpoint) => endpoint.status === "Endpoint blocked").map((endpoint) => `${endpoint.title}: ${endpoint.blockers[0] || endpoint.status}`)
+    : ["No active endpoint acceptance blocker in this preview. Keep production CI, auth, storage, monitoring, and owner signoff outside browser-local state."];
+  return {
+    accepted,
+    acceptanceBatchId,
+    blocked,
+    blockers,
+    endpointMatrixId,
+    endpoints,
+    handoffs,
+    metrics,
+    monitorHandoffId,
+    noGoRules,
+    readiness,
+    receiptFields,
+    releaseCloseoutId,
+    releaseSequence,
+    review,
+    status,
+    tone
+  };
+}
+
 function renderBackendTicketFactory() {
   if (!els.backendTicketFactoryOutput) return;
   const factory = backendTicketFactoryConfig();
   const closeout = backendTicketCloseout(factory);
+  const endpointMatrix = workerEndpointAcceptanceMatrix(factory, closeout);
   if (els.backendTicketFactorySummary) {
-    els.backendTicketFactorySummary.textContent = `${closeout.readiness}/100 | ${closeout.status}`;
+    els.backendTicketFactorySummary.textContent = `${endpointMatrix.readiness}/100 | ${endpointMatrix.status}`;
   }
   els.backendTicketFactoryOutput.innerHTML = `
     <div class="backend-ticket-hero ${factory.openP0.length ? "blocked" : factory.score >= 82 ? "ready" : "draft"}">
@@ -17604,6 +17794,83 @@ function renderBackendTicketFactory() {
           <button class="text-button" type="button" data-backend-ticket-route="${escapeHtml(ticket.route)}">Open route</button>
         </article>
       `).join("")}
+    </div>
+    <div class="worker-endpoint-matrix ${escapeHtml(endpointMatrix.tone)}">
+      <div class="worker-endpoint-head">
+        <div>
+          <span>V302 worker endpoint acceptance matrix</span>
+          <h3>${escapeHtml(endpointMatrix.status)}</h3>
+          <p>Matrix ${escapeHtml(endpointMatrix.endpointMatrixId)} maps every backend ticket to a method, path, service, payload schema, logs, monitor handoff, owner check, and release closeout gate before production workers can ship.</p>
+        </div>
+        <div class="worker-endpoint-score" style="--score:${endpointMatrix.readiness}">
+          <b>${endpointMatrix.readiness}</b>
+          <span>Endpt</span>
+        </div>
+      </div>
+      <div class="worker-endpoint-metric-grid">
+        ${endpointMatrix.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="worker-endpoint-grid">
+        ${endpointMatrix.endpoints.map((endpoint) => `
+          <article class="${escapeHtml(endpoint.tone)}">
+            <div class="backend-ticket-card-head">
+              <div>
+                <span>${escapeHtml(endpoint.priority)} | ${escapeHtml(endpoint.owner)} | ${escapeHtml(endpoint.service)}</span>
+                <strong>${escapeHtml(endpoint.title)}</strong>
+              </div>
+              <b>${endpoint.acceptanceScore}</b>
+            </div>
+            <p><b>${escapeHtml(endpoint.method)}</b> ${escapeHtml(endpoint.path)}</p>
+            <small>${escapeHtml(endpoint.status)} | ${escapeHtml(endpoint.endpointAcceptanceId)}</small>
+            <div class="build-progress-bar"><span style="width:${endpoint.acceptanceScore}%"></span></div>
+            <div class="worker-endpoint-lists">
+              <div>
+                <span>Payload</span>
+                <ul>${endpoint.payloadFields.slice(0, 6).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+              </div>
+              <div>
+                <span>Logs</span>
+                <ul>${endpoint.logs.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+              </div>
+            </div>
+            <p>Monitor: ${escapeHtml(endpoint.monitorEvent)}</p>
+            <button class="text-button" type="button" data-backend-ticket-route="${escapeHtml(endpoint.route)}">Open proof</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="worker-endpoint-handoff-grid">
+        ${endpointMatrix.handoffs.map((handoff) => `
+          <article>
+            <span>${escapeHtml(handoff.label)} | ${escapeHtml(handoff.owner)}</span>
+            <strong>${escapeHtml(handoff.value)}</strong>
+            <p>${escapeHtml(handoff.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="worker-endpoint-two">
+        <article>
+          <span>Release sequence</span>
+          <ol>${endpointMatrix.releaseSequence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol>
+        </article>
+        <article class="${escapeHtml(endpointMatrix.tone)}">
+          <span>Endpoint blockers</span>
+          <ul>${endpointMatrix.blockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>No-go rules</span>
+          <ul>${endpointMatrix.noGoRules.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <ul>${endpointMatrix.receiptFields.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        </article>
+      </div>
     </div>
     <div class="backend-ticket-closeout ${escapeHtml(closeout.tone)}">
       <div class="backend-ticket-closeout-head">
@@ -17696,12 +17963,16 @@ function renderBackendTicketFactory() {
 function makeBackendTicketFactoryBrief() {
   const factory = backendTicketFactoryConfig();
   const closeout = backendTicketCloseout(factory);
+  const endpointMatrix = workerEndpointAcceptanceMatrix(factory, closeout);
   return [
     "# NiveshNadi Backend Ticket Factory",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
     `Factory ID: ${factory.factoryId}`,
     `Factory score: ${factory.score}/100`,
     `Posture: ${factory.posture}`,
+    `Endpoint matrix ID: ${endpointMatrix.endpointMatrixId}`,
+    `Endpoint readiness: ${endpointMatrix.readiness}/100`,
+    `Endpoint status: ${endpointMatrix.status}`,
     `Closeout ID: ${closeout.closeoutId}`,
     `Closeout readiness: ${closeout.readiness}/100`,
     `Closeout status: ${closeout.status}`,
@@ -17721,6 +17992,29 @@ function makeBackendTicketFactoryBrief() {
       `  Acceptance: ${ticket.acceptance.join(" | ")}`,
       `  Blocked data: ${ticket.blockedData.join(", ")}`
     ].join("\n")),
+    "",
+    "## Worker Endpoint Acceptance Matrix",
+    ...endpointMatrix.metrics.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    ...endpointMatrix.endpoints.map((endpoint) => [
+      `- ${endpoint.endpointAcceptanceId}: ${endpoint.title}`,
+      `  Endpoint: ${endpoint.method} ${endpoint.path} | Service: ${endpoint.service} | Owner: ${endpoint.owner} | Status: ${endpoint.status} | Score: ${endpoint.acceptanceScore}/100`,
+      `  Payload: ${endpoint.payloadFields.join(", ")}`,
+      `  Logs: ${endpoint.logs.join(", ")}`,
+      `  Monitor: ${endpoint.monitorEvent} | Closeout: ${endpoint.closeoutId}`,
+      `  Blockers: ${endpoint.blockers.join(" | ")}`
+    ].join("\n")),
+    "",
+    "## Endpoint Handoffs",
+    ...endpointMatrix.handoffs.map((item) => `- ${item.label}: ${item.value} | ${item.owner} | ${item.detail}`),
+    "",
+    "## Endpoint Release Sequence",
+    ...endpointMatrix.releaseSequence.map((item) => `- ${item}`),
+    "",
+    "## Endpoint No-Go Rules",
+    ...endpointMatrix.noGoRules.map((item) => `- ${item}`),
+    "",
+    "## Endpoint Receipt Fields",
+    ...endpointMatrix.receiptFields.map((item) => `- ${item}`),
     "",
     "## Backend Ticket Closeout",
     ...closeout.metrics.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
@@ -17744,6 +18038,56 @@ function makeBackendTicketFactoryBrief() {
     "",
     "## Handoff Rules",
     ...factory.handoffRules.map((item) => `- ${item}`)
+  ].join("\n");
+}
+
+function makeWorkerEndpointAcceptanceMatrixBrief() {
+  const factory = backendTicketFactoryConfig();
+  const closeout = backendTicketCloseout(factory);
+  const endpointMatrix = workerEndpointAcceptanceMatrix(factory, closeout);
+  return [
+    "# NiveshNadi Worker Endpoint Acceptance Matrix",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Endpoint matrix ID: ${endpointMatrix.endpointMatrixId}`,
+    `Acceptance batch ID: ${endpointMatrix.acceptanceBatchId}`,
+    `Monitor handoff ID: ${endpointMatrix.monitorHandoffId}`,
+    `Release closeout ID: ${endpointMatrix.releaseCloseoutId}`,
+    `Readiness: ${endpointMatrix.readiness}/100`,
+    `Status: ${endpointMatrix.status}`,
+    `Accepted: ${endpointMatrix.accepted}`,
+    `Owner review: ${endpointMatrix.review}`,
+    `Blocked: ${endpointMatrix.blocked}`,
+    "",
+    "## Metrics",
+    ...endpointMatrix.metrics.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Endpoints",
+    ...endpointMatrix.endpoints.map((endpoint) => [
+      `- ${endpoint.endpointAcceptanceId}: ${endpoint.title}`,
+      `  Method/path: ${endpoint.method} ${endpoint.path}`,
+      `  Service: ${endpoint.service} | Owner: ${endpoint.owner} | Priority: ${endpoint.priority}`,
+      `  Status: ${endpoint.status} | Score: ${endpoint.acceptanceScore}/100`,
+      `  Payload fields: ${endpoint.payloadFields.join(", ")}`,
+      `  Logs: ${endpoint.logs.join(", ")}`,
+      `  Monitor event: ${endpoint.monitorEvent}`,
+      `  Monitor fields: ${endpoint.monitorFields.join(", ")}`,
+      `  Closeout: ${endpoint.closeoutId}`,
+      `  Blockers: ${endpoint.blockers.join(" | ")}`
+    ].join("\n")),
+    "",
+    "## Monitor Handoffs",
+    ...endpointMatrix.handoffs.map((item) => `- ${item.label}: ${item.value} | ${item.owner} | ${item.detail}`),
+    "",
+    "## Release Sequence",
+    ...endpointMatrix.releaseSequence.map((item) => `- ${item}`),
+    "",
+    "## No-Go Rules",
+    ...endpointMatrix.noGoRules.map((item) => `- ${item}`),
+    "",
+    "## Receipt Fields",
+    ...endpointMatrix.receiptFields.map((item) => `- ${item}`),
+    "",
+    "Guardrail: Endpoint acceptance is a production engineering handoff. It does not collect sensitive investor/payment identifiers, execute transactions, or replace real backend CI, auth, monitoring, and owner signoff."
   ].join("\n");
 }
 
@@ -50106,6 +50450,7 @@ function bindEvents() {
   els.openPaidPilotLaunchBlocker?.addEventListener("click", openPaidPilotLaunchBlocker);
   els.copyPaidPilotLaunchGate?.addEventListener("click", () => copyText(makePaidPilotLaunchGateBrief()));
   els.openBackendTicketBlocker?.addEventListener("click", openBackendTicketBlocker);
+  els.copyWorkerEndpointMatrix?.addEventListener("click", () => copyText(makeWorkerEndpointAcceptanceMatrixBrief()));
   els.copyBackendTicketFactory?.addEventListener("click", () => copyText(makeBackendTicketFactoryBrief()));
   els.openReceiptReplayBlocker?.addEventListener("click", openReceiptReplayBlocker);
   els.copyReceiptReplayEngine?.addEventListener("click", () => copyText(makeReceiptReplayEngineBrief()));
@@ -52046,6 +52391,7 @@ function cacheElements() {
     backendTicketFactorySummary: qs("#backendTicketFactorySummary"),
     backendTicketFactoryOutput: qs("#backendTicketFactoryOutput"),
     openBackendTicketBlocker: qs("#openBackendTicketBlocker"),
+    copyWorkerEndpointMatrix: qs("#copyWorkerEndpointMatrix"),
     copyBackendTicketFactory: qs("#copyBackendTicketFactory"),
     receiptReplaySummary: qs("#receiptReplaySummary"),
     receiptReplayOutput: qs("#receiptReplayOutput"),

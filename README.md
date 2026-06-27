@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v301 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v302 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -53,7 +53,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Nadi Payment Provider Pilot Receipt Contract with a Payment Provider Twin that turns the provider decision into backend-owned checkout, webhook, idempotency, entitlement, invoice, refund, reconciliation, support repair, incident receipt fields, and synthetic gateway rehearsal before a live paid pilot is trusted.
 - Nadi Pilot Receipt Vault that shows how provider pilot receipts are stored, replayed, audited, exported, used by support, joined to settlement, and frozen during incidents before paid access relies on payment events.
 - Nadi Paid Pilot Launch Gate that converts receipt vault replay, payment provider proof, entitlement enforcement, support and refund handling, account route readiness, evidence safety, privacy controls, and founder operating capacity into a go, hold, or no-go decision before opening the first tiny paid cohort.
-- Nadi Backend Ticket Factory with Backend Ticket Closeout that converts paid pilot gate blockers into owner-scoped backend tickets with event contracts, acceptance tests, blocked-data boundaries, route links, release dependencies, closeout gates, receipt proof, freeze posture, rollback notes, and owner signoff before implementation begins or closes.
+- Nadi Backend Ticket Factory with Backend Ticket Closeout and Worker Endpoint Acceptance Matrix that converts paid pilot gate blockers into owner-scoped backend tickets with event contracts, acceptance tests, blocked-data boundaries, route links, release dependencies, closeout gates, receipt proof, freeze posture, rollback notes, owner signoff, endpoint methods/paths, payload schemas, logs, monitoring handoffs, and production closeout gates before implementation begins or ships.
 - Nadi Receipt Replay Engine that turns the receipt vault replay ticket into checkout, duplicate webhook, refund reversal, settlement variance, support repair, audit export, and incident-freeze replay cases before paid access widens.
 - Nadi Entitlement Bridge with a receipt-driven access matrix that connects Free Starter, Nadi Plus Monthly, Nadi Plus Annual, Founder Beta, grace, refund, expired, support, replay proof, and feature-limit states to research access before paid accounts launch.
 - Nadi Subscription Ops Console with Production Support Tooling that maps renewals, failed payments, refunds, invoices, support repair, reconciliation, incidents, redacted lookup, case routing, entitlement repair, billing evidence, and closeout ownership before paid retail launch.

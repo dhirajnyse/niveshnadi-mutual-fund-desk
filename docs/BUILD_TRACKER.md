@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V302 Worker Endpoint Acceptance Matrix
+
+V302 adds Worker Endpoint Acceptance Matrix inside the Backend Ticket Factory. It maps every backend ticket to method, path, service, payload schema, request/receipt/replay/redaction logs, monitoring handoff, owner acknowledgement, no-go rules, and release closeout evidence before production workers can ship.
+
 ## V301 Founder Beta War-Room Digest
 
 V301 adds Founder Beta War-Room Digest inside the Founder Beta Operating Room. It rolls backend deploy runbook posture, beta incident command status, support capacity, invite decision, Trust Center proof, and Friday continuation decision into one compact founder review packet with copyable notes and no-go rules.

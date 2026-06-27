@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v316 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v317 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -32,6 +32,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Backend Deploy Runbook Packet inside Backend Audit Receipts packages smoke gates and incident command proof into deploy commands, environment checks, rollback contacts, release-note evidence, and hard deployment no-go rules before real backend workers can deploy.
 - Account Lifecycle Retention Job Fixtures inside Backend Audit Receipts turn retention enforcement proof into scheduled recovery, session, restore, deletion, and support-notice fixture rows with deterministic seed events, support SLA checks, command archive proof, receipt fields, and fixture no-go rules.
 - Account Lifecycle Support SLA Proof inside Backend Audit Receipts turns retention fixture support windows into acknowledgement receipts, reviewed support-safe response copy, escalation ownership, monitor handoff, closeout receipts, and SLA no-go rules before account support can widen.
+- Live Source Worker Proof inside Backend Audit Receipts binds production source import jobs to scheduler receipts, fetch and source-date proof, parser quarantine, durable receipt persistence, alert/replay proof, reviewer signoff, rollback evidence, affected-surface state, receipt fields, and hard no-go rules before any public claim refresh is trusted.
 - Self-research command desk with search, category, risk, and sorting controls.
 - Quiet Conviction Meter on the first screen that keeps confidence calm until evidence, peer, and memo checks are visible.
 - Learning Loop Ledger on the first screen that shows how research actions become privacy-safe learning signals without turning demo data into advice.

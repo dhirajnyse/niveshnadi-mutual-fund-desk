@@ -46,6 +46,8 @@ V315 adds Account Lifecycle Retention Job Fixtures. Backend Audit Receipts now t
 
 V316 adds Account Lifecycle Support SLA Proof. Backend Audit Receipts now turns retention fixture support windows into acknowledgement receipts, reviewed support-safe response copy, escalation owners, monitor handoff, closeout IDs, receipt fields, and SLA no-go rules before live source worker proof becomes the next closeout gate.
 
+V317 adds Live Source Worker Proof. Backend Audit Receipts now binds the active source job to scheduler receipt, fetch/source-date proof, parser quarantine, durable receipt persistence, alert and failed-run replay, reviewer signoff, rollback evidence, affected-surface state, receipt fields, and hard no-go rules before final launch signoff can be trusted.
+
 V116 adds Payment Reconciliation Replay. It joins gateway payment, invoice, entitlement, refund, support repair, and settlement receipts into one replay batch with an audit ID, ordered replay script, variance checks, storage proof, finance retention posture, and launch blockers.
 
 V120 adds Production Source Import Jobs. Backend Audit Receipts now turns each official source family into a backend-owned job contract with source job ID, import gate ID, source cadence, expected row/object volume, parser and schema version, accepted and rejected row counts, citation path, reviewer decision, rollback reference, event chain, payload fields, rejected-row quarantine policy, and public-surface freeze rules. The board separates demo dry-run readiness from production job readiness so AMFI, AMC factsheet, SID/KIM, portfolio disclosure, benchmark, TER, and riskometer imports cannot silently refresh public research claims.

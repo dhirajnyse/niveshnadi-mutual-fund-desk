@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v316-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v316 Support SLA Proof";
+const DATA_VERSION = "20260628-v317-02";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v317 Live Source Worker Proof";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1203,8 +1203,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 86,
     status: "In progress",
     route: "#backend-audit-receipts",
-    done: ["evidence ledger", "citation binder", "data readiness", "live data contract lab", "source dry-run board", "source receipt vault", "live data production receipts", "production source import gate", "production source import jobs", "source import worker blueprint", "monitoring alert routing", "alert delivery backend", "failed-run event store", "reviewer sign-off bridge", "rollback evidence store", "public recovery rehearsal", "recovery release queue", "correction publish console", "incident receipt replay", "claim surface map", "surface release queue", "reviewer workbench", "reviewer decision ledger", "reviewer release binder", "backend audit receipts", "source QA", "claim gates", "privacy controls"],
-    next: "Bind correction publish console to production correction notice publishing, approval capture, rollback hold, and investor-visible correction receipt storage."
+    done: ["evidence ledger", "citation binder", "data readiness", "live data contract lab", "source dry-run board", "source receipt vault", "live data production receipts", "production source import gate", "production source import jobs", "source import worker blueprint", "live source worker proof", "monitoring alert routing", "alert delivery backend", "failed-run event store", "reviewer sign-off bridge", "rollback evidence store", "public recovery rehearsal", "recovery release queue", "correction publish console", "incident receipt replay", "claim surface map", "surface release queue", "reviewer workbench", "reviewer decision ledger", "reviewer release binder", "backend audit receipts", "source QA", "claim gates", "privacy controls"],
+    next: "Move from live source worker proof into final payment, legal, security, and release signoff closeout."
   },
   {
     phase: "Phase 1D",
@@ -1240,8 +1240,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account lifecycle support SLA proof",
+    label: "Live source worker proof",
     status: "Shipping now",
+    route: "#backend-audit-receipts",
+    detail: "Prove scheduled source workers can fetch, quarantine, persist receipts, alert, replay failures, bind reviewer signoff, and recover public surfaces."
+  },
+  {
+    label: "Account lifecycle support SLA proof",
+    status: "Done",
     route: "#backend-audit-receipts",
     detail: "Turn retention fixture support windows into acknowledgement proof, reviewed response copy, escalation ownership, monitor handoff, and closeout receipts."
   },
@@ -9073,15 +9079,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Support SLA proof",
-      status: "Closeout active",
+      status: "Done in v316",
       route: "#account-launch-route",
       detail: "Close acknowledgement windows, reviewed response copy, escalation owner rules, monitor handoff, and live beta response timing."
     },
     {
       label: "Live source worker proof",
-      status: "Critical gate",
+      status: "Closeout active",
       route: "#source-receipts",
-      detail: "Persist scheduled source receipts, failed-run replay, reviewer sign-off, rollback evidence, and affected-surface proof."
+      detail: "Persist scheduled source receipts, fetch proof, parser quarantine, failed-run replay, reviewer sign-off, rollback evidence, and affected-surface proof."
     },
     {
       label: "Payment, legal, security signoff",
@@ -9314,7 +9320,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v316 is closing support SLA proof from Backend Audit Receipts.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v317 is closing live source worker proof from Backend Audit Receipts.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9443,7 +9449,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v316</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v317</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -43195,6 +43201,201 @@ function accountLifecycleSupportSlaProof(config = backendAuditConfig(), retentio
   };
 }
 
+function liveSourceWorkerProof(
+  config = backendAuditConfig(),
+  sourceImportJobs = productionSourceImportJobs(config),
+  sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config),
+  alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config),
+  alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config),
+  failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config),
+  reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config),
+  rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config),
+  sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence)
+) {
+  config = config || backendAuditConfig();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const activeJob = sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const liveWorkerProofId = ["NN", "LIVE", "SOURCE", "WORKER", "PROOF", sourceSlug, suffix].join("-").toUpperCase();
+  const schedulerReceiptId = ["NN", "LIVE", "SOURCE", "SCHEDULER", "RECEIPT", sourceSlug, suffix].join("-").toUpperCase();
+  const workerRunLedgerId = ["NN", "LIVE", "SOURCE", "RUN", "LEDGER", sourceSlug, suffix].join("-").toUpperCase();
+  const replayBinderId = ["NN", "LIVE", "SOURCE", "REPLAY", "BINDER", sourceSlug, suffix].join("-").toUpperCase();
+  const closeoutId = ["NN", "LIVE", "SOURCE", "WORKER", "CLOSEOUT", sourceSlug, suffix].join("-").toUpperCase();
+  const storageReady = config.storage === "event" || config.storage === "append";
+  const clean = (items = []) => [...new Set(items.filter(Boolean).filter((item) => !String(item).startsWith("No active")))];
+  const proofTemplates = [
+    {
+      label: "Scheduler proof",
+      owner: "Data Ops",
+      route: "#backend-audit-receipts",
+      event: "live_source_worker.scheduler_proved",
+      proof: `${schedulerReceiptId}, ${sourceWorker.workerId}, ${sourceWorker.runbookId}`,
+      acceptance: "Worker has cadence, pause state, retry policy, owner, runbook ID, and idempotency key before any live run.",
+      score: Math.round((sourceWorker.readiness + activeJob.gateScore + sourceImportJobs.readiness) / 3),
+      blockers: clean([...sourceWorker.blockers, ...activeJob.blockers]).slice(0, 3)
+    },
+    {
+      label: "Fetch and source date",
+      owner: "Data Engineering",
+      route: "#source-intake",
+      event: "live_source_worker.fetch_source_date_proved",
+      proof: "source_url_or_file_hash, checksum, source_date, duplicate_batch_flag",
+      acceptance: "Fetch proof captures source date, checksum, duplicate policy, response status, and official-source citation path.",
+      score: Math.round((activeJob.gateScore + sourceReceiptJob.readiness + sourceImportJobs.readiness) / 3),
+      blockers: clean([...activeJob.blockers, ...sourceReceiptJob.blockers]).slice(0, 3)
+    },
+    {
+      label: "Parser quarantine",
+      owner: "Data QA",
+      route: "#source-dry-run",
+      event: "live_source_worker.parser_quarantine_proved",
+      proof: "parser_version, schema_version, accepted_count, rejected_count, rejected_digest_id",
+      acceptance: "Parser run quarantines rows first and proves accepted/rejected counts before public surface queueing.",
+      score: Math.round((sourceWorker.readiness + failedRunStore.readiness + sourceImportJobs.readiness) / 3),
+      blockers: clean([...failedRunStore.blockers, ...sourceWorker.blockers]).slice(0, 3)
+    },
+    {
+      label: "Receipt persistence",
+      owner: "Security Ops",
+      route: "#source-receipts",
+      event: "live_source_worker.receipt_persistence_proved",
+      proof: `${sourceReceiptJob.receiptFamilyId}, ${failedRunStore.eventStoreId}`,
+      acceptance: "Append source receipt, parser log, idempotency key, event sequence, and retention rule before public refresh.",
+      score: Math.round((sourceReceiptJob.readiness + failedRunStore.readiness + (storageReady ? 88 : 24)) / 3),
+      blockers: clean([...sourceReceiptJob.blockers, ...failedRunStore.blockers, ...(storageReady ? [] : ["live source worker proof needs append-only or event-stream receipt storage"])]).slice(0, 4)
+    },
+    {
+      label: "Alert and replay",
+      owner: "Release Ops",
+      route: "#backend-audit-receipts",
+      event: "live_source_worker.alert_replay_proved",
+      proof: `${alertRouting.alertRouteId}, ${alertDelivery.deliveryId}, ${failedRunStore.replayCursorId}`,
+      acceptance: "High alerts route to Ops, Reviewer, Release Ops, dead-letter queue, and replay cursor before surfaces move.",
+      score: Math.round((alertRouting.readiness + alertDelivery.readiness + failedRunStore.readiness) / 3),
+      blockers: clean([...alertRouting.blockers, ...alertDelivery.blockers, ...failedRunStore.blockers]).slice(0, 4)
+    },
+    {
+      label: "Reviewer and rollback",
+      owner: "Reviewer",
+      route: "#reviewer-workbench",
+      event: "live_source_worker.reviewer_rollback_proved",
+      proof: `${reviewerSignoff.signoffId}, ${rollbackEvidence.rollbackEvidenceId}, ${rollbackEvidence.surfaceRecoveryId}`,
+      acceptance: "Reviewer signoff, rollback evidence, correction receipt, and affected-surface state agree before any claim refresh.",
+      score: Math.round((reviewerSignoff.readiness + rollbackEvidence.readiness + sourceReceiptJob.readiness) / 3),
+      blockers: clean([...reviewerSignoff.blockers, ...rollbackEvidence.blockers, ...sourceReceiptJob.blockers]).slice(0, 4)
+    }
+  ];
+  const proofs = proofTemplates.map((proof, index) => {
+    const blockers = clean([
+      ...proof.blockers,
+      ...(storageReady ? [] : ["live source worker proof cannot close with browser-local receipt storage"]),
+      "real scheduler execution, alert transport, reviewer identity, and durable artifact storage remain outside this static prototype"
+    ]);
+    const score = clampNumber(Math.round(proof.score - Math.min(blockers.length, 5) * 3 + (storageReady ? 4 : -10)), 12, 96);
+    const status = score >= 84 && blockers.length <= 1
+      ? "Proof ready"
+      : score >= 64
+        ? "Proof rehearsal"
+        : "Proof blocked";
+    return {
+      ...proof,
+      blockers: blockers.length ? blockers : ["No active live source worker proof blocker in this preview. Keep real scheduler, durable artifacts, and reviewer identity before launch."],
+      proofId: ["NN", "LIVE", "SOURCE", "PROOF", String(index + 1).padStart(2, "0"), sourceSlug, suffix].join("-").toUpperCase(),
+      score,
+      status,
+      tone: status === "Proof ready" ? "ready" : status === "Proof blocked" ? "caution" : "watch"
+    };
+  });
+  const ready = proofs.filter((proof) => proof.status === "Proof ready").length;
+  const review = proofs.filter((proof) => proof.status === "Proof rehearsal").length;
+  const blocked = proofs.filter((proof) => proof.status === "Proof blocked").length;
+  const proofAverage = Math.round(proofs.reduce((sum, proof) => sum + proof.score, 0) / proofs.length);
+  const activeBlockers = [...new Set(proofs.filter((proof) => proof.status !== "Proof ready").flatMap((proof) => clean(proof.blockers).slice(0, 2)))];
+  const releaseBlockers = [...new Set([
+    ...activeBlockers,
+    ...(storageReady ? [] : ["live source worker proof needs event-stream or append-only receipt storage"]),
+    "real scheduler execution, alert transport, reviewer identity, and durable artifact storage remain outside this static prototype"
+  ])];
+  const readiness = clampNumber(Math.round(
+    proofAverage * 0.5 +
+      sourceReceiptJob.readiness * 0.16 +
+      sourceWorker.readiness * 0.12 +
+      failedRunStore.readiness * 0.08 +
+      reviewerSignoff.readiness * 0.07 +
+      rollbackEvidence.readiness * 0.07
+  ) - blocked * 4 - Math.min(activeBlockers.length, 6), 12, 96);
+  const status = readiness >= 84 && blocked === 0 && releaseBlockers.length <= 1
+    ? "Live source worker proof ready"
+    : readiness >= 64 && blocked <= 1
+      ? "Live source worker proof in rehearsal"
+      : "Live source worker proof blocked";
+  return {
+    activeBlockers: activeBlockers.length ? activeBlockers : ["No active live source worker blocker in this preview. Keep real scheduler and durable artifacts before production launch."],
+    blocked,
+    closeoutId,
+    liveWorkerProofId,
+    metrics: [
+      { label: "Worker proof", value: liveWorkerProofId, detail: `${ready} ready, ${review} rehearsal, ${blocked} blocked proof row${proofs.length === 1 ? "" : "s"}.` },
+      { label: "Active source", value: activeJob.pipeline.title, detail: `${activeJob.jobId}; ${activeJob.pipeline.cadence}; ${activeJob.expectedRows}.` },
+      { label: "Run ledger", value: workerRunLedgerId, detail: `Scheduler ${schedulerReceiptId}; replay ${replayBinderId}.` },
+      { label: "Closeout", value: closeoutId, detail: `${status}; storage is ${backendAuditStorageLabel(config.storage)}.` }
+    ],
+    noGoRules: [
+      "No live source worker proof closes without scheduler receipt, fetch proof, source date, parser quarantine, persisted receipt, alert delivery, failed-run replay, reviewer signoff, and rollback evidence.",
+      "No public claim surface refreshes while a high alert, reviewer conflict, rollback gap, correction gap, or missing source date is open.",
+      "No live source worker may rely on browser-local state, screenshots, manual spreadsheets, private notes, or support memory as source proof.",
+      "No source receipt may store PAN, folio, CAS, bank data, card, UPI, credentials, transaction instructions, ARN/EUIN, distributor client-book data, or personalized advice content.",
+      "No paid or public account cohort widens while live source worker proof is blocked."
+    ],
+    proofAverage,
+    proofs,
+    readiness,
+    ready,
+    receiptFields: [
+      "live_source_worker_proof_id",
+      "live_source_worker_proof_row_id",
+      "source_job_id",
+      "import_gate_id",
+      "worker_id",
+      "runbook_id",
+      "scheduler_receipt_id",
+      "worker_run_ledger_id",
+      "source_url_or_file_hash",
+      "checksum",
+      "source_date",
+      "parser_version",
+      "schema_version",
+      "accepted_row_count",
+      "rejected_row_count",
+      "rejected_row_digest_id",
+      "source_receipt_id",
+      "alert_route_id",
+      "delivery_attempt_id",
+      "failed_run_event_store_id",
+      "replay_cursor_id",
+      "reviewer_signoff_id",
+      "rollback_evidence_id",
+      "affected_surface_ids",
+      "worker_closeout_id"
+    ],
+    releaseBlockers,
+    replayBinderId,
+    review,
+    schedulerReceiptId,
+    sequence: [
+      "Load active source job, import gate, worker ID, runbook ID, cadence, parser/schema version, and expected volume.",
+      "Capture fetch proof, source date, checksum, duplicate-batch decision, accepted/rejected counts, and rejected-row digest.",
+      "Persist source receipt and event sequence before any public claim surface is queued.",
+      "Route high alerts, delivery attempts, dead-letter state, and failed-run replay cursor before reviewer release.",
+      "Close only after reviewer signoff, rollback evidence, correction posture, affected-surface proof, and no-go decision agree."
+    ],
+    sourceSlug,
+    status,
+    tone: status === "Live source worker proof ready" ? "ready" : status === "Live source worker proof blocked" ? "caution" : "watch",
+    workerRunLedgerId
+  };
+}
+
 function renderBackendAuditReceipts(event) {
   if (event) event.preventDefault();
   if (!els.backendAuditOutput || !els.backendAuditSummary) return;
@@ -43208,6 +43409,7 @@ function renderBackendAuditReceipts(event) {
   const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence);
+  const liveWorkerProof = liveSourceWorkerProof(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob);
   const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
   const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
@@ -43720,6 +43922,74 @@ function renderBackendAuditReceipts(event) {
           <h3>Worker blockers</h3>
           <ul>
             ${sourceWorker.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="live-worker-proof ${escapeHtml(liveWorkerProof.tone)}">
+      <div class="live-worker-head">
+        <div>
+          <span>Live source worker proof</span>
+          <h3>${escapeHtml(liveWorkerProof.status)}</h3>
+          <p>Proof ${escapeHtml(liveWorkerProof.liveWorkerProofId)} binds the active source job to scheduler receipt, fetch proof, parser quarantine, durable receipt persistence, alert replay, reviewer signoff, and rollback evidence.</p>
+        </div>
+        <div class="live-worker-score" style="--score:${liveWorkerProof.readiness}">
+          <strong>${liveWorkerProof.readiness}</strong>
+          <span>Live</span>
+        </div>
+      </div>
+      <div class="live-worker-metric-grid">
+        ${liveWorkerProof.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="live-worker-proof-grid">
+        ${liveWorkerProof.proofs.map((proof) => `
+          <article class="${escapeHtml(proof.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(proof.owner)}</span>
+                <strong>${escapeHtml(proof.label)}</strong>
+              </div>
+              <b>${proof.score}</b>
+            </div>
+            <p>${escapeHtml(proof.status)} | ${escapeHtml(proof.proofId)}</p>
+            <div class="build-progress-bar"><span style="width:${proof.score}%"></span></div>
+            <small><strong>Event:</strong> ${escapeHtml(proof.event)}</small>
+            <small><strong>Proof:</strong> ${escapeHtml(proof.proof)}</small>
+            <small><strong>Accept:</strong> ${escapeHtml(proof.acceptance)}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(proof.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button live-worker-route" type="button" data-build-route="${escapeHtml(proof.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="live-worker-two">
+        <article>
+          <h3>Proof sequence</h3>
+          <ol>
+            ${liveWorkerProof.sequence.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${liveWorkerProof.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Live worker no-go rules</h3>
+          <ul>
+            ${liveWorkerProof.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${liveWorkerProof.releaseBlockers.length > 1 ? "caution" : "ready"}">
+          <h3>Live worker blockers</h3>
+          <ul>
+            ${liveWorkerProof.releaseBlockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
           </ul>
         </article>
       </div>
@@ -45717,7 +45987,6 @@ function makeBackendDeployRunbookPacketBrief() {
   const ciSmokeHarness = backendCiSmokeHarness(config, implementationHandoff, publicPublishDrill, workerContract, workerCloseout, sourceReceiptJob, recoveryQueue, correctionPublish, failedRunStore, alertDelivery, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
   const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenterConfig(), founderBetaOperatingRoomConfig());
   const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
-  const accountPaymentSmoke = productionAccountPaymentSmoke(config, workerSmokeDashboard);
   const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
   const deployRunbook = backendDeployRunbookPacket(config, workerSmokeDashboard, betaIncidentLedger, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs, implementationHandoff, workerCloseout);
   return [
@@ -45787,6 +46056,7 @@ function makeBackendAuditReceiptBrief() {
   const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence);
+  const liveWorkerProof = liveSourceWorkerProof(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob);
   const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
   const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
@@ -45799,6 +46069,7 @@ function makeBackendAuditReceiptBrief() {
   const ciSmokeHarness = backendCiSmokeHarness(config, implementationHandoff, publicPublishDrill, workerContract, workerCloseout, sourceReceiptJob, recoveryQueue, correctionPublish, failedRunStore, alertDelivery, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
   const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenterConfig(), founderBetaOperatingRoomConfig());
   const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const accountPaymentSmoke = productionAccountPaymentSmoke(config, workerSmokeDashboard);
   const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
   const deployRunbook = backendDeployRunbookPacket(config, workerSmokeDashboard, betaIncidentLedger, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs, implementationHandoff, workerCloseout);
   const retentionJobFixtures = accountLifecycleRetentionJobFixtures(config);
@@ -45937,6 +46208,22 @@ function makeBackendAuditReceiptBrief() {
     ...sourceWorker.runbookSteps.map((step) => `- Worker runbook step: ${step}`),
     ...sourceWorker.pauseRules.map((rule) => `- Worker pause rule: ${rule}`),
     ...sourceWorker.blockers.map((blocker) => `- Worker blocker: ${blocker}`),
+    "",
+    "## Live Source Worker Proof",
+    `- Status: ${liveWorkerProof.status}`,
+    `- Readiness: ${liveWorkerProof.readiness}/100`,
+    `- Live worker proof ID: ${liveWorkerProof.liveWorkerProofId}`,
+    `- Scheduler receipt ID: ${liveWorkerProof.schedulerReceiptId}`,
+    `- Worker run ledger ID: ${liveWorkerProof.workerRunLedgerId}`,
+    `- Replay binder ID: ${liveWorkerProof.replayBinderId}`,
+    `- Worker closeout ID: ${liveWorkerProof.closeoutId}`,
+    `- Ready/Rehearsal/Blocked: ${liveWorkerProof.ready}/${liveWorkerProof.review}/${liveWorkerProof.blocked}`,
+    ...liveWorkerProof.metrics.map((metric) => `- Live worker metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...liveWorkerProof.proofs.map((proof) => `- Live worker proof: ${proof.proofId}: ${proof.label} | ${proof.status} | ${proof.score}/100 | ${proof.event} | ${proof.proof}`),
+    ...liveWorkerProof.sequence.map((step) => `- Live worker sequence: ${step}`),
+    ...liveWorkerProof.receiptFields.map((field) => `- Live worker receipt field: ${field}`),
+    ...liveWorkerProof.noGoRules.map((rule) => `- Live worker no-go rule: ${rule}`),
+    ...liveWorkerProof.releaseBlockers.map((blocker) => `- Live worker blocker: ${blocker}`),
     "",
     "## Monitoring Alert Routing",
     `- Routing status: ${alertRouting.status}`,

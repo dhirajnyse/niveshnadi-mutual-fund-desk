@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V317 Live Source Worker Proof
+
+V317 adds Live Source Worker Proof inside Backend Audit Receipts. It binds the active production source job to scheduler receipt, fetch and source-date proof, parser quarantine, durable receipt persistence, alert delivery, failed-run replay, reviewer signoff, rollback evidence, affected-surface state, receipt fields, blockers, and hard no-go rules before final payment, legal, security, and release signoff closeout.
+
 ## V316 Account Lifecycle Support SLA Proof
 
 V316 adds Account Lifecycle Support SLA Proof inside Backend Audit Receipts. It turns retention fixture support windows into acknowledgement receipts, reviewed support-safe copy, escalation ownership, monitor handoff, receipt fields, active blockers, and hard SLA no-go rules before live source worker proof becomes the next closeout gate.

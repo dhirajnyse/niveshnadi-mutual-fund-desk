@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v297 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v298 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -26,6 +26,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Public Recovery Publish Drill inside Backend Audit Receipts rehearses investor-visible correction wording, Trust Center state, support-safe explanation, freeze/resume proof, reviewer closeout, monitoring window, public no-go rules, and investor-visible recovery receipts.
 - Backend CI Smoke Harness inside Backend Audit Receipts turns implementation handoff and public publish drill evidence into repeatable smoke fixtures for scheduler, parser, receipt persistence, alert delivery, failed-run replay, and public recovery closeout.
 - Founder Beta Recovery Rehearsal inside Backend Audit Receipts binds CI smoke proof, public recovery copy, Trust Center history, support-safe founder communication, post-publish monitoring, and Friday closeout before founder beta users see a recovery state.
+- Production Worker Smoke Dashboard inside Backend Audit Receipts turns CI fixtures and founder recovery rehearsal into owner-scoped production gates with pass/fail status, deploy command refs, release blockers, closeout proof, and deployment no-go rules.
 - Self-research command desk with search, category, risk, and sorting controls.
 - Quiet Conviction Meter on the first screen that keeps confidence calm until evidence, peer, and memo checks are visible.
 - Learning Loop Ledger on the first screen that shows how research actions become privacy-safe learning signals without turning demo data into advice.

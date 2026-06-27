@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v297-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v297 Founder Beta Recovery Rehearsal";
+const DATA_VERSION = "20260627-v298-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v298 Production Worker Smoke Dashboard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,22 +1240,22 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Founder beta recovery rehearsal",
+    label: "Production worker smoke dashboard",
     status: "Shipping now",
     route: "#backend-audit-receipts",
-    detail: "Bind CI smoke proof, public recovery copy, Trust Center history, support-safe founder communication, post-publish monitoring, and Friday closeout before founder beta users see a recovery state."
-  },
-  {
-    label: "Production worker smoke dashboard",
-    status: "Next",
-    route: "#backend-ticket-factory",
-    detail: "Move smoke fixture results into a production CI dashboard, release gate, and owner closeout queue after backend workers exist."
+    detail: "Turn smoke fixtures and founder recovery rehearsal into owner-scoped production gates with pass/fail status, release blockers, closeout proof, and deployment no-go rules."
   },
   {
     label: "Beta incident command ledger",
-    status: "Later",
+    status: "Next",
     route: "#trust-center",
     detail: "Persist founder recovery drills, Trust Center updates, support scripts, monitor windows, and closeout decisions into one beta incident history."
+  },
+  {
+    label: "Backend deploy runbook packet",
+    status: "Later",
+    route: "#backend-ticket-factory",
+    detail: "Package the smoke dashboard into deploy commands, environment checks, rollback contacts, and release-note evidence after real workers exist."
   }
 ];
 
@@ -9260,7 +9260,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v297</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v298</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -36681,6 +36681,238 @@ function founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill
   };
 }
 
+function productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs) {
+  config = config || backendAuditConfig();
+  sourceImportJobs = sourceImportJobs || productionSourceImportJobs(config);
+  sourceWorker = sourceWorker || sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const dashboardId = ["NN", "PROD", "WORKER", "SMOKE", sourceSlug, suffix].join("-").toUpperCase();
+  const ownerGateId = ["NN", "PROD", "OWNER", "GATE", sourceSlug, suffix].join("-").toUpperCase();
+  const deploymentGateId = ["NN", "PROD", "DEPLOY", "GATE", sourceSlug, suffix].join("-").toUpperCase();
+  const closeoutBoardId = ["NN", "PROD", "SMOKE", "CLOSEOUT", sourceSlug, suffix].join("-").toUpperCase();
+  const storageReady = config.storage === "event" || config.storage === "append";
+  const fixtureByKey = (key) => ciSmokeHarness.fixtures.find((fixture) => fixture.key === key);
+  const ticketByLabel = (label) => workerContract.tickets.find((ticket) => ticket.label === label);
+  const closeoutByLabel = (label) => workerCloseout.closeouts.find((item) => item.ticket.label === label);
+  const packetByLabel = (label) => implementationHandoff.packets.find((packet) => packet.ticket.label === label);
+  const gateTemplates = [
+    {
+      key: "scheduler",
+      label: "Scheduler worker",
+      owner: "Data Ops",
+      route: "#backend-ticket-factory",
+      fixtureKey: "scheduler",
+      ticketLabel: "Scheduler binding",
+      deployCommand: `npm run smoke -- --gate scheduler --source ${activeJob.jobId}`,
+      releaseProof: "schedule_state, pause_state, retry_receipt_id, idempotency_key"
+    },
+    {
+      key: "parser",
+      label: "Parser and quarantine",
+      owner: "Data QA",
+      route: "#source-dry-run",
+      fixtureKey: "parser",
+      ticketLabel: "Parser quarantine",
+      deployCommand: `npm run smoke -- --gate parser --source ${activeJob.jobId}`,
+      releaseProof: "parser_version, schema_version, accepted_row_count, rejected_row_digest_id"
+    },
+    {
+      key: "receipt-store",
+      label: "Receipt store",
+      owner: "Security Ops",
+      route: "#source-receipts",
+      fixtureKey: "receipt-persistence",
+      ticketLabel: "Receipt persistence",
+      deployCommand: `npm run smoke -- --gate receipt-store --source ${activeJob.jobId}`,
+      releaseProof: "source_receipt_id, event_sequence, retention_policy, redaction_attestation"
+    },
+    {
+      key: "alert-delivery",
+      label: "Alert delivery",
+      owner: "Release Ops",
+      route: "#backend-audit-receipts",
+      fixtureKey: "alert-delivery",
+      ticketLabel: "Alert fan-out",
+      deployCommand: `npm run smoke -- --gate alert-delivery --source ${activeJob.jobId}`,
+      releaseProof: "alert_route_id, delivery_attempt_id, reviewer_queue_id, dead_letter_id"
+    },
+    {
+      key: "failed-run-replay",
+      label: "Failed-run replay",
+      owner: "Trust Ops",
+      route: "#backend-audit-receipts",
+      fixtureKey: "failed-run-replay",
+      ticketLabel: "Release recovery",
+      deployCommand: `npm run smoke -- --gate failed-run-replay --source ${activeJob.jobId}`,
+      releaseProof: "failed_run_event_store_id, replay_cursor_id, replayed_receipt_ids, duplicate_release_check"
+    },
+    {
+      key: "public-recovery",
+      label: "Public recovery closeout",
+      owner: "Reviewer",
+      route: "#trust-center",
+      fixtureKey: "public-recovery-closeout",
+      ticketLabel: "Release recovery",
+      deployCommand: `npm run smoke -- --gate public-recovery --source ${activeJob.jobId}`,
+      releaseProof: "public_closeout_id, investor_visible_receipt_id, trust_center_update_id, monitor_window_id"
+    }
+  ];
+  const ownerGates = gateTemplates.map((gate) => {
+    const fixture = fixtureByKey(gate.fixtureKey);
+    const ticket = ticketByLabel(gate.ticketLabel);
+    const closeout = closeoutByLabel(gate.ticketLabel);
+    const packet = packetByLabel(gate.ticketLabel);
+    const score = clampNumber(Math.round(
+      (fixture?.score || 22) * 0.34 +
+        (closeout?.evidenceScore || 22) * 0.2 +
+        (packet?.score || 22) * 0.16 +
+        workerContract.readiness * 0.1 +
+        sourceReceiptJob.readiness * 0.08 +
+        failedRunStore.readiness * 0.06 +
+        (storageReady ? 88 : 24) * 0.06
+    ), 12, 96);
+    const blockers = [
+      ...(fixture?.status === "Smoke blocked" ? fixture.blockers.slice(0, 2) : []),
+      ...(ticket && ticket.score < 58 ? [ticket.blocker] : []),
+      ...(closeout?.status === "Closeout blocked" ? closeout.blockers.slice(0, 1) : []),
+      ...(packet?.status === "Implementation blocked" ? packet.blockers.slice(0, 1) : []),
+      ...(storageReady ? [] : ["production smoke dashboard needs append-only or event-stream receipt storage"])
+    ].filter(Boolean);
+    const status = score >= 84 && blockers.length === 0
+      ? "Gate pass"
+      : score >= 64 && storageReady
+        ? "Owner review"
+        : "Gate fail";
+    return {
+      ...gate,
+      blockers: blockers.length ? blockers : ["No active production gate blocker in this preview. Keep real worker endpoint, CI artifact, deployment environment, and owner sign-off before launch."],
+      closeoutReceiptId: closeout?.closeoutReceiptId || closeoutBoardId,
+      event: fixture?.event || `prod_worker.${gate.key}.smoke_checked`,
+      fixtureId: fixture?.fixtureId || dashboardId,
+      proof: fixture?.proof || gate.releaseProof,
+      score,
+      status,
+      ticketId: ticket?.ticketId || ownerGateId,
+      tone: status === "Gate pass" ? "ready" : status === "Gate fail" ? "caution" : "watch"
+    };
+  });
+  const pass = ownerGates.filter((gate) => gate.status === "Gate pass").length;
+  const review = ownerGates.filter((gate) => gate.status === "Owner review").length;
+  const fail = ownerGates.filter((gate) => gate.status === "Gate fail").length;
+  const releaseBlockers = [...new Set([
+    ...ciSmokeHarness.blockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 4),
+    ...founderRecovery.blockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 3),
+    ...workerCloseout.blockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 3),
+    ...(storageReady ? [] : ["production worker smoke dashboard cannot deploy with browser-local receipt storage"]),
+    ...(fail ? ["one or more owner gates fail production smoke threshold"] : []),
+    "real CI artifact storage, backend worker execution, deploy environment secrets, and owner identities are still outside this static prototype"
+  ])];
+  const readiness = clampNumber(Math.round(
+    ciSmokeHarness.readiness * 0.26 +
+      founderRecovery.readiness * 0.18 +
+      workerCloseout.readiness * 0.14 +
+      implementationHandoff.readiness * 0.12 +
+      failedRunStore.readiness * 0.1 +
+      alertDelivery.readiness * 0.08 +
+      reviewerSignoff.readiness * 0.06 +
+      rollbackEvidence.readiness * 0.06
+  ) - fail * 3, 12, 96);
+  const status = readiness >= 84 && fail === 0 && storageReady
+    ? "Production smoke pass"
+    : readiness >= 64
+      ? "Production smoke review"
+      : "Production smoke blocked";
+  const tone = status === "Production smoke pass" ? "ready" : status === "Production smoke blocked" ? "caution" : "watch";
+  const metrics = [
+    { label: "Smoke dashboard", value: dashboardId, detail: `${pass} pass, ${review} review, ${fail} fail owner gate${ownerGates.length === 1 ? "" : "s"}.` },
+    { label: "Owner gate", value: ownerGateId, detail: "Each gate needs owner, command, proof, artifact, closeout receipt, and blocker state." },
+    { label: "Deploy gate", value: deploymentGateId, detail: `${status}; storage is ${backendAuditStorageLabel(config.storage)}.` },
+    { label: "Closeout board", value: closeoutBoardId, detail: `Links ${ciSmokeHarness.smokeHarnessId} and ${founderRecovery.rehearsalId}.` }
+  ];
+  const closeoutRows = [
+    {
+      label: "Owner sign-off",
+      owner: "Release Ops",
+      value: `${pass}/${ownerGates.length} pass`,
+      detail: "Every failed or review gate needs named owner closeout before deploy."
+    },
+    {
+      label: "Artifact retention",
+      owner: "Security Ops",
+      value: storageReady ? backendAuditStorageLabel(config.storage) : "Storage blocked",
+      detail: "Commands, assertions, receipts, and redaction attestations must be replayable."
+    },
+    {
+      label: "Founder recovery link",
+      owner: "Founder",
+      value: founderRecovery.closeoutMemoId,
+      detail: "Founder beta communication cannot move if production smoke gates fail."
+    },
+    {
+      label: "Rollback monitor",
+      owner: "Trust Ops",
+      value: rollbackEvidence.rollbackEvidenceId,
+      detail: "Rollback evidence and monitor state stay attached to the deployment gate."
+    }
+  ];
+  const sequence = [
+    "Load CI smoke fixture batch, founder recovery rehearsal, worker closeout, and implementation handoff IDs.",
+    "Run each owner gate with command ref, event name, artifact URI, receipt IDs, and redaction attestation.",
+    "Mark gate pass, owner review, or gate fail from fixture result, closeout proof, implementation packet, and storage posture.",
+    "Block deploy if any owner gate fails, any artifact is browser-local only, or founder recovery state is blocked.",
+    "Attach dashboard receipt, owner closeout board, deployment gate, and rollback monitor to release notes."
+  ];
+  const receiptFields = [
+    "production_worker_smoke_dashboard_id",
+    "owner_gate_id",
+    "deployment_gate_id",
+    "closeout_board_id",
+    "source_job_id",
+    "worker_id",
+    "fixture_batch_id",
+    "fixture_id",
+    "owner_role",
+    "deploy_command_ref",
+    "artifact_uri",
+    "assertion_result",
+    "closeout_receipt_id",
+    "release_blocker_state",
+    "founder_recovery_rehearsal_id",
+    "rollback_evidence_id",
+    "no_private_data_attestation",
+    "deployed_at"
+  ];
+  const noGoRules = [
+    "No deploy if any owner gate is Gate fail or lacks owner closeout.",
+    "No deploy if smoke artifacts, assertion results, receipt IDs, or redaction attestations are browser-local only.",
+    "No deploy if failed-run replay cannot rebuild scheduler, parser, receipt, alert, reviewer, rollback, and recovery state.",
+    "No deploy if founder beta recovery is blocked or public recovery closeout lacks Trust Center and support-safe proof.",
+    "No deploy if PAN, folio, CAS, bank data, credentials, contact data, private notes, or distributor client records enter any smoke artifact."
+  ];
+
+  return {
+    closeoutBoardId,
+    closeoutRows,
+    dashboardId,
+    deploymentGateId,
+    fail,
+    metrics,
+    noGoRules,
+    ownerGateId,
+    ownerGates,
+    pass,
+    readiness,
+    receiptFields,
+    releaseBlockers,
+    review,
+    sequence,
+    status,
+    tone
+  };
+}
+
 function sourceIncidentReceiptReplay(alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
   const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
   const activeRoute = alertRouting.routes.find((route) => route.severity === "High") || alertRouting.routes[0];
@@ -37144,9 +37376,10 @@ function renderBackendAuditReceipts(event) {
   const trustCenter = trustCenterConfig();
   const founderOps = founderBetaOperatingRoomConfig();
   const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenter, founderOps);
+  const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
   const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
   const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
-  els.backendAuditSummary.textContent = `${founderRecovery.readiness}/100 | ${founderRecovery.status}`;
+  els.backendAuditSummary.textContent = `${workerSmokeDashboard.readiness}/100 | ${workerSmokeDashboard.status}`;
   els.backendAuditOutput.innerHTML = `
     <div class="backend-audit-hero ${escapeHtml(config.tone)}">
       <div>
@@ -38406,6 +38639,86 @@ function renderBackendAuditReceipts(event) {
         </article>
       </div>
     </div>
+    <div class="worker-smoke-dashboard ${escapeHtml(workerSmokeDashboard.tone)}">
+      <div class="worker-smoke-head">
+        <div>
+          <span>Production worker smoke dashboard</span>
+          <h3>${escapeHtml(workerSmokeDashboard.status)}</h3>
+          <p>Dashboard ${escapeHtml(workerSmokeDashboard.dashboardId)} turns CI fixtures and founder recovery rehearsal into owner-scoped production gates with pass/fail status, release blockers, closeout proof, and deployment no-go rules.</p>
+        </div>
+        <div class="worker-smoke-score" style="--score:${workerSmokeDashboard.readiness}">
+          <strong>${workerSmokeDashboard.readiness}</strong>
+          <span>Prod</span>
+        </div>
+      </div>
+      <div class="worker-smoke-metric-grid">
+        ${workerSmokeDashboard.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="worker-smoke-gate-grid">
+        ${workerSmokeDashboard.ownerGates.map((gate) => `
+          <article class="${escapeHtml(gate.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(gate.owner)}</span>
+                <strong>${escapeHtml(gate.label)}</strong>
+              </div>
+              <b>${gate.score}</b>
+            </div>
+            <p>${escapeHtml(gate.status)} | ${escapeHtml(gate.fixtureId)}</p>
+            <div class="build-progress-bar"><span style="width:${gate.score}%"></span></div>
+            <small><strong>Command:</strong> ${escapeHtml(gate.deployCommand)}</small>
+            <small><strong>Event:</strong> ${escapeHtml(gate.event)}</small>
+            <small><strong>Proof:</strong> ${escapeHtml(gate.releaseProof)}</small>
+            <small><strong>Ticket:</strong> ${escapeHtml(gate.ticketId)}</small>
+            <small><strong>Closeout:</strong> ${escapeHtml(gate.closeoutReceiptId)}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(gate.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button worker-smoke-route" type="button" data-build-route="${escapeHtml(gate.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="worker-smoke-closeout-grid">
+        ${workerSmokeDashboard.closeoutRows.map((row) => `
+          <article>
+            <span>${escapeHtml(row.owner)}</span>
+            <strong>${escapeHtml(row.label)}</strong>
+            <p>${escapeHtml(row.value)}</p>
+            <small>${escapeHtml(row.detail)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="worker-smoke-two">
+        <article>
+          <h3>Deploy sequence</h3>
+          <ol>
+            ${workerSmokeDashboard.sequence.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${workerSmokeDashboard.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Deploy no-go rules</h3>
+          <ul>
+            ${workerSmokeDashboard.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${workerSmokeDashboard.releaseBlockers.length > 1 ? "caution" : "ready"}">
+          <h3>Release blockers</h3>
+          <ul>
+            ${workerSmokeDashboard.releaseBlockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="source-incident-board ${escapeHtml(incidentReplay.tone)}">
       <div class="source-incident-head">
         <div>
@@ -38935,6 +39248,76 @@ function makeFounderBetaRecoveryRehearsalBrief() {
   ].join("\n");
 }
 
+function makeProductionWorkerSmokeDashboardBrief() {
+  const config = backendAuditConfig();
+  const paymentReplay = paymentReconciliationReplay(config);
+  const sourceImportJobs = productionSourceImportJobs(config);
+  const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config);
+  const alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config);
+  const failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence);
+  const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
+  const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const workerCloseout = workerTicketCloseoutDrill(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract);
+  const implementationHandoff = backendImplementationHandoffPack(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract, workerCloseout);
+  const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
+  const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
+  const publicPublishDrill = publicRecoveryPublishDrill(config, correctionPublish, recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, freezeAutomation);
+  const ciSmokeHarness = backendCiSmokeHarness(config, implementationHandoff, publicPublishDrill, workerContract, workerCloseout, sourceReceiptJob, recoveryQueue, correctionPublish, failedRunStore, alertDelivery, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenterConfig(), founderBetaOperatingRoomConfig());
+  const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  return [
+    "# NiveshNadi Production Worker Smoke Dashboard",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Dashboard ID: ${workerSmokeDashboard.dashboardId}`,
+    `Owner gate ID: ${workerSmokeDashboard.ownerGateId}`,
+    `Deployment gate ID: ${workerSmokeDashboard.deploymentGateId}`,
+    `Closeout board ID: ${workerSmokeDashboard.closeoutBoardId}`,
+    `Status: ${workerSmokeDashboard.status}`,
+    `Readiness: ${workerSmokeDashboard.readiness}/100`,
+    `CI smoke harness: ${ciSmokeHarness.smokeHarnessId}`,
+    `Founder recovery rehearsal: ${founderRecovery.rehearsalId}`,
+    "",
+    "## Metrics",
+    ...workerSmokeDashboard.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Owner Gates",
+    ...workerSmokeDashboard.ownerGates.flatMap((gate) => [
+      `- ${gate.fixtureId}: ${gate.label} | ${gate.status} | ${gate.score}/100 | Owner: ${gate.owner}`,
+      `  Event: ${gate.event}`,
+      `  Command: ${gate.deployCommand}`,
+      `  Proof: ${gate.releaseProof}`,
+      `  Ticket: ${gate.ticketId}`,
+      `  Closeout: ${gate.closeoutReceiptId}`,
+      `  Route: ${gate.route}`,
+      `  Blockers: ${gate.blockers.join(" | ")}`
+    ]),
+    "",
+    "## Closeout Board",
+    ...workerSmokeDashboard.closeoutRows.map((row) => `- ${row.label}: ${row.value} | ${row.owner} | ${row.detail}`),
+    "",
+    "## Deploy Sequence",
+    ...workerSmokeDashboard.sequence.map((step) => `- ${step}`),
+    "",
+    "## Receipt Fields",
+    ...workerSmokeDashboard.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## Deploy No-Go Rules",
+    ...workerSmokeDashboard.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "## Release Blockers",
+    ...workerSmokeDashboard.releaseBlockers.map((blocker) => `- ${blocker}`),
+    "",
+    "## Guardrail",
+    "Production worker smoke dashboard receipts are release operations metadata. They do not store PAN, folio, CAS, bank data, credentials, contact records, private notes, transaction instructions, distributor client books, or personalized advice content."
+  ].join("\n");
+}
+
 function makeBackendAuditReceiptBrief() {
   const config = backendAuditConfig();
   const paymentReplay = paymentReconciliationReplay(config);
@@ -38956,12 +39339,14 @@ function makeBackendAuditReceiptBrief() {
   const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
   const publicPublishDrill = publicRecoveryPublishDrill(config, correctionPublish, recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, freezeAutomation);
   const ciSmokeHarness = backendCiSmokeHarness(config, implementationHandoff, publicPublishDrill, workerContract, workerCloseout, sourceReceiptJob, recoveryQueue, correctionPublish, failedRunStore, alertDelivery, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenterConfig(), founderBetaOperatingRoomConfig());
+  const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
   return [
     "# NiveshNadi Backend Audit Receipts",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
     `Stream: ${config.stream.label}`,
-    `Status: ${freezeAutomation.status}`,
-    `Score: ${freezeAutomation.readiness}/100`,
+    `Status: ${workerSmokeDashboard.status}`,
+    `Score: ${workerSmokeDashboard.readiness}/100`,
     `Owner: ${config.stream.owner}`,
     `Risk: ${config.stream.risk}`,
     `Mode: ${backendAuditModeLabel(config.mode)}`,
@@ -39219,6 +39604,21 @@ function makeBackendAuditReceiptBrief() {
     ...founderRecovery.receiptFields.map((field) => `- Founder recovery receipt field: ${field}`),
     ...founderRecovery.noGoRules.map((rule) => `- Founder recovery no-go rule: ${rule}`),
     ...founderRecovery.blockers.map((blocker) => `- Founder recovery blocker: ${blocker}`),
+    "",
+    "## Production Worker Smoke Dashboard",
+    `- Production smoke status: ${workerSmokeDashboard.status}`,
+    `- Production smoke readiness: ${workerSmokeDashboard.readiness}/100`,
+    `- Dashboard ID: ${workerSmokeDashboard.dashboardId}`,
+    `- Owner gate ID: ${workerSmokeDashboard.ownerGateId}`,
+    `- Deployment gate ID: ${workerSmokeDashboard.deploymentGateId}`,
+    `- Closeout board ID: ${workerSmokeDashboard.closeoutBoardId}`,
+    ...workerSmokeDashboard.metrics.map((metric) => `- Production smoke metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...workerSmokeDashboard.ownerGates.map((gate) => `- Production owner gate: ${gate.fixtureId}: ${gate.label} | ${gate.status} | ${gate.score}/100 | ${gate.owner} | ${gate.event} | ${gate.deployCommand} | ${gate.releaseProof} | ${gate.ticketId} | ${gate.closeoutReceiptId} | ${gate.route}`),
+    ...workerSmokeDashboard.closeoutRows.map((row) => `- Production closeout row: ${row.label}: ${row.value} | ${row.owner} | ${row.detail}`),
+    ...workerSmokeDashboard.sequence.map((step) => `- Production deploy sequence: ${step}`),
+    ...workerSmokeDashboard.receiptFields.map((field) => `- Production receipt field: ${field}`),
+    ...workerSmokeDashboard.noGoRules.map((rule) => `- Production no-go rule: ${rule}`),
+    ...workerSmokeDashboard.releaseBlockers.map((blocker) => `- Production release blocker: ${blocker}`),
     "",
     "## Incident Receipt Replay",
     `- Replay status: ${incidentReplay.status}`,
@@ -49099,6 +49499,7 @@ function bindEvents() {
   els.copyPublicRecoveryPublishDrill?.addEventListener("click", () => copyText(makePublicRecoveryPublishDrillBrief()));
   els.copyBackendCiSmokeHarness?.addEventListener("click", () => copyText(makeBackendCiSmokeHarnessBrief()));
   els.copyFounderBetaRecoveryRehearsal?.addEventListener("click", () => copyText(makeFounderBetaRecoveryRehearsalBrief()));
+  els.copyProductionWorkerSmokeDashboard?.addEventListener("click", () => copyText(makeProductionWorkerSmokeDashboardBrief()));
   els.copyBackendAudit?.addEventListener("click", () => copyText(makeBackendAuditReceiptBrief()));
   els.sourceQueueForm?.addEventListener("submit", renderSourceQaQueue);
   [els.sourceQueueMode, els.sourceQueuePriority, els.sourceQueueOwner].forEach((input) => {
@@ -50886,6 +51287,7 @@ function cacheElements() {
     copyPublicRecoveryPublishDrill: qs("#copyPublicRecoveryPublishDrill"),
     copyBackendCiSmokeHarness: qs("#copyBackendCiSmokeHarness"),
     copyFounderBetaRecoveryRehearsal: qs("#copyFounderBetaRecoveryRehearsal"),
+    copyProductionWorkerSmokeDashboard: qs("#copyProductionWorkerSmokeDashboard"),
     copyBackendAudit: qs("#copyBackendAudit"),
     sourceQueueForm: qs("#sourceQueueForm"),
     sourceQueueMode: qs("#sourceQueueMode"),

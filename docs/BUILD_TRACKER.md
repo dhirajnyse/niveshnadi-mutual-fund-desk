@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V298 Production Worker Smoke Dashboard
+
+V298 adds Production Worker Smoke Dashboard inside Backend Audit Receipts. It turns the CI smoke fixtures and founder beta recovery rehearsal into owner-scoped production gates with pass/fail status, deploy command references, release blockers, closeout proof, deployment gate IDs, owner gate IDs, and no-go rules before the real workers can be treated as production-ready.
+
 ## V297 Founder Beta Recovery Rehearsal
 
 V297 adds Founder Beta Recovery Rehearsal inside Backend Audit Receipts. It binds CI smoke proof, public recovery copy, Trust Center history, support-safe founder communication, post-publish monitoring, and Friday closeout into one beta recovery rehearsal before founder beta users see a correction, hold, rollback, or resume state.

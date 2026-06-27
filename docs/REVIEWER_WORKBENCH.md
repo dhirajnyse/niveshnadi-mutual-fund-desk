@@ -18,6 +18,8 @@ V295 carries reviewer posture into Public Recovery Publish Drill. Investor-visib
 
 V296 turns reviewer closeout into a CI smoke gate. The public recovery closeout fixture now checks investor notice, Trust Center state, support script, reviewer closeout, rollback evidence, monitor window, and no-private-data attestation before the backend release gate can pass.
 
+V297 carries reviewer closeout into Founder Beta Recovery Rehearsal. Founder communication, Trust Center history, support reply, post-publish monitor, and Friday closeout cannot move unless reviewer sign-off, rollback evidence, recovery queue state, and public surface state agree.
+
 Each generated handoff includes source receipt, surface status, strictness threshold, reviewer priority, evidence lock, due posture, owner, fallback language, and the next decision route. The output is intentionally product-release control only. It excludes PAN, folio, CAS, bank data, contact data, account credentials, private notes, and distributor client records.
 
 Before launch, this desk should connect to saved reviewer decisions, source-date history, visible citation links, release receipts, rollback logs, and correction notice records. Until that live workflow exists, the workbench remains a transparent prototype layer that shows how review discipline should operate before a public metric, claim, research packet, or trust surface is treated as release-ready.

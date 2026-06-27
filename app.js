@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v296-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v296 Backend CI Smoke Harness";
+const DATA_VERSION = "20260627-v297-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v297 Founder Beta Recovery Rehearsal";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,22 +1240,22 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Backend CI smoke harness",
+    label: "Founder beta recovery rehearsal",
     status: "Shipping now",
     route: "#backend-audit-receipts",
-    detail: "Turn implementation handoff and public recovery publish packets into repeatable CI smoke fixtures for scheduler, parser, receipt persistence, alert delivery, failed-run replay, and recovery closeout."
-  },
-  {
-    label: "Founder beta recovery rehearsal",
-    status: "Next",
-    route: "#trust-center",
-    detail: "Bind the public recovery drill to founder beta communications, Trust Center history, support queue, and post-publish monitoring before paid beta grows."
+    detail: "Bind CI smoke proof, public recovery copy, Trust Center history, support-safe founder communication, post-publish monitoring, and Friday closeout before founder beta users see a recovery state."
   },
   {
     label: "Production worker smoke dashboard",
-    status: "Later",
+    status: "Next",
     route: "#backend-ticket-factory",
     detail: "Move smoke fixture results into a production CI dashboard, release gate, and owner closeout queue after backend workers exist."
+  },
+  {
+    label: "Beta incident command ledger",
+    status: "Later",
+    route: "#trust-center",
+    detail: "Persist founder recovery drills, Trust Center updates, support scripts, monitor windows, and closeout decisions into one beta incident history."
   }
 ];
 
@@ -9260,7 +9260,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v296</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v297</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -36464,6 +36464,223 @@ function backendCiSmokeHarness(config, implementationHandoff, publicPublishDrill
   };
 }
 
+function founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenter, founderOps) {
+  config = config || backendAuditConfig();
+  const sourceImportJobs = productionSourceImportJobs(config);
+  const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  trustCenter = trustCenter || trustCenterConfig();
+  founderOps = founderOps || founderBetaOperatingRoomConfig();
+  const rehearsalId = ["NN", "FOUNDER", "BETA", "RECOVERY", sourceSlug, suffix].join("-").toUpperCase();
+  const trustHistoryId = ["NN", "BETA", "TRUST", "HISTORY", sourceSlug, suffix].join("-").toUpperCase();
+  const supportCommsId = ["NN", "BETA", "SUPPORT", "COMMS", sourceSlug, suffix].join("-").toUpperCase();
+  const monitorId = ["NN", "BETA", "RECOVERY", "MONITOR", sourceSlug, suffix].join("-").toUpperCase();
+  const closeoutMemoId = ["NN", "BETA", "RECOVERY", "CLOSEOUT", sourceSlug, suffix].join("-").toUpperCase();
+  const publicCloseoutFixture = ciSmokeHarness.fixtures.find((fixture) => fixture.key === "public-recovery-closeout") || ciSmokeHarness.fixtures[ciSmokeHarness.fixtures.length - 1];
+  const trustLane = publicPublishDrill.drillLanes.find((lane) => lane.label === "Trust Center update") || publicPublishDrill.drillLanes[0];
+  const supportLane = publicPublishDrill.drillLanes.find((lane) => lane.label === "Support-safe script") || publicPublishDrill.drillLanes[0];
+  const monitorLane = publicPublishDrill.drillLanes.find((lane) => lane.label === "Post-publish monitor") || publicPublishDrill.drillLanes[0];
+  const founderFreeze = founderOps.posture.startsWith("Freeze");
+  const trustHistoryReady = trustCenter.trustScore >= 76 && trustCenter.correctionEntries.length > 0 && trustCenter.releaseEntries.length > 0;
+  const supportReady = founderOps.support?.score >= 64 && !founderOps.supportCapacity.toLowerCase().includes("freeze");
+  const smokeReady = ciSmokeHarness.blocked === 0 && ciSmokeHarness.readiness >= 64;
+  const lanes = [
+    {
+      label: "Trust Center history",
+      owner: "Trust Ops",
+      route: "#trust-center",
+      event: "founder_recovery.trust_history_bound",
+      proof: "trust_history_id, trust_center_update_id, public_closeout_id, latest_visible_status",
+      score: Math.round((trustCenter.trustScore + trustLane.score + publicCloseoutFixture.score) / 3),
+      detail: `Bind ${publicPublishDrill.trustCenterUpdateId} and ${ciSmokeHarness.publicCloseoutId} into a founder-visible Trust Center history row.`,
+      blockers: [
+        trustHistoryReady ? "" : "Trust Center needs saved release and correction history before founder beta recovery can be shown",
+        trustCenter.trustScore < 76 ? "Trust Center score is below founder recovery threshold" : ""
+      ]
+    },
+    {
+      label: "Founder beta communication",
+      owner: "Founder",
+      route: "#founder-beta-operating-room",
+      event: "founder_recovery.beta_comms_previewed",
+      proof: "support_comms_id, invite_window, support_capacity, founder_decision_id",
+      score: Math.round((founderOps.operatingScore + publicPublishDrill.readiness + trustCenter.trustScore) / 3),
+      detail: `Use ${founderOps.inviteWindow.toLowerCase()} and ${founderOps.supportCapacity.toLowerCase()} while wording stays research-only.`,
+      blockers: [
+        founderFreeze ? "Founder beta operating room is frozen for paid invites" : "",
+        founderOps.laneBlockers.length ? "one or more founder operating lanes need repair before recovery communication" : ""
+      ]
+    },
+    {
+      label: "Support-safe response",
+      owner: "Support",
+      route: "#paid-beta-support-ledger",
+      event: "founder_recovery.support_script_ready",
+      proof: "support_script_id, support_safe_summary_id, redaction_attestation, case_owner",
+      score: Math.round(((founderOps.support?.score || 42) + supportLane.score + correctionPublish.readiness) / 3),
+      detail: `Support script ${publicPublishDrill.supportScriptId} explains source freshness, correction receipt, review status, and monitor window without asking for private identifiers.`,
+      blockers: [
+        supportReady ? "" : "support capacity or support ledger score is below founder recovery threshold",
+        correctionPublish.readiness < 64 ? "correction publish console is not ready for support-safe response" : ""
+      ]
+    },
+    {
+      label: "Post-publish monitor",
+      owner: "Release Ops",
+      route: "#trust-center",
+      event: "founder_recovery.monitor_window_armed",
+      proof: "monitor_id, monitor_window_id, alert_delivery_id, smoke_harness_id",
+      score: Math.round((monitorLane.score + alertDelivery.readiness + ciSmokeHarness.readiness) / 3),
+      detail: `Monitor ${monitorId} starts before founder-visible correction, hold, rollback, or resume state moves.`,
+      blockers: [
+        alertDelivery.readiness < 64 ? "alert delivery is below monitor threshold" : "",
+        smokeReady ? "" : "CI smoke harness has blocked fixtures before monitor handoff"
+      ]
+    },
+    {
+      label: "Friday closeout decision",
+      owner: "Founder + Reviewer",
+      route: "#build-tracker",
+      event: "founder_recovery.closeout_decision_recorded",
+      proof: "closeout_memo_id, reviewer_closeout_id, release_gate_id, rollback_evidence_id",
+      score: Math.round((founderOps.operatingScore + reviewerSignoff.readiness + rollbackEvidence.readiness + recoveryQueue.readiness) / 4),
+      detail: `Record hold, freeze, correction, rollback, or resume only after ${reviewerSignoff.signoffId}, ${rollbackEvidence.rollbackEvidenceId}, and ${recoveryQueue.queueId} agree.`,
+      blockers: [
+        reviewerSignoff.readiness < 64 ? "reviewer sign-off is below closeout threshold" : "",
+        rollbackEvidence.readiness < 64 ? "rollback evidence is below closeout threshold" : "",
+        recoveryQueue.readiness < 64 ? "recovery queue is below closeout threshold" : ""
+      ]
+    }
+  ].map((lane) => {
+    const blockers = lane.blockers.filter(Boolean);
+    const score = clampNumber(Math.round(lane.score - blockers.length * 2), 12, 96);
+    const status = score >= 84 && blockers.length === 0
+      ? "Founder ready"
+      : score >= 64
+        ? "Founder rehearsal"
+        : "Founder blocked";
+    return {
+      ...lane,
+      blockers: blockers.length ? blockers : ["No active lane blocker in this preview. Keep real founder communications, support queue, Trust Center history, and monitor proof before launch."],
+      score,
+      status,
+      tone: status === "Founder ready" ? "ready" : status === "Founder blocked" ? "caution" : "watch"
+    };
+  });
+  const ready = lanes.filter((lane) => lane.status === "Founder ready").length;
+  const rehearsal = lanes.filter((lane) => lane.status === "Founder rehearsal").length;
+  const blocked = lanes.filter((lane) => lane.status === "Founder blocked").length;
+  const readiness = clampNumber(Math.round(
+    ciSmokeHarness.readiness * 0.24 +
+      publicPublishDrill.readiness * 0.18 +
+      trustCenter.trustScore * 0.16 +
+      founderOps.operatingScore * 0.16 +
+      recoveryQueue.readiness * 0.1 +
+      correctionPublish.readiness * 0.08 +
+      alertDelivery.readiness * 0.04 +
+      reviewerSignoff.readiness * 0.04
+  ) - blocked * 3, 12, 96);
+  const blockers = [...new Set([
+    ...ciSmokeHarness.blockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 3),
+    ...publicPublishDrill.blockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 3),
+    ...trustCenter.blockers.slice(0, 3),
+    ...founderOps.laneBlockers.map((lane) => `${lane.owner}: ${lane.label}`).slice(0, 3),
+    ...(blocked ? ["one or more founder recovery lanes are below rehearsal threshold"] : []),
+    "real founder beta messaging, support delivery, Trust Center publishing, and monitor persistence are still outside this static prototype"
+  ])];
+  const status = readiness >= 84 && blocked === 0 && smokeReady && trustHistoryReady
+    ? "Founder recovery ready"
+    : readiness >= 64
+      ? "Founder recovery rehearsal"
+      : "Founder recovery blocked";
+  const tone = status === "Founder recovery ready" ? "ready" : status === "Founder recovery blocked" ? "caution" : "watch";
+  const metrics = [
+    { label: "Recovery rehearsal", value: rehearsalId, detail: `${ready} ready, ${rehearsal} rehearsal, ${blocked} blocked founder recovery lane${lanes.length === 1 ? "" : "s"}.` },
+    { label: "Trust history", value: trustHistoryId, detail: `${trustCenter.posture}; ${trustCenter.releaseEntries.length} release and ${trustCenter.correctionEntries.length} correction record${trustCenter.correctionEntries.length === 1 ? "" : "s"}.` },
+    { label: "Support comms", value: supportCommsId, detail: `${founderOps.supportCapacity}; ${founderOps.inviteWindow}.` },
+    { label: "Monitor closeout", value: closeoutMemoId, detail: `${status}; monitor ${monitorId}.` }
+  ];
+  const copyBlocks = [
+    {
+      label: "Founder note",
+      value: `Founder beta recovery is in ${status.toLowerCase()}. We will show only research-control status, current source posture, reviewer closeout, and next monitor window.`,
+      tone: "founder"
+    },
+    {
+      label: "Support reply",
+      value: `We are reviewing source freshness and correction status. Please do not send PAN, folio, CAS, bank details, credentials, or transaction instructions here.`,
+      tone: "support"
+    },
+    {
+      label: "Trust Center history",
+      value: `Trust Center entry ${trustHistoryId} links ${publicPublishDrill.trustCenterUpdateId}, ${ciSmokeHarness.publicCloseoutId}, and monitor ${monitorId}.`,
+      tone: "trust"
+    },
+    {
+      label: "Monitor note",
+      value: `Post-publish monitor watches alert delivery, support questions, Trust Center state, and reviewer closeout before Friday decision ${closeoutMemoId}.`,
+      tone: "monitor"
+    }
+  ];
+  const sequence = [
+    "Confirm CI smoke public closeout, Trust Center update, investor-visible receipt, support script, and reviewer closeout IDs.",
+    "Preview founder note, support reply, Trust Center history row, and monitor note in one recovery pass.",
+    "Check support capacity, invite window, payment/account posture, and founder operating lane blockers before any beta user message.",
+    "Arm post-publish monitor and route alert, support, correction, rollback, and Trust Center changes into one closeout memo.",
+    "Hold Friday closeout until founder, reviewer, support, release, and Trust Center states agree."
+  ];
+  const receiptFields = [
+    "founder_beta_recovery_rehearsal_id",
+    "trust_history_id",
+    "support_comms_id",
+    "monitor_id",
+    "closeout_memo_id",
+    "ci_smoke_harness_id",
+    "public_publish_drill_id",
+    "trust_center_update_id",
+    "investor_visible_receipt_id",
+    "support_script_id",
+    "invite_window",
+    "support_capacity",
+    "founder_decision",
+    "reviewer_closeout_id",
+    "rollback_evidence_id",
+    "post_publish_monitor_status",
+    "no_private_data_attestation",
+    "closed_at"
+  ];
+  const noGoRules = [
+    "No founder beta recovery message if CI smoke public closeout, Trust Center update, support script, and reviewer closeout do not agree.",
+    "No support reply if it asks for PAN, folio, CAS, bank data, credentials, contact data, private notes, or transaction instructions.",
+    "No Trust Center history row if source receipt, correction receipt, rollback evidence, investor-visible receipt, or monitor window is missing.",
+    "No resume or correction if support capacity is frozen or founder operating lanes are blocked.",
+    "No Friday closeout if post-publish monitor, reviewer closeout, rollback evidence, and public surface state disagree."
+  ];
+
+  return {
+    blocked,
+    blockers,
+    closeoutMemoId,
+    copyBlocks,
+    lanes,
+    metrics,
+    monitorId,
+    noGoRules,
+    readiness,
+    ready,
+    receiptFields,
+    rehearsal,
+    rehearsalId,
+    sequence,
+    status,
+    supportCommsId,
+    tone,
+    trustHistoryId
+  };
+}
+
 function sourceIncidentReceiptReplay(alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
   const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
   const activeRoute = alertRouting.routes.find((route) => route.severity === "High") || alertRouting.routes[0];
@@ -36924,9 +37141,12 @@ function renderBackendAuditReceipts(event) {
   const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
   const publicPublishDrill = publicRecoveryPublishDrill(config, correctionPublish, recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, freezeAutomation);
   const ciSmokeHarness = backendCiSmokeHarness(config, implementationHandoff, publicPublishDrill, workerContract, workerCloseout, sourceReceiptJob, recoveryQueue, correctionPublish, failedRunStore, alertDelivery, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const trustCenter = trustCenterConfig();
+  const founderOps = founderBetaOperatingRoomConfig();
+  const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenter, founderOps);
   const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
   const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
-  els.backendAuditSummary.textContent = `${ciSmokeHarness.readiness}/100 | ${ciSmokeHarness.status}`;
+  els.backendAuditSummary.textContent = `${founderRecovery.readiness}/100 | ${founderRecovery.status}`;
   els.backendAuditOutput.innerHTML = `
     <div class="backend-audit-hero ${escapeHtml(config.tone)}">
       <div>
@@ -38110,6 +38330,82 @@ function renderBackendAuditReceipts(event) {
         </article>
       </div>
     </div>
+    <div class="founder-recovery-rehearsal ${escapeHtml(founderRecovery.tone)}">
+      <div class="founder-recovery-head">
+        <div>
+          <span>Founder beta recovery rehearsal</span>
+          <h3>${escapeHtml(founderRecovery.status)}</h3>
+          <p>Rehearsal ${escapeHtml(founderRecovery.rehearsalId)} binds CI smoke proof, public recovery copy, Trust Center history, support-safe founder communication, post-publish monitoring, and Friday closeout before founder beta users see a recovery state.</p>
+        </div>
+        <div class="founder-recovery-score" style="--score:${founderRecovery.readiness}">
+          <strong>${founderRecovery.readiness}</strong>
+          <span>Beta</span>
+        </div>
+      </div>
+      <div class="founder-recovery-metric-grid">
+        ${founderRecovery.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-recovery-lane-grid">
+        ${founderRecovery.lanes.map((lane) => `
+          <article class="${escapeHtml(lane.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(lane.owner)}</span>
+                <strong>${escapeHtml(lane.label)}</strong>
+              </div>
+              <b>${lane.score}</b>
+            </div>
+            <p>${escapeHtml(lane.detail)}</p>
+            <div class="build-progress-bar"><span style="width:${lane.score}%"></span></div>
+            <small><strong>Status:</strong> ${escapeHtml(lane.status)}</small>
+            <small><strong>Event:</strong> ${escapeHtml(lane.event)}</small>
+            <small><strong>Proof:</strong> ${escapeHtml(lane.proof)}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(lane.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button founder-recovery-route" type="button" data-build-route="${escapeHtml(lane.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-recovery-copy-grid">
+        ${founderRecovery.copyBlocks.map((block) => `
+          <article class="${escapeHtml(block.tone)}">
+            <span>${escapeHtml(block.label)}</span>
+            <p>${escapeHtml(block.value)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-recovery-two">
+        <article>
+          <h3>Recovery sequence</h3>
+          <ol>
+            ${founderRecovery.sequence.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${founderRecovery.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Founder no-go rules</h3>
+          <ul>
+            ${founderRecovery.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${founderRecovery.blockers.length > 1 ? "caution" : "ready"}">
+          <h3>Recovery blockers</h3>
+          <ul>
+            ${founderRecovery.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="source-incident-board ${escapeHtml(incidentReplay.tone)}">
       <div class="source-incident-head">
         <div>
@@ -38533,6 +38829,7 @@ function makeBackendCiSmokeHarnessBrief() {
   const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
   const publicPublishDrill = publicRecoveryPublishDrill(config, correctionPublish, recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, freezeAutomation);
   const ciSmokeHarness = backendCiSmokeHarness(config, implementationHandoff, publicPublishDrill, workerContract, workerCloseout, sourceReceiptJob, recoveryQueue, correctionPublish, failedRunStore, alertDelivery, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenterConfig(), founderBetaOperatingRoomConfig());
   return [
     "# NiveshNadi Backend CI Smoke Harness",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -38574,6 +38871,67 @@ function makeBackendCiSmokeHarnessBrief() {
     "",
     "## Guardrail",
     "Backend CI smoke receipts are release operations metadata. They do not store PAN, folio, CAS, bank data, credentials, contact records, private notes, transaction instructions, distributor client books, or personalized advice content."
+  ].join("\n");
+}
+
+function makeFounderBetaRecoveryRehearsalBrief() {
+  const config = backendAuditConfig();
+  const paymentReplay = paymentReconciliationReplay(config);
+  const sourceImportJobs = productionSourceImportJobs(config);
+  const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config);
+  const alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config);
+  const failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence);
+  const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
+  const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const workerCloseout = workerTicketCloseoutDrill(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract);
+  const implementationHandoff = backendImplementationHandoffPack(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract, workerCloseout);
+  const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
+  const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
+  const publicPublishDrill = publicRecoveryPublishDrill(config, correctionPublish, recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, freezeAutomation);
+  const ciSmokeHarness = backendCiSmokeHarness(config, implementationHandoff, publicPublishDrill, workerContract, workerCloseout, sourceReceiptJob, recoveryQueue, correctionPublish, failedRunStore, alertDelivery, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenterConfig(), founderBetaOperatingRoomConfig());
+  return [
+    "# NiveshNadi Founder Beta Recovery Rehearsal",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Recovery rehearsal ID: ${founderRecovery.rehearsalId}`,
+    `Trust history ID: ${founderRecovery.trustHistoryId}`,
+    `Support comms ID: ${founderRecovery.supportCommsId}`,
+    `Monitor ID: ${founderRecovery.monitorId}`,
+    `Closeout memo ID: ${founderRecovery.closeoutMemoId}`,
+    `Status: ${founderRecovery.status}`,
+    `Readiness: ${founderRecovery.readiness}/100`,
+    `CI smoke harness: ${ciSmokeHarness.smokeHarnessId}`,
+    `Public publish drill: ${publicPublishDrill.publishDrillId}`,
+    "",
+    "## Metrics",
+    ...founderRecovery.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Founder Recovery Lanes",
+    ...founderRecovery.lanes.map((lane) => `- ${lane.label}: ${lane.score}/100 | ${lane.status} | ${lane.owner} | ${lane.event} | Proof: ${lane.proof} | Route: ${lane.route} | ${lane.detail} | Blockers: ${lane.blockers.join(" | ")}`),
+    "",
+    "## Public Copy Blocks",
+    ...founderRecovery.copyBlocks.map((block) => `- ${block.label}: ${block.value}`),
+    "",
+    "## Recovery Sequence",
+    ...founderRecovery.sequence.map((step) => `- ${step}`),
+    "",
+    "## Receipt Fields",
+    ...founderRecovery.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## No-Go Rules",
+    ...founderRecovery.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "## Recovery Blockers",
+    ...founderRecovery.blockers.map((blocker) => `- ${blocker}`),
+    "",
+    "## Guardrail",
+    "Founder beta recovery receipts are beta operations metadata. They do not store PAN, folio, CAS, bank data, credentials, contact records, private notes, transaction instructions, distributor client books, or personalized advice content."
   ].join("\n");
 }
 
@@ -38845,6 +39203,22 @@ function makeBackendAuditReceiptBrief() {
     ...ciSmokeHarness.receiptFields.map((field) => `- Smoke receipt field: ${field}`),
     ...ciSmokeHarness.noGoRules.map((rule) => `- Smoke no-go rule: ${rule}`),
     ...ciSmokeHarness.blockers.map((blocker) => `- Smoke blocker: ${blocker}`),
+    "",
+    "## Founder Beta Recovery Rehearsal",
+    `- Founder recovery status: ${founderRecovery.status}`,
+    `- Founder recovery readiness: ${founderRecovery.readiness}/100`,
+    `- Recovery rehearsal ID: ${founderRecovery.rehearsalId}`,
+    `- Trust history ID: ${founderRecovery.trustHistoryId}`,
+    `- Support comms ID: ${founderRecovery.supportCommsId}`,
+    `- Monitor ID: ${founderRecovery.monitorId}`,
+    `- Closeout memo ID: ${founderRecovery.closeoutMemoId}`,
+    ...founderRecovery.metrics.map((metric) => `- Founder recovery metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...founderRecovery.lanes.map((lane) => `- Founder recovery lane: ${lane.label}: ${lane.score}/100 | ${lane.status} | ${lane.owner} | ${lane.event} | ${lane.proof} | ${lane.route}`),
+    ...founderRecovery.copyBlocks.map((block) => `- Founder recovery copy: ${block.label}: ${block.value}`),
+    ...founderRecovery.sequence.map((step) => `- Founder recovery sequence: ${step}`),
+    ...founderRecovery.receiptFields.map((field) => `- Founder recovery receipt field: ${field}`),
+    ...founderRecovery.noGoRules.map((rule) => `- Founder recovery no-go rule: ${rule}`),
+    ...founderRecovery.blockers.map((blocker) => `- Founder recovery blocker: ${blocker}`),
     "",
     "## Incident Receipt Replay",
     `- Replay status: ${incidentReplay.status}`,
@@ -48724,6 +49098,7 @@ function bindEvents() {
   els.copyBackendImplementationHandoff?.addEventListener("click", () => copyText(makeBackendImplementationHandoffPackBrief()));
   els.copyPublicRecoveryPublishDrill?.addEventListener("click", () => copyText(makePublicRecoveryPublishDrillBrief()));
   els.copyBackendCiSmokeHarness?.addEventListener("click", () => copyText(makeBackendCiSmokeHarnessBrief()));
+  els.copyFounderBetaRecoveryRehearsal?.addEventListener("click", () => copyText(makeFounderBetaRecoveryRehearsalBrief()));
   els.copyBackendAudit?.addEventListener("click", () => copyText(makeBackendAuditReceiptBrief()));
   els.sourceQueueForm?.addEventListener("submit", renderSourceQaQueue);
   [els.sourceQueueMode, els.sourceQueuePriority, els.sourceQueueOwner].forEach((input) => {
@@ -50510,6 +50885,7 @@ function cacheElements() {
     copyBackendImplementationHandoff: qs("#copyBackendImplementationHandoff"),
     copyPublicRecoveryPublishDrill: qs("#copyPublicRecoveryPublishDrill"),
     copyBackendCiSmokeHarness: qs("#copyBackendCiSmokeHarness"),
+    copyFounderBetaRecoveryRehearsal: qs("#copyFounderBetaRecoveryRehearsal"),
     copyBackendAudit: qs("#copyBackendAudit"),
     sourceQueueForm: qs("#sourceQueueForm"),
     sourceQueueMode: qs("#sourceQueueMode"),

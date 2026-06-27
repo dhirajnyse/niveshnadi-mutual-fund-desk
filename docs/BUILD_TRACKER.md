@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V297 Founder Beta Recovery Rehearsal
+
+V297 adds Founder Beta Recovery Rehearsal inside Backend Audit Receipts. It binds CI smoke proof, public recovery copy, Trust Center history, support-safe founder communication, post-publish monitoring, and Friday closeout into one beta recovery rehearsal before founder beta users see a correction, hold, rollback, or resume state.
+
 ## V296 Backend CI Smoke Harness
 
 V296 adds Backend CI Smoke Harness inside Backend Audit Receipts. It turns implementation handoff and public recovery publish evidence into repeatable release-gate fixtures for scheduler, parser, receipt persistence, alert delivery, failed-run replay, and public recovery closeout, with fixture IDs, command refs, assertion lists, blocked-data checks, receipt fields, no-go rules, and copyable smoke blockers.

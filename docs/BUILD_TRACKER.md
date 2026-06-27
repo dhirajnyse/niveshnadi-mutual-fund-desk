@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V299 Beta Incident Command Ledger
+
+V299 adds Beta Incident Command Ledger inside Backend Audit Receipts. It persists founder recovery, Trust Center history, support scripts, production smoke gates, monitor windows, owner command receipts, severity, beta continuation decisions, and command no-go rules into one incident command trail before founder beta invites, support posture, public recovery updates, or deploy decisions can continue.
+
 ## V298 Production Worker Smoke Dashboard
 
 V298 adds Production Worker Smoke Dashboard inside Backend Audit Receipts. It turns the CI smoke fixtures and founder beta recovery rehearsal into owner-scoped production gates with pass/fail status, deploy command references, release blockers, closeout proof, deployment gate IDs, owner gate IDs, and no-go rules before the real workers can be treated as production-ready.

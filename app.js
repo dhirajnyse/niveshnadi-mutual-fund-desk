@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v298-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v298 Production Worker Smoke Dashboard";
+const DATA_VERSION = "20260627-v299-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v299 Beta Incident Command Ledger";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,22 +1240,22 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Production worker smoke dashboard",
+    label: "Beta incident command ledger",
     status: "Shipping now",
     route: "#backend-audit-receipts",
-    detail: "Turn smoke fixtures and founder recovery rehearsal into owner-scoped production gates with pass/fail status, release blockers, closeout proof, and deployment no-go rules."
-  },
-  {
-    label: "Beta incident command ledger",
-    status: "Next",
-    route: "#trust-center",
-    detail: "Persist founder recovery drills, Trust Center updates, support scripts, monitor windows, and closeout decisions into one beta incident history."
+    detail: "Persist founder recovery drills, Trust Center updates, support scripts, monitor windows, production smoke gates, and closeout decisions into one beta incident command history."
   },
   {
     label: "Backend deploy runbook packet",
-    status: "Later",
+    status: "Next",
     route: "#backend-ticket-factory",
-    detail: "Package the smoke dashboard into deploy commands, environment checks, rollback contacts, and release-note evidence after real workers exist."
+    detail: "Package smoke dashboard and incident command ledger into deploy commands, environment checks, rollback contacts, and release-note evidence after real workers exist."
+  },
+  {
+    label: "Founder beta war-room digest",
+    status: "Later",
+    route: "#founder-beta-operating-room",
+    detail: "Summarize incident command posture into founder weekly operating rhythm, invite decisions, support capacity, and beta continuation notes."
   }
 ];
 
@@ -9260,7 +9260,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v298</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v299</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -36913,6 +36913,234 @@ function productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery,
   };
 }
 
+function betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs) {
+  config = config || backendAuditConfig();
+  sourceImportJobs = sourceImportJobs || productionSourceImportJobs(config);
+  sourceWorker = sourceWorker || sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const commandLedgerId = ["NN", "BETA", "INCIDENT", "COMMAND", sourceSlug, suffix].join("-").toUpperCase();
+  const incidentHistoryId = ["NN", "BETA", "INCIDENT", "HISTORY", sourceSlug, suffix].join("-").toUpperCase();
+  const betaContinuationGateId = ["NN", "BETA", "CONTINUATION", "GATE", sourceSlug, suffix].join("-").toUpperCase();
+  const commandDigestId = ["NN", "BETA", "COMMAND", "DIGEST", sourceSlug, suffix].join("-").toUpperCase();
+  const storageReady = config.storage === "event" || config.storage === "append";
+  const activeGateFailures = workerSmokeDashboard.ownerGates.filter((gate) => gate.status === "Gate fail");
+  const activeFounderBlockers = founderRecovery.blockers.filter((blocker) => !blocker.startsWith("No active"));
+  const activeSmokeBlockers = workerSmokeDashboard.releaseBlockers.filter((blocker) => !blocker.startsWith("No active"));
+  const incidentTemplates = [
+    {
+      key: "source-import-replay",
+      label: "Source import replay",
+      severity: incidentReplay.readiness < 56 ? "Critical" : "High",
+      owner: "Data Ops",
+      route: "#backend-audit-receipts",
+      event: "source_import.failed_run_replayed",
+      proof: incidentReplay.replayId,
+      action: "Replay failed source run, freeze affected surfaces, attach incident receipt, and route reviewer decision.",
+      score: Math.round((incidentReplay.readiness + failedRunStore.readiness + alertDelivery.readiness) / 3),
+      blocker: incidentReplay.blockers[0]
+    },
+    {
+      key: "production-worker-gates",
+      label: "Production worker gates",
+      severity: activeGateFailures.length ? "Critical" : "High",
+      owner: "Release Ops",
+      route: "#backend-ticket-factory",
+      event: "production_worker.smoke_gate_reviewed",
+      proof: workerSmokeDashboard.deploymentGateId,
+      action: "Hold deploy until owner gates, command refs, artifacts, closeout receipts, and no-go rules agree.",
+      score: workerSmokeDashboard.readiness,
+      blocker: activeSmokeBlockers[0]
+    },
+    {
+      key: "founder-recovery",
+      label: "Founder recovery command",
+      severity: founderRecovery.readiness < 56 ? "Critical" : "High",
+      owner: "Founder Ops",
+      route: "#founder-beta-operating-room",
+      event: "founder_beta.recovery_command_opened",
+      proof: founderRecovery.rehearsalId,
+      action: "Keep founder message, Trust Center history, support script, monitor, and Friday closeout in one command trail.",
+      score: founderRecovery.readiness,
+      blocker: activeFounderBlockers[0]
+    },
+    {
+      key: "trust-history",
+      label: "Trust Center history",
+      severity: "Medium",
+      owner: "Trust Ops",
+      route: "#trust-center",
+      event: "trust_center.beta_history_recorded",
+      proof: founderRecovery.trustHistoryId,
+      action: "Record recovery state, source receipt, correction or rollback proof, investor-visible receipt, and monitor window.",
+      score: Math.round((publicPublishDrill.readiness + correctionPublish.readiness + rollbackEvidence.readiness) / 3),
+      blocker: publicPublishDrill.blockers[0] || correctionPublish.blockers[0]
+    },
+    {
+      key: "support-comms",
+      label: "Support-safe comms",
+      severity: "Medium",
+      owner: "Support Ops",
+      route: "#paid-beta-support-ledger",
+      event: "support.beta_comms_scripted",
+      proof: founderRecovery.supportCommsId,
+      action: "Use support-safe explanation only; keep private identifiers, transaction instructions, and advice language out.",
+      score: Math.round((founderRecovery.readiness + recoveryQueue.readiness + reviewerSignoff.readiness) / 3),
+      blocker: recoveryQueue.blockers[0]
+    },
+    {
+      key: "rollback-monitor",
+      label: "Rollback monitor",
+      severity: rollbackEvidence.readiness < 56 ? "Critical" : "High",
+      owner: "Reviewer",
+      route: "#claim-rollback",
+      event: "rollback.monitor_window_armed",
+      proof: rollbackEvidence.rollbackEvidenceId,
+      action: "Tie rollback evidence, reviewer sign-off, monitor window, resume receipt, and closeout memo to beta continuation.",
+      score: Math.round((rollbackEvidence.readiness + reviewerSignoff.readiness + founderRecovery.readiness) / 3),
+      blocker: rollbackEvidence.blockers[0] || reviewerSignoff.blockers[0]
+    }
+  ];
+  const incidents = incidentTemplates.map((incident, index) => {
+    const score = clampNumber(incident.score, 12, 96);
+    const blockers = [
+      incident.blocker,
+      ...(storageReady ? [] : ["beta incident command ledger needs append-only or event-stream receipt storage"]),
+      ...(incident.severity === "Critical" ? ["critical beta incident requires named owner command closeout"] : [])
+    ].filter(Boolean);
+    const status = score >= 84 && blockers.length === 0
+      ? "Closed for beta"
+      : score >= 64 && storageReady
+        ? "Owner command"
+        : "Command active";
+    return {
+      ...incident,
+      blockers: blockers.length ? blockers : ["No active beta incident blocker in this preview. Keep command receipt, owner closeout, Trust Center history, support script, and monitor proof before beta continuation."],
+      commandReceiptId: ["NN", "BETA", "INCIDENT", String(index + 1).padStart(2, "0"), sourceSlug, suffix].join("-").toUpperCase(),
+      score,
+      status,
+      tone: status === "Closed for beta" ? "ready" : status === "Command active" ? "caution" : "watch"
+    };
+  });
+  const active = incidents.filter((incident) => incident.status === "Command active").length;
+  const ownerCommand = incidents.filter((incident) => incident.status === "Owner command").length;
+  const closed = incidents.filter((incident) => incident.status === "Closed for beta").length;
+  const critical = incidents.filter((incident) => incident.severity === "Critical").length;
+  const blockers = [...new Set([
+    ...activeFounderBlockers.slice(0, 3),
+    ...activeSmokeBlockers.slice(0, 4),
+    ...incidentReplay.blockers.filter((blocker) => !blocker.startsWith("No active")).slice(0, 2),
+    ...(storageReady ? [] : ["beta incident history cannot persist with browser-local receipt storage"]),
+    ...(activeGateFailures.length ? ["one or more production worker gates are still failing"] : []),
+    "real incident persistence, owner identity, alert acknowledgement, and beta user notification delivery remain outside this static prototype"
+  ])];
+  const readiness = clampNumber(Math.round(
+    workerSmokeDashboard.readiness * 0.24 +
+      founderRecovery.readiness * 0.2 +
+      incidentReplay.readiness * 0.16 +
+      publicPublishDrill.readiness * 0.12 +
+      recoveryQueue.readiness * 0.1 +
+      failedRunStore.readiness * 0.08 +
+      reviewerSignoff.readiness * 0.06 +
+      rollbackEvidence.readiness * 0.04
+  ) - active * 3 - critical * 2, 12, 96);
+  const status = readiness >= 84 && active === 0 && critical === 0 && storageReady
+    ? "Beta command clear"
+    : readiness >= 64 && active <= 2
+      ? "Beta command watch"
+      : "Beta command hold";
+  const tone = status === "Beta command clear" ? "ready" : status === "Beta command hold" ? "caution" : "watch";
+  const metrics = [
+    { label: "Command ledger", value: commandLedgerId, detail: `${active} active, ${ownerCommand} owner command, ${closed} closed incident${incidents.length === 1 ? "" : "s"}.` },
+    { label: "Incident history", value: incidentHistoryId, detail: `${critical} critical incident${critical === 1 ? "" : "s"} currently affect beta continuation.` },
+    { label: "Beta continuation", value: betaContinuationGateId, detail: `${status}; storage is ${backendAuditStorageLabel(config.storage)}.` },
+    { label: "Command digest", value: commandDigestId, detail: `Links ${workerSmokeDashboard.dashboardId}, ${founderRecovery.rehearsalId}, and ${incidentReplay.replayId}.` }
+  ];
+  const decisions = [
+    {
+      label: "Invite posture",
+      owner: "Founder",
+      value: status === "Beta command clear" ? "Continue invite window" : status === "Beta command watch" ? "Limit invite window" : "Pause invite window",
+      detail: "Founder beta growth follows incident command status, not sentiment."
+    },
+    {
+      label: "Support posture",
+      owner: "Support Ops",
+      value: active ? "Use command script" : "Use normal beta script",
+      detail: "Support replies stay tied to incident receipt, Trust Center history, and no-private-data rule."
+    },
+    {
+      label: "Public posture",
+      owner: "Trust Ops",
+      value: critical ? "Hold public recovery" : "Publish with monitor",
+      detail: "Trust Center row, investor-visible receipt, correction or rollback proof, and monitor window must agree."
+    },
+    {
+      label: "Deploy posture",
+      owner: "Release Ops",
+      value: activeGateFailures.length ? "No deploy" : "Deploy review",
+      detail: "Production worker deploy follows owner gate status and command closeout."
+    }
+  ];
+  const timeline = [
+    "Open command ledger from source import replay, worker smoke gate, founder recovery, Trust Center, support, or rollback monitor event.",
+    "Assign severity, owner, command receipt ID, beta decision, support posture, and public posture.",
+    "Attach source receipt, smoke dashboard, recovery rehearsal, Trust Center history, support script, monitor, and rollback proof.",
+    "Decide continue, limit, or pause founder beta invite/support/deploy activity from active command status.",
+    "Close only after owner closeout, public history, support-safe wording, replay proof, rollback or resume receipt, and monitor window agree."
+  ];
+  const receiptFields = [
+    "beta_incident_command_ledger_id",
+    "incident_history_id",
+    "beta_continuation_gate_id",
+    "command_digest_id",
+    "command_receipt_id",
+    "severity",
+    "owner_role",
+    "incident_event",
+    "source_job_id",
+    "worker_smoke_dashboard_id",
+    "founder_recovery_rehearsal_id",
+    "trust_history_id",
+    "support_comms_id",
+    "monitor_window_id",
+    "rollback_evidence_id",
+    "beta_decision",
+    "closeout_receipt_id",
+    "no_private_data_attestation",
+    "closed_at"
+  ];
+  const noGoRules = [
+    "No beta continuation if any critical incident is active without named owner command closeout.",
+    "No invite expansion if production worker gates fail or founder recovery rehearsal is blocked.",
+    "No public recovery update if Trust Center history, investor-visible receipt, correction or rollback proof, and monitor window disagree.",
+    "No support script if it asks for PAN, folio, CAS, bank data, credentials, contact data, private notes, or transaction instructions.",
+    "No command closure if incident receipt, smoke dashboard, recovery rehearsal, reviewer sign-off, rollback evidence, and beta decision are not linked."
+  ];
+
+  return {
+    active,
+    betaContinuationGateId,
+    blockers,
+    closed,
+    commandDigestId,
+    commandLedgerId,
+    critical,
+    decisions,
+    incidentHistoryId,
+    incidents,
+    metrics,
+    noGoRules,
+    ownerCommand,
+    readiness,
+    receiptFields,
+    status,
+    timeline,
+    tone
+  };
+}
+
 function sourceIncidentReceiptReplay(alertRouting = sourceWorkerAlertRouting(), sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
   const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
   const activeRoute = alertRouting.routes.find((route) => route.severity === "High") || alertRouting.routes[0];
@@ -37377,9 +37605,10 @@ function renderBackendAuditReceipts(event) {
   const founderOps = founderBetaOperatingRoomConfig();
   const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenter, founderOps);
   const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
   const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
   const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
-  els.backendAuditSummary.textContent = `${workerSmokeDashboard.readiness}/100 | ${workerSmokeDashboard.status}`;
+  els.backendAuditSummary.textContent = `${betaIncidentLedger.readiness}/100 | ${betaIncidentLedger.status}`;
   els.backendAuditOutput.innerHTML = `
     <div class="backend-audit-hero ${escapeHtml(config.tone)}">
       <div>
@@ -38719,6 +38948,84 @@ function renderBackendAuditReceipts(event) {
         </article>
       </div>
     </div>
+    <div class="beta-incident-ledger ${escapeHtml(betaIncidentLedger.tone)}">
+      <div class="beta-incident-head">
+        <div>
+          <span>Beta incident command ledger</span>
+          <h3>${escapeHtml(betaIncidentLedger.status)}</h3>
+          <p>Ledger ${escapeHtml(betaIncidentLedger.commandLedgerId)} persists founder recovery, Trust Center history, support scripts, production smoke gates, monitor windows, and closeout decisions into one beta continuation command trail.</p>
+        </div>
+        <div class="beta-incident-score" style="--score:${betaIncidentLedger.readiness}">
+          <strong>${betaIncidentLedger.readiness}</strong>
+          <span>Beta</span>
+        </div>
+      </div>
+      <div class="beta-incident-metric-grid">
+        ${betaIncidentLedger.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="beta-incident-card-grid">
+        ${betaIncidentLedger.incidents.map((incident) => `
+          <article class="${escapeHtml(incident.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(incident.severity)} | ${escapeHtml(incident.owner)}</span>
+                <strong>${escapeHtml(incident.label)}</strong>
+              </div>
+              <b>${incident.score}</b>
+            </div>
+            <p>${escapeHtml(incident.status)} | ${escapeHtml(incident.commandReceiptId)}</p>
+            <div class="build-progress-bar"><span style="width:${incident.score}%"></span></div>
+            <small><strong>Event:</strong> ${escapeHtml(incident.event)}</small>
+            <small><strong>Proof:</strong> ${escapeHtml(incident.proof)}</small>
+            <small><strong>Action:</strong> ${escapeHtml(incident.action)}</small>
+            <small><strong>Blocker:</strong> ${escapeHtml(incident.blockers.slice(0, 2).join(" | "))}</small>
+            <button class="text-button beta-incident-route" type="button" data-build-route="${escapeHtml(incident.route)}">Open route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="beta-incident-decision-grid">
+        ${betaIncidentLedger.decisions.map((decision) => `
+          <article>
+            <span>${escapeHtml(decision.owner)}</span>
+            <strong>${escapeHtml(decision.label)}</strong>
+            <p>${escapeHtml(decision.value)}</p>
+            <small>${escapeHtml(decision.detail)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="beta-incident-two">
+        <article>
+          <h3>Command timeline</h3>
+          <ol>
+            ${betaIncidentLedger.timeline.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${betaIncidentLedger.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Command no-go rules</h3>
+          <ul>
+            ${betaIncidentLedger.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${betaIncidentLedger.blockers.length > 1 ? "caution" : "ready"}">
+          <h3>Command blockers</h3>
+          <ul>
+            ${betaIncidentLedger.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
     <div class="source-incident-board ${escapeHtml(incidentReplay.tone)}">
       <div class="source-incident-head">
         <div>
@@ -39318,6 +39625,80 @@ function makeProductionWorkerSmokeDashboardBrief() {
   ].join("\n");
 }
 
+function makeBetaIncidentCommandLedgerBrief() {
+  const config = backendAuditConfig();
+  const paymentReplay = paymentReconciliationReplay(config);
+  const sourceImportJobs = productionSourceImportJobs(config);
+  const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config);
+  const alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config);
+  const failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence);
+  const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
+  const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const workerCloseout = workerTicketCloseoutDrill(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract);
+  const implementationHandoff = backendImplementationHandoffPack(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract, workerCloseout);
+  const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
+  const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
+  const publicPublishDrill = publicRecoveryPublishDrill(config, correctionPublish, recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, freezeAutomation);
+  const ciSmokeHarness = backendCiSmokeHarness(config, implementationHandoff, publicPublishDrill, workerContract, workerCloseout, sourceReceiptJob, recoveryQueue, correctionPublish, failedRunStore, alertDelivery, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenterConfig(), founderBetaOperatingRoomConfig());
+  const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
+  return [
+    "# NiveshNadi Beta Incident Command Ledger",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Command ledger ID: ${betaIncidentLedger.commandLedgerId}`,
+    `Incident history ID: ${betaIncidentLedger.incidentHistoryId}`,
+    `Beta continuation gate ID: ${betaIncidentLedger.betaContinuationGateId}`,
+    `Command digest ID: ${betaIncidentLedger.commandDigestId}`,
+    `Status: ${betaIncidentLedger.status}`,
+    `Readiness: ${betaIncidentLedger.readiness}/100`,
+    `Active incidents: ${betaIncidentLedger.active}`,
+    `Owner command incidents: ${betaIncidentLedger.ownerCommand}`,
+    `Closed incidents: ${betaIncidentLedger.closed}`,
+    `Critical incidents: ${betaIncidentLedger.critical}`,
+    `Worker smoke dashboard: ${workerSmokeDashboard.dashboardId}`,
+    `Founder recovery rehearsal: ${founderRecovery.rehearsalId}`,
+    `Incident replay: ${incidentReplay.replayId}`,
+    "",
+    "## Metrics",
+    ...betaIncidentLedger.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Command Incidents",
+    ...betaIncidentLedger.incidents.flatMap((incident) => [
+      `- ${incident.commandReceiptId}: ${incident.label} | ${incident.status} | ${incident.severity} | ${incident.score}/100 | Owner: ${incident.owner}`,
+      `  Event: ${incident.event}`,
+      `  Proof: ${incident.proof}`,
+      `  Action: ${incident.action}`,
+      `  Route: ${incident.route}`,
+      `  Blockers: ${incident.blockers.join(" | ")}`
+    ]),
+    "",
+    "## Beta Decisions",
+    ...betaIncidentLedger.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.detail}`),
+    "",
+    "## Command Timeline",
+    ...betaIncidentLedger.timeline.map((step) => `- ${step}`),
+    "",
+    "## Receipt Fields",
+    ...betaIncidentLedger.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## No-Go Rules",
+    ...betaIncidentLedger.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "## Command Blockers",
+    ...betaIncidentLedger.blockers.map((blocker) => `- ${blocker}`),
+    "",
+    "## Guardrail",
+    "Beta incident command receipts are beta operations metadata. They do not store PAN, folio, CAS, bank data, credentials, contact records, private notes, transaction instructions, distributor client books, or personalized advice content."
+  ].join("\n");
+}
+
 function makeBackendAuditReceiptBrief() {
   const config = backendAuditConfig();
   const paymentReplay = paymentReconciliationReplay(config);
@@ -39341,12 +39722,13 @@ function makeBackendAuditReceiptBrief() {
   const ciSmokeHarness = backendCiSmokeHarness(config, implementationHandoff, publicPublishDrill, workerContract, workerCloseout, sourceReceiptJob, recoveryQueue, correctionPublish, failedRunStore, alertDelivery, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
   const founderRecovery = founderBetaRecoveryRehearsal(config, ciSmokeHarness, publicPublishDrill, recoveryQueue, correctionPublish, alertDelivery, reviewerSignoff, rollbackEvidence, trustCenterConfig(), founderBetaOperatingRoomConfig());
   const workerSmokeDashboard = productionWorkerSmokeDashboard(config, ciSmokeHarness, founderRecovery, workerContract, workerCloseout, implementationHandoff, sourceReceiptJob, recoveryQueue, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceWorker, sourceImportJobs);
+  const betaIncidentLedger = betaIncidentCommandLedger(config, workerSmokeDashboard, founderRecovery, ciSmokeHarness, publicPublishDrill, incidentReplay, recoveryQueue, correctionPublish, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, sourceReceiptJob, sourceWorker, sourceImportJobs);
   return [
     "# NiveshNadi Backend Audit Receipts",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
     `Stream: ${config.stream.label}`,
-    `Status: ${workerSmokeDashboard.status}`,
-    `Score: ${workerSmokeDashboard.readiness}/100`,
+    `Status: ${betaIncidentLedger.status}`,
+    `Score: ${betaIncidentLedger.readiness}/100`,
     `Owner: ${config.stream.owner}`,
     `Risk: ${config.stream.risk}`,
     `Mode: ${backendAuditModeLabel(config.mode)}`,
@@ -39619,6 +40001,25 @@ function makeBackendAuditReceiptBrief() {
     ...workerSmokeDashboard.receiptFields.map((field) => `- Production receipt field: ${field}`),
     ...workerSmokeDashboard.noGoRules.map((rule) => `- Production no-go rule: ${rule}`),
     ...workerSmokeDashboard.releaseBlockers.map((blocker) => `- Production release blocker: ${blocker}`),
+    "",
+    "## Beta Incident Command Ledger",
+    `- Beta command status: ${betaIncidentLedger.status}`,
+    `- Beta command readiness: ${betaIncidentLedger.readiness}/100`,
+    `- Command ledger ID: ${betaIncidentLedger.commandLedgerId}`,
+    `- Incident history ID: ${betaIncidentLedger.incidentHistoryId}`,
+    `- Beta continuation gate ID: ${betaIncidentLedger.betaContinuationGateId}`,
+    `- Command digest ID: ${betaIncidentLedger.commandDigestId}`,
+    `- Active incidents: ${betaIncidentLedger.active}`,
+    `- Owner command incidents: ${betaIncidentLedger.ownerCommand}`,
+    `- Closed incidents: ${betaIncidentLedger.closed}`,
+    `- Critical incidents: ${betaIncidentLedger.critical}`,
+    ...betaIncidentLedger.metrics.map((metric) => `- Beta command metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...betaIncidentLedger.incidents.map((incident) => `- Beta command incident: ${incident.commandReceiptId}: ${incident.label} | ${incident.status} | ${incident.severity} | ${incident.score}/100 | ${incident.owner} | ${incident.event} | ${incident.proof} | ${incident.route}`),
+    ...betaIncidentLedger.decisions.map((decision) => `- Beta command decision: ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.detail}`),
+    ...betaIncidentLedger.timeline.map((step) => `- Beta command timeline: ${step}`),
+    ...betaIncidentLedger.receiptFields.map((field) => `- Beta command receipt field: ${field}`),
+    ...betaIncidentLedger.noGoRules.map((rule) => `- Beta command no-go rule: ${rule}`),
+    ...betaIncidentLedger.blockers.map((blocker) => `- Beta command blocker: ${blocker}`),
     "",
     "## Incident Receipt Replay",
     `- Replay status: ${incidentReplay.status}`,
@@ -49500,6 +49901,7 @@ function bindEvents() {
   els.copyBackendCiSmokeHarness?.addEventListener("click", () => copyText(makeBackendCiSmokeHarnessBrief()));
   els.copyFounderBetaRecoveryRehearsal?.addEventListener("click", () => copyText(makeFounderBetaRecoveryRehearsalBrief()));
   els.copyProductionWorkerSmokeDashboard?.addEventListener("click", () => copyText(makeProductionWorkerSmokeDashboardBrief()));
+  els.copyBetaIncidentCommandLedger?.addEventListener("click", () => copyText(makeBetaIncidentCommandLedgerBrief()));
   els.copyBackendAudit?.addEventListener("click", () => copyText(makeBackendAuditReceiptBrief()));
   els.sourceQueueForm?.addEventListener("submit", renderSourceQaQueue);
   [els.sourceQueueMode, els.sourceQueuePriority, els.sourceQueueOwner].forEach((input) => {
@@ -51288,6 +51690,7 @@ function cacheElements() {
     copyBackendCiSmokeHarness: qs("#copyBackendCiSmokeHarness"),
     copyFounderBetaRecoveryRehearsal: qs("#copyFounderBetaRecoveryRehearsal"),
     copyProductionWorkerSmokeDashboard: qs("#copyProductionWorkerSmokeDashboard"),
+    copyBetaIncidentCommandLedger: qs("#copyBetaIncidentCommandLedger"),
     copyBackendAudit: qs("#copyBackendAudit"),
     sourceQueueForm: qs("#sourceQueueForm"),
     sourceQueueMode: qs("#sourceQueueMode"),

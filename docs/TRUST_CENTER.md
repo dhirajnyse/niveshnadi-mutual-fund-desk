@@ -4,6 +4,8 @@ The Nadi Trust Center is the Phase 1 launch-readiness command layer for NiveshNa
 
 It is designed to answer a practical product question: can this research surface be trusted for its selected audience, or should it remain in demo, preview, reviewer queue, or launch hold?
 
+V299 connects Trust Center history to the Beta Incident Command Ledger in Backend Audit Receipts. Trust history rows, support-safe wording, monitor windows, reviewer closeout, rollback evidence, production smoke posture, and beta continuation decisions now become command evidence before a beta incident can close.
+
 ## Inputs
 
 The Trust Center reads the current selected fund, compare set, evidence readiness, claim release gate, claim release ledger, claim rollback console, correction notice builder, and correction notice ledger.

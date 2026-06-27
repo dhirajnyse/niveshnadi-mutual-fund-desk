@@ -23161,6 +23161,9 @@ body.simple-mode .quiet-fund-shelf {
 .worker-closeout-drill p,
 .worker-closeout-drill li,
 .worker-closeout-drill small,
+.implementation-handoff-pack p,
+.implementation-handoff-pack li,
+.implementation-handoff-pack small,
 .source-failed-board p,
 .source-failed-board li,
 .source-failed-board small,
@@ -23244,6 +23247,10 @@ body.simple-mode .quiet-fund-shelf {
 .worker-closeout-metric-grid,
 .worker-closeout-ticket-grid,
 .worker-closeout-two,
+.implementation-handoff-metric-grid,
+.implementation-handoff-packet-grid,
+.implementation-handoff-two,
+.implementation-handoff-owner-grid,
 .source-job-metric-grid,
 .source-job-active-grid,
 .source-job-grid,
@@ -23289,6 +23296,7 @@ body.simple-mode .quiet-fund-shelf {
 .backend-source-job-metric-grid,
 .scheduled-worker-metric-grid,
 .worker-closeout-metric-grid,
+.implementation-handoff-metric-grid,
 .source-job-metric-grid,
 .source-job-active-grid,
 .source-worker-metric-grid,
@@ -23322,6 +23330,7 @@ body.simple-mode .quiet-fund-shelf {
 .backend-source-job-lane-grid,
 .scheduled-worker-ticket-grid,
 .worker-closeout-ticket-grid,
+.implementation-handoff-packet-grid,
 .source-delivery-channel-grid,
 .source-delivery-flow-grid,
 .source-failed-event-grid,
@@ -23337,6 +23346,7 @@ body.simple-mode .quiet-fund-shelf {
 .backend-source-job-two,
 .scheduled-worker-two,
 .worker-closeout-two,
+.implementation-handoff-two,
 .source-delivery-two,
 .source-failed-two,
 .source-signoff-two,
@@ -23371,6 +23381,10 @@ body.simple-mode .quiet-fund-shelf {
 .worker-closeout-metric-grid article,
 .worker-closeout-ticket-grid article,
 .worker-closeout-two article,
+.implementation-handoff-metric-grid article,
+.implementation-handoff-packet-grid article,
+.implementation-handoff-two article,
+.implementation-handoff-owner-grid article,
 .source-job-metric-grid article,
 .source-job-active-grid article,
 .source-job-grid article,
@@ -23421,6 +23435,8 @@ body.simple-mode .quiet-fund-shelf {
 .scheduled-worker-two article.ready,
 .worker-closeout-ticket-grid article.ready,
 .worker-closeout-two article.ready,
+.implementation-handoff-packet-grid article.ready,
+.implementation-handoff-two article.ready,
 .source-job-grid article.ready,
 .source-job-two article.ready,
 .source-worker-alert-grid article.ready,
@@ -23456,6 +23472,8 @@ body.simple-mode .quiet-fund-shelf {
 .scheduled-worker-two article.watch,
 .worker-closeout-ticket-grid article.watch,
 .worker-closeout-two article.watch,
+.implementation-handoff-packet-grid article.watch,
+.implementation-handoff-two article.watch,
 .source-job-grid article.watch,
 .source-job-two article.watch,
 .source-worker-alert-grid article.watch,
@@ -23491,6 +23509,8 @@ body.simple-mode .quiet-fund-shelf {
 .scheduled-worker-two article.caution,
 .worker-closeout-ticket-grid article.caution,
 .worker-closeout-two article.caution,
+.implementation-handoff-packet-grid article.caution,
+.implementation-handoff-two article.caution,
 .source-job-grid article.caution,
 .source-job-two article.caution,
 .source-worker-alert-grid article.caution,
@@ -23530,6 +23550,11 @@ body.simple-mode .quiet-fund-shelf {
 .worker-closeout-head span,
 .worker-closeout-metric-grid span,
 .worker-closeout-ticket-grid span,
+.implementation-handoff-head span,
+.implementation-handoff-metric-grid span,
+.implementation-handoff-packet-grid span,
+.implementation-handoff-two span,
+.implementation-handoff-owner-grid span,
 .source-job-head span,
 .source-job-metric-grid span,
 .source-job-active-grid span,
@@ -23579,6 +23604,8 @@ body.simple-mode .quiet-fund-shelf {
 .scheduled-worker-ticket-grid strong,
 .worker-closeout-metric-grid strong,
 .worker-closeout-ticket-grid strong,
+.implementation-handoff-metric-grid strong,
+.implementation-handoff-packet-grid strong,
 .source-job-metric-grid strong,
 .source-job-active-grid strong,
 .source-job-two strong,
@@ -23615,6 +23642,7 @@ body.simple-mode .quiet-fund-shelf {
 .backend-source-job-two h3,
 .scheduled-worker-two h3,
 .worker-closeout-two h3,
+.implementation-handoff-two h3,
 .source-job-two h3,
 .source-worker-runbook-grid h3,
 .source-alert-two h3,
@@ -23969,6 +23997,140 @@ body.simple-mode .quiet-fund-shelf {
 .worker-closeout-two ol {
   margin: 8px 0 0;
   padding-left: 18px;
+}
+
+.implementation-handoff-pack {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(31, 78, 121, 0.28);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(241, 247, 252, 0.98), rgba(232, 247, 241, 0.9));
+}
+
+.implementation-handoff-pack.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.96), rgba(245, 249, 252, 0.96));
+}
+
+.implementation-handoff-pack.watch {
+  border-color: rgba(225, 160, 55, 0.42);
+}
+
+.implementation-handoff-pack.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(241, 247, 252, 0.96));
+}
+
+.implementation-handoff-pack p,
+.implementation-handoff-pack li,
+.implementation-handoff-pack small {
+  overflow-wrap: anywhere;
+}
+
+.implementation-handoff-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 12px;
+  align-items: center;
+}
+
+.implementation-handoff-head h3 {
+  margin: 3px 0 5px;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.14;
+}
+
+.implementation-handoff-head p {
+  margin: 0;
+}
+
+.implementation-handoff-score {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.implementation-handoff-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.implementation-handoff-score strong,
+.implementation-handoff-score span {
+  position: relative;
+}
+
+.implementation-handoff-score strong {
+  color: #ffffff;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.implementation-handoff-score span {
+  color: #dce7ed;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.implementation-handoff-packet-grid,
+.implementation-handoff-two,
+.implementation-handoff-owner-grid,
+.implementation-handoff-packet-grid article,
+.implementation-handoff-two article,
+.implementation-handoff-owner-grid article {
+  min-width: 0;
+}
+
+.implementation-handoff-packet-grid small {
+  display: block;
+  margin-top: 6px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+
+.implementation-handoff-packet-grid small strong {
+  color: var(--ink);
+}
+
+.implementation-handoff-route {
+  margin-top: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.implementation-handoff-two {
+  grid-template-columns: 1.1fr 1.15fr;
+}
+
+.implementation-handoff-two ul,
+.implementation-handoff-two ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.implementation-handoff-owner-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.implementation-handoff-owner-grid article {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.implementation-handoff-owner-grid p {
+  margin: 5px 0 0;
 }
 
 .launch-freeze-board {
@@ -34232,6 +34394,10 @@ body.simple-mode .quiet-fund-shelf {
   .worker-closeout-metric-grid,
   .worker-closeout-ticket-grid,
   .worker-closeout-two,
+  .implementation-handoff-metric-grid,
+  .implementation-handoff-packet-grid,
+  .implementation-handoff-two,
+  .implementation-handoff-owner-grid,
   .source-job-metric-grid,
   .source-job-active-grid,
   .source-job-grid,
@@ -35015,6 +35181,10 @@ body.simple-mode .quiet-fund-shelf {
   .worker-closeout-metric-grid,
   .worker-closeout-ticket-grid,
   .worker-closeout-two,
+  .implementation-handoff-metric-grid,
+  .implementation-handoff-packet-grid,
+  .implementation-handoff-two,
+  .implementation-handoff-owner-grid,
   .source-job-metric-grid,
   .source-job-active-grid,
   .source-job-grid,
@@ -35330,6 +35500,7 @@ body.simple-mode .quiet-fund-shelf {
   .backend-source-job-head,
   .scheduled-worker-head,
   .worker-closeout-head,
+  .implementation-handoff-head,
   .source-job-head,
   .source-worker-head,
   .source-alert-head,
@@ -35400,6 +35571,7 @@ body.simple-mode .quiet-fund-shelf {
   .backend-source-job-score,
   .scheduled-worker-score,
   .worker-closeout-score,
+  .implementation-handoff-score,
   .source-job-score,
   .source-worker-score,
   .source-alert-score,

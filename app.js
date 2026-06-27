@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260627-v293-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v293 Worker Ticket Closeout Drill";
+const DATA_VERSION = "20260627-v294-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v294 Backend Implementation Handoff Pack";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1240,22 +1240,22 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Worker ticket closeout drill",
+    label: "Backend implementation handoff pack",
     status: "Shipping now",
     route: "#backend-audit-receipts",
-    detail: "Rehearse closing scheduled worker tickets with acceptance evidence, failed-run replay, alert delivery proof, reviewer sign-off, recovery queue state, and launch no-go blockers."
-  },
-  {
-    label: "Backend implementation handoff pack",
-    status: "Next",
-    route: "#backend-ticket-factory",
-    detail: "Convert closeout-ready worker tickets into engineering handoff packets with owners, acceptance tests, release dependencies, and blocked-data boundaries."
+    detail: "Convert closeout-ready worker tickets into engineering handoff packets with API contracts, event payloads, acceptance tests, owners, dependencies, and launch no-go blockers."
   },
   {
     label: "Public recovery publish drill",
-    status: "Later",
+    status: "Next",
     route: "#correction-notice",
     detail: "Rehearse public correction wording, freeze recovery, reviewer closeout, and Trust Center status after a source import changes or fails."
+  },
+  {
+    label: "Backend CI smoke harness",
+    status: "Later",
+    route: "#backend-ticket-factory",
+    detail: "Turn implementation handoff packets into CI smoke fixtures for scheduler, parser, receipt persistence, alert delivery, replay, and recovery closeout."
   }
 ];
 
@@ -9260,7 +9260,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v293</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v294</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -34678,6 +34678,183 @@ function workerTicketCloseoutDrill(config = backendAuditConfig(), sourceImportJo
   };
 }
 
+function backendImplementationHandoffPack(config = backendAuditConfig(), sourceImportJobs = productionSourceImportJobs(config), sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config), alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config), alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config), failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config), reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config), rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config), publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config), recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config), sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence), workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore), workerCloseout = workerTicketCloseoutDrill(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract)) {
+  const activeJob = sourceImportJobs.activeJob;
+  const sourceSlug = activeJob.pipeline.id.replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const handoffId = ["NN", "BACKEND", "HANDOFF", sourceSlug, suffix].join("-").toUpperCase();
+  const apiContractId = ["NN", "API", "CONTRACT", "SOURCE", sourceSlug, suffix].join("-").toUpperCase();
+  const acceptancePlanId = ["NN", "ACCEPTANCE", "PLAN", sourceSlug, suffix].join("-").toUpperCase();
+  const releaseRunbookId = ["NN", "RELEASE", "RUNBOOK", "SOURCE", sourceSlug, suffix].join("-").toUpperCase();
+  const storageReady = config.storage === "event" || config.storage === "append";
+  const endpointMap = {
+    "Scheduler binding": { method: "POST", path: "/api/source-workers/:worker_id/schedule", service: "scheduler" },
+    "Fetch receipt": { method: "POST", path: "/api/source-runs/:source_job_id/fetch-receipts", service: "source-fetch" },
+    "Parser quarantine": { method: "POST", path: "/api/source-runs/:source_job_id/parser-results", service: "parser-qa" },
+    "Receipt persistence": { method: "POST", path: "/api/source-receipts", service: "receipt-store" },
+    "Alert fan-out": { method: "POST", path: "/api/source-alerts/:alert_route_id/deliveries", service: "alert-delivery" },
+    "Release recovery": { method: "POST", path: "/api/source-recovery/:recovery_queue_id/closeout", service: "release-recovery" }
+  };
+  const dependencyTemplate = [
+    { label: "Durable storage", ready: storageReady, detail: storageReady ? backendAuditStorageLabel(config.storage) : "Append-only or event-stream storage required." },
+    { label: "Failed-run replay", ready: failedRunStore.readiness >= 64, detail: `${failedRunStore.readiness}/100 | ${failedRunStore.eventStoreId}` },
+    { label: "Alert delivery", ready: alertDelivery.readiness >= 64, detail: `${alertDelivery.readiness}/100 | ${alertDelivery.deliveryId}` },
+    { label: "Reviewer sign-off", ready: reviewerSignoff.readiness >= 64, detail: `${reviewerSignoff.readiness}/100 | ${reviewerSignoff.signoffId}` },
+    { label: "Rollback evidence", ready: rollbackEvidence.readiness >= 64, detail: `${rollbackEvidence.readiness}/100 | ${rollbackEvidence.rollbackEvidenceId}` },
+    { label: "Recovery queue", ready: recoveryQueue.readiness >= 64, detail: `${recoveryQueue.readiness}/100 | ${recoveryQueue.queueId}` }
+  ];
+  const packets = workerCloseout.closeouts.map((closeout, index) => {
+    const ticket = closeout.ticket;
+    const endpoint = endpointMap[ticket.label] || endpointMap["Scheduler binding"];
+    const proofFields = ticket.proof.split(",").map((field) => field.trim()).filter(Boolean);
+    const payloadFields = [...new Set([
+      "request_id",
+      "source_job_id",
+      "worker_ticket_id",
+      "worker_contract_id",
+      "closeout_receipt_id",
+      ...proofFields,
+      "idempotency_key",
+      "actor_role",
+      "created_at"
+    ])];
+    const dependencies = dependencyTemplate.map((dependency) => ({
+      ...dependency,
+      ready: dependency.ready && closeout.evidenceScore >= 34
+    }));
+    const dependencyScore = Math.round(dependencies.filter((dependency) => dependency.ready).length / dependencies.length * 100);
+    const blockers = [
+      ...closeout.blockers.filter((blocker) => !blocker.startsWith("No active closeout")),
+      ...dependencies.filter((dependency) => !dependency.ready).map((dependency) => `${dependency.label}: ${dependency.detail}`)
+    ];
+    const score = clampNumber(Math.round(
+      closeout.evidenceScore * 0.38 +
+        ticket.score * 0.18 +
+        dependencyScore * 0.18 +
+        sourceReceiptJob.readiness * 0.1 +
+        workerContract.readiness * 0.1 +
+        (storageReady ? 82 : 24) * 0.06
+    ) - Math.min(blockers.length, 5) * 2, 14, 96);
+    const status = blockers.length
+      ? "Implementation blocked"
+      : score >= 82
+        ? "Ready for engineering"
+        : "Owner review needed";
+    const acceptanceTests = [
+      `Unit test: ${ticket.event} rejects missing required payload fields.`,
+      `Integration test: ${endpoint.method} ${endpoint.path} writes ${closeout.closeoutReceiptId}.`,
+      `Replay test: failed-run replay rebuilds ${ticket.label} without duplicate release events.`,
+      `Permission test: ${ticket.owner} can close and non-owner roles cannot close.`,
+      `Release test: ${closeout.releaseCheck}`
+    ];
+    return {
+      acceptanceTests,
+      blockedData: ["PAN", "folio", "CAS", "bank details", "UPI", "card data", "OTP", "raw contact data", "private notes", "distributor client book"],
+      blockers: blockers.length ? blockers : ["No active implementation blocker in this preview. Keep real backend CI, storage, alert delivery, and reviewer identity before launch."],
+      dependencies,
+      endpoint,
+      event: closeout.event,
+      handoffTicketId: ["NN", "BACKEND", "HANDOFF", String(index + 1).padStart(2, "0"), sourceSlug, suffix].join("-").toUpperCase(),
+      owner: closeout.owner,
+      payloadFields,
+      score,
+      service: endpoint.service,
+      status,
+      ticket,
+      tone: status === "Ready for engineering" ? "ready" : status === "Implementation blocked" ? "caution" : "watch"
+    };
+  });
+  const ready = packets.filter((packet) => packet.status === "Ready for engineering").length;
+  const blocked = packets.filter((packet) => packet.status === "Implementation blocked").length;
+  const review = packets.length - ready - blocked;
+  const readiness = clampNumber(Math.round(
+    workerCloseout.readiness * 0.3 +
+      workerContract.readiness * 0.18 +
+      sourceReceiptJob.readiness * 0.14 +
+      failedRunStore.readiness * 0.1 +
+      alertDelivery.readiness * 0.1 +
+      reviewerSignoff.readiness * 0.08 +
+      rollbackEvidence.readiness * 0.05 +
+      recoveryQueue.readiness * 0.05
+  ) - blocked * 3, 14, 96);
+  const status = readiness >= 84 && blocked === 0
+    ? "Backend handoff ready"
+    : readiness >= 66 && storageReady
+      ? "Backend handoff review"
+      : "Backend handoff blocked";
+  const tone = status === "Backend handoff ready" ? "ready" : status === "Backend handoff blocked" ? "caution" : "watch";
+  const metrics = [
+    { label: "Handoff pack", value: handoffId, detail: `${ready} ready, ${review} review, ${blocked} blocked implementation packet${packets.length === 1 ? "" : "s"}.` },
+    { label: "API contract", value: apiContractId, detail: `${packets.length} endpoint contracts tied to ${workerContract.contractId}.` },
+    { label: "Acceptance plan", value: acceptancePlanId, detail: `${packets.reduce((sum, packet) => sum + packet.acceptanceTests.length, 0)} test expectations across worker closeout lanes.` },
+    { label: "Readiness", value: `${readiness}/100`, detail: `${status}; ${releaseRunbookId}.` }
+  ];
+  const apiEnvelope = [
+    "request_id",
+    "idempotency_key",
+    "source_job_id",
+    "worker_contract_id",
+    "worker_ticket_id",
+    "closeout_receipt_id",
+    "event_name",
+    "actor_role",
+    "payload",
+    "evidence_refs",
+    "launch_state",
+    "retention_policy",
+    "created_at"
+  ];
+  const acceptanceStack = [
+    "Every endpoint rejects missing idempotency, source job, worker ticket, and closeout receipt IDs.",
+    "Every write creates append-only receipt evidence before release state can change.",
+    "Replay tests rebuild fetch, parser, persistence, alert, sign-off, rollback, and recovery state from receipts.",
+    "Permission tests prove only owner or reviewer roles can close their assigned lane.",
+    "Redaction tests fail if private investor identifiers enter payload, evidence, logs, or support summaries.",
+    "Release tests prove affected public surfaces stay frozen until recovery queue and reviewer closeout agree."
+  ];
+  const releaseDependencies = [
+    `${sourceReceiptJob.jobContractId}: source receipt job contract`,
+    `${workerContract.contractId}: scheduled worker receipt contract`,
+    `${workerCloseout.closeoutId}: worker closeout drill`,
+    `${failedRunStore.eventStoreId}: failed-run replay source`,
+    `${alertDelivery.deliveryId}: alert delivery backend`,
+    `${reviewerSignoff.signoffId}: reviewer sign-off bridge`,
+    `${rollbackEvidence.rollbackEvidenceId}: rollback evidence store`,
+    `${recoveryQueue.queueId}: recovery release queue`
+  ];
+  const blockers = [...new Set([
+    ...packets.flatMap((packet) => packet.blockers).filter((blocker) => !blocker.startsWith("No active implementation")).slice(0, 8),
+    ...(storageReady ? [] : ["backend implementation handoff cannot close without append-only or event-stream receipt storage"]),
+    ...(blocked ? ["one or more implementation packets are blocked by missing backend proof"] : [])
+  ])];
+  const ownerRules = [
+    "Data Ops owns scheduler state, pause, retry, and runbook closeout.",
+    "Data Engineering owns source fetch, parser contract, and schema validation implementation.",
+    "Security Ops owns append-only receipt persistence, idempotency, retention, and redaction proof.",
+    "Release Ops owns alert delivery, dead-letter handling, freeze, resume, and affected-surface state.",
+    "Reviewer owns release recovery sign-off and public correction readiness before launch."
+  ];
+  return {
+    acceptancePlanId,
+    acceptanceStack,
+    apiContractId,
+    apiEnvelope,
+    blocked,
+    blockers: blockers.length ? blockers : ["No active implementation handoff blocker in this preview. Keep real backend CI, durable storage, alert delivery, reviewer identity, and recovery queue proof before production."],
+    handoffId,
+    metrics,
+    ownerRules,
+    packets,
+    readiness,
+    ready,
+    releaseDependencies,
+    releaseRunbookId,
+    review,
+    status,
+    tone
+  };
+}
+
 function sourceWorkerAlertRouting(sourceWorker = sourceImportWorkerBlueprint(), sourceImportJobs = productionSourceImportJobs(), config = backendAuditConfig()) {
   const activeJob = sourceWorker.activeJob || sourceImportJobs.activeJob;
   const activeBlockers = sourceWorker.blockers.filter((blocker) => !blocker.startsWith("No active worker blocker"));
@@ -36311,12 +36488,13 @@ function renderBackendAuditReceipts(event) {
   const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const workerCloseout = workerTicketCloseoutDrill(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract);
+  const implementationHandoff = backendImplementationHandoffPack(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract, workerCloseout);
   const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
   const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
   const readyCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.baseScore >= 68).length;
   const veryHighCount = BACKEND_AUDIT_STREAMS.filter((stream) => stream.risk === "Very High").length;
-  els.backendAuditSummary.textContent = `${workerCloseout.readiness}/100 | ${workerCloseout.status}`;
+  els.backendAuditSummary.textContent = `${implementationHandoff.readiness}/100 | ${implementationHandoff.status}`;
   els.backendAuditOutput.innerHTML = `
     <div class="backend-audit-hero ${escapeHtml(config.tone)}">
       <div>
@@ -36513,6 +36691,81 @@ function renderBackendAuditReceipts(event) {
             ${workerCloseout.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
           </ul>
         </article>
+      </div>
+    </div>
+    <div class="implementation-handoff-pack ${escapeHtml(implementationHandoff.tone)}">
+      <div class="implementation-handoff-head">
+        <div>
+          <span>Backend implementation handoff pack</span>
+          <h3>${escapeHtml(implementationHandoff.status)}</h3>
+          <p>Handoff ${escapeHtml(implementationHandoff.handoffId)} converts worker closeout evidence into engineer-ready API contracts, payload fields, acceptance tests, owner rules, release dependencies, and launch blockers.</p>
+        </div>
+        <div class="implementation-handoff-score" style="--score:${implementationHandoff.readiness}">
+          <strong>${implementationHandoff.readiness}</strong>
+          <span>Build</span>
+        </div>
+      </div>
+      <div class="implementation-handoff-metric-grid">
+        ${implementationHandoff.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="implementation-handoff-packet-grid">
+        ${implementationHandoff.packets.map((packet) => `
+          <article class="${escapeHtml(packet.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(packet.owner)} | ${escapeHtml(packet.service)}</span>
+                <strong>${escapeHtml(packet.ticket.label)}</strong>
+              </div>
+              <b>${packet.score}</b>
+            </div>
+            <p>${escapeHtml(packet.handoffTicketId)}</p>
+            <div class="build-progress-bar"><span style="width:${packet.score}%"></span></div>
+            <small><strong>Endpoint:</strong> ${escapeHtml(packet.endpoint.method)} ${escapeHtml(packet.endpoint.path)}</small>
+            <small><strong>Event:</strong> ${escapeHtml(packet.event)}</small>
+            <small><strong>Status:</strong> ${escapeHtml(packet.status)}</small>
+            <button class="text-button implementation-handoff-route" type="button" data-build-route="${escapeHtml(packet.ticket.route)}">Open ticket route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="implementation-handoff-two">
+        <article>
+          <h3>API envelope</h3>
+          <ul>
+            ${implementationHandoff.apiEnvelope.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Acceptance stack</h3>
+          <ol>
+            ${implementationHandoff.acceptanceStack.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ol>
+        </article>
+        <article>
+          <h3>Release dependencies</h3>
+          <ul>
+            ${implementationHandoff.releaseDependencies.map((dependency) => `<li>${escapeHtml(dependency)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="${implementationHandoff.blockers.some((item) => item.startsWith("No active implementation handoff")) ? "ready" : "caution"}">
+          <h3>Implementation blockers</h3>
+          <ul>
+            ${implementationHandoff.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+      <div class="implementation-handoff-owner-grid">
+        ${implementationHandoff.ownerRules.map((rule) => `
+          <article>
+            <span>Owner rule</span>
+            <p>${escapeHtml(rule)}</p>
+          </article>
+        `).join("")}
       </div>
     </div>
     <div class="launch-freeze-board ${escapeHtml(freezeAutomation.tone)}">
@@ -37566,6 +37819,69 @@ function makeWorkerTicketCloseoutDrillBrief() {
   ].join("\n");
 }
 
+function makeBackendImplementationHandoffPackBrief() {
+  const config = backendAuditConfig();
+  const sourceImportJobs = productionSourceImportJobs(config);
+  const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
+  const alertRouting = sourceWorkerAlertRouting(sourceWorker, sourceImportJobs, config);
+  const alertDelivery = sourceAlertDeliveryBackend(alertRouting, sourceWorker, sourceImportJobs, config);
+  const failedRunStore = sourceFailedRunEventStore(alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const reviewerSignoff = sourceReviewerSignoffBridge(failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const rollbackEvidence = sourceRollbackEvidenceStore(reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
+  const sourceReceiptJob = backendSourceReceiptJob(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence);
+  const workerContract = scheduledWorkerReceiptContract(config, sourceImportJobs, sourceWorker, sourceReceiptJob, alertRouting, alertDelivery, failedRunStore);
+  const workerCloseout = workerTicketCloseoutDrill(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract);
+  const implementationHandoff = backendImplementationHandoffPack(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract, workerCloseout);
+  return [
+    "# NiveshNadi Backend Implementation Handoff Pack",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Handoff ID: ${implementationHandoff.handoffId}`,
+    `API contract ID: ${implementationHandoff.apiContractId}`,
+    `Acceptance plan ID: ${implementationHandoff.acceptancePlanId}`,
+    `Release runbook ID: ${implementationHandoff.releaseRunbookId}`,
+    `Status: ${implementationHandoff.status}`,
+    `Readiness: ${implementationHandoff.readiness}/100`,
+    `Worker closeout: ${workerCloseout.closeoutId} | ${workerCloseout.status}`,
+    `Worker contract: ${workerContract.contractId}`,
+    `Source receipt job: ${sourceReceiptJob.jobContractId}`,
+    "",
+    "## Metrics",
+    ...implementationHandoff.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Implementation Packets",
+    ...implementationHandoff.packets.flatMap((packet) => [
+      `- ${packet.handoffTicketId}: ${packet.ticket.label}`,
+      `  Owner: ${packet.owner} | Service: ${packet.service} | Status: ${packet.status} | Score: ${packet.score}/100`,
+      `  Endpoint: ${packet.endpoint.method} ${packet.endpoint.path}`,
+      `  Event: ${packet.event}`,
+      `  Payload fields: ${packet.payloadFields.join(", ")}`,
+      `  Acceptance: ${packet.acceptanceTests.join(" | ")}`,
+      `  Dependencies: ${packet.dependencies.map((dependency) => `${dependency.label}=${dependency.ready ? "ready" : "blocked"} (${dependency.detail})`).join(" | ")}`,
+      `  Blockers: ${packet.blockers.join(" | ")}`
+    ]),
+    "",
+    "## API Envelope",
+    ...implementationHandoff.apiEnvelope.map((field) => `- ${field}`),
+    "",
+    "## Acceptance Stack",
+    ...implementationHandoff.acceptanceStack.map((rule) => `- ${rule}`),
+    "",
+    "## Release Dependencies",
+    ...implementationHandoff.releaseDependencies.map((dependency) => `- ${dependency}`),
+    "",
+    "## Owner Rules",
+    ...implementationHandoff.ownerRules.map((rule) => `- ${rule}`),
+    "",
+    "## Implementation Blockers",
+    ...implementationHandoff.blockers.map((blocker) => `- ${blocker}`),
+    "",
+    "## Guardrail",
+    "Backend implementation handoff packets are engineering metadata. They do not store PAN, folio, CAS, bank data, credentials, contact records, private notes, transaction instructions, distributor client books, or personalized advice content."
+  ].join("\n");
+}
+
 function makeBackendAuditReceiptBrief() {
   const config = backendAuditConfig();
   const paymentReplay = paymentReconciliationReplay(config);
@@ -37581,6 +37897,7 @@ function makeBackendAuditReceiptBrief() {
   const publicRecovery = sourcePublicRecoveryRehearsal(rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const recoveryQueue = sourceRecoveryReleaseQueue(publicRecovery, rollbackEvidence, reviewerSignoff, failedRunStore, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const workerCloseout = workerTicketCloseoutDrill(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract);
+  const implementationHandoff = backendImplementationHandoffPack(config, sourceImportJobs, sourceWorker, alertRouting, alertDelivery, failedRunStore, reviewerSignoff, rollbackEvidence, publicRecovery, recoveryQueue, sourceReceiptJob, workerContract, workerCloseout);
   const correctionPublish = sourceCorrectionPublishConsole(recoveryQueue, publicRecovery, rollbackEvidence, reviewerSignoff, alertDelivery, alertRouting, sourceWorker, sourceImportJobs, config);
   const incidentReplay = sourceIncidentReceiptReplay(alertRouting, sourceWorker, sourceImportJobs, config);
   const freezeAutomation = launchFreezeAutomation(config, paymentReplay, incidentReplay, correctionPublish, recoveryQueue, publicRecovery, alertRouting, sourceWorker);
@@ -37630,6 +37947,21 @@ function makeBackendAuditReceiptBrief() {
     ...workerCloseout.receiptFields.map((field) => `- Closeout receipt field: ${field}`),
     ...workerCloseout.noGoRules.map((rule) => `- Closeout no-go rule: ${rule}`),
     ...workerCloseout.blockers.map((blocker) => `- Closeout blocker: ${blocker}`),
+    "",
+    "## Backend Implementation Handoff Pack",
+    `- Handoff status: ${implementationHandoff.status}`,
+    `- Handoff readiness: ${implementationHandoff.readiness}/100`,
+    `- Handoff ID: ${implementationHandoff.handoffId}`,
+    `- API contract ID: ${implementationHandoff.apiContractId}`,
+    `- Acceptance plan ID: ${implementationHandoff.acceptancePlanId}`,
+    `- Release runbook ID: ${implementationHandoff.releaseRunbookId}`,
+    ...implementationHandoff.metrics.map((metric) => `- Handoff metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...implementationHandoff.packets.map((packet) => `- Handoff packet: ${packet.handoffTicketId}: ${packet.ticket.label} | ${packet.status} | ${packet.score}/100 | ${packet.endpoint.method} ${packet.endpoint.path} | ${packet.event}`),
+    ...implementationHandoff.apiEnvelope.map((field) => `- API envelope field: ${field}`),
+    ...implementationHandoff.acceptanceStack.map((rule) => `- Handoff acceptance rule: ${rule}`),
+    ...implementationHandoff.releaseDependencies.map((dependency) => `- Handoff dependency: ${dependency}`),
+    ...implementationHandoff.ownerRules.map((rule) => `- Handoff owner rule: ${rule}`),
+    ...implementationHandoff.blockers.map((blocker) => `- Handoff blocker: ${blocker}`),
     "",
     "## Event Contract",
     ...config.stream.eventTypes.map((item) => `- ${item}`),
@@ -47662,6 +47994,7 @@ function bindEvents() {
   els.copyBackendSourceReceiptJob?.addEventListener("click", () => copyText(makeBackendSourceReceiptJobBrief()));
   els.copyScheduledWorkerContract?.addEventListener("click", () => copyText(makeScheduledWorkerReceiptContractBrief()));
   els.copyWorkerCloseoutDrill?.addEventListener("click", () => copyText(makeWorkerTicketCloseoutDrillBrief()));
+  els.copyBackendImplementationHandoff?.addEventListener("click", () => copyText(makeBackendImplementationHandoffPackBrief()));
   els.copyBackendAudit?.addEventListener("click", () => copyText(makeBackendAuditReceiptBrief()));
   els.sourceQueueForm?.addEventListener("submit", renderSourceQaQueue);
   [els.sourceQueueMode, els.sourceQueuePriority, els.sourceQueueOwner].forEach((input) => {
@@ -49445,6 +49778,7 @@ function cacheElements() {
     copyBackendSourceReceiptJob: qs("#copyBackendSourceReceiptJob"),
     copyScheduledWorkerContract: qs("#copyScheduledWorkerContract"),
     copyWorkerCloseoutDrill: qs("#copyWorkerCloseoutDrill"),
+    copyBackendImplementationHandoff: qs("#copyBackendImplementationHandoff"),
     copyBackendAudit: qs("#copyBackendAudit"),
     sourceQueueForm: qs("#sourceQueueForm"),
     sourceQueueMode: qs("#sourceQueueMode"),

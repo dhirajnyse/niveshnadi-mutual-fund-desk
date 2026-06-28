@@ -17,6 +17,7 @@
   --radius: 8px;
   --anchor-offset: 132px;
   --desk-rail-top: 72px;
+  --desk-rail-header-gap: 8px;
   --desk-rail-width: 204px;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
@@ -616,8 +617,8 @@ a {
 
 .desk-rail {
   position: fixed;
-  top: var(--desk-rail-top);
-  bottom: 0;
+  top: calc(var(--desk-rail-top) + var(--desk-rail-header-gap));
+  bottom: var(--desk-rail-header-gap);
   left: 0;
   z-index: 8;
   width: var(--desk-rail-width);
@@ -625,6 +626,7 @@ a {
   overflow-y: auto;
   scrollbar-width: none;
   color: #dbe9f2;
+  border-radius: 0 var(--radius) var(--radius) 0;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   background:
     linear-gradient(160deg, rgba(15, 124, 107, 0.32), transparent 34%),
@@ -635,6 +637,7 @@ a {
 body.desk-rail-right .desk-rail {
   right: 0;
   left: auto;
+  border-radius: var(--radius) 0 0 var(--radius);
   border-right: 0;
   border-left: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: -14px 0 34px rgba(15, 34, 56, 0.12);
@@ -652,12 +655,22 @@ body.desk-rail-right .desk-rail {
 
 .desk-rail-context {
   display: grid;
-  gap: 5px;
-  padding: 10px 9px;
+  grid-template-columns: minmax(0, 1fr) minmax(58px, auto);
+  gap: 5px 6px;
+  padding: 8px 7px;
   border: 1px solid rgba(158, 233, 223, 0.22);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.055);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.desk-rail-context > span,
+.desk-rail-context > strong,
+.desk-rail-context p,
+.desk-rail-progress,
+.desk-rail-recent,
+.desk-rail-switcher {
+  grid-column: 1 / -1;
 }
 
 .desk-rail-context > span,
@@ -670,10 +683,15 @@ body.desk-rail-right .desk-rail {
   text-transform: uppercase;
 }
 
+.desk-rail-next small,
+.desk-rail-back small {
+  display: none;
+}
+
 .desk-rail-context > strong {
   overflow: hidden;
   color: #ffffff;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 950;
   line-height: 1.1;
   text-overflow: ellipsis;
@@ -684,7 +702,7 @@ body.desk-rail-right .desk-rail {
   margin: 0;
   overflow: hidden;
   color: #bdd5e5;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 750;
   line-height: 1.2;
   text-overflow: ellipsis;
@@ -727,9 +745,9 @@ body.desk-rail-right .desk-rail {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 2px;
-  min-height: 32px;
-  margin-top: 3px;
-  padding: 6px 8px;
+  min-height: 25px;
+  margin-top: 0;
+  padding: 5px 6px;
   border: 1px solid rgba(158, 233, 223, 0.18);
   border-radius: var(--radius);
   background: rgba(226, 242, 255, 0.12);
@@ -738,8 +756,13 @@ body.desk-rail-right .desk-rail {
   text-align: left;
 }
 
+.desk-rail-next {
+  grid-column: 1;
+}
+
 .desk-rail-back {
-  min-height: 30px;
+  grid-column: 2;
+  min-height: 25px;
   background: rgba(255, 255, 255, 0.07);
 }
 
@@ -766,21 +789,23 @@ body.desk-rail-right .desk-rail {
 .desk-rail-back b {
   overflow: hidden;
   color: #ffffff;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.1;
+  text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .desk-rail-recent {
   display: grid;
-  grid-template-columns: auto repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
   gap: 4px;
-  margin-top: 3px;
+  margin-top: 0;
 }
 
 .desk-rail-recent span {
+  display: none;
   color: #9ee9df;
   font-size: 9px;
   font-weight: 950;
@@ -831,7 +856,7 @@ body.desk-rail-right .desk-rail {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 4px;
-  margin-top: 3px;
+  margin-top: 0;
 }
 
 .desk-rail-switcher button {
@@ -43672,7 +43697,7 @@ body.desk-rail-right .top-nav {
 }
 
 body.simple-mode .desk-rail {
-  top: var(--desk-rail-top);
+  top: calc(var(--desk-rail-top) + var(--desk-rail-header-gap));
 }
 
 .desk-rail-inner {
@@ -43690,13 +43715,13 @@ body.simple-mode .desk-rail {
 
 .desk-rail-next,
 .desk-rail-back {
-  min-height: 29px;
-  padding: 5px 7px;
+  min-height: 24px;
+  padding: 4px 5px;
 }
 
 .desk-rail-next b,
 .desk-rail-back b {
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .desk-rail-recent {

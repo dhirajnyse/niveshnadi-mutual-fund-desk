@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V346 Rail Top Compact
+
+V346 makes the desktop rail top lighter after the clearance fix. The rail now lands below the sticky header with a small breathing gap, rounds into the workspace, compresses Next and Back into compact destination buttons, hides the Recent label, and brings the real navigation groups closer to the top.
+
 ## V345 Rail Hero Clearance
 
 V345 keeps the desktop side rail parked below the sticky header and hero bar. The rail now reads a live `--desk-rail-top` value from the measured header height, updates on resize and header changes, and removes the stale compact offsets that let tabs run under the hero area.

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V342 Rail Keyboard Polish
+
+V342 makes the desktop rail more keyboard-ready without adding visible instruction copy. Focused rail controls now move through one scoped loop across Back, Next, Recent, group switches, and room links, and the rail gets a clearer quiet focus ring that also works in Mini rail mode.
+
 ## V341 Rail Recent Rooms
 
 V341 adds a compact two-room Recent row to the desktop rail context block. As users move through workspace rooms, the rail keeps the last two distinct rooms available as one-click return targets, while Mini rail collapses them into compact R1 and R2 buttons until hover or keyboard focus reveals full labels.

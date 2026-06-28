@@ -945,6 +945,19 @@ body.desk-rail-right .desk-rail-group.is-current {
   color: var(--mint);
 }
 
+.desk-rail :is(a, button):focus-visible {
+  outline: 2px solid rgba(158, 233, 223, 0.82);
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 4px rgba(158, 233, 223, 0.12),
+    0 10px 24px rgba(0, 0, 0, 0.2);
+}
+
+.desk-rail button:disabled:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
 body.desk-rail-left main {
   padding-left: var(--desk-rail-width);
 }

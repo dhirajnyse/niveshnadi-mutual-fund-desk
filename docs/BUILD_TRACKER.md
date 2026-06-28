@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V347 Rail Quiet Hierarchy
+
+V347 makes the desktop rail read more like calm product navigation. Inactive rows are quieter, group labels and count badges are slimmer, the active row keeps a crisp white selection without an oversized shadow, and the rail context block fades behind the actual tab list.
+
 ## V346 Rail Top Compact
 
 V346 makes the desktop rail top lighter after the clearance fix. The rail now lands below the sticky header with a small breathing gap, rounds into the workspace, compresses Next and Back into compact destination buttons, hides the Recent label, and brings the real navigation groups closer to the top.

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V330 Desk Rail Navigation
+
+V330 adapts the Hyrvia HRMS shell idea into NiveshNadi. High-frequency workspace tabs now sit in a persistent desktop side rail, the top bar stays focused on Simple View, tab side, Find tool, and Workspace jump controls, the rail can be saved on the left or right side, and mobile/tablet layouts keep the existing top tabs.
+
 ## V329 Workspace Fit Polish
 
 V329 removes the first-screen inner scroll trap, lets the calm research surface use the page scroll, adds bottom safe-area room for fixed search and back-to-top controls, and updates the Build Tracker so the overall-progress link now reports the workspace-fit audit as the current shipped lane.

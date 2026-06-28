@@ -1,6 +1,7 @@
-const DATA_VERSION = "20260628-v329-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v329 Workspace Fit Polish";
+const DATA_VERSION = "20260628-v330-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v330 Desk Rail Navigation";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
+const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
 const SIMPLE_FUND_SHELF_LIMIT = 6;
@@ -1016,6 +1017,7 @@ const state = {
   simpleFundShelfExpanded: false,
   simpleFiltersOpen: false,
   simpleRoomFocus: "",
+  navSide: "left",
   evidenceIntakeSlotId: "",
   investorRecordFocus: false,
   toolPaletteHost: null,
@@ -1224,8 +1226,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Use the workspace fit polish to keep the Build tab, progress link, and first research room compact without trapping the page in nested scroll."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "desk rail navigation", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Use the desk rail navigation to keep high-frequency rooms on the side while top controls stay focused on mode, search, and workspace jumps."
   },
   {
     phase: "Phase 2",
@@ -1241,8 +1243,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Workspace fit polish",
+    label: "Desk rail navigation",
     status: "Shipping now",
+    route: "#main",
+    detail: "Move high-frequency workspace tabs into a Hyrvia-inspired side rail with saved left/right preference and compact top utilities."
+  },
+  {
+    label: "Workspace fit polish",
+    status: "Done",
     route: "#main",
     detail: "Remove the first-screen inner scroll trap, protect bottom content from fixed controls, and keep the Build progress path easy to scan."
   },
@@ -9230,9 +9238,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Workspace fit polish",
-      status: "Active in v329",
+      status: "Done in v329",
       route: "#main",
       detail: "Remove first-screen nested scroll, keep compact cards readable, and add safe bottom room for fixed search and top controls."
+    },
+    {
+      label: "Desk rail navigation",
+      status: "Active in v330",
+      route: "#main",
+      detail: "Move primary workspace tabs to a persistent side rail, remember left or right placement, and keep mode/search/jump controls in the top bar."
     }
   ];
   const productionTarget = releaseVersion
@@ -9246,7 +9260,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, and workspace-fit audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, and desk-rail navigation audit are complete.`
   };
   const launchGates = [
     {
@@ -9459,7 +9473,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v329 removes the first-screen inner scroll trap and keeps the Build tab's overall-progress path easier to scan.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v330 adds a Hyrvia-inspired side rail with left/right tab placement while top controls stay compact.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9588,7 +9602,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v329</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v330</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -36259,6 +36273,35 @@ function saveSimpleModePreference(enabled) {
   }
 }
 
+function loadNavSidePreference() {
+  try {
+    return localStorage.getItem(NAV_SIDE_KEY) === "right" ? "right" : "left";
+  } catch (error) {
+    return "left";
+  }
+}
+
+function applyNavSidePreference(side = "left", persist = true) {
+  state.navSide = side === "right" ? "right" : "left";
+  document.body.classList.toggle("desk-rail-left", state.navSide === "left");
+  document.body.classList.toggle("desk-rail-right", state.navSide === "right");
+  if (els.navSideSelect) els.navSideSelect.value = state.navSide;
+  if (!persist) return;
+  try {
+    localStorage.setItem(NAV_SIDE_KEY, state.navSide);
+  } catch (error) {
+    // Navigation side is a comfort setting; default left remains usable.
+  }
+}
+
+function bindNavSidePreference() {
+  applyNavSidePreference(loadNavSidePreference(), false);
+  els.navSideSelect?.addEventListener("change", (event) => {
+    applyNavSidePreference(event.target.value);
+    settleHashNavigation();
+  });
+}
+
 function applySimpleFiltersOpen(open) {
   state.simpleFiltersOpen = Boolean(open);
   document.body.classList.toggle("simple-filters-open", state.simpleFiltersOpen);
@@ -60340,7 +60383,8 @@ function cacheElements() {
     toolPalette: qs("#toolPalette"),
     toolPaletteSearch: qs("#toolPaletteSearch"),
     toolPaletteResults: qs("#toolPaletteResults"),
-    navLinks: qsa(".top-nav a[href^='#']"),
+    navSideSelect: qs("#navSideSelect"),
+    navLinks: qsa(".top-nav a[href^='#'], .desk-rail a[href^='#']"),
     searchInput: qs("#searchInput"),
     searchFeedback: qs("#searchFeedback"),
     categoryFilter: qs("#categoryFilter"),
@@ -61099,6 +61143,7 @@ function cacheElements() {
 
 function init() {
   cacheElements();
+  bindNavSidePreference();
   bindSimpleModeToggle();
   renderCategoryFilter();
   renderWatchFundSelect();

@@ -28,6 +28,12 @@
   --section-heading-gap: 16px;
   --section-heading-margin: 10px;
   --section-action-height: 32px;
+  --score-ring-size: 88px;
+  --score-ring-inset: 7px;
+  --score-ring-value: 25px;
+  --score-ring-label: 8px;
+  --score-hero-gap: 14px;
+  --score-hero-pad: 15px;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 
@@ -43604,6 +43610,12 @@ body.desk-rail-right .floating-dock {
   --section-heading-gap: 8px;
   --section-heading-margin: 6px;
   --section-action-height: 28px;
+  --score-ring-size: 76px;
+  --score-ring-inset: 6px;
+  --score-ring-value: 22px;
+  --score-ring-label: 7px;
+  --score-hero-gap: 10px;
+  --score-hero-pad: 12px;
 }
 
 body.desk-rail-mini {
@@ -44084,6 +44096,37 @@ textarea {
 }
 
 @media (min-width: 981px) {
+  .workspace-band :is(
+    [class$="-hero"],
+    [class$="-head"],
+    [class$="-board"],
+    [class$="-closeout"],
+    [class$="-recorder"],
+    [class$="-lab"],
+    [class$="-mri"]
+  ):has([class$="-score"]) {
+    gap: var(--score-hero-gap);
+    padding: var(--score-hero-pad);
+  }
+
+  .workspace-band [class$="-score"] {
+    width: var(--score-ring-size);
+    height: var(--score-ring-size);
+    min-width: var(--score-ring-size);
+  }
+
+  .workspace-band [class$="-score"]::before {
+    inset: var(--score-ring-inset);
+  }
+
+  .workspace-band [class$="-score"] :is(b, strong) {
+    font-size: var(--score-ring-value);
+  }
+
+  .workspace-band [class$="-score"] span {
+    font-size: var(--score-ring-label);
+  }
+
   .section-heading {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;

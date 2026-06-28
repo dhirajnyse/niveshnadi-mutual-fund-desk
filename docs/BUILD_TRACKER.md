@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V352 Score Ring Rhythm
+
+V352 makes repeated circular score dials quieter on desktop. Shared score-ring variables now control size, inset, value text, label text, and score-bearing hero spacing so Build, Launch, Profile, Evidence, Pack, and backend rooms keep authority without oversized visual weight.
+
 ## V351 Section Header Rhythm
 
 V351 turns repeated room headings into compact desktop section strips. Titles, eyebrow labels, status chips, and action buttons now align on a tighter grid with shorter controls and a subtle divider so long rooms scan from heading to content with less visual drag.

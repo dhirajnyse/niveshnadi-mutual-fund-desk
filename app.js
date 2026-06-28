@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v322-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v322 Evidence Intake Drawer";
+const DATA_VERSION = "20260628-v323-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v323 Evidence Acceptance Ledger";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1224,8 +1224,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Attach owner proof through the intake drawer until payment, legal, security, support, live-source, and release-captain slots can close."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Close the acceptance ledger rows for payment, legal, security, support, live-source, and founder decision proof before claiming production-ready 100%."
   },
   {
     phase: "Phase 2",
@@ -1241,8 +1241,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Evidence intake drawer",
+    label: "Evidence acceptance ledger",
     status: "Shipping now",
+    route: "#founder-beta-operating-room",
+    detail: "Record accepted, rejected, and blocked owner proof rows with rejection reasons, progress locks, and 100% release gates."
+  },
+  {
+    label: "Evidence intake drawer",
+    status: "Done",
     route: "#founder-beta-operating-room",
     detail: "Turn each real proof slot into a compact owner intake drawer with required artifact, safety checks, acceptance steps, and 100% closeout condition."
   },
@@ -9146,9 +9152,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Evidence intake drawer",
-      status: "Intake active",
+      status: "Done in v322",
       route: "#founder-beta-operating-room",
       detail: "Open the weakest real proof slot, name the external artifact, enforce safe-attachment checks, and record the receipt fields needed for 100%."
+    },
+    {
+      label: "Evidence acceptance ledger",
+      status: "Acceptance active",
+      route: "#founder-beta-operating-room",
+      detail: "Record proof verdicts, rejected artifacts, owner attestations, and production progress locks before any 100% claim."
     }
   ];
   const productionTarget = releaseVersion
@@ -9375,7 +9387,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v322 turns real proof slots into owner intake packets on the path to 100%.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v323 turns intake packets into accepted, rejected, and blocked proof rows on the path to 100%.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9504,7 +9516,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v322</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v323</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -15227,6 +15239,134 @@ function founderEvidenceIntakeDrawer(realProof = founderRealProofCloseoutBoard()
   };
 }
 
+function founderEvidenceAcceptanceLedger(realProof = founderRealProofCloseoutBoard(), intake = founderEvidenceIntakeDrawer(realProof)) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const ledgerId = ["NN", "EVIDENCE", "ACCEPTANCE", "LEDGER", suffix].join("-").toUpperCase();
+  const acceptanceBatchId = ["NN", "EVIDENCE", "ACCEPTANCE", "BATCH", suffix].join("-").toUpperCase();
+  const progressLockId = ["NN", "PRODUCTION", "PROGRESS", "LOCK", suffix].join("-").toUpperCase();
+  const noGoRegisterId = ["NN", "ACCEPTANCE", "NO", "GO", "REGISTER", suffix].join("-").toUpperCase();
+  const readinessReceiptId = ["NN", "PRODUCTION", "READY", "RECEIPT", suffix].join("-").toUpperCase();
+  const packetIdFor = (index) => ["NN", "OWNER", "PROOF", "PACKET", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase();
+  const safetyScanIdFor = (index) => ["NN", "EVIDENCE", "SAFETY", "SCAN", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase();
+  const rows = realProof.slots.map((slot, index) => {
+    const accepted = slot.closeoutState === "Owner closed";
+    const review = slot.closeoutState === "Evidence review";
+    const verdict = accepted ? "Accepted" : review ? "Review pending" : "Rejected until proof attached";
+    const rejectionReason = accepted
+      ? "No rejection; keep source receipt, owner attestation, and no-go memo archived."
+      : review
+        ? "Owner attestation, source date, and blocked-data scan still need reviewer acceptance."
+        : slot.missingBecause;
+    const progressEffect = accepted
+      ? "May raise progress"
+      : review
+        ? "Progress held"
+        : "Progress locked";
+    return {
+      acceptanceReceiptId: ["NN", "EVIDENCE", "ACCEPTANCE", "RECEIPT", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      acceptanceRowId: ["NN", "EVIDENCE", "ACCEPTANCE", "ROW", String(index + 1).padStart(2, "0"), slot.label.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase(),
+      ownerProofPacketId: slot.evidenceSlotId === intake.focusedSlot?.evidenceSlotId ? intake.ownerPacketId : packetIdFor(index),
+      progressEffect,
+      rejectionReason,
+      safetyScanId: slot.evidenceSlotId === intake.focusedSlot?.evidenceSlotId ? intake.safetyScanId : safetyScanIdFor(index),
+      tone: accepted ? "ready" : review ? "watch" : "blocked",
+      verdict,
+      ...slot
+    };
+  });
+  const accepted = rows.filter((row) => row.verdict === "Accepted").length;
+  const review = rows.filter((row) => row.verdict === "Review pending").length;
+  const rejected = rows.filter((row) => row.verdict === "Rejected until proof attached").length;
+  const activeRow = rows.find((row) => row.evidenceSlotId === intake.focusedSlot?.evidenceSlotId) ||
+    [...rows].sort((a, b) => a.evidenceScore - b.evidenceScore)[0];
+  const readiness = clampNumber(Math.round(
+    realProof.readiness * 0.64 +
+      (accepted / Math.max(rows.length, 1)) * 34 +
+      (review / Math.max(rows.length, 1)) * 12
+  ) - rejected * 2, 8, 99);
+  const status = accepted === rows.length
+    ? "Acceptance ledger ready for 100% review"
+    : rejected > 0
+      ? "Acceptance ledger blocking 100%"
+      : "Acceptance ledger under review";
+  const tone = status === "Acceptance ledger ready for 100% review" ? "ready" : status === "Acceptance ledger blocking 100%" ? "blocked" : "watch";
+  const gates = [
+    {
+      label: "All owner proof rows",
+      status: `${accepted}/${rows.length} accepted`,
+      detail: "Every row must be accepted with external proof before the production-ready claim can move.",
+      tone: accepted === rows.length ? "ready" : "blocked"
+    },
+    {
+      label: "Rejected artifacts",
+      status: `${rejected} rejected`,
+      detail: "Any rejected or missing artifact keeps the first paid cohort frozen.",
+      tone: rejected === 0 ? "ready" : "blocked"
+    },
+    {
+      label: "Safety scans",
+      status: `${rows.length - rejected}/${rows.length} can be scanned`,
+      detail: "No PAN, folio, CAS, bank, card, UPI, OTP, credentials, ARN/EUIN, distributor records, or private notes.",
+      tone: rejected === 0 ? "watch" : "blocked"
+    },
+    {
+      label: "Progress lock",
+      status: rejected || review ? "Locked" : "Ready for final review",
+      detail: progressLockId,
+      tone: rejected ? "blocked" : review ? "watch" : "ready"
+    }
+  ];
+  const noGoReasons = rows
+    .filter((row) => row.verdict !== "Accepted")
+    .map((row) => `${row.owner}: ${row.label} - ${row.rejectionReason}`);
+  const metrics = [
+    { label: "Ledger", value: ledgerId, detail: `${status}; ${readiness}/100 acceptance readiness.` },
+    { label: "Acceptance batch", value: acceptanceBatchId, detail: `${accepted} accepted, ${review} review pending, ${rejected} rejected rows.` },
+    { label: "Active verdict", value: activeRow?.verdict || "No row", detail: activeRow ? `${activeRow.owner}: ${activeRow.rejectionReason}` : "No active acceptance row." },
+    { label: "100% lock", value: progressLockId, detail: rejected || review ? "Production-ready 100% remains locked." : "Ready for final founder review." }
+  ];
+  const receiptFields = [...new Set([
+    "evidence_acceptance_ledger_id",
+    "evidence_acceptance_batch_id",
+    "evidence_acceptance_row_id",
+    "evidence_acceptance_receipt_id",
+    "owner_proof_packet_id",
+    "evidence_safety_scan_id",
+    "evidence_slot_id",
+    "acceptance_verdict",
+    "rejection_reason",
+    "progress_effect",
+    "production_progress_lock_id",
+    "acceptance_no_go_register_id",
+    "production_ready_receipt_id",
+    "accepted_by",
+    "accepted_at",
+    "reviewed_by",
+    "reviewed_at",
+    ...intake.receiptFields
+  ])];
+
+  return {
+    acceptanceBatchId,
+    activeRow,
+    accepted,
+    gates,
+    ledgerId,
+    metrics,
+    noGoReasons: noGoReasons.length ? noGoReasons : ["No no-go reason remains after every owner proof row is accepted."],
+    noGoRegisterId,
+    progressLockId,
+    readiness,
+    readinessReceiptId,
+    receiptFields,
+    rejected,
+    review,
+    rows,
+    status,
+    tone
+  };
+}
+
 function renderFounderBetaOperatingRoom() {
   if (!els.founderBetaOpsOutput) return;
   const ops = founderBetaOperatingRoomConfig();
@@ -15235,8 +15375,9 @@ function renderFounderBetaOperatingRoom() {
   const daybook = founderFirstCohortRehearsalDaybook(ops, warRoom, commandCenter);
   const realProof = founderRealProofCloseoutBoard(ops, warRoom, commandCenter, daybook);
   const intake = founderEvidenceIntakeDrawer(realProof);
+  const ledger = founderEvidenceAcceptanceLedger(realProof, intake);
   if (els.founderBetaOpsSummary) {
-    els.founderBetaOpsSummary.textContent = `${realProof.readiness}/100 | ${intake.status}`;
+    els.founderBetaOpsSummary.textContent = `${ledger.readiness}/100 | ${ledger.status}`;
   }
   els.founderBetaOpsOutput.innerHTML = `
     <div class="founder-beta-ops-hero ${ops.posture.startsWith("Open") ? "ready" : ops.posture.startsWith("Founder") ? "watch" : "blocked"}">
@@ -15519,6 +15660,82 @@ function renderFounderBetaOperatingRoom() {
         </article>
       </div>
     </div>
+    <div id="evidence-acceptance-ledger" class="evidence-acceptance-ledger ${escapeHtml(ledger.tone)}">
+      <div class="evidence-acceptance-ledger-head">
+        <div>
+          <span>V323 evidence acceptance ledger</span>
+          <h3>${escapeHtml(ledger.status)}</h3>
+          <p>Ledger ${escapeHtml(ledger.ledgerId)} records whether each owner proof packet is accepted, rejected, or still under review, then keeps the production-ready 100% lock visible until every row closes.</p>
+        </div>
+        <div class="evidence-acceptance-ledger-score" style="--score:${ledger.readiness}">
+          <strong>${ledger.readiness}</strong>
+          <span>Accept</span>
+        </div>
+      </div>
+      <div class="evidence-acceptance-ledger-metrics">
+        ${ledger.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="evidence-acceptance-active">
+        <article class="${escapeHtml(ledger.activeRow?.tone || ledger.tone)}">
+          <span>Active verdict</span>
+          <strong>${escapeHtml(ledger.activeRow?.label || "No active row")}</strong>
+          <p><b>Verdict:</b> ${escapeHtml(ledger.activeRow?.verdict || "No verdict")}</p>
+          <p><b>Reason:</b> ${escapeHtml(ledger.activeRow?.rejectionReason || "No rejection reason.")}</p>
+          <small>${escapeHtml(ledger.activeRow?.acceptanceReceiptId || ledger.acceptanceBatchId)} | ${escapeHtml(ledger.activeRow?.progressEffect || "Progress locked")}</small>
+        </article>
+        <article>
+          <span>100% gate</span>
+          <strong>${escapeHtml(ledger.progressLockId)}</strong>
+          <p>Production-ready 100% stays locked until accepted rows equal total rows, rejected rows are zero, and the no-go register is clear.</p>
+          <small>${escapeHtml(ledger.readinessReceiptId)}</small>
+        </article>
+      </div>
+      <div class="evidence-acceptance-rows">
+        ${ledger.rows.map((row) => `
+          <article class="${escapeHtml(row.tone)}">
+            <div class="evidence-acceptance-row-head">
+              <div>
+                <span>${escapeHtml(row.day)} | ${escapeHtml(row.owner)}</span>
+                <strong>${escapeHtml(row.label)}</strong>
+              </div>
+              <b>${row.evidenceScore}</b>
+            </div>
+            <div class="build-progress-bar launch"><span style="width:${row.evidenceScore}%"></span></div>
+            <p><b>Verdict:</b> ${escapeHtml(row.verdict)}</p>
+            <p><b>Reason:</b> ${escapeHtml(row.rejectionReason)}</p>
+            <small>${escapeHtml(row.acceptanceRowId)} | ${escapeHtml(row.progressEffect)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="evidence-acceptance-two">
+        <article>
+          <span>100% release gates</span>
+          <strong>${escapeHtml(ledger.noGoRegisterId)}</strong>
+          <ul>${ledger.gates.map((gate) => `<li><b>${escapeHtml(gate.label)}:</b> ${escapeHtml(gate.status)} - ${escapeHtml(gate.detail)}</li>`).join("")}</ul>
+        </article>
+        <article class="${ledger.rejected || ledger.review ? "blocked" : "ready"}">
+          <span>No-go reasons</span>
+          <strong>${ledger.noGoReasons.length} reason${ledger.noGoReasons.length === 1 ? "" : "s"}</strong>
+          <ul>${ledger.noGoReasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>Acceptance receipts</span>
+          <strong>${escapeHtml(ledger.acceptanceBatchId)}</strong>
+          <p>${ledger.accepted} accepted, ${ledger.review} review pending, ${ledger.rejected} rejected proof row${ledger.rows.length === 1 ? "" : "s"}.</p>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <strong>${ledger.receiptFields.length} fields</strong>
+          <ul>${ledger.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}</ul>
+        </article>
+      </div>
+    </div>
     <div class="founder-war-room ${escapeHtml(warRoom.tone)}">
       <div class="founder-war-room-head">
         <div>
@@ -15639,6 +15856,7 @@ function makeFounderBetaWarRoomDigestBrief() {
   const daybook = founderFirstCohortRehearsalDaybook(ops, warRoom, commandCenter);
   const realProof = founderRealProofCloseoutBoard(ops, warRoom, commandCenter, daybook);
   const intake = founderEvidenceIntakeDrawer(realProof);
+  const ledger = founderEvidenceAcceptanceLedger(realProof, intake);
   return [
     "# NiveshNadi Founder Beta War-Room Digest",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -15654,6 +15872,10 @@ function makeFounderBetaWarRoomDigestBrief() {
     `Evidence intake drawer ID: ${intake.drawerId}`,
     `Evidence intake status: ${intake.status}`,
     `Focused evidence slot: ${intake.focusedSlot?.evidenceSlotId || "No active slot"}`,
+    `Evidence acceptance ledger ID: ${ledger.ledgerId}`,
+    `Evidence acceptance status: ${ledger.status}`,
+    `Evidence acceptance readiness: ${ledger.readiness}/100`,
+    `Production progress lock: ${ledger.progressLockId}`,
     `Cohort decision ID: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `War-room ID: ${warRoom.warRoomId}`,
@@ -15691,6 +15913,12 @@ function makeFounderBetaWarRoomDigestBrief() {
     ...intake.acceptanceSteps.map((step) => `- Acceptance: ${step}`),
     ...intake.safetyRules.map((rule) => `- Safety: ${rule}`),
     "",
+    "## Evidence Acceptance Ledger",
+    ...ledger.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...ledger.rows.map((row) => `- ${row.acceptanceRowId}: ${row.label} | ${row.owner} | ${row.verdict} | ${row.progressEffect} | Reason: ${row.rejectionReason}`),
+    ...ledger.gates.map((gate) => `- 100% gate: ${gate.label} | ${gate.status} | ${gate.detail}`),
+    ...ledger.noGoReasons.map((reason) => `- No-go: ${reason}`),
+    "",
     "## Founder Decisions",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),
     "",
@@ -15720,6 +15948,7 @@ function makeFounderBetaOperatingBrief() {
   const daybook = founderFirstCohortRehearsalDaybook(ops, warRoom, commandCenter);
   const realProof = founderRealProofCloseoutBoard(ops, warRoom, commandCenter, daybook);
   const intake = founderEvidenceIntakeDrawer(realProof);
+  const ledger = founderEvidenceAcceptanceLedger(realProof, intake);
   return [
     "# NiveshNadi Founder Beta Operating Room",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -15735,6 +15964,10 @@ function makeFounderBetaOperatingBrief() {
     `Evidence intake drawer: ${intake.drawerId}`,
     `Evidence intake status: ${intake.status}`,
     `Focused evidence slot: ${intake.focusedSlot?.evidenceSlotId || "No active slot"}`,
+    `Evidence acceptance ledger: ${ledger.ledgerId}`,
+    `Evidence acceptance status: ${ledger.status}`,
+    `Evidence acceptance readiness: ${ledger.readiness}/100`,
+    `Production progress lock: ${ledger.progressLockId}`,
     `Cohort decision: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `Operating score: ${ops.operatingScore}/100`,
@@ -15775,6 +16008,13 @@ function makeFounderBetaOperatingBrief() {
     ...intake.acceptanceSteps.map((step) => `- Evidence acceptance: ${step}`),
     ...intake.safetyRules.map((rule) => `- Evidence safety: ${rule}`),
     ...intake.receiptFields.map((field) => `- Evidence intake receipt field: ${field}`),
+    "",
+    "## Evidence Acceptance Ledger",
+    ...ledger.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...ledger.rows.map((row) => `- ${row.acceptanceRowId}: ${row.label} | ${row.owner} | ${row.verdict} | ${row.progressEffect} | Receipt: ${row.acceptanceReceiptId}`),
+    ...ledger.gates.map((gate) => `- Evidence 100% gate: ${gate.label} | ${gate.status} | ${gate.detail}`),
+    ...ledger.noGoReasons.map((reason) => `- Evidence no-go: ${reason}`),
+    ...ledger.receiptFields.map((field) => `- Evidence acceptance receipt field: ${field}`),
     "",
     "## Founder War-Room Digest",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),

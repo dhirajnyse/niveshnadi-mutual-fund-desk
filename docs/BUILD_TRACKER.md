@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V323 Evidence Acceptance Ledger
+
+V323 adds the Evidence Acceptance Ledger inside the Founder Beta Operating Room. It reads the Evidence Intake Drawer and Real Proof Closeout Board, then records every owner proof row as accepted, review pending, or rejected until proof is attached. It shows rejection reasons, active verdict, progress lock, no-go register, 100% release gates, acceptance receipts, and receipt fields before production-ready 100% can be claimed.
+
 ## V322 Evidence Intake Drawer
 
 V322 adds the Evidence Intake Drawer inside the Founder Beta Operating Room. It reads the Real Proof Closeout Board, focuses the weakest evidence slot, shows the owner proof packet, required artifact, missing reason, projected progress, safe-attachment checks, acceptance steps, six-slot intake queue, and receipt fields that must close before production-ready 100% can be claimed.

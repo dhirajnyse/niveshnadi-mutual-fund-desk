@@ -14,4 +14,6 @@ V321 adds Real Proof Closeout Board. The room now gives every rehearsal day an e
 
 V322 adds Evidence Intake Drawer. The room now opens the weakest real proof slot into a compact owner intake packet with required artifact, missing reason, safety scan, acceptance steps, projected progress, six-slot intake queue, and receipt fields. This makes the next move toward 100% explicit while still blocking progress from screenshots, demo copy, oral confirmation, or unsafe personal data.
 
+V323 adds Evidence Acceptance Ledger. The room now records each intake packet as accepted, review pending, or rejected until proof is attached. It keeps rejection reasons, owner proof packet IDs, safety scan IDs, progress effects, no-go reasons, and the production progress lock visible so 100% cannot be claimed while any evidence row is unresolved.
+
 This room protects monetization discipline. Low retail pricing can work only if hidden support, refund, evidence, and account costs are visible before the product invites more users. It also preserves the Phase 1 boundary: no advice, no execution, no PAN, folio, CAS, bank, UPI, card, OTP, ARN, EUIN, distributor client book, or Phase 2 workflow belongs inside the founder beta operating rhythm.

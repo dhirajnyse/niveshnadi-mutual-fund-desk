@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V355 Action Strip Parity
+
+V355 gives section heading chips and action buttons the same compact rhythm as the command and form controls. Shared action variables now control toolbar gaps, button height, chip padding, wrap behavior, and phone two-column action strips.
+
 ## V354 Responsive Control Parity
 
 V354 carries the compact control rhythm into smaller widths. The top command strip, workspace jump, action buttons, and form panels now share responsive sizing variables so tablet and phone layouts stay predictable instead of stretching controls unevenly.

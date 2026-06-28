@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V331 Desk Rail Fit Polish
+
+V331 tightens the desktop side rail after screenshot review. Workspace bands now anchor closer to the rail instead of drifting into a second gutter, the rail is slimmer, rail rhythm is denser, internal scrollbar chrome is hidden, and mobile/tablet spacing still resets to the top-tab layout.
+
 ## V330 Desk Rail Navigation
 
 V330 adapts the Hyrvia HRMS shell idea into NiveshNadi. High-frequency workspace tabs now sit in a persistent desktop side rail, the top bar stays focused on Simple View, tab side, Find tool, and Workspace jump controls, the rail can be saved on the left or right side, and mobile/tablet layouts keep the existing top tabs.

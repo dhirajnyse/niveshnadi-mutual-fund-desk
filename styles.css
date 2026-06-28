@@ -606,6 +606,7 @@ a {
   width: var(--desk-rail-width);
   padding: 12px 10px;
   overflow-y: auto;
+  scrollbar-width: none;
   color: #dbe9f2;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   background:
@@ -620,6 +621,11 @@ body.desk-rail-right .desk-rail {
   border-right: 0;
   border-left: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: -14px 0 34px rgba(15, 34, 56, 0.12);
+}
+
+.desk-rail::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .desk-rail-inner {
@@ -42935,7 +42941,7 @@ body.desk-rail-right .floating-dock {
 :root {
   --anchor-offset: 92px;
   --shadow: 0 10px 24px rgba(15, 34, 56, 0.08);
-  --desk-rail-width: 188px;
+  --desk-rail-width: 172px;
 }
 
 body {
@@ -43042,7 +43048,7 @@ body.desk-rail-right .top-nav {
 
 .desk-rail {
   top: 60px;
-  padding: 10px 8px;
+  padding: 9px 7px;
 }
 
 body.simple-mode .desk-rail {
@@ -43050,12 +43056,26 @@ body.simple-mode .desk-rail {
 }
 
 .desk-rail-inner {
-  gap: 10px;
+  gap: 8px;
+}
+
+.desk-rail-label {
+  padding: 3px 7px 1px;
 }
 
 .desk-rail a {
-  min-height: 32px;
-  padding: 6px 7px;
+  grid-template-columns: 25px minmax(0, 1fr);
+  min-height: 30px;
+  padding: 5px 7px;
+}
+
+.desk-rail a span {
+  min-width: 23px;
+  min-height: 19px;
+}
+
+.desk-rail a strong {
+  font-size: 11px;
 }
 
 main {
@@ -43065,6 +43085,16 @@ main {
 .workspace-band {
   width: min(1440px, calc(100% - 28px));
   margin-top: 10px;
+}
+
+body.desk-rail-left .workspace-band {
+  margin-right: auto;
+  margin-left: 14px;
+}
+
+body.desk-rail-right .workspace-band {
+  margin-right: 14px;
+  margin-left: auto;
 }
 
 .command-band {
@@ -43548,6 +43578,12 @@ body.simple-mode .serenity-path .simplicity-path-actions {
 
   .workspace-band {
     width: min(100% - 20px, 1380px);
+  }
+
+  body.desk-rail-left .workspace-band,
+  body.desk-rail-right .workspace-band {
+    margin-right: auto;
+    margin-left: auto;
   }
 
   .command-panel,

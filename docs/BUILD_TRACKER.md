@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V363 Next Tiny Step
+
+V363 adds one tiny next action to the Simple view active-room guide. After the done/hold proof pair, each guided room now gives a small next-minute move so the user can continue calmly without scanning the full workspace.
+
 ## V362 Hold If Guardrail
 
 V362 pairs the Simple view acceptance cue with one soft stop condition. Each guided room now says both when it is safe to continue and when to hold, keeping the one-move path evidence-first and unhurried.

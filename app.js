@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260629-v362-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v362 Hold If Guardrail";
+const DATA_VERSION = "20260629-v363-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v363 Next Tiny Step";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -29,6 +29,7 @@ const SIMPLE_ROOM_CUES = {
     action: "Fill goal, horizon, SIP comfort, emergency buffer, and drawdown comfort.",
     doneWhen: "Goal, horizon, SIP comfort, emergency buffer, and drawdown comfort are visible.",
     holdIf: "Emergency buffer or drawdown comfort is still unclear.",
+    nextTinyStep: "Enter horizon and SIP comfort first.",
     next: "Next: Find funds",
     route: "#screener"
   },
@@ -38,6 +39,7 @@ const SIMPLE_ROOM_CUES = {
     action: "Search one category, inspect the anchor fund, and keep one fair peer.",
     doneWhen: "One fund, one fair peer, and one shortlist reason are named.",
     holdIf: "No fair peer or shortlist reason is visible.",
+    nextTinyStep: "Search one category and inspect one anchor fund.",
     next: "Next: Verify evidence",
     route: "#evidence"
   },
@@ -47,6 +49,7 @@ const SIMPLE_ROOM_CUES = {
     action: "Check source status, citation path, TER, holdings, benchmark, and riskometer.",
     doneWhen: "Source status, date, TER, holdings, benchmark, and riskometer are visible.",
     holdIf: "Source date, citation path, TER, holdings, benchmark, or riskometer is missing.",
+    nextTinyStep: "Open Evidence and confirm the source date.",
     next: "Next: Write memo",
     route: "#decision-pack"
   },
@@ -56,6 +59,7 @@ const SIMPLE_ROOM_CUES = {
     action: "Record reason, amount, review date, conviction, and pause condition.",
     doneWhen: "Reason, amount, review date, conviction, and pause condition are written.",
     holdIf: "The reason is borrowed, rushed, or missing a review date.",
+    nextTinyStep: "Write one plain-English reason before action.",
     next: "Next: Save review",
     route: "#review-vault"
   },
@@ -65,6 +69,7 @@ const SIMPLE_ROOM_CUES = {
     action: "Save the review snapshot or record, then set the next trigger.",
     doneWhen: "Review memory and the next check trigger are saved.",
     holdIf: "No review trigger or saved memory is visible.",
+    nextTinyStep: "Save the review memory and set one trigger.",
     next: "Next: Return to Profile or Find",
     route: "#profile-room"
   }
@@ -4193,6 +4198,9 @@ function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.a
   const holdIf = progress.isComplete
     ? "A review trigger or saved memory is unclear."
     : cue.holdIf || "Required proof is unclear.";
+  const nextTinyStep = progress.isComplete
+    ? "Keep the saved review memory visible before widening."
+    : cue.nextTinyStep || cue.action;
   const secondaryActionsHtml = [
     !progress.isComplete && progress.resumeStep ? `
       <button class="signal-chip simplicity-resume" type="button" data-signal-route="${escapeHtml(progress.resumeStep.value)}" aria-label="Resume last room: ${escapeHtml(progress.resumeStep.label)}">
@@ -4242,6 +4250,10 @@ function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.a
         <strong>${escapeHtml(holdIf)}</strong>
       </p>
     </div>
+    <p class="simple-next-tiny-step">
+      <span>Next tiny step</span>
+      <strong>${escapeHtml(nextTinyStep)}</strong>
+    </p>
     <div class="room-progress-meter${progress.isComplete ? " is-complete" : ""}">
       <span>${escapeHtml(progress.activePosition)}</span>
       <strong>${escapeHtml(progress.label)}</strong>
@@ -9573,9 +9585,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Hold if guardrail",
-      status: "Active in v362",
+      status: "Done in v362",
       route: "#main",
       detail: "Pair every Simple room acceptance cue with one soft stop condition that prevents rushing."
+    },
+    {
+      label: "Next tiny step",
+      status: "Active in v363",
+      route: "#main",
+      detail: "Add one small next action under the proof guardrails so each room ends with a calm move."
     }
   ];
   const productionTarget = releaseVersion
@@ -9589,7 +9607,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, and hold-if audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, and next-tiny-step audit are complete.`
   };
   const launchGates = [
     {
@@ -9931,7 +9949,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v362</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v363</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

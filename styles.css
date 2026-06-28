@@ -3173,6 +3173,43 @@ main {
   line-height: 1.25;
 }
 
+.simple-next-tiny-step {
+  grid-column: 2 / span 2;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 5px 9px;
+  border: 1px solid rgba(31, 78, 121, 0.12);
+  border-radius: var(--radius);
+  background: rgba(239, 247, 255, 0.6);
+}
+
+.simple-next-tiny-step span {
+  display: inline-grid;
+  place-items: center;
+  min-height: 18px;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: rgba(225, 239, 252, 0.9);
+  color: var(--blue);
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.simple-next-tiny-step strong {
+  min-width: 0;
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1.25;
+}
+
 .room-focus-note .room-progress-meter {
   grid-column: 3;
 }
@@ -42861,6 +42898,7 @@ body.desk-rail-right .floating-dock {
   .room-focus-note .simple-command-band,
   .room-focus-note .simple-proof-cue-grid,
   .room-focus-note .simple-done-when,
+  .room-focus-note .simple-next-tiny-step,
   .room-focus-note .room-progress-meter,
   .room-focus-note .calm-focus-breath-row,
   .room-focus-note .simple-progress-rail,

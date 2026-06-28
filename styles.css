@@ -40389,7 +40389,7 @@ body.simple-mode .quiet-fund-shelf {
 .floating-dock {
   position: fixed;
   right: 18px;
-  bottom: 18px;
+  bottom: max(18px, calc(env(safe-area-inset-bottom, 0px) + 18px));
   z-index: 91;
   display: grid;
   gap: 10px;
@@ -42632,7 +42632,7 @@ body.simple-mode .quiet-fund-shelf {
 
   .floating-dock {
     right: 12px;
-    bottom: 12px;
+    bottom: max(12px, calc(env(safe-area-inset-bottom, 0px) + 12px));
     gap: 8px;
   }
 
@@ -42882,7 +42882,7 @@ body {
 }
 
 main {
-  padding-bottom: 30px;
+  padding-bottom: max(86px, calc(env(safe-area-inset-bottom, 0px) + 54px));
 }
 
 .workspace-band {
@@ -42897,6 +42897,10 @@ main {
 .workspace-grid {
   grid-template-columns: minmax(0, 1.72fr) minmax(250px, 0.55fr);
   gap: 10px;
+}
+
+.calm-focus-shell {
+  overflow: visible;
 }
 
 .command-panel {
@@ -43016,11 +43020,11 @@ main {
 
 .serenity-start-surface {
   max-width: none;
-  max-height: 620px;
+  max-height: none;
   margin-bottom: 8px;
   padding: 10px;
-  overflow: auto;
-  scrollbar-gutter: stable;
+  overflow: visible;
+  scrollbar-gutter: auto;
 }
 
 .serenity-start-surface > div {
@@ -43193,7 +43197,7 @@ body.simple-mode .next-operating-move {
 body.simple-mode .serenity-start-surface {
   grid-column: 1;
   grid-row: 4 / span 5;
-  max-height: 420px;
+  max-height: none;
 }
 
 body.simple-mode .serenity-start-surface > div {
@@ -43358,9 +43362,9 @@ body.simple-mode .serenity-path .simplicity-path-actions {
   }
 
   body.simple-mode .serenity-start-surface {
-    max-height: 340px;
-    overflow: auto;
-    scrollbar-gutter: stable;
+    max-height: none;
+    overflow: visible;
+    scrollbar-gutter: auto;
   }
 
   .serenity-start-surface > div,

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v328-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v328 Founder Launch Claim Gate";
+const DATA_VERSION = "20260628-v329-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v329 Workspace Fit Polish";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1224,8 +1224,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Use the launch claim gate to decide whether the production-ready 100% claim is locked, held, or ready for final release audit."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Use the workspace fit polish to keep the Build tab, progress link, and first research room compact without trapping the page in nested scroll."
   },
   {
     phase: "Phase 2",
@@ -1241,8 +1241,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Founder launch claim gate",
+    label: "Workspace fit polish",
     status: "Shipping now",
+    route: "#main",
+    detail: "Remove the first-screen inner scroll trap, protect bottom content from fixed controls, and keep the Build progress path easy to scan."
+  },
+  {
+    label: "Founder launch claim gate",
+    status: "Done",
     route: "#founder-beta-operating-room",
     detail: "Turn the receipt vault into a locked, held, or release-audit-ready production 100% claim gate before any public claim or tracker move."
   },
@@ -9218,9 +9224,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Founder launch claim gate",
-      status: "Claim gate active",
+      status: "Done in v328",
       route: "#founder-beta-operating-room",
       detail: "Decide whether the production-ready 100% claim is locked, held, or ready for final release audit from the archived receipt trail."
+    },
+    {
+      label: "Workspace fit polish",
+      status: "Active in v329",
+      route: "#main",
+      detail: "Remove first-screen nested scroll, keep compact cards readable, and add safe bottom room for fixed search and top controls."
     }
   ];
   const productionTarget = releaseVersion
@@ -9234,7 +9246,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, and launch claim gate are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, and workspace-fit audit are complete.`
   };
   const launchGates = [
     {
@@ -9447,7 +9459,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v328 turns the receipt vault into a locked, held, or release-audit-ready 100% claim gate.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v329 removes the first-screen inner scroll trap and keeps the Build tab's overall-progress path easier to scan.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9576,7 +9588,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v328</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v329</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V329 Workspace Fit Polish
+
+V329 removes the first-screen inner scroll trap, lets the calm research surface use the page scroll, adds bottom safe-area room for fixed search and back-to-top controls, and updates the Build Tracker so the overall-progress link now reports the workspace-fit audit as the current shipped lane.
+
 ## V328 Founder Launch Claim Gate
 
 V328 adds the Founder Launch Claim Gate inside the Founder Beta Operating Room. It reads the Founder Launch Receipt Vault, then decides whether the production-ready 100% claim is locked, held, or ready for final release audit using vault rows, claim lock, public wording, tracker move, public seal, backend handoff, no-claim reasons, release rules, and receipt fields.

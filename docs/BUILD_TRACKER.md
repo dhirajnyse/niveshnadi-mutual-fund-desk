@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V325 Production Unlock Review Board
+
+V325 adds the Production Unlock Review Board inside the Founder Beta Operating Room. It reads the Evidence Recovery Queue, then joins recovery tickets, accepted evidence, no-go reasons, support/refund readiness, payment/legal proof, live-source rollback proof, gate verdicts, founder decision memo, audit packet, blocker reasons, and receipt fields before production-ready 100% can open.
+
 ## V324 Evidence Recovery Queue
 
 V324 adds the Evidence Recovery Queue inside the Founder Beta Operating Room. It reads the Evidence Acceptance Ledger, then converts rejected and review-pending owner proof rows into recovery tickets with owner, priority, fix action, acceptance rule, source safety scan, blocker reason, founder escalation, recovery receipts, and production unlock plan before the desk can claim production-ready 100%.

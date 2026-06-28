@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v357-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v357 Calm Focus Mode";
+const DATA_VERSION = "20260628-v358-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v358 Action Priority Layer";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1199,7 +1199,7 @@ const BUILD_TRACKER_PHASES = [
     launch: 78,
     status: "Done",
     route: "#screener",
-    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "calm focus mode", "calm header", "first-screen focus", "guided selector", "live route rail", "one-question gate", "calm decision gate", "one breath brief", "three minute calm route", "calm decision mantra", "serenity start surface", "one calm start", "quiet opening copy", "calm promise line", "human trust promise", "serenity action path", "calm commitment cue", "shortlist boundary line", "quiet conviction meter", "learning loop ledger"],
+    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "action priority layer", "calm focus mode", "calm header", "first-screen focus", "guided selector", "live route rail", "one-question gate", "calm decision gate", "one breath brief", "three minute calm route", "calm decision mantra", "serenity start surface", "one calm start", "quiet opening copy", "calm promise line", "human trust promise", "serenity action path", "calm commitment cue", "shortlist boundary line", "quiet conviction meter", "learning loop ledger"],
     next: "Keep the default retail journey calm, obvious, short, and free of secondary context until the investor asks for depth."
   },
   {
@@ -1256,8 +1256,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Calm focus mode",
+    label: "Action priority layer",
     status: "Shipping now",
+    route: "#main",
+    detail: "Give Simple view one obvious first action while keeping copy, save, and utility actions quieter."
+  },
+  {
+    label: "Calm focus mode",
+    status: "Done",
     route: "#main",
     detail: "Make Simple view feel quieter with one active room, one proof cue, and one next move."
   },
@@ -1290,12 +1296,6 @@ const BUILD_TRACKER_CURRENT_SPRINT = [
     status: "Done",
     route: "#build-tracker",
     detail: "Keep circular score dials stable, smaller, and less visually heavy across hero panels."
-  },
-  {
-    label: "Section header rhythm",
-    status: "Done",
-    route: "#build-tracker",
-    detail: "Align room titles, status chips, and action buttons into compact scanning strips."
   },
   {
     label: "Layout preset command",
@@ -9507,9 +9507,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Calm focus mode",
-      status: "Active in v357",
+      status: "Done in v357",
       route: "#main",
       detail: "Turn Simple view into a quieter working state with one active room, one proof cue, one next move, and calmer active-room framing."
+    },
+    {
+      label: "Action priority layer",
+      status: "Active in v358",
+      route: "#main",
+      detail: "Give Simple view one clear first action while copy, save, and utility actions stay quieter across room toolbars."
     }
   ];
   const productionTarget = releaseVersion
@@ -9523,7 +9529,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, and calm-focus audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, and action-priority audit are complete.`
   };
   const launchGates = [
     {
@@ -9865,7 +9871,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v357</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v358</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -37041,6 +37047,7 @@ function applySimpleMode(enabled, persist = true) {
   state.simpleMode = enabled;
   if (enabled) state.simpleFundShelfExpanded = false;
   document.body.classList.toggle("simple-mode", enabled);
+  document.body.classList.toggle("action-priority-mode", enabled);
   document.body.classList.toggle("full-mode", !enabled);
   applySimpleFiltersOpen(false);
   syncWorkspaceFocusClass();

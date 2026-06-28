@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V358 Action Priority Layer
+
+V358 makes Simple view actions calmer and more decisive. The first room action, header next action, focus cue action, and first operating move now share a soft primary treatment while copy, save, and utility actions recede into quieter secondary controls.
+
 ## V357 Calm Focus Mode
 
 V357 turns Simple view into a calmer active-room working state. The focused room now carries a quiet surface, a Calm Focus Mode cue, a one-room one-proof one-next-move rhythm, and a 100% path audit marker so simplification stays part of production readiness.

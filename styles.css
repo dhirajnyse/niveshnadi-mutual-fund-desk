@@ -43,6 +43,12 @@
   --action-button-pad-x: 13px;
   --action-chip-pad-y: 7px;
   --action-chip-pad-x: 10px;
+  --action-primary-bg: linear-gradient(135deg, rgba(229, 247, 241, 0.98), rgba(234, 242, 251, 0.96));
+  --action-primary-line: rgba(15, 124, 107, 0.34);
+  --action-primary-shadow: 0 10px 24px rgba(15, 34, 56, 0.08);
+  --action-secondary-bg: rgba(234, 242, 251, 0.64);
+  --action-secondary-line: rgba(31, 78, 121, 0.12);
+  --action-secondary-ink: #365470;
   --score-ring-size: 88px;
   --score-ring-inset: 7px;
   --score-ring-value: 25px;
@@ -3753,6 +3759,47 @@ main {
   border-color: rgba(15, 124, 107, 0.36);
   background: var(--mint-soft);
   color: var(--mint);
+}
+
+body.simple-mode.action-priority-mode .header-next-action:not([hidden]),
+body.simple-mode.action-priority-mode .toolbar .text-button:first-of-type,
+body.simple-mode.action-priority-mode .toolbar .primary-button:first-of-type,
+body.simple-mode.action-priority-mode .room-cue-actions .signal-chip:first-child,
+body.simple-mode.action-priority-mode .serenity-path .primary-next-action,
+body.simple-mode.action-priority-mode .simplicity-path .primary-next-action,
+body.simple-mode.action-priority-mode .next-operating-grid button:first-child,
+body.simple-mode.action-priority-mode .serenity-start-surface button:first-child {
+  border-color: var(--action-primary-line);
+  background: var(--action-primary-bg);
+  color: var(--ink);
+  box-shadow: var(--action-primary-shadow);
+}
+
+body.simple-mode.action-priority-mode :is(.serenity-path, .simplicity-path) .primary-next-action span,
+body.simple-mode.action-priority-mode :is(.serenity-path, .simplicity-path) .primary-next-action strong,
+body.simple-mode.action-priority-mode :is(.serenity-path, .simplicity-path) .primary-next-action em {
+  color: var(--ink);
+}
+
+body.simple-mode.action-priority-mode .toolbar .text-button:not(:first-of-type),
+body.simple-mode.action-priority-mode .room-cue-actions .signal-chip:not(:first-child),
+body.simple-mode.action-priority-mode .next-operating-grid button:not(:first-child),
+body.simple-mode.action-priority-mode .serenity-start-surface button:not(:first-child) {
+  border-color: var(--action-secondary-line);
+  background: var(--action-secondary-bg);
+  color: var(--action-secondary-ink);
+  box-shadow: none;
+}
+
+body.simple-mode.action-priority-mode .toolbar .text-button:first-of-type:hover,
+body.simple-mode.action-priority-mode .toolbar .text-button:first-of-type:focus-visible,
+body.simple-mode.action-priority-mode .room-cue-actions .signal-chip:first-child:hover,
+body.simple-mode.action-priority-mode .room-cue-actions .signal-chip:first-child:focus-visible,
+body.simple-mode.action-priority-mode .next-operating-grid button:first-child:hover,
+body.simple-mode.action-priority-mode .next-operating-grid button:first-child:focus-visible {
+  border-color: rgba(15, 124, 107, 0.5);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 1), rgba(255, 243, 220, 0.72));
+  color: var(--ink);
 }
 
 body.simple-mode {

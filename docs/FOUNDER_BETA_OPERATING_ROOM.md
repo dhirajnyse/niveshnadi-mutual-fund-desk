@@ -22,4 +22,6 @@ V325 adds Production Unlock Review Board. The room now joins recovery tickets, a
 
 V326 adds Founder Signoff Memo. The room now converts the production unlock review into a founder open, hold, or freeze memo with signoff lines, memo clauses, blocker reasons, evidence binder, decision receipt, freeze receipt, and backend receipt fields. It keeps production-ready 100% closed until the founder signoff receipt is attached.
 
+V327 adds Founder Launch Receipt Vault. The room now stores the founder decision receipt, signoff lines, evidence binder, claim lock, audit trail, archive rules, backend handoff packet, blocker reasons, and receipt fields as one launch receipt trail. The vault keeps production-ready 100% locked or held until the recorded receipt trail proves the decision can move.
+
 This room protects monetization discipline. Low retail pricing can work only if hidden support, refund, evidence, and account costs are visible before the product invites more users. It also preserves the Phase 1 boundary: no advice, no execution, no PAN, folio, CAS, bank, UPI, card, OTP, ARN, EUIN, distributor client book, or Phase 2 workflow belongs inside the founder beta operating rhythm.

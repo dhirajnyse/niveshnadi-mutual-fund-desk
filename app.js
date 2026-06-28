@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v326-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v326 Founder Signoff Memo";
+const DATA_VERSION = "20260628-v327-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v327 Founder Launch Receipt Vault";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1224,8 +1224,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Use the founder signoff memo to record open, hold, or freeze before production-ready 100% can be claimed."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Use the launch receipt vault to store the founder decision trail before any production-ready 100% claim can move."
   },
   {
     phase: "Phase 2",
@@ -1241,8 +1241,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Founder signoff memo",
+    label: "Founder launch receipt vault",
     status: "Shipping now",
+    route: "#founder-beta-operating-room",
+    detail: "Archive the founder open, hold, or freeze decision with receipt rows, evidence binder, claim lock, and handoff packet before any 100% claim moves."
+  },
+  {
+    label: "Founder signoff memo",
+    status: "Done",
     route: "#founder-beta-operating-room",
     detail: "Turn the unlock review board into a founder open, hold, or freeze memo with signoff lines, blocker reasons, decision receipt, and the final 100% release condition."
   },
@@ -9194,9 +9200,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Founder signoff memo",
-      status: "Signoff active",
+      status: "Done in v326",
       route: "#founder-beta-operating-room",
       detail: "Record the founder open, hold, or freeze memo with signoff lines, blocker reasons, decision receipt, and the final release condition."
+    },
+    {
+      label: "Founder launch receipt vault",
+      status: "Receipt vault active",
+      route: "#founder-beta-operating-room",
+      detail: "Archive decision receipts, signoff lines, evidence binder, claim lock, and backend handoff packet before moving the 100% claim."
     }
   ];
   const productionTarget = releaseVersion
@@ -9210,7 +9222,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates and the founder signoff receipt are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, and launch receipt vault are complete.`
   };
   const launchGates = [
     {
@@ -9423,7 +9435,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v326 turns the unlock review into a founder open, hold, or freeze memo on the path to 100%.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v327 archives the founder decision trail and claim lock on the path to 100%.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9552,7 +9564,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v326</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v327</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -15779,6 +15791,147 @@ function founderProductionSignoffMemo(unlock = founderProductionUnlockReviewBoar
   };
 }
 
+function founderLaunchReceiptVault(signoff = founderProductionSignoffMemo()) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const vaultId = ["NN", "FOUNDER", "LAUNCH", "RECEIPT", "VAULT", suffix].join("-").toUpperCase();
+  const ledgerId = ["NN", "FOUNDER", "LAUNCH", "RECEIPT", "LEDGER", suffix].join("-").toUpperCase();
+  const auditTrailId = ["NN", "FOUNDER", "LAUNCH", "AUDIT", "TRAIL", suffix].join("-").toUpperCase();
+  const claimLockId = ["NN", "FOUNDER", "LAUNCH", "CLAIM", "LOCK", suffix].join("-").toUpperCase();
+  const handoffPacketId = ["NN", "FOUNDER", "LAUNCH", "HANDOFF", "PACKET", suffix].join("-").toUpperCase();
+  const archiveBatchId = ["NN", "FOUNDER", "LAUNCH", "ARCHIVE", "BATCH", suffix].join("-").toUpperCase();
+  const blocked = signoff.blocked;
+  const review = !blocked && signoff.review;
+  const status = blocked
+    ? "Launch receipt vault locks 100%"
+    : review
+      ? "Launch receipt vault holds 100%"
+      : "Launch receipt vault can release 100% review";
+  const tone = blocked ? "blocked" : review ? "watch" : "ready";
+  const readiness = clampNumber(Math.round(signoff.readiness - (blocked ? 2 : review ? 1 : 0)), 8, 99);
+  const claimLock = blocked
+    ? "100% claim locked by founder freeze receipt"
+    : review
+      ? "100% claim held until review receipts close"
+      : "100% claim ready for final receipt audit";
+  const releaseCondition = blocked
+    ? "Close blocker reasons, rerun signoff, then archive a new founder decision receipt."
+    : review
+      ? "Attach owner proof for every review line before moving the launch claim."
+      : "Attach signed timestamp, cohort cap, rollback owner, and vault audit trail before changing the production-ready claim.";
+  const rowTone = (state) => /locked|missing|freeze/i.test(state)
+    ? "blocked"
+    : /hold|review|pending/i.test(state)
+      ? "watch"
+      : "ready";
+  const rowInputs = [
+    {
+      label: "Founder decision receipt",
+      owner: "Founder",
+      state: blocked ? "Freeze receipt locked" : review ? "Hold receipt pending proof" : "Open receipt ready",
+      detail: signoff.decisionCopy,
+      source: signoff.decisionReceiptId
+    },
+    {
+      label: "Evidence binder",
+      owner: "Reviewer",
+      state: blocked ? "Blocked evidence carried" : review ? "Binder in review" : "Binder ready",
+      detail: `Evidence binder ${signoff.evidenceBinderId} carries signoff lines and blocker reasons into the launch archive.`,
+      source: signoff.evidenceBinderId
+    },
+    {
+      label: "Signoff lines",
+      owner: "Launch captain",
+      state: signoff.signoffLines.some((line) => line.tone === "blocked")
+        ? "Line blockers locked"
+        : signoff.signoffLines.some((line) => line.tone === "watch")
+          ? "Line review pending"
+          : "Lines ready",
+      detail: `${signoff.signoffLines.length} owner signoff line${signoff.signoffLines.length === 1 ? "" : "s"} archived with status, owner, and source receipt.`,
+      source: signoff.signoffPacketId
+    },
+    {
+      label: "100% claim lock",
+      owner: "Founder",
+      state: blocked ? "Claim locked" : review ? "Claim held" : "Claim audit ready",
+      detail: claimLock,
+      source: claimLockId
+    },
+    {
+      label: "Backend handoff packet",
+      owner: "Backend owner",
+      state: blocked ? "Handoff blocked" : review ? "Handoff in review" : "Handoff ready",
+      detail: "Backend handoff receives the decision posture, signed timestamp, cohort cap, rollback owner, and blocked-data boundary.",
+      source: handoffPacketId
+    }
+  ];
+  const rows = rowInputs.map((row, index) => ({
+    ...row,
+    rowId: ["NN", "FOUNDER", "LAUNCH", "RECEIPT", "ROW", String(index + 1).padStart(2, "0"), row.label.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase(),
+    tone: rowTone(row.state)
+  }));
+  const archiveRules = [
+    "Store the founder decision receipt before any public or Build tracker 100% claim changes.",
+    "Carry blocker reasons forward exactly; do not rewrite a freeze as a hold or open.",
+    "Attach signed_at, signed_by, cohort cap, rollback owner, and support owner before release audit.",
+    "If any signoff line is blocked or in review, the vault keeps the 100% claim locked or held.",
+    "Backend handoff can only consume receipt fields, not PAN, folio, CAS, bank, UPI, card, OTP, ARN, EUIN, or distributor client data."
+  ];
+  const handoffChecks = [
+    `Decision posture: ${signoff.decisionPosture}.`,
+    `Claim lock: ${claimLock}.`,
+    `Release condition: ${releaseCondition}`,
+    `Archive batch: ${archiveBatchId}.`,
+    `Audit trail: ${auditTrailId}.`
+  ];
+  const blockerReasons = signoff.blockerReasons;
+  const metrics = [
+    { label: "Receipt vault", value: vaultId, detail: `${status}; ${readiness}/100 vault readiness.` },
+    { label: "Decision ledger", value: ledgerId, detail: `${rows.filter((row) => row.tone === "ready").length} ready, ${rows.filter((row) => row.tone === "watch").length} review, ${rows.filter((row) => row.tone === "blocked").length} blocked row${rows.length === 1 ? "" : "s"}.` },
+    { label: "Claim lock", value: claimLockId, detail: claimLock },
+    { label: "Handoff packet", value: handoffPacketId, detail: "Backend receives only receipt fields and launch boundary metadata." }
+  ];
+  const receiptFields = [...new Set([
+    "founder_launch_receipt_vault_id",
+    "founder_launch_receipt_ledger_id",
+    "founder_launch_receipt_row_id",
+    "founder_launch_receipt_row_state",
+    "founder_launch_receipt_claim_lock_id",
+    "founder_launch_receipt_claim_lock_state",
+    "founder_launch_receipt_audit_trail_id",
+    "founder_launch_receipt_archive_batch_id",
+    "founder_launch_receipt_handoff_packet_id",
+    "founder_launch_release_condition",
+    "founder_launch_receipt_blocker_reason",
+    "founder_launch_receipt_signed_by",
+    "founder_launch_receipt_signed_at",
+    "founder_launch_receipt_support_owner",
+    "founder_launch_receipt_rollback_owner",
+    ...signoff.receiptFields
+  ])];
+
+  return {
+    archiveBatchId,
+    archiveRules,
+    auditTrailId,
+    blocked,
+    blockerReasons,
+    claimLock,
+    claimLockId,
+    handoffChecks,
+    handoffPacketId,
+    ledgerId,
+    metrics,
+    readiness,
+    receiptFields,
+    releaseCondition,
+    review,
+    rows,
+    status,
+    tone,
+    vaultId
+  };
+}
+
 function renderFounderBetaOperatingRoom() {
   if (!els.founderBetaOpsOutput) return;
   const ops = founderBetaOperatingRoomConfig();
@@ -15791,8 +15944,9 @@ function renderFounderBetaOperatingRoom() {
   const recovery = founderEvidenceRecoveryQueue(ledger);
   const unlock = founderProductionUnlockReviewBoard(recovery);
   const signoff = founderProductionSignoffMemo(unlock);
+  const vault = founderLaunchReceiptVault(signoff);
   if (els.founderBetaOpsSummary) {
-    els.founderBetaOpsSummary.textContent = `${signoff.readiness}/100 | ${signoff.status}`;
+    els.founderBetaOpsSummary.textContent = `${vault.readiness}/100 | ${vault.status}`;
   }
   els.founderBetaOpsOutput.innerHTML = `
     <div class="founder-beta-ops-hero ${ops.posture.startsWith("Open") ? "ready" : ops.posture.startsWith("Founder") ? "watch" : "blocked"}">
@@ -16369,6 +16523,73 @@ function renderFounderBetaOperatingRoom() {
         </article>
       </div>
     </div>
+    <div id="founder-launch-receipt-vault" class="founder-launch-receipt-vault ${escapeHtml(vault.tone)}">
+      <div class="founder-launch-vault-head">
+        <div>
+          <span>V327 founder launch receipt vault</span>
+          <h3>${escapeHtml(vault.status)}</h3>
+          <p>Vault ${escapeHtml(vault.vaultId)} archives the founder decision receipt, evidence binder, signoff lines, claim lock, and backend handoff packet before any production-ready 100% claim can move.</p>
+        </div>
+        <div class="founder-launch-vault-score" style="--score:${vault.readiness}">
+          <strong>${vault.readiness}</strong>
+          <span>Vault</span>
+        </div>
+      </div>
+      <div class="founder-launch-vault-metrics">
+        ${vault.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-launch-vault-decision">
+        <article class="${escapeHtml(vault.tone)}">
+          <span>Claim lock</span>
+          <strong>${escapeHtml(vault.claimLock)}</strong>
+          <p>${escapeHtml(vault.releaseCondition)}</p>
+          <small>${escapeHtml(vault.claimLockId)} | ${escapeHtml(vault.auditTrailId)}</small>
+        </article>
+        <article>
+          <span>Archive rules</span>
+          <strong>${escapeHtml(vault.archiveBatchId)}</strong>
+          <ol>${vault.archiveRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}</ol>
+        </article>
+      </div>
+      <div class="founder-launch-vault-rows">
+        ${vault.rows.map((row) => `
+          <article class="${escapeHtml(row.tone)}">
+            <span>${escapeHtml(row.owner)}</span>
+            <strong>${escapeHtml(row.label)}</strong>
+            <p><b>${escapeHtml(row.state)}:</b> ${escapeHtml(row.detail)}</p>
+            <small>${escapeHtml(row.rowId)} | ${escapeHtml(row.source)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-launch-vault-two">
+        <article>
+          <span>Backend handoff checks</span>
+          <strong>${escapeHtml(vault.handoffPacketId)}</strong>
+          <ul>${vault.handoffChecks.map((check) => `<li>${escapeHtml(check)}</li>`).join("")}</ul>
+        </article>
+        <article class="${vault.blocked ? "blocked" : vault.review ? "watch" : "ready"}">
+          <span>Carried blocker reasons</span>
+          <strong>${vault.blockerReasons.length} reason${vault.blockerReasons.length === 1 ? "" : "s"}</strong>
+          <ul>${vault.blockerReasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>Audit trail</span>
+          <strong>${escapeHtml(vault.auditTrailId)}</strong>
+          <p>The vault preserves the signoff decision, claim lock, evidence binder, archive batch, and release condition for the next backend handoff.</p>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <strong>${vault.receiptFields.length} fields</strong>
+          <ul>${vault.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}</ul>
+        </article>
+      </div>
+    </div>
     <div class="founder-war-room ${escapeHtml(warRoom.tone)}">
       <div class="founder-war-room-head">
         <div>
@@ -16493,6 +16714,7 @@ function makeFounderBetaWarRoomDigestBrief() {
   const recovery = founderEvidenceRecoveryQueue(ledger);
   const unlock = founderProductionUnlockReviewBoard(recovery);
   const signoff = founderProductionSignoffMemo(unlock);
+  const vault = founderLaunchReceiptVault(signoff);
   return [
     "# NiveshNadi Founder Beta War-Room Digest",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -16524,6 +16746,10 @@ function makeFounderBetaWarRoomDigestBrief() {
     `Founder signoff status: ${signoff.status}`,
     `Founder signoff readiness: ${signoff.readiness}/100`,
     `Founder signoff decision receipt: ${signoff.decisionReceiptId}`,
+    `Founder launch receipt vault ID: ${vault.vaultId}`,
+    `Founder launch receipt vault status: ${vault.status}`,
+    `Founder launch receipt vault readiness: ${vault.readiness}/100`,
+    `Founder launch claim lock: ${vault.claimLockId}`,
     `Cohort decision ID: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `War-room ID: ${warRoom.warRoomId}`,
@@ -16585,6 +16811,13 @@ function makeFounderBetaWarRoomDigestBrief() {
     ...signoff.decisionRules.map((rule) => `- Decision rule: ${rule}`),
     ...signoff.blockerReasons.map((reason) => `- Signoff blocker: ${reason}`),
     "",
+    "## Founder Launch Receipt Vault",
+    ...vault.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...vault.rows.map((row) => `- ${row.rowId}: ${row.label} | ${row.owner} | ${row.state} | ${row.detail}`),
+    ...vault.archiveRules.map((rule) => `- Archive rule: ${rule}`),
+    ...vault.handoffChecks.map((check) => `- Handoff check: ${check}`),
+    ...vault.blockerReasons.map((reason) => `- Vault blocker: ${reason}`),
+    "",
     "## Founder Decisions",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),
     "",
@@ -16618,6 +16851,7 @@ function makeFounderBetaOperatingBrief() {
   const recovery = founderEvidenceRecoveryQueue(ledger);
   const unlock = founderProductionUnlockReviewBoard(recovery);
   const signoff = founderProductionSignoffMemo(unlock);
+  const vault = founderLaunchReceiptVault(signoff);
   return [
     "# NiveshNadi Founder Beta Operating Room",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -16649,6 +16883,10 @@ function makeFounderBetaOperatingBrief() {
     `Founder signoff status: ${signoff.status}`,
     `Founder signoff readiness: ${signoff.readiness}/100`,
     `Founder signoff decision receipt: ${signoff.decisionReceiptId}`,
+    `Founder launch receipt vault: ${vault.vaultId}`,
+    `Founder launch receipt vault status: ${vault.status}`,
+    `Founder launch receipt vault readiness: ${vault.readiness}/100`,
+    `Founder launch claim lock: ${vault.claimLockId}`,
     `Cohort decision: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `Operating score: ${ops.operatingScore}/100`,
@@ -16717,6 +16955,14 @@ function makeFounderBetaOperatingBrief() {
     ...signoff.decisionRules.map((rule) => `- Founder signoff rule: ${rule}`),
     ...signoff.blockerReasons.map((reason) => `- Founder signoff blocker: ${reason}`),
     ...signoff.receiptFields.map((field) => `- Founder signoff receipt field: ${field}`),
+    "",
+    "## Founder Launch Receipt Vault",
+    ...vault.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...vault.rows.map((row) => `- Founder launch receipt row: ${row.label} | ${row.owner} | ${row.state} | ${row.rowId}`),
+    ...vault.archiveRules.map((rule) => `- Founder launch archive rule: ${rule}`),
+    ...vault.handoffChecks.map((check) => `- Founder launch handoff check: ${check}`),
+    ...vault.blockerReasons.map((reason) => `- Founder launch blocker: ${reason}`),
+    ...vault.receiptFields.map((field) => `- Founder launch receipt field: ${field}`),
     "",
     "## Founder War-Room Digest",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),

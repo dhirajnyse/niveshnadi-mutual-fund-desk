@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V327 Founder Launch Receipt Vault
+
+V327 adds the Founder Launch Receipt Vault inside the Founder Beta Operating Room. It reads the Founder Signoff Memo, then archives the founder decision receipt, signoff lines, evidence binder, claim lock, audit trail, archive rules, backend handoff packet, blocker reasons, and receipt fields before any production-ready 100% claim can move.
+
 ## V326 Founder Signoff Memo
 
 V326 adds the Founder Signoff Memo inside the Founder Beta Operating Room. It reads the Production Unlock Review Board, then records the founder open, hold, or freeze posture with owner signoff lines, memo clauses, blocker reasons, evidence binder, decision receipt, freeze receipt, and receipt fields before production-ready 100% can be claimed.

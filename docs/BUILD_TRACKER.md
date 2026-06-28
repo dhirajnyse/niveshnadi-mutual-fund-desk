@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V353 Form Control Rhythm
+
+V353 tightens the shared form layer after the score-ring pass. Labels, inputs, selects, textareas, control grids, and tool panels now use compact variables so Profile, filters, journals, labs, and evidence rooms scan more like one research workstation.
+
 ## V352 Score Ring Rhythm
 
 V352 makes repeated circular score dials quieter on desktop. Shared score-ring variables now control size, inset, value text, label text, and score-bearing hero spacing so Build, Launch, Profile, Evidence, Pack, and backend rooms keep authority without oversized visual weight.

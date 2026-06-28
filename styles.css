@@ -34,6 +34,12 @@
   --score-ring-label: 8px;
   --score-hero-gap: 14px;
   --score-hero-pad: 15px;
+  --control-row-gap: 10px;
+  --control-field-gap: 6px;
+  --control-height: 38px;
+  --control-pad-y: 9px;
+  --control-pad-x: 11px;
+  --control-panel-pad: 14px;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 
@@ -15783,13 +15789,13 @@ body.simple-mode.simple-review-focus .dossier-band {
   grid-column: 1;
   display: grid;
   grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(148px, 1fr));
-  gap: 10px;
+  gap: var(--control-row-gap);
   margin-top: 4px;
 }
 
 label {
   display: grid;
-  gap: 6px;
+  gap: var(--control-field-gap);
   color: var(--muted);
   font-size: 12px;
   font-weight: 900;
@@ -15799,12 +15805,12 @@ input,
 select,
 textarea {
   width: 100%;
-  min-height: 38px;
+  min-height: var(--control-height);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: #ffffff;
   color: var(--ink);
-  padding: 9px 11px;
+  padding: var(--control-pad-y) var(--control-pad-x);
   font-weight: 750;
 }
 
@@ -20584,13 +20590,13 @@ body.simple-mode .quiet-fund-shelf {
 .tool-panel {
   display: grid;
   gap: 10px;
-  padding: 14px;
+  padding: var(--control-panel-pad);
 }
 
 .tool-output {
   grid-column: span 1;
   min-height: 100%;
-  padding: 14px;
+  padding: var(--control-panel-pad);
   color: var(--muted);
 }
 
@@ -43616,6 +43622,12 @@ body.desk-rail-right .floating-dock {
   --score-ring-label: 7px;
   --score-hero-gap: 10px;
   --score-hero-pad: 12px;
+  --control-row-gap: 8px;
+  --control-field-gap: 4px;
+  --control-height: 32px;
+  --control-pad-y: 6px;
+  --control-pad-x: 9px;
+  --control-panel-pad: 11px;
 }
 
 body.desk-rail-mini {
@@ -44028,19 +44040,19 @@ body.desk-rail-right .workspace-band {
 }
 
 .control-grid {
-  gap: 8px;
+  gap: var(--control-row-gap);
   margin-top: 2px;
 }
 
 label {
-  gap: 4px;
+  gap: var(--control-field-gap);
 }
 
 input,
 select,
 textarea {
-  min-height: 34px;
-  padding: 7px 9px;
+  min-height: var(--control-height);
+  padding: var(--control-pad-y) var(--control-pad-x);
 }
 
 .simple-filter-toggle,
@@ -44092,7 +44104,7 @@ textarea {
 
 .tool-panel,
 .tool-output {
-  padding: 12px;
+  padding: var(--control-panel-pad);
 }
 
 @media (min-width: 981px) {

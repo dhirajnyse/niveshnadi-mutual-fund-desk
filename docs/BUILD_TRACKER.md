@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V339 Rail Group Memory
+
+V339 makes the desktop rail group switcher remember the last active route inside Desk, Research, Trust, and Founder. The fixed group routes remain safe fallbacks, but returning to a group now opens the user's latest valid workspace, and the button title plus accessibility label name that return target.
+
 ## V338 Rail Progress Spine
 
 V338 adds a compact progress spine inside the desktop side rail. The rail now shows the active shortcut number, total rail shortcut count, and a slim progress bar that updates with scroll, route jumps, and group switches, while Mini rail keeps the meter compact until hover or keyboard focus reveals the label.

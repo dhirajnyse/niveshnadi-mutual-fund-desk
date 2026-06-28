@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v335-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v335 Mini Rail Mode";
+const DATA_VERSION = "20260628-v336-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v336 Mini Rail Peek Labels";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1246,8 +1246,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Mini rail mode",
+    label: "Mini rail peek labels",
     status: "Shipping now",
+    route: "#main",
+    detail: "Let Mini rail stay narrow until hover or keyboard focus, then reveal the full workspace labels without changing the saved layout."
+  },
+  {
+    label: "Mini rail mode",
+    status: "Done",
     route: "#main",
     detail: "Add a saved Full/Mini rail density control so familiar users can reclaim workspace width without losing the side navigation."
   },
@@ -9301,9 +9307,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Mini rail mode",
-      status: "Active in v335",
+      status: "Done in v335",
       route: "#main",
       detail: "Let users switch between the full labeled rail and a saved mini rail that preserves direct access while reclaiming workspace width."
+    },
+    {
+      label: "Mini rail peek labels",
+      status: "Active in v336",
+      route: "#main",
+      detail: "Reveal full Mini rail labels on hover or keyboard focus while keeping the saved compact rail width for the workspace."
     }
   ];
   const productionTarget = releaseVersion
@@ -9317,7 +9329,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, and mini-rail audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, and mini-rail label audit are complete.`
   };
   const launchGates = [
     {
@@ -9530,7 +9542,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v335 adds a saved Mini rail so compact operators can keep navigation without giving up workspace width.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v336 lets Mini rail reveal labels on hover or keyboard focus while preserving the saved compact workspace.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9659,7 +9671,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v335</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v336</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -36179,6 +36191,24 @@ function railGroupLabel(group = "") {
   return RAIL_GROUP_ALIASES[group] || group || "Desk";
 }
 
+function hydrateDeskRailHints() {
+  qsa(".desk-rail a[href^='#']").forEach((link) => {
+    const meta = railMetaFromLink(link);
+    const number = link.querySelector("span")?.textContent?.trim();
+    const group = railGroupLabel(meta.group);
+    const hint = [number, meta.label].filter(Boolean).join(" ");
+    link.dataset.railTip = `${hint} | ${group}`;
+    link.title = `${hint} | ${group}`;
+    link.setAttribute("aria-label", `${meta.label}, ${group} workspace`);
+  });
+  qsa("[data-rail-group-label]").forEach((button) => {
+    const label = button.dataset.railGroupLabel || button.textContent?.trim() || "Desk";
+    button.dataset.railTip = `${label} rail`;
+    button.title = `Open ${label} rail`;
+    button.setAttribute("aria-label", `Open ${label} rail group`);
+  });
+}
+
 function railContextForHash(hash = "") {
   const links = qsa(".desk-rail a[href^='#']");
   const metas = links.map(railMetaFromLink).filter((item) => item.hash);
@@ -36261,7 +36291,9 @@ function updateDeskRailContext(hash = "") {
   els.deskRailCurrent.textContent = context.active.label;
   els.deskRailGroup.textContent = context.active.group;
   els.deskRailNext.dataset.railNext = context.next.hash;
+  els.deskRailNext.dataset.railTip = `Next: ${context.next.label}`;
   els.deskRailNext.title = `Open ${context.next.label}`;
+  els.deskRailNext.setAttribute("aria-label", `Open next workspace: ${context.next.label}`);
   const nextLabel = els.deskRailNext.querySelector("b");
   if (nextLabel) nextLabel.textContent = context.next.label;
   updateDeskRailSwitcher(context.activeGroup);
@@ -61369,6 +61401,7 @@ function cacheElements() {
 
 function init() {
   cacheElements();
+  hydrateDeskRailHints();
   bindNavSidePreference();
   bindNavDensityPreference();
   bindSimpleModeToggle();

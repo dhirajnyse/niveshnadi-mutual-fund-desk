@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V336 Mini Rail Peek Labels
+
+V336 makes Mini rail easier to trust after the compact-mode release. The rail stays narrow for workspace width, then temporarily expands on hover or keyboard focus to reveal full labels, current context, and group names without changing the saved rail preference.
+
 ## V335 Mini Rail Mode
 
 V335 adds a saved Full/Mini rail density control beside the existing left/right rail selector. Mini rail keeps the desktop side navigation available while collapsing labels into compact numbered targets and group initials, giving frequent operators more workspace width without returning to top-tab clutter.

@@ -842,6 +842,18 @@ body.desk-rail-right main {
 body.desk-rail-mini .desk-rail {
   padding-right: 7px;
   padding-left: 7px;
+  transition: width 160ms ease, box-shadow 160ms ease;
+}
+
+body.desk-rail-mini .desk-rail:hover,
+body.desk-rail-mini .desk-rail:focus-within {
+  width: 172px;
+  box-shadow: 18px 0 38px rgba(15, 34, 56, 0.18);
+}
+
+body.desk-rail-right.desk-rail-mini .desk-rail:hover,
+body.desk-rail-right.desk-rail-mini .desk-rail:focus-within {
+  box-shadow: -18px 0 38px rgba(15, 34, 56, 0.18);
 }
 
 body.desk-rail-mini .desk-rail-inner {
@@ -926,6 +938,81 @@ body.desk-rail-mini .desk-rail a span {
   width: 100%;
   min-width: 26px;
   min-height: 20px;
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail-context,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-context {
+  justify-items: stretch;
+  padding: 8px 7px;
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail-context > span,
+body.desk-rail-mini .desk-rail:hover .desk-rail-context > strong,
+body.desk-rail-mini .desk-rail:hover .desk-rail-context p,
+body.desk-rail-mini .desk-rail:hover .desk-rail-next small,
+body.desk-rail-mini .desk-rail:hover .desk-rail-label,
+body.desk-rail-mini .desk-rail:hover .desk-rail a strong,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-context > span,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-context > strong,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-context p,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-next small,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-label,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail a strong {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+  clip: auto;
+  clip-path: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail-next,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-next {
+  justify-items: stretch;
+  padding: 5px 7px;
+  text-align: left;
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail-next b,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-next b {
+  font-size: 11px;
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail-next b::after,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-next b::after {
+  content: none;
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail-switcher button,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-switcher button {
+  padding: 4px 5px;
+  font-size: 9px;
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail-switcher button::after,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-switcher button::after {
+  content: none;
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail-group,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-group {
+  justify-items: stretch;
+  padding: 1px;
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail a,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail a {
+  grid-template-columns: 25px minmax(0, 1fr);
+  justify-items: stretch;
+  padding: 5px 7px;
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail a span,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail a span {
+  width: auto;
+  min-width: 23px;
 }
 
 main {

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V333 Rail Group Switcher
+
+V333 adds compact Desk, Research, Trust, and Founder switches inside the desktop side rail. These shortcuts use the same route handling as the rest of the workspace, update the active rail group, and reduce the need to scroll the full rail just to move between work lanes.
+
 ## V332 Rail Context Guide
 
 V332 adds a compact Now/Next guide to the desktop side rail. The rail now keeps the current room, workspace group, and next high-frequency move visible while the user scrolls, jumps through the workspace selector, or opens routes from the tool finder.

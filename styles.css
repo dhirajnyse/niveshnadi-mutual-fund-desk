@@ -704,6 +704,40 @@ body.desk-rail-right .desk-rail {
   white-space: nowrap;
 }
 
+.desk-rail-switcher {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  margin-top: 3px;
+}
+
+.desk-rail-switcher button {
+  min-height: 25px;
+  padding: 5px 6px;
+  border: 1px solid rgba(158, 233, 223, 0.16);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.07);
+  color: #dbe9f2;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.desk-rail-switcher button:hover,
+.desk-rail-switcher button:focus-visible {
+  border-color: rgba(158, 233, 223, 0.38);
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  outline: none;
+}
+
+.desk-rail-switcher button[aria-pressed="true"] {
+  border-color: rgba(158, 233, 223, 0.34);
+  background: #ffffff;
+  color: var(--ink);
+}
+
 .desk-rail-group {
   display: grid;
   gap: 5px;
@@ -43146,6 +43180,16 @@ body.simple-mode .desk-rail {
 
 .desk-rail-next b {
   font-size: 11px;
+}
+
+.desk-rail-switcher {
+  gap: 3px;
+}
+
+.desk-rail-switcher button {
+  min-height: 23px;
+  padding: 4px 5px;
+  font-size: 9px;
 }
 
 .desk-rail-label {

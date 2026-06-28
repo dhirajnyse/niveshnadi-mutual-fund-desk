@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v332 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v333 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -39,7 +39,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Federated Trust Loop on the first screen that separates local learning, shared pattern learning, and privacy gates so every organization improves without exposing investor data.
 - Learning Consent Gate on the first screen that keeps organization-level learning local until consent, anonymization, and review posture are visible.
 - Outcome Learning Signal on the first screen that turns saved decisions, review outcomes, and anonymized lessons into a visible reinforcement cue before anything is shared.
-- Nadi Build Tracker plus Overall Progress Link, Workspace Fit Polish, Desk Rail Navigation, Desk Rail Fit Polish, Rail Context Guide, Publisher Handoff Kit, and Build Phases Room that separates the compact executive build view, where-we-reached summary, 100% closeout path, GitHub Desktop publishing steps, runtime-only copy guardrails, detailed phase cards, launch gates, completed modules, roadmap guardrails, and the Phase 2 distributor boundary while keeping the first workspace free of nested scroll traps and letting desktop users place high-frequency tabs on the left or right side with a tighter rail-to-workspace fit and a visible Now/Next rail cue.
+- Nadi Build Tracker plus Overall Progress Link, Workspace Fit Polish, Desk Rail Navigation, Desk Rail Fit Polish, Rail Context Guide, Rail Group Switcher, Publisher Handoff Kit, and Build Phases Room that separates the compact executive build view, where-we-reached summary, 100% closeout path, GitHub Desktop publishing steps, runtime-only copy guardrails, detailed phase cards, launch gates, completed modules, roadmap guardrails, and the Phase 2 distributor boundary while keeping the first workspace free of nested scroll traps and letting desktop users place high-frequency tabs on the left or right side with a tighter rail-to-workspace fit, a visible Now/Next rail cue, and direct Desk/Research/Trust/Founder rail jumps.
 - Nadi Market Strategy Room that keeps B2C pricing, competitor posture, monetization scenarios, trust moats, founder beta scale gate, founder beta learning ledger, founder beta experiment board, founder beta traffic rehearsal, paid beta gates, and the Phase 2 distributor boundary visible inside the founder workspace.
 - Nadi Paid Beta Evidence Pack that turns the monetization thesis into value proof, source proof, payment proof, account proof, support proof, compliance proof, cohort limits, required receipts, and a founder go/no-go path before the first paid users are invited.
 - Nadi Founder Invite Proof Path that turns the beta evidence pack into controlled invitation copy, eligibility checks, account and payment proof, access boundaries, support promise, pause/refund rules, receipt fields, and expansion discipline before retail users are invited.

@@ -771,6 +771,61 @@ body.desk-rail-right .desk-rail {
   white-space: nowrap;
 }
 
+.desk-rail-recent {
+  display: grid;
+  grid-template-columns: auto repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 4px;
+  margin-top: 3px;
+}
+
+.desk-rail-recent span {
+  color: #9ee9df;
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.desk-rail-recent button {
+  min-height: 25px;
+  min-width: 0;
+  padding: 5px 6px;
+  border: 1px solid rgba(158, 233, 223, 0.16);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.07);
+  color: #dbe9f2;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.desk-rail-recent button:hover,
+.desk-rail-recent button:focus-visible {
+  border-color: rgba(158, 233, 223, 0.38);
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  outline: none;
+}
+
+.desk-rail-recent button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.desk-rail-recent button:disabled:hover {
+  border-color: rgba(158, 233, 223, 0.16);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.desk-rail-recent button b {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .desk-rail-switcher {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -930,6 +985,7 @@ body.desk-rail-mini .desk-rail-context p,
 body.desk-rail-mini .desk-rail-progress span,
 body.desk-rail-mini .desk-rail-next small,
 body.desk-rail-mini .desk-rail-back small,
+body.desk-rail-mini .desk-rail-recent span,
 body.desk-rail-mini .desk-rail-label,
 body.desk-rail-mini .desk-rail a strong {
   position: absolute;
@@ -993,6 +1049,23 @@ body.desk-rail-mini .desk-rail-switcher button::after {
   font-weight: 950;
 }
 
+body.desk-rail-mini .desk-rail-recent {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3px;
+}
+
+body.desk-rail-mini .desk-rail-recent button {
+  min-height: 24px;
+  padding: 4px 0;
+  font-size: 0;
+}
+
+body.desk-rail-mini .desk-rail-recent button::after {
+  content: attr(data-short);
+  font-size: 9px;
+  font-weight: 950;
+}
+
 body.desk-rail-mini .desk-rail-group {
   justify-items: center;
   padding: 1px 0;
@@ -1031,6 +1104,7 @@ body.desk-rail-mini .desk-rail:hover .desk-rail-context p,
 body.desk-rail-mini .desk-rail:hover .desk-rail-progress span,
 body.desk-rail-mini .desk-rail:hover .desk-rail-next small,
 body.desk-rail-mini .desk-rail:hover .desk-rail-back small,
+body.desk-rail-mini .desk-rail:hover .desk-rail-recent span,
 body.desk-rail-mini .desk-rail:hover .desk-rail-label,
 body.desk-rail-mini .desk-rail:hover .desk-rail a strong,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-context > span,
@@ -1039,6 +1113,7 @@ body.desk-rail-mini .desk-rail:focus-within .desk-rail-context p,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-progress span,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-next small,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-back small,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-recent span,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-label,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail a strong {
   position: static;
@@ -1087,6 +1162,22 @@ body.desk-rail-mini .desk-rail:focus-within .desk-rail-switcher button {
 
 body.desk-rail-mini .desk-rail:hover .desk-rail-switcher button::after,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-switcher button::after {
+  content: none;
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail-recent,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-recent {
+  grid-template-columns: auto repeat(2, minmax(0, 1fr));
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail-recent button,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-recent button {
+  padding: 4px 5px;
+  font-size: 9px;
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail-recent button::after,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-recent button::after {
   content: none;
 }
 
@@ -43491,6 +43582,16 @@ body.simple-mode .desk-rail {
 .desk-rail-next b,
 .desk-rail-back b {
   font-size: 11px;
+}
+
+.desk-rail-recent {
+  gap: 3px;
+}
+
+.desk-rail-recent button {
+  min-height: 23px;
+  padding: 4px 5px;
+  font-size: 9px;
 }
 
 .desk-rail-switcher {

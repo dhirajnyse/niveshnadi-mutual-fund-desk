@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V341 Rail Recent Rooms
+
+V341 adds a compact two-room Recent row to the desktop rail context block. As users move through workspace rooms, the rail keeps the last two distinct rooms available as one-click return targets, while Mini rail collapses them into compact R1 and R2 buttons until hover or keyboard focus reveals full labels.
+
 ## V340 Rail Backtrack Cue
 
 V340 adds a compact Back cue to the desktop rail context block. After the active workspace room changes, the rail records the prior room in session memory, names it in the Back button title and accessibility label, and lets users return there without opening the full workspace selector.

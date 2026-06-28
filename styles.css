@@ -269,10 +269,13 @@ a {
 }
 
 .workspace-command {
-  gap: 8px;
+  gap: 6px;
   flex: 0 0 auto;
-  padding-left: 6px;
-  border-left: 1px solid rgba(81, 103, 125, 0.18);
+  padding: 4px;
+  border: 1px solid rgba(81, 103, 125, 0.14);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: 0 8px 20px rgba(15, 34, 56, 0.045);
   position: relative;
 }
 
@@ -447,11 +450,11 @@ a {
 .nav-density-control select,
 .nav-layout-control select {
   width: 100%;
-  min-height: 36px;
+  min-height: 34px;
   padding: 7px 30px 7px 10px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.86);
   color: var(--ink);
   font-size: 13px;
   font-weight: 800;
@@ -466,7 +469,7 @@ a {
 }
 
 .tool-palette-toggle {
-  min-height: 36px;
+  min-height: 34px;
   padding: 0 12px;
   border: 1px solid rgba(31, 78, 121, 0.18);
   border-radius: var(--radius);
@@ -598,7 +601,7 @@ a {
 }
 
 .simple-mode-toggle {
-  min-height: 36px;
+  min-height: 34px;
   padding: 0 12px;
   border: 1px solid rgba(15, 124, 107, 0.28);
   border-radius: var(--radius);
@@ -43590,18 +43593,18 @@ body {
 
 .app-header {
   grid-template-columns: minmax(235px, 300px) minmax(0, 1fr);
-  gap: 12px;
-  min-height: 60px;
-  padding: 6px clamp(14px, 2vw, 30px);
+  gap: 10px;
+  min-height: 56px;
+  padding: 5px clamp(12px, 2vw, 28px);
 }
 
 .brand-lockup {
-  gap: 10px;
+  gap: 9px;
 }
 
 .brand-logo {
-  width: 102px;
-  min-width: 92px;
+  width: 96px;
+  min-width: 88px;
 }
 
 .brand-meta-row {
@@ -43611,7 +43614,7 @@ body {
 
 .brand-lockup h1 {
   max-width: 220px;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.05;
 }
 
@@ -43666,7 +43669,9 @@ body.desk-rail-right .top-nav {
 }
 
 .workspace-command {
-  gap: 6px;
+  gap: 5px;
+  padding: 3px;
+  background: rgba(255, 255, 255, 0.76);
 }
 
 .simple-mode-toggle,
@@ -43675,7 +43680,7 @@ body.desk-rail-right .top-nav {
 .nav-density-control select,
 .nav-layout-control select,
 .workspace-jump select {
-  min-height: 32px;
+  min-height: 30px;
   font-size: 12px;
 }
 
@@ -43692,7 +43697,7 @@ body.desk-rail-right .top-nav {
 }
 
 .workspace-jump {
-  grid-template-columns: minmax(170px, 214px);
+  grid-template-columns: minmax(164px, 204px);
   margin-left: 2px;
 }
 

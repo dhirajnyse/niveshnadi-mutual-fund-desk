@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V348 Header Command Capsule
+
+V348 groups the sticky header controls into one compact command capsule. The header is slightly shorter, the brand lockup is tighter, layout and workspace controls share a calm white control surface, and the top bar reads as a focused command strip above the side rail.
+
 ## V347 Rail Quiet Hierarchy
 
 V347 makes the desktop rail read more like calm product navigation. Inactive rows are quieter, group labels and count badges are slimmer, the active row keeps a crisp white selection without an oversized shadow, and the rail context block fades behind the actual tab list.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v339-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v339 Rail Group Memory";
+const DATA_VERSION = "20260628-v340-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v340 Rail Backtrack Cue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1023,6 +1023,8 @@ const state = {
   navDensity: "full",
   railGroupMemory: {},
   railGroupMemoryLoaded: false,
+  railCurrentRoute: "",
+  railBackRoute: "",
   evidenceIntakeSlotId: "",
   investorRecordFocus: false,
   railKeepFrame: 0,
@@ -1232,8 +1234,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "desk rail navigation", "desk rail fit polish", "rail context guide", "rail group switcher", "rail active lane keeper", "mini rail mode", "mini rail peek labels", "layout preset command", "rail progress spine", "rail group memory", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Use rail group memory so repeated group switching returns to the last active workspace instead of a fixed first route."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "desk rail navigation", "desk rail fit polish", "rail context guide", "rail group switcher", "rail active lane keeper", "mini rail mode", "mini rail peek labels", "layout preset command", "rail progress spine", "rail group memory", "rail backtrack cue", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Use rail backtrack so repeated workspace jumps can return to the previous room without hunting in the full selector."
   },
   {
     phase: "Phase 2",
@@ -1249,8 +1251,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Rail group memory",
+    label: "Rail backtrack cue",
     status: "Shipping now",
+    route: "#main",
+    detail: "Add a compact Back cue beside Next so long workspace jumps can return to the previous room."
+  },
+  {
+    label: "Rail group memory",
+    status: "Done",
     route: "#main",
     detail: "Remember the last active route inside Desk, Research, Trust, and Founder so group switches return to the user's place."
   },
@@ -9352,9 +9360,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Rail group memory",
-      status: "Active in v339",
+      status: "Done in v339",
       route: "#main",
       detail: "Remember the last active route in each side-rail group so Desk, Research, Trust, and Founder switches return to the user's place."
+    },
+    {
+      label: "Rail backtrack cue",
+      status: "Active in v340",
+      route: "#main",
+      detail: "Add a compact Back control in the rail context so users can return to the previous active room after long workspace jumps."
     }
   ];
   const productionTarget = releaseVersion
@@ -9368,7 +9382,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, and rail-group memory audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, and rail-backtrack audit are complete.`
   };
   const launchGates = [
     {
@@ -9581,7 +9595,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v339 remembers each rail group's last room so long workspace movement feels less repetitive.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v340 adds a rail Back cue so users can return to the previous room after long workspace jumps.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9710,7 +9724,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v339</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v340</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -36289,6 +36303,27 @@ function rememberRailGroupRoute(context) {
   saveRailGroupMemory();
 }
 
+function rememberDeskRailBacktrack(hash = "") {
+  if (!hash || !targetFromHash(hash) || hash === state.railCurrentRoute) return;
+  if (state.railCurrentRoute && targetFromHash(state.railCurrentRoute)) {
+    state.railBackRoute = state.railCurrentRoute;
+  }
+  state.railCurrentRoute = hash;
+}
+
+function updateDeskRailBacktrack() {
+  if (!els.deskRailBack) return;
+  const hash = state.railBackRoute && targetFromHash(state.railBackRoute) ? state.railBackRoute : "";
+  const label = hash ? railLabelForHash(hash) : "Previous";
+  els.deskRailBack.dataset.railBack = hash;
+  els.deskRailBack.disabled = !hash;
+  els.deskRailBack.dataset.railTip = hash ? `Back: ${label}` : "Back appears after you move";
+  els.deskRailBack.title = hash ? `Back to ${label}` : "Back appears after you move to another workspace";
+  els.deskRailBack.setAttribute("aria-label", hash ? `Back to previous workspace: ${label}` : "Previous workspace unavailable yet");
+  const backLabel = els.deskRailBack.querySelector("b");
+  if (backLabel) backLabel.textContent = label;
+}
+
 function hydrateDeskRailHints() {
   qsa(".desk-rail a[href^='#']").forEach((link) => {
     const meta = railMetaFromLink(link);
@@ -36409,6 +36444,8 @@ function updateDeskRailContext(hash = "") {
     els.deskRailProgressBar.style.width = `${context.progress}%`;
   }
   rememberRailGroupRoute(context);
+  rememberDeskRailBacktrack(context.active.hash);
+  updateDeskRailBacktrack();
   els.deskRailNext.dataset.railNext = context.next.hash;
   els.deskRailNext.dataset.railTip = `Next: ${context.next.label}`;
   els.deskRailNext.title = `Open ${context.next.label}`;
@@ -60743,6 +60780,12 @@ function bindWorkspaceJump() {
     updateWorkspaceNavigator(hash);
     scrollToHash(hash, "smooth", true);
   });
+  els.deskRailBack?.addEventListener("click", () => {
+    const hash = els.deskRailBack.dataset.railBack;
+    if (!hash) return;
+    updateWorkspaceNavigator(hash);
+    scrollToHash(hash, "smooth", true);
+  });
   els.deskRailSwitcher?.addEventListener("click", (event) => {
     const button = event.target.closest("[data-rail-group]");
     if (!button) return;
@@ -60772,6 +60815,7 @@ function cacheElements() {
     deskRailPosition: qs("#deskRailPosition"),
     deskRailProgressBar: qs("#deskRailProgressBar"),
     deskRailNext: qs("#deskRailNext"),
+    deskRailBack: qs("#deskRailBack"),
     deskRailSwitcher: qs("#deskRailSwitcher"),
     deskRail: qs("#deskRail"),
     simpleModeToggle: qs("#simpleModeToggle"),

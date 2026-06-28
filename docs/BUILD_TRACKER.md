@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V340 Rail Backtrack Cue
+
+V340 adds a compact Back cue to the desktop rail context block. After the active workspace room changes, the rail records the prior room in session memory, names it in the Back button title and accessibility label, and lets users return there without opening the full workspace selector.
+
 ## V339 Rail Group Memory
 
 V339 makes the desktop rail group switcher remember the last active route inside Desk, Research, Trust, and Founder. The fixed group routes remain safe fallbacks, but returning to a group now opens the user's latest valid workspace, and the button title plus accessibility label name that return target.

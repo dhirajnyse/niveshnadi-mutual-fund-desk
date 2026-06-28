@@ -660,7 +660,8 @@ body.desk-rail-right .desk-rail {
 }
 
 .desk-rail-context > span,
-.desk-rail-next small {
+.desk-rail-next small,
+.desk-rail-back small {
   color: #9ee9df;
   font-size: 9px;
   font-weight: 950;
@@ -720,7 +721,8 @@ body.desk-rail-right .desk-rail {
   background: linear-gradient(90deg, #9ee9df, #f1a43a);
 }
 
-.desk-rail-next {
+.desk-rail-next,
+.desk-rail-back {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 2px;
@@ -735,14 +737,32 @@ body.desk-rail-right .desk-rail {
   text-align: left;
 }
 
+.desk-rail-back {
+  min-height: 30px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
 .desk-rail-next:hover,
-.desk-rail-next:focus-visible {
+.desk-rail-next:focus-visible,
+.desk-rail-back:hover,
+.desk-rail-back:focus-visible {
   border-color: rgba(158, 233, 223, 0.42);
   background: rgba(255, 255, 255, 0.16);
   outline: none;
 }
 
-.desk-rail-next b {
+.desk-rail-back:disabled {
+  cursor: default;
+  opacity: 0.48;
+}
+
+.desk-rail-back:disabled:hover {
+  border-color: rgba(158, 233, 223, 0.18);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.desk-rail-next b,
+.desk-rail-back b {
   overflow: hidden;
   color: #ffffff;
   font-size: 12px;
@@ -909,6 +929,7 @@ body.desk-rail-mini .desk-rail-context > strong,
 body.desk-rail-mini .desk-rail-context p,
 body.desk-rail-mini .desk-rail-progress span,
 body.desk-rail-mini .desk-rail-next small,
+body.desk-rail-mini .desk-rail-back small,
 body.desk-rail-mini .desk-rail-label,
 body.desk-rail-mini .desk-rail a strong {
   position: absolute;
@@ -920,7 +941,8 @@ body.desk-rail-mini .desk-rail a strong {
   white-space: nowrap;
 }
 
-body.desk-rail-mini .desk-rail-next {
+body.desk-rail-mini .desk-rail-next,
+body.desk-rail-mini .desk-rail-back {
   justify-items: center;
   min-height: 28px;
   padding: 5px 4px;
@@ -936,12 +958,20 @@ body.desk-rail-mini .desk-rail-progress i {
   height: 4px;
 }
 
-body.desk-rail-mini .desk-rail-next b {
+body.desk-rail-mini .desk-rail-next b,
+body.desk-rail-mini .desk-rail-back b {
   font-size: 0;
 }
 
 body.desk-rail-mini .desk-rail-next b::after {
   content: "Next";
+  font-size: 9px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+body.desk-rail-mini .desk-rail-back b::after {
+  content: "Back";
   font-size: 9px;
   font-weight: 950;
   text-transform: uppercase;
@@ -1000,6 +1030,7 @@ body.desk-rail-mini .desk-rail:hover .desk-rail-context > strong,
 body.desk-rail-mini .desk-rail:hover .desk-rail-context p,
 body.desk-rail-mini .desk-rail:hover .desk-rail-progress span,
 body.desk-rail-mini .desk-rail:hover .desk-rail-next small,
+body.desk-rail-mini .desk-rail:hover .desk-rail-back small,
 body.desk-rail-mini .desk-rail:hover .desk-rail-label,
 body.desk-rail-mini .desk-rail:hover .desk-rail a strong,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-context > span,
@@ -1007,6 +1038,7 @@ body.desk-rail-mini .desk-rail:focus-within .desk-rail-context > strong,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-context p,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-progress span,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-next small,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-back small,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-label,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail a strong {
   position: static;
@@ -1025,19 +1057,25 @@ body.desk-rail-mini .desk-rail:focus-within .desk-rail-progress {
 }
 
 body.desk-rail-mini .desk-rail:hover .desk-rail-next,
-body.desk-rail-mini .desk-rail:focus-within .desk-rail-next {
+body.desk-rail-mini .desk-rail:hover .desk-rail-back,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-next,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-back {
   justify-items: stretch;
   padding: 5px 7px;
   text-align: left;
 }
 
 body.desk-rail-mini .desk-rail:hover .desk-rail-next b,
-body.desk-rail-mini .desk-rail:focus-within .desk-rail-next b {
+body.desk-rail-mini .desk-rail:hover .desk-rail-back b,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-next b,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-back b {
   font-size: 11px;
 }
 
 body.desk-rail-mini .desk-rail:hover .desk-rail-next b::after,
-body.desk-rail-mini .desk-rail:focus-within .desk-rail-next b::after {
+body.desk-rail-mini .desk-rail:hover .desk-rail-back b::after,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-next b::after,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-back b::after {
   content: none;
 }
 
@@ -43444,12 +43482,14 @@ body.simple-mode .desk-rail {
   font-size: 12px;
 }
 
-.desk-rail-next {
+.desk-rail-next,
+.desk-rail-back {
   min-height: 29px;
   padding: 5px 7px;
 }
 
-.desk-rail-next b {
+.desk-rail-next b,
+.desk-rail-back b {
   font-size: 11px;
 }
 

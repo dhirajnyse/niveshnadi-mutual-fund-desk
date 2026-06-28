@@ -40,6 +40,9 @@
   --control-pad-y: 9px;
   --control-pad-x: 11px;
   --control-panel-pad: 14px;
+  --responsive-command-gap: 6px;
+  --responsive-command-min: 122px;
+  --responsive-command-jump-min: 220px;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 
@@ -43628,6 +43631,9 @@ body.desk-rail-right .floating-dock {
   --control-pad-y: 6px;
   --control-pad-x: 9px;
   --control-panel-pad: 11px;
+  --responsive-command-gap: 5px;
+  --responsive-command-min: 112px;
+  --responsive-command-jump-min: 204px;
 }
 
 body.desk-rail-mini {
@@ -44423,6 +44429,9 @@ body.simple-mode .serenity-path .simplicity-path-actions {
     --workspace-gutter: 20px;
     --workspace-max: 1380px;
     --workspace-section-gap: 10px;
+    --responsive-command-gap: 6px;
+    --responsive-command-min: 118px;
+    --responsive-command-jump-min: 220px;
   }
 
   .desk-rail {
@@ -44468,6 +44477,41 @@ body.simple-mode .serenity-path .simplicity-path-actions {
   .command-panel,
   body.simple-mode .command-panel {
     padding: 12px;
+  }
+
+  .workspace-command {
+    display: flex;
+    gap: var(--responsive-command-gap);
+    align-items: stretch;
+    width: 100%;
+    padding: 4px;
+    border: 1px solid rgba(81, 103, 125, 0.14);
+    background: rgba(255, 255, 255, 0.78);
+  }
+
+  .workspace-command > * {
+    min-width: 0;
+  }
+
+  .header-next-action,
+  .simple-mode-toggle,
+  .tool-palette-toggle {
+    flex: 1 1 var(--responsive-command-min);
+    max-width: none;
+    min-height: var(--control-height);
+  }
+
+  .workspace-jump {
+    flex: 2 1 var(--responsive-command-jump-min);
+    grid-template-columns: minmax(0, 1fr);
+    margin-left: 0;
+  }
+
+  .workspace-jump select,
+  .simple-mode-toggle,
+  .tool-palette-toggle,
+  .header-next-action {
+    min-width: 0;
   }
 
   .serenity-start-surface,
@@ -44567,6 +44611,54 @@ body.simple-mode .serenity-path .simplicity-path-actions {
 }
 
 @media (max-width: 680px) {
+  :root {
+    --workspace-gutter: 16px;
+    --control-height: 34px;
+    --control-panel-pad: 10px;
+    --responsive-command-gap: 5px;
+    --responsive-command-min: 0;
+    --responsive-command-jump-min: 0;
+  }
+
+  .workspace-command,
+  body.simple-mode .workspace-command {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--responsive-command-gap);
+    width: 100%;
+  }
+
+  .header-next-action:not([hidden]) {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-height: var(--control-height);
+    justify-content: center;
+  }
+
+  .simple-mode-toggle,
+  .tool-palette-toggle {
+    width: 100%;
+    min-height: var(--control-height);
+  }
+
+  .workspace-jump,
+  body.simple-mode .workspace-jump {
+    grid-column: 1 / -1;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .workspace-jump select,
+  body.simple-mode .workspace-jump select {
+    width: 100%;
+    min-height: var(--control-height);
+  }
+
+  .tool-panel,
+  .tool-output {
+    padding: var(--control-panel-pad);
+  }
+
   #provider-pilot-receipt .provider-pilot-field-grid,
   #provider-pilot-receipt .provider-pilot-two {
     grid-template-columns: 1fr;

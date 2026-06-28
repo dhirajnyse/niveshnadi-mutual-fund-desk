@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V354 Responsive Control Parity
+
+V354 carries the compact control rhythm into smaller widths. The top command strip, workspace jump, action buttons, and form panels now share responsive sizing variables so tablet and phone layouts stay predictable instead of stretching controls unevenly.
+
 ## V353 Form Control Rhythm
 
 V353 tightens the shared form layer after the score-ring pass. Labels, inputs, selects, textareas, control grids, and tool panels now use compact variables so Profile, filters, journals, labs, and evidence rooms scan more like one research workstation.

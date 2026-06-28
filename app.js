@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v353-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v353 Form Control Rhythm";
+const DATA_VERSION = "20260628-v354-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v354 Responsive Control Parity";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -9473,9 +9473,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Form control rhythm",
-      status: "Active in v353",
+      status: "Done in v353",
       route: "#profile-room",
       detail: "Tighten label gaps, input height, select rhythm, textarea rhythm, and tool-panel padding so form-heavy rooms scan faster."
+    },
+    {
+      label: "Responsive control parity",
+      status: "Active in v354",
+      route: "#main",
+      detail: "Keep command buttons, workspace jump controls, and form panels aligned with the same compact rhythm on tablet and phone widths."
     }
   ];
   const productionTarget = releaseVersion
@@ -9489,7 +9495,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, and form-control audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, and responsive-control audit are complete.`
   };
   const launchGates = [
     {
@@ -9831,7 +9837,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v353</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v354</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

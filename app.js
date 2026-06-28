@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v336-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v336 Mini Rail Peek Labels";
+const DATA_VERSION = "20260628-v337-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v337 Layout Preset Command";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1246,8 +1246,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Mini rail peek labels",
+    label: "Layout preset command",
     status: "Shipping now",
+    route: "#main",
+    detail: "Merge Tabs and Rail into one saved Layout preset so the command bar stays compact while keeping all rail positions."
+  },
+  {
+    label: "Mini rail peek labels",
+    status: "Done",
     route: "#main",
     detail: "Let Mini rail stay narrow until hover or keyboard focus, then reveal the full workspace labels without changing the saved layout."
   },
@@ -9313,9 +9319,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Mini rail peek labels",
-      status: "Active in v336",
+      status: "Done in v336",
       route: "#main",
       detail: "Reveal full Mini rail labels on hover or keyboard focus while keeping the saved compact rail width for the workspace."
+    },
+    {
+      label: "Layout preset command",
+      status: "Active in v337",
+      route: "#main",
+      detail: "Compress side and rail density choices into one saved Layout preset in the top command bar."
     }
   ];
   const productionTarget = releaseVersion
@@ -9329,7 +9341,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, and mini-rail label audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, and layout preset audit are complete.`
   };
   const launchGates = [
     {
@@ -9542,7 +9554,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v336 lets Mini rail reveal labels on hover or keyboard focus while preserving the saved compact workspace.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v337 compresses side and density controls into one saved Layout preset for a cleaner command bar.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9671,7 +9683,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v336</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v337</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -36491,11 +36503,20 @@ function loadNavSidePreference() {
   }
 }
 
+function navLayoutValue() {
+  return `${state.navSide === "right" ? "right" : "left"}-${state.navDensity === "mini" ? "mini" : "full"}`;
+}
+
+function syncNavLayoutSelect() {
+  if (els.navLayoutSelect) els.navLayoutSelect.value = navLayoutValue();
+}
+
 function applyNavSidePreference(side = "left", persist = true) {
   state.navSide = side === "right" ? "right" : "left";
   document.body.classList.toggle("desk-rail-left", state.navSide === "left");
   document.body.classList.toggle("desk-rail-right", state.navSide === "right");
   if (els.navSideSelect) els.navSideSelect.value = state.navSide;
+  syncNavLayoutSelect();
   if (!persist) return;
   try {
     localStorage.setItem(NAV_SIDE_KEY, state.navSide);
@@ -36524,6 +36545,7 @@ function applyNavDensityPreference(density = "full", persist = true) {
   state.navDensity = density === "mini" ? "mini" : "full";
   document.body.classList.toggle("desk-rail-mini", state.navDensity === "mini");
   if (els.navDensitySelect) els.navDensitySelect.value = state.navDensity;
+  syncNavLayoutSelect();
   if (!persist) return;
   try {
     localStorage.setItem(NAV_DENSITY_KEY, state.navDensity);
@@ -36536,6 +36558,16 @@ function bindNavDensityPreference() {
   applyNavDensityPreference(loadNavDensityPreference(), false);
   els.navDensitySelect?.addEventListener("change", (event) => {
     applyNavDensityPreference(event.target.value);
+    settleHashNavigation();
+  });
+}
+
+function bindNavLayoutPreference() {
+  syncNavLayoutSelect();
+  els.navLayoutSelect?.addEventListener("change", (event) => {
+    const [side, density] = String(event.target.value || "left-full").split("-");
+    applyNavSidePreference(side);
+    applyNavDensityPreference(density);
     settleHashNavigation();
   });
 }
@@ -60640,6 +60672,7 @@ function cacheElements() {
     toolPalette: qs("#toolPalette"),
     toolPaletteSearch: qs("#toolPaletteSearch"),
     toolPaletteResults: qs("#toolPaletteResults"),
+    navLayoutSelect: qs("#navLayoutSelect"),
     navSideSelect: qs("#navSideSelect"),
     navDensitySelect: qs("#navDensitySelect"),
     navLinks: qsa(".top-nav a[href^='#'], .desk-rail a[href^='#']"),
@@ -61404,6 +61437,7 @@ function init() {
   hydrateDeskRailHints();
   bindNavSidePreference();
   bindNavDensityPreference();
+  bindNavLayoutPreference();
   bindSimpleModeToggle();
   renderCategoryFilter();
   renderWatchFundSelect();

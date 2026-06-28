@@ -416,7 +416,8 @@ a {
 }
 
 .nav-side-control,
-.nav-density-control {
+.nav-density-control,
+.nav-layout-control {
   display: inline-grid;
   grid-template-columns: minmax(96px, 124px);
   align-items: center;
@@ -430,13 +431,19 @@ a {
   grid-template-columns: minmax(82px, 104px);
 }
 
+.nav-layout-control {
+  grid-template-columns: minmax(104px, 126px);
+}
+
 .nav-side-control span,
-.nav-density-control span {
+.nav-density-control span,
+.nav-layout-control span {
   display: none;
 }
 
 .nav-side-control select,
-.nav-density-control select {
+.nav-density-control select,
+.nav-layout-control select {
   width: 100%;
   min-height: 36px;
   padding: 7px 30px 7px 10px;
@@ -450,7 +457,8 @@ a {
 }
 
 .nav-side-control select:focus,
-.nav-density-control select:focus {
+.nav-density-control select:focus,
+.nav-layout-control select:focus {
   border-color: rgba(15, 124, 107, 0.62);
   outline: 3px solid rgba(216, 151, 60, 0.28);
 }
@@ -43343,6 +43351,7 @@ body.desk-rail-right .top-nav {
 .tool-palette-toggle,
 .nav-side-control select,
 .nav-density-control select,
+.nav-layout-control select,
 .workspace-jump select {
   min-height: 32px;
   font-size: 12px;
@@ -43354,6 +43363,10 @@ body.desk-rail-right .top-nav {
 
 .nav-density-control {
   grid-template-columns: minmax(80px, 96px);
+}
+
+.nav-layout-control {
+  grid-template-columns: minmax(102px, 118px);
 }
 
 .workspace-jump {
@@ -43919,7 +43932,8 @@ body.simple-mode .serenity-path .simplicity-path-actions {
   }
 
   .nav-side-control,
-  .nav-density-control {
+  .nav-density-control,
+  .nav-layout-control {
     display: none;
   }
 

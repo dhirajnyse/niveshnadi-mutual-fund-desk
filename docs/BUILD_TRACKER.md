@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V337 Layout Preset Command
+
+V337 compresses the top command bar by replacing separate Tabs and Rail selectors with one saved Layout preset. Left full, left mini, right full, and right mini still write to the same underlying rail preferences, so existing saved choices continue to work while the header takes less space.
+
 ## V336 Mini Rail Peek Labels
 
 V336 makes Mini rail easier to trust after the compact-mode release. The rail stays narrow for workspace width, then temporarily expands on hover or keyboard focus to reveal full labels, current context, and group names without changing the saved rail preference.

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V335 Mini Rail Mode
+
+V335 adds a saved Full/Mini rail density control beside the existing left/right rail selector. Mini rail keeps the desktop side navigation available while collapsing labels into compact numbered targets and group initials, giving frequent operators more workspace width without returning to top-tab clutter.
+
 ## V334 Rail Active Lane Keeper
 
 V334 keeps the desktop side rail oriented during long workspace movement. The active rail group is lightly marked, right-side rail placement gets a mirrored lane marker, and the relevant rail link or group is gently kept inside the fixed rail viewport as the workspace changes.

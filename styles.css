@@ -415,7 +415,8 @@ a {
   outline: 3px solid rgba(216, 151, 60, 0.28);
 }
 
-.nav-side-control {
+.nav-side-control,
+.nav-density-control {
   display: inline-grid;
   grid-template-columns: minmax(96px, 124px);
   align-items: center;
@@ -425,11 +426,17 @@ a {
   text-transform: uppercase;
 }
 
-.nav-side-control span {
+.nav-density-control {
+  grid-template-columns: minmax(82px, 104px);
+}
+
+.nav-side-control span,
+.nav-density-control span {
   display: none;
 }
 
-.nav-side-control select {
+.nav-side-control select,
+.nav-density-control select {
   width: 100%;
   min-height: 36px;
   padding: 7px 30px 7px 10px;
@@ -442,7 +449,8 @@ a {
   text-transform: none;
 }
 
-.nav-side-control select:focus {
+.nav-side-control select:focus,
+.nav-density-control select:focus {
   border-color: rgba(15, 124, 107, 0.62);
   outline: 3px solid rgba(216, 151, 60, 0.28);
 }
@@ -829,6 +837,95 @@ body.desk-rail-left main {
 
 body.desk-rail-right main {
   padding-right: var(--desk-rail-width);
+}
+
+body.desk-rail-mini .desk-rail {
+  padding-right: 7px;
+  padding-left: 7px;
+}
+
+body.desk-rail-mini .desk-rail-inner {
+  gap: 7px;
+}
+
+body.desk-rail-mini .desk-rail-context {
+  justify-items: center;
+  padding: 7px 5px;
+}
+
+body.desk-rail-mini .desk-rail-context > span,
+body.desk-rail-mini .desk-rail-context > strong,
+body.desk-rail-mini .desk-rail-context p,
+body.desk-rail-mini .desk-rail-next small,
+body.desk-rail-mini .desk-rail-label,
+body.desk-rail-mini .desk-rail a strong {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+body.desk-rail-mini .desk-rail-next {
+  justify-items: center;
+  min-height: 28px;
+  padding: 5px 4px;
+  text-align: center;
+}
+
+body.desk-rail-mini .desk-rail-next b {
+  font-size: 0;
+}
+
+body.desk-rail-mini .desk-rail-next b::after {
+  content: "Next";
+  font-size: 9px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+body.desk-rail-mini .desk-rail-switcher {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body.desk-rail-mini .desk-rail-switcher button {
+  min-height: 25px;
+  padding: 4px 0;
+  font-size: 0;
+}
+
+body.desk-rail-mini .desk-rail-switcher button::after {
+  content: attr(data-short);
+  font-size: 10px;
+  font-weight: 950;
+}
+
+body.desk-rail-mini .desk-rail-group {
+  justify-items: center;
+  padding: 1px 0;
+}
+
+body.desk-rail-mini .desk-rail-group.is-current {
+  box-shadow: inset 2px 0 0 rgba(158, 233, 223, 0.5);
+}
+
+body.desk-rail-right.desk-rail-mini .desk-rail-group.is-current {
+  box-shadow: inset -2px 0 0 rgba(158, 233, 223, 0.5);
+}
+
+body.desk-rail-mini .desk-rail a {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  min-height: 31px;
+  padding: 5px 4px;
+}
+
+body.desk-rail-mini .desk-rail a span {
+  width: 100%;
+  min-width: 26px;
+  min-height: 20px;
 }
 
 main {
@@ -43066,6 +43163,10 @@ body.desk-rail-right .floating-dock {
   --desk-rail-width: 172px;
 }
 
+body.desk-rail-mini {
+  --desk-rail-width: 74px;
+}
+
 body {
   font-size: 14px;
 }
@@ -43154,6 +43255,7 @@ body.desk-rail-right .top-nav {
 .simple-mode-toggle,
 .tool-palette-toggle,
 .nav-side-control select,
+.nav-density-control select,
 .workspace-jump select {
   min-height: 32px;
   font-size: 12px;
@@ -43161,6 +43263,10 @@ body.desk-rail-right .top-nav {
 
 .nav-side-control {
   grid-template-columns: minmax(94px, 112px);
+}
+
+.nav-density-control {
+  grid-template-columns: minmax(80px, 96px);
 }
 
 .workspace-jump {
@@ -43725,7 +43831,8 @@ body.simple-mode .serenity-path .simplicity-path-actions {
     display: grid;
   }
 
-  .nav-side-control {
+  .nav-side-control,
+  .nav-density-control {
     display: none;
   }
 

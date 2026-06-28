@@ -1,7 +1,8 @@
-const DATA_VERSION = "20260628-v334-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v334 Rail Active Lane Keeper";
+const DATA_VERSION = "20260628-v335-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v335 Mini Rail Mode";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
+const NAV_DENSITY_KEY = "niveshnadi-nav-density";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
 const SIMPLE_FUND_SHELF_LIMIT = 6;
@@ -1018,6 +1019,7 @@ const state = {
   simpleFiltersOpen: false,
   simpleRoomFocus: "",
   navSide: "left",
+  navDensity: "full",
   evidenceIntakeSlotId: "",
   investorRecordFocus: false,
   railKeepFrame: 0,
@@ -1244,8 +1246,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Rail active lane keeper",
+    label: "Mini rail mode",
     status: "Shipping now",
+    route: "#main",
+    detail: "Add a saved Full/Mini rail density control so familiar users can reclaim workspace width without losing the side navigation."
+  },
+  {
+    label: "Rail active lane keeper",
+    status: "Done",
     route: "#main",
     detail: "Keep the active rail group visibly marked and gently in view while users move through long research, trust, and founder lanes."
   },
@@ -1272,12 +1280,6 @@ const BUILD_TRACKER_CURRENT_SPRINT = [
     status: "Done",
     route: "#main",
     detail: "Move high-frequency workspace tabs into a Hyrvia-inspired side rail with saved left/right preference and compact top utilities."
-  },
-  {
-    label: "Workspace fit polish",
-    status: "Done",
-    route: "#main",
-    detail: "Remove the first-screen inner scroll trap, protect bottom content from fixed controls, and keep the Build progress path easy to scan."
   },
   {
     label: "Founder launch claim gate",
@@ -9293,9 +9295,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Rail active lane keeper",
-      status: "Active in v334",
+      status: "Done in v334",
       route: "#main",
       detail: "Highlight the current rail group and keep the relevant rail lane visible during long workspace scrolling and route jumps."
+    },
+    {
+      label: "Mini rail mode",
+      status: "Active in v335",
+      route: "#main",
+      detail: "Let users switch between the full labeled rail and a saved mini rail that preserves direct access while reclaiming workspace width."
     }
   ];
   const productionTarget = releaseVersion
@@ -9309,7 +9317,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, and rail-lane audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, and mini-rail audit are complete.`
   };
   const launchGates = [
     {
@@ -9522,7 +9530,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v334 keeps the active rail lane visible and lightly marked during long workspace movement.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v335 adds a saved Mini rail so compact operators can keep navigation without giving up workspace width.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9651,7 +9659,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v334</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v335</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -36472,6 +36480,34 @@ function bindNavSidePreference() {
   });
 }
 
+function loadNavDensityPreference() {
+  try {
+    return localStorage.getItem(NAV_DENSITY_KEY) === "mini" ? "mini" : "full";
+  } catch (error) {
+    return "full";
+  }
+}
+
+function applyNavDensityPreference(density = "full", persist = true) {
+  state.navDensity = density === "mini" ? "mini" : "full";
+  document.body.classList.toggle("desk-rail-mini", state.navDensity === "mini");
+  if (els.navDensitySelect) els.navDensitySelect.value = state.navDensity;
+  if (!persist) return;
+  try {
+    localStorage.setItem(NAV_DENSITY_KEY, state.navDensity);
+  } catch (error) {
+    // Rail density is a workspace comfort setting; full rail remains the fallback.
+  }
+}
+
+function bindNavDensityPreference() {
+  applyNavDensityPreference(loadNavDensityPreference(), false);
+  els.navDensitySelect?.addEventListener("change", (event) => {
+    applyNavDensityPreference(event.target.value);
+    settleHashNavigation();
+  });
+}
+
 function applySimpleFiltersOpen(open) {
   state.simpleFiltersOpen = Boolean(open);
   document.body.classList.toggle("simple-filters-open", state.simpleFiltersOpen);
@@ -60573,6 +60609,7 @@ function cacheElements() {
     toolPaletteSearch: qs("#toolPaletteSearch"),
     toolPaletteResults: qs("#toolPaletteResults"),
     navSideSelect: qs("#navSideSelect"),
+    navDensitySelect: qs("#navDensitySelect"),
     navLinks: qsa(".top-nav a[href^='#'], .desk-rail a[href^='#']"),
     searchInput: qs("#searchInput"),
     searchFeedback: qs("#searchFeedback"),
@@ -61333,6 +61370,7 @@ function cacheElements() {
 function init() {
   cacheElements();
   bindNavSidePreference();
+  bindNavDensityPreference();
   bindSimpleModeToggle();
   renderCategoryFilter();
   renderWatchFundSelect();

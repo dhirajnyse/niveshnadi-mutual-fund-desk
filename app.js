@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v323-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v323 Evidence Acceptance Ledger";
+const DATA_VERSION = "20260628-v324-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v324 Evidence Recovery Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1224,8 +1224,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Close the acceptance ledger rows for payment, legal, security, support, live-source, and founder decision proof before claiming production-ready 100%."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Work every recovery ticket until rejected and review-pending evidence rows are accepted or the first paid cohort remains frozen."
   },
   {
     phase: "Phase 2",
@@ -1241,8 +1241,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Evidence acceptance ledger",
+    label: "Evidence recovery queue",
     status: "Shipping now",
+    route: "#founder-beta-operating-room",
+    detail: "Turn rejected and review-pending proof rows into owner recovery tickets with fix action, acceptance rule, blocker reason, and 100% unlock condition."
+  },
+  {
+    label: "Evidence acceptance ledger",
+    status: "Done",
     route: "#founder-beta-operating-room",
     detail: "Record accepted, rejected, and blocked owner proof rows with rejection reasons, progress locks, and 100% release gates."
   },
@@ -9158,9 +9164,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Evidence acceptance ledger",
-      status: "Acceptance active",
+      status: "Done in v323",
       route: "#founder-beta-operating-room",
       detail: "Record proof verdicts, rejected artifacts, owner attestations, and production progress locks before any 100% claim."
+    },
+    {
+      label: "Evidence recovery queue",
+      status: "Recovery active",
+      route: "#founder-beta-operating-room",
+      detail: "Convert rejected and pending proof rows into owner repair tickets with acceptance criteria and 100% unlock conditions."
     }
   ];
   const productionTarget = releaseVersion
@@ -9387,7 +9399,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v323 turns intake packets into accepted, rejected, and blocked proof rows on the path to 100%.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v324 turns unresolved proof rows into owner recovery tickets on the path to 100%.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9516,7 +9528,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v323</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v324</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -15367,6 +15379,105 @@ function founderEvidenceAcceptanceLedger(realProof = founderRealProofCloseoutBoa
   };
 }
 
+function founderEvidenceRecoveryQueue(ledger = founderEvidenceAcceptanceLedger()) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const recoveryQueueId = ["NN", "EVIDENCE", "RECOVERY", "QUEUE", suffix].join("-").toUpperCase();
+  const recoveryBatchId = ["NN", "EVIDENCE", "RECOVERY", "BATCH", suffix].join("-").toUpperCase();
+  const founderEscalationId = ["NN", "FOUNDER", "RECOVERY", "ESCALATION", suffix].join("-").toUpperCase();
+  const unlockPlanId = ["NN", "PRODUCTION", "UNLOCK", "PLAN", suffix].join("-").toUpperCase();
+  const unresolvedRows = ledger.rows.filter((row) => row.verdict !== "Accepted");
+  const actionFor = (row) => row.verdict === "Review pending"
+    ? "Collect reviewer acceptance, owner attestation, source date, and blocked-data scan."
+    : `Attach external proof for ${row.requiredArtifact}`;
+  const tickets = unresolvedRows.map((row, index) => {
+    const critical = row.verdict === "Rejected until proof attached";
+    const priority = critical ? "P0 proof repair" : "P1 reviewer follow-up";
+    const recoveryState = critical ? "Open recovery" : "Reviewer follow-up";
+    const acceptanceRule = critical
+      ? "Close only after source receipt, owner attestation, safe-data scan, no-go memo update, and acceptance ledger verdict are saved."
+      : "Close only after reviewer accepts the owner packet and clears the progress hold.";
+    return {
+      acceptanceRule,
+      blocker: row.rejectionReason,
+      event: `evidence_recovery.${row.event.replace(/^real_proof_closeout\./, "")}`,
+      fixAction: actionFor(row),
+      owner: row.owner,
+      priority,
+      recoveryReceiptId: ["NN", "EVIDENCE", "RECOVERY", "RECEIPT", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      recoveryState,
+      route: row.route,
+      sourceAcceptanceRowId: row.acceptanceRowId,
+      sourceSafetyScanId: row.safetyScanId,
+      ticketId: ["NN", "EVIDENCE", "RECOVERY", "TICKET", String(index + 1).padStart(2, "0"), row.label.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase(),
+      tone: critical ? "blocked" : "watch",
+      unlockCondition: "Accepted ledger row with zero rejected artifacts and clear no-go register.",
+      ...row
+    };
+  });
+  const open = tickets.filter((ticket) => ticket.recoveryState === "Open recovery").length;
+  const followUp = tickets.filter((ticket) => ticket.recoveryState === "Reviewer follow-up").length;
+  const activeTicket = tickets[0];
+  const readiness = clampNumber(
+    ledger.readiness + Math.max(0, ledger.rows.length - tickets.length) * 2 - open * 2 - followUp,
+    8,
+    99
+  );
+  const status = tickets.length === 0
+    ? "Evidence recovery queue clear"
+    : open > 0
+      ? "Evidence recovery blocking 100%"
+      : "Evidence recovery needs reviewer closeout";
+  const tone = status === "Evidence recovery queue clear" ? "ready" : status === "Evidence recovery blocking 100%" ? "blocked" : "watch";
+  const metrics = [
+    { label: "Recovery queue", value: recoveryQueueId, detail: `${status}; ${tickets.length} ticket${tickets.length === 1 ? "" : "s"} before unlock.` },
+    { label: "Recovery batch", value: recoveryBatchId, detail: `${open} open repair, ${followUp} reviewer follow-up ticket${tickets.length === 1 ? "" : "s"}.` },
+    { label: "Active repair", value: activeTicket?.label || "No active ticket", detail: activeTicket ? `${activeTicket.owner}: ${activeTicket.fixAction}` : "No recovery ticket remains." },
+    { label: "Unlock plan", value: unlockPlanId, detail: tickets.length ? "100% stays locked until every ticket closes." : "Ready for final production review." }
+  ];
+  const recoveryRules = [
+    "Do not close a recovery ticket from a screenshot, oral confirmation, placeholder text, or browser-local state.",
+    "Every repair must produce a source receipt, owner attestation, blocked-data scan result, and updated no-go reason.",
+    "Keep paid invites frozen while any P0 proof repair remains open.",
+    "Reviewer follow-up cannot unlock 100% until the acceptance ledger row changes to accepted.",
+    "Escalate to founder if the same owner cannot attach safe external proof."
+  ];
+  const receiptFields = [...new Set([
+    "evidence_recovery_queue_id",
+    "evidence_recovery_batch_id",
+    "evidence_recovery_ticket_id",
+    "evidence_recovery_receipt_id",
+    "source_acceptance_row_id",
+    "source_safety_scan_id",
+    "recovery_priority",
+    "recovery_state",
+    "fix_action",
+    "acceptance_rule",
+    "unlock_condition",
+    "founder_escalation_id",
+    "production_unlock_plan_id",
+    "closed_by",
+    "closed_at",
+    ...ledger.receiptFields
+  ])];
+
+  return {
+    activeTicket,
+    founderEscalationId,
+    followUp,
+    metrics,
+    open,
+    readiness,
+    receiptFields,
+    recoveryBatchId,
+    recoveryQueueId,
+    recoveryRules,
+    status,
+    tickets,
+    tone,
+    unlockPlanId
+  };
+}
+
 function renderFounderBetaOperatingRoom() {
   if (!els.founderBetaOpsOutput) return;
   const ops = founderBetaOperatingRoomConfig();
@@ -15376,8 +15487,9 @@ function renderFounderBetaOperatingRoom() {
   const realProof = founderRealProofCloseoutBoard(ops, warRoom, commandCenter, daybook);
   const intake = founderEvidenceIntakeDrawer(realProof);
   const ledger = founderEvidenceAcceptanceLedger(realProof, intake);
+  const recovery = founderEvidenceRecoveryQueue(ledger);
   if (els.founderBetaOpsSummary) {
-    els.founderBetaOpsSummary.textContent = `${ledger.readiness}/100 | ${ledger.status}`;
+    els.founderBetaOpsSummary.textContent = `${recovery.readiness}/100 | ${recovery.status}`;
   }
   els.founderBetaOpsOutput.innerHTML = `
     <div class="founder-beta-ops-hero ${ops.posture.startsWith("Open") ? "ready" : ops.posture.startsWith("Founder") ? "watch" : "blocked"}">
@@ -15736,6 +15848,90 @@ function renderFounderBetaOperatingRoom() {
         </article>
       </div>
     </div>
+    <div id="evidence-recovery-queue" class="evidence-recovery-queue ${escapeHtml(recovery.tone)}">
+      <div class="evidence-recovery-queue-head">
+        <div>
+          <span>V324 evidence recovery queue</span>
+          <h3>${escapeHtml(recovery.status)}</h3>
+          <p>Queue ${escapeHtml(recovery.recoveryQueueId)} turns every unresolved acceptance row into an owner recovery ticket with fix action, acceptance rule, blocker reason, and production unlock condition.</p>
+        </div>
+        <div class="evidence-recovery-queue-score" style="--score:${recovery.readiness}">
+          <strong>${recovery.readiness}</strong>
+          <span>Fix</span>
+        </div>
+      </div>
+      <div class="evidence-recovery-queue-metrics">
+        ${recovery.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="evidence-recovery-active">
+        <article class="${escapeHtml(recovery.activeTicket?.tone || recovery.tone)}">
+          <span>Active recovery</span>
+          <strong>${escapeHtml(recovery.activeTicket?.label || "No active ticket")}</strong>
+          <p><b>Owner:</b> ${escapeHtml(recovery.activeTicket?.owner || "Founder")}</p>
+          <p><b>Fix:</b> ${escapeHtml(recovery.activeTicket?.fixAction || "No recovery fix remains.")}</p>
+          <p><b>Blocker:</b> ${escapeHtml(recovery.activeTicket?.blocker || "No blocker remains.")}</p>
+          <small>${escapeHtml(recovery.activeTicket?.ticketId || recovery.recoveryBatchId)}</small>
+        </article>
+        <article>
+          <span>Unlock plan</span>
+          <strong>${escapeHtml(recovery.unlockPlanId)}</strong>
+          <p>100% can unlock only after every recovery ticket closes and the acceptance ledger has zero rejected or pending rows.</p>
+          <small>${escapeHtml(recovery.founderEscalationId)}</small>
+        </article>
+      </div>
+      <div class="evidence-recovery-tickets">
+        ${recovery.tickets.length ? recovery.tickets.map((ticket) => `
+          <article class="${escapeHtml(ticket.tone)}">
+            <div class="evidence-recovery-ticket-head">
+              <div>
+                <span>${escapeHtml(ticket.priority)} | ${escapeHtml(ticket.owner)}</span>
+                <strong>${escapeHtml(ticket.label)}</strong>
+              </div>
+              <b>${ticket.evidenceScore}</b>
+            </div>
+            <div class="build-progress-bar launch"><span style="width:${ticket.evidenceScore}%"></span></div>
+            <p><b>Fix:</b> ${escapeHtml(ticket.fixAction)}</p>
+            <p><b>Accept:</b> ${escapeHtml(ticket.acceptanceRule)}</p>
+            <small>${escapeHtml(ticket.ticketId)} | ${escapeHtml(ticket.recoveryState)}</small>
+            <button class="text-button" type="button" data-founder-beta-ops-route="${escapeHtml(ticket.route)}">Open route</button>
+          </article>
+        `).join("") : `
+          <article class="ready">
+            <span>No recovery tickets</span>
+            <strong>Queue clear</strong>
+            <p>All proof rows are accepted. Move to final production review before making any 100% claim.</p>
+          </article>
+        `}
+      </div>
+      <div class="evidence-recovery-two">
+        <article>
+          <span>Recovery rules</span>
+          <strong>${escapeHtml(recovery.recoveryBatchId)}</strong>
+          <ul>${recovery.recoveryRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}</ul>
+        </article>
+        <article class="${recovery.open ? "blocked" : recovery.followUp ? "watch" : "ready"}">
+          <span>Founder escalation</span>
+          <strong>${escapeHtml(recovery.founderEscalationId)}</strong>
+          <p>${recovery.open} open repair and ${recovery.followUp} reviewer follow-up ticket${recovery.tickets.length === 1 ? "" : "s"} remain before unlock.</p>
+        </article>
+        <article>
+          <span>Unlock condition</span>
+          <strong>${escapeHtml(recovery.unlockPlanId)}</strong>
+          <p>Close all tickets, rerun acceptance ledger, clear no-go register, and then ask for final founder production review.</p>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <strong>${recovery.receiptFields.length} fields</strong>
+          <ul>${recovery.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}</ul>
+        </article>
+      </div>
+    </div>
     <div class="founder-war-room ${escapeHtml(warRoom.tone)}">
       <div class="founder-war-room-head">
         <div>
@@ -15857,6 +16053,7 @@ function makeFounderBetaWarRoomDigestBrief() {
   const realProof = founderRealProofCloseoutBoard(ops, warRoom, commandCenter, daybook);
   const intake = founderEvidenceIntakeDrawer(realProof);
   const ledger = founderEvidenceAcceptanceLedger(realProof, intake);
+  const recovery = founderEvidenceRecoveryQueue(ledger);
   return [
     "# NiveshNadi Founder Beta War-Room Digest",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -15876,6 +16073,10 @@ function makeFounderBetaWarRoomDigestBrief() {
     `Evidence acceptance status: ${ledger.status}`,
     `Evidence acceptance readiness: ${ledger.readiness}/100`,
     `Production progress lock: ${ledger.progressLockId}`,
+    `Evidence recovery queue ID: ${recovery.recoveryQueueId}`,
+    `Evidence recovery status: ${recovery.status}`,
+    `Evidence recovery readiness: ${recovery.readiness}/100`,
+    `Production unlock plan: ${recovery.unlockPlanId}`,
     `Cohort decision ID: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `War-room ID: ${warRoom.warRoomId}`,
@@ -15919,6 +16120,11 @@ function makeFounderBetaWarRoomDigestBrief() {
     ...ledger.gates.map((gate) => `- 100% gate: ${gate.label} | ${gate.status} | ${gate.detail}`),
     ...ledger.noGoReasons.map((reason) => `- No-go: ${reason}`),
     "",
+    "## Evidence Recovery Queue",
+    ...recovery.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...recovery.tickets.map((ticket) => `- ${ticket.ticketId}: ${ticket.label} | ${ticket.owner} | ${ticket.priority} | ${ticket.recoveryState} | Fix: ${ticket.fixAction}`),
+    ...recovery.recoveryRules.map((rule) => `- Recovery rule: ${rule}`),
+    "",
     "## Founder Decisions",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),
     "",
@@ -15949,6 +16155,7 @@ function makeFounderBetaOperatingBrief() {
   const realProof = founderRealProofCloseoutBoard(ops, warRoom, commandCenter, daybook);
   const intake = founderEvidenceIntakeDrawer(realProof);
   const ledger = founderEvidenceAcceptanceLedger(realProof, intake);
+  const recovery = founderEvidenceRecoveryQueue(ledger);
   return [
     "# NiveshNadi Founder Beta Operating Room",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -15968,6 +16175,10 @@ function makeFounderBetaOperatingBrief() {
     `Evidence acceptance status: ${ledger.status}`,
     `Evidence acceptance readiness: ${ledger.readiness}/100`,
     `Production progress lock: ${ledger.progressLockId}`,
+    `Evidence recovery queue: ${recovery.recoveryQueueId}`,
+    `Evidence recovery status: ${recovery.status}`,
+    `Evidence recovery readiness: ${recovery.readiness}/100`,
+    `Production unlock plan: ${recovery.unlockPlanId}`,
     `Cohort decision: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `Operating score: ${ops.operatingScore}/100`,
@@ -16015,6 +16226,12 @@ function makeFounderBetaOperatingBrief() {
     ...ledger.gates.map((gate) => `- Evidence 100% gate: ${gate.label} | ${gate.status} | ${gate.detail}`),
     ...ledger.noGoReasons.map((reason) => `- Evidence no-go: ${reason}`),
     ...ledger.receiptFields.map((field) => `- Evidence acceptance receipt field: ${field}`),
+    "",
+    "## Evidence Recovery Queue",
+    ...recovery.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...recovery.tickets.map((ticket) => `- ${ticket.ticketId}: ${ticket.label} | ${ticket.owner} | ${ticket.priority} | ${ticket.recoveryState} | Accept: ${ticket.acceptanceRule}`),
+    ...recovery.recoveryRules.map((rule) => `- Evidence recovery rule: ${rule}`),
+    ...recovery.receiptFields.map((field) => `- Evidence recovery receipt field: ${field}`),
     "",
     "## Founder War-Room Digest",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),

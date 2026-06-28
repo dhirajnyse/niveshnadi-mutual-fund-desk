@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V324 Evidence Recovery Queue
+
+V324 adds the Evidence Recovery Queue inside the Founder Beta Operating Room. It reads the Evidence Acceptance Ledger, then converts rejected and review-pending owner proof rows into recovery tickets with owner, priority, fix action, acceptance rule, source safety scan, blocker reason, founder escalation, recovery receipts, and production unlock plan before the desk can claim production-ready 100%.
+
 ## V323 Evidence Acceptance Ledger
 
 V323 adds the Evidence Acceptance Ledger inside the Founder Beta Operating Room. It reads the Evidence Intake Drawer and Real Proof Closeout Board, then records every owner proof row as accepted, review pending, or rejected until proof is attached. It shows rejection reasons, active verdict, progress lock, no-go register, 100% release gates, acceptance receipts, and receipt fields before production-ready 100% can be claimed.

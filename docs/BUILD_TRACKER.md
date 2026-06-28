@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V326 Founder Signoff Memo
+
+V326 adds the Founder Signoff Memo inside the Founder Beta Operating Room. It reads the Production Unlock Review Board, then records the founder open, hold, or freeze posture with owner signoff lines, memo clauses, blocker reasons, evidence binder, decision receipt, freeze receipt, and receipt fields before production-ready 100% can be claimed.
+
 ## V325 Production Unlock Review Board
 
 V325 adds the Production Unlock Review Board inside the Founder Beta Operating Room. It reads the Evidence Recovery Queue, then joins recovery tickets, accepted evidence, no-go reasons, support/refund readiness, payment/legal proof, live-source rollback proof, gate verdicts, founder decision memo, audit packet, blocker reasons, and receipt fields before production-ready 100% can open.

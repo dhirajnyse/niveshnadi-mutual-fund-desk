@@ -20,4 +20,6 @@ V324 adds Evidence Recovery Queue. The room now converts every rejected or revie
 
 V325 adds Production Unlock Review Board. The room now joins recovery tickets, acceptance evidence, no-go reasons, support/refund readiness, payment/legal proof, live-source rollback proof, unlock gate verdicts, founder decision memo, audit packet, blocker reasons, and receipt fields into one final review board. The board keeps production-ready 100% closed until all gates pass and the founder records an open, hold, or freeze decision.
 
+V326 adds Founder Signoff Memo. The room now converts the production unlock review into a founder open, hold, or freeze memo with signoff lines, memo clauses, blocker reasons, evidence binder, decision receipt, freeze receipt, and backend receipt fields. It keeps production-ready 100% closed until the founder signoff receipt is attached.
+
 This room protects monetization discipline. Low retail pricing can work only if hidden support, refund, evidence, and account costs are visible before the product invites more users. It also preserves the Phase 1 boundary: no advice, no execution, no PAN, folio, CAS, bank, UPI, card, OTP, ARN, EUIN, distributor client book, or Phase 2 workflow belongs inside the founder beta operating rhythm.

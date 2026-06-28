@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v325-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v325 Production Unlock Review Board";
+const DATA_VERSION = "20260628-v326-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v326 Founder Signoff Memo";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1224,8 +1224,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Use the unlock review board to keep 100% closed until recovery, acceptance, no-go, support, payment, legal, and live-source gates all pass."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Use the founder signoff memo to record open, hold, or freeze before production-ready 100% can be claimed."
   },
   {
     phase: "Phase 2",
@@ -1241,8 +1241,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Production unlock review board",
+    label: "Founder signoff memo",
     status: "Shipping now",
+    route: "#founder-beta-operating-room",
+    detail: "Turn the unlock review board into a founder open, hold, or freeze memo with signoff lines, blocker reasons, decision receipt, and the final 100% release condition."
+  },
+  {
+    label: "Production unlock review board",
+    status: "Done",
     route: "#founder-beta-operating-room",
     detail: "Join recovery tickets, acceptance rows, no-go reasons, and final founder review into one board that decides whether the 100% lock can open."
   },
@@ -9182,9 +9188,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Production unlock review board",
-      status: "Unlock review active",
+      status: "Done in v325",
       route: "#founder-beta-operating-room",
       detail: "Join recovery tickets, accepted evidence, no-go reasons, founder decision, and launch gates before opening the 100% lock."
+    },
+    {
+      label: "Founder signoff memo",
+      status: "Signoff active",
+      route: "#founder-beta-operating-room",
+      detail: "Record the founder open, hold, or freeze memo with signoff lines, blocker reasons, decision receipt, and the final release condition."
     }
   ];
   const productionTarget = releaseVersion
@@ -9198,7 +9210,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates read complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates and the founder signoff receipt are complete.`
   };
   const launchGates = [
     {
@@ -9411,7 +9423,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v325 turns recovery tickets into a final production unlock review on the path to 100%.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v326 turns the unlock review into a founder open, hold, or freeze memo on the path to 100%.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9540,7 +9552,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v325</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v326</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -15620,6 +15632,153 @@ function founderProductionUnlockReviewBoard(recovery = founderEvidenceRecoveryQu
   };
 }
 
+function founderProductionSignoffMemo(unlock = founderProductionUnlockReviewBoard()) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const memoId = ["NN", "FOUNDER", "SIGNOFF", "MEMO", suffix].join("-").toUpperCase();
+  const decisionReceiptId = ["NN", "FOUNDER", "SIGNOFF", "DECISION", "RECEIPT", suffix].join("-").toUpperCase();
+  const signoffPacketId = ["NN", "FOUNDER", "SIGNOFF", "PACKET", suffix].join("-").toUpperCase();
+  const evidenceBinderId = ["NN", "FOUNDER", "SIGNOFF", "EVIDENCE", "BINDER", suffix].join("-").toUpperCase();
+  const freezeReceiptId = ["NN", "FOUNDER", "SIGNOFF", "FREEZE", suffix].join("-").toUpperCase();
+  const gateByLabel = new Map(unlock.gates.map((gate) => [gate.label, gate]));
+  const evidenceGate = gateByLabel.get("Evidence recovery");
+  const acceptanceGate = gateByLabel.get("Acceptance ledger");
+  const supportGate = gateByLabel.get("Support and refund readiness");
+  const paymentGate = gateByLabel.get("Payment and legal proof");
+  const sourceGate = gateByLabel.get("Live-source and rollback proof");
+  const blocked = unlock.blocked > 0;
+  const review = !blocked && unlock.review > 0;
+  const decisionPosture = blocked
+    ? "Freeze paid cohort"
+    : review
+      ? "Hold for founder review"
+      : "Open controlled cohort";
+  const status = blocked
+    ? "Founder signoff memo freezes launch"
+    : review
+      ? "Founder signoff memo holds launch"
+      : "Founder signoff memo can open";
+  const tone = blocked ? "blocked" : review ? "watch" : "ready";
+  const readiness = clampNumber(Math.round(unlock.readiness - (blocked ? 3 : review ? 1 : 0)), 8, 99);
+  const decisionCopy = blocked
+    ? "Founder signs a freeze until blocked gates close and the unlock board can be rerun."
+    : review
+      ? "Founder holds production while review gates attach final owner proof."
+      : "Founder can open a controlled first cohort with cap, refund path, rollback owner, and timestamped receipt.";
+  const lineTone = (statusValue) => statusValue === "Ready" || statusValue === "Signed open"
+    ? "ready"
+    : statusValue === "Blocked" || statusValue === "Frozen"
+      ? "blocked"
+      : "watch";
+  const signoffLines = [
+    {
+      label: "Evidence owner",
+      owner: evidenceGate?.owner || "Founder",
+      status: evidenceGate?.status || "Review",
+      detail: evidenceGate?.detail || "Evidence recovery gate must be attached.",
+      source: evidenceGate?.gateId || unlock.gateRegisterId
+    },
+    {
+      label: "Acceptance owner",
+      owner: acceptanceGate?.owner || "Reviewer",
+      status: acceptanceGate?.status || "Review",
+      detail: acceptanceGate?.detail || "Acceptance ledger must show clean proof verdicts.",
+      source: acceptanceGate?.gateId || unlock.gateRegisterId
+    },
+    {
+      label: "Support/payment/legal",
+      owner: "Support and payment leads",
+      status: [supportGate?.status, paymentGate?.status].includes("Blocked")
+        ? "Blocked"
+        : [supportGate?.status, paymentGate?.status].includes("Review")
+          ? "Review"
+          : "Ready",
+      detail: "Support capacity, refund path, payment rail, legal wording, and no-advice disclosure must match the accepted evidence.",
+      source: [supportGate?.gateId, paymentGate?.gateId].filter(Boolean).join(" | ") || unlock.gateRegisterId
+    },
+    {
+      label: "Source/rollback owner",
+      owner: sourceGate?.owner || "Source owner",
+      status: sourceGate?.status || "Review",
+      detail: sourceGate?.detail || "Live-source receipt, alert/replay proof, and rollback owner must be attached.",
+      source: sourceGate?.gateId || unlock.gateRegisterId
+    },
+    {
+      label: "Founder decision",
+      owner: "Founder",
+      status: blocked ? "Frozen" : review ? "Review" : "Signed open",
+      detail: decisionCopy,
+      source: decisionReceiptId
+    }
+  ].map((line, index) => ({
+    ...line,
+    lineId: ["NN", "FOUNDER", "SIGNOFF", "LINE", String(index + 1).padStart(2, "0"), line.label.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase(),
+    tone: lineTone(line.status)
+  }));
+  const memoClauses = [
+    `Decision posture: ${decisionPosture}.`,
+    `Unlock board: ${unlock.unlockBoardId}; readiness ${unlock.readiness}/100 before founder memo.`,
+    `Evidence binder: ${evidenceBinderId}; audit packet ${unlock.auditPacketId}.`,
+    "Cohort cap, support owner, refund path, rollback owner, and signed timestamp are mandatory.",
+    "Production-ready 100% stays closed until every signoff line is Ready or Signed open."
+  ];
+  const decisionRules = [
+    "Freeze if any unlock gate is blocked or any recovery ticket remains open.",
+    "Hold if hard blockers close but review gates still need founder or owner proof.",
+    "Open only when every line is ready, the cohort cap is named, and the decision receipt is attached.",
+    "Never move the Build tracker to production-ready 100% without the founder signoff decision receipt."
+  ];
+  const blockerReasons = blocked
+    ? unlock.blockerReasons
+    : review
+      ? unlock.gates.filter((gate) => gate.status === "Review").map((gate) => `${gate.label}: ${gate.detail}`)
+      : ["No blocker remains; founder can attach the open decision receipt."];
+  const metrics = [
+    { label: "Signoff memo", value: memoId, detail: `${status}; ${readiness}/100 signoff readiness.` },
+    { label: "Decision receipt", value: decisionReceiptId, detail: decisionPosture },
+    { label: "Signoff packet", value: signoffPacketId, detail: `${signoffLines.filter((line) => line.tone === "ready").length} ready, ${signoffLines.filter((line) => line.tone === "watch").length} review, ${signoffLines.filter((line) => line.tone === "blocked").length} blocked line${signoffLines.length === 1 ? "" : "s"}.` },
+    { label: "Evidence binder", value: evidenceBinderId, detail: `${blockerReasons.length} memo blocker reason${blockerReasons.length === 1 ? "" : "s"} carried forward.` }
+  ];
+  const receiptFields = [...new Set([
+    "founder_signoff_memo_id",
+    "founder_signoff_decision_receipt_id",
+    "founder_signoff_packet_id",
+    "founder_signoff_evidence_binder_id",
+    "founder_signoff_freeze_receipt_id",
+    "founder_signoff_decision_posture",
+    "founder_signoff_line_id",
+    "founder_signoff_line_owner",
+    "founder_signoff_line_status",
+    "founder_signoff_blocker_reason",
+    "founder_signoff_clause",
+    "founder_signed_by",
+    "founder_signed_at",
+    "cohort_cap_after_signoff",
+    "rollback_owner_after_signoff",
+    ...unlock.receiptFields
+  ])];
+
+  return {
+    blocked,
+    blockerReasons,
+    decisionCopy,
+    decisionPosture,
+    decisionReceiptId,
+    decisionRules,
+    evidenceBinderId,
+    freezeReceiptId,
+    memoClauses,
+    memoId,
+    metrics,
+    readiness,
+    receiptFields,
+    review,
+    signoffLines,
+    signoffPacketId,
+    status,
+    tone
+  };
+}
+
 function renderFounderBetaOperatingRoom() {
   if (!els.founderBetaOpsOutput) return;
   const ops = founderBetaOperatingRoomConfig();
@@ -15631,8 +15790,9 @@ function renderFounderBetaOperatingRoom() {
   const ledger = founderEvidenceAcceptanceLedger(realProof, intake);
   const recovery = founderEvidenceRecoveryQueue(ledger);
   const unlock = founderProductionUnlockReviewBoard(recovery);
+  const signoff = founderProductionSignoffMemo(unlock);
   if (els.founderBetaOpsSummary) {
-    els.founderBetaOpsSummary.textContent = `${unlock.readiness}/100 | ${unlock.status}`;
+    els.founderBetaOpsSummary.textContent = `${signoff.readiness}/100 | ${signoff.status}`;
   }
   els.founderBetaOpsOutput.innerHTML = `
     <div class="founder-beta-ops-hero ${ops.posture.startsWith("Open") ? "ready" : ops.posture.startsWith("Founder") ? "watch" : "blocked"}">
@@ -16142,6 +16302,73 @@ function renderFounderBetaOperatingRoom() {
         </article>
       </div>
     </div>
+    <div id="founder-signoff-memo" class="founder-signoff-memo ${escapeHtml(signoff.tone)}">
+      <div class="founder-signoff-head">
+        <div>
+          <span>V326 founder signoff memo</span>
+          <h3>${escapeHtml(signoff.status)}</h3>
+          <p>Memo ${escapeHtml(signoff.memoId)} turns the production unlock review into a founder open, hold, or freeze decision with signoff lines, blocker reasons, and receipt fields before production-ready 100% can be claimed.</p>
+        </div>
+        <div class="founder-signoff-score" style="--score:${signoff.readiness}">
+          <strong>${signoff.readiness}</strong>
+          <span>Sign</span>
+        </div>
+      </div>
+      <div class="founder-signoff-metrics">
+        ${signoff.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-signoff-decision">
+        <article class="${escapeHtml(signoff.tone)}">
+          <span>Decision posture</span>
+          <strong>${escapeHtml(signoff.decisionPosture)}</strong>
+          <p>${escapeHtml(signoff.decisionCopy)}</p>
+          <small>${escapeHtml(signoff.decisionReceiptId)} | ${escapeHtml(signoff.freezeReceiptId)}</small>
+        </article>
+        <article>
+          <span>Memo clauses</span>
+          <strong>${escapeHtml(signoff.signoffPacketId)}</strong>
+          <ol>${signoff.memoClauses.map((clause) => `<li>${escapeHtml(clause)}</li>`).join("")}</ol>
+        </article>
+      </div>
+      <div class="founder-signoff-lines">
+        ${signoff.signoffLines.map((line) => `
+          <article class="${escapeHtml(line.tone)}">
+            <span>${escapeHtml(line.owner)}</span>
+            <strong>${escapeHtml(line.label)}</strong>
+            <p><b>${escapeHtml(line.status)}:</b> ${escapeHtml(line.detail)}</p>
+            <small>${escapeHtml(line.lineId)} | ${escapeHtml(line.source)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-signoff-two">
+        <article>
+          <span>Decision rules</span>
+          <strong>Open, hold, or freeze</strong>
+          <ul>${signoff.decisionRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}</ul>
+        </article>
+        <article class="${signoff.blocked ? "blocked" : signoff.review ? "watch" : "ready"}">
+          <span>Memo blocker reasons</span>
+          <strong>${signoff.blockerReasons.length} reason${signoff.blockerReasons.length === 1 ? "" : "s"}</strong>
+          <ul>${signoff.blockerReasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>Evidence binder</span>
+          <strong>${escapeHtml(signoff.evidenceBinderId)}</strong>
+          <p>Bind the unlock board, gate register, audit packet, blocker reasons, and founder decision receipt before changing the production-ready 100% claim.</p>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <strong>${signoff.receiptFields.length} fields</strong>
+          <ul>${signoff.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}</ul>
+        </article>
+      </div>
+    </div>
     <div class="founder-war-room ${escapeHtml(warRoom.tone)}">
       <div class="founder-war-room-head">
         <div>
@@ -16265,6 +16492,7 @@ function makeFounderBetaWarRoomDigestBrief() {
   const ledger = founderEvidenceAcceptanceLedger(realProof, intake);
   const recovery = founderEvidenceRecoveryQueue(ledger);
   const unlock = founderProductionUnlockReviewBoard(recovery);
+  const signoff = founderProductionSignoffMemo(unlock);
   return [
     "# NiveshNadi Founder Beta War-Room Digest",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -16292,6 +16520,10 @@ function makeFounderBetaWarRoomDigestBrief() {
     `Production unlock status: ${unlock.status}`,
     `Production unlock readiness: ${unlock.readiness}/100`,
     `Founder unlock decision: ${unlock.founderDecisionId}`,
+    `Founder signoff memo ID: ${signoff.memoId}`,
+    `Founder signoff status: ${signoff.status}`,
+    `Founder signoff readiness: ${signoff.readiness}/100`,
+    `Founder signoff decision receipt: ${signoff.decisionReceiptId}`,
     `Cohort decision ID: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `War-room ID: ${warRoom.warRoomId}`,
@@ -16346,6 +16578,13 @@ function makeFounderBetaWarRoomDigestBrief() {
     ...unlock.blockerReasons.map((reason) => `- Unlock blocker: ${reason}`),
     ...unlock.reviewPacket.map((item) => `- Review packet: ${item}`),
     "",
+    "## Founder Signoff Memo",
+    ...signoff.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...signoff.signoffLines.map((line) => `- ${line.lineId}: ${line.label} | ${line.owner} | ${line.status} | ${line.detail}`),
+    ...signoff.memoClauses.map((clause) => `- Memo clause: ${clause}`),
+    ...signoff.decisionRules.map((rule) => `- Decision rule: ${rule}`),
+    ...signoff.blockerReasons.map((reason) => `- Signoff blocker: ${reason}`),
+    "",
     "## Founder Decisions",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),
     "",
@@ -16378,6 +16617,7 @@ function makeFounderBetaOperatingBrief() {
   const ledger = founderEvidenceAcceptanceLedger(realProof, intake);
   const recovery = founderEvidenceRecoveryQueue(ledger);
   const unlock = founderProductionUnlockReviewBoard(recovery);
+  const signoff = founderProductionSignoffMemo(unlock);
   return [
     "# NiveshNadi Founder Beta Operating Room",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -16405,6 +16645,10 @@ function makeFounderBetaOperatingBrief() {
     `Production unlock status: ${unlock.status}`,
     `Production unlock readiness: ${unlock.readiness}/100`,
     `Founder unlock decision: ${unlock.founderDecisionId}`,
+    `Founder signoff memo: ${signoff.memoId}`,
+    `Founder signoff status: ${signoff.status}`,
+    `Founder signoff readiness: ${signoff.readiness}/100`,
+    `Founder signoff decision receipt: ${signoff.decisionReceiptId}`,
     `Cohort decision: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `Operating score: ${ops.operatingScore}/100`,
@@ -16465,6 +16709,14 @@ function makeFounderBetaOperatingBrief() {
     ...unlock.blockerReasons.map((reason) => `- Production unlock blocker: ${reason}`),
     ...unlock.reviewPacket.map((item) => `- Production unlock review packet: ${item}`),
     ...unlock.receiptFields.map((field) => `- Production unlock receipt field: ${field}`),
+    "",
+    "## Founder Signoff Memo",
+    ...signoff.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...signoff.signoffLines.map((line) => `- Founder signoff line: ${line.label} | ${line.owner} | ${line.status} | ${line.lineId}`),
+    ...signoff.memoClauses.map((clause) => `- Founder memo clause: ${clause}`),
+    ...signoff.decisionRules.map((rule) => `- Founder signoff rule: ${rule}`),
+    ...signoff.blockerReasons.map((reason) => `- Founder signoff blocker: ${reason}`),
+    ...signoff.receiptFields.map((field) => `- Founder signoff receipt field: ${field}`),
     "",
     "## Founder War-Room Digest",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),

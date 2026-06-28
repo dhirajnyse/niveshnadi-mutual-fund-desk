@@ -633,6 +633,77 @@ body.desk-rail-right .desk-rail {
   gap: 12px;
 }
 
+.desk-rail-context {
+  display: grid;
+  gap: 5px;
+  padding: 10px 9px;
+  border: 1px solid rgba(158, 233, 223, 0.22);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.desk-rail-context > span,
+.desk-rail-next small {
+  color: #9ee9df;
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.desk-rail-context > strong {
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.desk-rail-context p {
+  margin: 0;
+  overflow: hidden;
+  color: #bdd5e5;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.desk-rail-next {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+  min-height: 32px;
+  margin-top: 3px;
+  padding: 6px 8px;
+  border: 1px solid rgba(158, 233, 223, 0.18);
+  border-radius: var(--radius);
+  background: rgba(226, 242, 255, 0.12);
+  color: #ffffff;
+  cursor: pointer;
+  text-align: left;
+}
+
+.desk-rail-next:hover,
+.desk-rail-next:focus-visible {
+  border-color: rgba(158, 233, 223, 0.42);
+  background: rgba(255, 255, 255, 0.16);
+  outline: none;
+}
+
+.desk-rail-next b {
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .desk-rail-group {
   display: grid;
   gap: 5px;
@@ -43057,6 +43128,24 @@ body.simple-mode .desk-rail {
 
 .desk-rail-inner {
   gap: 8px;
+}
+
+.desk-rail-context {
+  gap: 4px;
+  padding: 8px 7px;
+}
+
+.desk-rail-context > strong {
+  font-size: 12px;
+}
+
+.desk-rail-next {
+  min-height: 29px;
+  padding: 5px 7px;
+}
+
+.desk-rail-next b {
+  font-size: 11px;
 }
 
 .desk-rail-label {

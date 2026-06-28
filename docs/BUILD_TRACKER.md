@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V332 Rail Context Guide
+
+V332 adds a compact Now/Next guide to the desktop side rail. The rail now keeps the current room, workspace group, and next high-frequency move visible while the user scrolls, jumps through the workspace selector, or opens routes from the tool finder.
+
 ## V331 Desk Rail Fit Polish
 
 V331 tightens the desktop side rail after screenshot review. Workspace bands now anchor closer to the rail instead of drifting into a second gutter, the rail is slimmer, rail rhythm is denser, internal scrollbar chrome is hidden, and mobile/tablet spacing still resets to the top-tab layout.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v331-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v331 Desk Rail Fit Polish";
+const DATA_VERSION = "20260628-v332-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v332 Rail Context Guide";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
@@ -1226,8 +1226,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "desk rail navigation", "desk rail fit polish", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Use the desk rail fit polish to keep the side rail close to the workspace, quiet, and free of heavy nested scrollbars."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "desk rail navigation", "desk rail fit polish", "rail context guide", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Use the rail context guide to keep the active room and next high-frequency move visible inside the side rail."
   },
   {
     phase: "Phase 2",
@@ -1243,8 +1243,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Desk rail fit polish",
+    label: "Rail context guide",
     status: "Shipping now",
+    route: "#main",
+    detail: "Add a compact Now/Next guide inside the side rail so long workspace movement feels guided instead of menu-heavy."
+  },
+  {
+    label: "Desk rail fit polish",
+    status: "Done",
     route: "#main",
     detail: "Tighten the Hyrvia-inspired rail by reducing the dead gutter, hiding rail chrome, and anchoring workspace bands near the side tabs."
   },
@@ -9256,9 +9262,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Desk rail fit polish",
-      status: "Active in v331",
+      status: "Done in v331",
       route: "#main",
       detail: "Anchor workspace bands closer to the side rail, slim the rail rhythm, and hide heavy nested rail scrollbar chrome."
+    },
+    {
+      label: "Rail context guide",
+      status: "Active in v332",
+      route: "#main",
+      detail: "Show the current room and next high-frequency rail move inside the side rail so navigation stays oriented during long scrolls."
     }
   ];
   const productionTarget = releaseVersion
@@ -9272,7 +9284,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, and rail-fit audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, and rail-context audit are complete.`
   };
   const launchGates = [
     {
@@ -9485,7 +9497,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v331 tightens the side rail so workspace bands sit closer, rail chrome stays quiet, and top controls remain compact.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v332 adds a compact rail context guide so the current room and next high-frequency move stay visible.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9614,7 +9626,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v331</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v332</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -36104,6 +36116,59 @@ function workspaceHashFromViewport() {
   return `#${active.id}`;
 }
 
+const RAIL_CONTEXT_GROUP_ROUTES = {
+  "Guided path": "#profile-room",
+  "Quick routes": "#screener",
+  Discover: "#screener",
+  "Compare and Fit": "#compare",
+  Portfolio: "#portfolio",
+  "Trust and Follow-up": "#evidence"
+};
+
+function railMetaFromLink(link) {
+  const hash = link?.getAttribute("href") || "";
+  const label = link?.querySelector("strong")?.textContent?.trim() || link?.textContent?.trim() || "Workspace";
+  const group = link?.closest(".desk-rail-group")?.querySelector(".desk-rail-label")?.textContent?.trim() || "Workspace";
+  return { hash, label, group };
+}
+
+function railContextForHash(hash = "") {
+  const links = qsa(".desk-rail a[href^='#']");
+  const metas = links.map(railMetaFromLink).filter((item) => item.hash);
+  if (!metas.length) return null;
+  const activeIndex = metas.findIndex((item) => item.hash === hash);
+  const option = workspaceOption(hash);
+  const optionGroup = option?.parentElement?.tagName === "OPTGROUP" ? option.parentElement.label : "Workspace";
+  const active = activeIndex >= 0
+    ? metas[activeIndex]
+    : {
+        hash,
+        label: option?.textContent?.trim() || "Screener",
+        group: optionGroup
+      };
+  const fallbackHash = RAIL_CONTEXT_GROUP_ROUTES[active.group] || "#build-tracker";
+  const fallbackIndex = metas.findIndex((item) => item.hash === fallbackHash);
+  const nextIndex = activeIndex >= 0
+    ? (activeIndex + 1) % metas.length
+    : Math.max(fallbackIndex, 0);
+  return {
+    active,
+    next: metas[nextIndex] || metas[0]
+  };
+}
+
+function updateDeskRailContext(hash = "") {
+  if (!els.deskRailCurrent || !els.deskRailGroup || !els.deskRailNext) return;
+  const context = railContextForHash(hash || workspaceHashFromViewport());
+  if (!context) return;
+  els.deskRailCurrent.textContent = context.active.label;
+  els.deskRailGroup.textContent = context.active.group;
+  els.deskRailNext.dataset.railNext = context.next.hash;
+  els.deskRailNext.title = `Open ${context.next.label}`;
+  const nextLabel = els.deskRailNext.querySelector("b");
+  if (nextLabel) nextLabel.textContent = context.next.label;
+}
+
 function updateWorkspaceNavigator(hash = "") {
   renderWorkspaceJumpForMode(hash || workspaceHashFromViewport());
   const fallbackHash = hash && workspaceOption(hash) ? hash : workspaceHashFromViewport();
@@ -36126,6 +36191,7 @@ function updateWorkspaceNavigator(hash = "") {
       else link.removeAttribute("aria-current");
     });
   }
+  updateDeskRailContext(activeHash || fallbackHash);
 }
 
 function normalizeToolSearch(value = "") {
@@ -60372,6 +60438,12 @@ function bindWorkspaceJump() {
     updateWorkspaceNavigator(hash);
     scrollToHash(hash, "smooth", true);
   });
+  els.deskRailNext?.addEventListener("click", () => {
+    const hash = els.deskRailNext.dataset.railNext;
+    if (!hash) return;
+    updateWorkspaceNavigator(hash);
+    scrollToHash(hash, "smooth", true);
+  });
   window.addEventListener("hashchange", () => {
     if (targetFromHash(window.location.hash)) {
       settleHashNavigation();
@@ -60388,6 +60460,9 @@ function cacheElements() {
   Object.assign(els, {
     workspaceJump: qs("#workspaceJump"),
     workspaceStatus: qs("#workspaceStatus"),
+    deskRailCurrent: qs("#deskRailCurrent"),
+    deskRailGroup: qs("#deskRailGroup"),
+    deskRailNext: qs("#deskRailNext"),
     simpleModeToggle: qs("#simpleModeToggle"),
     simpleFilterToggle: qs("#simpleFilterToggle"),
     headerNextAction: qs("#headerNextAction"),

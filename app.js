@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v327-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v327 Founder Launch Receipt Vault";
+const DATA_VERSION = "20260628-v328-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v328 Founder Launch Claim Gate";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1224,8 +1224,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Use the launch receipt vault to store the founder decision trail before any production-ready 100% claim can move."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Use the launch claim gate to decide whether the production-ready 100% claim is locked, held, or ready for final release audit."
   },
   {
     phase: "Phase 2",
@@ -1241,8 +1241,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Founder launch receipt vault",
+    label: "Founder launch claim gate",
     status: "Shipping now",
+    route: "#founder-beta-operating-room",
+    detail: "Turn the receipt vault into a locked, held, or release-audit-ready production 100% claim gate before any public claim or tracker move."
+  },
+  {
+    label: "Founder launch receipt vault",
+    status: "Done",
     route: "#founder-beta-operating-room",
     detail: "Archive the founder open, hold, or freeze decision with receipt rows, evidence binder, claim lock, and handoff packet before any 100% claim moves."
   },
@@ -9206,9 +9212,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Founder launch receipt vault",
-      status: "Receipt vault active",
+      status: "Done in v327",
       route: "#founder-beta-operating-room",
       detail: "Archive decision receipts, signoff lines, evidence binder, claim lock, and backend handoff packet before moving the 100% claim."
+    },
+    {
+      label: "Founder launch claim gate",
+      status: "Claim gate active",
+      route: "#founder-beta-operating-room",
+      detail: "Decide whether the production-ready 100% claim is locked, held, or ready for final release audit from the archived receipt trail."
     }
   ];
   const productionTarget = releaseVersion
@@ -9222,7 +9234,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, and launch receipt vault are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, and launch claim gate are complete.`
   };
   const launchGates = [
     {
@@ -9435,7 +9447,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v327 archives the founder decision trail and claim lock on the path to 100%.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v328 turns the receipt vault into a locked, held, or release-audit-ready 100% claim gate.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9564,7 +9576,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v327</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v328</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -15932,6 +15944,146 @@ function founderLaunchReceiptVault(signoff = founderProductionSignoffMemo()) {
   };
 }
 
+function founderLaunchClaimGate(vault = founderLaunchReceiptVault()) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const gateId = ["NN", "FOUNDER", "LAUNCH", "CLAIM", "GATE", suffix].join("-").toUpperCase();
+  const releaseAuditId = ["NN", "FOUNDER", "LAUNCH", "CLAIM", "RELEASE", "AUDIT", suffix].join("-").toUpperCase();
+  const claimWordingId = ["NN", "FOUNDER", "LAUNCH", "CLAIM", "WORDING", suffix].join("-").toUpperCase();
+  const trackerMoveId = ["NN", "FOUNDER", "LAUNCH", "TRACKER", "MOVE", suffix].join("-").toUpperCase();
+  const publicSealId = ["NN", "FOUNDER", "LAUNCH", "PUBLIC", "SEAL", suffix].join("-").toUpperCase();
+  const gateReceiptId = ["NN", "FOUNDER", "LAUNCH", "CLAIM", "RECEIPT", suffix].join("-").toUpperCase();
+  const blockedRows = vault.rows.filter((row) => row.tone === "blocked");
+  const reviewRows = vault.rows.filter((row) => row.tone === "watch");
+  const blocked = vault.blocked || blockedRows.length > 0;
+  const review = !blocked && (vault.review || reviewRows.length > 0);
+  const status = blocked
+    ? "Founder launch claim gate locks 100%"
+    : review
+      ? "Founder launch claim gate holds 100%"
+      : "Founder launch claim gate ready for release audit";
+  const tone = blocked ? "blocked" : review ? "watch" : "ready";
+  const readiness = clampNumber(Math.round(vault.readiness - (blocked ? 2 : review ? 1 : 0)), 8, 99);
+  const verdict = blocked
+    ? "Do not move the production-ready 100% claim"
+    : review
+      ? "Hold the 100% claim for founder release audit"
+      : "Founder may run final 100% release audit";
+  const publicClaim = blocked
+    ? "Keep public copy and Build tracker below production-ready 100%."
+    : review
+      ? "Keep the claim held until review rows and wording proof close."
+      : "Use only the audited release wording after final founder receipt.";
+  const checkTone = (state) => /locked|blocked|missing|below/i.test(state)
+    ? "blocked"
+    : /hold|review|audit/i.test(state)
+      ? "watch"
+      : "ready";
+  const checks = [
+    {
+      label: "Vault rows",
+      owner: "Launch captain",
+      state: blockedRows.length ? "Blocked rows remain" : reviewRows.length ? "Review rows remain" : "Rows ready",
+      detail: `${vault.rows.length} launch receipt row${vault.rows.length === 1 ? "" : "s"} checked from ${vault.ledgerId}.`,
+      source: vault.ledgerId
+    },
+    {
+      label: "Claim lock",
+      owner: "Founder",
+      state: blocked ? "Claim locked" : review ? "Claim held" : "Claim audit ready",
+      detail: vault.claimLock,
+      source: vault.claimLockId
+    },
+    {
+      label: "Release wording",
+      owner: "Founder",
+      state: blocked ? "Wording blocked" : review ? "Wording in review" : "Wording ready",
+      detail: publicClaim,
+      source: claimWordingId
+    },
+    {
+      label: "Build tracker move",
+      owner: "Release captain",
+      state: blocked ? "Tracker stays below 100%" : review ? "Tracker move held" : "Tracker move audit ready",
+      detail: "Build tracker can move only after the gate receipt confirms final release audit and no blocker reasons remain.",
+      source: trackerMoveId
+    },
+    {
+      label: "Public surface seal",
+      owner: "Reviewer",
+      state: blocked ? "Public seal blocked" : review ? "Public seal in review" : "Public seal ready",
+      detail: "Public surfaces must use audited wording, source-date visibility, no-advice copy, and no execution language.",
+      source: publicSealId
+    },
+    {
+      label: "Backend handoff",
+      owner: "Backend owner",
+      state: blocked ? "Handoff blocked" : review ? "Handoff review" : "Handoff ready",
+      detail: `Handoff packet ${vault.handoffPacketId} remains receipt-only and blocks sensitive identifiers.`,
+      source: vault.handoffPacketId
+    }
+  ].map((check, index) => ({
+    ...check,
+    checkId: ["NN", "FOUNDER", "LAUNCH", "CLAIM", "CHECK", String(index + 1).padStart(2, "0"), check.label.replace(/[^a-z0-9]+/gi, "").toUpperCase(), suffix].join("-").toUpperCase(),
+    tone: checkTone(check.state)
+  }));
+  const releaseRules = [
+    "Release audit cannot start while any vault row is blocked.",
+    "A held claim needs owner proof, wording proof, and founder review before the tracker moves.",
+    "The public claim must never imply investment advice, transaction execution, or live data coverage that the receipts do not prove.",
+    "Build tracker 100% requires gate receipt, audited wording, source-date visibility, support owner, rollback owner, and final founder timestamp.",
+    "Any new blocker reason resets the gate to locked and requires a new vault receipt trail."
+  ];
+  const noClaimReasons = blocked
+    ? [...vault.blockerReasons, ...blockedRows.map((row) => `${row.label}: ${row.state}`)]
+    : review
+      ? [...reviewRows.map((row) => `${row.label}: ${row.state}`), vault.releaseCondition]
+      : ["No gate blocker remains; final founder release audit can review the claim wording."];
+  const metrics = [
+    { label: "Claim gate", value: gateId, detail: `${status}; ${readiness}/100 claim readiness.` },
+    { label: "Gate receipt", value: gateReceiptId, detail: verdict },
+    { label: "Release audit", value: releaseAuditId, detail: `${checks.filter((check) => check.tone === "ready").length} ready, ${checks.filter((check) => check.tone === "watch").length} review, ${checks.filter((check) => check.tone === "blocked").length} blocked check${checks.length === 1 ? "" : "s"}.` },
+    { label: "Public seal", value: publicSealId, detail: publicClaim }
+  ];
+  const receiptFields = [...new Set([
+    "founder_launch_claim_gate_id",
+    "founder_launch_claim_gate_receipt_id",
+    "founder_launch_claim_release_audit_id",
+    "founder_launch_claim_wording_id",
+    "founder_launch_claim_tracker_move_id",
+    "founder_launch_claim_public_seal_id",
+    "founder_launch_claim_check_id",
+    "founder_launch_claim_check_state",
+    "founder_launch_claim_verdict",
+    "founder_launch_claim_public_copy",
+    "founder_launch_claim_no_claim_reason",
+    "founder_launch_claim_release_rule",
+    "founder_launch_claim_founder_signed_by",
+    "founder_launch_claim_founder_signed_at",
+    ...vault.receiptFields
+  ])];
+
+  return {
+    blocked,
+    checks,
+    claimWordingId,
+    gateId,
+    gateReceiptId,
+    metrics,
+    noClaimReasons,
+    publicClaim,
+    publicSealId,
+    readiness,
+    receiptFields,
+    releaseAuditId,
+    releaseRules,
+    review,
+    status,
+    tone,
+    trackerMoveId,
+    verdict
+  };
+}
+
 function renderFounderBetaOperatingRoom() {
   if (!els.founderBetaOpsOutput) return;
   const ops = founderBetaOperatingRoomConfig();
@@ -15945,8 +16097,9 @@ function renderFounderBetaOperatingRoom() {
   const unlock = founderProductionUnlockReviewBoard(recovery);
   const signoff = founderProductionSignoffMemo(unlock);
   const vault = founderLaunchReceiptVault(signoff);
+  const claimGate = founderLaunchClaimGate(vault);
   if (els.founderBetaOpsSummary) {
-    els.founderBetaOpsSummary.textContent = `${vault.readiness}/100 | ${vault.status}`;
+    els.founderBetaOpsSummary.textContent = `${claimGate.readiness}/100 | ${claimGate.status}`;
   }
   els.founderBetaOpsOutput.innerHTML = `
     <div class="founder-beta-ops-hero ${ops.posture.startsWith("Open") ? "ready" : ops.posture.startsWith("Founder") ? "watch" : "blocked"}">
@@ -16590,6 +16743,73 @@ function renderFounderBetaOperatingRoom() {
         </article>
       </div>
     </div>
+    <div id="founder-launch-claim-gate" class="founder-launch-claim-gate ${escapeHtml(claimGate.tone)}">
+      <div class="founder-launch-claim-head">
+        <div>
+          <span>V328 founder launch claim gate</span>
+          <h3>${escapeHtml(claimGate.status)}</h3>
+          <p>Gate ${escapeHtml(claimGate.gateId)} reads the receipt vault, claim lock, public wording, tracker move, and backend handoff before the product can move any production-ready 100% claim.</p>
+        </div>
+        <div class="founder-launch-claim-score" style="--score:${claimGate.readiness}">
+          <strong>${claimGate.readiness}</strong>
+          <span>Claim</span>
+        </div>
+      </div>
+      <div class="founder-launch-claim-metrics">
+        ${claimGate.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-launch-claim-decision">
+        <article class="${escapeHtml(claimGate.tone)}">
+          <span>Claim verdict</span>
+          <strong>${escapeHtml(claimGate.verdict)}</strong>
+          <p>${escapeHtml(claimGate.publicClaim)}</p>
+          <small>${escapeHtml(claimGate.gateReceiptId)} | ${escapeHtml(claimGate.releaseAuditId)}</small>
+        </article>
+        <article>
+          <span>Release rules</span>
+          <strong>${escapeHtml(claimGate.claimWordingId)}</strong>
+          <ol>${claimGate.releaseRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}</ol>
+        </article>
+      </div>
+      <div class="founder-launch-claim-checks">
+        ${claimGate.checks.map((check) => `
+          <article class="${escapeHtml(check.tone)}">
+            <span>${escapeHtml(check.owner)}</span>
+            <strong>${escapeHtml(check.label)}</strong>
+            <p><b>${escapeHtml(check.state)}:</b> ${escapeHtml(check.detail)}</p>
+            <small>${escapeHtml(check.checkId)} | ${escapeHtml(check.source)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="founder-launch-claim-two">
+        <article class="${claimGate.blocked ? "blocked" : claimGate.review ? "watch" : "ready"}">
+          <span>No-claim reasons</span>
+          <strong>${claimGate.noClaimReasons.length} reason${claimGate.noClaimReasons.length === 1 ? "" : "s"}</strong>
+          <ul>${claimGate.noClaimReasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>Tracker move</span>
+          <strong>${escapeHtml(claimGate.trackerMoveId)}</strong>
+          <p>Build tracker 100% can move only after the gate receipt, audited wording, founder timestamp, and public surface seal are attached.</p>
+        </article>
+        <article>
+          <span>Public surface seal</span>
+          <strong>${escapeHtml(claimGate.publicSealId)}</strong>
+          <p>Public copy must stay research-only, no-advice, no-execution, source-date visible, and bounded to proven launch receipts.</p>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <strong>${claimGate.receiptFields.length} fields</strong>
+          <ul>${claimGate.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}</ul>
+        </article>
+      </div>
+    </div>
     <div class="founder-war-room ${escapeHtml(warRoom.tone)}">
       <div class="founder-war-room-head">
         <div>
@@ -16715,6 +16935,7 @@ function makeFounderBetaWarRoomDigestBrief() {
   const unlock = founderProductionUnlockReviewBoard(recovery);
   const signoff = founderProductionSignoffMemo(unlock);
   const vault = founderLaunchReceiptVault(signoff);
+  const claimGate = founderLaunchClaimGate(vault);
   return [
     "# NiveshNadi Founder Beta War-Room Digest",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -16750,6 +16971,10 @@ function makeFounderBetaWarRoomDigestBrief() {
     `Founder launch receipt vault status: ${vault.status}`,
     `Founder launch receipt vault readiness: ${vault.readiness}/100`,
     `Founder launch claim lock: ${vault.claimLockId}`,
+    `Founder launch claim gate ID: ${claimGate.gateId}`,
+    `Founder launch claim gate status: ${claimGate.status}`,
+    `Founder launch claim gate readiness: ${claimGate.readiness}/100`,
+    `Founder launch claim gate receipt: ${claimGate.gateReceiptId}`,
     `Cohort decision ID: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `War-room ID: ${warRoom.warRoomId}`,
@@ -16818,6 +17043,12 @@ function makeFounderBetaWarRoomDigestBrief() {
     ...vault.handoffChecks.map((check) => `- Handoff check: ${check}`),
     ...vault.blockerReasons.map((reason) => `- Vault blocker: ${reason}`),
     "",
+    "## Founder Launch Claim Gate",
+    ...claimGate.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...claimGate.checks.map((check) => `- ${check.checkId}: ${check.label} | ${check.owner} | ${check.state} | ${check.detail}`),
+    ...claimGate.releaseRules.map((rule) => `- Claim release rule: ${rule}`),
+    ...claimGate.noClaimReasons.map((reason) => `- No-claim reason: ${reason}`),
+    "",
     "## Founder Decisions",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),
     "",
@@ -16852,6 +17083,7 @@ function makeFounderBetaOperatingBrief() {
   const unlock = founderProductionUnlockReviewBoard(recovery);
   const signoff = founderProductionSignoffMemo(unlock);
   const vault = founderLaunchReceiptVault(signoff);
+  const claimGate = founderLaunchClaimGate(vault);
   return [
     "# NiveshNadi Founder Beta Operating Room",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -16887,6 +17119,10 @@ function makeFounderBetaOperatingBrief() {
     `Founder launch receipt vault status: ${vault.status}`,
     `Founder launch receipt vault readiness: ${vault.readiness}/100`,
     `Founder launch claim lock: ${vault.claimLockId}`,
+    `Founder launch claim gate: ${claimGate.gateId}`,
+    `Founder launch claim gate status: ${claimGate.status}`,
+    `Founder launch claim gate readiness: ${claimGate.readiness}/100`,
+    `Founder launch claim gate receipt: ${claimGate.gateReceiptId}`,
     `Cohort decision: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `Operating score: ${ops.operatingScore}/100`,
@@ -16963,6 +17199,13 @@ function makeFounderBetaOperatingBrief() {
     ...vault.handoffChecks.map((check) => `- Founder launch handoff check: ${check}`),
     ...vault.blockerReasons.map((reason) => `- Founder launch blocker: ${reason}`),
     ...vault.receiptFields.map((field) => `- Founder launch receipt field: ${field}`),
+    "",
+    "## Founder Launch Claim Gate",
+    ...claimGate.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...claimGate.checks.map((check) => `- Founder launch claim check: ${check.label} | ${check.owner} | ${check.state} | ${check.checkId}`),
+    ...claimGate.releaseRules.map((rule) => `- Founder launch claim rule: ${rule}`),
+    ...claimGate.noClaimReasons.map((reason) => `- Founder launch no-claim reason: ${reason}`),
+    ...claimGate.receiptFields.map((field) => `- Founder launch claim receipt field: ${field}`),
     "",
     "## Founder War-Room Digest",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),

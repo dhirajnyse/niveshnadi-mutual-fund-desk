@@ -24,4 +24,6 @@ V326 adds Founder Signoff Memo. The room now converts the production unlock revi
 
 V327 adds Founder Launch Receipt Vault. The room now stores the founder decision receipt, signoff lines, evidence binder, claim lock, audit trail, archive rules, backend handoff packet, blocker reasons, and receipt fields as one launch receipt trail. The vault keeps production-ready 100% locked or held until the recorded receipt trail proves the decision can move.
 
+V328 adds Founder Launch Claim Gate. The room now reads the launch receipt vault and decides whether the production-ready 100% claim is locked, held, or ready for final release audit. It keeps the public claim, Build tracker move, public seal, backend handoff, no-claim reasons, release rules, and receipt fields tied to the recorded vault trail.
+
 This room protects monetization discipline. Low retail pricing can work only if hidden support, refund, evidence, and account costs are visible before the product invites more users. It also preserves the Phase 1 boundary: no advice, no execution, no PAN, folio, CAS, bank, UPI, card, OTP, ARN, EUIN, distributor client book, or Phase 2 workflow belongs inside the founder beta operating rhythm.

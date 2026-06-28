@@ -39658,6 +39658,188 @@ body.simple-mode .quiet-fund-shelf {
   padding-left: 18px;
 }
 
+.founder-launch-claim-gate {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(193, 75, 105, 0.34);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 242, 245, 0.9), rgba(245, 249, 252, 0.98));
+}
+
+.founder-launch-claim-gate.ready {
+  border-color: rgba(15, 124, 107, 0.42);
+  background: linear-gradient(135deg, rgba(232, 250, 245, 0.96), rgba(255, 255, 255, 0.94));
+}
+
+.founder-launch-claim-gate.watch {
+  border-color: rgba(214, 154, 61, 0.44);
+  background: linear-gradient(135deg, rgba(255, 248, 232, 0.94), rgba(245, 249, 252, 0.98));
+}
+
+.founder-launch-claim-gate.blocked {
+  border-color: rgba(193, 75, 105, 0.42);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.92), rgba(245, 249, 252, 0.98));
+}
+
+.founder-launch-claim-gate p,
+.founder-launch-claim-gate li,
+.founder-launch-claim-gate small {
+  color: var(--muted);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.founder-launch-claim-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 12px;
+  align-items: center;
+}
+
+.founder-launch-claim-head span,
+.founder-launch-claim-metrics span,
+.founder-launch-claim-decision span,
+.founder-launch-claim-checks span,
+.founder-launch-claim-two span {
+  color: var(--rose);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.founder-launch-claim-head h3 {
+  margin: 3px 0 5px;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.14;
+}
+
+.founder-launch-claim-head p {
+  margin: 0;
+}
+
+.founder-launch-claim-score {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--rose) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.founder-launch-claim-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.founder-launch-claim-score strong,
+.founder-launch-claim-score span {
+  position: relative;
+}
+
+.founder-launch-claim-score strong {
+  color: #ffffff;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.founder-launch-claim-score span {
+  color: #dce7ed;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.founder-launch-claim-metrics,
+.founder-launch-claim-decision,
+.founder-launch-claim-checks,
+.founder-launch-claim-two {
+  display: grid;
+  gap: 10px;
+}
+
+.founder-launch-claim-metrics,
+.founder-launch-claim-two {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.founder-launch-claim-decision {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.founder-launch-claim-checks {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.founder-launch-claim-metrics,
+.founder-launch-claim-decision,
+.founder-launch-claim-checks,
+.founder-launch-claim-two,
+.founder-launch-claim-metrics article,
+.founder-launch-claim-decision article,
+.founder-launch-claim-checks article,
+.founder-launch-claim-two article {
+  min-width: 0;
+}
+
+.founder-launch-claim-metrics article,
+.founder-launch-claim-decision article,
+.founder-launch-claim-checks article,
+.founder-launch-claim-two article {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.founder-launch-claim-decision article.ready,
+.founder-launch-claim-checks article.ready,
+.founder-launch-claim-two article.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: rgba(232, 250, 245, 0.76);
+}
+
+.founder-launch-claim-decision article.watch,
+.founder-launch-claim-checks article.watch,
+.founder-launch-claim-two article.watch {
+  border-color: rgba(214, 154, 61, 0.38);
+  background: rgba(255, 245, 223, 0.68);
+}
+
+.founder-launch-claim-decision article.blocked,
+.founder-launch-claim-checks article.blocked,
+.founder-launch-claim-two article.blocked {
+  border-color: rgba(198, 77, 103, 0.34);
+  background: rgba(255, 242, 245, 0.74);
+}
+
+.founder-launch-claim-metrics strong,
+.founder-launch-claim-decision strong,
+.founder-launch-claim-checks strong,
+.founder-launch-claim-two strong {
+  display: block;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.founder-launch-claim-decision ol,
+.founder-launch-claim-two ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
 .founder-war-room {
   display: grid;
   gap: 10px;
@@ -39890,6 +40072,10 @@ body.simple-mode .quiet-fund-shelf {
   .founder-launch-vault-decision,
   .founder-launch-vault-rows,
   .founder-launch-vault-two,
+  .founder-launch-claim-metrics,
+  .founder-launch-claim-decision,
+  .founder-launch-claim-checks,
+  .founder-launch-claim-two,
   .founder-war-room-metric-grid,
   .founder-war-room-decision-grid,
   .founder-war-room-action-grid,
@@ -39946,6 +40132,11 @@ body.simple-mode .quiet-fund-shelf {
   .founder-launch-vault-decision,
   .founder-launch-vault-rows,
   .founder-launch-vault-two,
+  .founder-launch-claim-head,
+  .founder-launch-claim-metrics,
+  .founder-launch-claim-decision,
+  .founder-launch-claim-checks,
+  .founder-launch-claim-two,
   .founder-war-room-head,
   .founder-war-room-metric-grid,
   .founder-war-room-decision-grid,
@@ -39964,6 +40155,7 @@ body.simple-mode .quiet-fund-shelf {
   .production-unlock-review-score,
   .founder-signoff-score,
   .founder-launch-vault-score,
+  .founder-launch-claim-score,
   .founder-war-room-score {
     justify-self: start;
   }

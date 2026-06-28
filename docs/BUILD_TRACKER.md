@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V328 Founder Launch Claim Gate
+
+V328 adds the Founder Launch Claim Gate inside the Founder Beta Operating Room. It reads the Founder Launch Receipt Vault, then decides whether the production-ready 100% claim is locked, held, or ready for final release audit using vault rows, claim lock, public wording, tracker move, public seal, backend handoff, no-claim reasons, release rules, and receipt fields.
+
 ## V327 Founder Launch Receipt Vault
 
 V327 adds the Founder Launch Receipt Vault inside the Founder Beta Operating Room. It reads the Founder Signoff Memo, then archives the founder decision receipt, signoff lines, evidence binder, claim lock, audit trail, archive rules, backend handoff packet, blocker reasons, and receipt fields before any production-ready 100% claim can move.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v358-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v358 Action Priority Layer";
+const DATA_VERSION = "20260629-v359-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v359 Guided Progress Rail";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1199,7 +1199,7 @@ const BUILD_TRACKER_PHASES = [
     launch: 78,
     status: "Done",
     route: "#screener",
-    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "action priority layer", "calm focus mode", "calm header", "first-screen focus", "guided selector", "live route rail", "one-question gate", "calm decision gate", "one breath brief", "three minute calm route", "calm decision mantra", "serenity start surface", "one calm start", "quiet opening copy", "calm promise line", "human trust promise", "serenity action path", "calm commitment cue", "shortlist boundary line", "quiet conviction meter", "learning loop ledger"],
+    done: ["screener", "profile room", "investor decision twin", "compare matrix", "goal fit", "SIP/STP lab", "simple view", "guided progress rail", "action priority layer", "calm focus mode", "calm header", "first-screen focus", "guided selector", "live route rail", "one-question gate", "calm decision gate", "one breath brief", "three minute calm route", "calm decision mantra", "serenity start surface", "one calm start", "quiet opening copy", "calm promise line", "human trust promise", "serenity action path", "calm commitment cue", "shortlist boundary line", "quiet conviction meter", "learning loop ledger"],
     next: "Keep the default retail journey calm, obvious, short, and free of secondary context until the investor asks for depth."
   },
   {
@@ -1256,8 +1256,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Action priority layer",
+    label: "Guided progress rail",
     status: "Shipping now",
+    route: "#main",
+    detail: "Show Profile, Find, Verify, Memo, and Review inside the active room cue with current, done, and pending states."
+  },
+  {
+    label: "Action priority layer",
+    status: "Done",
     route: "#main",
     detail: "Give Simple view one obvious first action while keeping copy, save, and utility actions quieter."
   },
@@ -1290,12 +1296,6 @@ const BUILD_TRACKER_CURRENT_SPRINT = [
     status: "Done",
     route: "#profile-room",
     detail: "Tighten labels, fields, selects, and tool panels so input-heavy rooms scan faster."
-  },
-  {
-    label: "Score ring rhythm",
-    status: "Done",
-    route: "#build-tracker",
-    detail: "Keep circular score dials stable, smaller, and less visually heavy across hero panels."
   },
   {
     label: "Layout preset command",
@@ -4171,6 +4171,21 @@ function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.a
   const calmPromise = progress.isComplete
     ? "Research round complete. Keep the saved memory visible before widening."
     : "One active room. One proof cue. One next move.";
+  const progressRailHtml = `
+    <div class="simple-progress-rail" aria-label="Simple research path progress">
+      ${SIMPLE_JOURNEY_STEPS.map((step) => {
+        const isActive = step.value === journey.activeStep.value;
+        const isVisited = progress.visitedSet?.has(step.value);
+        const state = isActive ? "is-active" : isVisited ? "is-done" : "is-pending";
+        return `
+          <button class="simple-progress-step ${state}" type="button" data-signal-route="${escapeHtml(step.value)}"${isActive ? ' aria-current="step"' : ""}>
+            <span>${escapeHtml(step.number)}</span>
+            <strong>${escapeHtml(step.label)}</strong>
+          </button>
+        `;
+      }).join("")}
+    </div>
+  `;
   const cueHtml = `
     <div class="calm-focus-mode-line">
       <span>Calm Focus Mode</span>
@@ -4183,11 +4198,7 @@ function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.a
       <strong>${escapeHtml(progress.label)}</strong>
       <em>${escapeHtml(progress.nextMemory)}</em>
     </div>
-    <div class="calm-focus-breath-row" aria-label="Calm focus rhythm">
-      <b>One room</b>
-      <b>One proof</b>
-      <b>One next move</b>
-    </div>
+    ${progressRailHtml}
     <p class="calm-focus-promise">${escapeHtml(calmPromise)}</p>
     <div class="room-cue-actions">
       ${progress.isComplete ? `
@@ -9513,9 +9524,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Action priority layer",
-      status: "Active in v358",
+      status: "Done in v358",
       route: "#main",
       detail: "Give Simple view one clear first action while copy, save, and utility actions stay quieter across room toolbars."
+    },
+    {
+      label: "Guided progress rail",
+      status: "Active in v359",
+      route: "#main",
+      detail: "Show the five-step Simple path inside the active room cue with done, current, and pending states."
     }
   ];
   const productionTarget = releaseVersion
@@ -9529,7 +9546,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, and action-priority audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, and guided-progress audit are complete.`
   };
   const launchGates = [
     {
@@ -9871,7 +9888,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v358</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v359</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

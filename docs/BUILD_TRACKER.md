@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V359 Guided Progress Rail
+
+V359 brings the Simple view path into the active room cue. Profile, Find, Verify, Memo, and Review now show as a compact stateful rail with current, completed, and pending steps so users can keep their place without scanning the whole interface.
+
 ## V358 Action Priority Layer
 
 V358 makes Simple view actions calmer and more decisive. The first room action, header next action, focus cue action, and first operating move now share a soft primary treatment while copy, save, and utility actions recede into quieter secondary controls.

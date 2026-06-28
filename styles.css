@@ -3069,6 +3069,79 @@ main {
   text-align: center;
 }
 
+.simple-progress-rail {
+  grid-column: 1 / span 3;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.simple-progress-step {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 5px;
+  min-height: 31px;
+  padding: 5px 7px;
+  border: 1px solid rgba(31, 78, 121, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--muted);
+  text-align: left;
+}
+
+.simple-progress-step span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 21px;
+  min-height: 20px;
+  border-radius: 999px;
+  background: rgba(31, 78, 121, 0.08);
+  color: var(--blue);
+  font-size: 10px;
+  line-height: 1;
+}
+
+.simple-progress-step strong {
+  min-width: 0;
+  margin: 0;
+  color: inherit;
+  font-size: 11px;
+  line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.simple-progress-step.is-done {
+  border-color: rgba(15, 124, 107, 0.16);
+  background: rgba(229, 247, 241, 0.72);
+  color: var(--mint);
+}
+
+.simple-progress-step.is-active {
+  border-color: rgba(15, 124, 107, 0.42);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.96), rgba(255, 243, 220, 0.58));
+  color: var(--ink);
+  box-shadow: 0 8px 18px rgba(15, 34, 56, 0.08);
+}
+
+.simple-progress-step.is-active span {
+  background: var(--mint);
+  color: #ffffff;
+}
+
+.simple-progress-step.is-pending {
+  opacity: 0.74;
+}
+
+.simple-progress-step:hover,
+.simple-progress-step:focus-visible {
+  border-color: rgba(15, 124, 107, 0.4);
+  background: rgba(229, 247, 241, 0.88);
+  color: var(--ink);
+}
+
 .room-focus-note .calm-focus-promise {
   grid-column: 1 / span 3;
   min-height: 25px;
@@ -42649,10 +42722,26 @@ body.desk-rail-right .floating-dock {
   .room-focus-note > p:not(.calm-focus-promise),
   .room-focus-note .room-progress-meter,
   .room-focus-note .calm-focus-breath-row,
+  .room-focus-note .simple-progress-rail,
   .room-focus-note .calm-focus-promise,
   .room-focus-note .room-cue-actions {
     grid-column: 1;
     grid-row: auto;
+  }
+
+  .simple-progress-rail {
+    gap: 4px;
+  }
+
+  .simple-progress-step {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    min-height: 30px;
+    padding: 4px 3px;
+  }
+
+  .simple-progress-step strong {
+    display: none;
   }
 
   .calm-focus-breath-row {

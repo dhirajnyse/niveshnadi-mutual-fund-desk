@@ -25,6 +25,9 @@
   --room-card-pad: 12px;
   --room-card-gap: 10px;
   --room-copy-line: 1.42;
+  --section-heading-gap: 16px;
+  --section-heading-margin: 10px;
+  --section-action-height: 32px;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 
@@ -18980,12 +18983,17 @@ a:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 10px;
+  gap: var(--section-heading-gap);
+  margin-bottom: var(--section-heading-margin);
 }
 
 .section-heading h2 {
   font-size: 27px;
+  overflow-wrap: anywhere;
+}
+
+.section-heading > div {
+  min-width: 0;
 }
 
 .toolbar {
@@ -20541,7 +20549,7 @@ body.simple-mode .quiet-fund-shelf {
 
 .status-chip {
   display: inline-flex;
-  min-height: 32px;
+  min-height: var(--section-action-height);
   align-items: center;
   padding: 7px 10px;
   background: var(--gold-soft);
@@ -43593,6 +43601,9 @@ body.desk-rail-right .floating-dock {
   --room-card-pad: 10px;
   --room-card-gap: 8px;
   --room-copy-line: 1.34;
+  --section-heading-gap: 8px;
+  --section-heading-margin: 6px;
+  --section-action-height: 28px;
 }
 
 body.desk-rail-mini {
@@ -44073,6 +44084,43 @@ textarea {
 }
 
 @media (min-width: 981px) {
+  .section-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 5px var(--section-heading-gap);
+    padding: 0 2px 5px;
+    border-bottom: 1px solid rgba(215, 227, 235, 0.72);
+  }
+
+  .section-heading .eyebrow {
+    margin-bottom: 2px;
+    font-size: 10px;
+  }
+
+  .section-heading h2 {
+    font-size: 22px;
+    line-height: 1.08;
+  }
+
+  .section-heading > .status-chip,
+  .section-heading > .toolbar {
+    justify-self: end;
+  }
+
+  .section-heading .toolbar {
+    gap: 6px;
+    justify-content: flex-end;
+  }
+
+  .section-heading .status-chip,
+  .section-heading .text-button,
+  .section-heading .primary-button {
+    min-height: var(--section-action-height);
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+
   .workspace-band :is([class*="-output"], .pricing-band) {
     gap: var(--room-card-gap);
   }

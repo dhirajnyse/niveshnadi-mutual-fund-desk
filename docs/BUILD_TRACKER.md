@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V351 Section Header Rhythm
+
+V351 turns repeated room headings into compact desktop section strips. Titles, eyebrow labels, status chips, and action buttons now align on a tighter grid with shorter controls and a subtle divider so long rooms scan from heading to content with less visual drag.
+
 ## V350 Room Card Density
 
 V350 tightens repeated room cards after the workspace rhythm pass. Desktop card padding, repeated gaps, copy line-height, pricing card height, and screener fund cards are slightly more compact so long rooms scan with less vertical drag while preserving the research hierarchy.

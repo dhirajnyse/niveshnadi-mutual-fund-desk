@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v343-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v343 Rail Group Collapse";
+const DATA_VERSION = "20260628-v344-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v344 Rail Group Count Badges";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1238,8 +1238,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "desk rail navigation", "desk rail fit polish", "rail context guide", "rail group switcher", "rail active lane keeper", "mini rail mode", "mini rail peek labels", "layout preset command", "rail progress spine", "rail group memory", "rail backtrack cue", "rail recent rooms", "rail keyboard polish", "rail group collapse", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Use collapsible rail groups so long side navigation stays compact while active rooms remain visible."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "desk rail navigation", "desk rail fit polish", "rail context guide", "rail group switcher", "rail active lane keeper", "mini rail mode", "mini rail peek labels", "layout preset command", "rail progress spine", "rail group memory", "rail backtrack cue", "rail recent rooms", "rail keyboard polish", "rail group collapse", "rail group count badges", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Use group count badges so collapsed rail groups show how many rooms remain inside each lane."
   },
   {
     phase: "Phase 2",
@@ -1255,8 +1255,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Rail group collapse",
+    label: "Rail group count badges",
     status: "Shipping now",
+    route: "#main",
+    detail: "Show compact room counts on each rail group header, synced from the actual route links."
+  },
+  {
+    label: "Rail group collapse",
+    status: "Done",
     route: "#main",
     detail: "Let side-rail groups collapse into compact headers while the active group stays open."
   },
@@ -9406,9 +9412,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Rail group collapse",
-      status: "Active in v343",
+      status: "Done in v343",
       route: "#main",
       detail: "Convert rail group labels into collapse controls with saved compact state while the active rail group stays open."
+    },
+    {
+      label: "Rail group count badges",
+      status: "Active in v344",
+      route: "#main",
+      detail: "Show synced room-count badges on every rail group header so collapsed groups still reveal their route depth."
     }
   ];
   const productionTarget = releaseVersion
@@ -9422,7 +9434,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, and rail-collapse audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, and rail-count audit are complete.`
   };
   const launchGates = [
     {
@@ -9635,7 +9647,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v343 makes side-rail groups collapsible so long navigation stays compact without losing the active room.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v344 adds synced count badges so collapsed rail groups still reveal their room depth.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9764,7 +9776,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v343</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v344</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -36357,18 +36369,33 @@ function saveRailCollapseMemory() {
   }
 }
 
+function syncDeskRailGroupCounts() {
+  qsa(".desk-rail-group").forEach((group) => {
+    const count = group.querySelectorAll("a[href^='#']").length;
+    const collapseButton = group.querySelector("[data-rail-collapse]");
+    const countBadge = collapseButton?.querySelector("[data-rail-count]");
+    group.dataset.railCount = String(count);
+    if (!collapseButton) return;
+    collapseButton.dataset.railCount = String(count);
+    if (countBadge) countBadge.textContent = String(count);
+  });
+}
+
 function syncDeskRailCollapse(activeGroup = "Desk") {
   loadRailCollapseMemory();
+  syncDeskRailGroupCounts();
   qsa(".desk-rail-group").forEach((group) => {
     const label = railGroupNameFromNode(group);
     const collapseButton = group.querySelector("[data-rail-collapse]");
     const isCollapsed = Boolean(label && label !== activeGroup && state.railCollapsedGroups.has(label));
+    const count = Number(group.dataset.railCount || 0);
+    const roomText = count === 1 ? "1 room" : `${count} rooms`;
     group.classList.toggle("is-collapsed", isCollapsed);
     if (!collapseButton) return;
-    collapseButton.dataset.railTip = isCollapsed ? `Expand ${label}` : `${label} open`;
-    collapseButton.title = isCollapsed ? `Expand ${label} rail group` : `${label} rail group open`;
+    collapseButton.dataset.railTip = isCollapsed ? `Expand ${label} (${roomText})` : `${label} open (${roomText})`;
+    collapseButton.title = isCollapsed ? `Expand ${label} rail group, ${roomText}` : `${label} rail group open, ${roomText}`;
     collapseButton.setAttribute("aria-expanded", isCollapsed ? "false" : "true");
-    collapseButton.setAttribute("aria-label", isCollapsed ? `Expand ${label} rail group` : `${label} rail group is open`);
+    collapseButton.setAttribute("aria-label", isCollapsed ? `Expand ${label} rail group, ${roomText}` : `${label} rail group is open, ${roomText}`);
   });
 }
 

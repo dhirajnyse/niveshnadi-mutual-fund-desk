@@ -884,7 +884,7 @@ body.desk-rail-right .desk-rail-group.is-current {
 
 .desk-rail-label {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
   gap: 6px;
   width: 100%;
@@ -900,6 +900,20 @@ body.desk-rail-right .desk-rail-group.is-current {
   letter-spacing: 0;
   text-align: left;
   text-transform: uppercase;
+}
+
+.desk-rail-count {
+  display: grid;
+  min-width: 20px;
+  height: 18px;
+  place-items: center;
+  border: 1px solid rgba(158, 233, 223, 0.2);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.08);
+  color: #dffcf6;
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1;
 }
 
 .desk-rail-label::after {
@@ -920,6 +934,12 @@ body.desk-rail-right .desk-rail-group.is-current {
 
 .desk-rail-group.is-collapsed {
   gap: 2px;
+}
+
+.desk-rail-group.is-collapsed .desk-rail-count {
+  border-color: rgba(158, 233, 223, 0.28);
+  background: rgba(158, 233, 223, 0.12);
+  color: #ffffff;
 }
 
 .desk-rail-group.is-collapsed .desk-rail-label::after {
@@ -1123,6 +1143,7 @@ body.desk-rail-mini .desk-rail-group {
 }
 
 body.desk-rail-mini .desk-rail-label {
+  grid-template-columns: minmax(0, 1fr) auto;
   justify-content: center;
   min-height: 24px;
   padding: 4px 0;
@@ -1134,6 +1155,12 @@ body.desk-rail-mini .desk-rail-label::before {
   content: attr(data-short);
   font-size: 10px;
   font-weight: 950;
+}
+
+body.desk-rail-mini .desk-rail-count {
+  min-width: 18px;
+  height: 17px;
+  font-size: 8px;
 }
 
 body.desk-rail-mini .desk-rail-label::after {
@@ -1197,7 +1224,7 @@ body.desk-rail-mini .desk-rail:focus-within .desk-rail a strong {
 
 body.desk-rail-mini .desk-rail:hover .desk-rail-label,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-label {
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   justify-content: stretch;
   padding: 4px 7px 2px;
   font-size: 10px;

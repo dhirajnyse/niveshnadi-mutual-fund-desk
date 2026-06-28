@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V344 Rail Group Count Badges
+
+V344 adds synced count badges to the desktop rail group headers. Each group now shows how many room links it contains, and the count is recalculated from the actual rail anchors so collapsed groups stay compact while still revealing their route depth.
+
 ## V343 Rail Group Collapse
 
 V343 converts desktop rail group labels into compact collapse controls. Research, Trust, and Founder start folded for a shorter side rail, user collapse choices are remembered locally, and the active group always stays open so the current workspace room remains visible.

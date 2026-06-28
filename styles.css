@@ -22,6 +22,9 @@
   --workspace-gutter: 42px;
   --workspace-max: 1380px;
   --workspace-section-gap: 16px;
+  --room-card-pad: 12px;
+  --room-card-gap: 10px;
+  --room-copy-line: 1.42;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 
@@ -43587,6 +43590,9 @@ body.desk-rail-right .floating-dock {
   --workspace-gutter: 24px;
   --workspace-max: 1420px;
   --workspace-section-gap: 8px;
+  --room-card-pad: 10px;
+  --room-card-gap: 8px;
+  --room-copy-line: 1.34;
 }
 
 body.desk-rail-mini {
@@ -44064,6 +44070,58 @@ textarea {
 .tool-panel,
 .tool-output {
   padding: 12px;
+}
+
+@media (min-width: 981px) {
+  .workspace-band :is([class*="-output"], .pricing-band) {
+    gap: var(--room-card-gap);
+  }
+
+  .workspace-band :is([class*="-output"], .pricing-band) :where(article),
+  .workspace-band :is([class*="-output"]) :where(.build-progress-roadmap, .publisher-handoff-card, .build-tracker-guardrail, .final-signoff-closeout) {
+    padding: var(--room-card-pad);
+  }
+
+  .workspace-band :is([class*="-output"], .pricing-band) :where(article, li, p, small, dd) {
+    line-height: var(--room-copy-line);
+  }
+
+  .workspace-band :is([class*="-output"], .pricing-band) :where(article p) {
+    margin-top: 5px;
+  }
+
+  .workspace-band :is([class*="-output"], .pricing-band) :where(article h3, article strong) {
+    line-height: 1.16;
+  }
+
+  .fund-card {
+    min-height: 214px;
+    gap: 8px;
+    padding: 11px;
+  }
+
+  .fund-card h3 {
+    margin-top: 4px;
+    font-size: 17px;
+  }
+
+  .pricing-grid,
+  .pricing-note-grid {
+    gap: var(--room-card-gap);
+  }
+
+  .pricing-card {
+    min-height: 286px;
+    gap: 8px;
+  }
+
+  .pricing-feature-list {
+    gap: 5px;
+  }
+
+  .plan-price strong {
+    font-size: 30px;
+  }
 }
 
 .fund-grid,

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V350 Room Card Density
+
+V350 tightens repeated room cards after the workspace rhythm pass. Desktop card padding, repeated gaps, copy line-height, pricing card height, and screener fund cards are slightly more compact so long rooms scan with less vertical drag while preserving the research hierarchy.
+
 ## V349 Workspace Canvas Rhythm
 
 V349 tightens the main workspace canvas after the rail and header polish. Workspace bands now share width, gutter, and section rhythm variables, compact desktop spacing is slightly tighter, and the first command panel sits closer to the shell without changing fund logic or data.

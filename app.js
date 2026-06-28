@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v349-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v349 Workspace Canvas Rhythm";
+const DATA_VERSION = "20260628-v350-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v350 Room Card Density";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1240,7 +1240,7 @@ const BUILD_TRACKER_PHASES = [
     status: "In progress",
     route: "#account-launch-route",
     done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "desk rail navigation", "desk rail fit polish", "rail context guide", "rail group switcher", "rail active lane keeper", "mini rail mode", "mini rail peek labels", "layout preset command", "rail progress spine", "rail group memory", "rail backtrack cue", "rail recent rooms", "rail keyboard polish", "rail group collapse", "rail group count badges", "rail hero clearance", "rail top compact", "rail quiet hierarchy", "header command capsule", "workspace canvas rhythm", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Keep the workspace canvas aligned with the rail and header so long rooms feel compact without crowding."
+    next: "Keep long rooms compact by tightening repeated card padding, gaps, and copy rhythm without reducing research clarity."
   },
   {
     phase: "Phase 2",
@@ -9449,9 +9449,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Workspace canvas rhythm",
-      status: "Active in v349",
+      status: "Done in v349",
       route: "#main",
       detail: "Tighten workspace band width, gutters, and section gaps so the main canvas aligns with the polished rail and header."
+    },
+    {
+      label: "Room card density",
+      status: "Active in v350",
+      route: "#build-tracker",
+      detail: "Reduce repeated card padding, gaps, line height, pricing height, and screener card height so long rooms scan with less vertical drag."
     }
   ];
   const productionTarget = releaseVersion
@@ -9465,7 +9471,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, and workspace-canvas audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, and room-card-density audit are complete.`
   };
   const launchGates = [
     {
@@ -9678,7 +9684,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v349 tightens workspace band width, gutters, and section rhythm.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v350 tightens repeated room cards so long rooms scan with less vertical drag.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9807,7 +9813,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v349</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v350</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

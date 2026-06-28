@@ -29,6 +29,11 @@
   --content-list-gap: 8px;
   --content-list-item-gap: 4px;
   --content-list-indent: 18px;
+  --calm-focus-bg: linear-gradient(135deg, rgba(232, 248, 244, 0.94), rgba(255, 255, 255, 0.98));
+  --calm-focus-line: rgba(15, 124, 107, 0.28);
+  --calm-focus-shadow: 0 18px 40px rgba(15, 34, 56, 0.08);
+  --calm-focus-note-gap: 8px;
+  --calm-focus-note-pad: 11px;
   --section-heading-gap: 16px;
   --section-heading-margin: 10px;
   --section-action-height: 32px;
@@ -2984,12 +2989,18 @@ main {
   grid-column: 1 / -1;
   display: none;
   grid-template-columns: minmax(180px, 0.72fr) minmax(0, 1.18fr) minmax(150px, 0.58fr) max-content;
-  gap: 10px;
+  gap: var(--calm-focus-note-gap);
   align-items: center;
-  padding: 10px 12px;
-  border: 1px solid rgba(31, 78, 121, 0.16);
+  padding: var(--calm-focus-note-pad);
+  border: 1px solid rgba(31, 78, 121, 0.14);
   border-radius: var(--radius);
-  background: rgba(245, 249, 252, 0.9);
+  background: rgba(245, 249, 252, 0.92);
+}
+
+.calm-focus-mode-line {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
 }
 
 .room-focus-note span {
@@ -3006,6 +3017,13 @@ main {
   line-height: 1.2;
 }
 
+.room-focus-note small {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
 .room-focus-note p {
   margin: 0;
   color: var(--muted);
@@ -3013,11 +3031,52 @@ main {
   line-height: 1.45;
 }
 
+.room-focus-note > p:not(.calm-focus-promise) {
+  grid-column: 2;
+}
+
+.room-focus-note .room-progress-meter {
+  grid-column: 3;
+}
+
 .room-focus-note .signal-chip {
   min-width: 142px;
 }
 
+.calm-focus-breath-row {
+  grid-column: 1 / span 3;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.calm-focus-breath-row b {
+  min-height: 25px;
+  padding: 5px 8px;
+  border: 1px solid rgba(15, 124, 107, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.room-focus-note .calm-focus-promise {
+  grid-column: 1 / span 3;
+  min-height: 25px;
+  padding: 5px 8px;
+  border-left: 3px solid rgba(216, 151, 60, 0.42);
+  background: rgba(255, 243, 220, 0.44);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 850;
+}
+
 .room-cue-actions {
+  grid-column: 4;
+  grid-row: 1 / span 3;
   display: grid;
   gap: 6px;
 }
@@ -4208,12 +4267,34 @@ body.simple-mode.simple-room-focus .inline-room-focus-note {
   display: grid;
 }
 
+body.simple-mode.calm-focus-mode .inline-room-focus-note {
+  margin-bottom: 12px;
+  border-color: var(--calm-focus-line);
+  background: var(--calm-focus-bg);
+  box-shadow: var(--calm-focus-shadow);
+}
+
 body.simple-mode.simple-profile-focus #profile-room,
 body.simple-mode.simple-find-focus #screener,
 body.simple-mode.simple-verify-focus #evidence,
 body.simple-mode.simple-memo-focus #decision-pack,
 body.simple-mode.simple-review-focus #review-vault {
   display: block;
+}
+
+body.simple-mode.calm-focus-mode.simple-profile-focus #profile-room,
+body.simple-mode.calm-focus-mode.simple-find-focus #screener,
+body.simple-mode.calm-focus-mode.simple-verify-focus #evidence,
+body.simple-mode.calm-focus-mode.simple-memo-focus #decision-pack,
+body.simple-mode.calm-focus-mode.simple-review-focus #review-vault {
+  padding: 12px;
+  border: 1px solid var(--calm-focus-line);
+  border-radius: calc(var(--radius) + 2px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(245, 249, 252, 0.98)),
+    linear-gradient(90deg, rgba(15, 124, 107, 0.05), rgba(216, 151, 60, 0.05));
+  box-shadow: var(--calm-focus-shadow);
+  scroll-margin-top: calc(var(--desk-rail-top) + 14px);
 }
 
 body.simple-mode.simple-profile-focus .memo-clearance-band,
@@ -42518,6 +42599,19 @@ body.desk-rail-right .floating-dock {
     width: 100%;
   }
 
+  .room-focus-note > p:not(.calm-focus-promise),
+  .room-focus-note .room-progress-meter,
+  .room-focus-note .calm-focus-breath-row,
+  .room-focus-note .calm-focus-promise,
+  .room-focus-note .room-cue-actions {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .calm-focus-breath-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   body.simple-mode.simple-filters-open .control-grid {
     grid-template-columns: minmax(0, 1fr);
     max-width: 620px;
@@ -44469,6 +44563,8 @@ body.simple-mode .serenity-path .simplicity-path-actions {
     --content-list-gap: 6px;
     --content-list-item-gap: 3px;
     --content-list-indent: 16px;
+    --calm-focus-note-gap: 6px;
+    --calm-focus-note-pad: 9px;
     --action-strip-gap: 6px;
     --action-button-height: 34px;
     --action-button-pad-y: 6px;

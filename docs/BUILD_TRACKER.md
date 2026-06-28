@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V357 Calm Focus Mode
+
+V357 turns Simple view into a calmer active-room working state. The focused room now carries a quiet surface, a Calm Focus Mode cue, a one-room one-proof one-next-move rhythm, and a 100% path audit marker so simplification stays part of production readiness.
+
 ## V356 Content Rhythm Parity
 
 V356 tightens repeated card copy after the action-strip pass. Shared content variables now control paragraph gaps, list gaps, list-item spacing, and list indentation so output cards, guardrails, and pricing/build rooms read denser without losing structure.

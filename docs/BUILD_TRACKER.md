@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V356 Content Rhythm Parity
+
+V356 tightens repeated card copy after the action-strip pass. Shared content variables now control paragraph gaps, list gaps, list-item spacing, and list indentation so output cards, guardrails, and pricing/build rooms read denser without losing structure.
+
 ## V355 Action Strip Parity
 
 V355 gives section heading chips and action buttons the same compact rhythm as the command and form controls. Shared action variables now control toolbar gaps, button height, chip padding, wrap behavior, and phone two-column action strips.

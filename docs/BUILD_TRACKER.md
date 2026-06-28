@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V334 Rail Active Lane Keeper
+
+V334 keeps the desktop side rail oriented during long workspace movement. The active rail group is lightly marked, right-side rail placement gets a mirrored lane marker, and the relevant rail link or group is gently kept inside the fixed rail viewport as the workspace changes.
+
 ## V333 Rail Group Switcher
 
 V333 adds compact Desk, Research, Trust, and Founder switches inside the desktop side rail. These shortcuts use the same route handling as the rest of the workspace, update the active rail group, and reduce the need to scroll the full rail just to move between work lanes.

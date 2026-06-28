@@ -741,6 +741,23 @@ body.desk-rail-right .desk-rail {
 .desk-rail-group {
   display: grid;
   gap: 5px;
+  padding: 2px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+}
+
+.desk-rail-group.is-current {
+  border-color: rgba(158, 233, 223, 0.18);
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow: inset 3px 0 0 rgba(158, 233, 223, 0.48);
+}
+
+body.desk-rail-right .desk-rail-group.is-current {
+  box-shadow: inset -3px 0 0 rgba(158, 233, 223, 0.48);
+}
+
+.desk-rail-group.is-current .desk-rail-label {
+  color: #ffffff;
 }
 
 .desk-rail-label {
@@ -43190,6 +43207,18 @@ body.simple-mode .desk-rail {
   min-height: 23px;
   padding: 4px 5px;
   font-size: 9px;
+}
+
+.desk-rail-group {
+  padding: 1px;
+}
+
+.desk-rail-group.is-current {
+  box-shadow: inset 2px 0 0 rgba(158, 233, 223, 0.48);
+}
+
+body.desk-rail-right .desk-rail-group.is-current {
+  box-shadow: inset -2px 0 0 rgba(158, 233, 223, 0.48);
 }
 
 .desk-rail-label {

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v333-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v333 Rail Group Switcher";
+const DATA_VERSION = "20260628-v334-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v334 Rail Active Lane Keeper";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
@@ -1020,6 +1020,7 @@ const state = {
   navSide: "left",
   evidenceIntakeSlotId: "",
   investorRecordFocus: false,
+  railKeepFrame: 0,
   toolPaletteHost: null,
   workspaceJumpFullHtml: "",
   workspaceOptionIndex: new Map(),
@@ -1226,8 +1227,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "desk rail navigation", "desk rail fit polish", "rail context guide", "rail group switcher", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Use the rail group switcher to jump across Desk, Research, Trust, and Founder lanes without scrolling the entire side rail."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "desk rail navigation", "desk rail fit polish", "rail context guide", "rail group switcher", "rail active lane keeper", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Use the rail active lane keeper so the active side-rail group stays highlighted and visible during long workspace moves."
   },
   {
     phase: "Phase 2",
@@ -1243,8 +1244,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Rail group switcher",
+    label: "Rail active lane keeper",
     status: "Shipping now",
+    route: "#main",
+    detail: "Keep the active rail group visibly marked and gently in view while users move through long research, trust, and founder lanes."
+  },
+  {
+    label: "Rail group switcher",
+    status: "Done",
     route: "#main",
     detail: "Add compact Desk, Research, Trust, and Founder switches inside the rail so long navigation has direct group jumps."
   },
@@ -9280,9 +9287,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Rail group switcher",
-      status: "Active in v333",
+      status: "Done in v333",
       route: "#main",
       detail: "Add Desk, Research, Trust, and Founder rail group shortcuts so users can move between work lanes without scrolling the whole rail."
+    },
+    {
+      label: "Rail active lane keeper",
+      status: "Active in v334",
+      route: "#main",
+      detail: "Highlight the current rail group and keep the relevant rail lane visible during long workspace scrolling and route jumps."
     }
   ];
   const productionTarget = releaseVersion
@@ -9296,7 +9309,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, and rail-group audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, and rail-lane audit are complete.`
   };
   const launchGates = [
     {
@@ -9509,7 +9522,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v333 adds rail group switches for direct Desk, Research, Trust, and Founder movement.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v334 keeps the active rail lane visible and lightly marked during long workspace movement.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9638,7 +9651,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v333</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v334</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -36191,6 +36204,48 @@ function updateDeskRailSwitcher(activeGroup = "Desk") {
   });
 }
 
+function deskRailGroupForLabel(groupLabel = "Desk") {
+  return qsa(".desk-rail-group").find((group) => {
+    const label = group.querySelector(".desk-rail-label")?.textContent?.trim();
+    return label === groupLabel;
+  }) || null;
+}
+
+function updateDeskRailGroupFocus(activeGroup = "Desk") {
+  qsa(".desk-rail-group").forEach((group) => {
+    const label = group.querySelector(".desk-rail-label")?.textContent?.trim();
+    group.classList.toggle("is-current", label === activeGroup);
+  });
+}
+
+function deskRailTargetForContext(context) {
+  if (!context) return null;
+  const directLink = qsa(".desk-rail a[href^='#']").find((link) => link.getAttribute("href") === context.active.hash);
+  return directLink || deskRailGroupForLabel(context.activeGroup);
+}
+
+function keepDeskRailTargetVisible(target) {
+  if (!els.deskRail || !target || !target.getClientRects().length || window.innerWidth <= 980) return;
+  const railRect = els.deskRail.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+  const topBuffer = 12;
+  const bottomBuffer = 18;
+  if (targetRect.top < railRect.top + topBuffer) {
+    els.deskRail.scrollTop -= railRect.top + topBuffer - targetRect.top;
+  } else if (targetRect.bottom > railRect.bottom - bottomBuffer) {
+    els.deskRail.scrollTop += targetRect.bottom - (railRect.bottom - bottomBuffer);
+  }
+}
+
+function queueDeskRailTargetKeep(target) {
+  if (!target || window.innerWidth <= 980) return;
+  if (state.railKeepFrame) window.cancelAnimationFrame(state.railKeepFrame);
+  state.railKeepFrame = window.requestAnimationFrame(() => {
+    state.railKeepFrame = 0;
+    keepDeskRailTargetVisible(target);
+  });
+}
+
 function updateDeskRailContext(hash = "") {
   if (!els.deskRailCurrent || !els.deskRailGroup || !els.deskRailNext) return;
   const context = railContextForHash(hash || workspaceHashFromViewport());
@@ -36202,6 +36257,8 @@ function updateDeskRailContext(hash = "") {
   const nextLabel = els.deskRailNext.querySelector("b");
   if (nextLabel) nextLabel.textContent = context.next.label;
   updateDeskRailSwitcher(context.activeGroup);
+  updateDeskRailGroupFocus(context.activeGroup);
+  queueDeskRailTargetKeep(deskRailTargetForContext(context));
 }
 
 function updateWorkspaceNavigator(hash = "") {
@@ -60507,6 +60564,7 @@ function cacheElements() {
     deskRailGroup: qs("#deskRailGroup"),
     deskRailNext: qs("#deskRailNext"),
     deskRailSwitcher: qs("#deskRailSwitcher"),
+    deskRail: qs("#deskRail"),
     simpleModeToggle: qs("#simpleModeToggle"),
     simpleFilterToggle: qs("#simpleFilterToggle"),
     headerNextAction: qs("#headerNextAction"),

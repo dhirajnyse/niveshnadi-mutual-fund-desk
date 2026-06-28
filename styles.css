@@ -689,6 +689,37 @@ body.desk-rail-right .desk-rail {
   white-space: nowrap;
 }
 
+.desk-rail-progress {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+  margin-top: 1px;
+}
+
+.desk-rail-progress span {
+  color: #dffcf6;
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+.desk-rail-progress i {
+  display: block;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.desk-rail-progress b {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #9ee9df, #f1a43a);
+}
+
 .desk-rail-next {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -876,6 +907,7 @@ body.desk-rail-mini .desk-rail-context {
 body.desk-rail-mini .desk-rail-context > span,
 body.desk-rail-mini .desk-rail-context > strong,
 body.desk-rail-mini .desk-rail-context p,
+body.desk-rail-mini .desk-rail-progress span,
 body.desk-rail-mini .desk-rail-next small,
 body.desk-rail-mini .desk-rail-label,
 body.desk-rail-mini .desk-rail a strong {
@@ -893,6 +925,15 @@ body.desk-rail-mini .desk-rail-next {
   min-height: 28px;
   padding: 5px 4px;
   text-align: center;
+}
+
+body.desk-rail-mini .desk-rail-progress {
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+body.desk-rail-mini .desk-rail-progress i {
+  height: 4px;
 }
 
 body.desk-rail-mini .desk-rail-next b {
@@ -957,12 +998,14 @@ body.desk-rail-mini .desk-rail:focus-within .desk-rail-context {
 body.desk-rail-mini .desk-rail:hover .desk-rail-context > span,
 body.desk-rail-mini .desk-rail:hover .desk-rail-context > strong,
 body.desk-rail-mini .desk-rail:hover .desk-rail-context p,
+body.desk-rail-mini .desk-rail:hover .desk-rail-progress span,
 body.desk-rail-mini .desk-rail:hover .desk-rail-next small,
 body.desk-rail-mini .desk-rail:hover .desk-rail-label,
 body.desk-rail-mini .desk-rail:hover .desk-rail a strong,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-context > span,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-context > strong,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-context p,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-progress span,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-next small,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail-label,
 body.desk-rail-mini .desk-rail:focus-within .desk-rail a strong {
@@ -974,6 +1017,11 @@ body.desk-rail-mini .desk-rail:focus-within .desk-rail a strong {
   clip-path: none;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+body.desk-rail-mini .desk-rail:hover .desk-rail-progress,
+body.desk-rail-mini .desk-rail:focus-within .desk-rail-progress {
+  grid-template-columns: auto minmax(0, 1fr);
 }
 
 body.desk-rail-mini .desk-rail:hover .desk-rail-next,

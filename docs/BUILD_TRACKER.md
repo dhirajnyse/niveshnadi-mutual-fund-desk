@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V338 Rail Progress Spine
+
+V338 adds a compact progress spine inside the desktop side rail. The rail now shows the active shortcut number, total rail shortcut count, and a slim progress bar that updates with scroll, route jumps, and group switches, while Mini rail keeps the meter compact until hover or keyboard focus reveals the label.
+
 ## V337 Layout Preset Command
 
 V337 compresses the top command bar by replacing separate Tabs and Rail selectors with one saved Layout preset. Left full, left mini, right full, and right mini still write to the same underlying rail preferences, so existing saved choices continue to work while the header takes less space.

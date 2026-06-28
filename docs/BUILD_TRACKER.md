@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V360 One Move Command
+
+V360 makes the Simple view active-room cue calmer. The focused room now leads with one primary command that names the next move and keeps the reason beside it, while resume/reset actions and progress memory stay secondary.
+
 ## V359 Guided Progress Rail
 
 V359 brings the Simple view path into the active room cue. Profile, Find, Verify, Memo, and Review now show as a compact stateful rail with current, completed, and pending steps so users can keep their place without scanning the whole interface.

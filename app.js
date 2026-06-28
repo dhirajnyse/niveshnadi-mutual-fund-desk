@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260629-v359-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v359 Guided Progress Rail";
+const DATA_VERSION = "20260629-v360-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v360 One Move Command";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -4171,6 +4171,25 @@ function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.a
   const calmPromise = progress.isComplete
     ? "Research round complete. Keep the saved memory visible before widening."
     : "One active room. One proof cue. One next move.";
+  const primaryRoute = progress.isComplete && showCompletionAction ? progress.finishStep.value : cue.route;
+  const primaryLead = progress.isComplete ? "Round complete" : "Do now";
+  const primaryLabel = progress.isComplete
+    ? showCompletionAction ? `Finish ${progress.finishStep.label}` : "Review saved round"
+    : cue.next.replace(/^Next:\s*/i, "Open ");
+  const primaryDetail = progress.isComplete ? calmPromise : cue.action;
+  const secondaryActionsHtml = [
+    !progress.isComplete && progress.resumeStep ? `
+      <button class="signal-chip simplicity-resume" type="button" data-signal-route="${escapeHtml(progress.resumeStep.value)}" aria-label="Resume last room: ${escapeHtml(progress.resumeStep.label)}">
+        <span>Resume</span>
+        <strong>${escapeHtml(progress.resumeStep.label)}</strong>
+      </button>
+    ` : "",
+    progress.canReset ? `
+      <button class="signal-chip simplicity-reset" type="button" data-simple-progress-reset>
+        Fresh start
+      </button>
+    ` : ""
+  ].filter(Boolean).join("");
   const progressRailHtml = `
     <div class="simple-progress-rail" aria-label="Simple research path progress">
       ${SIMPLE_JOURNEY_STEPS.map((step) => {
@@ -4192,7 +4211,11 @@ function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.a
       <strong>${escapeHtml(cue.title)}</strong>
       <small>${escapeHtml(cue.label)} | ${escapeHtml(progress.activePosition)}</small>
     </div>
-    <p>${escapeHtml(cue.action)}</p>
+    <button class="simple-command-band${progress.isComplete ? " simplicity-finish" : ""}" type="button" data-signal-route="${escapeHtml(primaryRoute)}" aria-label="${escapeHtml(`${primaryLead}: ${primaryLabel}. ${primaryDetail}`)}">
+      <span>${escapeHtml(primaryLead)}</span>
+      <strong>${escapeHtml(primaryLabel)}</strong>
+      <em>${escapeHtml(primaryDetail)}</em>
+    </button>
     <div class="room-progress-meter${progress.isComplete ? " is-complete" : ""}">
       <span>${escapeHtml(progress.activePosition)}</span>
       <strong>${escapeHtml(progress.label)}</strong>
@@ -4200,31 +4223,7 @@ function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.a
     </div>
     ${progressRailHtml}
     <p class="calm-focus-promise">${escapeHtml(calmPromise)}</p>
-    <div class="room-cue-actions">
-      ${progress.isComplete ? `
-        ${showCompletionAction ? `
-        <button class="signal-chip simplicity-finish" type="button" data-signal-route="${escapeHtml(progress.finishStep.value)}" aria-label="Finish research round: ${escapeHtml(progress.finishStep.label)}">
-          <span>Finish</span>
-          <strong>${escapeHtml(progress.finishStep.label)}</strong>
-        </button>
-        ` : ""}
-      ` : `
-        ${progress.resumeStep ? `
-          <button class="signal-chip simplicity-resume" type="button" data-signal-route="${escapeHtml(progress.resumeStep.value)}" aria-label="Resume last room: ${escapeHtml(progress.resumeStep.label)}">
-            <span>Resume</span>
-            <strong>${escapeHtml(progress.resumeStep.label)}</strong>
-          </button>
-        ` : ""}
-      <button class="signal-chip" type="button" data-signal-route="${escapeHtml(cue.route)}">
-        ${escapeHtml(cue.next)}
-      </button>
-      `}
-      ${progress.canReset ? `
-        <button class="signal-chip simplicity-reset" type="button" data-simple-progress-reset>
-          Fresh start
-        </button>
-      ` : ""}
-    </div>
+    ${secondaryActionsHtml ? `<div class="room-cue-actions">${secondaryActionsHtml}</div>` : ""}
   `;
   els.roomFocusNote.hidden = true;
   els.roomFocusNote.innerHTML = cueHtml;
@@ -9530,9 +9529,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Guided progress rail",
-      status: "Active in v359",
+      status: "Done in v359",
       route: "#main",
       detail: "Show the five-step Simple path inside the active room cue with done, current, and pending states."
+    },
+    {
+      label: "One move command",
+      status: "Active in v360",
+      route: "#main",
+      detail: "Make the active-room cue lead with one calm command before secondary actions and progress memory."
     }
   ];
   const productionTarget = releaseVersion
@@ -9546,7 +9551,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, and guided-progress audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, and one-move audit are complete.`
   };
   const launchGates = [
     {
@@ -9888,7 +9893,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v359</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v360</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

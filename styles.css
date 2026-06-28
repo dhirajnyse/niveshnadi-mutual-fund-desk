@@ -3041,6 +3041,82 @@ main {
   grid-column: 2;
 }
 
+.simple-command-band {
+  grid-column: 2 / span 2;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2px 10px;
+  align-items: center;
+  min-height: 54px;
+  padding: 9px 11px;
+  border: 1px solid rgba(15, 124, 107, 0.22);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(229, 247, 241, 0.96), rgba(255, 243, 220, 0.44)),
+    #ffffff;
+  color: var(--ink);
+  text-align: left;
+  box-shadow: 0 10px 24px rgba(15, 34, 56, 0.06);
+}
+
+.simple-command-band span {
+  grid-row: 1 / span 2;
+  display: inline-grid;
+  place-items: center;
+  min-width: 58px;
+  min-height: 30px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--mint);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.simple-command-band strong {
+  min-width: 0;
+  margin: 0;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.16;
+}
+
+.simple-command-band em {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 820;
+  line-height: 1.35;
+}
+
+.simple-command-band:hover,
+.simple-command-band:focus-visible {
+  border-color: rgba(15, 124, 107, 0.42);
+  background:
+    linear-gradient(135deg, rgba(229, 247, 241, 1), rgba(255, 255, 255, 0.96)),
+    #ffffff;
+  transform: translateY(-1px);
+}
+
+.simple-command-band.simplicity-finish {
+  border-color: rgba(15, 34, 56, 0.82);
+  background: linear-gradient(135deg, rgba(15, 34, 56, 0.96), rgba(15, 124, 107, 0.84));
+  color: #ffffff;
+}
+
+.simple-command-band.simplicity-finish span,
+.simple-command-band.simplicity-finish strong,
+.simple-command-band.simplicity-finish em {
+  color: #ffffff;
+}
+
+.simple-command-band.simplicity-finish span {
+  background: rgba(255, 255, 255, 0.16);
+}
+
 .room-focus-note .room-progress-meter {
   grid-column: 3;
 }
@@ -3837,6 +3913,7 @@ main {
 body.simple-mode.action-priority-mode .header-next-action:not([hidden]),
 body.simple-mode.action-priority-mode .toolbar .text-button:first-of-type,
 body.simple-mode.action-priority-mode .toolbar .primary-button:first-of-type,
+body.simple-mode.action-priority-mode .simple-command-band,
 body.simple-mode.action-priority-mode .room-cue-actions .signal-chip:first-child,
 body.simple-mode.action-priority-mode .serenity-path .primary-next-action,
 body.simple-mode.action-priority-mode .simplicity-path .primary-next-action,
@@ -3850,7 +3927,10 @@ body.simple-mode.action-priority-mode .serenity-start-surface button:first-child
 
 body.simple-mode.action-priority-mode :is(.serenity-path, .simplicity-path) .primary-next-action span,
 body.simple-mode.action-priority-mode :is(.serenity-path, .simplicity-path) .primary-next-action strong,
-body.simple-mode.action-priority-mode :is(.serenity-path, .simplicity-path) .primary-next-action em {
+body.simple-mode.action-priority-mode :is(.serenity-path, .simplicity-path) .primary-next-action em,
+body.simple-mode.action-priority-mode .simple-command-band span,
+body.simple-mode.action-priority-mode .simple-command-band strong,
+body.simple-mode.action-priority-mode .simple-command-band em {
   color: var(--ink);
 }
 
@@ -3866,6 +3946,8 @@ body.simple-mode.action-priority-mode .serenity-start-surface button:not(:first-
 
 body.simple-mode.action-priority-mode .toolbar .text-button:first-of-type:hover,
 body.simple-mode.action-priority-mode .toolbar .text-button:first-of-type:focus-visible,
+body.simple-mode.action-priority-mode .simple-command-band:hover,
+body.simple-mode.action-priority-mode .simple-command-band:focus-visible,
 body.simple-mode.action-priority-mode .room-cue-actions .signal-chip:first-child:hover,
 body.simple-mode.action-priority-mode .room-cue-actions .signal-chip:first-child:focus-visible,
 body.simple-mode.action-priority-mode .next-operating-grid button:first-child:hover,
@@ -42720,6 +42802,7 @@ body.desk-rail-right .floating-dock {
   }
 
   .room-focus-note > p:not(.calm-focus-promise),
+  .room-focus-note .simple-command-band,
   .room-focus-note .room-progress-meter,
   .room-focus-note .calm-focus-breath-row,
   .room-focus-note .simple-progress-rail,

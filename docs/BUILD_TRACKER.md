@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V362 Hold If Guardrail
+
+V362 pairs the Simple view acceptance cue with one soft stop condition. Each guided room now says both when it is safe to continue and when to hold, keeping the one-move path evidence-first and unhurried.
+
 ## V361 Done When Cue
 
 V361 adds a quiet acceptance cue to the Simple view active-room guide. Each guided room now says what must be visible or saved before the investor moves forward, making the one-move path easier to trust without adding another workflow panel.

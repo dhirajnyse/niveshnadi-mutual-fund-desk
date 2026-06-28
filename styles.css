@@ -3117,8 +3117,15 @@ main {
   background: rgba(255, 255, 255, 0.16);
 }
 
-.simple-done-when {
+.simple-proof-cue-grid {
   grid-column: 2 / span 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.simple-done-when,
+.simple-hold-if {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
@@ -3130,7 +3137,8 @@ main {
   background: rgba(255, 255, 255, 0.64);
 }
 
-.simple-done-when span {
+.simple-done-when span,
+.simple-hold-if span {
   display: inline-grid;
   place-items: center;
   min-height: 18px;
@@ -3145,7 +3153,18 @@ main {
   white-space: nowrap;
 }
 
-.simple-done-when strong {
+.simple-hold-if {
+  border-color: rgba(216, 151, 60, 0.2);
+  background: rgba(255, 249, 238, 0.68);
+}
+
+.simple-hold-if span {
+  background: rgba(255, 243, 220, 0.92);
+  color: #8a520b;
+}
+
+.simple-done-when strong,
+.simple-hold-if strong {
   min-width: 0;
   margin: 0;
   color: var(--ink);
@@ -42840,6 +42859,7 @@ body.desk-rail-right .floating-dock {
 
   .room-focus-note > p:not(.calm-focus-promise),
   .room-focus-note .simple-command-band,
+  .room-focus-note .simple-proof-cue-grid,
   .room-focus-note .simple-done-when,
   .room-focus-note .room-progress-meter,
   .room-focus-note .calm-focus-breath-row,
@@ -42848,6 +42868,10 @@ body.desk-rail-right .floating-dock {
   .room-focus-note .room-cue-actions {
     grid-column: 1;
     grid-row: auto;
+  }
+
+  .simple-proof-cue-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .simple-progress-rail {

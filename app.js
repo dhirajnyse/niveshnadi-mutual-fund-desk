@@ -1,9 +1,10 @@
-const DATA_VERSION = "20260628-v342-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v342 Rail Keyboard Polish";
+const DATA_VERSION = "20260628-v343-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v343 Rail Group Collapse";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
 const RAIL_GROUP_MEMORY_KEY = "niveshnadi-rail-group-memory";
+const RAIL_COLLAPSE_MEMORY_KEY = "niveshnadi-rail-collapse-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
 const SIMPLE_FUND_SHELF_LIMIT = 6;
@@ -1023,6 +1024,8 @@ const state = {
   navDensity: "full",
   railGroupMemory: {},
   railGroupMemoryLoaded: false,
+  railCollapsedGroups: new Set(),
+  railCollapseLoaded: false,
   railCurrentRoute: "",
   railBackRoute: "",
   railRecentRoutes: [],
@@ -1235,8 +1238,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "desk rail navigation", "desk rail fit polish", "rail context guide", "rail group switcher", "rail active lane keeper", "mini rail mode", "mini rail peek labels", "layout preset command", "rail progress spine", "rail group memory", "rail backtrack cue", "rail recent rooms", "rail keyboard polish", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Use keyboard-ready rail focus travel so repeated workspace movement stays fast without opening the full selector."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "evidence acceptance ledger", "evidence recovery queue", "production unlock review board", "founder signoff memo", "founder launch receipt vault", "founder launch claim gate", "workspace fit polish", "desk rail navigation", "desk rail fit polish", "rail context guide", "rail group switcher", "rail active lane keeper", "mini rail mode", "mini rail peek labels", "layout preset command", "rail progress spine", "rail group memory", "rail backtrack cue", "rail recent rooms", "rail keyboard polish", "rail group collapse", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Use collapsible rail groups so long side navigation stays compact while active rooms remain visible."
   },
   {
     phase: "Phase 2",
@@ -1252,8 +1255,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Rail keyboard polish",
+    label: "Rail group collapse",
     status: "Shipping now",
+    route: "#main",
+    detail: "Let side-rail groups collapse into compact headers while the active group stays open."
+  },
+  {
+    label: "Rail keyboard polish",
+    status: "Done",
     route: "#main",
     detail: "Make side-rail focus travel quicker and give focused rail controls a clearer quiet ring."
   },
@@ -9391,9 +9400,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Rail keyboard polish",
-      status: "Active in v342",
+      status: "Done in v342",
       route: "#main",
       detail: "Let focused rail controls travel as one keyboard-friendly loop, with clearer focus states across Back, Next, Recent, group, and room targets."
+    },
+    {
+      label: "Rail group collapse",
+      status: "Active in v343",
+      route: "#main",
+      detail: "Convert rail group labels into collapse controls with saved compact state while the active rail group stays open."
     }
   ];
   const productionTarget = releaseVersion
@@ -9407,7 +9422,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, and rail-keyboard audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, and rail-collapse audit are complete.`
   };
   const launchGates = [
     {
@@ -9620,7 +9635,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v342 makes the side rail more keyboard-ready and gives focused rail controls a clearer quiet ring.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v343 makes side-rail groups collapsible so long navigation stays compact without losing the active room.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9749,7 +9764,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v342</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v343</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -36268,7 +36283,8 @@ const RAIL_GROUP_FALLBACK_ROUTES = {
 function railMetaFromLink(link) {
   const hash = link?.getAttribute("href") || "";
   const label = link?.querySelector("strong")?.textContent?.trim() || link?.textContent?.trim() || "Workspace";
-  const group = link?.closest(".desk-rail-group")?.querySelector(".desk-rail-label")?.textContent?.trim() || "Workspace";
+  const groupNode = link?.closest(".desk-rail-group");
+  const group = groupNode?.dataset?.railGroupName || groupNode?.querySelector(".desk-rail-label")?.textContent?.trim() || "Workspace";
   return { hash, label, group };
 }
 
@@ -36311,6 +36327,64 @@ function saveRailGroupMemory() {
   } catch (error) {
     // Group memory is optional; fixed rail routes remain the durable fallback.
   }
+}
+
+function railGroupNameFromNode(group) {
+  return group?.dataset?.railGroupName || group?.querySelector(".desk-rail-label")?.textContent?.trim() || "";
+}
+
+function loadRailCollapseMemory() {
+  if (state.railCollapseLoaded) return;
+  const defaults = ["Research", "Trust", "Founder"];
+  let collapsed = defaults;
+  try {
+    const saved = JSON.parse(localStorage.getItem(RAIL_COLLAPSE_MEMORY_KEY) || "null");
+    if (Array.isArray(saved)) {
+      collapsed = saved.filter((group) => RAIL_GROUP_FALLBACK_ROUTES[group]);
+    }
+  } catch (error) {
+    // Collapse memory is optional; default compact groups keep the rail usable.
+  }
+  state.railCollapsedGroups = new Set(collapsed);
+  state.railCollapseLoaded = true;
+}
+
+function saveRailCollapseMemory() {
+  try {
+    localStorage.setItem(RAIL_COLLAPSE_MEMORY_KEY, JSON.stringify(Array.from(state.railCollapsedGroups)));
+  } catch (error) {
+    // Collapsed groups are a visual preference; navigation still works without storage.
+  }
+}
+
+function syncDeskRailCollapse(activeGroup = "Desk") {
+  loadRailCollapseMemory();
+  qsa(".desk-rail-group").forEach((group) => {
+    const label = railGroupNameFromNode(group);
+    const collapseButton = group.querySelector("[data-rail-collapse]");
+    const isCollapsed = Boolean(label && label !== activeGroup && state.railCollapsedGroups.has(label));
+    group.classList.toggle("is-collapsed", isCollapsed);
+    if (!collapseButton) return;
+    collapseButton.dataset.railTip = isCollapsed ? `Expand ${label}` : `${label} open`;
+    collapseButton.title = isCollapsed ? `Expand ${label} rail group` : `${label} rail group open`;
+    collapseButton.setAttribute("aria-expanded", isCollapsed ? "false" : "true");
+    collapseButton.setAttribute("aria-label", isCollapsed ? `Expand ${label} rail group` : `${label} rail group is open`);
+  });
+}
+
+function toggleDeskRailGroupCollapse(label = "") {
+  if (!label || !RAIL_GROUP_FALLBACK_ROUTES[label]) return;
+  loadRailCollapseMemory();
+  const activeGroup = railContextForHash(window.location.hash || workspaceHashFromViewport())?.activeGroup || "Desk";
+  if (label === activeGroup) {
+    state.railCollapsedGroups.delete(label);
+  } else if (state.railCollapsedGroups.has(label)) {
+    state.railCollapsedGroups.delete(label);
+  } else {
+    state.railCollapsedGroups.add(label);
+  }
+  saveRailCollapseMemory();
+  syncDeskRailCollapse(activeGroup);
 }
 
 function railGroupRoute(groupLabel = "Desk") {
@@ -36440,22 +36514,23 @@ function updateDeskRailSwitcher(activeGroup = "Desk") {
 
 function deskRailGroupForLabel(groupLabel = "Desk") {
   return qsa(".desk-rail-group").find((group) => {
-    const label = group.querySelector(".desk-rail-label")?.textContent?.trim();
+    const label = railGroupNameFromNode(group);
     return label === groupLabel;
   }) || null;
 }
 
 function updateDeskRailGroupFocus(activeGroup = "Desk") {
   qsa(".desk-rail-group").forEach((group) => {
-    const label = group.querySelector(".desk-rail-label")?.textContent?.trim();
+    const label = railGroupNameFromNode(group);
     group.classList.toggle("is-current", label === activeGroup);
   });
+  syncDeskRailCollapse(activeGroup);
 }
 
 function deskRailTargetForContext(context) {
   if (!context) return null;
   const directLink = qsa(".desk-rail a[href^='#']").find((link) => link.getAttribute("href") === context.active.hash);
-  return directLink || deskRailGroupForLabel(context.activeGroup);
+  return directLink && directLink.getClientRects().length ? directLink : deskRailGroupForLabel(context.activeGroup);
 }
 
 function keepDeskRailTargetVisible(target) {
@@ -60888,6 +60963,11 @@ function bindWorkspaceJump() {
     if (!hash) return;
     updateWorkspaceNavigator(hash);
     scrollToHash(hash, "smooth", true);
+  });
+  els.deskRail?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-rail-collapse]");
+    if (!button || !els.deskRail.contains(button)) return;
+    toggleDeskRailGroupCollapse(button.dataset.railCollapse);
   });
   els.deskRailSwitcher?.addEventListener("click", (event) => {
     const button = event.target.closest("[data-rail-group]");

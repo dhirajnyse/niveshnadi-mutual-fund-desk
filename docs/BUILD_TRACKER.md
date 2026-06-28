@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V343 Rail Group Collapse
+
+V343 converts desktop rail group labels into compact collapse controls. Research, Trust, and Founder start folded for a shorter side rail, user collapse choices are remembered locally, and the active group always stays open so the current workspace room remains visible.
+
 ## V342 Rail Keyboard Polish
 
 V342 makes the desktop rail more keyboard-ready without adding visible instruction copy. Focused rail controls now move through one scoped loop across Back, Next, Recent, group switches, and room links, and the rail gets a clearer quiet focus ring that also works in Mini rail mode.

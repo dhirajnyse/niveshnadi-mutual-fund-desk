@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V361 Done When Cue
+
+V361 adds a quiet acceptance cue to the Simple view active-room guide. Each guided room now says what must be visible or saved before the investor moves forward, making the one-move path easier to trust without adding another workflow panel.
+
 ## V360 One Move Command
 
 V360 makes the Simple view active-room cue calmer. The focused room now leads with one primary command that names the next move and keeps the reason beside it, while resume/reset actions and progress memory stay secondary.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260629-v360-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v360 One Move Command";
+const DATA_VERSION = "20260629-v361-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v361 Done When Cue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -27,6 +27,7 @@ const SIMPLE_ROOM_CUES = {
     label: "Profile room",
     title: "Set context before funds",
     action: "Fill goal, horizon, SIP comfort, emergency buffer, and drawdown comfort.",
+    doneWhen: "Goal, horizon, SIP comfort, emergency buffer, and drawdown comfort are visible.",
     next: "Next: Find funds",
     route: "#screener"
   },
@@ -34,6 +35,7 @@ const SIMPLE_ROOM_CUES = {
     label: "Find funds",
     title: "Build a tiny shortlist",
     action: "Search one category, inspect the anchor fund, and keep one fair peer.",
+    doneWhen: "One fund, one fair peer, and one shortlist reason are named.",
     next: "Next: Verify evidence",
     route: "#evidence"
   },
@@ -41,6 +43,7 @@ const SIMPLE_ROOM_CUES = {
     label: "Verify evidence",
     title: "Trust before score",
     action: "Check source status, citation path, TER, holdings, benchmark, and riskometer.",
+    doneWhen: "Source status, date, TER, holdings, benchmark, and riskometer are visible.",
     next: "Next: Write memo",
     route: "#decision-pack"
   },
@@ -48,6 +51,7 @@ const SIMPLE_ROOM_CUES = {
     label: "Write memo",
     title: "Write before action",
     action: "Record reason, amount, review date, conviction, and pause condition.",
+    doneWhen: "Reason, amount, review date, conviction, and pause condition are written.",
     next: "Next: Save review",
     route: "#review-vault"
   },
@@ -55,6 +59,7 @@ const SIMPLE_ROOM_CUES = {
     label: "Review memory",
     title: "Keep the future check visible",
     action: "Save the review snapshot or record, then set the next trigger.",
+    doneWhen: "Review memory and the next check trigger are saved.",
     next: "Next: Return to Profile or Find",
     route: "#profile-room"
   }
@@ -4177,6 +4182,9 @@ function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.a
     ? showCompletionAction ? `Finish ${progress.finishStep.label}` : "Review saved round"
     : cue.next.replace(/^Next:\s*/i, "Open ");
   const primaryDetail = progress.isComplete ? calmPromise : cue.action;
+  const doneWhen = progress.isComplete
+    ? "Saved review memory is visible before any wider research."
+    : cue.doneWhen || "The required proof is visible.";
   const secondaryActionsHtml = [
     !progress.isComplete && progress.resumeStep ? `
       <button class="signal-chip simplicity-resume" type="button" data-signal-route="${escapeHtml(progress.resumeStep.value)}" aria-label="Resume last room: ${escapeHtml(progress.resumeStep.label)}">
@@ -4216,6 +4224,10 @@ function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.a
       <strong>${escapeHtml(primaryLabel)}</strong>
       <em>${escapeHtml(primaryDetail)}</em>
     </button>
+    <p class="simple-done-when">
+      <span>Done when</span>
+      <strong>${escapeHtml(doneWhen)}</strong>
+    </p>
     <div class="room-progress-meter${progress.isComplete ? " is-complete" : ""}">
       <span>${escapeHtml(progress.activePosition)}</span>
       <strong>${escapeHtml(progress.label)}</strong>
@@ -9535,9 +9547,15 @@ function buildTrackerConfig() {
     },
     {
       label: "One move command",
-      status: "Active in v360",
+      status: "Done in v360",
       route: "#main",
       detail: "Make the active-room cue lead with one calm command before secondary actions and progress memory."
+    },
+    {
+      label: "Done when cue",
+      status: "Active in v361",
+      route: "#main",
+      detail: "Give each Simple room one quiet acceptance condition so users know when to move forward."
     }
   ];
   const productionTarget = releaseVersion
@@ -9551,7 +9569,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, and one-move audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, and done-when audit are complete.`
   };
   const launchGates = [
     {
@@ -9893,7 +9911,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v360</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v361</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

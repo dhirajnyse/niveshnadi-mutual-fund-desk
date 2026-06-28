@@ -3117,6 +3117,43 @@ main {
   background: rgba(255, 255, 255, 0.16);
 }
 
+.simple-done-when {
+  grid-column: 2 / span 2;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 6px 9px;
+  border: 1px solid rgba(15, 124, 107, 0.13);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.64);
+}
+
+.simple-done-when span {
+  display: inline-grid;
+  place-items: center;
+  min-height: 18px;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: rgba(229, 247, 241, 0.88);
+  color: var(--mint);
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.simple-done-when strong {
+  min-width: 0;
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1.25;
+}
+
 .room-focus-note .room-progress-meter {
   grid-column: 3;
 }
@@ -42803,6 +42840,7 @@ body.desk-rail-right .floating-dock {
 
   .room-focus-note > p:not(.calm-focus-promise),
   .room-focus-note .simple-command-band,
+  .room-focus-note .simple-done-when,
   .room-focus-note .room-progress-meter,
   .room-focus-note .calm-focus-breath-row,
   .room-focus-note .simple-progress-rail,

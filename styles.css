@@ -3173,8 +3173,15 @@ main {
   line-height: 1.25;
 }
 
-.simple-next-tiny-step {
+.simple-next-cue-grid {
   grid-column: 2 / span 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.simple-next-tiny-step,
+.simple-calm-pace {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
@@ -3186,7 +3193,13 @@ main {
   background: rgba(239, 247, 255, 0.6);
 }
 
-.simple-next-tiny-step span {
+.simple-calm-pace {
+  border-color: rgba(15, 124, 107, 0.12);
+  background: rgba(244, 251, 248, 0.66);
+}
+
+.simple-next-tiny-step span,
+.simple-calm-pace span {
   display: inline-grid;
   place-items: center;
   min-height: 18px;
@@ -3201,7 +3214,13 @@ main {
   white-space: nowrap;
 }
 
-.simple-next-tiny-step strong {
+.simple-calm-pace span {
+  background: rgba(229, 247, 241, 0.9);
+  color: var(--mint);
+}
+
+.simple-next-tiny-step strong,
+.simple-calm-pace strong {
   min-width: 0;
   margin: 0;
   color: var(--ink);
@@ -42898,7 +42917,7 @@ body.desk-rail-right .floating-dock {
   .room-focus-note .simple-command-band,
   .room-focus-note .simple-proof-cue-grid,
   .room-focus-note .simple-done-when,
-  .room-focus-note .simple-next-tiny-step,
+  .room-focus-note .simple-next-cue-grid,
   .room-focus-note .room-progress-meter,
   .room-focus-note .calm-focus-breath-row,
   .room-focus-note .simple-progress-rail,
@@ -42909,6 +42928,10 @@ body.desk-rail-right .floating-dock {
   }
 
   .simple-proof-cue-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .simple-next-cue-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 

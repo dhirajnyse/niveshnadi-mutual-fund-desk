@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V364 Calm Pace Cue
+
+V364 pairs each Simple view next tiny step with one calm pace cue. The active-room guide now says how briefly to stay with the current move, helping users avoid over-researching while keeping the proof-first path intact.
+
 ## V363 Next Tiny Step
 
 V363 adds one tiny next action to the Simple view active-room guide. After the done/hold proof pair, each guided room now gives a small next-minute move so the user can continue calmly without scanning the full workspace.

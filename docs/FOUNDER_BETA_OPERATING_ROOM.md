@@ -12,4 +12,6 @@ V320 adds First Cohort Rehearsal Daybook. The room now turns the launch command 
 
 V321 adds Real Proof Closeout Board. The room now gives every rehearsal day an evidence slot with required artifact, source proof, owner attestation, closeout state, missing reason, active blocker, no-go memo, and receipt fields. This keeps the first paid cohort closed until real payment, legal, security/support, live-source, and founder decision proof is attached, not merely described.
 
+V322 adds Evidence Intake Drawer. The room now opens the weakest real proof slot into a compact owner intake packet with required artifact, missing reason, safety scan, acceptance steps, projected progress, six-slot intake queue, and receipt fields. This makes the next move toward 100% explicit while still blocking progress from screenshots, demo copy, oral confirmation, or unsafe personal data.
+
 This room protects monetization discipline. Low retail pricing can work only if hidden support, refund, evidence, and account costs are visible before the product invites more users. It also preserves the Phase 1 boundary: no advice, no execution, no PAN, folio, CAS, bank, UPI, card, OTP, ARN, EUIN, distributor client book, or Phase 2 workflow belongs inside the founder beta operating rhythm.

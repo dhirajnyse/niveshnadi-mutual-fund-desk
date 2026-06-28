@@ -38505,10 +38505,231 @@ body.simple-mode .quiet-fund-shelf {
   font-size: 18px;
 }
 
+.real-proof-closeout-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
 .real-proof-closeout-two ol,
 .real-proof-closeout-two ul {
   margin: 0;
   padding-left: 18px;
+}
+
+.evidence-intake-drawer {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(15, 124, 107, 0.34);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(232, 250, 245, 0.92), rgba(245, 249, 252, 0.98));
+}
+
+.evidence-intake-drawer.ready {
+  border-color: rgba(15, 124, 107, 0.42);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.98), rgba(255, 255, 255, 0.94));
+}
+
+.evidence-intake-drawer.watch {
+  border-color: rgba(214, 154, 61, 0.42);
+  background: linear-gradient(135deg, rgba(255, 248, 232, 0.92), rgba(245, 249, 252, 0.98));
+}
+
+.evidence-intake-drawer.blocked {
+  border-color: rgba(193, 75, 105, 0.36);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.9), rgba(245, 249, 252, 0.96));
+}
+
+.evidence-intake-drawer p,
+.evidence-intake-drawer li,
+.evidence-intake-drawer small,
+.evidence-intake-drawer em {
+  color: var(--muted);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.evidence-intake-drawer-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 12px;
+  align-items: center;
+}
+
+.evidence-intake-drawer-head span,
+.evidence-intake-drawer-metrics span,
+.evidence-intake-drawer-focus span,
+.evidence-intake-contract span,
+.evidence-intake-queue span,
+.evidence-intake-two span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.evidence-intake-drawer-head h3 {
+  margin: 3px 0 5px;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.14;
+}
+
+.evidence-intake-drawer-head p {
+  margin: 0;
+}
+
+.evidence-intake-drawer-score {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border-radius: 50%;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #dce7ed 0);
+  color: #ffffff;
+}
+
+.evidence-intake-drawer-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.evidence-intake-drawer-score strong,
+.evidence-intake-drawer-score span {
+  position: relative;
+}
+
+.evidence-intake-drawer-score strong {
+  color: #ffffff;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.evidence-intake-drawer-score span {
+  color: #dce7ed;
+  font-size: 8px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.evidence-intake-drawer-metrics,
+.evidence-intake-drawer-focus,
+.evidence-intake-contract,
+.evidence-intake-queue,
+.evidence-intake-two {
+  display: grid;
+  gap: 10px;
+}
+
+.evidence-intake-drawer-metrics,
+.evidence-intake-contract {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.evidence-intake-drawer-focus,
+.evidence-intake-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.evidence-intake-queue {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.evidence-intake-drawer-metrics,
+.evidence-intake-drawer-focus,
+.evidence-intake-contract,
+.evidence-intake-queue,
+.evidence-intake-two,
+.evidence-intake-drawer-metrics article,
+.evidence-intake-drawer-focus article,
+.evidence-intake-contract article,
+.evidence-intake-queue button,
+.evidence-intake-two article {
+  min-width: 0;
+}
+
+.evidence-intake-drawer-metrics article,
+.evidence-intake-drawer-focus article,
+.evidence-intake-contract article,
+.evidence-intake-two article {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.evidence-intake-primary.blocked,
+.evidence-intake-queue button.blocked {
+  border-color: rgba(198, 77, 103, 0.32);
+  background: rgba(255, 242, 245, 0.72);
+}
+
+.evidence-intake-primary.watch,
+.evidence-intake-queue button.watch {
+  border-color: rgba(214, 154, 61, 0.38);
+  background: rgba(255, 245, 223, 0.68);
+}
+
+.evidence-intake-primary.ready,
+.evidence-intake-queue button.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: rgba(232, 250, 245, 0.76);
+}
+
+.evidence-intake-drawer-metrics strong,
+.evidence-intake-drawer-focus strong,
+.evidence-intake-contract strong,
+.evidence-intake-queue strong,
+.evidence-intake-two strong {
+  display: block;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.evidence-intake-drawer-focus ol,
+.evidence-intake-two ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.evidence-intake-queue button {
+  display: grid;
+  gap: 7px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.evidence-intake-queue button.active {
+  border-color: rgba(31, 78, 121, 0.52);
+  box-shadow: 0 0 0 2px rgba(31, 78, 121, 0.12);
+}
+
+.evidence-intake-queue button:hover,
+.evidence-intake-queue button:focus-visible {
+  border-color: rgba(15, 124, 107, 0.56);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.evidence-intake-queue em {
+  font-style: normal;
 }
 
 .founder-war-room {
@@ -38718,6 +38939,11 @@ body.simple-mode .quiet-fund-shelf {
   .real-proof-closeout-metrics,
   .real-proof-closeout-slots,
   .real-proof-closeout-two,
+  .evidence-intake-drawer-metrics,
+  .evidence-intake-drawer-focus,
+  .evidence-intake-contract,
+  .evidence-intake-queue,
+  .evidence-intake-two,
   .founder-war-room-metric-grid,
   .founder-war-room-decision-grid,
   .founder-war-room-action-grid,
@@ -38743,6 +38969,12 @@ body.simple-mode .quiet-fund-shelf {
   .real-proof-closeout-metrics,
   .real-proof-closeout-slots,
   .real-proof-closeout-two,
+  .evidence-intake-drawer-head,
+  .evidence-intake-drawer-metrics,
+  .evidence-intake-drawer-focus,
+  .evidence-intake-contract,
+  .evidence-intake-queue,
+  .evidence-intake-two,
   .founder-war-room-head,
   .founder-war-room-metric-grid,
   .founder-war-room-decision-grid,
@@ -38755,6 +38987,7 @@ body.simple-mode .quiet-fund-shelf {
   .founder-command-score,
   .first-cohort-daybook-score,
   .real-proof-closeout-score,
+  .evidence-intake-drawer-score,
   .founder-war-room-score {
     justify-self: start;
   }

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260628-v321-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v321 Real Proof Closeout Board";
+const DATA_VERSION = "20260628-v322-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v322 Evidence Intake Drawer";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const SIMPLE_MODE_KEY = "niveshnadi-simple-view";
 const SIMPLE_MODE_VERSION_KEY = "niveshnadi-simple-view-version";
@@ -1016,6 +1016,7 @@ const state = {
   simpleFundShelfExpanded: false,
   simpleFiltersOpen: false,
   simpleRoomFocus: "",
+  evidenceIntakeSlotId: "",
   investorRecordFocus: false,
   toolPaletteHost: null,
   workspaceJumpFullHtml: "",
@@ -1223,8 +1224,8 @@ const BUILD_TRACKER_PHASES = [
     launch: 96,
     status: "In progress",
     route: "#account-launch-route",
-    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
-    next: "Close real proof slots for payment, legal, security, support, live-source, and release-captain owners before the first paid cohort opens."
+    done: ["pricing posture", "market strategy room", "paid beta evidence pack", "founder invite proof path", "founder cohort control room", "cohort receipt backend", "cohort decision replay", "paid cohort expansion gate", "founder beta operating room", "founder beta launch command center", "first cohort rehearsal daybook", "real proof closeout board", "evidence intake drawer", "paid beta support ledger", "payment lab", "payment wiring console", "gateway retention policy", "paid beta runbook", "paid beta production gate", "final signoff closeout", "production support tooling", "backend support receipts", "payment reconciliation replay", "payment gateway sandbox route", "gateway decision and webhook drill", "payment provider pilot receipt contract", "payment provider twin", "production provider deployment receipts", "payment pilot receipt vault", "paid pilot launch gate", "backend ticket factory", "backend ticket closeout", "receipt replay engine", "receipt-driven entitlement matrix", "account vault limits", "support repair joins", "account vault endpoint contracts", "production account and payment smoke", "account recovery and retention receipts", "lifecycle worker acceptance tickets", "account lifecycle worker smoke harness", "account lifecycle production owner gates", "account lifecycle deploy runbook packet", "account lifecycle rollout approval archive", "account lifecycle post-deploy evidence drill", "account lifecycle retention enforcement dashboard", "account lifecycle retention job fixtures", "account lifecycle support SLA proof", "payment adapter repairs", "launch freeze automation", "retail account launch route", "founder auth decision board", "founder storage decision board", "backend storage handoff board", "export delete execution board", "support operations handoff", "founder beta checklist", "founder invite gate", "founder invite receipt", "founder support drill", "founder support casebook", "entitlement bridge", "subscription ops console", "subscription backend blueprint", "account readiness plan", "account launch shell", "account vault blueprint", "backend audit receipt lane", "share-safe export", "consent gate", "security model"],
+    next: "Attach owner proof through the intake drawer until payment, legal, security, support, live-source, and release-captain slots can close."
   },
   {
     phase: "Phase 2",
@@ -1240,8 +1241,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Real proof closeout board",
+    label: "Evidence intake drawer",
     status: "Shipping now",
+    route: "#founder-beta-operating-room",
+    detail: "Turn each real proof slot into a compact owner intake drawer with required artifact, safety checks, acceptance steps, and 100% closeout condition."
+  },
+  {
+    label: "Real proof closeout board",
+    status: "Done",
     route: "#founder-beta-operating-room",
     detail: "Give every first cohort rehearsal day an owner evidence slot, closeout state, missing artifact, and no-go reason before any paid invite can move."
   },
@@ -9133,9 +9140,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Real proof closeout board",
-      status: "Closeout active",
+      status: "Done in v321",
       route: "#founder-beta-operating-room",
       detail: "Attach evidence-slot status, owner blocker, accepted artifact, and no-go reason to every first cohort rehearsal day."
+    },
+    {
+      label: "Evidence intake drawer",
+      status: "Intake active",
+      route: "#founder-beta-operating-room",
+      detail: "Open the weakest real proof slot, name the external artifact, enforce safe-attachment checks, and record the receipt fields needed for 100%."
     }
   ];
   const productionTarget = releaseVersion
@@ -9362,7 +9375,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v321 turns the first cohort daybook into real proof closeout slots.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v322 turns real proof slots into owner intake packets on the path to 100%.</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9491,7 +9504,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v321</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v322</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -15110,6 +15123,110 @@ function founderRealProofCloseoutBoard(ops = founderBetaOperatingRoomConfig(), w
   };
 }
 
+function founderEvidenceIntakeDrawer(realProof = founderRealProofCloseoutBoard()) {
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const drawerId = ["NN", "EVIDENCE", "INTAKE", "DRAWER", suffix].join("-").toUpperCase();
+  const openSlots = realProof.slots.filter((slot) => slot.closeoutState !== "Owner closed");
+  const focusedSlot = realProof.slots.find((slot) => slot.evidenceSlotId === state.evidenceIntakeSlotId) ||
+    realProof.activeSlot ||
+    openSlots[0] ||
+    realProof.slots[0];
+  const focusedIndex = realProof.slots.findIndex((slot) => slot.evidenceSlotId === focusedSlot?.evidenceSlotId);
+  const slotNumber = String((focusedIndex >= 0 ? focusedIndex : 0) + 1).padStart(2, "0");
+  const sessionId = ["NN", "EVIDENCE", "INTAKE", "SESSION", slotNumber, suffix].join("-").toUpperCase();
+  const ownerPacketId = ["NN", "OWNER", "PROOF", "PACKET", slotNumber, suffix].join("-").toUpperCase();
+  const safetyScanId = ["NN", "EVIDENCE", "SAFETY", "SCAN", slotNumber, suffix].join("-").toUpperCase();
+  const acceptanceId = ["NN", "EVIDENCE", "ACCEPTANCE", slotNumber, suffix].join("-").toUpperCase();
+  const progressLift = focusedSlot?.closeoutState === "Proof blocked" ? 7 : focusedSlot?.closeoutState === "Evidence review" ? 5 : 2;
+  const projectedReadiness = clampNumber(
+    realProof.readiness + progressLift - Math.max(realProof.blocked - 1, 0),
+    realProof.readiness,
+    99
+  );
+  const status = realProof.closed === realProof.slots.length
+    ? "Evidence intake closed"
+    : focusedSlot?.closeoutState === "Proof blocked"
+      ? "Evidence intake waiting for owner proof"
+      : "Evidence intake under owner review";
+  const tone = status === "Evidence intake closed" ? "ready" : focusedSlot?.tone || realProof.tone;
+  const queue = realProof.slots.map((slot, index) => {
+    const isActive = slot.evidenceSlotId === focusedSlot?.evidenceSlotId;
+    const action = slot.closeoutState === "Owner closed"
+      ? "Archive accepted proof"
+      : slot.closeoutState === "Evidence review"
+        ? "Review owner attestation"
+        : "Collect external artifact";
+    return {
+      ...slot,
+      action,
+      active: isActive,
+      intakeLabel: `Slot ${String(index + 1).padStart(2, "0")}`,
+      requiredBrief: slot.requiredArtifact.length > 132 ? `${slot.requiredArtifact.slice(0, 129)}...` : slot.requiredArtifact
+    };
+  });
+  const intakeContract = [
+    { label: "Focused slot", value: focusedSlot?.label || "No slot", detail: focusedSlot?.evidenceSlotId || sessionId },
+    { label: "Owner", value: focusedSlot?.owner || "Founder", detail: focusedSlot ? focusedSlot.missingBecause : "No active missing reason." },
+    { label: "Artifact", value: ownerPacketId, detail: focusedSlot ? focusedSlot.requiredArtifact : "No artifact required in this preview." },
+    { label: "Projected progress", value: `${realProof.readiness} -> ${projectedReadiness}/100`, detail: "Projection moves only after owner proof is accepted; demo copy does not raise readiness." }
+  ];
+  const acceptanceSteps = [
+    "Confirm the artifact comes from the live owner or source system, not from demo copy.",
+    "Check date, source ID, owner name, expected outcome, recovery owner, and no-go reason.",
+    "Run the blocked-data scan before saving: no PAN, folio, CAS, bank, card, UPI, OTP, credentials, ARN/EUIN, distributor client records, or private note bodies.",
+    `Save ${acceptanceId} only when the owner attests the artifact and the launch no-go memo is updated.`,
+    "Move toward 100% only when all six evidence slots are owner closed with external proof."
+  ];
+  const safetyRules = [
+    `Safety scan: ${safetyScanId}`,
+    "Accepted formats: source receipt, dated memo, policy proof, runbook output, reviewer signoff, or rollback evidence.",
+    "Rejected formats: screenshots without source IDs, oral confirmation, browser-local state, placeholder text, or copied sample records.",
+    "Founder fallback: if proof cannot be attached safely, keep the paid cohort frozen and write the no-go reason."
+  ];
+  const metrics = [
+    { label: "Drawer", value: drawerId, detail: `${status}; ${openSlots.length} slot${openSlots.length === 1 ? "" : "s"} still need owner intake.` },
+    { label: "Session", value: sessionId, detail: focusedSlot ? `${focusedSlot.label}: ${focusedSlot.closeoutState}.` : "No active slot." },
+    { label: "Owner packet", value: ownerPacketId, detail: focusedSlot ? focusedSlot.requiredArtifact : "No packet required." },
+    { label: "100% condition", value: `${realProof.closed}/${realProof.slots.length} owner closed`, detail: "All slots must close with external proof before production-ready 100%." }
+  ];
+  const receiptFields = [
+    "evidence_intake_drawer_id",
+    "evidence_intake_session_id",
+    "owner_proof_packet_id",
+    "evidence_safety_scan_id",
+    "evidence_acceptance_id",
+    "focused_evidence_slot_id",
+    "artifact_kind",
+    "artifact_source_uri",
+    "artifact_source_date",
+    "artifact_owner_attestation",
+    "blocked_data_scan_result",
+    "launch_no_go_update",
+    "progress_projection_before",
+    "progress_projection_after",
+    ...realProof.receiptFields
+  ];
+
+  return {
+    acceptanceId,
+    acceptanceSteps,
+    drawerId,
+    focusedSlot,
+    intakeContract,
+    metrics,
+    openSlots,
+    ownerPacketId,
+    projectedReadiness,
+    queue,
+    receiptFields,
+    safetyRules,
+    safetyScanId,
+    sessionId,
+    status,
+    tone
+  };
+}
+
 function renderFounderBetaOperatingRoom() {
   if (!els.founderBetaOpsOutput) return;
   const ops = founderBetaOperatingRoomConfig();
@@ -15117,8 +15234,9 @@ function renderFounderBetaOperatingRoom() {
   const commandCenter = founderBetaLaunchCommandCenter(ops, warRoom);
   const daybook = founderFirstCohortRehearsalDaybook(ops, warRoom, commandCenter);
   const realProof = founderRealProofCloseoutBoard(ops, warRoom, commandCenter, daybook);
+  const intake = founderEvidenceIntakeDrawer(realProof);
   if (els.founderBetaOpsSummary) {
-    els.founderBetaOpsSummary.textContent = `${realProof.readiness}/100 | ${realProof.status}`;
+    els.founderBetaOpsSummary.textContent = `${realProof.readiness}/100 | ${intake.status}`;
   }
   els.founderBetaOpsOutput.innerHTML = `
     <div class="founder-beta-ops-hero ${ops.posture.startsWith("Open") ? "ready" : ops.posture.startsWith("Founder") ? "watch" : "blocked"}">
@@ -15303,7 +15421,10 @@ function renderFounderBetaOperatingRoom() {
             <small>${escapeHtml(slot.closeoutState)} | ${escapeHtml(slot.event)}</small>
             <p><b>Missing:</b> ${escapeHtml(slot.missingBecause)}</p>
             <p><b>Source:</b> ${escapeHtml(slot.artifactSource)}</p>
-            <button class="text-button" type="button" data-founder-beta-ops-route="${escapeHtml(slot.route)}">Open evidence route</button>
+            <div class="real-proof-closeout-card-actions">
+              <button class="text-button" type="button" data-founder-beta-intake-slot="${escapeHtml(slot.evidenceSlotId)}">Open intake</button>
+              <button class="text-button" type="button" data-founder-beta-ops-route="${escapeHtml(slot.route)}">Open route</button>
+            </div>
           </article>
         `).join("")}
       </div>
@@ -15327,6 +15448,74 @@ function renderFounderBetaOperatingRoom() {
           <span>Receipt fields</span>
           <strong>${realProof.receiptFields.length} fields</strong>
           <ul>${realProof.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}</ul>
+        </article>
+      </div>
+    </div>
+    <div id="real-proof-evidence-intake" class="evidence-intake-drawer ${escapeHtml(intake.tone)}">
+      <div class="evidence-intake-drawer-head">
+        <div>
+          <span>V322 evidence intake drawer</span>
+          <h3>${escapeHtml(intake.status)}</h3>
+          <p>Drawer ${escapeHtml(intake.drawerId)} focuses the weakest real proof slot, names the owner packet, applies safe-attachment checks, and shows what must close before progress can move toward production-ready 100%.</p>
+        </div>
+        <div class="evidence-intake-drawer-score" style="--score:${realProof.readiness}">
+          <strong>${realProof.readiness}</strong>
+          <span>Now</span>
+        </div>
+      </div>
+      <div class="evidence-intake-drawer-metrics">
+        ${intake.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="evidence-intake-drawer-focus">
+        <article class="evidence-intake-primary ${escapeHtml(intake.focusedSlot?.tone || intake.tone)}">
+          <span>Active intake</span>
+          <strong>${escapeHtml(intake.focusedSlot?.label || "No active slot")}</strong>
+          <p><b>Owner:</b> ${escapeHtml(intake.focusedSlot?.owner || "Founder")}</p>
+          <p><b>Required:</b> ${escapeHtml(intake.focusedSlot?.requiredArtifact || "No artifact required.")}</p>
+          <p><b>Missing:</b> ${escapeHtml(intake.focusedSlot?.missingBecause || "No missing reason.")}</p>
+          <small>${escapeHtml(intake.sessionId)} | ${escapeHtml(intake.focusedSlot?.event || "evidence_intake.no_active_slot")}</small>
+        </article>
+        <article>
+          <span>Acceptance steps</span>
+          <strong>${escapeHtml(intake.acceptanceId)}</strong>
+          <ol>${intake.acceptanceSteps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
+        </article>
+      </div>
+      <div class="evidence-intake-contract">
+        ${intake.intakeContract.map((item) => `
+          <article>
+            <span>${escapeHtml(item.label)}</span>
+            <strong>${escapeHtml(item.value)}</strong>
+            <p>${escapeHtml(item.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="evidence-intake-queue">
+        ${intake.queue.map((slot) => `
+          <button class="${slot.active ? "active " : ""}${escapeHtml(slot.tone)}" type="button" data-founder-beta-intake-slot="${escapeHtml(slot.evidenceSlotId)}" aria-pressed="${slot.active ? "true" : "false"}">
+            <span>${escapeHtml(slot.intakeLabel)} | ${escapeHtml(slot.owner)}</span>
+            <strong>${escapeHtml(slot.label)}</strong>
+            <small>${escapeHtml(slot.action)} | ${slot.evidenceScore}/100</small>
+            <em>${escapeHtml(slot.requiredBrief)}</em>
+          </button>
+        `).join("")}
+      </div>
+      <div class="evidence-intake-two">
+        <article>
+          <span>Safety scan</span>
+          <strong>${escapeHtml(intake.safetyScanId)}</strong>
+          <ul>${intake.safetyRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}</ul>
+        </article>
+        <article>
+          <span>Receipt fields</span>
+          <strong>${intake.receiptFields.length} fields</strong>
+          <ul>${intake.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}</ul>
         </article>
       </div>
     </div>
@@ -15449,6 +15638,7 @@ function makeFounderBetaWarRoomDigestBrief() {
   const commandCenter = founderBetaLaunchCommandCenter(ops, warRoom);
   const daybook = founderFirstCohortRehearsalDaybook(ops, warRoom, commandCenter);
   const realProof = founderRealProofCloseoutBoard(ops, warRoom, commandCenter, daybook);
+  const intake = founderEvidenceIntakeDrawer(realProof);
   return [
     "# NiveshNadi Founder Beta War-Room Digest",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -15461,6 +15651,9 @@ function makeFounderBetaWarRoomDigestBrief() {
     `Real proof closeout board ID: ${realProof.closeoutBoardId}`,
     `Real proof status: ${realProof.status}`,
     `Real proof readiness: ${realProof.readiness}/100`,
+    `Evidence intake drawer ID: ${intake.drawerId}`,
+    `Evidence intake status: ${intake.status}`,
+    `Focused evidence slot: ${intake.focusedSlot?.evidenceSlotId || "No active slot"}`,
     `Cohort decision ID: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `War-room ID: ${warRoom.warRoomId}`,
@@ -15491,6 +15684,13 @@ function makeFounderBetaWarRoomDigestBrief() {
     ...realProof.slots.map((slot) => `- ${slot.evidenceSlotId}: ${slot.label} | ${slot.owner} | ${slot.closeoutState} | ${slot.evidenceScore}/100 | Required: ${slot.requiredArtifact} | Missing: ${slot.missingBecause}`),
     ...realProof.closeoutRules.map((rule) => `- Closeout rule: ${rule}`),
     "",
+    "## Evidence Intake Drawer",
+    ...intake.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...intake.intakeContract.map((item) => `- Intake contract: ${item.label} | ${item.value} | ${item.detail}`),
+    ...intake.queue.map((slot) => `- ${slot.intakeLabel}: ${slot.label} | ${slot.owner} | ${slot.action} | ${slot.closeoutState} | ${slot.evidenceScore}/100`),
+    ...intake.acceptanceSteps.map((step) => `- Acceptance: ${step}`),
+    ...intake.safetyRules.map((rule) => `- Safety: ${rule}`),
+    "",
     "## Founder Decisions",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),
     "",
@@ -15519,6 +15719,7 @@ function makeFounderBetaOperatingBrief() {
   const commandCenter = founderBetaLaunchCommandCenter(ops, warRoom);
   const daybook = founderFirstCohortRehearsalDaybook(ops, warRoom, commandCenter);
   const realProof = founderRealProofCloseoutBoard(ops, warRoom, commandCenter, daybook);
+  const intake = founderEvidenceIntakeDrawer(realProof);
   return [
     "# NiveshNadi Founder Beta Operating Room",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -15531,6 +15732,9 @@ function makeFounderBetaOperatingBrief() {
     `Real proof closeout board: ${realProof.closeoutBoardId}`,
     `Real proof status: ${realProof.status}`,
     `Real proof readiness: ${realProof.readiness}/100`,
+    `Evidence intake drawer: ${intake.drawerId}`,
+    `Evidence intake status: ${intake.status}`,
+    `Focused evidence slot: ${intake.focusedSlot?.evidenceSlotId || "No active slot"}`,
     `Cohort decision: ${commandCenter.cohortDecisionId}`,
     `Cohort cap: ${commandCenter.cohortCap}`,
     `Operating score: ${ops.operatingScore}/100`,
@@ -15563,6 +15767,14 @@ function makeFounderBetaOperatingBrief() {
     ...realProof.slots.map((slot) => `- ${slot.evidenceSlotId}: ${slot.label} | ${slot.owner} | ${slot.closeoutState} | ${slot.evidenceScore}/100 | Event: ${slot.event} | Source: ${slot.artifactSource}`),
     ...realProof.closeoutRules.map((rule) => `- Real proof closeout rule: ${rule}`),
     ...realProof.receiptFields.map((field) => `- Real proof receipt field: ${field}`),
+    "",
+    "## Evidence Intake Drawer",
+    ...intake.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...intake.intakeContract.map((item) => `- Intake contract: ${item.label} | ${item.value} | ${item.detail}`),
+    ...intake.queue.map((slot) => `- ${slot.intakeLabel}: ${slot.label} | ${slot.owner} | ${slot.action} | ${slot.closeoutState} | ${slot.evidenceScore}/100 | Required: ${slot.requiredBrief}`),
+    ...intake.acceptanceSteps.map((step) => `- Evidence acceptance: ${step}`),
+    ...intake.safetyRules.map((rule) => `- Evidence safety: ${rule}`),
+    ...intake.receiptFields.map((field) => `- Evidence intake receipt field: ${field}`),
     "",
     "## Founder War-Room Digest",
     ...warRoom.decisions.map((decision) => `- ${decision.label}: ${decision.value} | ${decision.owner} | ${decision.score}/100 | ${decision.detail}`),
@@ -57941,6 +58153,14 @@ function bindEvents() {
     const founderBetaOpsRoute = event.target.closest("[data-founder-beta-ops-route]");
     if (!founderBetaOpsRoute) return;
     scrollToHash(founderBetaOpsRoute.dataset.founderBetaOpsRoute, "smooth", true);
+  });
+
+  document.addEventListener("click", (event) => {
+    const intakeSlot = event.target.closest("[data-founder-beta-intake-slot]");
+    if (!intakeSlot) return;
+    state.evidenceIntakeSlotId = intakeSlot.dataset.founderBetaIntakeSlot || "";
+    renderFounderBetaOperatingRoom();
+    scrollToHash("#real-proof-evidence-intake", "smooth", true);
   });
 
   document.addEventListener("click", (event) => {

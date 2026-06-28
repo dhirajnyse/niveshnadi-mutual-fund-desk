@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V322 Evidence Intake Drawer
+
+V322 adds the Evidence Intake Drawer inside the Founder Beta Operating Room. It reads the Real Proof Closeout Board, focuses the weakest evidence slot, shows the owner proof packet, required artifact, missing reason, projected progress, safe-attachment checks, acceptance steps, six-slot intake queue, and receipt fields that must close before production-ready 100% can be claimed.
+
 ## V321 Real Proof Closeout Board
 
 V321 adds the Real Proof Closeout Board inside the Founder Beta Operating Room. It reads the First Cohort Rehearsal Daybook, then gives each payment, legal, security/support, live-source, and founder decision day an evidence slot with required artifact, owner attestation, closeout state, missing reason, launch no-go memory, closeout rules, and receipt fields before the first paid cohort can open.

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V345 Rail Hero Clearance
+
+V345 keeps the desktop side rail parked below the sticky header and hero bar. The rail now reads a live `--desk-rail-top` value from the measured header height, updates on resize and header changes, and removes the stale compact offsets that let tabs run under the hero area.
+
 ## V344 Rail Group Count Badges
 
 V344 adds synced count badges to the desktop rail group headers. Each group now shows how many room links it contains, and the count is recalculated from the actual rail anchors so collapsed groups stay compact while still revealing their route depth.

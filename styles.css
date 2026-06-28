@@ -16,6 +16,7 @@
   --shadow: 0 14px 36px rgba(15, 34, 56, 0.1);
   --radius: 8px;
   --anchor-offset: 132px;
+  --desk-rail-top: 72px;
   --desk-rail-width: 204px;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
@@ -615,7 +616,7 @@ a {
 
 .desk-rail {
   position: fixed;
-  top: 72px;
+  top: var(--desk-rail-top);
   bottom: 0;
   left: 0;
   z-index: 8;
@@ -43667,12 +43668,11 @@ body.desk-rail-right .top-nav {
 }
 
 .desk-rail {
-  top: 60px;
   padding: 9px 7px;
 }
 
 body.simple-mode .desk-rail {
-  top: 54px;
+  top: var(--desk-rail-top);
 }
 
 .desk-rail-inner {

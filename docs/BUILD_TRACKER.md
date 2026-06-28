@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V349 Workspace Canvas Rhythm
+
+V349 tightens the main workspace canvas after the rail and header polish. Workspace bands now share width, gutter, and section rhythm variables, compact desktop spacing is slightly tighter, and the first command panel sits closer to the shell without changing fund logic or data.
+
 ## V348 Header Command Capsule
 
 V348 groups the sticky header controls into one compact command capsule. The header is slightly shorter, the brand lockup is tighter, layout and workspace controls share a calm white control surface, and the top bar reads as a focused command strip above the side rail.

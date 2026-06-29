@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260629-v368-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v368 Room Focus Bookmark";
+const DATA_VERSION = "20260629-v369-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v369 Quiet Exit Trail";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -4219,6 +4219,9 @@ function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.a
   const calmPace = progress.isComplete
     ? "One saved memory before a new round."
     : cue.paceCue || "Stay with one small move before widening.";
+  const leaveAfter = progress.isComplete
+    ? "One saved memory, then pause."
+    : calmPace;
   const ignoreForNow = progress.isComplete
     ? "Ignore new fund searches until the saved memory is visible."
     : cue.ignoreForNow || "Ignore wider research until this room is clear.";
@@ -4282,6 +4285,10 @@ function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.a
       <p class="simple-hold-if">
         <span>Hold if</span>
         <strong>${escapeHtml(holdIf)}</strong>
+      </p>
+      <p class="simple-leave-after">
+        <span>Leave after</span>
+        <strong>${escapeHtml(leaveAfter)}</strong>
       </p>
     </div>
     <p class="simple-focus-sentence" aria-label="Simple quiet focus sentence">
@@ -9655,9 +9662,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Room focus bookmark",
-      status: "Active in v368",
+      status: "Done in v368",
       route: "#main",
       detail: "Show a tiny Now, Next, and Park bookmark inside the Simple room guide so users keep their place without scanning."
+    },
+    {
+      label: "Quiet exit trail",
+      status: "Active in v369",
+      route: "#main",
+      detail: "Add a Leave after cue beside Done when and Hold if so each Simple room teaches when to stop calmly."
     }
   ];
   const productionTarget = releaseVersion
@@ -9673,7 +9686,7 @@ function buildTrackerConfig() {
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
     targetShort: `${productionTarget}; 100% after production gates close.`,
     targetRule: "Full audit list stays available in the copied Build Tracker output.",
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, and room-focus-bookmark audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, and quiet-exit-trail audit are complete.`
   };
   const launchGates = [
     {
@@ -10015,7 +10028,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v368</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v369</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

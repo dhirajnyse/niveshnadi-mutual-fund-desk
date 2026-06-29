@@ -3163,12 +3163,13 @@ main {
 .simple-proof-cue-grid {
   grid-column: 2 / span 2;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
 }
 
 .simple-done-when,
-.simple-hold-if {
+.simple-hold-if,
+.simple-leave-after {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
@@ -3181,7 +3182,8 @@ main {
 }
 
 .simple-done-when span,
-.simple-hold-if span {
+.simple-hold-if span,
+.simple-leave-after span {
   display: inline-grid;
   place-items: center;
   min-height: 18px;
@@ -3206,8 +3208,19 @@ main {
   color: #8a520b;
 }
 
+.simple-leave-after {
+  border-color: rgba(31, 78, 121, 0.12);
+  background: rgba(239, 247, 255, 0.62);
+}
+
+.simple-leave-after span {
+  background: rgba(225, 239, 252, 0.92);
+  color: var(--blue);
+}
+
 .simple-done-when strong,
-.simple-hold-if strong {
+.simple-hold-if strong,
+.simple-leave-after strong {
   min-width: 0;
   margin: 0;
   color: var(--ink);
@@ -43013,6 +43026,7 @@ body.desk-rail-right .floating-dock {
   .room-focus-note .simple-command-band,
   .room-focus-note .simple-proof-cue-grid,
   .room-focus-note .simple-done-when,
+  .room-focus-note .simple-leave-after,
   .room-focus-note .simple-next-cue-grid,
   .room-focus-note .simple-focus-sentence,
   .room-focus-note .room-progress-meter,

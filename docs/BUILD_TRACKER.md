@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V369 Quiet Exit Trail
+
+V369 adds a Leave after cue beside Done when and Hold if in the Simple view room guide. Each room now shows the proof condition, the pause condition, and the quiet stopping point before the user widens the workflow.
+
 ## V368 Room Focus Bookmark
 
 V368 adds a tiny Now, Next, and Park bookmark inside the Simple view room guide. The room now shows where the user is, the next proof move, and what should wait without making them scan the rail or widen the workflow.

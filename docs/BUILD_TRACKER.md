@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V372 Quiet Step Dots
+
+V372 turns the five-step Simple progress rail into quieter accessible dots. The path remains clickable and labeled for assistive tools, but the room guide no longer reads like a second tab row.
+
 ## V371 Room Entry Calm
 
 V371 turns the Simple room guide opening into one compact room-entry context. The Calm Focus label, room name, current progress, and Now/Next/Park bookmark now sit in a lighter first row so the next move starts with less visual noise.

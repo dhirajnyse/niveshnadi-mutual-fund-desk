@@ -3402,58 +3402,64 @@ main {
 .simple-progress-rail {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 5px;
+  grid-template-columns: repeat(5, minmax(24px, 1fr));
+  gap: 3px;
+  min-height: 30px;
+  padding: 4px 6px;
+  border: 1px solid rgba(31, 78, 121, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.46);
 }
 
 .simple-progress-step {
+  position: relative;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 5px;
-  min-height: 31px;
-  padding: 5px 7px;
-  border: 1px solid rgba(31, 78, 121, 0.12);
+  place-items: center;
+  min-height: 20px;
+  padding: 2px;
+  border: 1px solid transparent;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
+  background: transparent;
   color: var(--muted);
-  text-align: left;
+  text-align: center;
 }
 
 .simple-progress-step span {
   display: inline-grid;
   place-items: center;
-  min-width: 21px;
-  min-height: 20px;
+  min-width: 18px;
+  min-height: 18px;
   border-radius: 999px;
   background: rgba(31, 78, 121, 0.08);
   color: var(--blue);
-  font-size: 10px;
+  font-size: 9px;
+  font-weight: 950;
   line-height: 1;
 }
 
 .simple-progress-step strong {
-  min-width: 0;
-  margin: 0;
-  color: inherit;
-  font-size: 11px;
-  line-height: 1.1;
+  position: absolute;
+  width: 1px;
+  height: 1px;
   overflow: hidden;
-  text-overflow: ellipsis;
+  clip: rect(0 0 0 0);
   white-space: nowrap;
 }
 
 .simple-progress-step.is-done {
-  border-color: rgba(15, 124, 107, 0.16);
-  background: rgba(229, 247, 241, 0.72);
+  color: var(--mint);
+}
+
+.simple-progress-step.is-done span {
+  background: rgba(15, 124, 107, 0.16);
   color: var(--mint);
 }
 
 .simple-progress-step.is-active {
-  border-color: rgba(15, 124, 107, 0.42);
-  background: linear-gradient(135deg, rgba(229, 247, 241, 0.96), rgba(255, 243, 220, 0.58));
+  border-color: rgba(15, 124, 107, 0.22);
+  background: rgba(229, 247, 241, 0.58);
   color: var(--ink);
-  box-shadow: 0 8px 18px rgba(15, 34, 56, 0.08);
+  box-shadow: none;
 }
 
 .simple-progress-step.is-active span {
@@ -3467,8 +3473,8 @@ main {
 
 .simple-progress-step:hover,
 .simple-progress-step:focus-visible {
-  border-color: rgba(15, 124, 107, 0.4);
-  background: rgba(229, 247, 241, 0.88);
+  border-color: rgba(15, 124, 107, 0.24);
+  background: rgba(229, 247, 241, 0.62);
   color: var(--ink);
 }
 
@@ -43102,8 +43108,8 @@ body.desk-rail-right .floating-dock {
   .simple-progress-step {
     grid-template-columns: 1fr;
     justify-items: center;
-    min-height: 30px;
-    padding: 4px 3px;
+    min-height: 22px;
+    padding: 2px;
   }
 
   .simple-progress-step strong {

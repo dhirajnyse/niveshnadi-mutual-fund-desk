@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V373 Memory Footer Calm
+
+V373 folds the Simple room progress memory and calm promise into one quiet footer. The guide still shows where the research round is, but it now ends with one compact memory line instead of separate progress and promise rows.
+
 ## V372 Quiet Step Dots
 
 V372 turns the five-step Simple progress rail into quieter accessible dots. The path remains clickable and labeled for assistive tools, but the room guide no longer reads like a second tab row.

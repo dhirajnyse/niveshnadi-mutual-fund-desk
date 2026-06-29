@@ -3371,10 +3371,6 @@ main {
   line-height: 1.25;
 }
 
-.room-focus-note .room-progress-meter {
-  grid-column: 3;
-}
-
 .room-focus-note .signal-chip {
   min-width: 142px;
 }
@@ -3478,15 +3474,33 @@ main {
   color: var(--ink);
 }
 
-.room-focus-note .calm-focus-promise {
+.simple-memory-footer {
   grid-column: 1 / -1;
-  min-height: 22px;
-  padding: 4px 8px;
-  border-left: 3px solid rgba(216, 151, 60, 0.42);
-  background: rgba(255, 243, 220, 0.44);
+  display: grid;
+  grid-template-columns: minmax(128px, 0.34fr) minmax(0, 1fr);
+  gap: 4px;
+  align-items: stretch;
+  padding: 4px;
+  border: 1px solid rgba(31, 78, 121, 0.08);
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, rgba(244, 251, 248, 0.6), rgba(255, 243, 220, 0.34));
+}
+
+.simple-memory-footer.is-complete {
+  background: linear-gradient(90deg, rgba(255, 243, 220, 0.62), rgba(244, 251, 248, 0.46));
+}
+
+.room-focus-note .calm-focus-promise {
+  min-height: 28px;
+  padding: 5px 8px;
+  border-left: 0;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.54);
   color: var(--ink);
   font-size: 12px;
   font-weight: 850;
+  display: grid;
+  align-items: center;
 }
 
 .room-cue-actions {
@@ -3502,29 +3516,34 @@ main {
 
 .room-progress-meter {
   display: grid;
-  gap: 2px;
-  min-height: 42px;
-  padding: 6px 9px;
-  border: 1px solid rgba(15, 124, 107, 0.16);
-  border-radius: var(--radius);
-  background: rgba(235, 248, 244, 0.72);
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1px 6px;
+  align-items: center;
+  min-height: 28px;
+  padding: 5px 8px;
+  border: 1px solid rgba(15, 124, 107, 0.1);
+  border-radius: 6px;
+  background: rgba(235, 248, 244, 0.48);
 }
 
 .room-progress-meter.is-complete {
-  border-color: rgba(216, 151, 60, 0.32);
-  background: rgba(255, 243, 220, 0.78);
+  border-color: rgba(216, 151, 60, 0.18);
+  background: rgba(255, 243, 220, 0.5);
 }
 
 .room-progress-meter strong {
   margin: 0;
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.1;
 }
 
 .room-progress-meter em {
+  grid-column: 2;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 10px;
   font-style: normal;
   font-weight: 850;
+  line-height: 1.1;
 }
 
 .simplicity-path .simple-step.is-visited:not(.is-active) {
@@ -43071,6 +43090,7 @@ body.desk-rail-right .floating-dock {
   .room-focus-note .simple-leave-after,
   .room-focus-note .simple-next-cue-grid,
   .room-focus-note .simple-focus-sentence,
+  .room-focus-note .simple-memory-footer,
   .room-focus-note .room-progress-meter,
   .room-focus-note .calm-focus-breath-row,
   .room-focus-note .simple-progress-rail,
@@ -43085,6 +43105,10 @@ body.desk-rail-right .floating-dock {
   }
 
   .simple-room-entry {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .simple-memory-footer {
     grid-template-columns: minmax(0, 1fr);
   }
 

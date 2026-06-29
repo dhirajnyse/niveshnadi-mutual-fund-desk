@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V368 Room Focus Bookmark
+
+V368 adds a tiny Now, Next, and Park bookmark inside the Simple view room guide. The room now shows where the user is, the next proof move, and what should wait without making them scan the rail or widen the workflow.
+
 ## V367 Compact Focus Layout
 
 V367 tightens the Simple view focus band and Build Tracker progress rows. The active room guide now uses shorter spacing, while the progress path shows a shorter 100% summary on screen without losing the full audit trail in copied output.

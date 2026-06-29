@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260629-v365-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v365 Ignore For Now Cue";
+const DATA_VERSION = "20260629-v366-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v366 Quiet Focus Sentence";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -32,6 +32,7 @@ const SIMPLE_ROOM_CUES = {
     nextTinyStep: "Enter horizon and SIP comfort first.",
     paceCue: "Two quiet minutes before fund search.",
     ignoreForNow: "Ignore fund rankings until the profile is clear.",
+    focusSentence: "Enter horizon and SIP comfort; ignore fund rankings until the profile is clear.",
     next: "Next: Find funds",
     route: "#screener"
   },
@@ -44,6 +45,7 @@ const SIMPLE_ROOM_CUES = {
     nextTinyStep: "Search one category and inspect one anchor fund.",
     paceCue: "One category pass, then stop.",
     ignoreForNow: "Ignore every other fund until one fair peer is named.",
+    focusSentence: "Inspect one category and one fair peer; leave every other fund outside this pass.",
     next: "Next: Verify evidence",
     route: "#evidence"
   },
@@ -56,6 +58,7 @@ const SIMPLE_ROOM_CUES = {
     nextTinyStep: "Open Evidence and confirm the source date.",
     paceCue: "Three checks before trusting score.",
     ignoreForNow: "Ignore the score until the source path is visible.",
+    focusSentence: "Confirm the source date first; ignore the score until the source path is visible.",
     next: "Next: Write memo",
     route: "#decision-pack"
   },
@@ -68,6 +71,7 @@ const SIMPLE_ROOM_CUES = {
     nextTinyStep: "Write one plain-English reason before action.",
     paceCue: "One sentence is enough today.",
     ignoreForNow: "Ignore market noise until the reason is written.",
+    focusSentence: "Write one reason in your own words; leave market noise outside the memo.",
     next: "Next: Save review",
     route: "#review-vault"
   },
@@ -80,6 +84,7 @@ const SIMPLE_ROOM_CUES = {
     nextTinyStep: "Save the review memory and set one trigger.",
     paceCue: "Save once, then leave it quiet.",
     ignoreForNow: "Ignore new research until the review trigger is saved.",
+    focusSentence: "Save one review trigger; leave new research for the next round.",
     next: "Next: Return to Profile or Find",
     route: "#profile-room"
   }
@@ -4217,6 +4222,9 @@ function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.a
   const ignoreForNow = progress.isComplete
     ? "Ignore new fund searches until the saved memory is visible."
     : cue.ignoreForNow || "Ignore wider research until this room is clear.";
+  const focusSentence = progress.isComplete
+    ? "Keep saved review memory visible; leave new fund searches outside this round."
+    : cue.focusSentence || `${nextTinyStep} ${ignoreForNow}`;
   const secondaryActionsHtml = [
     !progress.isComplete && progress.resumeStep ? `
       <button class="signal-chip simplicity-resume" type="button" data-signal-route="${escapeHtml(progress.resumeStep.value)}" aria-label="Resume last room: ${escapeHtml(progress.resumeStep.label)}">
@@ -4266,20 +4274,10 @@ function renderSimpleRoomCue(journey, progress = simpleProgressMemory(journey?.a
         <strong>${escapeHtml(holdIf)}</strong>
       </p>
     </div>
-    <div class="simple-next-cue-grid" aria-label="Simple next step, pace, and ignore cue">
-      <p class="simple-next-tiny-step">
-        <span>Next tiny step</span>
-        <strong>${escapeHtml(nextTinyStep)}</strong>
-      </p>
-      <p class="simple-calm-pace">
-        <span>Calm pace</span>
-        <strong>${escapeHtml(calmPace)}</strong>
-      </p>
-      <p class="simple-ignore-now">
-        <span>Ignore for now</span>
-        <strong>${escapeHtml(ignoreForNow)}</strong>
-      </p>
-    </div>
+    <p class="simple-focus-sentence" aria-label="Simple quiet focus sentence">
+      <span>Quiet focus</span>
+      <strong>${escapeHtml(focusSentence)}</strong>
+    </p>
     <div class="room-progress-meter${progress.isComplete ? " is-complete" : ""}">
       <span>${escapeHtml(progress.activePosition)}</span>
       <strong>${escapeHtml(progress.label)}</strong>
@@ -9629,9 +9627,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Ignore for now cue",
-      status: "Active in v365",
+      status: "Done in v365",
       route: "#main",
       detail: "Name one distraction to park in each Simple room so the user can stay with the current move."
+    },
+    {
+      label: "Quiet focus sentence",
+      status: "Active in v366",
+      route: "#main",
+      detail: "Collapse next-step, pace, and ignore guidance into one calm sentence for each Simple room."
     }
   ];
   const productionTarget = releaseVersion
@@ -9645,7 +9649,7 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, and ignore-now audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, and quiet-focus-sentence audit are complete.`
   };
   const launchGates = [
     {
@@ -9987,7 +9991,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v365</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v366</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

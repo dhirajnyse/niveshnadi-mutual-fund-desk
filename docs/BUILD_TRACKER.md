@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V366 Quiet Focus Sentence
+
+V366 turns the separate next-step, pace, and ignore cues into one quiet focus sentence for each Simple view room. The active guide now reads like one calm instruction instead of several small prompts.
+
 ## V365 Ignore For Now Cue
 
 V365 adds one ignore-for-now cue to each Simple view room. The active guide now names the one distraction to park so the user can stay with the current evidence-first move instead of widening too early.

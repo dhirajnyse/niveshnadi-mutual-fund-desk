@@ -3003,11 +3003,26 @@ main {
   background: rgba(245, 249, 252, 0.92);
 }
 
+.simple-room-entry {
+  grid-column: 1 / span 3;
+  display: grid;
+  grid-template-columns: minmax(132px, 0.32fr) minmax(0, 1fr);
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+  padding: 4px;
+  border: 1px solid rgba(31, 78, 121, 0.1);
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.7), rgba(244, 251, 248, 0.54));
+}
+
 .calm-focus-mode-line {
   display: grid;
-  gap: 2px;
+  gap: 1px;
   min-width: 0;
-  padding-top: 2px;
+  min-height: 30px;
+  padding: 4px 7px;
+  border-right: 1px solid rgba(31, 78, 121, 0.08);
 }
 
 .room-focus-note span {
@@ -3031,6 +3046,22 @@ main {
   line-height: 1.2;
 }
 
+.calm-focus-mode-line span {
+  font-size: 9px;
+  line-height: 1;
+}
+
+.calm-focus-mode-line strong {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.12;
+}
+
+.calm-focus-mode-line small {
+  font-size: 10px;
+  line-height: 1.12;
+}
+
 .room-focus-note p {
   margin: 0;
   color: var(--muted);
@@ -3043,22 +3074,22 @@ main {
 }
 
 .simple-room-bookmark {
-  grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 5px;
+  gap: 4px;
+  min-width: 0;
 }
 
 .simple-room-bookmark span {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 5px;
-  min-height: 25px;
-  padding: 4px 7px;
-  border: 1px solid rgba(31, 78, 121, 0.1);
+  gap: 4px;
+  min-height: 23px;
+  padding: 3px 6px;
+  border: 1px solid rgba(31, 78, 121, 0.06);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.46);
   color: var(--ink);
   font-size: inherit;
   font-weight: inherit;
@@ -3067,7 +3098,7 @@ main {
 
 .simple-room-bookmark b {
   color: var(--mint);
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 950;
   line-height: 1;
   text-transform: uppercase;
@@ -3077,7 +3108,7 @@ main {
   min-width: 0;
   margin: 0;
   color: var(--ink);
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.12;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -43026,6 +43057,7 @@ body.desk-rail-right .floating-dock {
   }
 
   .room-focus-note > p:not(.calm-focus-promise),
+  .room-focus-note .simple-room-entry,
   .room-focus-note .simple-room-bookmark,
   .room-focus-note .simple-command-band,
   .room-focus-note .simple-proof-cue-grid,
@@ -43044,6 +43076,15 @@ body.desk-rail-right .floating-dock {
 
   .simple-proof-cue-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .simple-room-entry {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .calm-focus-mode-line {
+    border-right: 0;
+    border-bottom: 1px solid rgba(31, 78, 121, 0.08);
   }
 
   .simple-next-cue-grid {

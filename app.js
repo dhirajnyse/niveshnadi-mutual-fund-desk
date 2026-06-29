@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260629-v366-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v366 Quiet Focus Sentence";
+const DATA_VERSION = "20260629-v367-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v367 Compact Focus Layout";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -9633,9 +9633,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Quiet focus sentence",
-      status: "Active in v366",
+      status: "Done in v366",
       route: "#main",
       detail: "Collapse next-step, pace, and ignore guidance into one calm sentence for each Simple room."
+    },
+    {
+      label: "Compact focus layout",
+      status: "Active in v367",
+      route: "#main",
+      detail: "Shorten the Simple focus band and make Build Tracker progress cards stop stretching around long copy."
     }
   ];
   const productionTarget = releaseVersion
@@ -9649,7 +9655,9 @@ function buildTrackerConfig() {
     phaseOneLaunch,
     phaseOneProgress,
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, and quiet-focus-sentence audit are complete.`
+    targetShort: `${productionTarget}; 100% after production gates close.`,
+    targetRule: "Full audit list stays available in the copied Build Tracker output.",
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, and compact-focus-layout audit are complete.`
   };
   const launchGates = [
     {
@@ -9847,7 +9855,7 @@ function buildProgressRoadmapMarkup(tracker) {
         <div>
           <span>Progress link target</span>
           <strong id="build-progress-roadmap-title">Overall progress and 100% path</strong>
-          <p>${escapeHtml(summary.reached)}. ${escapeHtml(summary.targetWindow)}</p>
+          <p>${escapeHtml(summary.reached)}. ${escapeHtml(summary.targetShort)}</p>
         </div>
         <a class="text-button build-progress-route" href="#launch-readiness">Open launch board</a>
       </div>
@@ -9862,7 +9870,7 @@ function buildProgressRoadmapMarkup(tracker) {
           <span>Where we reached</span>
           <strong>${escapeHtml(summary.currentMove.label)}</strong>
           <div class="build-progress-bar"><span style="width:${summary.phaseOneProgress}%"></span></div>
-          <p>Phase 1 build is ${summary.phaseOneProgress}/100; v352 makes repeated score rings smaller, stable, and less visually heavy.</p>
+          <p>Phase 1 build is ${summary.phaseOneProgress}/100; ${escapeHtml(summary.currentMove.detail)}</p>
         </article>
         <article>
           <span>Launch readiness</span>
@@ -9872,9 +9880,9 @@ function buildProgressRoadmapMarkup(tracker) {
         </article>
         <article>
           <span>When 100%</span>
-          <strong>${escapeHtml(summary.targetWindow)}</strong>
+          <strong>${escapeHtml(summary.targetShort)}</strong>
           <div class="build-progress-bar launch"><span style="width:${summary.phaseOneLaunch}%"></span></div>
-          <p>Production-ready 100% is gate-based, not a date promise.</p>
+          <p>${escapeHtml(summary.targetRule)}</p>
         </article>
       </div>
       <div class="build-progress-path">
@@ -9991,7 +9999,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v366</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v367</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

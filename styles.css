@@ -32,8 +32,8 @@
   --calm-focus-bg: linear-gradient(135deg, rgba(232, 248, 244, 0.94), rgba(255, 255, 255, 0.98));
   --calm-focus-line: rgba(15, 124, 107, 0.28);
   --calm-focus-shadow: 0 18px 40px rgba(15, 34, 56, 0.08);
-  --calm-focus-note-gap: 8px;
-  --calm-focus-note-pad: 11px;
+  --calm-focus-note-gap: 6px;
+  --calm-focus-note-pad: 8px;
   --section-heading-gap: 16px;
   --section-heading-margin: 10px;
   --section-action-height: 32px;
@@ -2994,9 +2994,9 @@ main {
 .room-focus-note {
   grid-column: 1 / -1;
   display: none;
-  grid-template-columns: minmax(180px, 0.72fr) minmax(0, 1.18fr) minmax(150px, 0.58fr) max-content;
+  grid-template-columns: minmax(145px, 0.5fr) minmax(0, 1.24fr) minmax(136px, 0.42fr) minmax(112px, auto);
   gap: var(--calm-focus-note-gap);
-  align-items: center;
+  align-items: start;
   padding: var(--calm-focus-note-pad);
   border: 1px solid rgba(31, 78, 121, 0.14);
   border-radius: var(--radius);
@@ -3007,6 +3007,7 @@ main {
   display: grid;
   gap: 2px;
   min-width: 0;
+  padding-top: 2px;
 }
 
 .room-focus-note span {
@@ -3019,7 +3020,7 @@ main {
 .room-focus-note strong {
   display: block;
   margin-top: 2px;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.2;
 }
 
@@ -3047,8 +3048,8 @@ main {
   grid-template-columns: auto minmax(0, 1fr);
   gap: 2px 10px;
   align-items: center;
-  min-height: 54px;
-  padding: 9px 11px;
+  min-height: 44px;
+  padding: 7px 9px;
   border: 1px solid rgba(15, 124, 107, 0.22);
   border-radius: var(--radius);
   background:
@@ -3063,9 +3064,9 @@ main {
   grid-row: 1 / span 2;
   display: inline-grid;
   place-items: center;
-  min-width: 58px;
-  min-height: 30px;
-  padding: 5px 8px;
+  min-width: 50px;
+  min-height: 24px;
+  padding: 4px 7px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.86);
   color: var(--mint);
@@ -3130,8 +3131,8 @@ main {
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: 6px;
-  min-height: 30px;
-  padding: 6px 9px;
+  min-height: 27px;
+  padding: 5px 8px;
   border: 1px solid rgba(15, 124, 107, 0.13);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.64);
@@ -3249,8 +3250,8 @@ main {
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: 7px;
-  min-height: 30px;
-  padding: 6px 10px;
+  min-height: 27px;
+  padding: 5px 9px;
   border: 1px solid rgba(15, 124, 107, 0.14);
   border-radius: var(--radius);
   background: linear-gradient(90deg, rgba(244, 251, 248, 0.78), rgba(239, 247, 255, 0.62));
@@ -3309,7 +3310,7 @@ main {
 }
 
 .simple-progress-rail {
-  grid-column: 1 / span 3;
+  grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 5px;
@@ -3382,9 +3383,9 @@ main {
 }
 
 .room-focus-note .calm-focus-promise {
-  grid-column: 1 / span 3;
-  min-height: 25px;
-  padding: 5px 8px;
+  grid-column: 1 / -1;
+  min-height: 22px;
+  padding: 4px 8px;
   border-left: 3px solid rgba(216, 151, 60, 0.42);
   background: rgba(255, 243, 220, 0.44);
   color: var(--ink);
@@ -3394,7 +3395,7 @@ main {
 
 .room-cue-actions {
   grid-column: 4;
-  grid-row: 1 / span 3;
+  grid-row: 1 / span 2;
   display: grid;
   gap: 6px;
 }
@@ -3406,8 +3407,8 @@ main {
 .room-progress-meter {
   display: grid;
   gap: 2px;
-  min-height: 48px;
-  padding: 8px 10px;
+  min-height: 42px;
+  padding: 6px 9px;
   border: 1px solid rgba(15, 124, 107, 0.16);
   border-radius: var(--radius);
   background: rgba(235, 248, 244, 0.72);
@@ -7609,6 +7610,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 .build-phase2-metrics {
   display: grid;
   gap: 10px;
+  align-items: start;
 }
 
 .build-tracker-metrics,
@@ -7698,7 +7700,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 .build-progress-roadmap {
   scroll-margin-top: calc(var(--anchor-offset) + 12px);
   display: grid;
-  gap: 12px;
+  gap: 10px;
   border-color: rgba(31, 78, 121, 0.22);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(234, 242, 251, 0.82));
 }
@@ -7709,7 +7711,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 }
 
 .build-progress-roadmap:target {
-  padding-top: 112px;
+  padding-top: 48px;
 }
 
 .build-progress-roadmap-head {
@@ -44958,7 +44960,7 @@ body.simple-mode .serenity-path .simplicity-path-actions {
     --content-list-item-gap: 3px;
     --content-list-indent: 16px;
     --calm-focus-note-gap: 6px;
-    --calm-focus-note-pad: 9px;
+    --calm-focus-note-pad: 8px;
     --action-strip-gap: 6px;
     --action-button-height: 34px;
     --action-button-pad-y: 6px;

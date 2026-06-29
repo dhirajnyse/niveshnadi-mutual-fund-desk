@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V367 Compact Focus Layout
+
+V367 tightens the Simple view focus band and Build Tracker progress rows. The active room guide now uses shorter spacing, while the progress path shows a shorter 100% summary on screen without losing the full audit trail in copied output.
+
 ## V366 Quiet Focus Sentence
 
 V366 turns the separate next-step, pace, and ignore cues into one quiet focus sentence for each Simple view room. The active guide now reads like one calm instruction instead of several small prompts.

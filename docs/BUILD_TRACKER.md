@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V365 Ignore For Now Cue
+
+V365 adds one ignore-for-now cue to each Simple view room. The active guide now names the one distraction to park so the user can stay with the current evidence-first move instead of widening too early.
+
 ## V364 Calm Pace Cue
 
 V364 pairs each Simple view next tiny step with one calm pace cue. The active-room guide now says how briefly to stay with the current move, helping users avoid over-researching while keeping the proof-first path intact.

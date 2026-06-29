@@ -3181,7 +3181,8 @@ main {
 }
 
 .simple-next-tiny-step,
-.simple-calm-pace {
+.simple-calm-pace,
+.simple-ignore-now {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
@@ -3198,8 +3199,15 @@ main {
   background: rgba(244, 251, 248, 0.66);
 }
 
+.simple-ignore-now {
+  grid-column: 1 / -1;
+  border-color: rgba(77, 96, 121, 0.14);
+  background: rgba(255, 255, 255, 0.66);
+}
+
 .simple-next-tiny-step span,
-.simple-calm-pace span {
+.simple-calm-pace span,
+.simple-ignore-now span {
   display: inline-grid;
   place-items: center;
   min-height: 18px;
@@ -3219,8 +3227,14 @@ main {
   color: var(--mint);
 }
 
+.simple-ignore-now span {
+  background: rgba(235, 241, 247, 0.94);
+  color: var(--muted);
+}
+
 .simple-next-tiny-step strong,
-.simple-calm-pace strong {
+.simple-calm-pace strong,
+.simple-ignore-now strong {
   min-width: 0;
   margin: 0;
   color: var(--ink);

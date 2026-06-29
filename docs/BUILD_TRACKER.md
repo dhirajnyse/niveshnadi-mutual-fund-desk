@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V370 Soft Proof Trail
+
+V370 turns the Done when, Hold if, and Leave after cues into a softer proof trail. The Simple room guide keeps the same stopping logic, but the cue area now reads as one quiet rhythm instead of three separate cards.
+
 ## V369 Quiet Exit Trail
 
 V369 adds a Leave after cue beside Done when and Hold if in the Simple view room guide. Each room now shows the proof condition, the pause condition, and the quiet stopping point before the user widens the workflow.

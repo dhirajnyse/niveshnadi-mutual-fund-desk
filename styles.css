@@ -3339,21 +3339,22 @@ main {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 7px;
-  min-height: 27px;
-  padding: 5px 9px;
-  border: 1px solid rgba(15, 124, 107, 0.14);
-  border-radius: var(--radius);
-  background: linear-gradient(90deg, rgba(244, 251, 248, 0.78), rgba(239, 247, 255, 0.62));
+  gap: 6px;
+  min-height: 24px;
+  padding: 4px 8px;
+  border: 1px solid rgba(31, 78, 121, 0.08);
+  border-left: 2px solid rgba(15, 124, 107, 0.22);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.52);
 }
 
 .simple-focus-sentence span {
   display: inline-grid;
   place-items: center;
-  min-height: 18px;
-  padding: 3px 7px;
+  min-height: 16px;
+  padding: 2px 5px;
   border-radius: 999px;
-  background: rgba(229, 247, 241, 0.92);
+  background: rgba(229, 247, 241, 0.72);
   color: var(--mint);
   font-size: 9px;
   font-weight: 950;
@@ -3366,9 +3367,9 @@ main {
   min-width: 0;
   margin: 0;
   color: var(--ink);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 850;
-  line-height: 1.25;
+  line-height: 1.22;
 }
 
 .room-focus-note .signal-chip {

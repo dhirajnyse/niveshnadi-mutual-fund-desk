@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V374 Quiet Focus Thread
+
+V374 makes the Simple room Quiet focus sentence feel like a slim thread between the proof trail and memory footer. The guidance stays visible, but it no longer reads like another separate card.
+
 ## V373 Memory Footer Calm
 
 V373 folds the Simple room progress memory and calm promise into one quiet footer. The guide still shows where the research round is, but it now ends with one compact memory line instead of separate progress and promise rows.

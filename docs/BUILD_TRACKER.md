@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V376 Command Breath
+
+V376 softens the Simple room Do now command so it stays first but no longer feels raised or loud. The command keeps its role while the room starts with more breathing space.
+
 ## V375 Bookmark Whisper
 
 V375 softens the Simple room Now, Next, and Park bookmark row so it reads like one quiet cue instead of three small pills. The first action stays visually dominant while context remains visible.

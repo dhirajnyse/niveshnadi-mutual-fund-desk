@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V379 Progress Rail Whisper
+
+V379 softens the Simple room five-step progress rail so it reads as quiet memory instead of another tab strip. The active step stays clear, but the rail now uses smaller dots, gentler fill, and lower pending weight.
+
 ## V378 Proof Trail Whisper
 
 V378 softens the Simple room Done, Hold, Leave, and Quiet focus cues so they read as one calm proof trail. The guardrails stay visible, but the small cards now carry less border, fill, and label weight.

@@ -3407,20 +3407,20 @@ main {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(5, minmax(24px, 1fr));
-  gap: 3px;
-  min-height: 30px;
-  padding: 4px 6px;
-  border: 1px solid rgba(31, 78, 121, 0.08);
+  gap: 2px;
+  min-height: 26px;
+  padding: 3px 5px;
+  border: 1px solid rgba(31, 78, 121, 0.045);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.46);
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .simple-progress-step {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 20px;
-  padding: 2px;
+  min-height: 18px;
+  padding: 1px;
   border: 1px solid transparent;
   border-radius: 999px;
   background: transparent;
@@ -3431,12 +3431,12 @@ main {
 .simple-progress-step span {
   display: inline-grid;
   place-items: center;
-  min-width: 18px;
-  min-height: 18px;
+  min-width: 16px;
+  min-height: 16px;
   border-radius: 999px;
-  background: rgba(31, 78, 121, 0.08);
+  background: rgba(31, 78, 121, 0.055);
   color: var(--blue);
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 950;
   line-height: 1;
 }
@@ -3455,30 +3455,30 @@ main {
 }
 
 .simple-progress-step.is-done span {
-  background: rgba(15, 124, 107, 0.16);
+  background: rgba(15, 124, 107, 0.11);
   color: var(--mint);
 }
 
 .simple-progress-step.is-active {
-  border-color: rgba(15, 124, 107, 0.22);
-  background: rgba(229, 247, 241, 0.58);
+  border-color: rgba(15, 124, 107, 0.14);
+  background: rgba(229, 247, 241, 0.36);
   color: var(--ink);
   box-shadow: none;
 }
 
 .simple-progress-step.is-active span {
-  background: var(--mint);
+  background: rgba(15, 124, 107, 0.86);
   color: #ffffff;
 }
 
 .simple-progress-step.is-pending {
-  opacity: 0.74;
+  opacity: 0.68;
 }
 
 .simple-progress-step:hover,
 .simple-progress-step:focus-visible {
-  border-color: rgba(15, 124, 107, 0.24);
-  background: rgba(229, 247, 241, 0.62);
+  border-color: rgba(15, 124, 107, 0.16);
+  background: rgba(229, 247, 241, 0.42);
   color: var(--ink);
 }
 

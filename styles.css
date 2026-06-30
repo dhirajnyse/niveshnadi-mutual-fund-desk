@@ -32,8 +32,8 @@
   --calm-focus-bg: linear-gradient(135deg, rgba(232, 248, 244, 0.94), rgba(255, 255, 255, 0.98));
   --calm-focus-line: rgba(15, 124, 107, 0.28);
   --calm-focus-shadow: 0 18px 40px rgba(15, 34, 56, 0.08);
-  --calm-focus-note-gap: 6px;
-  --calm-focus-note-pad: 8px;
+  --calm-focus-note-gap: 5px;
+  --calm-focus-note-pad: 6px;
   --section-heading-gap: 16px;
   --section-heading-margin: 10px;
   --section-action-height: 32px;
@@ -2998,31 +2998,33 @@ main {
   gap: var(--calm-focus-note-gap);
   align-items: start;
   padding: var(--calm-focus-note-pad);
-  border: 1px solid rgba(31, 78, 121, 0.14);
+  border: 1px solid rgba(31, 78, 121, 0.09);
   border-radius: var(--radius);
-  background: rgba(245, 249, 252, 0.92);
+  background:
+    linear-gradient(135deg, rgba(248, 252, 251, 0.68), rgba(255, 255, 255, 0.72)),
+    rgba(245, 249, 252, 0.56);
 }
 
 .simple-room-entry {
   grid-column: 1 / span 3;
   display: grid;
   grid-template-columns: minmax(132px, 0.32fr) minmax(0, 1fr);
-  gap: 5px;
+  gap: 4px;
   align-items: center;
   min-width: 0;
-  padding: 4px;
-  border: 1px solid rgba(31, 78, 121, 0.1);
+  padding: 3px;
+  border: 1px solid rgba(31, 78, 121, 0.07);
   border-radius: var(--radius);
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.7), rgba(244, 251, 248, 0.54));
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.56), rgba(244, 251, 248, 0.38));
 }
 
 .calm-focus-mode-line {
   display: grid;
   gap: 1px;
   min-width: 0;
-  min-height: 30px;
-  padding: 4px 7px;
-  border-right: 1px solid rgba(31, 78, 121, 0.08);
+  min-height: 27px;
+  padding: 3px 6px;
+  border-right: 1px solid rgba(31, 78, 121, 0.06);
 }
 
 .room-focus-note span {
@@ -3035,13 +3037,13 @@ main {
 .room-focus-note strong {
   display: block;
   margin-top: 2px;
-  font-size: 14px;
-  line-height: 1.2;
+  font-size: 13px;
+  line-height: 1.16;
 }
 
 .room-focus-note small {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 850;
   line-height: 1.2;
 }
@@ -3065,8 +3067,8 @@ main {
 .room-focus-note p {
   margin: 0;
   color: var(--muted);
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 12px;
+  line-height: 1.38;
 }
 
 .room-focus-note > p:not(.calm-focus-promise) {
@@ -3486,24 +3488,24 @@ main {
   grid-template-columns: minmax(128px, 0.34fr) minmax(0, 1fr);
   gap: 4px;
   align-items: stretch;
-  padding: 4px;
-  border: 1px solid rgba(31, 78, 121, 0.08);
+  padding: 3px;
+  border: 1px solid rgba(31, 78, 121, 0.06);
   border-radius: var(--radius);
-  background: linear-gradient(90deg, rgba(244, 251, 248, 0.6), rgba(255, 243, 220, 0.34));
+  background: linear-gradient(90deg, rgba(244, 251, 248, 0.44), rgba(255, 243, 220, 0.24));
 }
 
 .simple-memory-footer.is-complete {
-  background: linear-gradient(90deg, rgba(255, 243, 220, 0.62), rgba(244, 251, 248, 0.46));
+  background: linear-gradient(90deg, rgba(255, 243, 220, 0.44), rgba(244, 251, 248, 0.34));
 }
 
 .room-focus-note .calm-focus-promise {
-  min-height: 28px;
-  padding: 5px 8px;
+  min-height: 26px;
+  padding: 4px 7px;
   border-left: 0;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.54);
+  background: rgba(255, 255, 255, 0.38);
   color: var(--ink);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 850;
   display: grid;
   align-items: center;
@@ -3525,11 +3527,11 @@ main {
   grid-template-columns: auto minmax(0, 1fr);
   gap: 1px 6px;
   align-items: center;
-  min-height: 28px;
-  padding: 5px 8px;
-  border: 1px solid rgba(15, 124, 107, 0.1);
+  min-height: 26px;
+  padding: 4px 7px;
+  border: 1px solid rgba(15, 124, 107, 0.08);
   border-radius: 6px;
-  background: rgba(235, 248, 244, 0.48);
+  background: rgba(235, 248, 244, 0.36);
 }
 
 .room-progress-meter.is-complete {

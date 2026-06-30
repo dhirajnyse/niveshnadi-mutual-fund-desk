@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V377 Focus Surface Breath
+
+V377 softens the Simple room cue surface so the active room feels less boxed in. The command, bookmark, proof trail, and memory footer now sit inside a lighter shell with less border weight and gentler fill.
+
 ## V376 Command Breath
 
 V376 softens the Simple room Do now command so it stays first but no longer feels raised or loud. The command keeps its role while the room starts with more breathing space.

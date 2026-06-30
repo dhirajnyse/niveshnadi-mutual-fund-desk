@@ -2871,28 +2871,33 @@ main {
 }
 
 .simplicity-resume {
-  margin-top: 8px;
-  min-height: 32px;
-  background: #ffffff;
-  border-color: rgba(15, 124, 107, 0.28);
-  color: var(--mint);
+  margin-top: 0;
+  min-height: 28px;
+  padding: 0 7px;
+  background: rgba(255, 255, 255, 0.28);
+  border-color: rgba(15, 124, 107, 0.12);
+  color: rgba(15, 124, 107, 0.86);
+  box-shadow: none;
 }
 
 .simplicity-resume span {
-  font-size: 10px;
+  font-size: 9px;
 }
 
 .simplicity-resume strong {
   margin: 0;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1;
 }
 
 .simplicity-reset {
-  min-height: 30px;
-  border-color: rgba(31, 78, 121, 0.16);
-  background: rgba(255, 255, 255, 0.84);
-  color: var(--muted);
+  min-height: 26px;
+  padding: 0 7px;
+  border-color: rgba(31, 78, 121, 0.08);
+  background: rgba(255, 255, 255, 0.24);
+  color: rgba(54, 84, 112, 0.82);
+  font-size: 11px;
+  box-shadow: none;
 }
 
 .simplicity-finish {
@@ -3516,11 +3521,21 @@ main {
   grid-column: 4;
   grid-row: 1 / span 2;
   display: grid;
-  gap: 6px;
+  gap: 4px;
 }
 
 .room-cue-actions .signal-chip {
   width: 100%;
+  min-height: 26px;
+  padding: 0 7px;
+  box-shadow: none;
+}
+
+.room-cue-actions .signal-chip:hover,
+.room-cue-actions .signal-chip:focus-visible {
+  border-color: rgba(15, 124, 107, 0.18);
+  background: rgba(229, 247, 241, 0.38);
+  color: var(--mint);
 }
 
 .room-progress-meter {
@@ -4202,7 +4217,6 @@ body.simple-mode.action-priority-mode .header-next-action:not([hidden]),
 body.simple-mode.action-priority-mode .toolbar .text-button:first-of-type,
 body.simple-mode.action-priority-mode .toolbar .primary-button:first-of-type,
 body.simple-mode.action-priority-mode .simple-command-band,
-body.simple-mode.action-priority-mode .room-cue-actions .signal-chip:first-child,
 body.simple-mode.action-priority-mode .serenity-path .primary-next-action,
 body.simple-mode.action-priority-mode .simplicity-path .primary-next-action,
 body.simple-mode.action-priority-mode .next-operating-grid button:first-child,
@@ -4223,7 +4237,7 @@ body.simple-mode.action-priority-mode .simple-command-band em {
 }
 
 body.simple-mode.action-priority-mode .toolbar .text-button:not(:first-of-type),
-body.simple-mode.action-priority-mode .room-cue-actions .signal-chip:not(:first-child),
+body.simple-mode.action-priority-mode .room-cue-actions .signal-chip,
 body.simple-mode.action-priority-mode .next-operating-grid button:not(:first-child),
 body.simple-mode.action-priority-mode .serenity-start-surface button:not(:first-child) {
   border-color: var(--action-secondary-line);
@@ -4236,8 +4250,6 @@ body.simple-mode.action-priority-mode .toolbar .text-button:first-of-type:hover,
 body.simple-mode.action-priority-mode .toolbar .text-button:first-of-type:focus-visible,
 body.simple-mode.action-priority-mode .simple-command-band:hover,
 body.simple-mode.action-priority-mode .simple-command-band:focus-visible,
-body.simple-mode.action-priority-mode .room-cue-actions .signal-chip:first-child:hover,
-body.simple-mode.action-priority-mode .room-cue-actions .signal-chip:first-child:focus-visible,
 body.simple-mode.action-priority-mode .next-operating-grid button:first-child:hover,
 body.simple-mode.action-priority-mode .next-operating-grid button:first-child:focus-visible {
   border-color: rgba(15, 124, 107, 0.34);

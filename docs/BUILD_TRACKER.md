@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V381 Cue Action Whisper
+
+V381 softens the Simple room secondary cue actions so Resume and Fresh start read as quiet escape hatches. They no longer inherit the primary-action treatment, keeping Do now as the only command that should pull attention.
+
 ## V380 Memory Footer Whisper
 
 V380 softens the Simple room memory footer so it closes the cue as a quiet line instead of another small panel. The progress memory and calm promise stay visible with lighter fill, smaller copy, and lower border weight.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260630-v377-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v377 Focus Surface Breath";
+const DATA_VERSION = "20260701-v378-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v378 Proof Trail Whisper";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -9721,9 +9721,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Focus surface breath",
-      status: "Active in v377",
+      status: "Done in v377",
       route: "#main",
       detail: "Soften the Simple room cue shell so the first workspace feels calmer and less boxed in."
+    },
+    {
+      label: "Proof trail whisper",
+      status: "Active in v378",
+      route: "#main",
+      detail: "Make Done, Hold, Leave, and Quiet focus read as softer guardrails inside one calm cue."
     }
   ];
   const productionTarget = releaseVersion
@@ -9739,7 +9745,7 @@ function buildTrackerConfig() {
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
     targetShort: `${productionTarget}; 100% after production gates close.`,
     targetRule: "Full audit list stays available in the copied Build Tracker output.",
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, and focus-surface audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, and proof-trail-whisper audit are complete.`
   };
   const launchGates = [
     {
@@ -10081,7 +10087,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v377</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v378</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

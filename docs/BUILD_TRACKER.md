@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V378 Proof Trail Whisper
+
+V378 softens the Simple room Done, Hold, Leave, and Quiet focus cues so they read as one calm proof trail. The guardrails stay visible, but the small cards now carry less border, fill, and label weight.
+
 ## V377 Focus Surface Breath
 
 V377 softens the Simple room cue surface so the active room feels less boxed in. The command, bookmark, proof trail, and memory footer now sit inside a lighter shell with less border weight and gentler fill.

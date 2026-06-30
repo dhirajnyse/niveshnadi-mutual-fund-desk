@@ -3076,20 +3076,24 @@ main {
 .simple-room-bookmark {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 4px;
+  gap: 3px;
   min-width: 0;
+  padding: 2px;
+  border: 1px solid rgba(31, 78, 121, 0.055);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.32);
 }
 
 .simple-room-bookmark span {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 4px;
-  min-height: 23px;
-  padding: 3px 6px;
-  border: 1px solid rgba(31, 78, 121, 0.06);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.46);
+  gap: 3px;
+  min-height: 19px;
+  padding: 2px 5px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
   color: var(--ink);
   font-size: inherit;
   font-weight: inherit;
@@ -3097,7 +3101,7 @@ main {
 }
 
 .simple-room-bookmark b {
-  color: var(--mint);
+  color: rgba(15, 124, 107, 0.76);
   font-size: 8px;
   font-weight: 950;
   line-height: 1;
@@ -3107,8 +3111,9 @@ main {
 .simple-room-bookmark strong {
   min-width: 0;
   margin: 0;
-  color: var(--ink);
+  color: rgba(15, 34, 56, 0.86);
   font-size: 10px;
+  font-weight: 850;
   line-height: 1.12;
   overflow: hidden;
   text-overflow: ellipsis;

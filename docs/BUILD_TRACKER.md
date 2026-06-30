@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V375 Bookmark Whisper
+
+V375 softens the Simple room Now, Next, and Park bookmark row so it reads like one quiet cue instead of three small pills. The first action stays visually dominant while context remains visible.
+
 ## V374 Quiet Focus Thread
 
 V374 makes the Simple room Quiet focus sentence feel like a slim thread between the proof trail and memory footer. The guidance stays visible, but it no longer reads like another separate card.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260702-v402-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v402 Quiet Focus Handoff";
+const DATA_VERSION = "20260702-v403-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v403 Quiet Search Return";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1290,8 +1290,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Quiet focus handoff",
+    label: "Quiet search return",
     status: "Shipping now",
+    route: "#build-tracker",
+    detail: "Return focus to the search button when quick search closes by Escape or Close."
+  },
+  {
+    label: "Quiet focus handoff",
+    status: "Done",
     route: "#build-tracker",
     detail: "Move keyboard focus to the opened room after rail, header, selector, or action navigation."
   },
@@ -9923,9 +9929,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Quiet focus handoff",
-      status: "Active in v402",
+      status: "Done in v402",
       route: "#build-tracker",
       detail: "Move keyboard focus to the opened room after rail, header, selector, or action navigation."
+    },
+    {
+      label: "Quiet search return",
+      status: "Active in v403",
+      route: "#build-tracker",
+      detail: "Return focus to the search button when quick search closes by Escape or Close."
     }
   ];
   const productionTarget = releaseVersion
@@ -9941,7 +9953,7 @@ function buildTrackerConfig() {
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
     targetShort: `${productionTarget}; 100% after production gates close.`,
     targetRule: "Full audit list stays available in the copied Build Tracker output.",
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, rail-link-whisper audit, workspace-center-breath audit, card-field-rhythm audit, quiet-input-rhythm audit, list-scan-whisper audit, quiet-table-alignment audit, quiet-empty-space audit, calm-reading-width audit, quiet-button-hierarchy audit, quiet-status-language audit, quiet-form-grouping audit, quiet-panel-boundaries audit, quiet-room-entrances audit, quiet-interior-scan audit, quiet-arrival-state audit, quiet-room-awareness audit, and quiet-focus-handoff audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, rail-link-whisper audit, workspace-center-breath audit, card-field-rhythm audit, quiet-input-rhythm audit, list-scan-whisper audit, quiet-table-alignment audit, quiet-empty-space audit, calm-reading-width audit, quiet-button-hierarchy audit, quiet-status-language audit, quiet-form-grouping audit, quiet-panel-boundaries audit, quiet-room-entrances audit, quiet-interior-scan audit, quiet-arrival-state audit, quiet-room-awareness audit, quiet-focus-handoff audit, and quiet-search-return audit are complete.`
   };
   const launchGates = [
     {
@@ -10283,7 +10295,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v402</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v403</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -61398,13 +61410,15 @@ function bindSectionNavigation() {
 
 function bindFloatingSearch() {
   if (!els.floatingSearchToggle || !els.floatingSearchPanel || !els.floatingSearchInput) return;
-  const setOpen = (isOpen) => {
+  const setOpen = (isOpen, returnFocus = false) => {
     els.floatingSearchPanel.hidden = !isOpen;
     els.floatingSearchToggle.classList.toggle("is-open", isOpen);
     els.floatingSearchToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
     if (isOpen && window.innerWidth > 680) {
       els.floatingSearchInput.focus();
       els.floatingSearchInput.select();
+    } else if (!isOpen && returnFocus) {
+      els.floatingSearchToggle.focus({ preventScroll: true });
     }
   };
 
@@ -61416,18 +61430,24 @@ function bindFloatingSearch() {
     }
   });
 
-  els.floatingSearchClose?.addEventListener("click", () => setOpen(false));
+  els.floatingSearchClose?.addEventListener("click", () => setOpen(false, true));
   els.floatingSearchInput.addEventListener("input", (event) => {
     syncSearchInputs(event.target.value);
   });
   els.floatingSearchInput.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") setOpen(false);
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setOpen(false, true);
+    }
   });
   els.floatingSearchPanel.addEventListener("click", (event) => {
     if (event.target.closest("a")) setOpen(false);
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !els.floatingSearchPanel.hidden) setOpen(false);
+    if (event.key === "Escape" && !els.floatingSearchPanel.hidden) {
+      event.preventDefault();
+      setOpen(false, true);
+    }
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
       event.preventDefault();
       setOpen(true);

@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v402 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v403 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Quiet Search Return that brings focus back to the floating search button after Escape or Close and exposes the search shortcut to assistive tech.
 - Quiet Focus Handoff that moves keyboard focus to the opened room after rail, header, selector, or action navigation without adding visible UI.
 - Quiet Room Awareness that keeps the browser title and hidden workspace status aligned with the current room without adding visible UI.
 - Quiet Decision Rail on the first screen compresses fund choice into Name, Verify, Compare, and Write checkpoints so Simple View stays calm while Full View keeps the deeper learning surfaces.

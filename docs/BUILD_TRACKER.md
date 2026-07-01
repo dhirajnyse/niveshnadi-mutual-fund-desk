@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V403 Quiet Search Return
+
+V403 makes the floating search panel close more calmly. Escape and Close now return focus to the search button, and the button exposes the Control+K shortcut to assistive technology so quick search feels complete without adding visible UI.
+
 ## V402 Quiet Focus Handoff
 
 V402 moves keyboard focus to the opened room after rail, header, selector, or action navigation. The route handoff now shares the same scroll, workspace status, title, and focus rhythm so the app feels calmer for keyboard and assistive navigation without adding visible controls.

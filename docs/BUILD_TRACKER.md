@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V386 Rail Link Whisper
+
+V386 softens the side rail room links, number chips, hover fill, and active-room elevation so the navigation reads like quiet guidance instead of stacked buttons. The current room stays clear with less lift.
+
 ## V385 Rail Group Whisper
 
 V385 softens the side rail group headers, count badges, collapse arrows, and current-group rail so Desk, Research, Trust, and Founder read lighter. The rail keeps its structure while the category labels stop competing with the room links.

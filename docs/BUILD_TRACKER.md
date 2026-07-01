@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V398 Quiet Room Entrances
+
+V398 makes section headings, eyebrows, status chips, and toolbars feel like calm doorway cues into each room. Room starts now carry a softer heading rail and quieter action strip across desktop, tablet, and mobile widths.
+
 ## V397 Quiet Panel Boundaries
 
 V397 softens panel surfaces, neutral card borders, and hover lift so long rooms feel like one calm desk. Status color still carries meaning, but repeated panels now sit more quietly on the canvas.

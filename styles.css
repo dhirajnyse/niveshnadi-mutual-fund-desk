@@ -66,6 +66,15 @@
   --calm-focus-note-pad: 6px;
   --section-heading-gap: 16px;
   --section-heading-margin: 10px;
+  --section-heading-pad-y: 6px;
+  --section-heading-pad-x: 4px;
+  --section-heading-line: rgba(31, 78, 121, 0.1);
+  --section-heading-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0));
+  --section-heading-radius: 8px;
+  --section-eyebrow-ink: #0f7466;
+  --section-toolbar-bg: rgba(255, 255, 255, 0.44);
+  --section-toolbar-line: rgba(31, 78, 121, 0.08);
+  --section-toolbar-pad: 3px;
   --section-action-height: 32px;
   --action-strip-gap: 8px;
   --action-button-height: 38px;
@@ -294,7 +303,7 @@ a {
 .release-pill,
 .metric-label {
   margin: 0 0 4px;
-  color: var(--mint);
+  color: var(--section-eyebrow-ink);
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -19688,6 +19697,10 @@ a:focus-visible {
   flex-wrap: wrap;
   gap: var(--section-heading-gap);
   margin-bottom: var(--section-heading-margin);
+  padding: var(--section-heading-pad-y) var(--section-heading-pad-x);
+  border-bottom: 1px solid var(--section-heading-line);
+  border-radius: var(--section-heading-radius) var(--section-heading-radius) 0 0;
+  background: var(--section-heading-bg);
 }
 
 .section-heading h2 {
@@ -44469,6 +44482,13 @@ body.desk-rail-right .floating-dock {
   --metric-copy-line: 1.24;
   --section-heading-gap: 8px;
   --section-heading-margin: 6px;
+  --section-heading-pad-y: 4px;
+  --section-heading-pad-x: 2px;
+  --section-heading-line: rgba(31, 78, 121, 0.075);
+  --section-heading-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+  --section-toolbar-bg: rgba(255, 255, 255, 0.34);
+  --section-toolbar-line: rgba(31, 78, 121, 0.06);
+  --section-toolbar-pad: 2px;
   --section-action-height: 28px;
   --action-strip-gap: 6px;
   --action-button-height: 34px;
@@ -45256,8 +45276,9 @@ textarea:focus {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: end;
     gap: 5px var(--section-heading-gap);
-    padding: 0 2px 5px;
-    border-bottom: 1px solid rgba(215, 227, 235, 0.72);
+    padding: var(--section-heading-pad-y) var(--section-heading-pad-x);
+    border-bottom: 1px solid var(--section-heading-line);
+    background: var(--section-heading-bg);
   }
 
   .section-heading .eyebrow {
@@ -45279,6 +45300,10 @@ textarea:focus {
     gap: var(--action-strip-gap);
     justify-content: flex-end;
     max-width: min(100%, 640px);
+    padding: var(--section-toolbar-pad);
+    border: 1px solid var(--section-toolbar-line);
+    border-radius: var(--radius);
+    background: var(--section-toolbar-bg);
   }
 
   .section-heading .status-chip,
@@ -45692,6 +45717,10 @@ body.simple-mode .serenity-path .simplicity-path-actions {
     gap: var(--action-strip-gap);
     justify-content: flex-start;
     max-width: 100%;
+    padding: var(--section-toolbar-pad);
+    border: 1px solid var(--section-toolbar-line);
+    border-radius: var(--radius);
+    background: var(--section-toolbar-bg);
   }
 
   .section-heading .status-chip,
@@ -45859,6 +45888,12 @@ body.simple-mode .serenity-path .simplicity-path-actions {
     --content-list-indent: 15px;
     --section-heading-gap: 6px;
     --section-heading-margin: 6px;
+    --section-heading-pad-y: 5px;
+    --section-heading-pad-x: 0;
+    --section-heading-bg: transparent;
+    --section-toolbar-bg: transparent;
+    --section-toolbar-line: rgba(31, 78, 121, 0.06);
+    --section-toolbar-pad: 0;
     --section-action-height: 30px;
     --action-strip-gap: 5px;
     --action-button-height: 34px;
@@ -45876,6 +45911,7 @@ body.simple-mode .serenity-path .simplicity-path-actions {
     grid-template-columns: minmax(0, 1fr);
     align-items: start;
     gap: var(--section-heading-gap);
+    border-bottom-color: var(--section-heading-line);
   }
 
   .section-heading > div {
@@ -45887,6 +45923,10 @@ body.simple-mode .serenity-path .simplicity-path-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
     gap: var(--action-strip-gap);
+    padding: var(--section-toolbar-pad);
+    border: 1px solid var(--section-toolbar-line);
+    border-radius: var(--radius);
+    background: var(--section-toolbar-bg);
   }
 
   .section-heading .toolbar .status-chip,

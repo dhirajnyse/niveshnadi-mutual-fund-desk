@@ -938,10 +938,10 @@ body.desk-rail-right .desk-rail {
 
 .desk-rail-group {
   display: grid;
-  gap: 3px;
-  padding: 0 1px 7px;
+  gap: 2px;
+  padding: 0 1px 6px;
   border: 0;
-  border-bottom: 1px solid rgba(158, 233, 223, 0.09);
+  border-bottom: 1px solid rgba(158, 233, 223, 0.06);
   border-radius: 0;
 }
 
@@ -951,32 +951,32 @@ body.desk-rail-right .desk-rail {
 
 .desk-rail-group.is-current {
   background: transparent;
-  box-shadow: inset 2px 0 0 rgba(158, 233, 223, 0.34);
+  box-shadow: inset 1px 0 0 rgba(158, 233, 223, 0.24);
 }
 
 body.desk-rail-right .desk-rail-group.is-current {
-  box-shadow: inset -2px 0 0 rgba(158, 233, 223, 0.34);
+  box-shadow: inset -1px 0 0 rgba(158, 233, 223, 0.24);
 }
 
 .desk-rail-group.is-current .desk-rail-label {
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .desk-rail-label {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   width: 100%;
-  min-height: 22px;
-  padding: 2px 6px;
+  min-height: 21px;
+  padding: 2px 5px;
   border: 0;
   border-radius: var(--radius);
   background: transparent;
-  color: rgba(158, 233, 223, 0.82);
+  color: rgba(158, 233, 223, 0.68);
   cursor: pointer;
   font-size: 9px;
-  font-weight: 950;
+  font-weight: 850;
   letter-spacing: 0;
   text-align: left;
   text-transform: uppercase;
@@ -984,32 +984,32 @@ body.desk-rail-right .desk-rail-group.is-current {
 
 .desk-rail-count {
   display: grid;
-  min-width: 18px;
-  height: 16px;
+  min-width: 17px;
+  height: 15px;
   place-items: center;
-  border: 1px solid rgba(158, 233, 223, 0.2);
+  border: 1px solid rgba(158, 233, 223, 0.12);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.055);
-  color: #dffcf6;
+  background: rgba(255, 255, 255, 0.035);
+  color: rgba(223, 252, 246, 0.78);
   font-size: 8px;
-  font-weight: 950;
+  font-weight: 850;
   line-height: 1;
 }
 
 .desk-rail-label::after {
   content: "";
-  width: 7px;
-  height: 7px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  opacity: 0.72;
+  width: 6px;
+  height: 6px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  opacity: 0.58;
   transform: rotate(45deg) translateY(-1px);
 }
 
 .desk-rail-label:hover,
 .desk-rail-label:focus-visible {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .desk-rail-group.is-collapsed {
@@ -1017,9 +1017,9 @@ body.desk-rail-right .desk-rail-group.is-current {
 }
 
 .desk-rail-group.is-collapsed .desk-rail-count {
-  border-color: rgba(158, 233, 223, 0.28);
-  background: rgba(158, 233, 223, 0.12);
-  color: #ffffff;
+  border-color: rgba(158, 233, 223, 0.18);
+  background: rgba(158, 233, 223, 0.08);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .desk-rail-group.is-collapsed .desk-rail-label::after {
@@ -44508,19 +44508,27 @@ body.simple-mode .desk-rail {
 }
 
 .desk-rail-group {
-  padding: 1px;
+  padding: 1px 1px 5px;
+  border-bottom-color: rgba(158, 233, 223, 0.055);
 }
 
 .desk-rail-group.is-current {
-  box-shadow: inset 2px 0 0 rgba(158, 233, 223, 0.48);
+  box-shadow: inset 1px 0 0 rgba(158, 233, 223, 0.28);
 }
 
 body.desk-rail-right .desk-rail-group.is-current {
-  box-shadow: inset -2px 0 0 rgba(158, 233, 223, 0.48);
+  box-shadow: inset -1px 0 0 rgba(158, 233, 223, 0.28);
 }
 
 .desk-rail-label {
-  padding: 3px 7px 1px;
+  min-height: 20px;
+  padding: 2px 6px 1px;
+  font-weight: 850;
+}
+
+.desk-rail-count {
+  min-width: 16px;
+  height: 14px;
 }
 
 .desk-rail a {

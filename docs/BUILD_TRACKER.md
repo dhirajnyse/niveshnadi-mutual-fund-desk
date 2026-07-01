@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V385 Rail Group Whisper
+
+V385 softens the side rail group headers, count badges, collapse arrows, and current-group rail so Desk, Research, Trust, and Founder read lighter. The rail keeps its structure while the category labels stop competing with the room links.
+
 ## V384 Rail Context Whisper
 
 V384 softens the side rail Now, Next, Back, Recent, and rail-switcher controls so the context panel stays helpful without feeling like a dense command block. The rail keeps orientation memory while letting the navigation groups stay calmer.

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V391 Quiet Table Alignment
+
+V391 steadies dense metric cards, grid rows, labels, values, and small panel heights so long research rooms scan more evenly. The UI keeps the same compact density while metric surfaces feel less uneven.
+
 ## V390 List Scan Whisper
 
 V390 makes dense evidence, dossier, pack, and pricing lists easier to scan with quieter markers, calmer list copy, and subtle repeated-row rhythm. Long research rooms should feel less noisy while preserving every proof and boundary line.

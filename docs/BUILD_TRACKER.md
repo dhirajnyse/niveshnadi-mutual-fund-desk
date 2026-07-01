@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V401 Quiet Room Awareness
+
+V401 keeps the browser title and hidden workspace status aligned with the current room. Rail, header, selector, and scroll-based workspace changes now share one quiet room-awareness update so orientation improves without adding visible controls.
+
 ## V400 Quiet Arrival State
 
 V400 lets jumped-to rooms gently mark the current heading and first surface after rail, header, or selector navigation. The app now keeps navigation feedback calm: a soft heading marker and light first-surface lift confirm where the user landed without adding another visible control.

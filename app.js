@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260702-v400-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v400 Quiet Arrival State";
+const DATA_VERSION = "20260702-v401-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v401 Quiet Room Awareness";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1060,6 +1060,8 @@ const state = {
   railCurrentRoute: "",
   railBackRoute: "",
   railRecentRoutes: [],
+  workspaceAnnouncedHash: "",
+  workspaceAnnouncedLabel: "",
   evidenceIntakeSlotId: "",
   investorRecordFocus: false,
   railKeepFrame: 0,
@@ -1286,8 +1288,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Quiet arrival state",
+    label: "Quiet room awareness",
     status: "Shipping now",
+    route: "#build-tracker",
+    detail: "Keep the browser title and hidden workspace status aligned with the current room."
+  },
+  {
+    label: "Quiet arrival state",
+    status: "Done",
     route: "#build-tracker",
     detail: "Let jumped-to rooms gently show their heading and first surface as the current landing."
   },
@@ -9895,9 +9903,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Quiet arrival state",
-      status: "Active in v400",
+      status: "Done in v400",
       route: "#build-tracker",
       detail: "Let jumped-to rooms gently show their heading and first surface as the current landing."
+    },
+    {
+      label: "Quiet room awareness",
+      status: "Active in v401",
+      route: "#build-tracker",
+      detail: "Keep the browser title and hidden workspace status aligned with the current room."
     }
   ];
   const productionTarget = releaseVersion
@@ -9913,7 +9927,7 @@ function buildTrackerConfig() {
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
     targetShort: `${productionTarget}; 100% after production gates close.`,
     targetRule: "Full audit list stays available in the copied Build Tracker output.",
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, rail-link-whisper audit, workspace-center-breath audit, card-field-rhythm audit, quiet-input-rhythm audit, list-scan-whisper audit, quiet-table-alignment audit, quiet-empty-space audit, calm-reading-width audit, quiet-button-hierarchy audit, quiet-status-language audit, quiet-form-grouping audit, quiet-panel-boundaries audit, quiet-room-entrances audit, quiet-interior-scan audit, and quiet-arrival-state audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, rail-link-whisper audit, workspace-center-breath audit, card-field-rhythm audit, quiet-input-rhythm audit, list-scan-whisper audit, quiet-table-alignment audit, quiet-empty-space audit, calm-reading-width audit, quiet-button-hierarchy audit, quiet-status-language audit, quiet-form-grouping audit, quiet-panel-boundaries audit, quiet-room-entrances audit, quiet-interior-scan audit, quiet-arrival-state audit, and quiet-room-awareness audit are complete.`
   };
   const launchGates = [
     {
@@ -10255,7 +10269,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v400</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v401</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -37156,6 +37170,19 @@ function updateDeskRailContext(hash = "") {
   queueDeskRailTargetKeep(deskRailTargetForContext(context));
 }
 
+function updateWorkspaceAwareness(hash = "", group = "Workspace", label = "Screener") {
+  const cleanLabel = String(label || "Screener").trim();
+  const cleanGroup = String(group || "Workspace").trim();
+  if (!cleanLabel) return;
+  const pageTitle = `${cleanLabel} | NiveshNadi Mutual Fund Desk`;
+  if (document.title !== pageTitle) document.title = pageTitle;
+  if (!els.workspaceAnnouncer) return;
+  if (state.workspaceAnnouncedHash === hash && state.workspaceAnnouncedLabel === cleanLabel) return;
+  state.workspaceAnnouncedHash = hash;
+  state.workspaceAnnouncedLabel = cleanLabel;
+  els.workspaceAnnouncer.textContent = `Current workspace: ${cleanGroup}, ${cleanLabel}.`;
+}
+
 function updateWorkspaceNavigator(hash = "") {
   renderWorkspaceJumpForMode(hash || workspaceHashFromViewport());
   const fallbackHash = hash && workspaceOption(hash) ? hash : workspaceHashFromViewport();
@@ -37165,12 +37192,13 @@ function updateWorkspaceNavigator(hash = "") {
   if (els.workspaceJump) {
     els.workspaceJump.value = activeHash;
   }
+  const group = option?.parentElement?.tagName === "OPTGROUP" ? option.parentElement.label : "Workspace";
+  const label = option?.textContent?.trim() || "Screener";
   if (els.workspaceStatus) {
-    const group = option?.parentElement?.tagName === "OPTGROUP" ? option.parentElement.label : "Workspace";
-    const label = option?.textContent?.trim() || "Screener";
     els.workspaceStatus.textContent = `${group}: ${label}`;
     els.workspaceStatus.title = `Current workspace: ${label}`;
   }
+  updateWorkspaceAwareness(activeHash || fallbackHash, group, label);
   if (els.navLinks) {
     els.navLinks.forEach((link) => {
       const isActive = link.getAttribute("href") === activeHash;
@@ -61527,6 +61555,7 @@ function cacheElements() {
   Object.assign(els, {
     workspaceJump: qs("#workspaceJump"),
     workspaceStatus: qs("#workspaceStatus"),
+    workspaceAnnouncer: qs("#workspaceAnnouncer"),
     deskRailCurrent: qs("#deskRailCurrent"),
     deskRailGroup: qs("#deskRailGroup"),
     deskRailPosition: qs("#deskRailPosition"),

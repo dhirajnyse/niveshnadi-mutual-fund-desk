@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v400 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v401 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Quiet Room Awareness that keeps the browser title and hidden workspace status aligned with the current room without adding visible UI.
 - Quiet Decision Rail on the first screen compresses fund choice into Name, Verify, Compare, and Write checkpoints so Simple View stays calm while Full View keeps the deeper learning surfaces.
 - Calm Review Compass on the first screen turns closed-loop learning into a simple observe, decide, improve pattern before any route can improve from behavior.
 - Calm Learning Contract on the first screen explains how closed-loop AI learning captures only research patterns, requires human review before release, improves only with consent, and blocks personal identifiers.

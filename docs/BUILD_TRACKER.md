@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V383 Header Utility Whisper
+
+V383 softens the remaining sticky header command controls so Full view, rail layout, tool search, and workspace jump read as quiet utilities. The header keeps power-user access without feeling like a second action bar above the room.
+
 ## V382 Header Next Whisper
 
 V382 softens the sticky header Next cue so it stays available as a navigation reminder without competing with the in-room Do now command. The top bar now supports the room instead of pulling attention away from it.

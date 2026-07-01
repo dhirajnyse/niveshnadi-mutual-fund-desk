@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V388 Card Field Rhythm
+
+V388 tunes repeated output cards with shared field spacing, softer neutral borders, and tighter paragraph rhythm while protecting ready, watch, caution, blocked, draft, and clear status tones. Long rooms should scan more calmly without losing meaning.
+
 ## V387 Workspace Center Breath
 
 V387 centers the rail-aware workspace canvas, replaces hard side offsets with balanced auto margins, and gives wide desktop rooms calmer gutters. Long rooms should now feel less pinned to the rail and more like a quiet desk surface.

@@ -82,6 +82,11 @@
   --section-toolbar-bg: rgba(255, 255, 255, 0.44);
   --section-toolbar-line: rgba(31, 78, 121, 0.08);
   --section-toolbar-pad: 3px;
+  --arrival-heading-bg: linear-gradient(90deg, rgba(229, 247, 241, 0.86), rgba(255, 255, 255, 0.12));
+  --arrival-heading-line: rgba(15, 124, 107, 0.28);
+  --arrival-marker: rgba(15, 124, 107, 0.72);
+  --arrival-surface-shadow: 0 12px 28px rgba(15, 124, 107, 0.075);
+  --arrival-outline: rgba(15, 124, 107, 0.16);
   --section-action-height: 32px;
   --action-strip-gap: 8px;
   --action-button-height: 38px;
@@ -1499,6 +1504,24 @@ main {
 .workspace-band {
   width: min(var(--workspace-max), calc(100% - var(--workspace-gutter)));
   margin: var(--workspace-section-gap) auto 0;
+}
+
+.workspace-band[id]:target,
+.detail-band:target {
+  border-radius: var(--radius);
+}
+
+.workspace-band[id]:target > .section-heading,
+.detail-band:target > .section-heading {
+  border-bottom-color: var(--arrival-heading-line);
+  background: var(--arrival-heading-bg);
+  box-shadow: inset 3px 0 0 var(--arrival-marker);
+}
+
+.workspace-band[id]:target > :where(.workspace-grid, [class*="-output"], .portfolio-picker, .fund-detail, .disclosure-band),
+.detail-band:target > :where(.workspace-grid, [class*="-output"], .portfolio-picker, .fund-detail, .disclosure-band) {
+  border-color: var(--arrival-outline);
+  box-shadow: var(--arrival-surface-shadow);
 }
 
 .command-band {
@@ -44540,6 +44563,11 @@ body.desk-rail-right .floating-dock {
   --section-toolbar-bg: rgba(255, 255, 255, 0.34);
   --section-toolbar-line: rgba(31, 78, 121, 0.06);
   --section-toolbar-pad: 2px;
+  --arrival-heading-bg: linear-gradient(90deg, rgba(229, 247, 241, 0.68), rgba(255, 255, 255, 0.08));
+  --arrival-heading-line: rgba(15, 124, 107, 0.22);
+  --arrival-marker: rgba(15, 124, 107, 0.58);
+  --arrival-surface-shadow: 0 8px 20px rgba(15, 124, 107, 0.055);
+  --arrival-outline: rgba(15, 124, 107, 0.13);
   --section-action-height: 28px;
   --action-strip-gap: 6px;
   --action-button-height: 34px;
@@ -45956,6 +45984,8 @@ body.simple-mode .serenity-path .simplicity-path-actions {
     --section-toolbar-bg: transparent;
     --section-toolbar-line: rgba(31, 78, 121, 0.06);
     --section-toolbar-pad: 0;
+    --arrival-heading-bg: linear-gradient(90deg, rgba(229, 247, 241, 0.55), rgba(255, 255, 255, 0));
+    --arrival-surface-shadow: 0 6px 16px rgba(15, 124, 107, 0.05);
     --section-action-height: 30px;
     --action-strip-gap: 5px;
     --action-button-height: 34px;

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V400 Quiet Arrival State
+
+V400 lets jumped-to rooms gently mark the current heading and first surface after rail, header, or selector navigation. The app now keeps navigation feedback calm: a soft heading marker and light first-surface lift confirm where the user landed without adding another visible control.
+
 ## V399 Quiet Interior Scan
 
 V399 applies one calmer text, list, and card-action rhythm inside the research rooms. The room entrances from v398 now lead into interiors with more consistent copy size, list spacing, marker color, title line-height, and card action distance across desktop, tablet, and mobile widths.

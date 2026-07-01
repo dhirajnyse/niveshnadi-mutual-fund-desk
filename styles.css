@@ -44320,6 +44320,11 @@ body.desk-rail-right .floating-dock {
   --control-pad-y: 6px;
   --control-pad-x: 9px;
   --control-panel-pad: 11px;
+  --control-soft-bg: rgba(255, 255, 255, 0.9);
+  --control-soft-line: rgba(31, 78, 121, 0.14);
+  --control-focus-line: rgba(15, 124, 107, 0.48);
+  --control-focus-shadow: 0 0 0 3px rgba(15, 124, 107, 0.1);
+  --control-label-ink: #405970;
   --responsive-command-gap: 5px;
   --responsive-command-min: 112px;
   --responsive-command-jump-min: 204px;
@@ -44774,6 +44779,7 @@ body.desk-rail-right .workspace-band {
 
 label {
   gap: var(--control-field-gap);
+  color: var(--control-label-ink);
 }
 
 input,
@@ -44781,6 +44787,31 @@ select,
 textarea {
   min-height: var(--control-height);
   padding: var(--control-pad-y) var(--control-pad-x);
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  border-color: var(--control-soft-line);
+  background: var(--control-soft-bg);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52);
+  line-height: 1.18;
+  transition: border-color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+}
+
+input:not([type="checkbox"]):not([type="radio"])::placeholder,
+textarea::placeholder {
+  color: rgba(81, 103, 125, 0.64);
+}
+
+input:not([type="checkbox"]):not([type="radio"]):focus,
+select:focus,
+textarea:focus {
+  border-color: var(--control-focus-line);
+  background: #ffffff;
+  outline: 2px solid rgba(15, 124, 107, 0.14);
+  outline-offset: 1px;
+  box-shadow: var(--control-focus-shadow);
 }
 
 .simple-filter-toggle,

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V389 Quiet Input Rhythm
+
+V389 softens text inputs, selects, textareas, labels, placeholders, and focus states across form-heavy rooms while leaving checkbox and radio controls alone. Input-heavy workflows should feel calmer without hiding active focus.
+
 ## V388 Card Field Rhythm
 
 V388 tunes repeated output cards with shared field spacing, softer neutral borders, and tighter paragraph rhythm while protecting ready, watch, caution, blocked, draft, and clear status tones. Long rooms should scan more calmly without losing meaning.

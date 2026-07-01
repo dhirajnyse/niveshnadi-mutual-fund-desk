@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V390 List Scan Whisper
+
+V390 makes dense evidence, dossier, pack, and pricing lists easier to scan with quieter markers, calmer list copy, and subtle repeated-row rhythm. Long research rooms should feel less noisy while preserving every proof and boundary line.
+
 ## V389 Quiet Input Rhythm
 
 V389 softens text inputs, selects, textareas, labels, placeholders, and focus states across form-heavy rooms while leaving checkbox and radio controls alone. Input-heavy workflows should feel calmer without hiding active focus.

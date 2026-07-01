@@ -30,6 +30,14 @@
   --room-card-pad: 12px;
   --room-card-gap: 10px;
   --room-copy-line: 1.42;
+  --panel-surface-bg: rgba(255, 255, 255, 0.88);
+  --panel-surface-line: rgba(31, 78, 121, 0.12);
+  --panel-surface-shadow: 0 12px 26px rgba(15, 34, 56, 0.055);
+  --panel-card-bg: rgba(255, 255, 255, 0.74);
+  --panel-card-line: rgba(31, 78, 121, 0.11);
+  --panel-card-hover-line: rgba(15, 124, 107, 0.2);
+  --panel-card-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.56);
+  --panel-status-blend: rgba(255, 255, 255, 0.74);
   --reading-measure: 74ch;
   --reading-wide-measure: 88ch;
   --reading-tight-measure: 58ch;
@@ -1554,9 +1562,9 @@ main {
 .portfolio-picker,
 .fund-detail,
 .disclosure-band {
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
+  background: var(--panel-surface-bg);
+  border: 1px solid var(--panel-surface-line);
+  box-shadow: var(--panel-surface-shadow);
 }
 
 .calm-focus-shell {
@@ -19844,9 +19852,10 @@ body.simple-mode .quiet-fund-shelf {
 .watch-alert,
 .pack-card,
 .pack-hero {
-  background: var(--paper);
-  border: 1px solid var(--line);
+  background: var(--panel-card-bg);
+  border: 1px solid var(--panel-card-line);
   border-radius: var(--radius);
+  box-shadow: var(--panel-card-shadow);
 }
 
 .fund-card {
@@ -19859,9 +19868,9 @@ body.simple-mode .quiet-fund-shelf {
 }
 
 .fund-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(15, 124, 107, 0.45);
-  box-shadow: 0 12px 28px rgba(15, 34, 56, 0.1);
+  transform: translateY(-1px);
+  border-color: var(--panel-card-hover-line);
+  box-shadow: var(--panel-surface-shadow);
 }
 
 .fund-card.is-selected {
@@ -44426,8 +44435,16 @@ body.desk-rail-right .floating-dock {
   --room-card-pad: 10px;
   --room-card-gap: 8px;
   --room-card-field-gap: 4px;
-  --room-card-soft-line: rgba(31, 78, 121, 0.11);
-  --room-card-soft-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.54);
+  --panel-surface-bg: rgba(255, 255, 255, 0.78);
+  --panel-surface-line: rgba(31, 78, 121, 0.1);
+  --panel-surface-shadow: 0 8px 18px rgba(15, 34, 56, 0.04);
+  --panel-card-bg: rgba(255, 255, 255, 0.66);
+  --panel-card-line: rgba(31, 78, 121, 0.09);
+  --panel-card-hover-line: rgba(15, 124, 107, 0.17);
+  --panel-card-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52);
+  --panel-status-blend: rgba(255, 255, 255, 0.66);
+  --room-card-soft-line: var(--panel-card-line);
+  --room-card-soft-shadow: var(--panel-card-shadow);
   --room-copy-line: 1.34;
   --reading-measure: 70ch;
   --reading-wide-measure: 84ch;
@@ -44447,8 +44464,8 @@ body.desk-rail-right .floating-dock {
   --metric-card-min: 72px;
   --metric-card-pad: 9px;
   --metric-card-gap: 3px;
-  --metric-card-line: rgba(31, 78, 121, 0.1);
-  --metric-card-bg: rgba(255, 255, 255, 0.68);
+  --metric-card-line: var(--panel-card-line);
+  --metric-card-bg: var(--panel-card-bg);
   --metric-copy-line: 1.24;
   --section-heading-gap: 8px;
   --section-heading-margin: 6px;
@@ -44500,8 +44517,8 @@ body.desk-rail-right .floating-dock {
   --form-label-gap: 3px;
   --form-helper-line: 1.28;
   --form-helper-ink: #526b82;
-  --form-panel-bg: rgba(255, 255, 255, 0.7);
-  --form-panel-line: rgba(31, 78, 121, 0.1);
+  --form-panel-bg: var(--panel-card-bg);
+  --form-panel-line: var(--panel-card-line);
   --form-field-bg: rgba(255, 255, 255, 0.86);
   --form-field-line: rgba(31, 78, 121, 0.12);
   --form-field-focus-bg: #ffffff;
@@ -45126,6 +45143,13 @@ textarea:focus {
   min-height: 100%;
 }
 
+.workspace-band :is([class*="-output"], .pricing-band, .tool-output) :where(article:not(.ready):not(.watch):not(.caution):not(.blocked):not(.draft):not(.clear)),
+.workspace-band :where([class*="-card-grid"], [class*="-note-grid"]) > :where(article:not(.ready):not(.watch):not(.caution):not(.blocked):not(.draft):not(.clear), div:not(.ready):not(.watch):not(.caution):not(.blocked):not(.draft):not(.clear)) {
+  border-color: var(--panel-card-line);
+  background: var(--panel-card-bg);
+  box-shadow: var(--panel-card-shadow);
+}
+
 .simple-filter-toggle,
 .signal-chip {
   min-height: 28px;
@@ -45178,9 +45202,11 @@ textarea:focus {
   padding: var(--control-panel-pad);
 }
 
-.tool-panel {
+.tool-panel,
+.tool-output {
   border-color: var(--form-panel-line);
   background: var(--form-panel-bg);
+  box-shadow: var(--panel-card-shadow);
 }
 
 .workspace-band :is([class*="-output"], .tool-output) {
@@ -45283,32 +45309,32 @@ textarea:focus {
 
   .workspace-band :is([class*="-output"], .pricing-band) :is(article.ready, div.ready, button.ready, small.ready) {
     border-color: var(--status-ready-line);
-    background: linear-gradient(135deg, var(--status-ready-bg), rgba(255, 255, 255, 0.72));
+    background: linear-gradient(135deg, var(--status-ready-bg), var(--panel-status-blend));
   }
 
   .workspace-band :is([class*="-output"], .pricing-band) :is(article.clear, div.clear, button.clear, small.clear) {
     border-color: var(--status-clear-line);
-    background: linear-gradient(135deg, var(--status-clear-bg), rgba(255, 255, 255, 0.72));
+    background: linear-gradient(135deg, var(--status-clear-bg), var(--panel-status-blend));
   }
 
   .workspace-band :is([class*="-output"], .pricing-band) :is(article.watch, div.watch, button.watch, small.watch) {
     border-color: var(--status-watch-line);
-    background: linear-gradient(135deg, var(--status-watch-bg), rgba(255, 255, 255, 0.72));
+    background: linear-gradient(135deg, var(--status-watch-bg), var(--panel-status-blend));
   }
 
   .workspace-band :is([class*="-output"], .pricing-band) :is(article.caution, div.caution, button.caution, small.caution) {
     border-color: var(--status-caution-line);
-    background: linear-gradient(135deg, var(--status-caution-bg), rgba(255, 255, 255, 0.72));
+    background: linear-gradient(135deg, var(--status-caution-bg), var(--panel-status-blend));
   }
 
   .workspace-band :is([class*="-output"], .pricing-band) :is(article.blocked, div.blocked, button.blocked, small.blocked) {
     border-color: var(--status-blocked-line);
-    background: linear-gradient(135deg, var(--status-blocked-bg), rgba(255, 255, 255, 0.72));
+    background: linear-gradient(135deg, var(--status-blocked-bg), var(--panel-status-blend));
   }
 
   .workspace-band :is([class*="-output"], .pricing-band) :is(article.draft, div.draft, button.draft, small.draft) {
     border-color: var(--status-draft-line);
-    background: linear-gradient(135deg, var(--status-draft-bg), rgba(255, 255, 255, 0.72));
+    background: linear-gradient(135deg, var(--status-draft-bg), var(--panel-status-blend));
   }
 
   .workspace-band :is([class*="-output"], .pricing-band) :where(article, li, p, small, dd) {

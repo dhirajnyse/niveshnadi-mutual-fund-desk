@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V397 Quiet Panel Boundaries
+
+V397 softens panel surfaces, neutral card borders, and hover lift so long rooms feel like one calm desk. Status color still carries meaning, but repeated panels now sit more quietly on the canvas.
+
 ## V396 Quiet Form Grouping
 
 V396 groups labels, fields, helper text, and tool panels into calmer form blocks across input-heavy rooms. Forms stay compact while labels, fields, actions, and helper copy feel more composed.

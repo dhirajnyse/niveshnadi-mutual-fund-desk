@@ -30,6 +30,12 @@
   --room-card-pad: 12px;
   --room-card-gap: 10px;
   --room-copy-line: 1.42;
+  --reading-measure: 74ch;
+  --reading-wide-measure: 88ch;
+  --reading-tight-measure: 58ch;
+  --reading-note-measure: 66ch;
+  --reading-copy-line: 1.4;
+  --reading-list-line: 1.36;
   --content-paragraph-gap: 6px;
   --content-list-gap: 8px;
   --content-list-item-gap: 4px;
@@ -44316,6 +44322,12 @@ body.desk-rail-right .floating-dock {
   --room-card-soft-line: rgba(31, 78, 121, 0.11);
   --room-card-soft-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.54);
   --room-copy-line: 1.34;
+  --reading-measure: 70ch;
+  --reading-wide-measure: 84ch;
+  --reading-tight-measure: 56ch;
+  --reading-note-measure: 62ch;
+  --reading-copy-line: 1.36;
+  --reading-list-line: 1.32;
   --content-paragraph-gap: 5px;
   --content-list-gap: 6px;
   --content-list-item-gap: 3px;
@@ -44846,6 +44858,33 @@ textarea:focus {
   box-shadow: var(--control-focus-shadow);
 }
 
+.workspace-band :is([class*="-output"], .pricing-band) :where(article > p, article > small, article > ul, article > ol, .pack-list, .doc-list, .pricing-feature-list) {
+  max-width: var(--reading-measure);
+  text-wrap: pretty;
+}
+
+.workspace-band :is([class*="-output"], .pricing-band) :where(article li, article dd, .pack-list li, .doc-list li, .pricing-feature-list li) {
+  max-width: var(--reading-note-measure);
+  line-height: var(--reading-list-line);
+  text-wrap: pretty;
+}
+
+.workspace-band :where(
+  [class$="-hero"],
+  [class$="-head"],
+  [class$="-board"],
+  [class$="-closeout"],
+  [class$="-recorder"],
+  [class$="-lab"],
+  [class$="-mri"],
+  [class$="-summary"],
+  [class$="-guardrail"],
+  [class$="-boundary"]
+) :where(p, small) {
+  max-width: var(--reading-wide-measure);
+  text-wrap: pretty;
+}
+
 .workspace-band :is([class*="-output"], .pricing-band) :where(article ul, article ol, .pack-list, .doc-list, .pricing-feature-list) {
   color: var(--content-list-ink);
 }
@@ -44884,7 +44923,9 @@ textarea:focus {
 
 .workspace-band :where(.metric-grid, [class*="-metric-grid"], [class$="-metrics"]) > :where(article, div) > p {
   margin-top: 1px;
+  max-width: var(--reading-tight-measure);
   line-height: var(--metric-copy-line);
+  text-wrap: pretty;
 }
 
 .workspace-band :where([class*="-card-grid"], [class*="-note-grid"]) {
@@ -45047,6 +45088,14 @@ textarea:focus {
 
   .workspace-band :is([class*="-output"], .pricing-band) :where(article, li, p, small, dd) {
     line-height: var(--room-copy-line);
+  }
+
+  .workspace-band :is([class*="-output"], .pricing-band) :where(article > p, article > small, article dd) {
+    line-height: var(--reading-copy-line);
+  }
+
+  .workspace-band :is([class*="-output"], .pricing-band) :where(article li, .pack-list li, .doc-list li, .pricing-feature-list li) {
+    line-height: var(--reading-list-line);
   }
 
   .workspace-band :is([class*="-output"], .pricing-band) :where(article > :first-child) {
@@ -45315,6 +45364,12 @@ body.simple-mode .serenity-path .simplicity-path-actions {
     --workspace-empty-gap: 8px;
     --workspace-side-column: 240px;
     --workspace-empty-panel-pad: 10px;
+    --reading-measure: 100%;
+    --reading-wide-measure: 100%;
+    --reading-tight-measure: 100%;
+    --reading-note-measure: 100%;
+    --reading-copy-line: 1.36;
+    --reading-list-line: 1.33;
     --content-paragraph-gap: 5px;
     --content-list-gap: 6px;
     --content-list-item-gap: 3px;
@@ -45541,6 +45596,12 @@ body.simple-mode .serenity-path .simplicity-path-actions {
     --workspace-empty-panel-pad: 9px;
     --control-height: 34px;
     --control-panel-pad: 10px;
+    --reading-measure: 100%;
+    --reading-wide-measure: 100%;
+    --reading-tight-measure: 100%;
+    --reading-note-measure: 100%;
+    --reading-copy-line: 1.34;
+    --reading-list-line: 1.32;
     --content-paragraph-gap: 4px;
     --content-list-gap: 5px;
     --content-list-item-gap: 2px;

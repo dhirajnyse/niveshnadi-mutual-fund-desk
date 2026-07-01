@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V393 Calm Reading Width
+
+V393 constrains long proof notes, memo copy, and output paragraphs so dense research rooms read more calmly without hiding detail. Long lines now settle into a readable measure while compact cards keep their structure.
+
 ## V392 Quiet Empty Space
 
 V392 reduces oversized gutters, first-screen pockets, and placeholder output air so the desk feels balanced without becoming crowded. Output panels now start closer to their content while the compact shell keeps a calm amount of breathing room.

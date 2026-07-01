@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V387 Workspace Center Breath
+
+V387 centers the rail-aware workspace canvas, replaces hard side offsets with balanced auto margins, and gives wide desktop rooms calmer gutters. Long rooms should now feel less pinned to the rail and more like a quiet desk surface.
+
 ## V386 Rail Link Whisper
 
 V386 softens the side rail room links, number chips, hover fill, and active-room elevation so the navigation reads like quiet guidance instead of stacked buttons. The current room stays clear with less lift.

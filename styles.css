@@ -44286,9 +44286,9 @@ body.desk-rail-right .floating-dock {
   --anchor-offset: 92px;
   --shadow: 0 10px 24px rgba(15, 34, 56, 0.08);
   --desk-rail-width: 172px;
-  --workspace-gutter: 24px;
-  --workspace-max: 1420px;
-  --workspace-section-gap: 8px;
+  --workspace-gutter: clamp(24px, 3vw, 56px);
+  --workspace-max: 1388px;
+  --workspace-section-gap: 9px;
   --room-card-pad: 10px;
   --room-card-gap: 8px;
   --room-copy-line: 1.34;
@@ -44324,7 +44324,7 @@ body.desk-rail-right .floating-dock {
 
 body.desk-rail-mini {
   --desk-rail-width: 74px;
-  --workspace-gutter: 20px;
+  --workspace-gutter: clamp(20px, 2.4vw, 44px);
 }
 
 body {
@@ -44554,16 +44554,18 @@ main {
 
 .workspace-band {
   width: min(var(--workspace-max), calc(100% - var(--workspace-gutter)));
+  margin-right: auto;
+  margin-left: auto;
   margin-top: var(--workspace-section-gap);
 }
 
 body.desk-rail-left .workspace-band {
   margin-right: auto;
-  margin-left: 10px;
+  margin-left: auto;
 }
 
 body.desk-rail-right .workspace-band {
-  margin-right: 10px;
+  margin-right: auto;
   margin-left: auto;
 }
 
@@ -44573,7 +44575,14 @@ body.desk-rail-right .workspace-band {
 
 .workspace-grid {
   grid-template-columns: minmax(0, 1.72fr) minmax(250px, 0.55fr);
-  gap: 8px;
+  gap: 10px;
+}
+
+@media (min-width: 1600px) {
+  body.desk-rail-left .workspace-band,
+  body.desk-rail-right .workspace-band {
+    width: min(var(--workspace-max), calc(100% - clamp(56px, 5vw, 104px)));
+  }
 }
 
 .calm-focus-shell {

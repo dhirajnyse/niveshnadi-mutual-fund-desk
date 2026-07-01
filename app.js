@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260701-v386-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v386 Rail Link Whisper";
+const DATA_VERSION = "20260701-v387-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v387 Workspace Center Breath";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -9775,9 +9775,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Rail link whisper",
-      status: "Active in v386",
+      status: "Done in v386",
       route: "#main",
       detail: "Soften the rail room links, number chips, and active link elevation so the side rail reads like quiet guidance."
+    },
+    {
+      label: "Workspace center breath",
+      status: "Active in v387",
+      route: "#main",
+      detail: "Center the rail-aware workspace canvas with calmer wide-screen gutters so long rooms feel balanced."
     }
   ];
   const productionTarget = releaseVersion
@@ -9793,7 +9799,7 @@ function buildTrackerConfig() {
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
     targetShort: `${productionTarget}; 100% after production gates close.`,
     targetRule: "Full audit list stays available in the copied Build Tracker output.",
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, and rail-link-whisper audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, rail-link-whisper audit, and workspace-center-breath audit are complete.`
   };
   const launchGates = [
     {
@@ -10135,7 +10141,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v386</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v387</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>

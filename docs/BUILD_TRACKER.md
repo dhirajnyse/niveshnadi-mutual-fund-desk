@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V399 Quiet Interior Scan
+
+V399 applies one calmer text, list, and card-action rhythm inside the research rooms. The room entrances from v398 now lead into interiors with more consistent copy size, list spacing, marker color, title line-height, and card action distance across desktop, tablet, and mobile widths.
+
 ## V398 Quiet Room Entrances
 
 V398 makes section headings, eyebrows, status chips, and toolbars feel like calm doorway cues into each room. Room starts now carry a softer heading rail and quieter action strip across desktop, tablet, and mobile widths.

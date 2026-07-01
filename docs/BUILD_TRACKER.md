@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V382 Header Next Whisper
+
+V382 softens the sticky header Next cue so it stays available as a navigation reminder without competing with the in-room Do now command. The top bar now supports the room instead of pulling attention away from it.
+
 ## V381 Cue Action Whisper
 
 V381 softens the Simple room secondary cue actions so Resume and Fresh start read as quiet escape hatches. They no longer inherit the primary-action treatment, keeping Do now as the only command that should pull attention.

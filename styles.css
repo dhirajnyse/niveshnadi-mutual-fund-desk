@@ -699,17 +699,17 @@ body.desk-rail-right .desk-rail {
 
 .desk-rail-inner {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .desk-rail-context {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(58px, auto);
-  gap: 5px 6px;
-  padding: 8px 7px;
-  border: 1px solid rgba(158, 233, 223, 0.14);
+  gap: 4px 5px;
+  padding: 7px 6px;
+  border: 1px solid rgba(158, 233, 223, 0.09);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.035);
+  background: rgba(255, 255, 255, 0.022);
   box-shadow: none;
 }
 
@@ -725,9 +725,9 @@ body.desk-rail-right .desk-rail {
 .desk-rail-context > span,
 .desk-rail-next small,
 .desk-rail-back small {
-  color: #9ee9df;
+  color: rgba(158, 233, 223, 0.78);
   font-size: 9px;
-  font-weight: 950;
+  font-weight: 900;
   letter-spacing: 0;
   text-transform: uppercase;
 }
@@ -741,7 +741,7 @@ body.desk-rail-right .desk-rail {
   overflow: hidden;
   color: #ffffff;
   font-size: 12px;
-  font-weight: 950;
+  font-weight: 900;
   line-height: 1.1;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -750,9 +750,9 @@ body.desk-rail-right .desk-rail {
 .desk-rail-context p {
   margin: 0;
   overflow: hidden;
-  color: #bdd5e5;
+  color: rgba(189, 213, 229, 0.86);
   font-size: 10px;
-  font-weight: 750;
+  font-weight: 700;
   line-height: 1.2;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -767,18 +767,18 @@ body.desk-rail-right .desk-rail {
 }
 
 .desk-rail-progress span {
-  color: #dffcf6;
+  color: rgba(223, 252, 246, 0.82);
   font-size: 9px;
-  font-weight: 950;
+  font-weight: 850;
   letter-spacing: 0;
 }
 
 .desk-rail-progress i {
   display: block;
-  height: 5px;
+  height: 4px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .desk-rail-progress b {
@@ -786,7 +786,7 @@ body.desk-rail-right .desk-rail {
   width: 0;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #9ee9df, #f1a43a);
+  background: linear-gradient(90deg, rgba(158, 233, 223, 0.74), rgba(241, 164, 58, 0.82));
 }
 
 .desk-rail-next,
@@ -794,13 +794,13 @@ body.desk-rail-right .desk-rail {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 2px;
-  min-height: 25px;
+  min-height: 24px;
   margin-top: 0;
-  padding: 5px 6px;
-  border: 1px solid rgba(158, 233, 223, 0.18);
+  padding: 4px 5px;
+  border: 1px solid rgba(158, 233, 223, 0.12);
   border-radius: var(--radius);
-  background: rgba(226, 242, 255, 0.12);
-  color: #ffffff;
+  background: rgba(226, 242, 255, 0.07);
+  color: rgba(255, 255, 255, 0.9);
   cursor: pointer;
   text-align: left;
 }
@@ -811,8 +811,8 @@ body.desk-rail-right .desk-rail {
 
 .desk-rail-back {
   grid-column: 2;
-  min-height: 25px;
-  background: rgba(255, 255, 255, 0.07);
+  min-height: 24px;
+  background: rgba(255, 255, 255, 0.045);
 }
 
 .desk-rail-next:hover,
@@ -820,25 +820,26 @@ body.desk-rail-right .desk-rail {
 .desk-rail-back:hover,
 .desk-rail-back:focus-visible {
   border-color: rgba(158, 233, 223, 0.42);
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.11);
   outline: none;
 }
 
 .desk-rail-back:disabled {
   cursor: default;
-  opacity: 0.48;
+  opacity: 0.38;
 }
 
 .desk-rail-back:disabled:hover {
-  border-color: rgba(158, 233, 223, 0.18);
-  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(158, 233, 223, 0.12);
+  background: rgba(255, 255, 255, 0.045);
 }
 
 .desk-rail-next b,
 .desk-rail-back b {
   overflow: hidden;
-  color: #ffffff;
-  font-size: 11px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 10px;
+  font-weight: 850;
   line-height: 1.1;
   text-align: center;
   text-overflow: ellipsis;
@@ -849,49 +850,49 @@ body.desk-rail-right .desk-rail {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   margin-top: 0;
 }
 
 .desk-rail-recent span {
   display: none;
-  color: #9ee9df;
+  color: rgba(158, 233, 223, 0.74);
   font-size: 9px;
-  font-weight: 950;
+  font-weight: 850;
   letter-spacing: 0;
   text-transform: uppercase;
 }
 
 .desk-rail-recent button {
-  min-height: 25px;
+  min-height: 23px;
   min-width: 0;
-  padding: 5px 6px;
-  border: 1px solid rgba(158, 233, 223, 0.16);
+  padding: 4px 5px;
+  border: 1px solid rgba(158, 233, 223, 0.1);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.07);
-  color: #dbe9f2;
+  background: rgba(255, 255, 255, 0.045);
+  color: rgba(219, 233, 242, 0.88);
   cursor: pointer;
-  font-size: 10px;
-  font-weight: 900;
+  font-size: 9px;
+  font-weight: 850;
   letter-spacing: 0;
 }
 
 .desk-rail-recent button:hover,
 .desk-rail-recent button:focus-visible {
   border-color: rgba(158, 233, 223, 0.38);
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
   outline: none;
 }
 
 .desk-rail-recent button:disabled {
   cursor: default;
-  opacity: 0.45;
+  opacity: 0.34;
 }
 
 .desk-rail-recent button:disabled:hover {
-  border-color: rgba(158, 233, 223, 0.16);
-  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(158, 233, 223, 0.1);
+  background: rgba(255, 255, 255, 0.045);
 }
 
 .desk-rail-recent button b {
@@ -904,27 +905,27 @@ body.desk-rail-right .desk-rail {
 .desk-rail-switcher {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 4px;
+  gap: 3px;
   margin-top: 0;
 }
 
 .desk-rail-switcher button {
-  min-height: 25px;
-  padding: 5px 6px;
-  border: 1px solid rgba(158, 233, 223, 0.16);
+  min-height: 23px;
+  padding: 4px 5px;
+  border: 1px solid rgba(158, 233, 223, 0.1);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.07);
-  color: #dbe9f2;
+  background: rgba(255, 255, 255, 0.045);
+  color: rgba(219, 233, 242, 0.88);
   cursor: pointer;
   font-size: 10px;
-  font-weight: 900;
+  font-weight: 850;
   letter-spacing: 0;
 }
 
 .desk-rail-switcher button:hover,
 .desk-rail-switcher button:focus-visible {
   border-color: rgba(158, 233, 223, 0.38);
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
   outline: none;
 }
@@ -44460,7 +44461,9 @@ body.simple-mode .desk-rail {
 
 .desk-rail-context {
   gap: 4px;
-  padding: 8px 7px;
+  padding: 7px 6px;
+  border-color: rgba(158, 233, 223, 0.08);
+  background: rgba(255, 255, 255, 0.018);
 }
 
 .desk-rail-context > strong {
@@ -44469,8 +44472,10 @@ body.simple-mode .desk-rail {
 
 .desk-rail-next,
 .desk-rail-back {
-  min-height: 24px;
+  min-height: 23px;
   padding: 4px 5px;
+  border-color: rgba(158, 233, 223, 0.1);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .desk-rail-next b,
@@ -44483,8 +44488,10 @@ body.simple-mode .desk-rail {
 }
 
 .desk-rail-recent button {
-  min-height: 23px;
+  min-height: 22px;
   padding: 4px 5px;
+  border-color: rgba(158, 233, 223, 0.09);
+  background: rgba(255, 255, 255, 0.04);
   font-size: 9px;
 }
 
@@ -44493,8 +44500,10 @@ body.simple-mode .desk-rail {
 }
 
 .desk-rail-switcher button {
-  min-height: 23px;
+  min-height: 22px;
   padding: 4px 5px;
+  border-color: rgba(158, 233, 223, 0.09);
+  background: rgba(255, 255, 255, 0.04);
   font-size: 9px;
 }
 

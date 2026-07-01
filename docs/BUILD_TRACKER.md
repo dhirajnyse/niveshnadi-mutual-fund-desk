@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V384 Rail Context Whisper
+
+V384 softens the side rail Now, Next, Back, Recent, and rail-switcher controls so the context panel stays helpful without feeling like a dense command block. The rail keeps orientation memory while letting the navigation groups stay calmer.
+
 ## V383 Header Utility Whisper
 
 V383 softens the remaining sticky header command controls so Full view, rail layout, tool search, and workspace jump read as quiet utilities. The header keeps power-user access without feeling like a second action bar above the room.

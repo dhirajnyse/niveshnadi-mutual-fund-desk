@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V396 Quiet Form Grouping
+
+V396 groups labels, fields, helper text, and tool panels into calmer form blocks across input-heavy rooms. Forms stay compact while labels, fields, actions, and helper copy feel more composed.
+
 ## V395 Quiet Status Language
 
 V395 unifies ready, watch, caution, blocked, draft, clear, and section chips into calmer shared status tones. The desk keeps its meaning while state labels and repeated output cards feel less noisy across long rooms.

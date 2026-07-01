@@ -118,6 +118,16 @@
   --control-pad-y: 9px;
   --control-pad-x: 11px;
   --control-panel-pad: 14px;
+  --form-group-gap: 9px;
+  --form-label-gap: 5px;
+  --form-helper-line: 1.34;
+  --form-helper-ink: #5b7085;
+  --form-panel-bg: rgba(255, 255, 255, 0.78);
+  --form-panel-line: rgba(31, 78, 121, 0.13);
+  --form-field-bg: rgba(255, 255, 255, 0.92);
+  --form-field-line: rgba(31, 78, 121, 0.15);
+  --form-field-focus-bg: #ffffff;
+  --form-action-gap: 7px;
   --responsive-command-gap: 6px;
   --responsive-command-min: 122px;
   --responsive-command-jump-min: 220px;
@@ -44486,6 +44496,16 @@ body.desk-rail-right .floating-dock {
   --control-focus-line: rgba(15, 124, 107, 0.48);
   --control-focus-shadow: 0 0 0 3px rgba(15, 124, 107, 0.1);
   --control-label-ink: #405970;
+  --form-group-gap: 7px;
+  --form-label-gap: 3px;
+  --form-helper-line: 1.28;
+  --form-helper-ink: #526b82;
+  --form-panel-bg: rgba(255, 255, 255, 0.7);
+  --form-panel-line: rgba(31, 78, 121, 0.1);
+  --form-field-bg: rgba(255, 255, 255, 0.86);
+  --form-field-line: rgba(31, 78, 121, 0.12);
+  --form-field-focus-bg: #ffffff;
+  --form-action-gap: 5px;
   --responsive-command-gap: 5px;
   --responsive-command-min: 112px;
   --responsive-command-jump-min: 204px;
@@ -44963,6 +44983,31 @@ label {
   color: var(--control-label-ink);
 }
 
+.workspace-band :where(.tool-panel, form, [class$="-form"], [class*="-form "]) {
+  gap: var(--form-group-gap);
+}
+
+.workspace-band :where(.tool-panel, form, [class$="-form"], [class*="-form "]) :where(label:not(:has(input[type="checkbox"])):not(:has(input[type="radio"]))) {
+  display: grid;
+  gap: var(--form-label-gap);
+  color: var(--control-label-ink);
+  line-height: 1.12;
+}
+
+.workspace-band :where(.tool-panel, form, [class$="-form"], [class*="-form "]) :where(label:has(input[type="checkbox"]), label:has(input[type="radio"])) {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  line-height: 1.28;
+}
+
+.workspace-band :where(.tool-panel, form, [class$="-form"], [class*="-form "]) :where(label small, .helper, .field-help, .form-help) {
+  color: var(--form-helper-ink);
+  font-size: 11px;
+  line-height: var(--form-helper-line);
+  text-transform: none;
+}
+
 input,
 select,
 textarea {
@@ -44973,11 +45018,15 @@ textarea {
 input:not([type="checkbox"]):not([type="radio"]),
 select,
 textarea {
-  border-color: var(--control-soft-line);
-  background: var(--control-soft-bg);
+  border-color: var(--form-field-line, var(--control-soft-line));
+  background: var(--form-field-bg, var(--control-soft-bg));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52);
   line-height: 1.18;
   transition: border-color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+}
+
+.workspace-band :where(.tool-panel, form, [class$="-form"], [class*="-form "]) :where(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+  width: 100%;
 }
 
 input:not([type="checkbox"]):not([type="radio"])::placeholder,
@@ -44989,10 +45038,14 @@ input:not([type="checkbox"]):not([type="radio"]):focus,
 select:focus,
 textarea:focus {
   border-color: var(--control-focus-line);
-  background: #ffffff;
+  background: var(--form-field-focus-bg);
   outline: 2px solid rgba(15, 124, 107, 0.14);
   outline-offset: 1px;
   box-shadow: var(--control-focus-shadow);
+}
+
+.workspace-band :where([class$="-actions"], [class*="-actions "], [class*="-actions"]) {
+  gap: var(--form-action-gap);
 }
 
 .workspace-band :is([class*="-output"], .pricing-band) :where(article > p, article > small, article > ul, article > ol, .pack-list, .doc-list, .pricing-feature-list) {
@@ -45123,6 +45176,11 @@ textarea:focus {
 .tool-panel,
 .tool-output {
   padding: var(--control-panel-pad);
+}
+
+.tool-panel {
+  border-color: var(--form-panel-line);
+  background: var(--form-panel-bg);
 }
 
 .workspace-band :is([class*="-output"], .tool-output) {

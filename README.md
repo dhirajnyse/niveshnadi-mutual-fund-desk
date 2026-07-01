@@ -2,7 +2,7 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v391 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v392 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
@@ -46,6 +46,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 - Quiet Input Rhythm that softens text inputs, selects, labels, placeholders, and focus states across form-heavy rooms while leaving checkbox/radio controls untouched.
 - List Scan Whisper that makes dense evidence, dossier, pack, and pricing lists easier to scan with quieter markers, calmer list copy, and subtle repeated-row rhythm.
 - Quiet Table Alignment that steadies dense metric cards, grid rows, labels, values, and small panel heights so long research rooms scan more evenly.
+- Quiet Empty Space that reduces oversized gutters, first-screen pockets, and placeholder output air so the desk feels balanced without becoming crowded.
 - Nadi Market Strategy Room that keeps B2C pricing, competitor posture, monetization scenarios, trust moats, founder beta scale gate, founder beta learning ledger, founder beta experiment board, founder beta traffic rehearsal, paid beta gates, and the Phase 2 distributor boundary visible inside the founder workspace.
 - Nadi Paid Beta Evidence Pack that turns the monetization thesis into value proof, source proof, payment proof, account proof, support proof, compliance proof, cohort limits, required receipts, and a founder go/no-go path before the first paid users are invited.
 - Nadi Founder Invite Proof Path that turns the beta evidence pack into controlled invitation copy, eligibility checks, account and payment proof, access boundaries, support promise, pause/refund rules, receipt fields, and expansion discipline before retail users are invited.

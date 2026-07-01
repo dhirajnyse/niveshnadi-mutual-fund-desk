@@ -22,6 +22,11 @@
   --workspace-gutter: 42px;
   --workspace-max: 1380px;
   --workspace-section-gap: 16px;
+  --workspace-empty-gutter: 36px;
+  --workspace-empty-gap: 10px;
+  --workspace-side-column: 280px;
+  --workspace-empty-panel-pad: 12px;
+  --workspace-empty-output-min: auto;
   --room-card-pad: 12px;
   --room-card-gap: 10px;
   --room-copy-line: 1.42;
@@ -44297,9 +44302,14 @@ body.desk-rail-right .floating-dock {
   --anchor-offset: 92px;
   --shadow: 0 10px 24px rgba(15, 34, 56, 0.08);
   --desk-rail-width: 172px;
-  --workspace-gutter: clamp(24px, 3vw, 56px);
+  --workspace-gutter: clamp(20px, 2.6vw, 48px);
   --workspace-max: 1388px;
   --workspace-section-gap: 9px;
+  --workspace-empty-gutter: clamp(18px, 2.2vw, 42px);
+  --workspace-empty-gap: 7px;
+  --workspace-side-column: 232px;
+  --workspace-empty-panel-pad: 9px;
+  --workspace-empty-output-min: auto;
   --room-card-pad: 10px;
   --room-card-gap: 8px;
   --room-card-field-gap: 4px;
@@ -44604,14 +44614,14 @@ body.desk-rail-right .workspace-band {
 }
 
 .workspace-grid {
-  grid-template-columns: minmax(0, 1.72fr) minmax(250px, 0.55fr);
-  gap: 10px;
+  grid-template-columns: minmax(0, 1.72fr) minmax(var(--workspace-side-column), 0.52fr);
+  gap: var(--workspace-empty-gap);
 }
 
 @media (min-width: 1600px) {
   body.desk-rail-left .workspace-band,
   body.desk-rail-right .workspace-band {
-    width: min(var(--workspace-max), calc(100% - clamp(56px, 5vw, 104px)));
+    width: min(var(--workspace-max), calc(100% - var(--workspace-empty-gutter)));
   }
 }
 
@@ -44620,9 +44630,9 @@ body.desk-rail-right .workspace-band {
 }
 
 .command-panel {
-  grid-template-columns: minmax(0, 1fr) 252px;
-  gap: 8px 10px;
-  padding: 12px;
+  grid-template-columns: minmax(0, 1fr) var(--workspace-side-column);
+  gap: var(--workspace-empty-gap);
+  padding: var(--workspace-empty-panel-pad);
 }
 
 .command-panel h2 {
@@ -44937,6 +44947,16 @@ textarea:focus {
   padding: var(--control-panel-pad);
 }
 
+.workspace-band :is([class*="-output"], .tool-output) {
+  align-content: start;
+  min-height: var(--workspace-empty-output-min);
+}
+
+.workspace-band :is([class*="-output"]) :where([class*="-empty"], [class$="-empty"]) {
+  gap: var(--workspace-empty-gap);
+  padding: var(--workspace-empty-panel-pad);
+}
+
 @media (min-width: 981px) {
   .workspace-band :is(
     [class$="-hero"],
@@ -45012,7 +45032,7 @@ textarea:focus {
   }
 
   .workspace-band :is([class*="-output"], .pricing-band) {
-    gap: var(--room-card-gap);
+    gap: min(var(--room-card-gap), var(--workspace-empty-gap));
   }
 
   .workspace-band :is([class*="-output"], .pricing-band) :where(article),
@@ -45116,8 +45136,8 @@ body.simple-mode .brand-lockup h1 {
 }
 
 body.simple-mode .command-panel {
-  max-width: 1180px;
-  padding: 14px;
+  max-width: 1120px;
+  padding: 12px;
 }
 
 body.simple-mode .command-panel h2 {
@@ -45126,8 +45146,8 @@ body.simple-mode .command-panel h2 {
 
 body.simple-mode .command-copy {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(310px, 0.72fr);
-  gap: 8px 12px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.62fr);
+  gap: var(--workspace-empty-gap);
   max-width: none;
   align-items: start;
 }
@@ -45139,13 +45159,13 @@ body.simple-mode .command-copy > h2 {
 
 body.simple-mode .next-operating-move {
   grid-column: 1 / -1;
-  grid-template-columns: minmax(0, 0.7fr) minmax(390px, 1fr);
+  grid-template-columns: minmax(0, 0.74fr) minmax(340px, 0.98fr);
   margin: 2px 0 0;
 }
 
 body.simple-mode .serenity-start-surface {
   grid-column: 1;
-  grid-row: 4 / span 5;
+  grid-row: 4 / span 4;
   max-height: none;
 }
 
@@ -45291,6 +45311,10 @@ body.simple-mode .serenity-path .simplicity-path-actions {
     --workspace-gutter: 20px;
     --workspace-max: 1380px;
     --workspace-section-gap: 10px;
+    --workspace-empty-gutter: 20px;
+    --workspace-empty-gap: 8px;
+    --workspace-side-column: 240px;
+    --workspace-empty-panel-pad: 10px;
     --content-paragraph-gap: 5px;
     --content-list-gap: 6px;
     --content-list-item-gap: 3px;
@@ -45511,6 +45535,10 @@ body.simple-mode .serenity-path .simplicity-path-actions {
 @media (max-width: 680px) {
   :root {
     --workspace-gutter: 16px;
+    --workspace-empty-gutter: 16px;
+    --workspace-empty-gap: 7px;
+    --workspace-side-column: 220px;
+    --workspace-empty-panel-pad: 9px;
     --control-height: 34px;
     --control-panel-pad: 10px;
     --content-paragraph-gap: 4px;

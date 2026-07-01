@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V392 Quiet Empty Space
+
+V392 reduces oversized gutters, first-screen pockets, and placeholder output air so the desk feels balanced without becoming crowded. Output panels now start closer to their content while the compact shell keeps a calm amount of breathing room.
+
 ## V391 Quiet Table Alignment
 
 V391 steadies dense metric cards, grid rows, labels, values, and small panel heights so long research rooms scan more evenly. The UI keeps the same compact density while metric surfaces feel less uneven.

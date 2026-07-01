@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V395 Quiet Status Language
+
+V395 unifies ready, watch, caution, blocked, draft, clear, and section chips into calmer shared status tones. The desk keeps its meaning while state labels and repeated output cards feel less noisy across long rooms.
+
 ## V394 Quiet Button Hierarchy
 
 V394 separates primary, secondary, copy, save, clear, and header utility actions so the next move is easier to see. Primary actions keep one confident treatment while repeat toolbar and copy controls recede into a quieter utility tier.

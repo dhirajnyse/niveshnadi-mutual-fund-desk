@@ -85,6 +85,27 @@
   --button-utility-line: rgba(31, 78, 121, 0.12);
   --button-utility-ink: #405a72;
   --button-focus-ring: rgba(15, 124, 107, 0.2);
+  --status-ready-bg: rgba(229, 247, 241, 0.72);
+  --status-ready-line: rgba(15, 124, 107, 0.24);
+  --status-ready-ink: #0f6e60;
+  --status-watch-bg: rgba(255, 246, 226, 0.78);
+  --status-watch-line: rgba(216, 151, 60, 0.25);
+  --status-watch-ink: #825313;
+  --status-caution-bg: rgba(255, 236, 239, 0.66);
+  --status-caution-line: rgba(173, 77, 87, 0.23);
+  --status-caution-ink: #974651;
+  --status-blocked-bg: rgba(255, 236, 239, 0.78);
+  --status-blocked-line: rgba(173, 77, 87, 0.34);
+  --status-blocked-ink: #873842;
+  --status-draft-bg: rgba(234, 242, 251, 0.72);
+  --status-draft-line: rgba(31, 78, 121, 0.18);
+  --status-draft-ink: #33556f;
+  --status-clear-bg: rgba(232, 248, 244, 0.64);
+  --status-clear-line: rgba(15, 124, 107, 0.2);
+  --status-clear-ink: #0f6e60;
+  --status-chip-bg: rgba(255, 246, 226, 0.72);
+  --status-chip-line: rgba(216, 151, 60, 0.24);
+  --status-chip-ink: #76500f;
   --score-ring-size: 88px;
   --score-ring-inset: 7px;
   --score-ring-value: 25px;
@@ -20009,22 +20030,26 @@ body.simple-mode .quiet-fund-shelf {
   align-items: center;
   min-height: 24px;
   padding: 4px 7px;
-  background: var(--blue-soft);
-  color: var(--blue);
+  border: 1px solid var(--status-draft-line);
+  background: var(--status-draft-bg);
+  color: var(--status-draft-ink);
   font-size: 11px;
   font-weight: 900;
+  line-height: 1;
 }
 
 .tag.risk-high,
 .tag.risk-very-high {
-  background: var(--rose-soft);
-  color: var(--rose);
+  border-color: var(--status-caution-line);
+  background: var(--status-caution-bg);
+  color: var(--status-caution-ink);
 }
 
 .tag.risk-low,
 .tag.risk-moderate {
-  background: var(--mint-soft);
-  color: var(--mint);
+  border-color: var(--status-ready-line);
+  background: var(--status-ready-bg);
+  color: var(--status-ready-ink);
 }
 
 .score {
@@ -21271,10 +21296,13 @@ body.simple-mode .quiet-fund-shelf {
   min-height: var(--section-action-height);
   align-items: center;
   padding: var(--action-chip-pad-y) var(--action-chip-pad-x);
-  background: var(--gold-soft);
-  color: #76480e;
+  border: 1px solid var(--status-chip-line);
+  background: var(--status-chip-bg);
+  color: var(--status-chip-ink);
   font-size: 12px;
   font-weight: 950;
+  line-height: 1.05;
+  box-shadow: none;
 }
 
 .tool-grid,
@@ -44427,6 +44455,20 @@ body.desk-rail-right .floating-dock {
   --button-utility-bg: rgba(255, 255, 255, 0.66);
   --button-utility-line: rgba(31, 78, 121, 0.1);
   --button-utility-ink: #455e75;
+  --status-ready-bg: rgba(229, 247, 241, 0.62);
+  --status-ready-line: rgba(15, 124, 107, 0.2);
+  --status-watch-bg: rgba(255, 246, 226, 0.66);
+  --status-watch-line: rgba(216, 151, 60, 0.2);
+  --status-caution-bg: rgba(255, 236, 239, 0.56);
+  --status-caution-line: rgba(173, 77, 87, 0.2);
+  --status-blocked-bg: rgba(255, 236, 239, 0.66);
+  --status-blocked-line: rgba(173, 77, 87, 0.28);
+  --status-draft-bg: rgba(234, 242, 251, 0.62);
+  --status-draft-line: rgba(31, 78, 121, 0.14);
+  --status-clear-bg: rgba(232, 248, 244, 0.58);
+  --status-clear-line: rgba(15, 124, 107, 0.18);
+  --status-chip-bg: rgba(255, 246, 226, 0.62);
+  --status-chip-line: rgba(216, 151, 60, 0.2);
   --score-ring-size: 76px;
   --score-ring-inset: 6px;
   --score-ring-value: 22px;
@@ -45179,6 +45221,36 @@ textarea:focus {
   .workspace-band :is([class*="-output"], .pricing-band) :where(article:not(.ready):not(.watch):not(.caution):not(.blocked):not(.draft):not(.clear)) {
     border-color: var(--room-card-soft-line);
     box-shadow: var(--room-card-soft-shadow);
+  }
+
+  .workspace-band :is([class*="-output"], .pricing-band) :is(article.ready, div.ready, button.ready, small.ready) {
+    border-color: var(--status-ready-line);
+    background: linear-gradient(135deg, var(--status-ready-bg), rgba(255, 255, 255, 0.72));
+  }
+
+  .workspace-band :is([class*="-output"], .pricing-band) :is(article.clear, div.clear, button.clear, small.clear) {
+    border-color: var(--status-clear-line);
+    background: linear-gradient(135deg, var(--status-clear-bg), rgba(255, 255, 255, 0.72));
+  }
+
+  .workspace-band :is([class*="-output"], .pricing-band) :is(article.watch, div.watch, button.watch, small.watch) {
+    border-color: var(--status-watch-line);
+    background: linear-gradient(135deg, var(--status-watch-bg), rgba(255, 255, 255, 0.72));
+  }
+
+  .workspace-band :is([class*="-output"], .pricing-band) :is(article.caution, div.caution, button.caution, small.caution) {
+    border-color: var(--status-caution-line);
+    background: linear-gradient(135deg, var(--status-caution-bg), rgba(255, 255, 255, 0.72));
+  }
+
+  .workspace-band :is([class*="-output"], .pricing-band) :is(article.blocked, div.blocked, button.blocked, small.blocked) {
+    border-color: var(--status-blocked-line);
+    background: linear-gradient(135deg, var(--status-blocked-bg), rgba(255, 255, 255, 0.72));
+  }
+
+  .workspace-band :is([class*="-output"], .pricing-band) :is(article.draft, div.draft, button.draft, small.draft) {
+    border-color: var(--status-draft-line);
+    background: linear-gradient(135deg, var(--status-draft-bg), rgba(255, 255, 255, 0.72));
   }
 
   .workspace-band :is([class*="-output"], .pricing-band) :where(article, li, p, small, dd) {

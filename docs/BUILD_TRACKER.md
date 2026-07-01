@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V402 Quiet Focus Handoff
+
+V402 moves keyboard focus to the opened room after rail, header, selector, or action navigation. The route handoff now shares the same scroll, workspace status, title, and focus rhythm so the app feels calmer for keyboard and assistive navigation without adding visible controls.
+
 ## V401 Quiet Room Awareness
 
 V401 keeps the browser title and hidden workspace status aligned with the current room. Rail, header, selector, and scroll-based workspace changes now share one quiet room-awareness update so orientation improves without adding visible controls.

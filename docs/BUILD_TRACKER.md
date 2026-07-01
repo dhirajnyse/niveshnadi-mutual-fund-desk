@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V394 Quiet Button Hierarchy
+
+V394 separates primary, secondary, copy, save, clear, and header utility actions so the next move is easier to see. Primary actions keep one confident treatment while repeat toolbar and copy controls recede into a quieter utility tier.
+
 ## V393 Calm Reading Width
 
 V393 constrains long proof notes, memo copy, and output paragraphs so dense research rooms read more calmly without hiding detail. Long lines now settle into a readable measure while compact cards keep their structure.

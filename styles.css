@@ -71,6 +71,20 @@
   --action-secondary-bg: rgba(234, 242, 251, 0.64);
   --action-secondary-line: rgba(31, 78, 121, 0.12);
   --action-secondary-ink: #365470;
+  --button-primary-bg: linear-gradient(135deg, #0f2238, #173452);
+  --button-primary-hover-bg: linear-gradient(135deg, #14314d, #1f4e79);
+  --button-primary-line: rgba(15, 34, 56, 0.82);
+  --button-primary-ink: #ffffff;
+  --button-primary-shadow: 0 8px 18px rgba(15, 34, 56, 0.13);
+  --button-secondary-bg: rgba(234, 242, 251, 0.76);
+  --button-secondary-hover-bg: rgba(229, 247, 241, 0.84);
+  --button-secondary-line: rgba(31, 78, 121, 0.16);
+  --button-secondary-ink: #194c76;
+  --button-utility-bg: rgba(255, 255, 255, 0.74);
+  --button-utility-hover-bg: rgba(234, 242, 251, 0.74);
+  --button-utility-line: rgba(31, 78, 121, 0.12);
+  --button-utility-ink: #405a72;
+  --button-focus-ring: rgba(15, 124, 107, 0.2);
   --score-ring-size: 88px;
   --score-ring-inset: 7px;
   --score-ring-value: 25px;
@@ -19658,13 +19672,16 @@ a:focus-visible {
 .icon-button {
   border: 1px solid transparent;
   font-weight: 900;
+  transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease, color 140ms ease, transform 140ms ease;
 }
 
 .text-button {
   min-height: var(--action-button-height);
   padding: var(--action-button-pad-y) var(--action-button-pad-x);
-  background: var(--blue-soft);
-  color: var(--blue);
+  border-color: var(--button-secondary-line);
+  background: var(--button-secondary-bg);
+  color: var(--button-secondary-ink);
+  box-shadow: none;
 }
 
 .text-button.primary-next-action {
@@ -19687,11 +19704,40 @@ a:focus-visible {
   transform: translateY(-1px);
 }
 
+.text-button:hover,
+.text-button:focus-visible {
+  border-color: rgba(15, 124, 107, 0.26);
+  background: var(--button-secondary-hover-bg);
+  color: var(--ink);
+}
+
+.text-button.primary-next-action:hover,
+.text-button.primary-next-action:focus-visible {
+  border-color: var(--button-primary-line);
+  background: var(--button-primary-hover-bg);
+  color: #ffffff;
+}
+
 .primary-button {
   min-height: var(--action-button-height);
   padding: var(--action-button-pad-y) var(--action-button-pad-x);
-  background: var(--ink);
+  border-color: var(--button-primary-line);
+  background: var(--button-primary-bg);
+  color: var(--button-primary-ink);
+  box-shadow: var(--button-primary-shadow);
+}
+
+.primary-button:hover,
+.primary-button:focus-visible {
+  background: var(--button-primary-hover-bg);
   color: #ffffff;
+}
+
+.text-button:focus-visible,
+.primary-button:focus-visible,
+.icon-button:focus-visible {
+  outline: 2px solid var(--button-focus-ring);
+  outline-offset: 2px;
 }
 
 .icon-button {
@@ -19701,6 +19747,29 @@ a:focus-visible {
   place-items: center;
   background: var(--mint-soft);
   color: var(--mint);
+}
+
+.toolbar .text-button + .text-button:not(.primary-next-action),
+button[id^="copy"],
+button[id^="save"],
+button[id^="clear"] {
+  border-color: var(--button-utility-line);
+  background: var(--button-utility-bg);
+  color: var(--button-utility-ink);
+  box-shadow: none;
+}
+
+.toolbar .text-button + .text-button:not(.primary-next-action):hover,
+.toolbar .text-button + .text-button:not(.primary-next-action):focus-visible,
+button[id^="copy"]:hover,
+button[id^="copy"]:focus-visible,
+button[id^="save"]:hover,
+button[id^="save"]:focus-visible,
+button[id^="clear"]:hover,
+button[id^="clear"]:focus-visible {
+  border-color: rgba(31, 78, 121, 0.18);
+  background: var(--button-utility-hover-bg);
+  color: var(--blue);
 }
 
 .fund-grid {
@@ -44352,6 +44421,12 @@ body.desk-rail-right .floating-dock {
   --action-button-pad-x: 10px;
   --action-chip-pad-y: 5px;
   --action-chip-pad-x: 8px;
+  --button-primary-shadow: 0 5px 14px rgba(15, 34, 56, 0.1);
+  --button-secondary-bg: rgba(234, 242, 251, 0.68);
+  --button-secondary-line: rgba(31, 78, 121, 0.13);
+  --button-utility-bg: rgba(255, 255, 255, 0.66);
+  --button-utility-line: rgba(31, 78, 121, 0.1);
+  --button-utility-ink: #455e75;
   --score-ring-size: 76px;
   --score-ring-inset: 6px;
   --score-ring-value: 22px;
@@ -44466,6 +44541,26 @@ body.desk-rail-right .top-nav {
   border-color: rgba(81, 103, 125, 0.09);
   background: rgba(255, 255, 255, 0.54);
   box-shadow: none;
+}
+
+.workspace-command :where(.text-button, .primary-button, .tool-palette-toggle, .simple-mode-toggle) {
+  border-color: var(--button-utility-line);
+  background: var(--button-utility-bg);
+  color: var(--button-utility-ink);
+  box-shadow: none;
+}
+
+.workspace-command :where(.text-button, .primary-button, .tool-palette-toggle, .simple-mode-toggle):hover,
+.workspace-command :where(.text-button, .primary-button, .tool-palette-toggle, .simple-mode-toggle):focus-visible {
+  border-color: rgba(15, 124, 107, 0.24);
+  background: var(--button-utility-hover-bg);
+  color: var(--blue);
+}
+
+.workspace-command :where(select) {
+  border-color: var(--button-utility-line);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--button-utility-ink);
 }
 
 .simple-mode-toggle,

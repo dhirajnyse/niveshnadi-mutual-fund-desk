@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260702-v406-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v406 Quiet Filter Count";
+const DATA_VERSION = "20260702-v407-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v407 Quiet Filter Reset";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1290,8 +1290,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Quiet filter count",
+    label: "Quiet filter reset",
     status: "Shipping now",
+    route: "#build-tracker",
+    detail: "Clear hidden Simple View filters without clearing the search."
+  },
+  {
+    label: "Quiet filter count",
+    status: "Done",
     route: "#build-tracker",
     detail: "Show a compact active-filter count when hidden filters are shaping Simple View results."
   },
@@ -9971,9 +9977,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Quiet filter count",
-      status: "Active in v406",
+      status: "Done in v406",
       route: "#build-tracker",
       detail: "Show a compact active-filter count when hidden filters are shaping Simple View results."
+    },
+    {
+      label: "Quiet filter reset",
+      status: "Active in v407",
+      route: "#build-tracker",
+      detail: "Clear hidden Simple View filters without clearing the search."
     }
   ];
   const productionTarget = releaseVersion
@@ -9989,7 +10001,7 @@ function buildTrackerConfig() {
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
     targetShort: `${productionTarget}; 100% after production gates close.`,
     targetRule: "Full audit list stays available in the copied Build Tracker output.",
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, rail-link-whisper audit, workspace-center-breath audit, card-field-rhythm audit, quiet-input-rhythm audit, list-scan-whisper audit, quiet-table-alignment audit, quiet-empty-space audit, calm-reading-width audit, quiet-button-hierarchy audit, quiet-status-language audit, quiet-form-grouping audit, quiet-panel-boundaries audit, quiet-room-entrances audit, quiet-interior-scan audit, quiet-arrival-state audit, quiet-room-awareness audit, quiet-focus-handoff audit, quiet-search-return audit, quiet-filter-return audit, quiet-filter-voice audit, and quiet-filter-count audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, rail-link-whisper audit, workspace-center-breath audit, card-field-rhythm audit, quiet-input-rhythm audit, list-scan-whisper audit, quiet-table-alignment audit, quiet-empty-space audit, calm-reading-width audit, quiet-button-hierarchy audit, quiet-status-language audit, quiet-form-grouping audit, quiet-panel-boundaries audit, quiet-room-entrances audit, quiet-interior-scan audit, quiet-arrival-state audit, quiet-room-awareness audit, quiet-focus-handoff audit, quiet-search-return audit, quiet-filter-return audit, quiet-filter-voice audit, quiet-filter-count audit, and quiet-filter-reset audit are complete.`
   };
   const launchGates = [
     {
@@ -10331,7 +10343,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v406</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v407</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -30058,25 +30070,37 @@ function simpleAdvancedFilterLabels() {
 }
 
 function syncSimpleFilterToggle() {
-  if (!els.simpleFilterToggle) return;
   const activeLabels = simpleAdvancedFilterLabels();
   const activeCount = activeLabels.length;
   const activePhrase = activeLabels.join(", ");
   const activeSuffix = activeCount ? ` Active filters: ${activePhrase}.` : "";
-  const voiceLabel = state.simpleFiltersOpen
-    ? `Hide filters and return to one-search Simple View.${activeSuffix}`
-    : activeCount
-      ? `Show filters. ${activeCount} active ${activeCount === 1 ? "filter" : "filters"}: ${activePhrase}.`
-      : "Show category, risk, and sort filters";
-  els.simpleFilterToggle.dataset.activeFilters = String(activeCount);
-  els.simpleFilterToggle.setAttribute("aria-expanded", state.simpleFiltersOpen ? "true" : "false");
-  els.simpleFilterToggle.setAttribute("aria-label", voiceLabel);
-  els.simpleFilterToggle.textContent = state.simpleFiltersOpen ? "Quiet search" : activeCount ? `Filters ${activeCount}` : "More filters";
-  els.simpleFilterToggle.title = state.simpleFiltersOpen
-    ? `Return to one-search Simple View.${activeSuffix}`
-    : activeCount
-      ? `${activeCount} hidden ${activeCount === 1 ? "filter is" : "filters are"} shaping results: ${activePhrase}`
-      : "Show category, risk, and sort filters";
+  if (els.simpleFilterToggle) {
+    const voiceLabel = state.simpleFiltersOpen
+      ? `Hide filters and return to one-search Simple View.${activeSuffix}`
+      : activeCount
+        ? `Show filters. ${activeCount} active ${activeCount === 1 ? "filter" : "filters"}: ${activePhrase}.`
+        : "Show category, risk, and sort filters";
+    els.simpleFilterToggle.dataset.activeFilters = String(activeCount);
+    els.simpleFilterToggle.setAttribute("aria-expanded", state.simpleFiltersOpen ? "true" : "false");
+    els.simpleFilterToggle.setAttribute("aria-label", voiceLabel);
+    els.simpleFilterToggle.textContent = state.simpleFiltersOpen ? "Quiet search" : activeCount ? `Filters ${activeCount}` : "More filters";
+    els.simpleFilterToggle.title = state.simpleFiltersOpen
+      ? `Return to one-search Simple View.${activeSuffix}`
+      : activeCount
+        ? `${activeCount} hidden ${activeCount === 1 ? "filter is" : "filters are"} shaping results: ${activePhrase}`
+        : "Show category, risk, and sort filters";
+  }
+  if (els.simpleFilterReset) {
+    els.simpleFilterReset.dataset.activeFilters = String(activeCount);
+    els.simpleFilterReset.hidden = activeCount === 0;
+    els.simpleFilterReset.setAttribute(
+      "aria-label",
+      activeCount ? `Clear hidden filters: ${activePhrase}` : "No hidden filters to clear"
+    );
+    els.simpleFilterReset.title = activeCount
+      ? `Clear ${activeCount} hidden ${activeCount === 1 ? "filter" : "filters"} and keep the search`
+      : "No hidden filters to clear";
+  }
 }
 
 function renderCategoryFilter() {
@@ -37585,6 +37609,25 @@ function applySimpleFiltersOpen(open, returnFocus = false) {
   }
 }
 
+function resetSimpleAdvancedFilters(returnFocus = false) {
+  state.filters.category = "all";
+  state.filters.risk = "all";
+  state.filters.sort = "score";
+  state.simpleFundShelfExpanded = false;
+  if (els.categoryFilter) els.categoryFilter.value = "all";
+  if (els.riskFilter) els.riskFilter.value = "all";
+  if (els.sortSelect) els.sortSelect.value = "score";
+  renderFundGrid();
+  renderSelectionFunnel();
+  renderShortlistReasonBoard();
+  renderProofGapQueue();
+  renderMemoClearanceDesk();
+  renderClearanceSprintBoard();
+  if (returnFocus && els.simpleFilterToggle) {
+    els.simpleFilterToggle.focus({ preventScroll: true });
+  }
+}
+
 function applySimpleMode(enabled, persist = true) {
   state.simpleMode = enabled;
   if (enabled) state.simpleFundShelfExpanded = false;
@@ -37614,6 +37657,9 @@ function bindSimpleModeToggle() {
   });
   els.simpleFilterToggle?.addEventListener("click", () => {
     applySimpleFiltersOpen(!state.simpleFiltersOpen);
+  });
+  els.simpleFilterReset?.addEventListener("click", () => {
+    resetSimpleAdvancedFilters(true);
   });
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape" || !state.simpleFiltersOpen) return;
@@ -61719,6 +61765,7 @@ function cacheElements() {
     deskRail: qs("#deskRail"),
     simpleModeToggle: qs("#simpleModeToggle"),
     simpleFilterToggle: qs("#simpleFilterToggle"),
+    simpleFilterReset: qs("#simpleFilterReset"),
     headerNextAction: qs("#headerNextAction"),
     toolPaletteToggle: qs("#toolPaletteToggle"),
     toolPalette: qs("#toolPalette"),

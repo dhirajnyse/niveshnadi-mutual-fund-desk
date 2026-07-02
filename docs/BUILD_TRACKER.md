@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V407 Quiet Filter Reset
+
+V407 gives Simple View a quiet escape hatch when hidden filters are active. The new Clear pill appears only beside an active filter count, clears category, risk, and sort filters, and keeps the current search text intact.
+
 ## V406 Quiet Filter Count
 
 V406 makes hidden Simple View filters visible without adding another panel. When category, risk, or sort filters are active while the drawer is closed, the More filters pill becomes a compact active-filter count and keeps the full state in its assistive label.

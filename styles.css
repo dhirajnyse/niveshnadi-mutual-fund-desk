@@ -4786,6 +4786,15 @@ body.simple-mode .search-feedback .search-top-match {
   color: var(--ink);
 }
 
+body.simple-mode .search-feedback .search-reset-receipt {
+  padding: 5px 9px;
+  border: 1px solid rgba(15, 124, 107, 0.2);
+  border-radius: 999px;
+  background: rgba(226, 247, 241, 0.72);
+  color: var(--teal);
+  font-weight: 900;
+}
+
 body.simple-mode .search-feedback .signal-chip.is-primary {
   background: var(--ink);
   color: #fff;

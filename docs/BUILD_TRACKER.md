@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V408 Quiet Reset Receipt
+
+V408 adds a calm receipt after the hidden-filter Clear action. The existing search feedback line now confirms that hidden filters were cleared and the current search was kept, then clears that receipt on the next search or filter change.
+
 ## V407 Quiet Filter Reset
 
 V407 gives Simple View a quiet escape hatch when hidden filters are active. The new Clear pill appears only beside an active filter count, clears category, risk, and sort filters, and keeps the current search text intact.

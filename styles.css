@@ -4679,6 +4679,12 @@ body.simple-mode .simple-filter-toggle:focus-visible {
   border-color: rgba(15, 124, 107, 0.42);
 }
 
+body.simple-mode .simple-filter-toggle[data-active-filters]:not([data-active-filters="0"]) {
+  border-color: rgba(229, 158, 49, 0.46);
+  background: rgba(255, 247, 230, 0.92);
+  color: var(--navy);
+}
+
 .search-starters {
   display: none;
 }

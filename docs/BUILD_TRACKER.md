@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V406 Quiet Filter Count
+
+V406 makes hidden Simple View filters visible without adding another panel. When category, risk, or sort filters are active while the drawer is closed, the More filters pill becomes a compact active-filter count and keeps the full state in its assistive label.
+
 ## V405 Quiet Filter Voice
 
 V405 gives the More filters control a clear state voice for assistive technology. The button now announces whether it will show category, risk, and sort filters or hide them and return to one-search Simple View, without adding visible UI.

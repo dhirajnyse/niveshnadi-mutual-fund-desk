@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V405 Quiet Filter Voice
+
+V405 gives the More filters control a clear state voice for assistive technology. The button now announces whether it will show category, risk, and sort filters or hide them and return to one-search Simple View, without adding visible UI.
+
 ## V404 Quiet Filter Return
 
 V404 lets Escape close the Simple View filter drawer and return focus to the More filters control. It makes the optional filter layer behave like the floating search panel, keeping one-search Simple View calm for keyboard users without adding visible UI.

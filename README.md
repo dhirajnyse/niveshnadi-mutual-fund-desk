@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v404 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v405 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Quiet Filter Voice that keeps the More filters control state clear to assistive technology without adding visible UI.
 - Quiet Filter Return that lets Escape close the Simple View filter drawer and return focus to More filters without adding visible UI.
 - Quiet Search Return that brings focus back to the floating search button after Escape or Close and exposes the search shortcut to assistive tech.
 - Quiet Focus Handoff that moves keyboard focus to the opened room after rail, header, selector, or action navigation without adding visible UI.

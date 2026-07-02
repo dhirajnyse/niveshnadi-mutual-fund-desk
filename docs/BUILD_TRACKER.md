@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V404 Quiet Filter Return
+
+V404 lets Escape close the Simple View filter drawer and return focus to the More filters control. It makes the optional filter layer behave like the floating search panel, keeping one-search Simple View calm for keyboard users without adding visible UI.
+
 ## V403 Quiet Search Return
 
 V403 makes the floating search panel close more calmly. Escape and Close now return focus to the search button, and the button exposes the Control+K shortcut to assistive technology so quick search feels complete without adding visible UI.

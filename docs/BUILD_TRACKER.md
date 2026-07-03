@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V414 Quiet Search Escape
+
+V414 lets Escape clear the main fund search while keeping focus in the same search field. The search loop now feels calmer after `/`: jump to search, type, clear, and try again without adding visible shortcut copy.
+
 ## V413 Quiet Search Key
 
 V413 lets `/` focus the main fund search when the user is not already typing in a field. It scrolls back to the screener, selects the current search text, and keeps the shortcut invisible except for assistive metadata on the search field.

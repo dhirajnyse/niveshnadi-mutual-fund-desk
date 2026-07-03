@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V409 Quiet Clear Meaning
+
+V409 removes the last ambiguity from the hidden-filter reset. The small action now says Clear filters, and its receipt says Search kept only when there was search text to preserve.
+
 ## V408 Quiet Reset Receipt
 
 V408 adds a calm receipt after the hidden-filter Clear action. The existing search feedback line now confirms that hidden filters were cleared and the current search was kept, then clears that receipt on the next search or filter change.

@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v408 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v409 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Quiet Clear Meaning that labels the hidden-filter reset plainly and keeps its receipt contextual.
 - Quiet Reset Receipt that confirms hidden filters were cleared while keeping the current search.
 - Quiet Filter Reset that clears hidden category, risk, and sort filters without clearing the current search.
 - Quiet Filter Count that shows a compact active-filter count when hidden category, risk, or sort filters are shaping Simple View results.

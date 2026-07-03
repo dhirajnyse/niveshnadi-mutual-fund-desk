@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260703-v418-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v418 Quiet Fund Context";
+const DATA_VERSION = "20260704-v419-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v419 Quiet Inspect Labels";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1293,8 +1293,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Quiet fund context",
+    label: "Quiet inspect labels",
     status: "Shipping now",
+    route: "#build-tracker",
+    detail: "Give repeated Inspect buttons fund-specific labels without changing the visible text."
+  },
+  {
+    label: "Quiet fund context",
+    status: "Done",
     route: "#build-tracker",
     detail: "Carry the selected fund into Fund DNA title and hidden workspace status."
   },
@@ -10112,9 +10118,15 @@ function buildTrackerConfig() {
     },
     {
       label: "Quiet fund context",
-      status: "Active in v418",
+      status: "Done in v418",
       route: "#build-tracker",
       detail: "Carry the selected fund into Fund DNA title and hidden workspace status."
+    },
+    {
+      label: "Quiet inspect labels",
+      status: "Active in v419",
+      route: "#build-tracker",
+      detail: "Give repeated Inspect buttons fund-specific labels without changing the visible text."
     }
   ];
   const productionTarget = releaseVersion
@@ -10130,7 +10142,7 @@ function buildTrackerConfig() {
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
     targetShort: `${productionTarget}; 100% after production gates close.`,
     targetRule: "Full audit list stays available in the copied Build Tracker output.",
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, rail-link-whisper audit, workspace-center-breath audit, card-field-rhythm audit, quiet-input-rhythm audit, list-scan-whisper audit, quiet-table-alignment audit, quiet-empty-space audit, calm-reading-width audit, quiet-button-hierarchy audit, quiet-status-language audit, quiet-form-grouping audit, quiet-panel-boundaries audit, quiet-room-entrances audit, quiet-interior-scan audit, quiet-arrival-state audit, quiet-room-awareness audit, quiet-focus-handoff audit, quiet-search-return audit, quiet-filter-return audit, quiet-filter-voice audit, quiet-filter-count audit, quiet-filter-reset audit, quiet-reset-receipt audit, quiet-clear-meaning audit, quiet-clear-hint audit, quiet-clear-return audit, quiet-clear-close audit, quiet-search-key audit, quiet-search-escape audit, quiet-search-enter audit, quiet-search-handoff audit, quiet-fund-receipt audit, and quiet-fund-context audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, rail-link-whisper audit, workspace-center-breath audit, card-field-rhythm audit, quiet-input-rhythm audit, list-scan-whisper audit, quiet-table-alignment audit, quiet-empty-space audit, calm-reading-width audit, quiet-button-hierarchy audit, quiet-status-language audit, quiet-form-grouping audit, quiet-panel-boundaries audit, quiet-room-entrances audit, quiet-interior-scan audit, quiet-arrival-state audit, quiet-room-awareness audit, quiet-focus-handoff audit, quiet-search-return audit, quiet-filter-return audit, quiet-filter-voice audit, quiet-filter-count audit, quiet-filter-reset audit, quiet-reset-receipt audit, quiet-clear-meaning audit, quiet-clear-hint audit, quiet-clear-return audit, quiet-clear-close audit, quiet-search-key audit, quiet-search-escape audit, quiet-search-enter audit, quiet-search-handoff audit, quiet-fund-receipt audit, quiet-fund-context audit, and quiet-inspect-labels audit are complete.`
   };
   const launchGates = [
     {
@@ -10472,7 +10484,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v418</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v419</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -30135,6 +30147,15 @@ function selectedFund() {
   return FUNDS.find((fund) => fund.id === state.selectedId) || FUNDS[0];
 }
 
+function fundSelectButtonMarkup(fund, label = "Inspect") {
+  const cleanLabel = String(label || "Inspect").trim();
+  const isSelected = cleanLabel.toLowerCase() === "selected";
+  const accessibleLabel = isSelected
+    ? `Selected fund: ${fund.name}. Open Fund DNA.`
+    : `${cleanLabel} ${fund.name} in Fund DNA.`;
+  return `<button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}" aria-label="${escapeHtml(accessibleLabel)}" title="${escapeHtml(accessibleLabel)}">${escapeHtml(cleanLabel)}</button>`;
+}
+
 function fundSearchText(fund) {
   return [
     fund.name,
@@ -30348,7 +30369,7 @@ function renderFundGrid() {
           <div><span>Drawdown</span><strong>${fund.maxDrawdown}%</strong></div>
         </div>
         <div class="fund-actions">
-          <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">Inspect</button>
+          ${fundSelectButtonMarkup(fund)}
           <label class="compare-toggle">
             <input type="checkbox" data-compare-fund="${escapeHtml(fund.id)}" ${checked}>
             Compare
@@ -30729,7 +30750,7 @@ function renderProfileRoom(event) {
           <span>${score}/100 profile fit</span>
           <strong>${escapeHtml(fund.name)}</strong>
           <p>${escapeHtml(fund.category)} | ${escapeHtml(fund.risk)} risk | TER ${fund.expense.toFixed(2)}%</p>
-          <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">Inspect</button>
+          ${fundSelectButtonMarkup(fund)}
         </article>
       `).join("")}
     </div>
@@ -32314,7 +32335,7 @@ function renderSelectionFunnel() {
           <span>${score}/100 profile fit</span>
           <strong>${escapeHtml(fund.name)}</strong>
           <p>${escapeHtml(fund.category)} | ${escapeHtml(fund.risk)} risk | Nadi ${nadi}/100 | Evidence ${evidence}/100</p>
-          <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">${selected ? "Selected" : "Inspect"}</button>
+          ${fundSelectButtonMarkup(fund, selected ? "Selected" : "Inspect")}
         </article>
       `).join("")}
     </div>
@@ -33739,7 +33760,7 @@ function renderInvestorPassport() {
           <span>${score}/100 profile fit</span>
           <strong>${escapeHtml(fund.name)}</strong>
           <p>${escapeHtml(fund.category)} | ${escapeHtml(fund.risk)} risk | TER ${fund.expense.toFixed(2)}%</p>
-          <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">Inspect</button>
+          ${fundSelectButtonMarkup(fund)}
         </article>
       `).join("")}
     </div>
@@ -35503,7 +35524,7 @@ function renderSuitabilityPassport() {
             <span>${escapeHtml(item.posture)}</span>
             <strong>${escapeHtml(item.fund.name)}</strong>
             <p>${escapeHtml(item.fund.category)} | ${escapeHtml(item.fund.risk)} risk | ${item.score}/100</p>
-            <button class="text-button" type="button" data-select-fund="${escapeHtml(item.fund.id)}">Inspect</button>
+            ${fundSelectButtonMarkup(item.fund)}
           </article>
         `).join("")}
       </div>
@@ -36289,7 +36310,7 @@ function renderSwitchDecisionLab() {
             <span>${escapeHtml(fund.category)}</span>
             <strong>${escapeHtml(fund.name)}</strong>
             <p>${escapeHtml(fund.risk)} risk | ${nadiScore(fund)}/100 score | ${fund.expense.toFixed(2)}% TER</p>
-            <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">Inspect</button>
+            ${fundSelectButtonMarkup(fund)}
           </article>
         `).join("")}
       </div>
@@ -56632,7 +56653,7 @@ function renderWatchlistRoom() {
         </div>
         <div class="watch-alert-list">${alertCopy}</div>
         <div class="watch-card-actions">
-          <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">Inspect</button>
+          ${fundSelectButtonMarkup(fund)}
           <button class="remove-button" type="button" data-remove-watch="${escapeHtml(fund.id)}">Remove fund</button>
         </div>
       </article>
@@ -59254,7 +59275,7 @@ function renderGoalFitCompass(event) {
           <span>${escapeHtml(fund.category)}</span>
           <strong>${escapeHtml(fund.name)}</strong>
           <p>${escapeHtml(fund.role)}</p>
-          <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">Inspect fund</button>
+          ${fundSelectButtonMarkup(fund, "Inspect fund")}
         </article>
       `).join("") : `
         <article class="fit-fund-card">
@@ -59429,7 +59450,7 @@ function renderFirstSipCoach(event) {
           <span>${escapeHtml(fund.category)}</span>
           <strong>${escapeHtml(fund.name)}</strong>
           <p>${escapeHtml(fund.role)}</p>
-          <button class="text-button" type="button" data-select-fund="${escapeHtml(fund.id)}">Inspect</button>
+          ${fundSelectButtonMarkup(fund)}
         </article>
       `).join("")}
     </div>

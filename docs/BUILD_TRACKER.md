@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V419 Quiet Inspect Labels
+
+V419 gives every repeated fund Inspect action a fund-specific assistive label and tooltip. The visible text stays compact, while screen readers and hover states now know exactly which fund will open in Fund DNA.
+
 ## V418 Quiet Fund Context
 
 V418 carries the selected fund into the Fund DNA browser title and hidden workspace status. The visible page stays unchanged, but browser tabs and assistive workspace updates now say which fund the user is inspecting.

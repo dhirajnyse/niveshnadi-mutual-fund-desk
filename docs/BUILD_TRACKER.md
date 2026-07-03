@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V420 Quiet Compare Labels
+
+V420 gives the fund Compare checkbox a fund-specific assistive label and tooltip. The visible text stays compact, while assistive tech and hover states now know which fund is being added to or removed from Compare.
+
 ## V419 Quiet Inspect Labels
 
 V419 gives every repeated fund Inspect action a fund-specific assistive label and tooltip. The visible text stays compact, while screen readers and hover states now know exactly which fund will open in Fund DNA.

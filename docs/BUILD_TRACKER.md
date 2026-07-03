@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V410 Quiet Clear Hint
+
+V410 aligns the hidden-filter Clear filters hint with the actual search state. The tooltip and assistive label now mention keeping search only when there is search text to preserve.
+
 ## V409 Quiet Clear Meaning
 
 V409 removes the last ambiguity from the hidden-filter reset. The small action now says Clear filters, and its receipt says Search kept only when there was search text to preserve.

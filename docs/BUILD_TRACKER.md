@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V418 Quiet Fund Context
+
+V418 carries the selected fund into the Fund DNA browser title and hidden workspace status. The visible page stays unchanged, but browser tabs and assistive workspace updates now say which fund the user is inspecting.
+
 ## V417 Quiet Fund Receipt
 
 V417 confirms the selected fund after Fund DNA opens. The receipt uses the existing hidden workspace announcer, so the screen stays calm while keyboard and assistive navigation still get closure after a fund-card or search handoff.

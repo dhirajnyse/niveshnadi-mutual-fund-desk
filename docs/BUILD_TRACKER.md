@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V413 Quiet Search Key
+
+V413 lets `/` focus the main fund search when the user is not already typing in a field. It scrolls back to the screener, selects the current search text, and keeps the shortcut invisible except for assistive metadata on the search field.
+
 ## V412 Quiet Clear Close
 
 V412 closes the optional Simple View filter drawer after hidden filters are cleared. The clear hint now says it will close filters and return to search, keeping the screen back in one-search mode after cleanup.

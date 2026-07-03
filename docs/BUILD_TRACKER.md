@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V412 Quiet Clear Close
+
+V412 closes the optional Simple View filter drawer after hidden filters are cleared. The clear hint now says it will close filters and return to search, keeping the screen back in one-search mode after cleanup.
+
 ## V411 Quiet Clear Return
 
 V411 returns focus to the main search box after hidden Simple View filters are cleared. The hidden-filter clear hint now says this quietly, so keyboard users land on the next useful action instead of a disappearing control.

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V416 Quiet Search Handoff
+
+V416 moves focus to Fund DNA after a fund is opened from search. The visual path stays the same, but keyboard users now land on the selected fund context instead of staying behind in the search box.
+
 ## V415 Quiet Search Enter
 
 V415 lets Enter open the top search match from the main fund search. The search loop is now `/` to arrive, type to narrow, Enter to inspect, or Escape to clear, without adding visible shortcut copy.

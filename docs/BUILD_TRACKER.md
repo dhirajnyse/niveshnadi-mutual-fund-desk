@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V417 Quiet Fund Receipt
+
+V417 confirms the selected fund after Fund DNA opens. The receipt uses the existing hidden workspace announcer, so the screen stays calm while keyboard and assistive navigation still get closure after a fund-card or search handoff.
+
 ## V416 Quiet Search Handoff
 
 V416 moves focus to Fund DNA after a fund is opened from search. The visual path stays the same, but keyboard users now land on the selected fund context instead of staying behind in the search box.

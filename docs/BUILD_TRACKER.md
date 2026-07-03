@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V421 Quiet Compare Receipt
+
+V421 confirms compare-set changes through the hidden workspace announcer. Adding or removing a fund now gives a calm receipt with the fund name and current Compare count, without adding visual UI.
+
 ## V420 Quiet Compare Labels
 
 V420 gives the fund Compare checkbox a fund-specific assistive label and tooltip. The visible text stays compact, while assistive tech and hover states now know which fund is being added to or removed from Compare.

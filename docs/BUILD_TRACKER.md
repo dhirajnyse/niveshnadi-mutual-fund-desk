@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V415 Quiet Search Enter
+
+V415 lets Enter open the top search match from the main fund search. The search loop is now `/` to arrive, type to narrow, Enter to inspect, or Escape to clear, without adding visible shortcut copy.
+
 ## V414 Quiet Search Escape
 
 V414 lets Escape clear the main fund search while keeping focus in the same search field. The search loop now feels calmer after `/`: jump to search, type, clear, and try again without adding visible shortcut copy.

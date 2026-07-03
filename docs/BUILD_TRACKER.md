@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V411 Quiet Clear Return
+
+V411 returns focus to the main search box after hidden Simple View filters are cleared. The hidden-filter clear hint now says this quietly, so keyboard users land on the next useful action instead of a disappearing control.
+
 ## V410 Quiet Clear Hint
 
 V410 aligns the hidden-filter Clear filters hint with the actual search state. The tooltip and assistive label now mention keeping search only when there is search text to preserve.

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V425 Release Freshness Cue
+
+V425 adds a compact Build Tracker freshness cue that names the active release key, the Pages freshness URL, and the release-stamp check. It helps confirm what build is actually being seen when GitHub Pages or browser cache lags.
+
 ## V424 Quiet Compare Live Context
 
 V424 refreshes the Compare room browser title and hidden workspace status immediately after the compare set changes. The Compare count now stays fresh without waiting for another navigation event.

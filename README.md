@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v427 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v428 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Release Doctor Lane that shows healthy, watch, and repair cues for proving a fresh GitHub Pages release.
 - Release Health Receipt that shows the static deploy workflow and live-stamp proof inside the Build Tracker.
 - Pages Deploy Guard with an explicit static GitHub Pages workflow for release deploys.
 - Release Freshness Cue that shows the active release key and GitHub Pages freshness check inside the Build Tracker.

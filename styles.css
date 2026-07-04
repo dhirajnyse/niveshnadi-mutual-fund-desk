@@ -8241,6 +8241,85 @@ body.simple-mode.simple-review-focus .dossier-band {
   line-height: 1.42;
 }
 
+.release-doctor-lane {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(31, 78, 121, 0.2);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(229, 247, 241, 0.74));
+}
+
+.release-doctor-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.release-doctor-head span,
+.release-doctor-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.release-doctor-head strong,
+.release-doctor-grid strong {
+  display: block;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.18;
+}
+
+.release-doctor-head p,
+.release-doctor-grid p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.release-doctor-head code {
+  max-width: 220px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: var(--blue-soft);
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.release-doctor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.release-doctor-grid article {
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.release-doctor-grid article.ready {
+  border-color: rgba(15, 124, 107, 0.25);
+  background: var(--mint-soft);
+}
+
+.release-doctor-grid article.watch {
+  border-color: rgba(216, 151, 60, 0.34);
+  background: var(--gold-soft);
+}
+
+.release-doctor-grid article.caution {
+  border-color: rgba(173, 77, 87, 0.26);
+  background: var(--rose-soft);
+}
+
 .build-next-grid ul,
 .build-phase2-card ul,
 .build-tracker-guardrail ul {
@@ -42706,6 +42785,7 @@ body.desk-rail-right .floating-dock {
   .build-next-grid,
   .build-move-grid,
   .build-phase2-metrics,
+  .release-doctor-grid,
   .launch-readiness-metrics,
   .launch-gate-grid,
   .launch-ladder-grid,
@@ -43571,6 +43651,7 @@ body.desk-rail-right .floating-dock {
   .build-next-grid,
   .build-move-grid,
   .build-phase2-metrics,
+  .release-doctor-grid,
   .launch-readiness-metrics,
   .launch-gate-grid,
   .launch-ladder-grid,

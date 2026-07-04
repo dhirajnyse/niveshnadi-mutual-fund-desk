@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V428 Release Doctor Lane
+
+V428 adds a compact Release Doctor lane to the Build Tracker. It separates a healthy deploy, cache-lag watch state, and repair move so a fresh GitHub Pages release can be proved calmly before changing product code.
+
 ## V427 Release Health Receipt
 
 V427 turns the Build Tracker release cue into a small health receipt. It names the static Pages deploy workflow, the workflow path, and the live release-stamp rule so the founder can confirm a release is healthy without opening another room.

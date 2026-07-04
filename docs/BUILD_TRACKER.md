@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V422 Quiet Compare Focus
+
+V422 restores keyboard focus to the same Compare or X-Ray portfolio checkbox after compare-set rerenders. The set can update the wider desk without dropping the user's current control.
+
 ## V421 Quiet Compare Receipt
 
 V421 confirms compare-set changes through the hidden workspace announcer. Adding or removing a fund now gives a calm receipt with the fund name and current Compare count, without adding visual UI.

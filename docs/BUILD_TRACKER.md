@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V427 Release Health Receipt
+
+V427 turns the Build Tracker release cue into a small health receipt. It names the static Pages deploy workflow, the workflow path, and the live release-stamp rule so the founder can confirm a release is healthy without opening another room.
+
 ## V426 Pages Deploy Guard
 
 V426 adds an explicit static GitHub Pages workflow so the repo can deploy the root static site through a controlled Pages artifact path. This protects releases when the generated Pages deployment path fails without exposing another product surface to investors.

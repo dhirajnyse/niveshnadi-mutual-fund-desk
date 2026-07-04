@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V423 Quiet Compare Context
+
+V423 carries the Compare count into the browser title and hidden workspace status when the Compare room is active. The visible header stays compact while the room context remains clear.
+
 ## V422 Quiet Compare Focus
 
 V422 restores keyboard focus to the same Compare or X-Ray portfolio checkbox after compare-set rerenders. The set can update the wider desk without dropping the user's current control.

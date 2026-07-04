@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260704-v422-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v422 Quiet Compare Focus";
+const DATA_VERSION = "20260704-v423-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v423 Quiet Compare Context";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1063,7 +1063,8 @@ const state = {
   railRecentRoutes: [],
   workspaceAnnouncedHash: "",
   workspaceAnnouncedLabel: "",
-  workspaceAnnouncedFundName: "",
+  workspaceAnnouncedContextLabel: "",
+  workspaceAnnouncedContextValue: "",
   workspaceFocusedHash: "",
   workspaceFocusTimer: 0,
   selectedFundReceiptTimer: 0,
@@ -1295,8 +1296,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Quiet compare focus",
+    label: "Quiet compare context",
     status: "Shipping now",
+    route: "#build-tracker",
+    detail: "Carry the Compare count into workspace title and hidden status."
+  },
+  {
+    label: "Quiet compare focus",
+    status: "Done",
     route: "#build-tracker",
     detail: "Return focus to the same Compare control after compare-set rerenders."
   },
@@ -10162,7 +10169,7 @@ function buildTrackerConfig() {
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
     targetShort: `${productionTarget}; 100% after production gates close.`,
     targetRule: "Full audit list stays available in the copied Build Tracker output.",
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, rail-link-whisper audit, workspace-center-breath audit, card-field-rhythm audit, quiet-input-rhythm audit, list-scan-whisper audit, quiet-table-alignment audit, quiet-empty-space audit, calm-reading-width audit, quiet-button-hierarchy audit, quiet-status-language audit, quiet-form-grouping audit, quiet-panel-boundaries audit, quiet-room-entrances audit, quiet-interior-scan audit, quiet-arrival-state audit, quiet-room-awareness audit, quiet-focus-handoff audit, quiet-search-return audit, quiet-filter-return audit, quiet-filter-voice audit, quiet-filter-count audit, quiet-filter-reset audit, quiet-reset-receipt audit, quiet-clear-meaning audit, quiet-clear-hint audit, quiet-clear-return audit, quiet-clear-close audit, quiet-search-key audit, quiet-search-escape audit, quiet-search-enter audit, quiet-search-handoff audit, quiet-fund-receipt audit, quiet-fund-context audit, quiet-inspect-labels audit, quiet-compare-labels audit, quiet-compare-receipt audit, and quiet-compare-focus audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, rail-link-whisper audit, workspace-center-breath audit, card-field-rhythm audit, quiet-input-rhythm audit, list-scan-whisper audit, quiet-table-alignment audit, quiet-empty-space audit, calm-reading-width audit, quiet-button-hierarchy audit, quiet-status-language audit, quiet-form-grouping audit, quiet-panel-boundaries audit, quiet-room-entrances audit, quiet-interior-scan audit, quiet-arrival-state audit, quiet-room-awareness audit, quiet-focus-handoff audit, quiet-search-return audit, quiet-filter-return audit, quiet-filter-voice audit, quiet-filter-count audit, quiet-filter-reset audit, quiet-reset-receipt audit, quiet-clear-meaning audit, quiet-clear-hint audit, quiet-clear-return audit, quiet-clear-close audit, quiet-search-key audit, quiet-search-escape audit, quiet-search-enter audit, quiet-search-handoff audit, quiet-fund-receipt audit, quiet-fund-context audit, quiet-inspect-labels audit, quiet-compare-labels audit, quiet-compare-receipt audit, quiet-compare-focus audit, and quiet-compare-context audit are complete.`
   };
   const launchGates = [
     {
@@ -10504,7 +10511,7 @@ function renderBuildTracker() {
       `).join("")}
     </div>
     <div class="build-tracker-metrics">
-    <article><span>Prototype version</span><strong>Phase 1 v422</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
+    <article><span>Prototype version</span><strong>Phase 1 v423</strong><p>${escapeHtml(RELEASE_LABEL)}</p></article>
       <article><span>Product build</span><strong>${tracker.buildProgress}/100</strong><p>Usable prototype depth across all lanes</p></article>
       <article><span>Launch readiness</span><strong>${tracker.launchReadiness}/100</strong><p>Lower until live data, accounts, payments, legal, and security gates are complete</p></article>
       <article><span>Done modules</span><strong>${tracker.doneModules.length}</strong><p>${escapeHtml(tracker.pace)}</p></article>
@@ -37509,31 +37516,39 @@ function updateDeskRailContext(hash = "") {
   queueDeskRailTargetKeep(deskRailTargetForContext(context));
 }
 
-function workspaceFundContextName(hash = "") {
-  if (hash !== "#why-lens") return "";
-  return selectedFund()?.name || "";
+function workspaceContext(hash = "") {
+  if (hash === "#why-lens") {
+    return { label: "Selected fund", value: selectedFund()?.name || "" };
+  }
+  if (hash === "#compare") {
+    const count = state.compare.size;
+    return { label: "Compare set", value: `${count} fund${count === 1 ? "" : "s"} in Compare` };
+  }
+  return { label: "", value: "" };
 }
 
 function updateWorkspaceAwareness(hash = "", group = "Workspace", label = "Screener") {
   const cleanLabel = String(label || "Screener").trim();
   const cleanGroup = String(group || "Workspace").trim();
   if (!cleanLabel) return;
-  const fundName = workspaceFundContextName(hash);
-  const pageTitle = fundName
-    ? `${fundName} | ${cleanLabel} | NiveshNadi Mutual Fund Desk`
+  const context = workspaceContext(hash);
+  const pageTitle = context.value
+    ? `${context.value} | ${cleanLabel} | NiveshNadi Mutual Fund Desk`
     : `${cleanLabel} | NiveshNadi Mutual Fund Desk`;
   if (document.title !== pageTitle) document.title = pageTitle;
   if (!els.workspaceAnnouncer) return;
   if (
     state.workspaceAnnouncedHash === hash &&
     state.workspaceAnnouncedLabel === cleanLabel &&
-    state.workspaceAnnouncedFundName === fundName
+    state.workspaceAnnouncedContextLabel === context.label &&
+    state.workspaceAnnouncedContextValue === context.value
   ) return;
   state.workspaceAnnouncedHash = hash;
   state.workspaceAnnouncedLabel = cleanLabel;
-  state.workspaceAnnouncedFundName = fundName;
-  els.workspaceAnnouncer.textContent = fundName
-    ? `Current workspace: ${cleanGroup}, ${cleanLabel}. Selected fund: ${fundName}.`
+  state.workspaceAnnouncedContextLabel = context.label;
+  state.workspaceAnnouncedContextValue = context.value;
+  els.workspaceAnnouncer.textContent = context.value
+    ? `Current workspace: ${cleanGroup}, ${cleanLabel}. ${context.label}: ${context.value}.`
     : `Current workspace: ${cleanGroup}, ${cleanLabel}.`;
 }
 

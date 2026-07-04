@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V426 Pages Deploy Guard
+
+V426 adds an explicit static GitHub Pages workflow so the repo can deploy the root static site through a controlled Pages artifact path. This protects releases when the generated Pages deployment path fails without exposing another product surface to investors.
+
 ## V425 Release Freshness Cue
 
 V425 adds a compact Build Tracker freshness cue that names the active release key, the Pages freshness URL, and the release-stamp check. It helps confirm what build is actually being seen when GitHub Pages or browser cache lags.

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V429 Release Doctor Action Strip
+
+V429 makes the Release Doctor lane directly actionable. The Build Tracker now gives the founder quick links to the fresh GitHub Pages build and live release stamp, plus a copyable doctor receipt for release handoff notes.
+
 ## V428 Release Doctor Lane
 
 V428 adds a compact Release Doctor lane to the Build Tracker. It separates a healthy deploy, cache-lag watch state, and repair move so a fresh GitHub Pages release can be proved calmly before changing product code.

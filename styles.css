@@ -8297,6 +8297,19 @@ body.simple-mode.simple-review-focus .dossier-band {
   gap: 10px;
 }
 
+.release-doctor-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  align-items: center;
+}
+
+.release-doctor-actions .text-button {
+  justify-content: center;
+  width: 100%;
+  min-height: 34px;
+}
+
 .release-doctor-grid article {
   min-width: 0;
   padding: 11px;
@@ -42786,6 +42799,7 @@ body.desk-rail-right .floating-dock {
   .build-move-grid,
   .build-phase2-metrics,
   .release-doctor-grid,
+  .release-doctor-actions,
   .launch-readiness-metrics,
   .launch-gate-grid,
   .launch-ladder-grid,
@@ -43652,6 +43666,7 @@ body.desk-rail-right .floating-dock {
   .build-move-grid,
   .build-phase2-metrics,
   .release-doctor-grid,
+  .release-doctor-actions,
   .launch-readiness-metrics,
   .launch-gate-grid,
   .launch-ladder-grid,

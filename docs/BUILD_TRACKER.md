@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V431 Release Proof Checklist
+
+V431 adds a compact four-step proof checklist to the Release Doctor. Every release now has a visible share gate for source markers, Pages deployment success, live release-stamp match, and fresh Build Tracker URL proof.
+
 ## V430 Deploy Memory Row
 
 V430 adds a compact deploy memory row to the Release Doctor. It records the v429 product commit, the live deploy retry commit, and the retry-once rule so a transient Pages failure becomes visible operating memory instead of hidden chat history.

@@ -8259,6 +8259,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 
 .release-doctor-head span,
 .release-doctor-grid span,
+.release-doctor-proof span,
 .release-doctor-memory span {
   color: var(--mint);
   font-size: 11px;
@@ -8268,6 +8269,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 
 .release-doctor-head strong,
 .release-doctor-grid strong,
+.release-doctor-proof strong,
 .release-doctor-memory strong {
   display: block;
   color: var(--ink);
@@ -8277,6 +8279,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 
 .release-doctor-head p,
 .release-doctor-grid p,
+.release-doctor-proof p,
 .release-doctor-memory p {
   margin: 4px 0 0;
   color: var(--muted);
@@ -8300,6 +8303,12 @@ body.simple-mode.simple-review-focus .dossier-band {
   gap: 10px;
 }
 
+.release-doctor-proof {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
 .release-doctor-memory {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -8320,12 +8329,18 @@ body.simple-mode.simple-review-focus .dossier-band {
 }
 
 .release-doctor-grid article,
+.release-doctor-proof article,
 .release-doctor-memory article {
   min-width: 0;
   padding: 11px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--wash);
+}
+
+.release-doctor-proof article {
+  border-color: rgba(31, 78, 121, 0.14);
+  background: rgba(234, 242, 251, 0.58);
 }
 
 .release-doctor-memory article {
@@ -42814,6 +42829,7 @@ body.desk-rail-right .floating-dock {
   .build-move-grid,
   .build-phase2-metrics,
   .release-doctor-grid,
+  .release-doctor-proof,
   .release-doctor-memory,
   .release-doctor-actions,
   .launch-readiness-metrics,
@@ -43682,6 +43698,7 @@ body.desk-rail-right .floating-dock {
   .build-move-grid,
   .build-phase2-metrics,
   .release-doctor-grid,
+  .release-doctor-proof,
   .release-doctor-memory,
   .release-doctor-actions,
   .launch-readiness-metrics,

@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v429 Release Doctor Action Strip
-20260704-v429-01
+NiveshNadi Phase 1 v430 Deploy Memory Row
+20260704-v430-01

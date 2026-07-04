@@ -8258,7 +8258,8 @@ body.simple-mode.simple-review-focus .dossier-band {
 }
 
 .release-doctor-head span,
-.release-doctor-grid span {
+.release-doctor-grid span,
+.release-doctor-memory span {
   color: var(--mint);
   font-size: 11px;
   font-weight: 950;
@@ -8266,7 +8267,8 @@ body.simple-mode.simple-review-focus .dossier-band {
 }
 
 .release-doctor-head strong,
-.release-doctor-grid strong {
+.release-doctor-grid strong,
+.release-doctor-memory strong {
   display: block;
   color: var(--ink);
   font-size: 17px;
@@ -8274,7 +8276,8 @@ body.simple-mode.simple-review-focus .dossier-band {
 }
 
 .release-doctor-head p,
-.release-doctor-grid p {
+.release-doctor-grid p,
+.release-doctor-memory p {
   margin: 4px 0 0;
   color: var(--muted);
   line-height: 1.42;
@@ -8297,6 +8300,12 @@ body.simple-mode.simple-review-focus .dossier-band {
   gap: 10px;
 }
 
+.release-doctor-memory {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
 .release-doctor-actions {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -8310,12 +8319,18 @@ body.simple-mode.simple-review-focus .dossier-band {
   min-height: 34px;
 }
 
-.release-doctor-grid article {
+.release-doctor-grid article,
+.release-doctor-memory article {
   min-width: 0;
   padding: 11px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--wash);
+}
+
+.release-doctor-memory article {
+  border-color: rgba(15, 124, 107, 0.18);
+  background: rgba(255, 255, 255, 0.68);
 }
 
 .release-doctor-grid article.ready {
@@ -42799,6 +42814,7 @@ body.desk-rail-right .floating-dock {
   .build-move-grid,
   .build-phase2-metrics,
   .release-doctor-grid,
+  .release-doctor-memory,
   .release-doctor-actions,
   .launch-readiness-metrics,
   .launch-gate-grid,
@@ -43666,6 +43682,7 @@ body.desk-rail-right .floating-dock {
   .build-move-grid,
   .build-phase2-metrics,
   .release-doctor-grid,
+  .release-doctor-memory,
   .release-doctor-actions,
   .launch-readiness-metrics,
   .launch-gate-grid,

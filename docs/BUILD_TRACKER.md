@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V430 Deploy Memory Row
+
+V430 adds a compact deploy memory row to the Release Doctor. It records the v429 product commit, the live deploy retry commit, and the retry-once rule so a transient Pages failure becomes visible operating memory instead of hidden chat history.
+
 ## V429 Release Doctor Action Strip
 
 V429 makes the Release Doctor lane directly actionable. The Build Tracker now gives the founder quick links to the fresh GitHub Pages build and live release stamp, plus a copyable doctor receipt for release handoff notes.

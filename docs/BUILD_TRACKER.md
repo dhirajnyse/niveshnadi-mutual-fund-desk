@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V424 Quiet Compare Live Context
+
+V424 refreshes the Compare room browser title and hidden workspace status immediately after the compare set changes. The Compare count now stays fresh without waiting for another navigation event.
+
 ## V423 Quiet Compare Context
 
 V423 carries the Compare count into the browser title and hidden workspace status when the Compare room is active. The visible header stays compact while the room context remains clear.

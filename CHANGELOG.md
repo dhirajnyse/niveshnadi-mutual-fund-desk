@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v448 Search-to-Memo Handoff
+
+- Version: `0.448.0`
+- Data version: `20260706-v448-01`
+- Changes made: Added a Search-to-Memo Handoff to the Decision Pack with selected-fund context, search phrase, top blocker scoring, next route, memo prompt, receipt fields, and a dedicated copy action.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check
+- Known risks: The handoff reduces repeated typing but still depends on the investor writing and reviewing the final memo reason before treating it as durable research.
+
 ## NiveshNadi Phase 1 v447 Release Proof Archive
 
 - Version: `0.447.0`

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V448 Search-to-Memo Handoff
+
+V448 adds a Search-to-Memo Handoff inside the Decision Pack. It carries selected-fund context, search phrase, top blocker, next route, and a plain-English memo prompt into a copyable handoff note.
+
 ## V447 Release Proof Archive
 
 V447 adds a Release Proof Archive to the Release Doctor. The archive keeps the previous five verified release receipts visible and copyable so founder review can trace what changed before a new build is shared.

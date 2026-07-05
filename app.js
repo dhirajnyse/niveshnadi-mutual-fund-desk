@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v447-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v447 Release Proof Archive";
+const DATA_VERSION = "20260706-v448-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v448 Search-to-Memo Handoff";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1296,8 +1296,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Release proof archive",
+    label: "Search-to-memo handoff",
     status: "Shipping now",
+    route: "#decision-pack",
+    detail: "Carry selected-fund, blocker, and search context into the memo path."
+  },
+  {
+    label: "Release proof archive",
+    status: "Done",
     route: "#build-tracker",
     detail: "Keep the last five release receipts visible for founder review."
   },
@@ -10317,7 +10323,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, and release-proof-archive audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, and search-to-memo-handoff audit are complete."
   );
   const launchGates = [
     {
@@ -10394,11 +10400,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v446 is verified on commit 82544f9. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v447 is verified on commit f0cc8de. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v446 verified",
+      outcome: "Previous outcome: v447 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44601",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44701",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10501,15 +10507,9 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "Four releases remain",
+      verdict: "Three releases remain",
       rule: "Finish the in-flight batch, then keep the next release small enough to prove in one calm pass.",
       lanes: [
-        {
-          version: "v448",
-          label: "Search-to-memo handoff",
-          route: "#decision-pack",
-          detail: "Carry the current fund and top blocker into the memo path with less repeated typing."
-        },
         {
           version: "v449",
           label: "Saved review export polish",
@@ -10533,6 +10533,12 @@ function buildTrackerConfig() {
           label: "Proof archive retention",
           route: "#build-tracker",
           detail: "Keep release proof compact as the archive rolls forward after this batch closes."
+        },
+        {
+          version: "v453",
+          label: "Memo handoff receipt",
+          route: "#decision-pack",
+          detail: "Save the memo handoff as a small receipt once accounts or review history can persist it."
         }
       ]
     },
@@ -10541,6 +10547,13 @@ function buildTrackerConfig() {
       verdict: "Five receipts visible",
       rule: "Keep the previous five verified release receipts visible before sharing a new build.",
       receipts: [
+        {
+          version: "v447",
+          key: "20260706-v447-01",
+          commit: "f0cc8de",
+          receiptId: "NN-SHARE-RECEIPT-20260706V44701",
+          proof: "Release Proof Archive added and verified by static release checks."
+        },
         {
           version: "v446",
           key: "20260706-v446-01",
@@ -10568,13 +10581,6 @@ function buildTrackerConfig() {
           commit: "e839d39",
           receiptId: "NN-RELEASE-CHECKLIST-20260706V44301",
           proof: "Release Batch Checklist made source, checks, QA, deploy, and risk visible."
-        },
-        {
-          version: "v442",
-          key: "20260706-v442-01",
-          commit: "0f39e06",
-          receiptId: "NN-CHANGELOG-LEDGER-20260706V44201",
-          proof: "Batch Changelog Ledger started release evidence tracking."
         }
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness."
@@ -10582,39 +10588,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "82544f9",
-        detail: "v446 source change shipped with matching release labels and stamp."
+        value: "f0cc8de",
+        detail: "v447 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v446 product commit."
+        detail: "The static Pages deployment completed for the v447 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v446-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v447-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v446 outcome is saved so the next release starts from proof."
+        detail: "The v447 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "82544f9",
-        detail: "v446 source change that added Next Batch Planner."
+        value: "f0cc8de",
+        detail: "v447 source change that added Release Proof Archive."
       },
       {
         label: "Live deploy commit",
-        value: "82544f9",
-        detail: "v446 Pages deploy succeeded on the product commit."
+        value: "f0cc8de",
+        detail: "v447 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v446 verified",
+        value: "v447 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -57987,6 +57993,7 @@ function renderDecisionPack(event) {
   const regret = decisionRegretLab(pack, recorder, court);
   const motive = decisionMotiveMri(pack, recorder, court, regret);
   const multiverse = decisionMultiverse(pack, recorder, court, regret, motive);
+  const handoff = searchToMemoHandoff(pack);
   const watchItems = pack.watchTriggers.length
     ? pack.watchTriggers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")
     : "<li>No saved watch triggers yet. Add review or risk triggers before committing real money.</li>";
@@ -58045,6 +58052,40 @@ function renderDecisionPack(event) {
         <span>Decision reason</span>
         <p>${escapeHtml(pack.reason)}</p>
       </article>
+    </div>
+    <div class="pack-card search-memo-handoff">
+      <div class="pack-flight-hero">
+        <div>
+          <span>Search-to-memo handoff</span>
+          <strong>${escapeHtml(handoff.status)}</strong>
+          <p>${escapeHtml(handoff.memoPrompt)}</p>
+        </div>
+        <div class="pack-flight-score" style="--score:${handoff.topBlocker.score}">
+          <b>${handoff.topBlocker.score}</b>
+          <small>Handoff</small>
+        </div>
+      </div>
+      <div class="pack-card-grid">
+        <article class="pack-card">
+          <span>Search context</span>
+          <strong>${escapeHtml(handoff.sourceLabel)}</strong>
+          <p>${escapeHtml(pack.fund.category)} | ${escapeHtml(pack.fund.risk)} risk | Nadi ${nadiScore(pack.fund)}/100</p>
+        </article>
+        <article class="pack-card caution">
+          <span>Top blocker</span>
+          <strong>${escapeHtml(handoff.topBlocker.label)}</strong>
+          <p>${escapeHtml(handoff.topBlocker.detail)}</p>
+        </article>
+        <article class="pack-card">
+          <span>Receipt</span>
+          <strong>${escapeHtml(handoff.handoffId)}</strong>
+          <p>${handoff.receiptFields.map((field) => escapeHtml(field)).join(" | ")}</p>
+        </article>
+      </div>
+      <div class="release-doctor-actions">
+        <button class="text-button" type="button" data-build-route="${escapeHtml(handoff.topBlocker.route)}">Open top blocker</button>
+        <button class="text-button" type="button" data-copy-search-memo-handoff>Copy memo handoff</button>
+      </div>
     </div>
     <div class="pack-flight-recorder ${escapeHtml(recorder.tone)}">
       <div class="pack-flight-hero">
@@ -58346,6 +58387,52 @@ function buildDecisionPack() {
     title: `${fund.name} decision memo`,
     typedReason,
     watchTriggers
+  };
+}
+
+function searchToMemoHandoff(pack) {
+  const searchText = (els.searchInput?.value || "").trim();
+  const evidence = evidenceReadinessScore(pack.fund);
+  const compareCount = pack.compareFunds.length;
+  const reasonWords = pack.typedReason.split(/\s+/).filter(Boolean).length;
+  const reviewReady = Boolean(pack.reviewDate);
+  const sourceLabel = searchText || pack.fund.name;
+  const checks = [
+    {
+      label: "Source proof",
+      score: evidence,
+      route: "#evidence",
+      detail: evidence >= 78 ? "Evidence can travel into the memo." : "Verify source date, factsheet, SID/KIM, riskometer, TER, and holdings before memo confidence."
+    },
+    {
+      label: "Fair peer",
+      score: compareCount >= 2 ? 82 : compareCount ? 62 : 38,
+      route: "#compare",
+      detail: compareCount >= 2 ? `${compareCount} funds are available for comparison.` : "Add at least two fair peers before treating the memo as durable."
+    },
+    {
+      label: "Own-word reason",
+      score: reasonWords >= 18 ? 84 : reasonWords >= 8 ? 62 : 32,
+      route: "#decision-pack",
+      detail: reasonWords >= 18 ? "Reason is written enough to review." : "Write the reason in plain English before saving or sharing the memo."
+    },
+    {
+      label: "Review date",
+      score: reviewReady ? 78 : 35,
+      route: "#review-rhythm",
+      detail: reviewReady ? `Review date ${pack.reviewDate} is visible.` : "Set one review date so the memo has a follow-up memory."
+    }
+  ];
+  const topBlocker = [...checks].sort((a, b) => a.score - b.score)[0];
+  const handoffId = ["NN", "SEARCH", "MEMO", DATA_VERSION.replace(/-/g, ""), pack.fund.id].join("-").toUpperCase();
+  return {
+    handoffId,
+    sourceLabel,
+    status: topBlocker.score >= 72 ? "Memo handoff clear" : "Memo handoff needs one blocker",
+    topBlocker,
+    checks,
+    memoPrompt: `Write one plain-English reason for ${pack.fund.name}: role, source date, fair peer, amount ${formatMoney(pack.amount)}, review date ${pack.reviewDate || "not set"}, and no-action boundary.`,
+    receiptFields: ["handoff_id", "fund_id", "search_context", "top_blocker", "memo_prompt", "next_route", "created_at"]
   };
 }
 
@@ -59011,6 +59098,7 @@ function makeDecisionPackText() {
   const regret = decisionRegretLab(pack, recorder, court);
   const motive = decisionMotiveMri(pack, recorder, court, regret);
   const multiverse = decisionMultiverse(pack, recorder, court, regret, motive);
+  const handoff = searchToMemoHandoff(pack);
   const compareLines = pack.compareFunds.length
     ? pack.compareFunds.map((fund) => `- ${fund.name} | ${fund.category} | Score ${nadiScore(fund)}/100`).join("\n")
     : "- No X-Ray set selected";
@@ -59033,6 +59121,14 @@ function makeDecisionPackText() {
     "",
     "## Reason",
     pack.reason,
+    "",
+    "## Search-to-Memo Handoff",
+    `- Handoff ID: ${handoff.handoffId}`,
+    `- Search context: ${handoff.sourceLabel}`,
+    `- Status: ${handoff.status}`,
+    `- Top blocker: ${handoff.topBlocker.label} | ${handoff.topBlocker.detail}`,
+    `- Next route: ${handoff.topBlocker.route}`,
+    `- Memo prompt: ${handoff.memoPrompt}`,
     "",
     "## Evidence Checklist",
     `- Role: ${pack.fund.role}`,
@@ -59137,6 +59233,28 @@ function makeDecisionPackText() {
     "- Research memo only; not personalized investment advice.",
     "- Check duplication, time horizon, expense, drawdown, and review trigger before acting.",
     "- Mutual fund investments are subject to market risks."
+  ].join("\n");
+}
+
+function makeSearchMemoHandoffBrief() {
+  const pack = buildDecisionPack();
+  const handoff = searchToMemoHandoff(pack);
+  return [
+    "# NiveshNadi Search-to-Memo Handoff",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Handoff ID: ${handoff.handoffId}`,
+    `Selected fund: ${pack.fund.name}`,
+    `Search context: ${handoff.sourceLabel}`,
+    `Decision stance: ${pack.decision}`,
+    `Top blocker: ${handoff.topBlocker.label}`,
+    `Blocker detail: ${handoff.topBlocker.detail}`,
+    `Open next: ${handoff.topBlocker.route}`,
+    `Memo prompt: ${handoff.memoPrompt}`,
+    "",
+    "## Handoff checks",
+    ...handoff.checks.map((check) => `- ${check.label}: ${check.score}/100 | ${check.detail} | Route ${check.route}`),
+    "",
+    "Research memo only. This handoff is not personalized advice, suitability approval, execution instruction, or a return guarantee."
   ].join("\n");
 }
 
@@ -61941,6 +62059,13 @@ function bindEvents() {
     if (!copyReleaseProofArchive) return;
     event.preventDefault();
     copyText(makeReleaseProofArchiveBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copySearchMemoHandoff = event.target.closest("[data-copy-search-memo-handoff]");
+    if (!copySearchMemoHandoff) return;
+    event.preventDefault();
+    copyText(makeSearchMemoHandoffBrief());
   });
 
   document.addEventListener("click", (event) => {

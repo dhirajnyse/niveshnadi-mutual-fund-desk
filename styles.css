@@ -8344,7 +8344,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 
 .release-doctor-actions {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
   align-items: center;
 }

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V437 Share Receipt Copy
+
+V437 adds a dedicated Copy Share Receipt action to the Release Doctor. The copied text carries only the calm release verdict, required proof, previous verified outcome, fresh build link, and release-stamp link.
+
 ## V436 Release Share Receipt
 
 V436 adds a compact share receipt to the Release Doctor. It puts the current share-ready rule, required proof, and previous verified outcome above the deeper share gate, outcome trail, proof checklist, and memory rows.

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V441 Share Receipt Lineage
+
+V441 adds receipt lineage to the Release Doctor and copied Share Receipt. A copied handoff now carries the current receipt ID, the previous verified receipt ID, and a plain line showing the release chain.
+
 ## V440 Share Receipt Supersede
 
 V440 adds a supersede rule to the Release Doctor and copied Share Receipt. A copied handoff now says when the receipt is no longer current because a different live release-stamp key or newer release note appears.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v446-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v446 Next Batch Planner";
+const DATA_VERSION = "20260706-v447-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v447 Release Proof Archive";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1296,8 +1296,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Next batch planner",
+    label: "Release proof archive",
     status: "Shipping now",
+    route: "#build-tracker",
+    detail: "Keep the last five release receipts visible for founder review."
+  },
+  {
+    label: "Next batch planner",
+    status: "Done",
     route: "#build-tracker",
     detail: "Turn the next five releases into a copyable product plan."
   },
@@ -10311,7 +10317,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, and next-batch-planner audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, and release-proof-archive audit are complete."
   );
   const launchGates = [
     {
@@ -10388,11 +10394,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v445 is verified on commit af57bbe. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v446 is verified on commit 82544f9. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v445 verified",
+      outcome: "Previous outcome: v446 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44501",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44601",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10495,15 +10501,9 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "Five releases queued",
-      rule: "Choose small improvements that make the app calmer, more provable, and easier to trust before adding new rooms.",
+      verdict: "Four releases remain",
+      rule: "Finish the in-flight batch, then keep the next release small enough to prove in one calm pass.",
       lanes: [
-        {
-          version: "v447",
-          label: "Release proof archive",
-          route: "#build-tracker",
-          detail: "Keep the last five release receipts visible so support and founder review can trace what changed."
-        },
         {
           version: "v448",
           label: "Search-to-memo handoff",
@@ -10527,45 +10527,94 @@ function buildTrackerConfig() {
           label: "Live-data readiness focus",
           route: "#source-receipts",
           detail: "Bring source-date, citation, TER, holding, and riskometer gaps into one next action."
+        },
+        {
+          version: "v452",
+          label: "Proof archive retention",
+          route: "#build-tracker",
+          detail: "Keep release proof compact as the archive rolls forward after this batch closes."
         }
       ]
+    },
+    releaseProofArchive: {
+      label: "Release proof archive",
+      verdict: "Five receipts visible",
+      rule: "Keep the previous five verified release receipts visible before sharing a new build.",
+      receipts: [
+        {
+          version: "v446",
+          key: "20260706-v446-01",
+          commit: "82544f9",
+          receiptId: "NN-SHARE-RECEIPT-20260706V44601",
+          proof: "Next Batch Planner verified live with matching stamp."
+        },
+        {
+          version: "v445",
+          key: "20260706-v445-01",
+          commit: "af57bbe",
+          receiptId: "NN-SHARE-RECEIPT-20260706V44501",
+          proof: "Workspace Fit Guard shipped and live stamp matched."
+        },
+        {
+          version: "v444",
+          key: "20260706-v444-01",
+          commit: "6102871",
+          receiptId: "NN-VISUAL-QA-20260706V44401",
+          proof: "Visual QA Receipt added for desktop, tablet, and mobile proof."
+        },
+        {
+          version: "v443",
+          key: "20260706-v443-01",
+          commit: "e839d39",
+          receiptId: "NN-RELEASE-CHECKLIST-20260706V44301",
+          proof: "Release Batch Checklist made source, checks, QA, deploy, and risk visible."
+        },
+        {
+          version: "v442",
+          key: "20260706-v442-01",
+          commit: "0f39e06",
+          receiptId: "NN-CHANGELOG-LEDGER-20260706V44201",
+          proof: "Batch Changelog Ledger started release evidence tracking."
+        }
+      ],
+      retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness."
     },
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "af57bbe",
-        detail: "v445 source change shipped with matching release labels and stamp."
+        value: "82544f9",
+        detail: "v446 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v445 product commit."
+        detail: "The static Pages deployment completed for the v446 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v445-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v446-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v445 outcome is saved so the next release starts from proof."
+        detail: "The v446 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "af57bbe",
-        detail: "v445 source change that added Workspace Fit Guard."
+        value: "82544f9",
+        detail: "v446 source change that added Next Batch Planner."
       },
       {
         label: "Live deploy commit",
-        value: "af57bbe",
-        detail: "v445 Pages deploy succeeded on the product commit."
+        value: "82544f9",
+        detail: "v446 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v445 verified",
+        value: "v446 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -10930,6 +10979,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Release proof archive">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.releaseProofArchive.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.releaseProofArchive.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.releaseProofArchive.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.releaseProofArchive.receipts.map((receipt) => `
+          <article>
+            <span>${escapeHtml(receipt.version)} | ${escapeHtml(receipt.key)}</span>
+            <strong>${escapeHtml(receipt.commit)}</strong>
+            <p>${escapeHtml(receipt.receiptId)}. ${escapeHtml(receipt.proof)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-receipt" aria-label="Release share receipt">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.shareReceipt.label)}</span>
@@ -11003,6 +11066,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-release-share-receipt>Copy share receipt</button>
         <button class="text-button" type="button" data-copy-visual-qa-receipt>Copy visual QA</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
+        <button class="text-button" type="button" data-copy-release-proof-archive>Copy proof archive</button>
         <button class="text-button" type="button" data-copy-release-doctor>Copy doctor receipt</button>
       </div>
     </div>
@@ -11144,6 +11208,10 @@ function makeBuildTrackerBrief() {
     `Next batch plan: ${tracker.releaseDoctor.nextBatchPlan.verdict}`,
     `Next batch rule: ${tracker.releaseDoctor.nextBatchPlan.rule}`,
     ...tracker.releaseDoctor.nextBatchPlan.lanes.map((step) => `- ${step.version} ${step.label}: ${step.detail} (${step.route})`),
+    `Release proof archive: ${tracker.releaseDoctor.releaseProofArchive.verdict}`,
+    `Release proof archive rule: ${tracker.releaseDoctor.releaseProofArchive.rule}`,
+    ...tracker.releaseDoctor.releaseProofArchive.receipts.map((receipt) => `- Release proof ${receipt.version}: ${receipt.key} | ${receipt.commit} | ${receipt.receiptId} | ${receipt.proof}`),
+    `Release proof archive retention: ${tracker.releaseDoctor.releaseProofArchive.retention}`,
     `Share gate: ${tracker.releaseDoctor.shareGate.verdict} | ${tracker.releaseDoctor.shareGate.detail}`,
     `Hold if: ${tracker.releaseDoctor.shareGate.holdIf}`,
     `Next if held: ${tracker.releaseDoctor.shareGate.next}`,
@@ -11213,6 +11281,12 @@ function makeReleaseDoctorBrief() {
     `- Verdict: ${tracker.releaseDoctor.nextBatchPlan.verdict}`,
     `- Rule: ${tracker.releaseDoctor.nextBatchPlan.rule}`,
     ...tracker.releaseDoctor.nextBatchPlan.lanes.map((step) => `- ${step.version} ${step.label}: ${step.detail} Route: ${step.route}`),
+    "",
+    "## Release Proof Archive",
+    `- Verdict: ${tracker.releaseDoctor.releaseProofArchive.verdict}`,
+    `- Rule: ${tracker.releaseDoctor.releaseProofArchive.rule}`,
+    ...tracker.releaseDoctor.releaseProofArchive.receipts.map((receipt) => `- ${receipt.version}: ${receipt.key} | ${receipt.commit} | ${receipt.receiptId} | ${receipt.proof}`),
+    `- Retention: ${tracker.releaseDoctor.releaseProofArchive.retention}`,
     "",
     "## Share Gate",
     `- Verdict: ${tracker.releaseDoctor.shareGate.verdict}`,
@@ -11288,6 +11362,26 @@ function makeNextBatchPlanBrief() {
     "",
     "## Proposed next five releases",
     ...tracker.releaseDoctor.nextBatchPlan.lanes.map((step) => `- ${step.version} ${step.label}: ${step.detail} Route: ${step.route}`)
+  ].join("\n");
+}
+
+function makeReleaseProofArchiveBrief() {
+  const tracker = buildTrackerConfig();
+  return [
+    "# NiveshNadi Release Proof Archive",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Verdict: ${tracker.releaseDoctor.releaseProofArchive.verdict}`,
+    `Rule: ${tracker.releaseDoctor.releaseProofArchive.rule}`,
+    "",
+    "## Verified release receipts",
+    ...tracker.releaseDoctor.releaseProofArchive.receipts.map((receipt) => [
+      `- ${receipt.version}: ${receipt.key}`,
+      `  Commit: ${receipt.commit}`,
+      `  Receipt: ${receipt.receiptId}`,
+      `  Proof: ${receipt.proof}`
+    ].join("\n")),
+    "",
+    `Retention: ${tracker.releaseDoctor.releaseProofArchive.retention}`
   ].join("\n");
 }
 
@@ -61840,6 +61934,13 @@ function bindEvents() {
     if (!copyNextBatchPlan) return;
     event.preventDefault();
     copyText(makeNextBatchPlanBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyReleaseProofArchive = event.target.closest("[data-copy-release-proof-archive]");
+    if (!copyReleaseProofArchive) return;
+    event.preventDefault();
+    copyText(makeReleaseProofArchiveBrief());
   });
 
   document.addEventListener("click", (event) => {

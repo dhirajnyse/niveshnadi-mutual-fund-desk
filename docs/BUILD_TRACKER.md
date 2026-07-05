@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V447 Release Proof Archive
+
+V447 adds a Release Proof Archive to the Release Doctor. The archive keeps the previous five verified release receipts visible and copyable so founder review can trace what changed before a new build is shared.
+
 ## V446 Next Batch Planner
 
 V446 adds a copyable Next Batch Planner to the Release Doctor. The planner turns the next five release ideas into scoped, route-linked work so the project can continue calmly after the current batch.

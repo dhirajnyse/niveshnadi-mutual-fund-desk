@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v446 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v447 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Release Proof Archive that keeps the previous five verified release receipts visible and copyable from the Release Doctor.
 - Next Batch Planner that turns the next five releases into a copyable release plan from the Release Doctor.
 - Workspace Fit Guard that tracks sticky-header clearance, rail placement, stable gutters, and mobile rail removal before release.
 - Visual QA Receipt that makes desktop, tablet, and mobile layout review copyable from the Release Doctor.

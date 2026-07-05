@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v447 Release Proof Archive
+
+- Version: `0.447.0`
+- Data version: `20260706-v447-01`
+- Changes made: Added a Release Proof Archive to the Release Doctor with the previous five verified release receipts, release keys, commits, proof notes, retention boundary, and a copyable archive brief.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check
+- Known risks: The archive proves static release lineage only; it does not certify live data, accounts, payments, legal, or security launch readiness.
+
 ## NiveshNadi Phase 1 v446 Next Batch Planner
 
 - Version: `0.446.0`

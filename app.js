@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v443-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v443 Release Batch Checklist";
+const DATA_VERSION = "20260706-v444-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v444 Visual QA Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1296,8 +1296,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Release batch checklist",
+    label: "Visual QA receipt",
     status: "Shipping now",
+    route: "#build-tracker",
+    detail: "Copy desktop, tablet, and mobile viewport proof before sharing."
+  },
+  {
+    label: "Release batch checklist",
+    status: "Done",
     route: "#build-tracker",
     detail: "Show the five release proof checks before any batch is shared."
   },
@@ -10293,7 +10299,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, and release-batch-checklist audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, and visual-qa-receipt audit are complete."
   );
   const launchGates = [
     {
@@ -10370,11 +10376,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v442 is verified on commit 0f39e06. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v443 is verified on commit e839d39. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v442 verified",
+      outcome: "Previous outcome: v443 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44201",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44301",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10429,42 +10435,66 @@ function buildTrackerConfig() {
         detail: "Changelog records what remains uncertain so the next release starts honestly."
       }
     ],
+    visualQaReceipt: {
+      label: "Visual QA receipt",
+      verdict: "Viewport proof required",
+      receiptId: ["NN", "VISUAL", "QA", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      rule: "Pass desktop, tablet, and mobile checks before calling the batch visually ready.",
+      viewports: [
+        {
+          label: "Desktop",
+          value: "1440 x 900",
+          detail: "Header commands stay inside one row, side rail starts below the header, and Build Tracker cards do not collide."
+        },
+        {
+          label: "Tablet",
+          value: "900 x 1000",
+          detail: "Workspace controls wrap cleanly, action strip stays readable, and no text overlaps score rings."
+        },
+        {
+          label: "Mobile",
+          value: "390 x 844",
+          detail: "Rail falls away, header utilities remain tappable, and primary room text fits without horizontal scroll."
+        }
+      ],
+      knownRisk: "Visual QA is proof of layout health only; it does not prove live data, payments, accounts, legal, or security launch readiness."
+    },
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "0f39e06",
-        detail: "v442 source change shipped with matching release labels and stamp."
+        value: "e839d39",
+        detail: "v443 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v442 product commit."
+        detail: "The static Pages deployment completed for the v443 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v442-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v443-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v442 outcome is saved so the next release starts from proof."
+        detail: "The v443 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "0f39e06",
-        detail: "v442 source change that added Batch Changelog Ledger."
+        value: "e839d39",
+        detail: "v443 source change that added Release Batch Checklist."
       },
       {
         label: "Live deploy commit",
-        value: "0f39e06",
-        detail: "v442 Pages deploy succeeded on the product commit."
+        value: "e839d39",
+        detail: "v443 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v442 verified",
+        value: "v443 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -10787,6 +10817,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Visual QA receipt">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.visualQaReceipt.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.visualQaReceipt.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.visualQaReceipt.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.visualQaReceipt.viewports.map((step) => `
+          <article>
+            <span>${escapeHtml(step.label)}</span>
+            <strong>${escapeHtml(step.value)}</strong>
+            <p>${escapeHtml(step.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-receipt" aria-label="Release share receipt">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.shareReceipt.label)}</span>
@@ -10858,6 +10902,7 @@ function releaseDoctorMarkup(tracker) {
           <a class="text-button" href="${escapeHtml(action.href)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(action.detail)}">${escapeHtml(action.label)}</a>
         `).join("")}
         <button class="text-button" type="button" data-copy-release-share-receipt>Copy share receipt</button>
+        <button class="text-button" type="button" data-copy-visual-qa-receipt>Copy visual QA</button>
         <button class="text-button" type="button" data-copy-release-doctor>Copy doctor receipt</button>
       </div>
     </div>
@@ -10990,6 +11035,9 @@ function makeBuildTrackerBrief() {
     `Share receipt recheck if: ${tracker.releaseDoctor.shareReceipt.recheckIf}`,
     `Share receipt superseded when: ${tracker.releaseDoctor.shareReceipt.supersededWhen}`,
     ...tracker.releaseDoctor.batchChecklist.map((step) => `- Release checklist ${step.label}: ${step.value} | ${step.detail}`),
+    `Visual QA receipt: ${tracker.releaseDoctor.visualQaReceipt.receiptId}`,
+    `Visual QA rule: ${tracker.releaseDoctor.visualQaReceipt.rule}`,
+    ...tracker.releaseDoctor.visualQaReceipt.viewports.map((step) => `- Visual QA ${step.label}: ${step.value} | ${step.detail}`),
     `Share gate: ${tracker.releaseDoctor.shareGate.verdict} | ${tracker.releaseDoctor.shareGate.detail}`,
     `Hold if: ${tracker.releaseDoctor.shareGate.holdIf}`,
     `Next if held: ${tracker.releaseDoctor.shareGate.next}`,
@@ -11043,6 +11091,13 @@ function makeReleaseDoctorBrief() {
     "## Release Batch Checklist",
     ...tracker.releaseDoctor.batchChecklist.map((step) => `- ${step.label}: ${step.value} | ${step.detail}`),
     "",
+    "## Visual QA Receipt",
+    `- Receipt ID: ${tracker.releaseDoctor.visualQaReceipt.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.visualQaReceipt.verdict}`,
+    `- Rule: ${tracker.releaseDoctor.visualQaReceipt.rule}`,
+    ...tracker.releaseDoctor.visualQaReceipt.viewports.map((step) => `- ${step.label}: ${step.value} | ${step.detail}`),
+    `- Known risk: ${tracker.releaseDoctor.visualQaReceipt.knownRisk}`,
+    "",
     "## Share Gate",
     `- Verdict: ${tracker.releaseDoctor.shareGate.verdict}`,
     `- Share when: ${tracker.releaseDoctor.shareGate.detail}`,
@@ -11088,6 +11143,22 @@ function makeReleaseShareReceiptBrief() {
     `Next if held: ${tracker.releaseDoctor.shareGate.next}`,
     "",
     "This receipt proves only the static release handoff. It does not change live-data, account, payment, legal, or security launch readiness."
+  ].join("\n");
+}
+
+function makeVisualQaReceiptBrief() {
+  const tracker = buildTrackerConfig();
+  return [
+    "# NiveshNadi Visual QA Receipt",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${tracker.releaseDoctor.visualQaReceipt.receiptId}`,
+    `Verdict: ${tracker.releaseDoctor.visualQaReceipt.verdict}`,
+    `Rule: ${tracker.releaseDoctor.visualQaReceipt.rule}`,
+    "",
+    "## Viewports",
+    ...tracker.releaseDoctor.visualQaReceipt.viewports.map((step) => `- ${step.label} (${step.value}): ${step.detail}`),
+    "",
+    `Known risk: ${tracker.releaseDoctor.visualQaReceipt.knownRisk}`
   ].join("\n");
 }
 
@@ -61626,6 +61697,13 @@ function bindEvents() {
     if (!copyReleaseShareReceipt) return;
     event.preventDefault();
     copyText(makeReleaseShareReceiptBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyVisualQaReceipt = event.target.closest("[data-copy-visual-qa-receipt]");
+    if (!copyVisualQaReceipt) return;
+    event.preventDefault();
+    copyText(makeVisualQaReceiptBrief());
   });
 
   document.addEventListener("click", (event) => {

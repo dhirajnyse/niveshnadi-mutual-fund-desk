@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V444 Visual QA Receipt
+
+V444 adds a copyable Visual QA Receipt to the Release Doctor. The receipt names desktop, tablet, and mobile viewport checks so UI review becomes release evidence instead of a loose final glance.
+
 ## V443 Release Batch Checklist
 
 V443 adds a compact release checklist to the Release Doctor. Every batch now keeps source alignment, static checks, visual QA, deploy stamp proof, and known-risk notes visible before the build is shared.

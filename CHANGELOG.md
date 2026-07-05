@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v444 Visual QA Receipt
+
+- Version: `0.444.0`
+- Data version: `20260706-v444-01`
+- Changes made: Added a copyable Visual QA Receipt to the Release Doctor with desktop, tablet, and mobile viewport checks, a visual QA receipt ID, and known-risk wording.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check
+- Known risks: The receipt defines the viewport checks; the actual browser pass is still executed once the five-version batch reaches its final candidate.
+
 ## NiveshNadi Phase 1 v443 Release Batch Checklist
 
 - Version: `0.443.0`

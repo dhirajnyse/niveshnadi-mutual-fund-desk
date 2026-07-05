@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V439 Share Receipt Freshness
+
+V439 adds a freshness rule to the Release Doctor and copied Share Receipt. A copied handoff now says when the receipt is valid and when to recheck cache, deploy, copied key, or live release-stamp proof.
+
 ## V438 Share Receipt ID
 
 V438 adds a stable share receipt ID to the Release Doctor and copied Share Receipt. The handoff note can now cite a precise receipt number tied to the active release key before anyone shares a live build.

@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v444 Visual QA Receipt
-20260706-v444-01
+NiveshNadi Phase 1 v445 Workspace Fit Guard
+20260706-v445-01

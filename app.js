@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v444-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v444 Visual QA Receipt";
+const DATA_VERSION = "20260706-v445-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v445 Workspace Fit Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1296,8 +1296,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Visual QA receipt",
+    label: "Workspace fit guard",
     status: "Shipping now",
+    route: "#build-tracker",
+    detail: "Keep header, rail, and workspace clearance explicit before release."
+  },
+  {
+    label: "Visual QA receipt",
+    status: "Done",
     route: "#build-tracker",
     detail: "Copy desktop, tablet, and mobile viewport proof before sharing."
   },
@@ -10299,7 +10305,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, and visual-qa-receipt audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, and workspace-fit-guard audit are complete."
   );
   const launchGates = [
     {
@@ -10376,11 +10382,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v443 is verified on commit e839d39. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v444 is verified on commit 6102871. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v443 verified",
+      outcome: "Previous outcome: v444 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44301",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44401",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10459,42 +10465,64 @@ function buildTrackerConfig() {
       ],
       knownRisk: "Visual QA is proof of layout health only; it does not prove live data, payments, accounts, legal, or security launch readiness."
     },
+    workspaceFitGuard: {
+      label: "Workspace fit guard",
+      verdict: "Header and rail must not overlap",
+      rule: "The side rail starts below the sticky header, the workspace keeps stable gutters, and mobile hides the rail before it can crowd content.",
+      checks: [
+        {
+          label: "Header clearance",
+          value: "Rail below bar",
+          detail: "Rail top uses the measured sticky-header bottom plus the quiet rail gap."
+        },
+        {
+          label: "Wide canvas",
+          value: "Stable gutter",
+          detail: "Workspace width stays centered with a stable scrollbar gutter, reducing horizontal jumps while long rooms scroll."
+        },
+        {
+          label: "Small screens",
+          value: "Rail hidden",
+          detail: "Below tablet width the side rail is removed and header controls wrap inside the command capsule."
+        }
+      ]
+    },
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "e839d39",
-        detail: "v443 source change shipped with matching release labels and stamp."
+        value: "6102871",
+        detail: "v444 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v443 product commit."
+        detail: "The static Pages deployment completed for the v444 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v443-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v444-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v443 outcome is saved so the next release starts from proof."
+        detail: "The v444 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "e839d39",
-        detail: "v443 source change that added Release Batch Checklist."
+        value: "6102871",
+        detail: "v444 source change that added Visual QA Receipt."
       },
       {
         label: "Live deploy commit",
-        value: "e839d39",
-        detail: "v443 Pages deploy succeeded on the product commit."
+        value: "6102871",
+        detail: "v444 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v443 verified",
+        value: "v444 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -10831,6 +10859,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Workspace fit guard">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.workspaceFitGuard.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.workspaceFitGuard.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.workspaceFitGuard.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.workspaceFitGuard.checks.map((step) => `
+          <article>
+            <span>${escapeHtml(step.label)}</span>
+            <strong>${escapeHtml(step.value)}</strong>
+            <p>${escapeHtml(step.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-receipt" aria-label="Release share receipt">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.shareReceipt.label)}</span>
@@ -11038,6 +11080,9 @@ function makeBuildTrackerBrief() {
     `Visual QA receipt: ${tracker.releaseDoctor.visualQaReceipt.receiptId}`,
     `Visual QA rule: ${tracker.releaseDoctor.visualQaReceipt.rule}`,
     ...tracker.releaseDoctor.visualQaReceipt.viewports.map((step) => `- Visual QA ${step.label}: ${step.value} | ${step.detail}`),
+    `Workspace fit guard: ${tracker.releaseDoctor.workspaceFitGuard.verdict}`,
+    `Workspace fit rule: ${tracker.releaseDoctor.workspaceFitGuard.rule}`,
+    ...tracker.releaseDoctor.workspaceFitGuard.checks.map((step) => `- Workspace fit ${step.label}: ${step.value} | ${step.detail}`),
     `Share gate: ${tracker.releaseDoctor.shareGate.verdict} | ${tracker.releaseDoctor.shareGate.detail}`,
     `Hold if: ${tracker.releaseDoctor.shareGate.holdIf}`,
     `Next if held: ${tracker.releaseDoctor.shareGate.next}`,
@@ -11097,6 +11142,11 @@ function makeReleaseDoctorBrief() {
     `- Rule: ${tracker.releaseDoctor.visualQaReceipt.rule}`,
     ...tracker.releaseDoctor.visualQaReceipt.viewports.map((step) => `- ${step.label}: ${step.value} | ${step.detail}`),
     `- Known risk: ${tracker.releaseDoctor.visualQaReceipt.knownRisk}`,
+    "",
+    "## Workspace Fit Guard",
+    `- Verdict: ${tracker.releaseDoctor.workspaceFitGuard.verdict}`,
+    `- Rule: ${tracker.releaseDoctor.workspaceFitGuard.rule}`,
+    ...tracker.releaseDoctor.workspaceFitGuard.checks.map((step) => `- ${step.label}: ${step.value} | ${step.detail}`),
     "",
     "## Share Gate",
     `- Verdict: ${tracker.releaseDoctor.shareGate.verdict}`,

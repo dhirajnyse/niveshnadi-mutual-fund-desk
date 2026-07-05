@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V445 Workspace Fit Guard
+
+V445 adds a Workspace Fit Guard to the Release Doctor and hardens layout clearance. The app now records header/rail clearance, stable wide-screen gutters, and mobile rail removal as release checks, while CSS keeps the side rail below the sticky header and contains rail scrolling.
+
 ## V444 Visual QA Receipt
 
 V444 adds a copyable Visual QA Receipt to the Release Doctor. The receipt names desktop, tablet, and mobile viewport checks so UI review becomes release evidence instead of a loose final glance.

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v445 Workspace Fit Guard
+
+- Version: `0.445.0`
+- Data version: `20260706-v445-01`
+- Changes made: Added a Workspace Fit Guard to the Release Doctor and copied release output; hardened sticky-header/side-rail clearance with a minimum rail offset, stable scrollbar gutter, and contained rail scrolling.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `styles.css`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check
+- Known risks: CSS hardening reduces overlap risk, but final assurance still depends on the browser visual QA pass across the selected desktop, tablet, and mobile viewports.
+
 ## NiveshNadi Phase 1 v444 Visual QA Receipt
 
 - Version: `0.444.0`

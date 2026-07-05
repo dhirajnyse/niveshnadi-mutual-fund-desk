@@ -8260,6 +8260,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 .release-doctor-head span,
 .release-doctor-grid span,
 .release-doctor-share span,
+.release-doctor-trail span,
 .release-doctor-proof span,
 .release-doctor-memory span {
   color: var(--mint);
@@ -8271,6 +8272,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 .release-doctor-head strong,
 .release-doctor-grid strong,
 .release-doctor-share strong,
+.release-doctor-trail strong,
 .release-doctor-proof strong,
 .release-doctor-memory strong {
   display: block;
@@ -8282,6 +8284,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 .release-doctor-head p,
 .release-doctor-grid p,
 .release-doctor-share p,
+.release-doctor-trail p,
 .release-doctor-proof p,
 .release-doctor-memory p {
   margin: 4px 0 0;
@@ -8312,6 +8315,12 @@ body.simple-mode.simple-review-focus .dossier-band {
   gap: 8px;
 }
 
+.release-doctor-trail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
 .release-doctor-proof {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -8339,6 +8348,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 
 .release-doctor-grid article,
 .release-doctor-share article,
+.release-doctor-trail article,
 .release-doctor-proof article,
 .release-doctor-memory article {
   min-width: 0;
@@ -8351,6 +8361,11 @@ body.simple-mode.simple-review-focus .dossier-band {
 .release-doctor-share article {
   border-color: rgba(216, 151, 60, 0.25);
   background: linear-gradient(135deg, rgba(255, 246, 226, 0.74), rgba(255, 255, 255, 0.78));
+}
+
+.release-doctor-trail article {
+  border-color: rgba(15, 124, 107, 0.18);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.74), rgba(234, 242, 251, 0.56));
 }
 
 .release-doctor-proof article {
@@ -42845,6 +42860,7 @@ body.desk-rail-right .floating-dock {
   .build-phase2-metrics,
   .release-doctor-grid,
   .release-doctor-share,
+  .release-doctor-trail,
   .release-doctor-proof,
   .release-doctor-memory,
   .release-doctor-actions,
@@ -43715,6 +43731,7 @@ body.desk-rail-right .floating-dock {
   .build-phase2-metrics,
   .release-doctor-grid,
   .release-doctor-share,
+  .release-doctor-trail,
   .release-doctor-proof,
   .release-doctor-memory,
   .release-doctor-actions,

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V435 Release Outcome Trail
+
+V435 adds a compact outcome trail to the Release Doctor. The Build Tracker now shows the last release as built, deployed, verified, and share-ready before the deeper proof checklist and memory rows.
+
 ## V434 Share Outcome Memory
 
 V434 refreshes the Release Doctor memory with the real v433 share gate outcome. It records the product commit, retry commit, and verified share result so the share-or-hold gate carries the latest operating receipt.

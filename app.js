@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v445-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v445 Workspace Fit Guard";
+const DATA_VERSION = "20260706-v446-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v446 Next Batch Planner";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1296,8 +1296,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Workspace fit guard",
+    label: "Next batch planner",
     status: "Shipping now",
+    route: "#build-tracker",
+    detail: "Turn the next five releases into a copyable product plan."
+  },
+  {
+    label: "Workspace fit guard",
+    status: "Done",
     route: "#build-tracker",
     detail: "Keep header, rail, and workspace clearance explicit before release."
   },
@@ -10305,7 +10311,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, and workspace-fit-guard audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, and next-batch-planner audit are complete."
   );
   const launchGates = [
     {
@@ -10382,11 +10388,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v444 is verified on commit 6102871. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v445 is verified on commit af57bbe. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v444 verified",
+      outcome: "Previous outcome: v445 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44401",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44501",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10487,42 +10493,79 @@ function buildTrackerConfig() {
         }
       ]
     },
+    nextBatchPlan: {
+      label: "Next batch planner",
+      verdict: "Five releases queued",
+      rule: "Choose small improvements that make the app calmer, more provable, and easier to trust before adding new rooms.",
+      lanes: [
+        {
+          version: "v447",
+          label: "Release proof archive",
+          route: "#build-tracker",
+          detail: "Keep the last five release receipts visible so support and founder review can trace what changed."
+        },
+        {
+          version: "v448",
+          label: "Search-to-memo handoff",
+          route: "#decision-pack",
+          detail: "Carry the current fund and top blocker into the memo path with less repeated typing."
+        },
+        {
+          version: "v449",
+          label: "Saved review export polish",
+          route: "#review-vault",
+          detail: "Make saved review output shorter, cleaner, and easier to share without personal data."
+        },
+        {
+          version: "v450",
+          label: "Mobile calm audit",
+          route: "#main",
+          detail: "Tighten the first-screen mobile rhythm so the app feels peaceful on a phone."
+        },
+        {
+          version: "v451",
+          label: "Live-data readiness focus",
+          route: "#source-receipts",
+          detail: "Bring source-date, citation, TER, holding, and riskometer gaps into one next action."
+        }
+      ]
+    },
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "6102871",
-        detail: "v444 source change shipped with matching release labels and stamp."
+        value: "af57bbe",
+        detail: "v445 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v444 product commit."
+        detail: "The static Pages deployment completed for the v445 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v444-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v445-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v444 outcome is saved so the next release starts from proof."
+        detail: "The v445 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "6102871",
-        detail: "v444 source change that added Visual QA Receipt."
+        value: "af57bbe",
+        detail: "v445 source change that added Workspace Fit Guard."
       },
       {
         label: "Live deploy commit",
-        value: "6102871",
-        detail: "v444 Pages deploy succeeded on the product commit."
+        value: "af57bbe",
+        detail: "v445 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v444 verified",
+        value: "v445 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -10873,6 +10916,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Next batch planner">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.nextBatchPlan.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.nextBatchPlan.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.nextBatchPlan.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.nextBatchPlan.lanes.map((step) => `
+          <article>
+            <span>${escapeHtml(step.version)}</span>
+            <strong>${escapeHtml(step.label)}</strong>
+            <p>${escapeHtml(step.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-receipt" aria-label="Release share receipt">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.shareReceipt.label)}</span>
@@ -10945,6 +11002,7 @@ function releaseDoctorMarkup(tracker) {
         `).join("")}
         <button class="text-button" type="button" data-copy-release-share-receipt>Copy share receipt</button>
         <button class="text-button" type="button" data-copy-visual-qa-receipt>Copy visual QA</button>
+        <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
         <button class="text-button" type="button" data-copy-release-doctor>Copy doctor receipt</button>
       </div>
     </div>
@@ -11083,6 +11141,9 @@ function makeBuildTrackerBrief() {
     `Workspace fit guard: ${tracker.releaseDoctor.workspaceFitGuard.verdict}`,
     `Workspace fit rule: ${tracker.releaseDoctor.workspaceFitGuard.rule}`,
     ...tracker.releaseDoctor.workspaceFitGuard.checks.map((step) => `- Workspace fit ${step.label}: ${step.value} | ${step.detail}`),
+    `Next batch plan: ${tracker.releaseDoctor.nextBatchPlan.verdict}`,
+    `Next batch rule: ${tracker.releaseDoctor.nextBatchPlan.rule}`,
+    ...tracker.releaseDoctor.nextBatchPlan.lanes.map((step) => `- ${step.version} ${step.label}: ${step.detail} (${step.route})`),
     `Share gate: ${tracker.releaseDoctor.shareGate.verdict} | ${tracker.releaseDoctor.shareGate.detail}`,
     `Hold if: ${tracker.releaseDoctor.shareGate.holdIf}`,
     `Next if held: ${tracker.releaseDoctor.shareGate.next}`,
@@ -11148,6 +11209,11 @@ function makeReleaseDoctorBrief() {
     `- Rule: ${tracker.releaseDoctor.workspaceFitGuard.rule}`,
     ...tracker.releaseDoctor.workspaceFitGuard.checks.map((step) => `- ${step.label}: ${step.value} | ${step.detail}`),
     "",
+    "## Next Batch Planner",
+    `- Verdict: ${tracker.releaseDoctor.nextBatchPlan.verdict}`,
+    `- Rule: ${tracker.releaseDoctor.nextBatchPlan.rule}`,
+    ...tracker.releaseDoctor.nextBatchPlan.lanes.map((step) => `- ${step.version} ${step.label}: ${step.detail} Route: ${step.route}`),
+    "",
     "## Share Gate",
     `- Verdict: ${tracker.releaseDoctor.shareGate.verdict}`,
     `- Share when: ${tracker.releaseDoctor.shareGate.detail}`,
@@ -11209,6 +11275,19 @@ function makeVisualQaReceiptBrief() {
     ...tracker.releaseDoctor.visualQaReceipt.viewports.map((step) => `- ${step.label} (${step.value}): ${step.detail}`),
     "",
     `Known risk: ${tracker.releaseDoctor.visualQaReceipt.knownRisk}`
+  ].join("\n");
+}
+
+function makeNextBatchPlanBrief() {
+  const tracker = buildTrackerConfig();
+  return [
+    "# NiveshNadi Next Batch Plan",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Verdict: ${tracker.releaseDoctor.nextBatchPlan.verdict}`,
+    `Rule: ${tracker.releaseDoctor.nextBatchPlan.rule}`,
+    "",
+    "## Proposed next five releases",
+    ...tracker.releaseDoctor.nextBatchPlan.lanes.map((step) => `- ${step.version} ${step.label}: ${step.detail} Route: ${step.route}`)
   ].join("\n");
 }
 
@@ -61754,6 +61833,13 @@ function bindEvents() {
     if (!copyVisualQaReceipt) return;
     event.preventDefault();
     copyText(makeVisualQaReceiptBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyNextBatchPlan = event.target.closest("[data-copy-next-batch-plan]");
+    if (!copyNextBatchPlan) return;
+    event.preventDefault();
+    copyText(makeNextBatchPlanBrief());
   });
 
   document.addEventListener("click", (event) => {

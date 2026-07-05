@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v446 Next Batch Planner
+
+- Version: `0.446.0`
+- Data version: `20260706-v446-01`
+- Changes made: Added a copyable Next Batch Planner to the Release Doctor with five route-linked candidate releases: release proof archive, search-to-memo handoff, saved review export polish, mobile calm audit, and live-data readiness focus.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; browser visual QA across desktop, tablet, and mobile before final push
+- Known risks: The next batch plan is intentionally a product plan, not committed scope; final implementation order may change after the next inspection pass.
+
 ## NiveshNadi Phase 1 v445 Workspace Fit Guard
 
 - Version: `0.445.0`

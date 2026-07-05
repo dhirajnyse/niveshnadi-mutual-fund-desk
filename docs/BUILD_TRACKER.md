@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V446 Next Batch Planner
+
+V446 adds a copyable Next Batch Planner to the Release Doctor. The planner turns the next five release ideas into scoped, route-linked work so the project can continue calmly after the current batch.
+
 ## V445 Workspace Fit Guard
 
 V445 adds a Workspace Fit Guard to the Release Doctor and hardens layout clearance. The app now records header/rail clearance, stable wide-screen gutters, and mobile rail removal as release checks, while CSS keeps the side rail below the sticky header and contains rail scrolling.

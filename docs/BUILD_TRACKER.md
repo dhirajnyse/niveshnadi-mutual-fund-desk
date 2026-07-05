@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V436 Release Share Receipt
+
+V436 adds a compact share receipt to the Release Doctor. It puts the current share-ready rule, required proof, and previous verified outcome above the deeper share gate, outcome trail, proof checklist, and memory rows.
+
 ## V435 Release Outcome Trail
 
 V435 adds a compact outcome trail to the Release Doctor. The Build Tracker now shows the last release as built, deployed, verified, and share-ready before the deeper proof checklist and memory rows.

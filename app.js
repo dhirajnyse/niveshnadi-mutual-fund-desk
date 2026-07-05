@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260705-v435-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v435 Release Outcome Trail";
+const DATA_VERSION = "20260705-v436-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v436 Release Share Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1296,8 +1296,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Release outcome trail",
+    label: "Release share receipt",
     status: "Shipping now",
+    route: "#build-tracker",
+    detail: "Put one compact share-ready receipt above the deeper Release Doctor rows."
+  },
+  {
+    label: "Release outcome trail",
+    status: "Done",
     route: "#build-tracker",
     detail: "Show the last release as a four-step built, deployed, verified, share-ready path."
   },
@@ -10241,7 +10247,7 @@ function buildTrackerConfig() {
     reached: `${RELEASE_LABEL} reached: ${currentMove.label}`,
     targetShort: `${productionTarget}; 100% after production gates close.`,
     targetRule: "Full audit list stays available in the copied Build Tracker output.",
-    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, rail-link-whisper audit, workspace-center-breath audit, card-field-rhythm audit, quiet-input-rhythm audit, list-scan-whisper audit, quiet-table-alignment audit, quiet-empty-space audit, calm-reading-width audit, quiet-button-hierarchy audit, quiet-status-language audit, quiet-form-grouping audit, quiet-panel-boundaries audit, quiet-room-entrances audit, quiet-interior-scan audit, quiet-arrival-state audit, quiet-room-awareness audit, quiet-focus-handoff audit, quiet-search-return audit, quiet-filter-return audit, quiet-filter-voice audit, quiet-filter-count audit, quiet-filter-reset audit, quiet-reset-receipt audit, quiet-clear-meaning audit, quiet-clear-hint audit, quiet-clear-return audit, quiet-clear-close audit, quiet-search-key audit, quiet-search-escape audit, quiet-search-enter audit, quiet-search-handoff audit, quiet-fund-receipt audit, quiet-fund-context audit, quiet-inspect-labels audit, quiet-compare-labels audit, quiet-compare-receipt audit, quiet-compare-focus audit, quiet-compare-context audit, quiet-compare-live-context audit, release-freshness-cue audit, pages-deploy-guard audit, release-health-receipt audit, release-doctor-lane audit, release-doctor-action-strip audit, deploy-memory-row audit, release-proof-checklist audit, proof-outcome-memory audit, release-share-gate audit, share-outcome-memory audit, and release-outcome-trail audit are complete.`
+    targetWindow: `${productionTarget}; 100% only after all production gates, founder signoff, receipt vault, launch claim gate, workspace-fit audit, desk-rail navigation audit, rail-fit audit, rail-context audit, rail-group audit, rail-lane audit, mini-rail audit, mini-rail label audit, layout preset audit, rail-progress audit, rail-group memory audit, rail-backtrack audit, rail-recent audit, rail-keyboard audit, rail-collapse audit, rail-count audit, rail-clearance audit, rail-top compact audit, rail-hierarchy audit, header-command audit, workspace-canvas audit, room-card-density audit, section-header audit, score-ring audit, form-control audit, responsive-control audit, action-strip audit, content-rhythm audit, calm-focus audit, action-priority audit, guided-progress audit, one-move audit, done-when audit, hold-if audit, next-tiny-step audit, calm-pace audit, ignore-now audit, quiet-focus-sentence audit, compact-focus-layout audit, room-focus-bookmark audit, quiet-exit-trail audit, soft-proof-trail audit, room-entry-calm audit, quiet-step-dots audit, memory-footer-calm audit, quiet-focus-thread audit, bookmark-whisper audit, command-breath audit, focus-surface audit, proof-trail-whisper audit, progress-rail-whisper audit, memory-footer-whisper audit, cue-action-whisper audit, header-next-whisper audit, header-utility-whisper audit, rail-context-whisper audit, rail-group-whisper audit, rail-link-whisper audit, workspace-center-breath audit, card-field-rhythm audit, quiet-input-rhythm audit, list-scan-whisper audit, quiet-table-alignment audit, quiet-empty-space audit, calm-reading-width audit, quiet-button-hierarchy audit, quiet-status-language audit, quiet-form-grouping audit, quiet-panel-boundaries audit, quiet-room-entrances audit, quiet-interior-scan audit, quiet-arrival-state audit, quiet-room-awareness audit, quiet-focus-handoff audit, quiet-search-return audit, quiet-filter-return audit, quiet-filter-voice audit, quiet-filter-count audit, quiet-filter-reset audit, quiet-reset-receipt audit, quiet-clear-meaning audit, quiet-clear-hint audit, quiet-clear-return audit, quiet-clear-close audit, quiet-search-key audit, quiet-search-escape audit, quiet-search-enter audit, quiet-search-handoff audit, quiet-fund-receipt audit, quiet-fund-context audit, quiet-inspect-labels audit, quiet-compare-labels audit, quiet-compare-receipt audit, quiet-compare-focus audit, quiet-compare-context audit, quiet-compare-live-context audit, release-freshness-cue audit, pages-deploy-guard audit, release-health-receipt audit, release-doctor-lane audit, release-doctor-action-strip audit, deploy-memory-row audit, release-proof-checklist audit, proof-outcome-memory audit, release-share-gate audit, share-outcome-memory audit, release-outcome-trail audit, and release-share-receipt audit are complete.`
   };
   const launchGates = [
     {
@@ -10315,6 +10321,13 @@ function buildTrackerConfig() {
       holdIf: "Hold if the Pages deploy fails, the stamp is old, or cache proof is unclear.",
       next: "If the hold condition appears, retry Pages once and update share outcome memory after success."
     },
+    shareReceipt: {
+      label: "Release share receipt",
+      verdict: "Share after live stamp",
+      detail: `Last release v435 is verified on commit 71e3425. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      proof: "Fresh URL plus stamp match",
+      outcome: "Previous outcome: v435 verified"
+    },
     proofSteps: [
       {
         label: "01 Commit",
@@ -10340,39 +10353,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "1feed70",
-        detail: "v434 source change shipped with matching release labels and stamp."
+        value: "71e3425",
+        detail: "v435 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v434 product commit."
+        detail: "The static Pages deployment completed for the v435 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260705-v434-01 before sharing."
+        detail: "release-stamp.txt returned 20260705-v435-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v434 outcome is saved so the next release starts from proof."
+        detail: "The v435 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "1feed70",
-        detail: "v434 source change that added Share Outcome Memory."
+        value: "71e3425",
+        detail: "v435 source change that added the Release Outcome Trail."
       },
       {
         label: "Live deploy commit",
-        value: "1feed70",
-        detail: "v434 Pages deploy succeeded on the product commit."
+        value: "71e3425",
+        detail: "v435 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v434 verified",
+        value: "v435 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -10686,6 +10699,23 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-receipt" aria-label="Release share receipt">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.shareReceipt.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.shareReceipt.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.shareReceipt.detail)}</p>
+        </article>
+        <article>
+          <span>Proof</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.shareReceipt.proof)}</strong>
+          <p>Use the fresh Build Tracker URL and live stamp before opening the release link widely.</p>
+        </article>
+        <article>
+          <span>Last outcome</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.shareReceipt.outcome)}</strong>
+          <p>The previous release is the trust anchor for this handoff.</p>
+        </article>
+      </div>
       <div class="release-doctor-share" aria-label="Release share gate">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.shareGate.label)}</span>
@@ -10858,6 +10888,7 @@ function makeBuildTrackerBrief() {
     `Deploy workflow path: ${tracker.releaseHealth.workflowPath}`,
     `Healthy when: ${tracker.releaseHealth.healthyWhen}`,
     `Release doctor: ${tracker.releaseDoctor.status} - ${tracker.releaseDoctor.summary}`,
+    `Share receipt: ${tracker.releaseDoctor.shareReceipt.verdict} | ${tracker.releaseDoctor.shareReceipt.detail}`,
     `Share gate: ${tracker.releaseDoctor.shareGate.verdict} | ${tracker.releaseDoctor.shareGate.detail}`,
     `Hold if: ${tracker.releaseDoctor.shareGate.holdIf}`,
     `Next if held: ${tracker.releaseDoctor.shareGate.next}`,
@@ -10895,6 +10926,12 @@ function makeReleaseDoctorBrief() {
     `Workflow path: ${tracker.releaseHealth.workflowPath}`,
     `Fresh build: ${tracker.releaseFreshness.pagesCheck}`,
     `Release stamp: ${tracker.releaseFreshness.stampCheck}`,
+    "",
+    "## Share Receipt",
+    `- Verdict: ${tracker.releaseDoctor.shareReceipt.verdict}`,
+    `- Detail: ${tracker.releaseDoctor.shareReceipt.detail}`,
+    `- Proof: ${tracker.releaseDoctor.shareReceipt.proof}`,
+    `- Last outcome: ${tracker.releaseDoctor.shareReceipt.outcome}`,
     "",
     "## Share Gate",
     `- Verdict: ${tracker.releaseDoctor.shareGate.verdict}`,

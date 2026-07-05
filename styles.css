@@ -8259,6 +8259,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 
 .release-doctor-head span,
 .release-doctor-grid span,
+.release-doctor-receipt span,
 .release-doctor-share span,
 .release-doctor-trail span,
 .release-doctor-proof span,
@@ -8271,6 +8272,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 
 .release-doctor-head strong,
 .release-doctor-grid strong,
+.release-doctor-receipt strong,
 .release-doctor-share strong,
 .release-doctor-trail strong,
 .release-doctor-proof strong,
@@ -8283,6 +8285,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 
 .release-doctor-head p,
 .release-doctor-grid p,
+.release-doctor-receipt p,
 .release-doctor-share p,
 .release-doctor-trail p,
 .release-doctor-proof p,
@@ -8307,6 +8310,12 @@ body.simple-mode.simple-review-focus .dossier-band {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
+}
+
+.release-doctor-receipt {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 0.9fr));
+  gap: 8px;
 }
 
 .release-doctor-share {
@@ -8347,6 +8356,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 }
 
 .release-doctor-grid article,
+.release-doctor-receipt article,
 .release-doctor-share article,
 .release-doctor-trail article,
 .release-doctor-proof article,
@@ -8361,6 +8371,11 @@ body.simple-mode.simple-review-focus .dossier-band {
 .release-doctor-share article {
   border-color: rgba(216, 151, 60, 0.25);
   background: linear-gradient(135deg, rgba(255, 246, 226, 0.74), rgba(255, 255, 255, 0.78));
+}
+
+.release-doctor-receipt article {
+  border-color: rgba(15, 124, 107, 0.22);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.84), rgba(255, 255, 255, 0.82));
 }
 
 .release-doctor-trail article {
@@ -42859,6 +42874,7 @@ body.desk-rail-right .floating-dock {
   .build-move-grid,
   .build-phase2-metrics,
   .release-doctor-grid,
+  .release-doctor-receipt,
   .release-doctor-share,
   .release-doctor-trail,
   .release-doctor-proof,
@@ -43730,6 +43746,7 @@ body.desk-rail-right .floating-dock {
   .build-move-grid,
   .build-phase2-metrics,
   .release-doctor-grid,
+  .release-doctor-receipt,
   .release-doctor-share,
   .release-doctor-trail,
   .release-doctor-proof,

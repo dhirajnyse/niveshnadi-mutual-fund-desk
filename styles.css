@@ -8314,7 +8314,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 
 .release-doctor-receipt {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 0.9fr));
+  grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0, 0.88fr));
   gap: 8px;
 }
 
@@ -8376,6 +8376,10 @@ body.simple-mode.simple-review-focus .dossier-band {
 .release-doctor-receipt article {
   border-color: rgba(15, 124, 107, 0.22);
   background: linear-gradient(135deg, rgba(229, 247, 241, 0.84), rgba(255, 255, 255, 0.82));
+}
+
+.release-doctor-receipt strong {
+  overflow-wrap: anywhere;
 }
 
 .release-doctor-trail article {

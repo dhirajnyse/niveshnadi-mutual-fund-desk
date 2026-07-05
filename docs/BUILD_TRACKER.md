@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V438 Share Receipt ID
+
+V438 adds a stable share receipt ID to the Release Doctor and copied Share Receipt. The handoff note can now cite a precise receipt number tied to the active release key before anyone shares a live build.
+
 ## V437 Share Receipt Copy
 
 V437 adds a dedicated Copy Share Receipt action to the Release Doctor. The copied text carries only the calm release verdict, required proof, previous verified outcome, fresh build link, and release-stamp link.

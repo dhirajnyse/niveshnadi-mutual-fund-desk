@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V432 Proof Outcome Memory
+
+V432 refreshes the Release Doctor memory with the real v431 proof outcome. It records the v431 product commit, the retry commit that served the live release, and the verified stamp result so the proof checklist now has visible operating memory behind it.
+
 ## V431 Release Proof Checklist
 
 V431 adds a compact four-step proof checklist to the Release Doctor. Every release now has a visible share gate for source markers, Pages deployment success, live release-stamp match, and fresh Build Tracker URL proof.

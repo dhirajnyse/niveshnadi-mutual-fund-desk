@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v442-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v442 Batch Changelog Ledger";
+const DATA_VERSION = "20260706-v443-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v443 Release Batch Checklist";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1296,8 +1296,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Batch changelog ledger",
+    label: "Release batch checklist",
     status: "Shipping now",
+    route: "#build-tracker",
+    detail: "Show the five release proof checks before any batch is shared."
+  },
+  {
+    label: "Batch changelog ledger",
+    status: "Done",
     route: "#build-tracker",
     detail: "Record version, changes, files, checks, and known risks for every release."
   },
@@ -10287,7 +10293,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, and batch-changelog-ledger audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, and release-batch-checklist audit are complete."
   );
   const launchGates = [
     {
@@ -10364,11 +10370,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v441 is verified on commit 14d7ed0. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v442 is verified on commit 0f39e06. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v441 verified",
+      outcome: "Previous outcome: v442 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260705V44101",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44201",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10396,42 +10402,69 @@ function buildTrackerConfig() {
         detail: "Open the fresh Build Tracker URL when cache looks old."
       }
     ],
+    batchChecklist: [
+      {
+        label: "Source",
+        value: "Version aligned",
+        detail: "Release label, data key, package version, cache key, stamp, docs, and changelog name the same build."
+      },
+      {
+        label: "Checks",
+        value: "Static plus security",
+        detail: "Run syntax, static checks, security audit, and diff hygiene before the release is committed."
+      },
+      {
+        label: "Visual QA",
+        value: "Viewport pass",
+        detail: "Inspect the app at desktop, tablet, and mobile widths before the batch is called ready."
+      },
+      {
+        label: "Deploy",
+        value: "Stamp proof",
+        detail: "Pages deploy succeeds and the live release-stamp key matches the current data version."
+      },
+      {
+        label: "Risk",
+        value: "Known risk noted",
+        detail: "Changelog records what remains uncertain so the next release starts honestly."
+      }
+    ],
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "14d7ed0",
-        detail: "v441 source change shipped with matching release labels and stamp."
+        value: "0f39e06",
+        detail: "v442 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v441 product commit."
+        detail: "The static Pages deployment completed for the v442 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260705-v441-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v442-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v441 outcome is saved so the next release starts from proof."
+        detail: "The v442 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "14d7ed0",
-        detail: "v441 source change that added Share Receipt Lineage."
+        value: "0f39e06",
+        detail: "v442 source change that added Batch Changelog Ledger."
       },
       {
         label: "Live deploy commit",
-        value: "14d7ed0",
-        detail: "v441 Pages deploy succeeded on the product commit."
+        value: "0f39e06",
+        detail: "v442 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v441 verified",
+        value: "v442 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -10745,6 +10778,15 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Release batch checklist">
+        ${tracker.releaseDoctor.batchChecklist.map((step) => `
+          <article>
+            <span>${escapeHtml(step.label)}</span>
+            <strong>${escapeHtml(step.value)}</strong>
+            <p>${escapeHtml(step.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-receipt" aria-label="Release share receipt">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.shareReceipt.label)}</span>
@@ -10947,6 +10989,7 @@ function makeBuildTrackerBrief() {
     `Share receipt valid when: ${tracker.releaseDoctor.shareReceipt.validWhen}`,
     `Share receipt recheck if: ${tracker.releaseDoctor.shareReceipt.recheckIf}`,
     `Share receipt superseded when: ${tracker.releaseDoctor.shareReceipt.supersededWhen}`,
+    ...tracker.releaseDoctor.batchChecklist.map((step) => `- Release checklist ${step.label}: ${step.value} | ${step.detail}`),
     `Share gate: ${tracker.releaseDoctor.shareGate.verdict} | ${tracker.releaseDoctor.shareGate.detail}`,
     `Hold if: ${tracker.releaseDoctor.shareGate.holdIf}`,
     `Next if held: ${tracker.releaseDoctor.shareGate.next}`,
@@ -10996,6 +11039,9 @@ function makeReleaseDoctorBrief() {
     `- Valid when: ${tracker.releaseDoctor.shareReceipt.validWhen}`,
     `- Recheck if: ${tracker.releaseDoctor.shareReceipt.recheckIf}`,
     `- Superseded when: ${tracker.releaseDoctor.shareReceipt.supersededWhen}`,
+    "",
+    "## Release Batch Checklist",
+    ...tracker.releaseDoctor.batchChecklist.map((step) => `- ${step.label}: ${step.value} | ${step.detail}`),
     "",
     "## Share Gate",
     `- Verdict: ${tracker.releaseDoctor.shareGate.verdict}`,

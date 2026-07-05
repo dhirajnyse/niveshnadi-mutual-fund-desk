@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v443 Release Batch Checklist
+
+- Version: `0.443.0`
+- Data version: `20260706-v443-01`
+- Changes made: Added a compact Release Doctor checklist for source alignment, static/security checks, visual QA, deploy stamp proof, and known-risk notes; included the checklist in copied Build Tracker and Release Doctor output.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check
+- Known risks: The checklist records required proof, but the browser visual QA pass is still executed at the end of the five-version batch before final publishing.
+
 ## NiveshNadi Phase 1 v442 Batch Changelog Ledger
 
 - Version: `0.442.0`

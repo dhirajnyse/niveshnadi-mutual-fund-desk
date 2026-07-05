@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V443 Release Batch Checklist
+
+V443 adds a compact release checklist to the Release Doctor. Every batch now keeps source alignment, static checks, visual QA, deploy stamp proof, and known-risk notes visible before the build is shared.
+
 ## V442 Batch Changelog Ledger
 
 V442 adds a durable release changelog and static check coverage for the current release entry. Each release now records the version number, changes made, files changed, checks run, and known risks before the release is committed.

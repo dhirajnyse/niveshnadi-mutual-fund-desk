@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v442 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v443 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Release Batch Checklist that shows source alignment, static checks, visual QA, deploy proof, and risk-note requirements inside the Release Doctor.
 - Batch Changelog Ledger that records version, changes, files changed, checks, and known risks for every release.
 - Share Receipt Lineage that links each copied release receipt to the previous verified receipt.
 - Share Receipt Supersede that marks copied release receipts stale when a newer live stamp or release note appears.

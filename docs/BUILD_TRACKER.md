@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V440 Share Receipt Supersede
+
+V440 adds a supersede rule to the Release Doctor and copied Share Receipt. A copied handoff now says when the receipt is no longer current because a different live release-stamp key or newer release note appears.
+
 ## V439 Share Receipt Freshness
 
 V439 adds a freshness rule to the Release Doctor and copied Share Receipt. A copied handoff now says when the receipt is valid and when to recheck cache, deploy, copied key, or live release-stamp proof.

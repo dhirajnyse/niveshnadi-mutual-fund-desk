@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v439 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v440 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Share Receipt Supersede that marks copied release receipts stale when a newer live stamp or release note appears.
 - Share Receipt Freshness that states when copied release receipts are valid and when stale proof must be rechecked.
 - Share Receipt ID that gives every copied release handoff a stable receipt number tied to the active release key.
 - Share Receipt Copy that copies only the calm release handoff verdict, proof, previous outcome, and freshness links.

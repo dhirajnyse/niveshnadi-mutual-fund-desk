@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260705-v441-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v441 Share Receipt Lineage";
+const DATA_VERSION = "20260706-v442-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v442 Batch Changelog Ledger";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1296,8 +1296,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Receipt lineage",
+    label: "Batch changelog ledger",
     status: "Shipping now",
+    route: "#build-tracker",
+    detail: "Record version, changes, files, checks, and known risks for every release."
+  },
+  {
+    label: "Receipt lineage",
+    status: "Done",
     route: "#build-tracker",
     detail: "Link copied release receipts to the previous verified receipt."
   },
@@ -10281,7 +10287,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, and share-receipt-lineage audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, and batch-changelog-ledger audit are complete."
   );
   const launchGates = [
     {
@@ -10358,11 +10364,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v440 is verified on commit 915cc7f. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v441 is verified on commit 14d7ed0. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v440 verified",
+      outcome: "Previous outcome: v441 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260705V44001",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260705V44101",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10393,39 +10399,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "915cc7f",
-        detail: "v440 source change shipped with matching release labels and stamp."
+        value: "14d7ed0",
+        detail: "v441 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v440 product commit."
+        detail: "The static Pages deployment completed for the v441 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260705-v440-01 before sharing."
+        detail: "release-stamp.txt returned 20260705-v441-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v440 outcome is saved so the next release starts from proof."
+        detail: "The v441 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "915cc7f",
-        detail: "v440 source change that added Share Receipt Supersede."
+        value: "14d7ed0",
+        detail: "v441 source change that added Share Receipt Lineage."
       },
       {
         label: "Live deploy commit",
-        value: "915cc7f",
-        detail: "v440 Pages deploy succeeded on the product commit."
+        value: "14d7ed0",
+        detail: "v441 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v440 verified",
+        value: "v441 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],

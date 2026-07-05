@@ -24,7 +24,10 @@ function listFiles(dir) {
 const index = read("index.html");
 const app = read("app.js");
 const styles = read("styles.css");
+const changelog = read("CHANGELOG.md");
 const packageJson = JSON.parse(read("package.json"));
+const releaseLabel = app.match(/const RELEASE_LABEL = "([^"]+)";/)?.[1] || "";
+const dataVersion = app.match(/const DATA_VERSION = "([^"]+)";/)?.[1] || "";
 
 assert(index.includes("Content-Security-Policy"), "index.html is missing a CSP meta tag.");
 assert(index.includes("NiveshNadi Mutual Fund Desk"), "index.html is missing the product title.");
@@ -151,6 +154,13 @@ assert(index.includes("scrollTopButton"), "index.html is missing the back-to-top
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 
 assert(app.includes("const DATA_VERSION"), "app.js is missing DATA_VERSION.");
+assert(Boolean(releaseLabel), "app.js is missing a parseable RELEASE_LABEL.");
+assert(Boolean(dataVersion), "app.js is missing a parseable DATA_VERSION.");
+assert(changelog.includes(releaseLabel), "CHANGELOG.md is missing the current release label.");
+assert(changelog.includes(dataVersion), "CHANGELOG.md is missing the current data version.");
+assert(changelog.includes("Files changed"), "CHANGELOG.md entries must record files changed.");
+assert(changelog.includes("Checks run"), "CHANGELOG.md entries must record checks run.");
+assert(changelog.includes("Known risks"), "CHANGELOG.md entries must record known risks.");
 assert(app.includes("Nadi Large Cap Core Fund"), "app.js is missing demo fund data.");
 assert(app.includes("function whyFundLens") && app.includes("function makeWhyFundNote"), "app.js is missing Why This Fund Lens behavior.");
 assert(app.includes("function renderSignalStrip") && app.includes("function makeSignalStripNote"), "app.js is missing Nadi Signal Strip behavior.");
@@ -479,6 +489,7 @@ for (const file of listFiles("data").filter((name) => name.endsWith(".json"))) {
 
 for (const file of [
   "SECURITY.md",
+  "CHANGELOG.md",
   "README.md",
   "docs/BRAND_SYSTEM.md",
   "docs/COMPLIANCE_NOTES.md",

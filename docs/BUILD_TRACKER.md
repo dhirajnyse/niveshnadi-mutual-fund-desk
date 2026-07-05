@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V442 Batch Changelog Ledger
+
+V442 adds a durable release changelog and static check coverage for the current release entry. Each release now records the version number, changes made, files changed, checks run, and known risks before the release is committed.
+
 ## V441 Share Receipt Lineage
 
 V441 adds receipt lineage to the Release Doctor and copied Share Receipt. A copied handoff now carries the current receipt ID, the previous verified receipt ID, and a plain line showing the release chain.

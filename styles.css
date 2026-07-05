@@ -8259,6 +8259,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 
 .release-doctor-head span,
 .release-doctor-grid span,
+.release-doctor-share span,
 .release-doctor-proof span,
 .release-doctor-memory span {
   color: var(--mint);
@@ -8269,6 +8270,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 
 .release-doctor-head strong,
 .release-doctor-grid strong,
+.release-doctor-share strong,
 .release-doctor-proof strong,
 .release-doctor-memory strong {
   display: block;
@@ -8279,6 +8281,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 
 .release-doctor-head p,
 .release-doctor-grid p,
+.release-doctor-share p,
 .release-doctor-proof p,
 .release-doctor-memory p {
   margin: 4px 0 0;
@@ -8301,6 +8304,12 @@ body.simple-mode.simple-review-focus .dossier-band {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
+}
+
+.release-doctor-share {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) repeat(2, minmax(0, 0.92fr));
+  gap: 8px;
 }
 
 .release-doctor-proof {
@@ -8329,6 +8338,7 @@ body.simple-mode.simple-review-focus .dossier-band {
 }
 
 .release-doctor-grid article,
+.release-doctor-share article,
 .release-doctor-proof article,
 .release-doctor-memory article {
   min-width: 0;
@@ -8336,6 +8346,11 @@ body.simple-mode.simple-review-focus .dossier-band {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--wash);
+}
+
+.release-doctor-share article {
+  border-color: rgba(216, 151, 60, 0.25);
+  background: linear-gradient(135deg, rgba(255, 246, 226, 0.74), rgba(255, 255, 255, 0.78));
 }
 
 .release-doctor-proof article {
@@ -42829,6 +42844,7 @@ body.desk-rail-right .floating-dock {
   .build-move-grid,
   .build-phase2-metrics,
   .release-doctor-grid,
+  .release-doctor-share,
   .release-doctor-proof,
   .release-doctor-memory,
   .release-doctor-actions,
@@ -43698,6 +43714,7 @@ body.desk-rail-right .floating-dock {
   .build-move-grid,
   .build-phase2-metrics,
   .release-doctor-grid,
+  .release-doctor-share,
   .release-doctor-proof,
   .release-doctor-memory,
   .release-doctor-actions,

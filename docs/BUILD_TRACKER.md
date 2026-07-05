@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V433 Release Share Gate
+
+V433 adds a compact share-or-hold gate to the Release Doctor. The Build Tracker now states when the current release can be shared, when it must be held, and the next move if proof is unclear.
+
 ## V432 Proof Outcome Memory
 
 V432 refreshes the Release Doctor memory with the real v431 proof outcome. It records the v431 product commit, the retry commit that served the live release, and the verified stamp result so the proof checklist now has visible operating memory behind it.

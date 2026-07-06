@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V462 Retention Action Router
+
+V462 adds Retention Action Router to the Release Doctor. It turns release proof, memo handoff, review memory, source cleanup, and viewport proof into one route, one next action, one proof lock, and one hold condition so the next custody work starts from a calm operating map.
+
 ## V461 Source Custody Deletion Receipts
 
 V461 adds Source Custody Deletion Receipts to the Source Receipt Vault. It maps stale-source supersede, failed-receipt delete/quarantine, claim-surface freeze, and reviewer sign-off receipts so live-source proof has a cleanup path before backend custody exists.

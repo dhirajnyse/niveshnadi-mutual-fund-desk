@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v462 Retention Action Router
+
+- Version: `0.462.0`
+- Data version: `20260706-v462-01`
+- Changes made: Added Retention Action Router to the Release Doctor with one next action, route, proof lock, and hold condition for release proof, memo handoff, review memory, source cleanup, and viewport proof; rolled Release Doctor memory forward to v461.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v462 marker scan
+- Known risks: The router coordinates retained proof surfaces only; production still needs account storage, source custody, actual deletion execution, reviewer identity, backend audit logs, automated visual regression, privacy review, and rollback evidence.
+
 ## NiveshNadi Phase 1 v461 Source Custody Deletion Receipts
 
 - Version: `0.461.0`

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v461-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v461 Source Custody Deletion Receipts";
+const DATA_VERSION = "20260706-v462-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v462 Retention Action Router";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v460 passed local release checks on commit bb06c28. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v461 passed local checks, deploy checks, and live stamp verification on commit f2a5d18. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v460 local checks passed",
+      outcome: "Previous outcome: v461 live stamp verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46001",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46101",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10698,40 +10698,83 @@ function buildTrackerConfig() {
         }
       ]
     },
+    retentionActionRouter: {
+      label: "Retention action router",
+      verdict: "One next action per proof surface",
+      receiptId: ["NN", "RETENTION", "ACTION", "ROUTER", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      rule: "Every retained proof surface must route to one next action, one proof lock, and one hold condition before custody work widens.",
+      actions: [
+        {
+          label: "Release proof",
+          route: "#build-tracker",
+          action: "Verify live stamp, copy share receipt, then roll proof archive after deployment.",
+          proof: "Release key, commit, receipt ID, and known-risk line match the current build.",
+          hold: "Hold sharing if stamp, cache key, or Actions status disagree."
+        },
+        {
+          label: "Memo handoff",
+          route: "#decision-pack",
+          action: "Keep compact memo receipt fields and prepare saved-research custody mapping.",
+          proof: "Fund, search context, blocker, memo prompt, persistence rule, and excluded private data are visible.",
+          hold: "Hold account sync if reason text, source date, or owner consent is missing."
+        },
+        {
+          label: "Review memory",
+          route: "#review-vault",
+          action: "Keep review snapshot memory short and prepare account-backed history with deletion controls.",
+          proof: "Review cadence, delta, export scope, memory receipt, and delete/supersede rule are visible.",
+          hold: "Hold durable storage if review owner, purpose, or deletion receipt is unclear."
+        },
+        {
+          label: "Source cleanup",
+          route: "#source-receipts",
+          action: "Route stale, failed, frozen, and reviewer-signed source receipts into custody tickets.",
+          proof: "Supersede, delete, freeze, and sign-off receipts name trigger, action, route, and boundary.",
+          hold: "Hold live claim refresh if replacement receipt, reviewer sign-off, or rollback evidence is missing."
+        },
+        {
+          label: "Viewport proof",
+          route: "#build-tracker",
+          action: "Carry viewport rows into future visual regression proof without retaining private screenshots.",
+          proof: "Viewport size, pass/fail status, proof note, retest trigger, and deletion boundary are retained.",
+          hold: "Hold visual automation if screenshot hash, viewport metadata, or deletion rule is absent."
+        }
+      ]
+    },
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
       rule: "Source custody deletion receipts are visible; keep the next batch focused on account deletion, visual regression, and backend custody surfaces.",
       lanes: [
         {
-          version: "v462",
-          label: "Retention action router",
-          route: "#build-tracker",
-          detail: "Turn retention health findings into one next action for the founder release desk."
-        },
-        {
           version: "v463",
           label: "Saved research custody map",
-          route: "#account-readiness",
-          detail: "Connect memo and review persistence into a future account-backed saved research custody model."
+          route: "#build-tracker",
+          detail: "Map memo, review, source, deletion, and viewport receipts into a future account custody model."
         },
         {
           version: "v464",
           label: "Account deletion rehearsal",
           route: "#account-readiness",
-          detail: "Rehearse account deletion, export, and receipt cleanup before production storage exists."
+          detail: "Rehearse account deletion, export, retained-proof, and support notice before production storage exists."
         },
         {
           version: "v465",
           label: "Visual regression handoff",
-          route: "#build-tracker",
-          detail: "Prepare the viewport proof history for future automated screenshot comparison and release gating."
+          route: "#account-readiness",
+          detail: "Prepare viewport proof history for automated screenshot comparison and release gating."
         },
         {
           version: "v466",
           label: "Backend custody bridge",
           route: "#backend-audit",
           detail: "Bridge memo, review, source, deletion, and viewport receipts into backend-ready custody tickets."
+        },
+        {
+          version: "v467",
+          label: "Account consent migration preview",
+          route: "#backend-audit",
+          detail: "Preview how browser-local saved research can migrate only after consent, export, and delete controls exist."
         }
       ]
     },
@@ -10740,6 +10783,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v461",
+          key: "20260706-v461-01",
+          commit: "f2a5d18",
+          receiptId: "NN-SHARE-RECEIPT-20260706V46101",
+          proof: "Source Custody Deletion Receipts added, deployed, and live-stamp verified."
+        },
         {
           version: "v460",
           key: "20260706-v460-01",
@@ -10768,13 +10818,6 @@ function buildTrackerConfig() {
           receiptId: "NN-SHARE-RECEIPT-20260706V45701",
           proof: "Retention Health Summary added and verified by static release checks."
         },
-        {
-          version: "v456",
-          key: "20260706-v456-01",
-          commit: "a09c6ec",
-          receiptId: "NN-SHARE-RECEIPT-20260706V45601",
-          proof: "Live Data Receipt Retention added and verified live after deploy retry 495a2b6."
-        }
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
       retentionReview: {
@@ -10811,40 +10854,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "bb06c28",
-        detail: "v460 source change shipped with matching release labels and stamp."
+        value: "f2a5d18",
+        detail: "v461 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Checked",
-        value: "Static pass",
-        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v460."
+        value: "Static plus visual pass",
+        detail: "Syntax, static, security, local preview, visual QA, Actions, and live stamp checks passed for v461."
       },
       {
-        label: "03 Queued",
-        value: "Batch push later",
-        detail: "This five-version batch will be pushed and live-verified after v461."
+        label: "03 Deployed",
+        value: "Live stamp verified",
+        detail: "GitHub Pages served 20260706-v461-01 after the v461 batch push."
       },
       {
         label: "04 Share",
-        value: "Hold for live stamp",
-        detail: "Do not share v461 until the final batch deploy returns the active release stamp."
+        value: "Next build held",
+        detail: "Do not share v462 until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "bb06c28",
-        detail: "v460 source change that added Viewport Proof History."
+        value: "f2a5d18",
+        detail: "v461 source change that added Source Custody Deletion Receipts."
       },
       {
-        label: "Local release checks",
+        label: "Release checks",
         value: "Passed",
-        detail: "v460 passed syntax, static, security, diff hygiene, and marker scans before v461 started."
+        detail: "v461 passed syntax, static, security, local preview, visual QA, Actions, and live Pages verification."
       },
       {
         label: "Share outcome",
-        value: "v460 held for batch deploy",
-        detail: "The final batch release will be pushed and live-stamp verified after v461."
+        value: "v461 live verified",
+        detail: "The previous batch reached GitHub Pages with the expected release stamp."
       }
     ],
     actions: [
@@ -11250,6 +11293,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Retention action router">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.retentionActionRouter.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.retentionActionRouter.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.retentionActionRouter.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.retentionActionRouter.actions.map((item) => `
+          <article>
+            <span>${escapeHtml(item.label)} | ${escapeHtml(item.route)}</span>
+            <strong>${escapeHtml(item.action)}</strong>
+            <p>${escapeHtml(item.proof)} Hold: ${escapeHtml(item.hold)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Next batch planner">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.nextBatchPlan.label)}</span>
@@ -11368,6 +11425,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-mobile-audit-retention>Copy mobile retention</button>
         <button class="text-button" type="button" data-copy-viewport-proof-history>Copy viewport history</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
+        <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
         <button class="text-button" type="button" data-copy-release-proof-archive>Copy proof archive</button>
         <button class="text-button" type="button" data-copy-proof-archive-retention>Copy archive retention</button>
@@ -11531,6 +11589,10 @@ function makeBuildTrackerBrief() {
     `Retention health rule: ${tracker.releaseDoctor.retentionHealthSummary.rule}`,
     ...tracker.releaseDoctor.retentionHealthSummary.surfaces.map((surface) => `- Retention surface ${surface.label}: ${surface.value} | ${surface.status} | ${surface.detail}`),
     ...tracker.releaseDoctor.retentionHealthSummary.custody.map((item) => `- Retention custody ${item.label}: ${item.value} | ${item.detail}`),
+    `Retention action router: ${tracker.releaseDoctor.retentionActionRouter.verdict}`,
+    `Retention action receipt: ${tracker.releaseDoctor.retentionActionRouter.receiptId}`,
+    `Retention action rule: ${tracker.releaseDoctor.retentionActionRouter.rule}`,
+    ...tracker.releaseDoctor.retentionActionRouter.actions.map((item) => `- Retention action ${item.label}: ${item.action} | Route ${item.route} | Proof ${item.proof} | Hold ${item.hold}`),
     `Next batch plan: ${tracker.releaseDoctor.nextBatchPlan.verdict}`,
     `Next batch rule: ${tracker.releaseDoctor.nextBatchPlan.rule}`,
     ...tracker.releaseDoctor.nextBatchPlan.lanes.map((step) => `- ${step.version} ${step.label}: ${step.detail} (${step.route})`),
@@ -11638,6 +11700,12 @@ function makeReleaseDoctorBrief() {
     `- Rule: ${tracker.releaseDoctor.retentionHealthSummary.rule}`,
     ...tracker.releaseDoctor.retentionHealthSummary.surfaces.map((surface) => `- ${surface.label}: ${surface.value} | ${surface.status} | ${surface.detail}`),
     ...tracker.releaseDoctor.retentionHealthSummary.custody.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Retention Action Router",
+    `- Receipt ID: ${tracker.releaseDoctor.retentionActionRouter.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.retentionActionRouter.verdict}`,
+    `- Rule: ${tracker.releaseDoctor.retentionActionRouter.rule}`,
+    ...tracker.releaseDoctor.retentionActionRouter.actions.map((item) => `- ${item.label}: ${item.action} Route: ${item.route}. Proof: ${item.proof}. Hold: ${item.hold}`),
     "",
     "## Next Batch Planner",
     `- Verdict: ${tracker.releaseDoctor.nextBatchPlan.verdict}`,
@@ -11822,6 +11890,28 @@ function makeRetentionHealthSummaryBrief() {
     ...summary.custody.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
     "",
     "Retention Health Summary is a product build control. It does not approve investment action, launch readiness, account custody, payments, legal posture, or security posture."
+  ].join("\n");
+}
+
+function makeRetentionActionRouterBrief() {
+  const tracker = buildTrackerConfig();
+  const router = tracker.releaseDoctor.retentionActionRouter;
+  return [
+    "# NiveshNadi Retention Action Router",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${router.receiptId}`,
+    `Verdict: ${router.verdict}`,
+    `Rule: ${router.rule}`,
+    "",
+    "## Routed actions",
+    ...router.actions.map((item) => [
+      `- ${item.label}: ${item.action}`,
+      `  Route: ${item.route}`,
+      `  Proof lock: ${item.proof}`,
+      `  Hold if: ${item.hold}`
+    ].join("\n")),
+    "",
+    "Retention Action Router is a founder release control. It does not create backend custody, delete data, approve investing, execute transactions, or certify launch readiness."
   ].join("\n");
 }
 
@@ -63319,6 +63409,13 @@ function bindEvents() {
     if (!copyRetentionHealthSummary) return;
     event.preventDefault();
     copyText(makeRetentionHealthSummaryBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyRetentionActionRouter = event.target.closest("[data-copy-retention-action-router]");
+    if (!copyRetentionActionRouter) return;
+    event.preventDefault();
+    copyText(makeRetentionActionRouterBrief());
   });
 
   document.addEventListener("click", (event) => {

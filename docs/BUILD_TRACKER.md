@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V452 Proof Archive Retention
+
+V452 adds a Proof Archive Retention layer to the Release Doctor. It keeps the latest five release receipts visible, rolls the oldest receipt out, states the no-private-data retention fields, and provides a copyable retention receipt for founder release review.
+
 ## V451 Live Data Readiness Focus
 
 V451 adds a Live Data Readiness Focus to the Source Receipt Vault. It turns the active source receipt or preview into one clear source-proof action covering source date, citation path, TER/expense, holdings, riskometer, required receipt fields, production blockers, and a copyable live-readiness handoff.

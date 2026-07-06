@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v452 Proof Archive Retention
+
+- Version: `0.452.0`
+- Data version: `20260706-v452-01`
+- Changes made: Added Proof Archive Retention to the Release Doctor with latest-five retention, oldest-receipt retirement, no-private-data fields, founder review cadence, and a dedicated copyable archive-retention receipt; rolled release proof memory forward to v451 and prepared the remaining retention batch.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v452 marker scan
+- Known risks: Archive retention proves release lineage only; it still does not certify live data, account storage, payments, legal review, security posture, or production launch readiness.
+
 ## NiveshNadi Phase 1 v451 Live Data Readiness Focus
 
 - Version: `0.451.0`

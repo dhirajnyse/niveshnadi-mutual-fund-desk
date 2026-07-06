@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v451-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v451 Live Data Readiness Focus";
+const DATA_VERSION = "20260706-v452-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v452 Proof Archive Retention";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10341,7 +10341,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, and live-data-readiness-focus audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, and proof-archive-retention audit are complete."
   );
   const launchGates = [
     {
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v450 is verified on commit 96c76b6. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v451 is verified on commit c418f26. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v450 verified",
+      outcome: "Previous outcome: v451 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45001",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45101",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10567,14 +10567,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "The current five-release batch is closing; keep the next batch focused on retaining the proof surfaces just added.",
+      rule: "The current retention batch is underway; keep the remaining releases focused on proof surfaces that can stay small as history grows.",
       lanes: [
-        {
-          version: "v452",
-          label: "Proof archive retention",
-          route: "#build-tracker",
-          detail: "Keep release proof compact as the archive rolls forward after this batch closes."
-        },
         {
           version: "v453",
           label: "Memo handoff receipt",
@@ -10598,14 +10592,27 @@ function buildTrackerConfig() {
           label: "Live data receipt retention",
           route: "#source-receipts",
           detail: "Keep live-data readiness compact as real source receipt history grows."
+        },
+        {
+          version: "v457",
+          label: "Retention health summary",
+          route: "#build-tracker",
+          detail: "Summarize which proof surfaces are retained, which stay local, and which must move to backend custody."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Five receipts visible",
-      rule: "Keep the previous five verified release receipts visible before sharing a new build.",
+      verdict: "Retention rules visible",
+      rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v451",
+          key: "20260706-v451-01",
+          commit: "c418f26",
+          receiptId: "NN-SHARE-RECEIPT-20260706V45101",
+          proof: "Live Data Readiness Focus added, visually checked, and verified live on GitHub Pages."
+        },
         {
           version: "v450",
           key: "20260706-v450-01",
@@ -10633,53 +10640,76 @@ function buildTrackerConfig() {
           commit: "f0cc8de",
           receiptId: "NN-SHARE-RECEIPT-20260706V44701",
           proof: "Release Proof Archive added and verified by static release checks."
-        },
-        {
-          version: "v446",
-          key: "20260706-v446-01",
-          commit: "82544f9",
-          receiptId: "NN-SHARE-RECEIPT-20260706V44601",
-          proof: "Next Batch Planner verified live with matching stamp."
         }
       ],
-      retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness."
+      retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
+      retentionReview: {
+        label: "Proof archive retention",
+        verdict: "Keep five, retire one",
+        receiptId: ["NN", "ARCHIVE", "RETENTION", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        cadence: "Review on every release before the share receipt is copied.",
+        owner: "Founder release desk",
+        boundary: "Store release key, commit, receipt ID, proof note, and risk boundary only; do not store private user data, screenshots with identifiers, credentials, PAN, folio, CAS, bank, contact, or payment data."
+      },
+      retentionPolicy: [
+        {
+          label: "Keep",
+          value: "Latest five receipts",
+          detail: "Carry the five newest verified release receipts so review starts from proof instead of memory."
+        },
+        {
+          label: "Retire",
+          value: "Oldest receipt",
+          detail: "When a new release is verified, the oldest archive row rolls out unless it is part of a legal or incident record."
+        },
+        {
+          label: "Fields",
+          value: "No private data",
+          detail: "Retain version, key, commit, receipt ID, proof note, and known-risk boundary only."
+        },
+        {
+          label: "Use",
+          value: "Share gate input",
+          detail: "Archive proof supports release sharing; it must not be treated as live-data, account, payment, legal, or security proof."
+        }
+      ]
     },
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "96c76b6",
-        detail: "v450 source change shipped with matching release labels and stamp."
+        value: "c418f26",
+        detail: "v451 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v450 product commit."
+        detail: "The static Pages deployment completed for the v451 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v450-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v451-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v450 outcome is saved so the next release starts from proof."
+        detail: "The v451 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "96c76b6",
-        detail: "v450 source change that added Mobile Calm Audit."
+        value: "c418f26",
+        detail: "v451 source change that added Live Data Readiness Focus."
       },
       {
         label: "Live deploy commit",
-        value: "96c76b6",
-        detail: "v450 Pages deploy succeeded on the product commit."
+        value: "c418f26",
+        detail: "v451 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v450 verified",
+        value: "v451 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -11072,6 +11102,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Proof archive retention">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.releaseProofArchive.retentionReview.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.releaseProofArchive.retentionReview.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.releaseProofArchive.retentionReview.cadence)}</p>
+        </article>
+        ${tracker.releaseDoctor.releaseProofArchive.retentionPolicy.map((policy) => `
+          <article>
+            <span>${escapeHtml(policy.label)}</span>
+            <strong>${escapeHtml(policy.value)}</strong>
+            <p>${escapeHtml(policy.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-receipt" aria-label="Release share receipt">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.shareReceipt.label)}</span>
@@ -11147,6 +11191,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-mobile-calm-audit>Copy mobile audit</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
         <button class="text-button" type="button" data-copy-release-proof-archive>Copy proof archive</button>
+        <button class="text-button" type="button" data-copy-proof-archive-retention>Copy archive retention</button>
         <button class="text-button" type="button" data-copy-release-doctor>Copy doctor receipt</button>
       </div>
     </div>
@@ -11297,6 +11342,9 @@ function makeBuildTrackerBrief() {
     `Release proof archive rule: ${tracker.releaseDoctor.releaseProofArchive.rule}`,
     ...tracker.releaseDoctor.releaseProofArchive.receipts.map((receipt) => `- Release proof ${receipt.version}: ${receipt.key} | ${receipt.commit} | ${receipt.receiptId} | ${receipt.proof}`),
     `Release proof archive retention: ${tracker.releaseDoctor.releaseProofArchive.retention}`,
+    `Proof archive retention receipt: ${tracker.releaseDoctor.releaseProofArchive.retentionReview.receiptId}`,
+    `Proof archive retention cadence: ${tracker.releaseDoctor.releaseProofArchive.retentionReview.cadence}`,
+    ...tracker.releaseDoctor.releaseProofArchive.retentionPolicy.map((policy) => `- Archive retention ${policy.label}: ${policy.value} | ${policy.detail}`),
     `Share gate: ${tracker.releaseDoctor.shareGate.verdict} | ${tracker.releaseDoctor.shareGate.detail}`,
     `Hold if: ${tracker.releaseDoctor.shareGate.holdIf}`,
     `Next if held: ${tracker.releaseDoctor.shareGate.next}`,
@@ -11380,6 +11428,11 @@ function makeReleaseDoctorBrief() {
     `- Rule: ${tracker.releaseDoctor.releaseProofArchive.rule}`,
     ...tracker.releaseDoctor.releaseProofArchive.receipts.map((receipt) => `- ${receipt.version}: ${receipt.key} | ${receipt.commit} | ${receipt.receiptId} | ${receipt.proof}`),
     `- Retention: ${tracker.releaseDoctor.releaseProofArchive.retention}`,
+    `- Retention receipt: ${tracker.releaseDoctor.releaseProofArchive.retentionReview.receiptId}`,
+    `- Retention cadence: ${tracker.releaseDoctor.releaseProofArchive.retentionReview.cadence}`,
+    `- Retention owner: ${tracker.releaseDoctor.releaseProofArchive.retentionReview.owner}`,
+    `- Retention boundary: ${tracker.releaseDoctor.releaseProofArchive.retentionReview.boundary}`,
+    ...tracker.releaseDoctor.releaseProofArchive.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`),
     "",
     "## Share Gate",
     `- Verdict: ${tracker.releaseDoctor.shareGate.verdict}`,
@@ -11493,7 +11546,36 @@ function makeReleaseProofArchiveBrief() {
       `  Proof: ${receipt.proof}`
     ].join("\n")),
     "",
-    `Retention: ${tracker.releaseDoctor.releaseProofArchive.retention}`
+    `Retention: ${tracker.releaseDoctor.releaseProofArchive.retention}`,
+    `Retention receipt: ${tracker.releaseDoctor.releaseProofArchive.retentionReview.receiptId}`,
+    `Retention cadence: ${tracker.releaseDoctor.releaseProofArchive.retentionReview.cadence}`,
+    `Retention owner: ${tracker.releaseDoctor.releaseProofArchive.retentionReview.owner}`,
+    `Retention boundary: ${tracker.releaseDoctor.releaseProofArchive.retentionReview.boundary}`,
+    "",
+    "## Retention policy",
+    ...tracker.releaseDoctor.releaseProofArchive.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`)
+  ].join("\n");
+}
+
+function makeProofArchiveRetentionBrief() {
+  const tracker = buildTrackerConfig();
+  const archive = tracker.releaseDoctor.releaseProofArchive;
+  return [
+    "# NiveshNadi Proof Archive Retention",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${archive.retentionReview.receiptId}`,
+    `Verdict: ${archive.retentionReview.verdict}`,
+    `Cadence: ${archive.retentionReview.cadence}`,
+    `Owner: ${archive.retentionReview.owner}`,
+    `Boundary: ${archive.retentionReview.boundary}`,
+    "",
+    "## Retention policy",
+    ...archive.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`),
+    "",
+    "## Current retained receipts",
+    ...archive.receipts.map((receipt) => `- ${receipt.version}: ${receipt.key} | ${receipt.commit} | ${receipt.receiptId}`),
+    "",
+    archive.retention
   ].join("\n");
 }
 
@@ -62445,6 +62527,13 @@ function bindEvents() {
     if (!copyReleaseProofArchive) return;
     event.preventDefault();
     copyText(makeReleaseProofArchiveBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyProofArchiveRetention = event.target.closest("[data-copy-proof-archive-retention]");
+    if (!copyProofArchiveRetention) return;
+    event.preventDefault();
+    copyText(makeProofArchiveRetentionBrief());
   });
 
   document.addEventListener("click", (event) => {

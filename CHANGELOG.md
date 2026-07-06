@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v464 Account Deletion Rehearsal
+
+- Version: `0.464.0`
+- Data version: `20260706-v464-01`
+- Changes made: Added Account Deletion Rehearsal to Account Readiness with export preview, freeze sync, delete job, retained-proof, and support-notice steps, blocked-data list, closeout tests, dedicated copyable deletion rehearsal, and Account Readiness brief coverage; rolled Release Doctor memory forward to v463.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v464 marker scan
+- Known risks: The rehearsal is a deletion-readiness model only; production still needs actual account storage, deletion workers, export files, support-safe notifications, retained-proof policy, legal retention review, audit logs, idempotency, and recovery/escalation tests.
+
 ## NiveshNadi Phase 1 v463 Saved Research Custody Map
 
 - Version: `0.463.0`

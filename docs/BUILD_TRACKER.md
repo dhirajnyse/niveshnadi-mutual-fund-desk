@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V464 Account Deletion Rehearsal
+
+V464 adds Account Deletion Rehearsal to Account Readiness. It rehearses export preview, sync freeze, delete job, retained proof, support notice, blocked data, and closeout tests so account custody cannot widen until deletion behavior is explainable.
+
 ## V463 Saved Research Custody Map
 
 V463 adds Saved Research Custody Map to Account Readiness. It maps memo receipts, review snapshots, source receipts, viewport proof, and dossier/export packets into future account-backed object families with allowed fields, sync triggers, deletion rules, and blocked private-data boundaries.

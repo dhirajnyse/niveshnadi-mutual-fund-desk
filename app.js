@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v463-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v463 Saved Research Custody Map";
+const DATA_VERSION = "20260706-v464-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v464 Account Deletion Rehearsal";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v462 passed local release checks on commit 018e149. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v463 passed local release checks on commit 19433c1. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v462 local checks passed",
+      outcome: "Previous outcome: v463 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46201",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46301",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10775,6 +10775,12 @@ function buildTrackerConfig() {
           label: "Receipt owner audit",
           route: "#backend-audit-receipts",
           detail: "Name the owner, support view, audit boundary, and escalation route for every retained receipt family."
+        },
+        {
+          version: "v469",
+          label: "Deletion support closeout",
+          route: "#account-readiness",
+          detail: "Turn deletion rehearsal into support-safe closeout wording, status views, and escalation receipts."
         }
       ]
     },
@@ -10783,6 +10789,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v463",
+          key: "20260706-v463-01",
+          commit: "19433c1",
+          receiptId: "NN-SHARE-RECEIPT-20260706V46301",
+          proof: "Saved Research Custody Map added and verified by static release checks."
+        },
         {
           version: "v462",
           key: "20260706-v462-01",
@@ -10810,13 +10823,6 @@ function buildTrackerConfig() {
           commit: "11a6c96",
           receiptId: "NN-SHARE-RECEIPT-20260706V45901",
           proof: "Review Memory Persistence added and verified by static release checks."
-        },
-        {
-          version: "v458",
-          key: "20260706-v458-01",
-          commit: "2a80444",
-          receiptId: "NN-SHARE-RECEIPT-20260706V45801",
-          proof: "Memo Receipt Persistence added and verified by static release checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10854,13 +10860,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "018e149",
-        detail: "v462 source change shipped with matching release labels and stamp."
+        value: "19433c1",
+        detail: "v463 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v462."
+        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v463."
       },
       {
         label: "03 Queued",
@@ -10870,23 +10876,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v463 until this release returns the active release stamp."
+        detail: "Do not share v464 until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "018e149",
-        detail: "v462 source change that added Retention Action Router."
+        value: "19433c1",
+        detail: "v463 source change that added Saved Research Custody Map."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v462 passed syntax, static, security, diff hygiene, and marker scans."
+        detail: "v463 passed syntax, static, security, diff hygiene, and marker scans."
       },
       {
         label: "Share outcome",
-        value: "v462 held for batch deploy",
+        value: "v463 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v466."
       }
     ],
@@ -25564,11 +25570,64 @@ function accountReadinessLabConfig() {
       "Support views can show receipt metadata and status only; they must not expose private note bodies or identifiers."
     ]
   };
+  const accountDeletionRehearsal = {
+    label: "Account deletion rehearsal",
+    status: "Rehearse before storage",
+    receiptId: ["NN", "ACCOUNT", "DELETE", "REHEARSAL", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    score: 68,
+    rule: "No account custody widens until export preview, deletion freeze, delete job, retained-proof receipt, support notice, and post-delete audit boundary can be replayed.",
+    steps: [
+      {
+        label: "Export preview",
+        owner: "Account owner",
+        action: "Show profile, saved receipts, watchlist, reviews, memos, dossiers, and entitlement metadata before deletion.",
+        proof: "User can copy or download a research-only export summary before confirming deletion.",
+        hold: "Hold deletion if export preview is missing or contains private identifiers."
+      },
+      {
+        label: "Freeze sync",
+        owner: "Account service",
+        action: "Stop new receipt sync, entitlement updates, support edits, and review writes during the deletion window.",
+        proof: "Frozen object count and timestamp are retained as metadata only.",
+        hold: "Hold deletion if new writes can still enter the account."
+      },
+      {
+        label: "Delete job",
+        owner: "Backend worker",
+        action: "Delete saved research objects, local migration links, entitlement projection, and support lookup references.",
+        proof: "Completion receipt names object family, count, worker id, and no-private-data retained field list.",
+        hold: "Hold completion if any object family returns pending, failed, or retrying."
+      },
+      {
+        label: "Retained proof",
+        owner: "Privacy owner",
+        action: "Retain only deletion request id, completion id, timestamp, legal-retention reason, and support-safe status.",
+        proof: "Retained proof explicitly excludes payload bodies, notes, identifiers, and payment secrets.",
+        hold: "Hold closeout if retained proof can reconstruct private account data."
+      },
+      {
+        label: "Support notice",
+        owner: "Support desk",
+        action: "Send support-safe completion wording with what was deleted, what remains as proof, and how to escalate a mistake.",
+        proof: "Notice receipt is linked to deletion completion without exposing deleted data.",
+        hold: "Hold support reply if wording promises recovery, advice, refund, or transaction outcome."
+      }
+    ],
+    blockedData: ["PAN", "folio", "CAS", "bank", "card", "UPI", "credentials", "payment token", "private notes", "distributor-client records"],
+    closeoutTests: [
+      "Deleted account cannot reopen saved research objects without a fresh account and fresh consent.",
+      "Support can see deletion status but not deleted payload bodies.",
+      "Export preview and delete completion use matching object-family counts.",
+      "Legal-retention proof explains what remains and why it remains.",
+      "Entitlement projection is removed or anonymized before account closeout."
+    ]
+  };
 
   return {
     accountFlow,
     accountRules,
     accountScore,
+    accountDeletionRehearsal,
     blocked,
     dataBuckets,
     launchTests,
@@ -25628,6 +25687,23 @@ function renderAccountReadinessLab() {
           <p><strong>Sync:</strong> ${escapeHtml(item.sync)}</p>
           <p><strong>Delete:</strong> ${escapeHtml(item.deleteRule)}</p>
           <p><strong>Block:</strong> ${escapeHtml(item.blocked)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-data-grid" aria-label="Account deletion rehearsal">
+      <article class="draft">
+        <span>${escapeHtml(lab.accountDeletionRehearsal.label)}</span>
+        <strong>${escapeHtml(lab.accountDeletionRehearsal.status)} | ${lab.accountDeletionRehearsal.score}/100</strong>
+        <p>${escapeHtml(lab.accountDeletionRehearsal.rule)}</p>
+        <button class="text-button" type="button" data-copy-account-deletion-rehearsal>Copy deletion rehearsal</button>
+      </article>
+      ${lab.accountDeletionRehearsal.steps.map((step) => `
+        <article>
+          <span>${escapeHtml(step.owner)}</span>
+          <strong>${escapeHtml(step.label)}</strong>
+          <p><strong>Action:</strong> ${escapeHtml(step.action)}</p>
+          <p><strong>Proof:</strong> ${escapeHtml(step.proof)}</p>
+          <p><strong>Hold:</strong> ${escapeHtml(step.hold)}</p>
         </article>
       `).join("")}
     </div>
@@ -25698,6 +25774,15 @@ function makeAccountReadinessBrief() {
     ...lab.savedResearchCustodyMap.objects.map((item) => `- ${item.label}: ${item.source} | Keep ${item.keep} | Sync ${item.sync} | Delete ${item.deleteRule} | Block ${item.blocked}`),
     ...lab.savedResearchCustodyMap.guardrails.map((rule) => `- Custody guardrail: ${rule}`),
     "",
+    "## Account Deletion Rehearsal",
+    `- Receipt ID: ${lab.accountDeletionRehearsal.receiptId}`,
+    `- Status: ${lab.accountDeletionRehearsal.status}`,
+    `- Score: ${lab.accountDeletionRehearsal.score}/100`,
+    `- Rule: ${lab.accountDeletionRehearsal.rule}`,
+    ...lab.accountDeletionRehearsal.steps.map((step) => `- ${step.label}: ${step.action} | Proof ${step.proof} | Hold ${step.hold}`),
+    ...lab.accountDeletionRehearsal.closeoutTests.map((test) => `- Closeout test: ${test}`),
+    `- Blocked data: ${lab.accountDeletionRehearsal.blockedData.join(", ")}`,
+    "",
     "## Launch Tests",
     ...lab.launchTests.map((test) => `- ${test}`),
     "",
@@ -25728,6 +25813,33 @@ function makeSavedResearchCustodyMapBrief() {
     ...map.guardrails.map((rule) => `- ${rule}`),
     "",
     "Saved Research Custody Map is a migration design only. It does not create accounts, store investor identifiers, approve investing, execute transactions, or certify launch readiness."
+  ].join("\n");
+}
+
+function makeAccountDeletionRehearsalBrief() {
+  const rehearsal = accountReadinessLabConfig().accountDeletionRehearsal;
+  return [
+    "# NiveshNadi Account Deletion Rehearsal",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${rehearsal.receiptId}`,
+    `Status: ${rehearsal.status}`,
+    `Score: ${rehearsal.score}/100`,
+    `Rule: ${rehearsal.rule}`,
+    "",
+    "## Rehearsal Steps",
+    ...rehearsal.steps.map((step) => [
+      `- ${step.label} (${step.owner})`,
+      `  Action: ${step.action}`,
+      `  Proof: ${step.proof}`,
+      `  Hold if: ${step.hold}`
+    ].join("\n")),
+    "",
+    "## Closeout Tests",
+    ...rehearsal.closeoutTests.map((test) => `- ${test}`),
+    "",
+    `Blocked data: ${rehearsal.blockedData.join(", ")}`,
+    "",
+    "Account Deletion Rehearsal is a production-readiness plan only. It does not delete real data, create account storage, approve investing, execute transactions, or certify privacy compliance."
   ].join("\n");
 }
 
@@ -63531,6 +63643,13 @@ function bindEvents() {
     if (!copySavedResearchCustody) return;
     event.preventDefault();
     copyText(makeSavedResearchCustodyMapBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyAccountDeletionRehearsal = event.target.closest("[data-copy-account-deletion-rehearsal]");
+    if (!copyAccountDeletionRehearsal) return;
+    event.preventDefault();
+    copyText(makeAccountDeletionRehearsalBrief());
   });
 
   document.addEventListener("click", (event) => {

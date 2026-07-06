@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v466 Backend Custody Bridge
+
+- Version: `0.466.0`
+- Data version: `20260706-v466-01`
+- Changes made: Added Backend Custody Bridge inside Backend Audit Receipts with backend-owned custody ticket IDs for saved research, review memory, source cleanup, memo handoff, and visual QA baseline proof; added bridge metrics, receipt fields, guardrails, proof-route buttons, dedicated copy action, full backend audit brief coverage, and Release Doctor memory rolled forward to v465.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v466 marker scan; local preview smoke and visual QA.
+- Known risks: The bridge is a backend engineering contract only; production still needs real account storage, consent capture, deletion execution, source ingestion workers, visual CI storage, idempotent APIs, privacy review, support tooling, and reviewer sign-off.
+
 ## NiveshNadi Phase 1 v465 Visual Regression Handoff
 
 - Version: `0.465.0`

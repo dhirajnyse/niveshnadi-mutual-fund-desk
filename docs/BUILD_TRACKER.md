@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V466 Backend Custody Bridge
+
+V466 adds Backend Custody Bridge inside Backend Audit Receipts. It maps saved research, review memory, source cleanup, memo handoff, and visual QA baseline proof into backend-owned custody ticket IDs with allowed fields, acceptance rules, hold conditions, blocked-data guardrails, proof-route buttons, and a copyable bridge handoff.
+
 ## V465 Visual Regression Handoff
 
 V465 adds Visual Regression Handoff to the Release Doctor. It defines route-and-viewport baselines, hash-first comparison rules, release-hold failure routing, screenshot deletion boundaries, and a copyable visual automation contract before screenshot QA becomes durable backend proof.

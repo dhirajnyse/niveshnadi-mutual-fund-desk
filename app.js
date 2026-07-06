@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v465-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v465 Visual Regression Handoff";
+const DATA_VERSION = "20260706-v466-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v466 Backend Custody Bridge";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v464 passed local release checks on commit ebfe020. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v465 passed local release checks on commit fa83842. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v464 local checks passed",
+      outcome: "Previous outcome: v465 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46401",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46501",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10793,14 +10793,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Visual regression handoff is visible; keep the next batch focused on backend custody, consent migration, receipt ownership, deletion support, and visual baseline storage.",
+      rule: "Backend custody bridge is visible; keep the next batch focused on consent migration, receipt ownership, deletion support, visual baseline storage, and custody ticket closeout.",
       lanes: [
-        {
-          version: "v466",
-          label: "Backend custody bridge",
-          route: "#backend-audit-receipts",
-          detail: "Bridge memo, review, source, deletion, and viewport receipts into backend-ready custody tickets."
-        },
         {
           version: "v467",
           label: "Account consent migration preview",
@@ -10824,6 +10818,12 @@ function buildTrackerConfig() {
           label: "Visual QA baseline store",
           route: "#build-tracker",
           detail: "Turn the visual regression handoff into baseline metadata, hash retention, failure routing, and screenshot deletion proof."
+        },
+        {
+          version: "v471",
+          label: "Custody ticket closeout",
+          route: "#backend-audit-receipts",
+          detail: "Close the first custody bridge tickets with owner signoff, accepted fields, deletion receipts, and no-private-data scans."
         }
       ]
     },
@@ -10832,6 +10832,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v465",
+          key: "20260706-v465-01",
+          commit: "fa83842",
+          receiptId: "NN-SHARE-RECEIPT-20260706V46501",
+          proof: "Visual Regression Handoff added and verified by static release checks."
+        },
         {
           version: "v464",
           key: "20260706-v464-01",
@@ -10859,13 +10866,6 @@ function buildTrackerConfig() {
           commit: "f2a5d18",
           receiptId: "NN-SHARE-RECEIPT-20260706V46101",
           proof: "Source Custody Deletion Receipts added, deployed, and live-stamp verified."
-        },
-        {
-          version: "v460",
-          key: "20260706-v460-01",
-          commit: "bb06c28",
-          receiptId: "NN-SHARE-RECEIPT-20260706V46001",
-          proof: "Viewport Proof History added and verified by static release checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10903,13 +10903,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "ebfe020",
-        detail: "v464 source change shipped with matching release labels and stamp."
+        value: "fa83842",
+        detail: "v465 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v464."
+        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v465."
       },
       {
         label: "03 Queued",
@@ -10919,23 +10919,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v465 until this release returns the active release stamp."
+        detail: "Do not share v466 until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "ebfe020",
-        detail: "v464 source change that added Account Deletion Rehearsal."
+        value: "fa83842",
+        detail: "v465 source change that added Visual Regression Handoff."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v464 passed syntax, static, security, diff hygiene, and marker scans."
+        detail: "v465 passed syntax, static, security, diff hygiene, and marker scans."
       },
       {
         label: "Share outcome",
-        value: "v464 held for batch deploy",
+        value: "v465 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v466."
       }
     ],
@@ -45360,6 +45360,129 @@ function backendAuditConfig() {
   };
 }
 
+function backendCustodyBridge(config = backendAuditConfig()) {
+  config = config || backendAuditConfig();
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const storageReady = config.storage !== "browser";
+  const bridgeId = ["NN", "BACKEND", "CUSTODY", "BRIDGE", suffix].join("-").toUpperCase();
+  const ticketBatchId = ["NN", "CUSTODY", "TICKET", "BATCH", suffix].join("-").toUpperCase();
+  const templates = [
+    {
+      label: "Saved research custody",
+      source: "Saved Research Custody Map",
+      route: "#account-readiness",
+      owner: "Account Platform",
+      event: "account.saved_research.custody_mapped",
+      fields: ["account_id_hash", "research_object_id", "source_receipt_ids", "export_preview_id", "delete_receipt_id"],
+      acceptance: "Consent, export preview, delete receipt, and support redaction route agree before saved research syncs.",
+      hold: "Hold if owner consent, export preview, delete receipt, or support redaction route is missing."
+    },
+    {
+      label: "Review memory history",
+      source: "Review Memory Persistence",
+      route: "#review-vault",
+      owner: "Review Vault",
+      event: "account.review_memory.history_bound",
+      fields: ["account_id_hash", "review_snapshot_id", "review_delta", "purpose", "retire_receipt_id"],
+      acceptance: "Review snapshot has purpose, cadence, owner, supersede rule, and delete path before durable history.",
+      hold: "Hold if purpose, owner, cadence, or retire receipt is unclear."
+    },
+    {
+      label: "Source receipt cleanup",
+      source: "Source Custody Deletion Receipts",
+      route: "#source-receipts",
+      owner: "Data Ops",
+      event: "source.receipt.cleanup_bound",
+      fields: ["source_receipt_id", "supersede_receipt_id", "delete_receipt_id", "freeze_receipt_id", "reviewer_signoff_id"],
+      acceptance: "Supersede, delete, freeze, reviewer signoff, and rollback evidence can replay before public claim refresh.",
+      hold: "Hold if replacement receipt, reviewer signoff, rollback proof, or affected-surface state is absent."
+    },
+    {
+      label: "Memo handoff persistence",
+      source: "Memo Receipt Persistence",
+      route: "#decision-pack",
+      owner: "Research Memo",
+      event: "research.memo_handoff.persisted",
+      fields: ["fund_id", "memo_handoff_id", "search_context_id", "blocker_id", "reason_receipt_id"],
+      acceptance: "Memo stores only research context, blocker, source status, and plain-English reason fields.",
+      hold: "Hold if reason text, source date, citation path, or private-data scan is missing."
+    },
+    {
+      label: "Visual QA baseline",
+      source: "Visual Regression Handoff",
+      route: "#build-tracker",
+      owner: "Founder UI Release Desk",
+      event: "release.visual_baseline.bound",
+      fields: ["route", "viewport", "release_key", "dom_marker", "screenshot_hash", "delete_image_receipt_id"],
+      acceptance: "Baseline stores viewport metadata and screenshot hash, then deletes private screenshots after proof extraction.",
+      hold: "Hold if hash, route marker, failure rule, or screenshot deletion receipt is missing."
+    }
+  ];
+  const tickets = templates.map((ticket, index) => {
+    const base = config.score + (storageReady ? 8 : -20) - (ticket.fields.length > 5 ? 2 : 0);
+    const score = clampNumber(Math.round(base - (index === 4 && config.mode === "privacy" ? 0 : 3)), 18, 96);
+    const status = score >= 82 && storageReady
+      ? "Bridge ready"
+      : score >= 64
+        ? "Bridge draft"
+        : "Custody blocker";
+    return {
+      ...ticket,
+      score,
+      status,
+      ticketId: ["NN", "CUSTODY", "BRIDGE", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      tone: status === "Bridge ready" ? "ready" : status === "Custody blocker" ? "caution" : "watch"
+    };
+  });
+  const readiness = clampNumber(Math.round(tickets.reduce((sum, ticket) => sum + ticket.score, 0) / tickets.length), 18, 96);
+  const blocked = tickets.filter((ticket) => ticket.status === "Custody blocker");
+  const ready = tickets.filter((ticket) => ticket.status === "Bridge ready");
+  const status = blocked.length
+    ? "Custody bridge blocked"
+    : ready.length === tickets.length
+      ? "Custody bridge ready"
+      : "Custody bridge drafted";
+  return {
+    blocked,
+    bridgeId,
+    guardrails: [
+      "Bridge tickets store metadata, hashes, IDs, owners, and state transitions only.",
+      "Account-bound research sync starts only after consent, export preview, delete route, support redaction, and purpose are visible.",
+      "Source, memo, review, account, and visual proof receipts must retain delete or supersede events before production custody.",
+      "Private identifiers stay excluded: PAN, folio, CAS, bank, contact, credentials, payment tokens, private notes, and distributor-client data.",
+      "A copied bridge is an engineering handoff only; it is not live-data proof, investment advice, payment readiness, or legal approval."
+    ],
+    metrics: [
+      { label: "Bridge readiness", value: `${readiness}/100`, detail: status },
+      { label: "Ticket batch", value: ticketBatchId, detail: `${tickets.length} custody bridge tickets mapped.` },
+      { label: "Ready tickets", value: `${ready.length}/${tickets.length}`, detail: storageReady ? "Storage pattern can carry backend receipts." : "Browser-local storage blocks custody." },
+      { label: "Active stream", value: config.stream.label, detail: `${backendAuditStorageLabel(config.storage)} | ${backendAuditRetentionLabel(config.retention)}` }
+    ],
+    receiptFields: [
+      "backend_custody_bridge_id",
+      "custody_ticket_id",
+      "source_surface",
+      "source_route",
+      "owner_role",
+      "event_name",
+      "idempotency_key",
+      "allowed_fields",
+      "acceptance_rule",
+      "hold_condition",
+      "blocked_data_scan",
+      "retention_policy",
+      "delete_or_supersede_receipt_id",
+      "created_at"
+    ],
+    readiness,
+    ready,
+    status,
+    ticketBatchId,
+    tickets,
+    tone: status === "Custody bridge ready" ? "ready" : status === "Custody bridge blocked" ? "caution" : "watch"
+  };
+}
+
 function productionSourceImportJobs(config = backendAuditConfig()) {
   const sourceReceipts = loadSourceReceipts();
   const reviewerDecisions = loadReviewerDecisionLedger();
@@ -50052,6 +50175,7 @@ function renderBackendAuditReceipts(event) {
   if (event) event.preventDefault();
   if (!els.backendAuditOutput || !els.backendAuditSummary) return;
   const config = backendAuditConfig();
+  const custodyBridge = backendCustodyBridge(config);
   const paymentReplay = paymentReconciliationReplay(config);
   const sourceImportJobs = productionSourceImportJobs(config);
   const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
@@ -50101,6 +50225,59 @@ function renderBackendAuditReceipts(event) {
       <article><span>Storage</span><strong>${escapeHtml(backendAuditStorageLabel(config.storage))}</strong><p>${escapeHtml(config.stream.retention)}</p></article>
       <article><span>Risk band</span><strong>${escapeHtml(config.stream.risk)}</strong><p>${escapeHtml(backendAuditRetentionLabel(config.retention))}</p></article>
       <article><span>Ready streams</span><strong>${readyCount}/${BACKEND_AUDIT_STREAMS.length}</strong><p>${veryHighCount} very-high-risk streams need stricter audit.</p></article>
+    </div>
+    <div class="backend-source-receipt-job ${escapeHtml(custodyBridge.tone)}" aria-label="Backend custody bridge">
+      <div class="backend-source-job-head">
+        <div>
+          <span>Backend custody bridge</span>
+          <h3>${escapeHtml(custodyBridge.status)}</h3>
+          <p>${escapeHtml(custodyBridge.bridgeId)} connects saved research, review memory, source cleanup, memo handoff, and visual QA proof to backend-owned custody tickets before production storage widens.</p>
+        </div>
+        <div class="backend-source-job-score" style="--score:${custodyBridge.readiness}">
+          <strong>${custodyBridge.readiness}</strong>
+          <span>Bridge</span>
+        </div>
+      </div>
+      <div class="backend-source-job-metric-grid">
+        ${custodyBridge.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="backend-source-job-lane-grid">
+        ${custodyBridge.tickets.map((ticket) => `
+          <article class="${escapeHtml(ticket.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(ticket.source)} | ${escapeHtml(ticket.owner)}</span>
+                <strong>${escapeHtml(ticket.label)}</strong>
+              </div>
+              <b>${ticket.score}</b>
+            </div>
+            <p>${escapeHtml(ticket.event)}</p>
+            <div class="build-progress-bar"><span style="width:${ticket.score}%"></span></div>
+            <small>${escapeHtml(ticket.acceptance)} Hold: ${escapeHtml(ticket.hold)}</small>
+            <button class="text-button backend-source-job-route" type="button" data-build-route="${escapeHtml(ticket.route)}">Open proof route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="backend-source-job-two">
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${custodyBridge.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="backend-audit-guardrail">
+          <h3>Bridge guardrails</h3>
+          <ul>
+            ${custodyBridge.guardrails.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
     </div>
     <div class="backend-source-receipt-job ${escapeHtml(sourceReceiptJob.tone)}">
       <div class="backend-source-job-head">
@@ -52697,8 +52874,49 @@ function makeBackendDeployRunbookPacketBrief() {
   ].join("\n");
 }
 
+function makeBackendCustodyBridgeBrief() {
+  const config = backendAuditConfig();
+  const bridge = backendCustodyBridge(config);
+  return [
+    "# NiveshNadi Backend Custody Bridge",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Bridge ID: ${bridge.bridgeId}`,
+    `Ticket batch ID: ${bridge.ticketBatchId}`,
+    `Status: ${bridge.status}`,
+    `Readiness: ${bridge.readiness}/100`,
+    `Active stream: ${config.stream.label}`,
+    `Storage: ${backendAuditStorageLabel(config.storage)}`,
+    `Retention: ${backendAuditRetentionLabel(config.retention)}`,
+    "",
+    "## Bridge Metrics",
+    ...bridge.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Custody Tickets",
+    ...bridge.tickets.flatMap((ticket) => [
+      `- ${ticket.ticketId}: ${ticket.label} | ${ticket.status} | ${ticket.score}/100`,
+      `  Source: ${ticket.source}`,
+      `  Owner: ${ticket.owner}`,
+      `  Route: ${ticket.route}`,
+      `  Event: ${ticket.event}`,
+      `  Fields: ${ticket.fields.join(", ")}`,
+      `  Acceptance: ${ticket.acceptance}`,
+      `  Hold: ${ticket.hold}`
+    ]),
+    "",
+    "## Receipt Fields",
+    ...bridge.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## Guardrails",
+    ...bridge.guardrails.map((rule) => `- ${rule}`),
+    "",
+    "## Known Risk",
+    "This bridge is a backend engineering handoff only. It does not create real account storage, consent capture, deletion execution, source ingestion, visual CI, legal approval, or payment readiness."
+  ].join("\n");
+}
+
 function makeBackendAuditReceiptBrief() {
   const config = backendAuditConfig();
+  const custodyBridge = backendCustodyBridge(config);
   const paymentReplay = paymentReconciliationReplay(config);
   const sourceImportJobs = productionSourceImportJobs(config);
   const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
@@ -52737,6 +52955,16 @@ function makeBackendAuditReceiptBrief() {
     `Mode: ${backendAuditModeLabel(config.mode)}`,
     `Storage: ${backendAuditStorageLabel(config.storage)}`,
     `Retention: ${backendAuditRetentionLabel(config.retention)}`,
+    "",
+    "## Backend Custody Bridge",
+    `- Bridge status: ${custodyBridge.status}`,
+    `- Bridge readiness: ${custodyBridge.readiness}/100`,
+    `- Bridge ID: ${custodyBridge.bridgeId}`,
+    `- Ticket batch ID: ${custodyBridge.ticketBatchId}`,
+    ...custodyBridge.metrics.map((metric) => `- Custody bridge metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...custodyBridge.tickets.map((ticket) => `- Custody bridge ticket: ${ticket.ticketId}: ${ticket.label} | ${ticket.status} | ${ticket.score}/100 | ${ticket.owner} | ${ticket.event} | Route: ${ticket.route} | Hold: ${ticket.hold}`),
+    ...custodyBridge.receiptFields.map((field) => `- Custody bridge receipt field: ${field}`),
+    ...custodyBridge.guardrails.map((rule) => `- Custody bridge guardrail: ${rule}`),
     "",
     "## Backend Source Receipt Job",
     `- Job status: ${sourceReceiptJob.status}`,
@@ -63314,6 +63542,7 @@ function bindEvents() {
     input?.addEventListener("change", () => renderBackendAuditReceipts());
   });
   els.openBackendAuditRoute?.addEventListener("click", openBackendAuditRoute);
+  els.copyBackendCustodyBridge?.addEventListener("click", () => copyText(makeBackendCustodyBridgeBrief()));
   els.copyBackendSourceReceiptJob?.addEventListener("click", () => copyText(makeBackendSourceReceiptJobBrief()));
   els.copyScheduledWorkerContract?.addEventListener("click", () => copyText(makeScheduledWorkerReceiptContractBrief()));
   els.copyWorkerCloseoutDrill?.addEventListener("click", () => copyText(makeWorkerTicketCloseoutDrillBrief()));
@@ -65349,6 +65578,7 @@ function cacheElements() {
     backendAuditSummary: qs("#backendAuditSummary"),
     backendAuditOutput: qs("#backendAuditOutput"),
     openBackendAuditRoute: qs("#openBackendAuditRoute"),
+    copyBackendCustodyBridge: qs("#copyBackendCustodyBridge"),
     copyBackendSourceReceiptJob: qs("#copyBackendSourceReceiptJob"),
     copyScheduledWorkerContract: qs("#copyScheduledWorkerContract"),
     copyWorkerCloseoutDrill: qs("#copyWorkerCloseoutDrill"),

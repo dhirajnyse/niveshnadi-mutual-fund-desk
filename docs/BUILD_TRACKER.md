@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V459 Review Memory Persistence
+
+V459 adds Review Memory Persistence to the Review Vault. It shows the future account-history receipt, memory owner, review cadence, keep/sync/supersede/exclude rules, and a copyable memory note so saved review history can move later without private investor identifiers.
+
 ## V458 Memo Receipt Persistence
 
 V458 adds Memo Receipt Persistence to the Decision Pack. It shows which memo receipt fields can be kept, when saved research should sync later, when a receipt should be retired, which private identifiers must stay excluded, and gives the founder desk a copyable persistence note.

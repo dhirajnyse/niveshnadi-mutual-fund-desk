@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v459 Review Memory Persistence
+
+- Version: `0.459.0`
+- Data version: `20260706-v459-01`
+- Changes made: Added Review Memory Persistence to the Review Vault export polish with account-history receipt, owner/cadence rules, keep/sync/supersede/exclude policy, dedicated copyable memory note, and Review Vault export coverage; rolled Release Doctor memory forward to v458.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v459 marker scan
+- Known risks: Review memory persistence remains a product custody plan; production still needs account auth, consent capture, deletion receipts, backend audit logs, reviewer ownership, and privacy/security review.
+
 ## NiveshNadi Phase 1 v458 Memo Receipt Persistence
 
 - Version: `0.458.0`

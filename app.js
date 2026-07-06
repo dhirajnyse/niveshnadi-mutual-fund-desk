@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v458-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v458 Memo Receipt Persistence";
+const DATA_VERSION = "20260706-v459-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v459 Review Memory Persistence";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10341,7 +10341,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, memo-handoff-receipt audit, review-export-retention audit, mobile-audit-retention audit, live-data-receipt-retention audit, retention-health-summary audit, and memo-receipt-persistence audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, memo-handoff-receipt audit, review-export-retention audit, mobile-audit-retention audit, live-data-receipt-retention audit, retention-health-summary audit, memo-receipt-persistence audit, and review-memory-persistence audit are complete."
   );
   const launchGates = [
     {
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v457 passed local release checks on commit 5eb3b2a. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v458 passed local release checks on commit 2a80444. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v457 local checks passed",
+      outcome: "Previous outcome: v458 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45701",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45801",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10653,14 +10653,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Memo receipt persistence is visible; keep the remaining releases focused on review, viewport, and source custody surfaces that can move from local memory to backend custody later.",
+      rule: "Review memory persistence is visible; keep the remaining releases focused on viewport and source custody surfaces that can move from local memory to backend custody later.",
       lanes: [
-        {
-          version: "v459",
-          label: "Review memory persistence",
-          route: "#review-vault",
-          detail: "Prepare review export retention for future account-backed export history."
-        },
         {
           version: "v460",
           label: "Viewport proof history",
@@ -10684,6 +10678,12 @@ function buildTrackerConfig() {
           label: "Saved research custody map",
           route: "#account-readiness",
           detail: "Connect memo and review persistence into a future account-backed saved research custody model."
+        },
+        {
+          version: "v464",
+          label: "Account deletion rehearsal",
+          route: "#account-readiness",
+          detail: "Rehearse account deletion, export, and receipt cleanup before production storage exists."
         }
       ]
     },
@@ -10692,6 +10692,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v458",
+          key: "20260706-v458-01",
+          commit: "2a80444",
+          receiptId: "NN-SHARE-RECEIPT-20260706V45801",
+          proof: "Memo Receipt Persistence added and verified by static release checks."
+        },
         {
           version: "v457",
           key: "20260706-v457-01",
@@ -10719,13 +10726,6 @@ function buildTrackerConfig() {
           commit: "d54cc4a",
           receiptId: "NN-SHARE-RECEIPT-20260706V45401",
           proof: "Review Export Retention added and verified by static release checks."
-        },
-        {
-          version: "v453",
-          key: "20260706-v453-01",
-          commit: "2ba5f0c",
-          receiptId: "NN-SHARE-RECEIPT-20260706V45301",
-          proof: "Memo Handoff Receipt added and verified by static release checks."
         }
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10763,13 +10763,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "5eb3b2a",
-        detail: "v457 source change shipped with matching release labels and stamp."
+        value: "2a80444",
+        detail: "v458 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v457."
+        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v458."
       },
       {
         label: "03 Queued",
@@ -10779,23 +10779,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Hold for live stamp",
-        detail: "Do not share v458 until the final batch deploy returns the active release stamp."
+        detail: "Do not share v459 until the final batch deploy returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "5eb3b2a",
-        detail: "v457 source change that added the Retention Health Summary."
+        value: "2a80444",
+        detail: "v458 source change that added Memo Receipt Persistence."
       },
       {
         label: "Local release checks",
         value: "Passed",
-        detail: "v457 passed syntax, static, security, diff hygiene, and marker scans before v458 started."
+        detail: "v458 passed syntax, static, security, diff hygiene, and marker scans before v459 started."
       },
       {
         label: "Share outcome",
-        value: "v457 held for batch deploy",
+        value: "v458 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v461."
       }
     ],
@@ -40458,6 +40458,20 @@ function reviewExportPolishConfig(latest, entries, roundReceipt) {
         { label: "Exclude", value: "Private fields", detail: "No PAN, folio, CAS, bank, contact, credentials, client identifiers, or private notes." },
         { label: "Move later", value: "Backend custody", detail: "Account sync should store explicit export receipts, deletion events, and review owner consent." }
       ]
+    },
+    memoryPersistence: {
+      receiptId: ["NN", "REVIEW", "MEMORY", "PERSISTENCE", DATA_VERSION.replace(/-/g, ""), latest.id || "PREVIEW"].join("-").toUpperCase(),
+      verdict: entries.length ? "Prepare account review memory" : "Preview memory only",
+      cadence: "Review whenever score, evidence, TER, drift, fund set, queue, or review owner changes.",
+      owner: "Review memory desk",
+      rule: "Persist only compact review memory fields first; account-backed storage must add consent, deletion receipts, owner controls, and audit logs before production.",
+      boundary: "Review memory must exclude PAN, folio, CAS, bank, contact, account credentials, payment data, private notes, client identifiers, and transaction instructions.",
+      policy: [
+        { label: "Keep", value: "Score and review cue", detail: "Retain score, evidence, drift, TER, fund set, queue cue, review date, and research boundary." },
+        { label: "Sync later", value: "After owner consent", detail: "Move to account-backed review history only after the review owner accepts saved-memory controls." },
+        { label: "Supersede", value: "Fund set changes", detail: "Retire or mark stale when the fund set, goal, review owner, or evidence posture changes materially." },
+        { label: "Exclude", value: "Private data", detail: "Do not persist PAN, folio, CAS, account, bank, contact, credentials, payment data, or private notes." }
+      ]
     }
   };
 }
@@ -40486,11 +40500,17 @@ function renderReviewExportPolish(config) {
           </div>
         `).join("")}
       </div>
+      <div class="review-vault-mini-grid review-memory-persistence">
+        <div><span>Memory</span><b>${escapeHtml(config.memoryPersistence.verdict)}</b></div>
+        <div><span>Owner</span><b>${escapeHtml(config.memoryPersistence.owner)}</b></div>
+        <div><span>Cadence</span><b>${escapeHtml(config.memoryPersistence.cadence)}</b></div>
+      </div>
       <ul class="review-vault-list">
         ${config.shareLines.slice(0, 4).map((line) => `<li>${escapeHtml(line)}</li>`).join("")}
       </ul>
       <button class="text-button" type="button" data-copy-review-export-polish>Copy safe export</button>
       <button class="text-button" type="button" data-copy-review-export-retention>Copy retention</button>
+      <button class="text-button" type="button" data-copy-review-memory-persistence>Copy memory note</button>
     </div>
   `;
 }
@@ -40673,6 +40693,9 @@ function makeReviewVaultBrief() {
     `Export retention ID: ${exportPolish.retention.receiptId}`,
     `Export retention verdict: ${exportPolish.retention.verdict}`,
     `Export retention rule: ${exportPolish.retention.rule}`,
+    `Review memory persistence ID: ${exportPolish.memoryPersistence.receiptId}`,
+    `Review memory verdict: ${exportPolish.memoryPersistence.verdict}`,
+    `Review memory rule: ${exportPolish.memoryPersistence.rule}`,
     `Latest score: ${latest.score}/100`,
     `Latest focus: ${latest.focusLabel}`,
     `Latest posture: ${latest.posture}`,
@@ -40698,6 +40721,9 @@ function makeReviewVaultBrief() {
     "## Export Retention",
     ...exportPolish.retention.policy.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
     "",
+    "## Review Memory Persistence",
+    ...exportPolish.memoryPersistence.policy.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
     "## Recent Snapshots",
     ...(entries.length ? entries.slice(0, 6).map((entry) => `- ${new Date(entry.createdAt).toLocaleString("en-IN")}: ${entry.score}/100, ${entry.focusLabel}, drift ${entry.metrics.drift.toFixed(1)}%, evidence ${entry.metrics.evidence}/100`) : ["- No saved snapshots yet. This brief uses the current review preview."]),
     "",
@@ -40720,6 +40746,8 @@ function makeReviewExportPolishBrief() {
     `Line budget: ${exportPolish.lineBudget}`,
     `Retention ID: ${exportPolish.retention.receiptId}`,
     `Retention verdict: ${exportPolish.retention.verdict}`,
+    `Review memory persistence ID: ${exportPolish.memoryPersistence.receiptId}`,
+    `Review memory verdict: ${exportPolish.memoryPersistence.verdict}`,
     "",
     "## Copyable review brief",
     ...exportPolish.shareLines.map((line) => `- ${line}`),
@@ -40733,6 +40761,10 @@ function makeReviewExportPolishBrief() {
     "## Retention",
     `Rule: ${exportPolish.retention.rule}`,
     ...exportPolish.retention.policy.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Review Memory Persistence",
+    `Rule: ${exportPolish.memoryPersistence.rule}`,
+    ...exportPolish.memoryPersistence.policy.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
     "",
     "Research memory only. This export is not personalized advice, suitability approval, execution instruction, tax guidance, or a return guarantee."
   ].join("\n");
@@ -40750,13 +40782,43 @@ function makeReviewExportRetentionBrief() {
     `Retention ID: ${exportPolish.retention.receiptId}`,
     `Verdict: ${exportPolish.retention.verdict}`,
     `Rule: ${exportPolish.retention.rule}`,
+    `Review memory persistence ID: ${exportPolish.memoryPersistence.receiptId}`,
+    `Review memory verdict: ${exportPolish.memoryPersistence.verdict}`,
     `Saved snapshots: ${entries.length}`,
     `Export ID: ${exportPolish.exportId}`,
     "",
     "## Retention policy",
     ...exportPolish.retention.policy.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
     "",
+    "## Review memory policy",
+    ...exportPolish.memoryPersistence.policy.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
     "Review export retention is browser-local research memory only. It is not personalized advice, suitability approval, execution instruction, tax guidance, or a return guarantee."
+  ].join("\n");
+}
+
+function makeReviewMemoryPersistenceBrief() {
+  const entries = loadReviewVault();
+  const current = reviewSnapshotFromConfig(portfolioReviewConfig());
+  const latest = entries[0] || current;
+  const roundReceipt = researchRoundReceipt(current, entries);
+  const exportPolish = reviewExportPolishConfig(latest, entries, roundReceipt);
+  return [
+    "# NiveshNadi Review Memory Persistence",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Persistence ID: ${exportPolish.memoryPersistence.receiptId}`,
+    `Verdict: ${exportPolish.memoryPersistence.verdict}`,
+    `Saved snapshots: ${entries.length}`,
+    `Export ID: ${exportPolish.exportId}`,
+    `Owner: ${exportPolish.memoryPersistence.owner}`,
+    `Cadence: ${exportPolish.memoryPersistence.cadence}`,
+    `Rule: ${exportPolish.memoryPersistence.rule}`,
+    `Boundary: ${exportPolish.memoryPersistence.boundary}`,
+    "",
+    "## Persistence policy",
+    ...exportPolish.memoryPersistence.policy.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "Review Memory Persistence is a product custody plan. It does not create account storage, approve investing, execute transactions, guarantee returns, or permit private investor identifiers."
   ].join("\n");
 }
 
@@ -63101,6 +63163,13 @@ function bindEvents() {
     if (!copyReviewExportRetention) return;
     event.preventDefault();
     copyText(makeReviewExportRetentionBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyReviewMemoryPersistence = event.target.closest("[data-copy-review-memory-persistence]");
+    if (!copyReviewMemoryPersistence) return;
+    event.preventDefault();
+    copyText(makeReviewMemoryPersistenceBrief());
   });
 
   document.addEventListener("click", (event) => {

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v476 Custody API Readiness
+
+- Version: `0.476.0`
+- Data version: `20260707-v476-01`
+- Changes made: Added Custody API Readiness inside Backend Audit Receipts with endpoint rows, idempotency keys, permission policies, audit events, support-safe response boundaries, receipt fields, no-go rules, dedicated copy action, Backend Audit brief coverage, and release markers rolled forward to v476.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v476 marker scan.
+- Known risks: Custody API readiness is a static contract only; production still needs real authenticated endpoints, server-side idempotency, permission enforcement, append-only audit storage, redaction scans, support-safe response filtering, privacy/security/legal review, and deployment verification.
+
 ## NiveshNadi Phase 1 v475 Baseline Compare Automation
 
 - Version: `0.475.0`

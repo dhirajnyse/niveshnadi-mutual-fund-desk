@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v475-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v475 Baseline Compare Automation";
+const DATA_VERSION = "20260707-v476-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v476 Custody API Readiness";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v474 passed release checks on commit b83e91a. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v475 passed release checks on commit 1ba68f5. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v474 local checks passed",
+      outcome: "Previous outcome: v475 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47401",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47501",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10931,14 +10931,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Baseline compare automation is visible; keep the next batch focused on custody API readiness, account recovery rehearsal, export download rehearsal, support queue rehearsal, and release compare runner.",
+      rule: "Custody API readiness is visible; keep the next batch focused on account recovery rehearsal, export download rehearsal, support queue rehearsal, release compare runner, and API contract smoke receipts.",
       lanes: [
-        {
-          version: "v476",
-          label: "Custody API readiness",
-          route: "#backend-audit-receipts",
-          detail: "Convert custody closeout contracts into endpoint, idempotency, audit-log, permission, and support-safe API readiness checks."
-        },
         {
           version: "v477",
           label: "Account recovery rehearsal",
@@ -10962,6 +10956,12 @@ function buildTrackerConfig() {
           label: "Release compare runner",
           route: "#build-tracker",
           detail: "Turn baseline compare automation into a runner checklist with inputs, outputs, retry receipts, and final share gate."
+        },
+        {
+          version: "v481",
+          label: "API contract smoke receipts",
+          route: "#backend-audit-receipts",
+          detail: "Add endpoint smoke receipt rows for request envelope, idempotency, permission, redaction, audit replay, and support-safe response proof."
         }
       ]
     },
@@ -10970,6 +10970,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v475",
+          key: "20260707-v475-01",
+          commit: "1ba68f5",
+          receiptId: "NN-SHARE-RECEIPT-20260707V47501",
+          proof: "Baseline Compare Automation added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v474",
           key: "20260707-v474-01",
@@ -10997,13 +11004,6 @@ function buildTrackerConfig() {
           commit: "ba7f6d2",
           receiptId: "NN-SHARE-RECEIPT-20260706V47101",
           proof: "Custody Ticket Closeout and section heading fit guard added, pushed, and live-stamp verified."
-        },
-        {
-          version: "v470",
-          key: "20260706-v470-01",
-          commit: "6e86343",
-          receiptId: "NN-SHARE-RECEIPT-20260706V47001",
-          proof: "Visual QA Baseline Store added and verified by static release checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11041,8 +11041,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v475",
-        detail: "Baseline Compare Automation is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v476",
+        detail: "Custody API Readiness is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11057,23 +11057,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v475 as complete until this release returns the active release stamp."
+        detail: "Do not share v476 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v475 source change adds Baseline Compare Automation."
+        detail: "v476 source change adds Custody API Readiness."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v475 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v476 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v475 held for batch deploy",
+        value: "v476 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v476."
       }
     ],
@@ -46686,6 +46686,133 @@ function custodyTicketCloseout(config = backendAuditConfig(), bridge = backendCu
   };
 }
 
+function custodyApiReadiness(config = backendAuditConfig(), bridge = backendCustodyBridge(config), ownerAudit = receiptOwnerAudit(config, bridge), ticketCloseout = custodyTicketCloseout(config, bridge, ownerAudit)) {
+  config = config || backendAuditConfig();
+  bridge = bridge || backendCustodyBridge(config);
+  ownerAudit = ownerAudit || receiptOwnerAudit(config, bridge);
+  ticketCloseout = ticketCloseout || custodyTicketCloseout(config, bridge, ownerAudit);
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const apiReadinessId = ["NN", "CUSTODY", "API", "READINESS", suffix].join("-").toUpperCase();
+  const storageReady = config.storage === "event" || config.storage === "append";
+  const closeoutReady = ticketCloseout.ready >= Math.max(2, Math.floor(ticketCloseout.closeouts.length * 0.5));
+  const endpointMap = [
+    {
+      label: "Create custody receipt",
+      method: "POST",
+      path: "/api/custody/receipts",
+      owner: "Receipt API",
+      payload: "object_family, source_room, account_hash, receipt_fields, redaction_scan_id, idempotency_key",
+      proof: "receipt_created_event_id",
+      permission: "account-write plus receipt-owner role"
+    },
+    {
+      label: "Read support-safe status",
+      method: "GET",
+      path: "/api/custody/receipts/{id}/status",
+      owner: "Support Boundary",
+      payload: "receipt_id, status, owner, next_action, support_view_policy",
+      proof: "support_status_read_event_id",
+      permission: "support-read status only"
+    },
+    {
+      label: "Delete or supersede receipt",
+      method: "POST",
+      path: "/api/custody/receipts/{id}/supersede",
+      owner: "Privacy owner",
+      payload: "receipt_id, supersede_reason, delete_or_supersede_receipt_id, retained_proof_boundary",
+      proof: "delete_or_supersede_event_id",
+      permission: "privacy-owner approval"
+    },
+    {
+      label: "Replay receipt audit log",
+      method: "GET",
+      path: "/api/custody/receipts/{id}/audit",
+      owner: "Audit worker",
+      payload: "receipt_id, event_type, owner, timestamp, hash_pointer, no_private_data_scan_id",
+      proof: "audit_replay_event_id",
+      permission: "audit-read metadata only"
+    }
+  ];
+  const endpointRows = endpointMap.map((endpoint, index) => {
+    const closeout = ticketCloseout.closeouts[index % ticketCloseout.closeouts.length];
+    const score = clampNumber(Math.round(
+      closeout.score * 0.34 +
+        config.score * 0.24 +
+        (storageReady ? 18 : -18) +
+        (closeout.status === "Ticket closeout ready" ? 16 : closeout.status === "Ticket closeout draft" ? 8 : -6) +
+        (endpoint.method === "GET" ? 4 : 0),
+      18,
+      96
+    ));
+    const status = score >= 84 && storageReady ? "API route ready" : score >= 64 ? "API route draft" : "API route blocked";
+    return {
+      ...endpoint,
+      auditEvent: ["NN", "CUSTODY", "API", "EVENT", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      closeoutReceiptId: closeout.closeoutReceiptId,
+      idempotency: `${endpoint.method}:${endpoint.path}:idempotency_key:${suffix}`,
+      score,
+      status,
+      tone: status === "API route ready" ? "ready" : status === "API route blocked" ? "caution" : "watch"
+    };
+  });
+  const ready = endpointRows.filter((row) => row.status === "API route ready").length;
+  const blocked = endpointRows.filter((row) => row.status === "API route blocked").length;
+  const readiness = clampNumber(Math.round(
+    endpointRows.reduce((sum, row) => sum + row.score, 0) / endpointRows.length +
+      (closeoutReady ? 4 : -8) +
+      (storageReady ? 3 : -10),
+    18,
+    96
+  ));
+  const status = blocked
+    ? "Custody API blocked"
+    : ready === endpointRows.length
+      ? "Custody API release-ready"
+      : "Custody API drafted";
+  return {
+    apiReadinessId,
+    blocked,
+    endpointRows,
+    guardrails: [
+      "Every custody API request needs an idempotency key, authenticated actor, explicit owner, redaction scan, and append-only audit event.",
+      "Support endpoints can return status, owner, next action, and receipt ids only; they cannot return payload bodies or private identifiers.",
+      "Delete or supersede endpoints must preserve retained-proof metadata without reconstructing deleted account content.",
+      "API readiness does not override custody ticket closeout; blocked closeout rows keep production API launch held."
+    ],
+    metrics: [
+      { label: "API readiness", value: `${readiness}/100`, detail: status },
+      { label: "Ready endpoints", value: `${ready}/${endpointRows.length}`, detail: `${blocked} blocked before custody APIs can widen.` },
+      { label: "API readiness ID", value: apiReadinessId, detail: "Binds endpoints, idempotency, permission, support view, and audit-log replay." },
+      { label: "Storage dependency", value: backendAuditStorageLabel(config.storage), detail: storageReady ? "Storage can carry API audit metadata." : "Append-only or event-stream storage required before API launch." }
+    ],
+    noGoRules: [
+      "Do not open custody APIs if storage is browser-local, ticket closeout is blocked, or audit replay cannot read append-only events.",
+      "Do not return payload bodies, private notes, PAN, folio, CAS, bank, card, UPI, contact, credentials, payment tokens, or distributor-client data through support endpoints.",
+      "Do not accept mutating requests without idempotency keys, actor permissions, owner receipt, and redaction scan.",
+      "Do not treat API readiness as account launch readiness until security, legal, privacy, incident, and deployment checks are complete."
+    ],
+    readiness,
+    ready,
+    receiptFields: [
+      "custody_api_readiness_id",
+      "endpoint_method",
+      "endpoint_path",
+      "actor_role",
+      "permission_policy",
+      "idempotency_key",
+      "custody_receipt_id",
+      "audit_event_id",
+      "redaction_scan_id",
+      "support_view_policy",
+      "delete_or_supersede_receipt_id",
+      "result_state",
+      "created_at"
+    ],
+    status,
+    tone: status === "Custody API release-ready" ? "ready" : status === "Custody API blocked" ? "caution" : "watch"
+  };
+}
+
 function productionSourceImportJobs(config = backendAuditConfig()) {
   const sourceReceipts = loadSourceReceipts();
   const reviewerDecisions = loadReviewerDecisionLedger();
@@ -51381,6 +51508,7 @@ function renderBackendAuditReceipts(event) {
   const custodyBridge = backendCustodyBridge(config);
   const ownerAudit = receiptOwnerAudit(config, custodyBridge);
   const ticketCloseout = custodyTicketCloseout(config, custodyBridge, ownerAudit);
+  const custodyApi = custodyApiReadiness(config, custodyBridge, ownerAudit, ticketCloseout);
   const paymentReplay = paymentReconciliationReplay(config);
   const sourceImportJobs = productionSourceImportJobs(config);
   const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
@@ -51591,6 +51719,66 @@ function renderBackendAuditReceipts(event) {
           <h3>Closeout guardrails</h3>
           <ul>
             ${ticketCloseout.guardrails.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="backend-source-receipt-job ${escapeHtml(custodyApi.tone)}" aria-label="Custody API readiness">
+      <div class="backend-source-job-head">
+        <div>
+          <span>Custody API readiness</span>
+          <h3>${escapeHtml(custodyApi.status)}</h3>
+          <p>${escapeHtml(custodyApi.apiReadinessId)} turns custody closeout rows into endpoint, idempotency, permission, audit-log, support-safe, and delete-or-supersede API gates before production custody APIs widen.</p>
+        </div>
+        <div class="backend-source-job-score" style="--score:${custodyApi.readiness}">
+          <strong>${custodyApi.readiness}</strong>
+          <span>API</span>
+        </div>
+      </div>
+      <div class="backend-source-job-metric-grid">
+        ${custodyApi.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="backend-source-job-lane-grid">
+        ${custodyApi.endpointRows.map((row) => `
+          <article class="${escapeHtml(row.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(row.owner)} | ${escapeHtml(row.permission)}</span>
+                <strong>${escapeHtml(row.label)}</strong>
+              </div>
+              <b>${row.score}</b>
+            </div>
+            <p><strong>${escapeHtml(row.method)}</strong> ${escapeHtml(row.path)}</p>
+            <div class="build-progress-bar"><span style="width:${row.score}%"></span></div>
+            <small><strong>Payload:</strong> ${escapeHtml(row.payload)}</small>
+            <small><strong>Idempotency:</strong> ${escapeHtml(row.idempotency)}</small>
+            <small><strong>Audit:</strong> ${escapeHtml(row.auditEvent)} | <strong>Closeout:</strong> ${escapeHtml(row.closeoutReceiptId)}</small>
+          </article>
+        `).join("")}
+      </div>
+      <div class="backend-source-job-two">
+        <article>
+          <h3>API receipt fields</h3>
+          <ul>
+            ${custodyApi.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>API no-go rules</h3>
+          <ol>
+            ${custodyApi.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="backend-audit-guardrail">
+          <h3>API guardrails</h3>
+          <ul>
+            ${custodyApi.guardrails.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
           </ul>
         </article>
       </div>
@@ -54311,11 +54499,55 @@ function makeCustodyTicketCloseoutBrief() {
   ].join("\n");
 }
 
+function makeCustodyApiReadinessBrief() {
+  const config = backendAuditConfig();
+  const bridge = backendCustodyBridge(config);
+  const ownerAudit = receiptOwnerAudit(config, bridge);
+  const ticketCloseout = custodyTicketCloseout(config, bridge, ownerAudit);
+  const api = custodyApiReadiness(config, bridge, ownerAudit, ticketCloseout);
+  return [
+    "# NiveshNadi Custody API Readiness",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `API readiness ID: ${api.apiReadinessId}`,
+    `Status: ${api.status}`,
+    `Readiness: ${api.readiness}/100`,
+    `Active stream: ${config.stream.label}`,
+    `Storage: ${backendAuditStorageLabel(config.storage)}`,
+    "",
+    "## Metrics",
+    ...api.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Endpoint Rows",
+    ...api.endpointRows.flatMap((row) => [
+      `- ${row.label}: ${row.method} ${row.path} | ${row.status} | ${row.score}/100`,
+      `  Owner: ${row.owner}`,
+      `  Permission: ${row.permission}`,
+      `  Payload: ${row.payload}`,
+      `  Proof: ${row.proof}`,
+      `  Audit event: ${row.auditEvent}`,
+      `  Idempotency: ${row.idempotency}`,
+      `  Closeout: ${row.closeoutReceiptId}`
+    ]),
+    "",
+    "## Receipt Fields",
+    ...api.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## No-Go Rules",
+    ...api.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "## Guardrails",
+    ...api.guardrails.map((rule) => `- ${rule}`),
+    "",
+    "Custody API Readiness is a backend API contract only. It does not create real endpoints, store real account data, expose private data to support, execute deletion, approve launch, or replace privacy/legal/security review."
+  ].join("\n");
+}
+
 function makeBackendAuditReceiptBrief() {
   const config = backendAuditConfig();
   const custodyBridge = backendCustodyBridge(config);
   const ownerAudit = receiptOwnerAudit(config, custodyBridge);
   const ticketCloseout = custodyTicketCloseout(config, custodyBridge, ownerAudit);
+  const custodyApi = custodyApiReadiness(config, custodyBridge, ownerAudit, ticketCloseout);
   const paymentReplay = paymentReconciliationReplay(config);
   const sourceImportJobs = productionSourceImportJobs(config);
   const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
@@ -54382,6 +54614,16 @@ function makeBackendAuditReceiptBrief() {
     ...ticketCloseout.receiptFields.map((field) => `- Ticket closeout receipt field: ${field}`),
     ...ticketCloseout.noGoRules.map((rule) => `- Ticket closeout no-go: ${rule}`),
     ...ticketCloseout.guardrails.map((rule) => `- Ticket closeout guardrail: ${rule}`),
+    "",
+    "## Custody API Readiness",
+    `- API readiness status: ${custodyApi.status}`,
+    `- API readiness score: ${custodyApi.readiness}/100`,
+    `- API readiness ID: ${custodyApi.apiReadinessId}`,
+    ...custodyApi.metrics.map((metric) => `- Custody API metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...custodyApi.endpointRows.map((row) => `- Custody API endpoint: ${row.method} ${row.path} | ${row.label} | ${row.status} | ${row.score}/100 | Permission: ${row.permission} | Audit: ${row.auditEvent} | Idempotency: ${row.idempotency}`),
+    ...custodyApi.receiptFields.map((field) => `- Custody API receipt field: ${field}`),
+    ...custodyApi.noGoRules.map((rule) => `- Custody API no-go: ${rule}`),
+    ...custodyApi.guardrails.map((rule) => `- Custody API guardrail: ${rule}`),
     "",
     "## Backend Source Receipt Job",
     `- Job status: ${sourceReceiptJob.status}`,
@@ -64962,6 +65204,7 @@ function bindEvents() {
   els.copyBackendCustodyBridge?.addEventListener("click", () => copyText(makeBackendCustodyBridgeBrief()));
   els.copyReceiptOwnerAudit?.addEventListener("click", () => copyText(makeReceiptOwnerAuditBrief()));
   els.copyCustodyTicketCloseout?.addEventListener("click", () => copyText(makeCustodyTicketCloseoutBrief()));
+  els.copyCustodyApiReadiness?.addEventListener("click", () => copyText(makeCustodyApiReadinessBrief()));
   els.copyBackendSourceReceiptJob?.addEventListener("click", () => copyText(makeBackendSourceReceiptJobBrief()));
   els.copyScheduledWorkerContract?.addEventListener("click", () => copyText(makeScheduledWorkerReceiptContractBrief()));
   els.copyWorkerCloseoutDrill?.addEventListener("click", () => copyText(makeWorkerTicketCloseoutDrillBrief()));
@@ -67049,6 +67292,7 @@ function cacheElements() {
     copyBackendCustodyBridge: qs("#copyBackendCustodyBridge"),
     copyReceiptOwnerAudit: qs("#copyReceiptOwnerAudit"),
     copyCustodyTicketCloseout: qs("#copyCustodyTicketCloseout"),
+    copyCustodyApiReadiness: qs("#copyCustodyApiReadiness"),
     copyBackendSourceReceiptJob: qs("#copyBackendSourceReceiptJob"),
     copyScheduledWorkerContract: qs("#copyScheduledWorkerContract"),
     copyWorkerCloseoutDrill: qs("#copyWorkerCloseoutDrill"),

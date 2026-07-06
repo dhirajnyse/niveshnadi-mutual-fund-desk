@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V476 Custody API Readiness
+
+V476 adds Custody API Readiness inside Backend Audit Receipts. It converts custody closeout into endpoint rows, idempotency rules, permission policies, audit events, receipt fields, guardrails, no-go rules, and a copyable API readiness contract before production custody APIs can widen.
+
 ## V475 Baseline Compare Automation
 
 V475 adds Baseline Compare Automation to the Build Tracker Release Doctor. It defines automated visual compare runs, failure thresholds, retry rules, receipt fields, deletion proof, and a copyable automation contract so visual QA can move from memory toward repeatable release proof.

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v468 Receipt Owner Audit
+
+- Version: `0.468.0`
+- Data version: `20260706-v468-01`
+- Changes made: Added Receipt Owner Audit inside Backend Audit Receipts with owner rows for every custody bridge ticket, support-safe status views, audit-boundary fields, escalation routes, stale-proof rules, blocked private-data language, dedicated toolbar copy action, full backend audit brief coverage, and Release Doctor memory rolled forward to v467.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v468 marker scan
+- Known risks: The owner audit is an ownership and support-view contract only; production still needs actual backend owners, support permissions, audit-log storage, reviewer identity, escalation tooling, privacy/legal signoff, and enforcement against private-data leakage.
+
 ## NiveshNadi Phase 1 v467 Account Consent Migration Preview
 
 - Version: `0.467.0`

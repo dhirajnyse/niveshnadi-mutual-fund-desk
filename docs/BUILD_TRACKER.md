@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V468 Receipt Owner Audit
+
+V468 adds Receipt Owner Audit inside Backend Audit Receipts. It assigns every custody bridge ticket to one accountable owner, one support-safe status view, one audit boundary, one escalation route, one stale-proof rule, blocked private-data language, and a copyable owner-audit handoff.
+
 ## V467 Account Consent Migration Preview
 
 V467 adds Account Consent Migration Preview inside Account Readiness. It shows how browser-local saved research can move only after scope, export preview, account-vault dry run, delete route, rollback wording, support-safe status, receipt fields, blocked private data, and consent-specific no-go rules are visible.

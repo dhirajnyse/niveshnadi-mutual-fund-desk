@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v467-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v467 Account Consent Migration Preview";
+const DATA_VERSION = "20260706-v468-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v468 Receipt Owner Audit";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v466 passed release checks on commit 3487077. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v467 passed release checks on commit 0250a4a. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v466 live stamp verified",
+      outcome: "Previous outcome: v467 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46601",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46701",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10793,14 +10793,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Consent migration preview is visible; keep the next batch focused on receipt ownership, deletion support, visual baseline storage, custody ticket closeout, and consent migration closeout.",
+      rule: "Receipt ownership is visible; keep the next batch focused on deletion support, visual baseline storage, custody ticket closeout, consent migration closeout, and account export proof.",
       lanes: [
-        {
-          version: "v468",
-          label: "Receipt owner audit",
-          route: "#backend-audit-receipts",
-          detail: "Name the owner, support view, audit boundary, and escalation route for every retained receipt family."
-        },
         {
           version: "v469",
           label: "Deletion support closeout",
@@ -10824,6 +10818,12 @@ function buildTrackerConfig() {
           label: "Consent migration closeout",
           route: "#account-readiness",
           detail: "Turn the consent preview into a closeout checklist with export proof, user confirmation, rollback, and support receipt boundaries."
+        },
+        {
+          version: "v473",
+          label: "Account export proof",
+          route: "#account-readiness",
+          detail: "Define the account export manifest, file boundary, redaction proof, retention line, and support-safe copy before account storage widens."
         }
       ]
     },
@@ -10832,6 +10832,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v467",
+          key: "20260706-v467-01",
+          commit: "0250a4a",
+          receiptId: "NN-SHARE-RECEIPT-20260706V46701",
+          proof: "Account Consent Migration Preview added and verified by static release checks."
+        },
         {
           version: "v466",
           key: "20260706-v466-01",
@@ -10859,13 +10866,6 @@ function buildTrackerConfig() {
           commit: "19433c1",
           receiptId: "NN-SHARE-RECEIPT-20260706V46301",
           proof: "Saved Research Custody Map added and verified by static release checks."
-        },
-        {
-          version: "v462",
-          key: "20260706-v462-01",
-          commit: "018e149",
-          receiptId: "NN-SHARE-RECEIPT-20260706V46201",
-          proof: "Retention Action Router added and verified by static release checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10903,8 +10903,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v467",
-        detail: "Account Consent Migration Preview is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v468",
+        detail: "Receipt Owner Audit is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -10926,7 +10926,7 @@ function buildTrackerConfig() {
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v467 source change adds Account Consent Migration Preview."
+        detail: "v468 source change adds Receipt Owner Audit."
       },
       {
         label: "Release checks",
@@ -10935,7 +10935,7 @@ function buildTrackerConfig() {
       },
       {
         label: "Share outcome",
-        value: "v467 held for batch deploy",
+        value: "v468 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v471."
       }
     ],
@@ -45636,6 +45636,88 @@ function backendCustodyBridge(config = backendAuditConfig()) {
   };
 }
 
+function receiptOwnerAudit(config = backendAuditConfig(), bridge = backendCustodyBridge(config)) {
+  config = config || backendAuditConfig();
+  bridge = bridge || backendCustodyBridge(config);
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const auditId = ["NN", "RECEIPT", "OWNER", "AUDIT", suffix].join("-").toUpperCase();
+  const ownerRows = bridge.tickets.map((ticket, index) => {
+    const supportView = ticket.owner === "Data Ops"
+      ? "Source receipt status, reviewer signoff, rollback state, and affected-surface ids only."
+      : ticket.owner === "Founder UI Release Desk"
+        ? "Route, viewport, release key, hash placeholder, pass/fail state, and deletion receipt only."
+        : ticket.owner === "Account Platform"
+          ? "Consent state, export preview id, delete receipt id, object count, and redaction result only."
+          : ticket.owner === "Review Vault"
+            ? "Review snapshot id, purpose, cadence, supersede receipt, and delete receipt only."
+            : "Memo handoff id, source status, blocker id, reason receipt id, and redaction result only.";
+    const auditBoundary = [
+      "owner_role",
+      "receipt_id",
+      "status",
+      "event_name",
+      "idempotency_key",
+      "allowed_fields",
+      "blocked_data_scan",
+      "delete_or_supersede_receipt_id"
+    ];
+    const score = clampNumber(Math.round(ticket.score + (config.storage === "event" ? 6 : config.storage === "browser" ? -18 : 0) - (index > 2 ? 2 : 0)), 18, 96);
+    const status = score >= 84
+      ? "Owner audit ready"
+      : score >= 64
+        ? "Owner audit draft"
+        : "Owner audit blocked";
+    return {
+      auditBoundary,
+      escalation: `Escalate to ${ticket.owner} if ${ticket.label.toLowerCase()} is stale, missing delete proof, or support cannot explain the status.`,
+      noPrivateData: "No PAN, folio, CAS, bank, contact, credential, payment token, private note, raw upload, or distributor-client data.",
+      owner: ticket.owner,
+      route: ticket.route,
+      score,
+      source: ticket.source,
+      staleRule: "Stale after release key, source receipt, user consent, reviewer status, or delete/supersede receipt changes.",
+      status,
+      supportView,
+      ticket,
+      tone: status === "Owner audit ready" ? "ready" : status === "Owner audit blocked" ? "caution" : "watch"
+    };
+  });
+  const ready = ownerRows.filter((row) => row.status === "Owner audit ready").length;
+  const blocked = ownerRows.filter((row) => row.status === "Owner audit blocked").length;
+  const readiness = clampNumber(Math.round(ownerRows.reduce((sum, row) => sum + row.score, 0) / ownerRows.length), 18, 96);
+  const status = blocked
+    ? "Owner audit blocked"
+    : ready === ownerRows.length
+      ? "Owner audit ready"
+      : "Owner audit drafted";
+  return {
+    auditId,
+    blocked,
+    guardrails: [
+      "Every retained receipt family needs exactly one product owner and one support-safe status view.",
+      "Support may explain status, owner, route, and next proof; support must not see private payload bodies or identifiers.",
+      "Owner audit is stale when consent, export preview, delete receipt, reviewer state, release key, or source proof changes.",
+      "Escalation must point to the accountable owner before a custody ticket can be called release-ready."
+    ],
+    ownerRows,
+    readiness,
+    ready,
+    receiptFields: [
+      "receipt_owner_audit_id",
+      "custody_ticket_id",
+      "owner_role",
+      "support_view_policy",
+      "audit_boundary_fields",
+      "escalation_route",
+      "stale_rule",
+      "no_private_data_scan",
+      "created_at"
+    ],
+    status,
+    tone: status === "Owner audit ready" ? "ready" : status === "Owner audit blocked" ? "caution" : "watch"
+  };
+}
+
 function productionSourceImportJobs(config = backendAuditConfig()) {
   const sourceReceipts = loadSourceReceipts();
   const reviewerDecisions = loadReviewerDecisionLedger();
@@ -50329,6 +50411,7 @@ function renderBackendAuditReceipts(event) {
   if (!els.backendAuditOutput || !els.backendAuditSummary) return;
   const config = backendAuditConfig();
   const custodyBridge = backendCustodyBridge(config);
+  const ownerAudit = receiptOwnerAudit(config, custodyBridge);
   const paymentReplay = paymentReconciliationReplay(config);
   const sourceImportJobs = productionSourceImportJobs(config);
   const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
@@ -50428,6 +50511,56 @@ function renderBackendAuditReceipts(event) {
           <h3>Bridge guardrails</h3>
           <ul>
             ${custodyBridge.guardrails.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="backend-source-receipt-job ${escapeHtml(ownerAudit.tone)}" aria-label="Receipt owner audit">
+      <div class="backend-source-job-head">
+        <div>
+          <span>Receipt owner audit</span>
+          <h3>${escapeHtml(ownerAudit.status)}</h3>
+          <p>${escapeHtml(ownerAudit.auditId)} assigns each custody receipt to one accountable owner, one support-safe status view, one escalation route, and one stale-proof rule.</p>
+        </div>
+        <div class="backend-source-job-score" style="--score:${ownerAudit.readiness}">
+          <strong>${ownerAudit.readiness}</strong>
+          <span>Owner</span>
+        </div>
+      </div>
+      <div class="backend-source-job-metric-grid">
+        <article><span>Owner rows</span><strong>${ownerAudit.ownerRows.length}</strong><p>${ownerAudit.ready} ready, ${ownerAudit.blocked} blocked.</p></article>
+        <article><span>Audit ID</span><strong>${escapeHtml(ownerAudit.auditId)}</strong><p>Support view, stale rule, escalation, and boundary fields.</p></article>
+        <article><span>Storage posture</span><strong>${escapeHtml(backendAuditStorageLabel(config.storage))}</strong><p>${escapeHtml(config.stream.label)} owner audit inherits the selected receipt storage.</p></article>
+        <article><span>Private data</span><strong>Excluded</strong><p>No payload bodies, identifiers, credentials, payment tokens, or private notes.</p></article>
+      </div>
+      <div class="backend-source-job-lane-grid">
+        ${ownerAudit.ownerRows.map((row) => `
+          <article class="${escapeHtml(row.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(row.owner)} | ${escapeHtml(row.source)}</span>
+                <strong>${escapeHtml(row.ticket.label)}</strong>
+              </div>
+              <b>${row.score}</b>
+            </div>
+            <p>${escapeHtml(row.supportView)}</p>
+            <div class="build-progress-bar"><span style="width:${row.score}%"></span></div>
+            <small>${escapeHtml(row.escalation)} ${escapeHtml(row.staleRule)}</small>
+            <button class="text-button backend-source-job-route" type="button" data-build-route="${escapeHtml(row.route)}">Open owner route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="backend-source-job-two">
+        <article>
+          <h3>Receipt fields</h3>
+          <ul>
+            ${ownerAudit.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="backend-audit-guardrail">
+          <h3>Owner guardrails</h3>
+          <ul>
+            ${ownerAudit.guardrails.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
           </ul>
         </article>
       </div>
@@ -53067,9 +53200,46 @@ function makeBackendCustodyBridgeBrief() {
   ].join("\n");
 }
 
+function makeReceiptOwnerAuditBrief() {
+  const config = backendAuditConfig();
+  const bridge = backendCustodyBridge(config);
+  const ownerAudit = receiptOwnerAudit(config, bridge);
+  return [
+    "# NiveshNadi Receipt Owner Audit",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Audit ID: ${ownerAudit.auditId}`,
+    `Status: ${ownerAudit.status}`,
+    `Readiness: ${ownerAudit.readiness}/100`,
+    `Active stream: ${config.stream.label}`,
+    `Storage: ${backendAuditStorageLabel(config.storage)}`,
+    "",
+    "## Owner Rows",
+    ...ownerAudit.ownerRows.flatMap((row) => [
+      `- ${row.ticket.ticketId}: ${row.ticket.label} | ${row.status} | ${row.score}/100`,
+      `  Owner: ${row.owner}`,
+      `  Source: ${row.source}`,
+      `  Route: ${row.route}`,
+      `  Support view: ${row.supportView}`,
+      `  Audit boundary: ${row.auditBoundary.join(", ")}`,
+      `  Escalation: ${row.escalation}`,
+      `  Stale rule: ${row.staleRule}`,
+      `  No private data: ${row.noPrivateData}`
+    ]),
+    "",
+    "## Receipt Fields",
+    ...ownerAudit.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## Guardrails",
+    ...ownerAudit.guardrails.map((rule) => `- ${rule}`),
+    "",
+    "Receipt Owner Audit is a backend ownership contract only. It does not create account storage, expose private data to support, approve launch, execute transactions, or replace privacy/legal review."
+  ].join("\n");
+}
+
 function makeBackendAuditReceiptBrief() {
   const config = backendAuditConfig();
   const custodyBridge = backendCustodyBridge(config);
+  const ownerAudit = receiptOwnerAudit(config, custodyBridge);
   const paymentReplay = paymentReconciliationReplay(config);
   const sourceImportJobs = productionSourceImportJobs(config);
   const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
@@ -53118,6 +53288,14 @@ function makeBackendAuditReceiptBrief() {
     ...custodyBridge.tickets.map((ticket) => `- Custody bridge ticket: ${ticket.ticketId}: ${ticket.label} | ${ticket.status} | ${ticket.score}/100 | ${ticket.owner} | ${ticket.event} | Route: ${ticket.route} | Hold: ${ticket.hold}`),
     ...custodyBridge.receiptFields.map((field) => `- Custody bridge receipt field: ${field}`),
     ...custodyBridge.guardrails.map((rule) => `- Custody bridge guardrail: ${rule}`),
+    "",
+    "## Receipt Owner Audit",
+    `- Owner audit status: ${ownerAudit.status}`,
+    `- Owner audit readiness: ${ownerAudit.readiness}/100`,
+    `- Owner audit ID: ${ownerAudit.auditId}`,
+    ...ownerAudit.ownerRows.map((row) => `- Owner audit row: ${row.ticket.ticketId}: ${row.ticket.label} | ${row.status} | ${row.score}/100 | Owner: ${row.owner} | Support: ${row.supportView} | Escalate: ${row.escalation} | Stale: ${row.staleRule}`),
+    ...ownerAudit.receiptFields.map((field) => `- Owner audit receipt field: ${field}`),
+    ...ownerAudit.guardrails.map((rule) => `- Owner audit guardrail: ${rule}`),
     "",
     "## Backend Source Receipt Job",
     `- Job status: ${sourceReceiptJob.status}`,
@@ -63696,6 +63874,7 @@ function bindEvents() {
   });
   els.openBackendAuditRoute?.addEventListener("click", openBackendAuditRoute);
   els.copyBackendCustodyBridge?.addEventListener("click", () => copyText(makeBackendCustodyBridgeBrief()));
+  els.copyReceiptOwnerAudit?.addEventListener("click", () => copyText(makeReceiptOwnerAuditBrief()));
   els.copyBackendSourceReceiptJob?.addEventListener("click", () => copyText(makeBackendSourceReceiptJobBrief()));
   els.copyScheduledWorkerContract?.addEventListener("click", () => copyText(makeScheduledWorkerReceiptContractBrief()));
   els.copyWorkerCloseoutDrill?.addEventListener("click", () => copyText(makeWorkerTicketCloseoutDrillBrief()));
@@ -65739,6 +65918,7 @@ function cacheElements() {
     backendAuditOutput: qs("#backendAuditOutput"),
     openBackendAuditRoute: qs("#openBackendAuditRoute"),
     copyBackendCustodyBridge: qs("#copyBackendCustodyBridge"),
+    copyReceiptOwnerAudit: qs("#copyReceiptOwnerAudit"),
     copyBackendSourceReceiptJob: qs("#copyBackendSourceReceiptJob"),
     copyScheduledWorkerContract: qs("#copyScheduledWorkerContract"),
     copyWorkerCloseoutDrill: qs("#copyWorkerCloseoutDrill"),

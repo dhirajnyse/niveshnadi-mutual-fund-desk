@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V471 Custody Ticket Closeout
+
+V471 adds Custody Ticket Closeout inside Backend Audit Receipts. It closes each custody bridge ticket only after owner signoff, accepted fields, support-safe status, no-private-data scan, delete-or-supersede proof, launch no-go rules, and a copyable closeout receipt are visible.
+
 ## V470 Visual QA Baseline Store
 
 V470 adds Visual QA Baseline Store to the Release Doctor. It turns the visual regression handoff into route, viewport, DOM marker, screenshot hash, comparison result, reviewer state, failure routing, raw-image deletion proof, storage fields, and a copyable baseline-store contract.

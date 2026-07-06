@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v470-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v470 Visual QA Baseline Store";
+const DATA_VERSION = "20260706-v471-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v471 Custody Ticket Closeout";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v469 passed release checks on commit 914a9fe. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v470 passed release checks on commit 6e86343. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v469 local checks passed",
+      outcome: "Previous outcome: v470 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46901",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V47001",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10857,14 +10857,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Visual QA baseline storage is visible; keep the next batch focused on custody ticket closeout, consent migration closeout, account export proof, support case audit, and baseline compare automation.",
+      rule: "Custody ticket closeout is visible; keep the next batch focused on consent migration closeout, account export proof, support case audit, baseline compare automation, and custody API readiness.",
       lanes: [
-        {
-          version: "v471",
-          label: "Custody ticket closeout",
-          route: "#backend-audit-receipts",
-          detail: "Close the first custody bridge tickets with owner signoff, accepted fields, deletion receipts, and no-private-data scans."
-        },
         {
           version: "v472",
           label: "Consent migration closeout",
@@ -10888,6 +10882,12 @@ function buildTrackerConfig() {
           label: "Baseline compare automation",
           route: "#build-tracker",
           detail: "Define automated compare runs, failure thresholds, retry rules, reviewer signoff, and screenshot deletion receipts."
+        },
+        {
+          version: "v476",
+          label: "Custody API readiness",
+          route: "#backend-audit-receipts",
+          detail: "Convert custody closeout contracts into endpoint, idempotency, audit-log, permission, and support-safe API readiness checks."
         }
       ]
     },
@@ -10896,6 +10896,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v470",
+          key: "20260706-v470-01",
+          commit: "6e86343",
+          receiptId: "NN-SHARE-RECEIPT-20260706V47001",
+          proof: "Visual QA Baseline Store added and verified by static release checks."
+        },
         {
           version: "v469",
           key: "20260706-v469-01",
@@ -10923,13 +10930,6 @@ function buildTrackerConfig() {
           commit: "3487077",
           receiptId: "NN-SHARE-RECEIPT-20260706V46601",
           proof: "Backend Custody Bridge added, deployed, and live-stamp verified."
-        },
-        {
-          version: "v465",
-          key: "20260706-v465-01",
-          commit: "fa83842",
-          receiptId: "NN-SHARE-RECEIPT-20260706V46501",
-          proof: "Visual Regression Handoff added and verified by static release checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10967,8 +10967,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v470",
-        detail: "Visual QA Baseline Store is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v471",
+        detail: "Custody Ticket Closeout is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -10983,23 +10983,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v467 as complete until this release returns the active release stamp."
+        detail: "Do not share v471 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v470 source change adds Visual QA Baseline Store."
+        detail: "v471 source change adds Custody Ticket Closeout."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v467 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v471 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v470 held for batch deploy",
+        value: "v471 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v471."
       }
     ],
@@ -45979,6 +45979,104 @@ function receiptOwnerAudit(config = backendAuditConfig(), bridge = backendCustod
   };
 }
 
+function custodyTicketCloseout(config = backendAuditConfig(), bridge = backendCustodyBridge(config), ownerAudit = receiptOwnerAudit(config, bridge)) {
+  config = config || backendAuditConfig();
+  bridge = bridge || backendCustodyBridge(config);
+  ownerAudit = ownerAudit || receiptOwnerAudit(config, bridge);
+  const suffix = DATA_VERSION.replace(/-/g, "");
+  const closeoutId = ["NN", "CUSTODY", "TICKET", "CLOSEOUT", suffix].join("-").toUpperCase();
+  const ownerRows = ownerAudit.ownerRows || [];
+  const storageReady = config.storage !== "browser";
+  const closeouts = bridge.tickets.map((ticket, index) => {
+    const ownerRow = ownerRows.find((row) => row.ticket?.ticketId === ticket.ticketId) || {};
+    const ownerScore = ownerRow.score || 50;
+    const acceptedFieldCount = ticket.fields.length;
+    const score = clampNumber(Math.round(
+      ticket.score * 0.3 +
+        ownerScore * 0.28 +
+        config.score * 0.18 +
+        (storageReady ? 14 : -20) +
+        (acceptedFieldCount >= 5 ? 6 : 2) -
+        (index === 4 ? 2 : 0),
+      18,
+      96
+    ));
+    const status = score >= 84 && storageReady && ownerRow.status !== "Owner audit blocked"
+      ? "Ticket closeout ready"
+      : score >= 64
+        ? "Ticket closeout draft"
+        : "Ticket closeout blocked";
+    return {
+      acceptedFieldCount,
+      closeoutReceiptId: ["NN", "CUSTODY", "CLOSEOUT", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      deleteOrSupersedeReceiptId: ["NN", "DELETE", "OR", "SUPERSEDE", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      noPrivateDataScanId: ["NN", "NO", "PRIVATE", "SCAN", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      owner: ownerRow.owner || ticket.owner,
+      ownerSignoffId: ["NN", "OWNER", "SIGNOFF", String(index + 1).padStart(2, "0"), suffix].join("-").toUpperCase(),
+      releaseCheck: status === "Ticket closeout ready"
+        ? "Can enter release review after live backend proof and reviewer signoff replay."
+        : status === "Ticket closeout draft"
+          ? "Hold release until owner signoff, accepted fields, support-safe view, and delete/supersede receipt replay."
+          : "Block release until storage, owner, deletion proof, support view, and private-data scan are repaired.",
+      route: ticket.route,
+      score,
+      source: ticket.source,
+      status,
+      supportView: ownerRow.supportView || "Support-safe status, owner, route, next proof, and no private payload bodies only.",
+      ticket,
+      tone: status === "Ticket closeout ready" ? "ready" : status === "Ticket closeout blocked" ? "caution" : "watch"
+    };
+  });
+  const ready = closeouts.filter((item) => item.status === "Ticket closeout ready").length;
+  const blocked = closeouts.filter((item) => item.status === "Ticket closeout blocked").length;
+  const readiness = clampNumber(Math.round(closeouts.reduce((sum, item) => sum + item.score, 0) / closeouts.length), 18, 96);
+  const status = blocked
+    ? "Ticket closeout blocked"
+    : ready === closeouts.length
+      ? "Ticket closeout ready"
+      : "Ticket closeout drafted";
+  return {
+    blocked,
+    closeoutId,
+    closeouts,
+    guardrails: [
+      "A custody ticket closes only after owner signoff, accepted field list, support-safe status view, delete-or-supersede receipt, and no-private-data scan agree.",
+      "Closeout receipts store operational metadata and hashes only; they do not store private payload bodies, PAN, folio, CAS, bank, contact, credential, payment token, or private note data.",
+      "Support can read status, owner, route, and next proof, but cannot inspect raw investor identifiers or free-form private notes.",
+      "Release review stays held when any closeout row is blocked, stale, ownerless, or missing delete/supersede proof."
+    ],
+    metrics: [
+      { label: "Closeout readiness", value: `${readiness}/100`, detail: status },
+      { label: "Closed rows", value: `${ready}/${closeouts.length}`, detail: `${blocked} blocked before production custody can widen.` },
+      { label: "Closeout ID", value: closeoutId, detail: "One batch receipt for owner signoff and delete-or-supersede proof." },
+      { label: "Storage posture", value: backendAuditStorageLabel(config.storage), detail: storageReady ? "Storage can carry closeout metadata." : "Browser-local storage blocks closeout." }
+    ],
+    noGoRules: [
+      "Do not close a custody ticket without owner signoff and accepted-field receipt.",
+      "Do not close if delete-or-supersede proof, private-data scan, or support-safe status view is missing.",
+      "Do not call account custody production-ready while any closeout row is blocked or stale.",
+      "Do not expose raw uploaded documents, contact details, credentials, payment tokens, distributor-client data, or private notes in support views."
+    ],
+    readiness,
+    ready,
+    receiptFields: [
+      "custody_ticket_closeout_id",
+      "custody_ticket_id",
+      "owner_role",
+      "accepted_field_count",
+      "owner_signoff_id",
+      "delete_or_supersede_receipt_id",
+      "no_private_data_scan_id",
+      "support_view_policy",
+      "release_check",
+      "closeout_state",
+      "created_at"
+    ],
+    status,
+    tone: status === "Ticket closeout ready" ? "ready" : status === "Ticket closeout blocked" ? "caution" : "watch"
+  };
+}
+
 function productionSourceImportJobs(config = backendAuditConfig()) {
   const sourceReceipts = loadSourceReceipts();
   const reviewerDecisions = loadReviewerDecisionLedger();
@@ -50673,6 +50771,7 @@ function renderBackendAuditReceipts(event) {
   const config = backendAuditConfig();
   const custodyBridge = backendCustodyBridge(config);
   const ownerAudit = receiptOwnerAudit(config, custodyBridge);
+  const ticketCloseout = custodyTicketCloseout(config, custodyBridge, ownerAudit);
   const paymentReplay = paymentReconciliationReplay(config);
   const sourceImportJobs = productionSourceImportJobs(config);
   const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
@@ -50822,6 +50921,67 @@ function renderBackendAuditReceipts(event) {
           <h3>Owner guardrails</h3>
           <ul>
             ${ownerAudit.guardrails.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ul>
+        </article>
+      </div>
+    </div>
+    <div class="backend-source-receipt-job ${escapeHtml(ticketCloseout.tone)}" aria-label="Custody ticket closeout">
+      <div class="backend-source-job-head">
+        <div>
+          <span>Custody ticket closeout</span>
+          <h3>${escapeHtml(ticketCloseout.status)}</h3>
+          <p>${escapeHtml(ticketCloseout.closeoutId)} closes each backend custody ticket only after owner signoff, accepted fields, no-private-data scan, support-safe view, and delete-or-supersede proof are visible.</p>
+        </div>
+        <div class="backend-source-job-score" style="--score:${ticketCloseout.readiness}">
+          <strong>${ticketCloseout.readiness}</strong>
+          <span>Close</span>
+        </div>
+      </div>
+      <div class="backend-source-job-metric-grid">
+        ${ticketCloseout.metrics.map((metric) => `
+          <article>
+            <span>${escapeHtml(metric.label)}</span>
+            <strong>${escapeHtml(metric.value)}</strong>
+            <p>${escapeHtml(metric.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="backend-source-job-lane-grid">
+        ${ticketCloseout.closeouts.map((item) => `
+          <article class="${escapeHtml(item.tone)}">
+            <div class="backend-audit-card-head">
+              <div>
+                <span>${escapeHtml(item.owner)} | ${escapeHtml(item.source)}</span>
+                <strong>${escapeHtml(item.ticket.label)}</strong>
+              </div>
+              <b>${item.score}</b>
+            </div>
+            <p>${escapeHtml(item.closeoutReceiptId)}</p>
+            <div class="build-progress-bar"><span style="width:${item.score}%"></span></div>
+            <small><strong>Accepted fields:</strong> ${item.acceptedFieldCount} | <strong>Owner signoff:</strong> ${escapeHtml(item.ownerSignoffId)}</small>
+            <small><strong>Delete/supersede:</strong> ${escapeHtml(item.deleteOrSupersedeReceiptId)}</small>
+            <small><strong>Release:</strong> ${escapeHtml(item.releaseCheck)}</small>
+            <button class="text-button backend-source-job-route" type="button" data-build-route="${escapeHtml(item.route)}">Open closeout route</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="backend-source-job-two">
+        <article>
+          <h3>Closeout receipt fields</h3>
+          <ul>
+            ${ticketCloseout.receiptFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}
+          </ul>
+        </article>
+        <article>
+          <h3>Launch no-go rules</h3>
+          <ol>
+            ${ticketCloseout.noGoRules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
+          </ol>
+        </article>
+        <article class="backend-audit-guardrail">
+          <h3>Closeout guardrails</h3>
+          <ul>
+            ${ticketCloseout.guardrails.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}
           </ul>
         </article>
       </div>
@@ -53497,10 +53657,56 @@ function makeReceiptOwnerAuditBrief() {
   ].join("\n");
 }
 
+function makeCustodyTicketCloseoutBrief() {
+  const config = backendAuditConfig();
+  const bridge = backendCustodyBridge(config);
+  const ownerAudit = receiptOwnerAudit(config, bridge);
+  const ticketCloseout = custodyTicketCloseout(config, bridge, ownerAudit);
+  return [
+    "# NiveshNadi Custody Ticket Closeout",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Closeout ID: ${ticketCloseout.closeoutId}`,
+    `Status: ${ticketCloseout.status}`,
+    `Readiness: ${ticketCloseout.readiness}/100`,
+    `Active stream: ${config.stream.label}`,
+    `Storage: ${backendAuditStorageLabel(config.storage)}`,
+    "",
+    "## Metrics",
+    ...ticketCloseout.metrics.map((metric) => `- ${metric.label}: ${metric.value} | ${metric.detail}`),
+    "",
+    "## Closeout Rows",
+    ...ticketCloseout.closeouts.flatMap((item) => [
+      `- ${item.closeoutReceiptId}: ${item.ticket.label} | ${item.status} | ${item.score}/100`,
+      `  Ticket: ${item.ticket.ticketId}`,
+      `  Owner: ${item.owner}`,
+      `  Source: ${item.source}`,
+      `  Route: ${item.route}`,
+      `  Accepted fields: ${item.acceptedFieldCount}`,
+      `  Owner signoff: ${item.ownerSignoffId}`,
+      `  Delete or supersede: ${item.deleteOrSupersedeReceiptId}`,
+      `  No-private-data scan: ${item.noPrivateDataScanId}`,
+      `  Support view: ${item.supportView}`,
+      `  Release check: ${item.releaseCheck}`
+    ]),
+    "",
+    "## Receipt Fields",
+    ...ticketCloseout.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## Launch No-Go Rules",
+    ...ticketCloseout.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "## Guardrails",
+    ...ticketCloseout.guardrails.map((rule) => `- ${rule}`),
+    "",
+    "Custody Ticket Closeout is a backend custody contract only. It does not create account storage, expose private data to support, execute deletion, approve launch, or replace privacy/legal/security review."
+  ].join("\n");
+}
+
 function makeBackendAuditReceiptBrief() {
   const config = backendAuditConfig();
   const custodyBridge = backendCustodyBridge(config);
   const ownerAudit = receiptOwnerAudit(config, custodyBridge);
+  const ticketCloseout = custodyTicketCloseout(config, custodyBridge, ownerAudit);
   const paymentReplay = paymentReconciliationReplay(config);
   const sourceImportJobs = productionSourceImportJobs(config);
   const sourceWorker = sourceImportWorkerBlueprint(sourceImportJobs, config);
@@ -53557,6 +53763,16 @@ function makeBackendAuditReceiptBrief() {
     ...ownerAudit.ownerRows.map((row) => `- Owner audit row: ${row.ticket.ticketId}: ${row.ticket.label} | ${row.status} | ${row.score}/100 | Owner: ${row.owner} | Support: ${row.supportView} | Escalate: ${row.escalation} | Stale: ${row.staleRule}`),
     ...ownerAudit.receiptFields.map((field) => `- Owner audit receipt field: ${field}`),
     ...ownerAudit.guardrails.map((rule) => `- Owner audit guardrail: ${rule}`),
+    "",
+    "## Custody Ticket Closeout",
+    `- Ticket closeout status: ${ticketCloseout.status}`,
+    `- Ticket closeout readiness: ${ticketCloseout.readiness}/100`,
+    `- Ticket closeout ID: ${ticketCloseout.closeoutId}`,
+    ...ticketCloseout.metrics.map((metric) => `- Ticket closeout metric: ${metric.label}: ${metric.value} | ${metric.detail}`),
+    ...ticketCloseout.closeouts.map((item) => `- Ticket closeout row: ${item.closeoutReceiptId}: ${item.ticket.label} | ${item.status} | ${item.score}/100 | Ticket: ${item.ticket.ticketId} | Owner: ${item.owner} | Owner signoff: ${item.ownerSignoffId} | Delete/supersede: ${item.deleteOrSupersedeReceiptId} | No-private-data scan: ${item.noPrivateDataScanId} | Release: ${item.releaseCheck}`),
+    ...ticketCloseout.receiptFields.map((field) => `- Ticket closeout receipt field: ${field}`),
+    ...ticketCloseout.noGoRules.map((rule) => `- Ticket closeout no-go: ${rule}`),
+    ...ticketCloseout.guardrails.map((rule) => `- Ticket closeout guardrail: ${rule}`),
     "",
     "## Backend Source Receipt Job",
     `- Job status: ${sourceReceiptJob.status}`,
@@ -64136,6 +64352,7 @@ function bindEvents() {
   els.openBackendAuditRoute?.addEventListener("click", openBackendAuditRoute);
   els.copyBackendCustodyBridge?.addEventListener("click", () => copyText(makeBackendCustodyBridgeBrief()));
   els.copyReceiptOwnerAudit?.addEventListener("click", () => copyText(makeReceiptOwnerAuditBrief()));
+  els.copyCustodyTicketCloseout?.addEventListener("click", () => copyText(makeCustodyTicketCloseoutBrief()));
   els.copyBackendSourceReceiptJob?.addEventListener("click", () => copyText(makeBackendSourceReceiptJobBrief()));
   els.copyScheduledWorkerContract?.addEventListener("click", () => copyText(makeScheduledWorkerReceiptContractBrief()));
   els.copyWorkerCloseoutDrill?.addEventListener("click", () => copyText(makeWorkerTicketCloseoutDrillBrief()));
@@ -66194,6 +66411,7 @@ function cacheElements() {
     openBackendAuditRoute: qs("#openBackendAuditRoute"),
     copyBackendCustodyBridge: qs("#copyBackendCustodyBridge"),
     copyReceiptOwnerAudit: qs("#copyReceiptOwnerAudit"),
+    copyCustodyTicketCloseout: qs("#copyCustodyTicketCloseout"),
     copyBackendSourceReceiptJob: qs("#copyBackendSourceReceiptJob"),
     copyScheduledWorkerContract: qs("#copyScheduledWorkerContract"),
     copyWorkerCloseoutDrill: qs("#copyWorkerCloseoutDrill"),

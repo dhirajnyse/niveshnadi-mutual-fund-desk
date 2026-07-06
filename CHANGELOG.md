@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v473 Account Export Proof
+
+- Version: `0.473.0`
+- Data version: `20260707-v473-01`
+- Changes made: Added Account Export Proof inside Account Readiness with export sections, manifest rows, redaction rules, receipt fields, no-go rules, dedicated copy action, Account Readiness brief coverage, and release markers rolled forward to v473.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v473 marker scan.
+- Known risks: Export proof is a readiness contract only; production still needs real account storage, generated export files, authenticated download links, backend manifest generation, redaction scanners, retention deletion, support-safe status views, privacy/legal review, and deployment verification.
+
 ## NiveshNadi Phase 1 v472 Consent Migration Closeout
 
 - Version: `0.472.0`

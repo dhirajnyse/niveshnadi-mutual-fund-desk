@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v472-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v472 Consent Migration Closeout";
+const DATA_VERSION = "20260707-v473-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v473 Account Export Proof";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v471 passed release checks on commit ba7f6d2. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v472 passed release checks on commit 7b8d3af. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v471 local and visual checks passed",
+      outcome: "Previous outcome: v472 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V47101",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47201",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10857,14 +10857,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Consent migration closeout is visible; keep the next batch focused on account export proof, support case audit, baseline compare automation, custody API readiness, and account recovery rehearsal.",
+      rule: "Account export proof is visible; keep the next batch focused on support case audit, baseline compare automation, custody API readiness, account recovery rehearsal, and export download rehearsal.",
       lanes: [
-        {
-          version: "v473",
-          label: "Account export proof",
-          route: "#account-readiness",
-          detail: "Define the account export manifest, file boundary, redaction proof, retention line, and support-safe copy before account storage widens."
-        },
         {
           version: "v474",
           label: "Support case audit",
@@ -10888,6 +10882,12 @@ function buildTrackerConfig() {
           label: "Account recovery rehearsal",
           route: "#account-readiness",
           detail: "Rehearse account restore, export replay, support evidence, user confirmation, and rollback proof before account storage widens."
+        },
+        {
+          version: "v478",
+          label: "Export download rehearsal",
+          route: "#account-readiness",
+          detail: "Rehearse export file generation, expiry, retry, redaction scan, download receipt, and support-safe status wording."
         }
       ]
     },
@@ -10896,6 +10896,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v472",
+          key: "20260707-v472-01",
+          commit: "7b8d3af",
+          receiptId: "NN-SHARE-RECEIPT-20260707V47201",
+          proof: "Consent Migration Closeout added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v471",
           key: "20260706-v471-01",
@@ -10923,13 +10930,6 @@ function buildTrackerConfig() {
           commit: "497c3fc",
           receiptId: "NN-SHARE-RECEIPT-20260706V46801",
           proof: "Receipt Owner Audit added and verified by static release checks."
-        },
-        {
-          version: "v467",
-          key: "20260706-v467-01",
-          commit: "0250a4a",
-          receiptId: "NN-SHARE-RECEIPT-20260706V46701",
-          proof: "Account Consent Migration Preview added and verified by static release checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10967,8 +10967,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v472",
-        detail: "Consent Migration Closeout is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v473",
+        detail: "Account Export Proof is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -10983,23 +10983,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v472 as complete until this release returns the active release stamp."
+        detail: "Do not share v473 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v472 source change adds Consent Migration Closeout."
+        detail: "v473 source change adds Account Export Proof."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v472 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v473 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v472 held for batch deploy",
+        value: "v473 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v476."
       }
     ],
@@ -25932,6 +25932,81 @@ function accountReadinessLabConfig() {
       "Do not convert a consent closeout into advice, transaction approval, suitability approval, refund promise, or legal certification."
     ]
   };
+  const accountExportProof = {
+    label: "Account export proof",
+    status: "Export before trust",
+    receiptId: ["NN", "ACCOUNT", "EXPORT", "PROOF", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    score: 78,
+    rule: "No saved account research is trustworthy until the user can preview, export, verify, redact, and replay the exact account data boundary without private identifiers.",
+    exportSections: [
+      {
+        label: "Profile snapshot",
+        owner: "Account Platform",
+        format: "profile.json",
+        includes: "goal type, horizon, SIP comfort, drawdown comfort, emergency buffer, research confidence",
+        excludes: "PAN, folio, CAS, address, phone, email body, bank, card, UPI, nominee, private notes",
+        proof: "profile_export_section_id"
+      },
+      {
+        label: "Saved research memory",
+        owner: "Research Vault",
+        format: "research-memory.json",
+        includes: "fund ids, compare sets, memo receipt ids, review dates, score deltas, next review reminders",
+        excludes: "free-form private notes, advisor-client notes, contact data, payment tokens",
+        proof: "research_memory_export_section_id"
+      },
+      {
+        label: "Evidence pointer ledger",
+        owner: "Evidence Ledger",
+        format: "evidence-pointers.csv",
+        includes: "source date, citation path, source family, reviewer state, receipt id, parser version",
+        excludes: "licensed source payload bodies, raw uploads, credentials, hidden scrape output",
+        proof: "evidence_pointer_export_section_id"
+      },
+      {
+        label: "Entitlement summary",
+        owner: "Billing Boundary",
+        format: "entitlement-summary.json",
+        includes: "plan state, period, gateway receipt reference, feature limit state, renewal state",
+        excludes: "card, UPI, bank, payment token, gateway secret, refund-sensitive private data",
+        proof: "entitlement_export_section_id"
+      }
+    ],
+    manifestRows: accountConsentMigrationCloseout.closeoutRows.map((row, index) => ({
+      family: row.label,
+      source: row.source,
+      manifestId: ["NN", "EXPORT", "MANIFEST", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      countProof: "Object count must match consent closeout before the export is marked ready.",
+      redactionProof: "Blocked-data scan must return no PAN, folio, CAS, bank, card, UPI, contact, credentials, ARN/EUIN, or distributor-client records."
+    })),
+    redactionRules: [
+      "Export preview must show object counts, section names, excluded-data list, file names, retention period, and delete route before download.",
+      "Every export file needs a manifest id, account hash, generated-at time, source room, schema version, and redaction scan id.",
+      "Support can see export status, section count, and receipt ids only; support cannot open payload bodies.",
+      "Export retry must reuse an idempotency key and mark the old attempt superseded instead of creating hidden duplicates."
+    ],
+    receiptFields: [
+      "account_export_proof_id",
+      "account_id_hash",
+      "export_manifest_id",
+      "schema_version",
+      "section_name",
+      "file_name",
+      "object_count",
+      "redaction_scan_id",
+      "generated_at",
+      "expires_at",
+      "support_status_policy_id",
+      "delete_route_id",
+      "download_receipt_id"
+    ],
+    noGoRules: [
+      "Do not call account custody ready if export preview is missing, stale, or mismatched with consent closeout.",
+      "Do not export raw private notes, PAN, folio, CAS, bank, card, UPI, phone, email body, credentials, ARN/EUIN, or distributor-client records.",
+      "Do not expose export payload bodies to support or logs.",
+      "Do not widen paid accounts until export retry, deletion, redaction, and retention rules can be replayed."
+    ]
+  };
   const accountDeletionRehearsal = {
     label: "Account deletion rehearsal",
     status: "Rehearse before storage",
@@ -26061,6 +26136,7 @@ function accountReadinessLabConfig() {
     accountScore,
     accountConsentMigrationPreview,
     accountConsentMigrationCloseout,
+    accountExportProof,
     accountDeletionRehearsal,
     deletionSupportCloseout,
     blocked,
@@ -26172,6 +26248,32 @@ function renderAccountReadinessLab() {
           <p><strong>Owner:</strong> ${escapeHtml(row.ownerSignoff)}</p>
           <p><strong>Scan:</strong> ${escapeHtml(row.redactionScan)}</p>
           <p><strong>Release:</strong> ${escapeHtml(row.releaseCheck)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-data-grid" aria-label="Account export proof">
+      <article class="ready">
+        <span>${escapeHtml(lab.accountExportProof.label)}</span>
+        <strong>${escapeHtml(lab.accountExportProof.status)} | ${lab.accountExportProof.score}/100</strong>
+        <p>${escapeHtml(lab.accountExportProof.rule)}</p>
+        <button class="text-button" type="button" data-copy-account-export-proof>Copy export proof</button>
+      </article>
+      ${lab.accountExportProof.exportSections.map((section) => `
+        <article>
+          <span>${escapeHtml(section.owner)}</span>
+          <strong>${escapeHtml(section.label)}</strong>
+          <p><strong>File:</strong> ${escapeHtml(section.format)}</p>
+          <p><strong>Includes:</strong> ${escapeHtml(section.includes)}</p>
+          <p><strong>Excludes:</strong> ${escapeHtml(section.excludes)}</p>
+        </article>
+      `).join("")}
+      ${lab.accountExportProof.manifestRows.map((row) => `
+        <article>
+          <span>${escapeHtml(row.source)}</span>
+          <strong>${escapeHtml(row.family)}</strong>
+          <p><strong>Manifest:</strong> ${escapeHtml(row.manifestId)}</p>
+          <p><strong>Count:</strong> ${escapeHtml(row.countProof)}</p>
+          <p><strong>Scan:</strong> ${escapeHtml(row.redactionProof)}</p>
         </article>
       `).join("")}
     </div>
@@ -26304,6 +26406,17 @@ function makeAccountReadinessBrief() {
     ...lab.accountConsentMigrationCloseout.receiptFields.map((field) => `- Consent closeout receipt field: ${field}`),
     ...lab.accountConsentMigrationCloseout.noGoRules.map((rule) => `- Consent closeout no-go: ${rule}`),
     "",
+    "## Account Export Proof",
+    `- Receipt ID: ${lab.accountExportProof.receiptId}`,
+    `- Status: ${lab.accountExportProof.status}`,
+    `- Score: ${lab.accountExportProof.score}/100`,
+    `- Rule: ${lab.accountExportProof.rule}`,
+    ...lab.accountExportProof.exportSections.map((section) => `- Export section ${section.label}: ${section.format} | Includes ${section.includes} | Excludes ${section.excludes} | Proof ${section.proof}`),
+    ...lab.accountExportProof.manifestRows.map((row) => `- Manifest ${row.family}: ${row.manifestId} | Count ${row.countProof} | Scan ${row.redactionProof}`),
+    ...lab.accountExportProof.redactionRules.map((rule) => `- Export redaction rule: ${rule}`),
+    ...lab.accountExportProof.receiptFields.map((field) => `- Export proof receipt field: ${field}`),
+    ...lab.accountExportProof.noGoRules.map((rule) => `- Export no-go: ${rule}`),
+    "",
     "## Account Deletion Rehearsal",
     `- Receipt ID: ${lab.accountDeletionRehearsal.receiptId}`,
     `- Status: ${lab.accountDeletionRehearsal.status}`,
@@ -26429,6 +26542,46 @@ function makeAccountConsentMigrationCloseoutBrief() {
     ...closeout.noGoRules.map((rule) => `- ${rule}`),
     "",
     "Consent Migration Closeout is a custody and consent contract only. It does not create real account storage, migrate real data, approve investing, execute transactions, certify privacy compliance, or replace legal review."
+  ].join("\n");
+}
+
+function makeAccountExportProofBrief() {
+  const proof = accountReadinessLabConfig().accountExportProof;
+  return [
+    "# NiveshNadi Account Export Proof",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${proof.receiptId}`,
+    `Status: ${proof.status}`,
+    `Score: ${proof.score}/100`,
+    `Rule: ${proof.rule}`,
+    "",
+    "## Export Sections",
+    ...proof.exportSections.map((section) => [
+      `- ${section.label} (${section.owner})`,
+      `  File: ${section.format}`,
+      `  Includes: ${section.includes}`,
+      `  Excludes: ${section.excludes}`,
+      `  Proof: ${section.proof}`
+    ].join("\n")),
+    "",
+    "## Manifest Rows",
+    ...proof.manifestRows.map((row) => [
+      `- ${row.family} (${row.source})`,
+      `  Manifest: ${row.manifestId}`,
+      `  Count proof: ${row.countProof}`,
+      `  Redaction proof: ${row.redactionProof}`
+    ].join("\n")),
+    "",
+    "## Redaction Rules",
+    ...proof.redactionRules.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...proof.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## No-Go Rules",
+    ...proof.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "Account Export Proof is an account-readiness contract only. It does not create real account storage, download real files, approve investing, execute transactions, certify privacy compliance, or replace legal review."
   ].join("\n");
 }
 
@@ -64945,6 +65098,13 @@ function bindEvents() {
     if (!copyAccountConsentMigrationCloseout) return;
     event.preventDefault();
     copyText(makeAccountConsentMigrationCloseoutBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyAccountExportProof = event.target.closest("[data-copy-account-export-proof]");
+    if (!copyAccountExportProof) return;
+    event.preventDefault();
+    copyText(makeAccountExportProofBrief());
   });
 
   document.addEventListener("click", (event) => {

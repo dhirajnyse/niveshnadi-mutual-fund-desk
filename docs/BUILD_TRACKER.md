@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V473 Account Export Proof
+
+V473 adds Account Export Proof inside Account Readiness. It defines export sections, manifest rows, redaction rules, receipt fields, no-go rules, and a copyable export proof so saved account research has a visible preview, export, redaction, support-safe, and retention boundary before trust widens.
+
 ## V472 Consent Migration Closeout
 
 V472 adds Consent Migration Closeout inside Account Readiness. It turns the consent migration preview into proof gates, object-family closeout rows, owner signoff IDs, redaction scans, rollback rules, receipt fields, no-go lines, and a copyable closeout receipt before account migration can widen.

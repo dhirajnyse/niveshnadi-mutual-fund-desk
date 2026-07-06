@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v453-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v453 Memo Handoff Receipt";
+const DATA_VERSION = "20260706-v454-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v454 Review Export Retention";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10341,7 +10341,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, and memo-handoff-receipt audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, memo-handoff-receipt audit, and review-export-retention audit are complete."
   );
   const launchGates = [
     {
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v452 is verified on commit 3fb1b30. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v453 is verified on commit 2ba5f0c. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v452 verified",
+      outcome: "Previous outcome: v453 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45201",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45301",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10570,12 +10570,6 @@ function buildTrackerConfig() {
       rule: "The current retention batch is underway; keep the remaining releases focused on proof surfaces that can stay small as history grows.",
       lanes: [
         {
-          version: "v454",
-          label: "Review export retention",
-          route: "#review-vault",
-          detail: "Keep share-safe review exports short as saved history grows."
-        },
-        {
           version: "v455",
           label: "Mobile audit retention",
           route: "#main",
@@ -10598,6 +10592,12 @@ function buildTrackerConfig() {
           label: "Memo receipt persistence",
           route: "#decision-pack",
           detail: "Prepare the memo handoff receipt for future account-backed saved research history."
+        },
+        {
+          version: "v459",
+          label: "Review memory persistence",
+          route: "#review-vault",
+          detail: "Prepare review export retention for future account-backed export history."
         }
       ]
     },
@@ -10606,6 +10606,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v453",
+          key: "20260706-v453-01",
+          commit: "2ba5f0c",
+          receiptId: "NN-SHARE-RECEIPT-20260706V45301",
+          proof: "Memo Handoff Receipt added and verified by static release checks."
+        },
         {
           version: "v452",
           key: "20260706-v452-01",
@@ -10633,13 +10640,6 @@ function buildTrackerConfig() {
           commit: "1b7e156",
           receiptId: "NN-SHARE-RECEIPT-20260706V44901",
           proof: "Saved Review Export Polish added and verified by static release checks."
-        },
-        {
-          version: "v448",
-          key: "20260706-v448-01",
-          commit: "23e73bb",
-          receiptId: "NN-SHARE-RECEIPT-20260706V44801",
-          proof: "Search-to-Memo Handoff added and verified by static release checks."
         }
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10677,39 +10677,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "3fb1b30",
-        detail: "v452 source change shipped with matching release labels and stamp."
+        value: "2ba5f0c",
+        detail: "v453 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v452 product commit."
+        detail: "The static Pages deployment completed for the v453 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v452-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v453-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v452 outcome is saved so the next release starts from proof."
+        detail: "The v453 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "3fb1b30",
-        detail: "v452 source change that added Proof Archive Retention."
+        value: "2ba5f0c",
+        detail: "v453 source change that added Memo Handoff Receipt."
       },
       {
         label: "Live deploy commit",
-        value: "3fb1b30",
-        detail: "v452 Pages deploy succeeded on the product commit."
+        value: "2ba5f0c",
+        detail: "v453 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v452 verified",
+        value: "v453 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -40253,7 +40253,18 @@ function reviewExportPolishConfig(latest, entries, roundReceipt) {
     score,
     shareLines,
     status,
-    summary: `Saved snapshots ${entries.length}. The export stays short and keeps private-data fields out of copied review text.`
+    summary: `Saved snapshots ${entries.length}. The export stays short and keeps private-data fields out of copied review text.`,
+    retention: {
+      receiptId: ["NN", "REVIEW", "EXPORT", "RETENTION", DATA_VERSION.replace(/-/g, ""), latest.id || "PREVIEW"].join("-").toUpperCase(),
+      verdict: entries.length ? "Retain compact review history" : "Preview only",
+      rule: "Keep short review export summaries; clear browser-local snapshots when the review purpose ends or private data appears.",
+      policy: [
+        { label: "Keep", value: "Latest 6 snapshots", detail: "Use only score, evidence, drift, TER, fund names, queue, and review cue." },
+        { label: "Delete", value: "On purpose change", detail: "Clear snapshots when the goal, fund set, or review owner changes enough to confuse the record." },
+        { label: "Exclude", value: "Private fields", detail: "No PAN, folio, CAS, bank, contact, credentials, client identifiers, or private notes." },
+        { label: "Move later", value: "Backend custody", detail: "Account sync should store explicit export receipts, deletion events, and review owner consent." }
+      ]
+    }
   };
 }
 
@@ -40273,10 +40284,19 @@ function renderReviewExportPolish(config) {
         <div><span>Included</span><b>${config.included.length}</b></div>
         <div><span>Excluded</span><b>${config.excluded.length}</b></div>
       </div>
+      <div class="review-vault-mini-grid review-export-retention">
+        ${config.retention.policy.map((item) => `
+          <div>
+            <span>${escapeHtml(item.label)}</span>
+            <b>${escapeHtml(item.value)}</b>
+          </div>
+        `).join("")}
+      </div>
       <ul class="review-vault-list">
         ${config.shareLines.slice(0, 4).map((line) => `<li>${escapeHtml(line)}</li>`).join("")}
       </ul>
       <button class="text-button" type="button" data-copy-review-export-polish>Copy safe export</button>
+      <button class="text-button" type="button" data-copy-review-export-retention>Copy retention</button>
     </div>
   `;
 }
@@ -40456,6 +40476,9 @@ function makeReviewVaultBrief() {
     `Start next round: ${roundReceipt.snapshotSaved ? "Available; clears guided-room progress only and keeps saved review history" : "Available after saving one round"}`,
     `Share-safe export: ${exportPolish.status} | ${exportPolish.lineBudget}`,
     `Safe export ID: ${exportPolish.exportId}`,
+    `Export retention ID: ${exportPolish.retention.receiptId}`,
+    `Export retention verdict: ${exportPolish.retention.verdict}`,
+    `Export retention rule: ${exportPolish.retention.rule}`,
     `Latest score: ${latest.score}/100`,
     `Latest focus: ${latest.focusLabel}`,
     `Latest posture: ${latest.posture}`,
@@ -40478,6 +40501,9 @@ function makeReviewVaultBrief() {
     ...exportPolish.shareLines.map((line) => `- ${line}`),
     `- Excluded: ${exportPolish.excluded.join(", ")}`,
     "",
+    "## Export Retention",
+    ...exportPolish.retention.policy.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
     "## Recent Snapshots",
     ...(entries.length ? entries.slice(0, 6).map((entry) => `- ${new Date(entry.createdAt).toLocaleString("en-IN")}: ${entry.score}/100, ${entry.focusLabel}, drift ${entry.metrics.drift.toFixed(1)}%, evidence ${entry.metrics.evidence}/100`) : ["- No saved snapshots yet. This brief uses the current review preview."]),
     "",
@@ -40498,6 +40524,8 @@ function makeReviewExportPolishBrief() {
     `Export ID: ${exportPolish.exportId}`,
     `Status: ${exportPolish.status}`,
     `Line budget: ${exportPolish.lineBudget}`,
+    `Retention ID: ${exportPolish.retention.receiptId}`,
+    `Retention verdict: ${exportPolish.retention.verdict}`,
     "",
     "## Copyable review brief",
     ...exportPolish.shareLines.map((line) => `- ${line}`),
@@ -40508,7 +40536,33 @@ function makeReviewExportPolishBrief() {
     "## Excluded",
     ...exportPolish.excluded.map((item) => `- ${item}`),
     "",
+    "## Retention",
+    `Rule: ${exportPolish.retention.rule}`,
+    ...exportPolish.retention.policy.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
     "Research memory only. This export is not personalized advice, suitability approval, execution instruction, tax guidance, or a return guarantee."
+  ].join("\n");
+}
+
+function makeReviewExportRetentionBrief() {
+  const entries = loadReviewVault();
+  const current = reviewSnapshotFromConfig(portfolioReviewConfig());
+  const latest = entries[0] || current;
+  const roundReceipt = researchRoundReceipt(current, entries);
+  const exportPolish = reviewExportPolishConfig(latest, entries, roundReceipt);
+  return [
+    "# NiveshNadi Review Export Retention",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Retention ID: ${exportPolish.retention.receiptId}`,
+    `Verdict: ${exportPolish.retention.verdict}`,
+    `Rule: ${exportPolish.retention.rule}`,
+    `Saved snapshots: ${entries.length}`,
+    `Export ID: ${exportPolish.exportId}`,
+    "",
+    "## Retention policy",
+    ...exportPolish.retention.policy.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "Review export retention is browser-local research memory only. It is not personalized advice, suitability approval, execution instruction, tax guidance, or a return guarantee."
   ].join("\n");
 }
 
@@ -62642,6 +62696,13 @@ function bindEvents() {
     if (!copyReviewExportPolish) return;
     event.preventDefault();
     copyText(makeReviewExportPolishBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyReviewExportRetention = event.target.closest("[data-copy-review-export-retention]");
+    if (!copyReviewExportRetention) return;
+    event.preventDefault();
+    copyText(makeReviewExportRetentionBrief());
   });
 
   document.addEventListener("click", (event) => {

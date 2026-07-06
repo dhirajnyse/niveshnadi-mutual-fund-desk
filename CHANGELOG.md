@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v454 Review Export Retention
+
+- Version: `0.454.0`
+- Data version: `20260706-v454-01`
+- Changes made: Added Review Export Retention to the Review Vault export polish with a retention receipt ID, latest-six snapshot limit, delete-on-purpose-change rule, no-private-data exclusion boundary, and dedicated copyable retention note; rolled Release Doctor memory forward to v453.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v454 marker scan
+- Known risks: Export retention remains browser-local and research-only; durable account retention, deletion receipts, review-owner consent, and backend custody still belong to the production account layer.
+
 ## NiveshNadi Phase 1 v453 Memo Handoff Receipt
 
 - Version: `0.453.0`

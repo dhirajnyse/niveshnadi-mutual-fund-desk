@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v453 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v454 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Review Export Retention that keeps saved review export memory short, deletable, and private-data safe.
 - Memo Handoff Receipt that records what search context can safely travel into a written decision memo.
 - Proof Archive Retention that keeps release proof compact, copyable, and free of private user data as the archive rolls forward.
 - Live Data Readiness Focus that keeps source date, citation path, TER/expense, holdings, and riskometer proof in one Source Receipt Vault action.

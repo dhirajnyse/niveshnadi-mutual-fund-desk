@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V454 Review Export Retention
+
+V454 adds Review Export Retention to the Review Vault export polish. It keeps saved review export memory short, private-data safe, deletable when the purpose changes, and copyable as a dedicated retention receipt.
+
 ## V453 Memo Handoff Receipt
 
 V453 adds a Memo Handoff Receipt inside the Decision Pack. It records what search context can travel into the memo, which handoff checks are clear, what field names are retained, when to hold, and which private identifiers are excluded.

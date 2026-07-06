@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v449 Saved Review Export Polish
+
+- Version: `0.449.0`
+- Data version: `20260706-v449-01`
+- Changes made: Added a share-safe Review Vault export card, export scoring, short copyable review brief, included/excluded field lists, line budget, and private-data boundary.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check
+- Known risks: Export polish summarizes browser-local review memory only; it still depends on the user avoiding private notes and verifying live source data before relying on a saved review.
+
 ## NiveshNadi Phase 1 v448 Search-to-Memo Handoff
 
 - Version: `0.448.0`

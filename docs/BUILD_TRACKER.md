@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V449 Saved Review Export Polish
+
+V449 adds a share-safe export card to the Review Vault. It produces a short review brief with included fields, excluded private data, line budget, export ID, and a copy-safe research-only boundary.
+
 ## V448 Search-to-Memo Handoff
 
 V448 adds a Search-to-Memo Handoff inside the Decision Pack. It carries selected-fund context, search phrase, top blocker, next route, and a plain-English memo prompt into a copyable handoff note.

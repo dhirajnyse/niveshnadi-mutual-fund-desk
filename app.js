@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v448-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v448 Search-to-Memo Handoff";
+const DATA_VERSION = "20260706-v449-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v449 Saved Review Export Polish";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1296,8 +1296,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Search-to-memo handoff",
+    label: "Saved review export polish",
     status: "Shipping now",
+    route: "#review-vault",
+    detail: "Make saved review output shorter, safer, and easier to share."
+  },
+  {
+    label: "Search-to-memo handoff",
+    status: "Done",
     route: "#decision-pack",
     detail: "Carry selected-fund, blocker, and search context into the memo path."
   },
@@ -10323,7 +10329,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, and search-to-memo-handoff audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, and saved-review-export-polish audit are complete."
   );
   const launchGates = [
     {
@@ -10400,11 +10406,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v447 is verified on commit f0cc8de. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v448 is verified on commit 23e73bb. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v447 verified",
+      outcome: "Previous outcome: v448 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44701",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44801",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10507,15 +10513,9 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "Three releases remain",
+      verdict: "Two releases remain",
       rule: "Finish the in-flight batch, then keep the next release small enough to prove in one calm pass.",
       lanes: [
-        {
-          version: "v449",
-          label: "Saved review export polish",
-          route: "#review-vault",
-          detail: "Make saved review output shorter, cleaner, and easier to share without personal data."
-        },
         {
           version: "v450",
           label: "Mobile calm audit",
@@ -10539,6 +10539,12 @@ function buildTrackerConfig() {
           label: "Memo handoff receipt",
           route: "#decision-pack",
           detail: "Save the memo handoff as a small receipt once accounts or review history can persist it."
+        },
+        {
+          version: "v454",
+          label: "Review export retention",
+          route: "#review-vault",
+          detail: "Keep share-safe review exports short as saved history grows."
         }
       ]
     },
@@ -10547,6 +10553,13 @@ function buildTrackerConfig() {
       verdict: "Five receipts visible",
       rule: "Keep the previous five verified release receipts visible before sharing a new build.",
       receipts: [
+        {
+          version: "v448",
+          key: "20260706-v448-01",
+          commit: "23e73bb",
+          receiptId: "NN-SHARE-RECEIPT-20260706V44801",
+          proof: "Search-to-Memo Handoff added and verified by static release checks."
+        },
         {
           version: "v447",
           key: "20260706-v447-01",
@@ -10574,13 +10587,6 @@ function buildTrackerConfig() {
           commit: "6102871",
           receiptId: "NN-VISUAL-QA-20260706V44401",
           proof: "Visual QA Receipt added for desktop, tablet, and mobile proof."
-        },
-        {
-          version: "v443",
-          key: "20260706-v443-01",
-          commit: "e839d39",
-          receiptId: "NN-RELEASE-CHECKLIST-20260706V44301",
-          proof: "Release Batch Checklist made source, checks, QA, deploy, and risk visible."
         }
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness."
@@ -10588,39 +10594,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "f0cc8de",
-        detail: "v447 source change shipped with matching release labels and stamp."
+        value: "23e73bb",
+        detail: "v448 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v447 product commit."
+        detail: "The static Pages deployment completed for the v448 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v447-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v448-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v447 outcome is saved so the next release starts from proof."
+        detail: "The v448 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "f0cc8de",
-        detail: "v447 source change that added Release Proof Archive."
+        value: "23e73bb",
+        detail: "v448 source change that added Search-to-Memo Handoff."
       },
       {
         label: "Live deploy commit",
-        value: "f0cc8de",
-        detail: "v447 Pages deploy succeeded on the product commit."
+        value: "23e73bb",
+        detail: "v448 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v447 verified",
+        value: "v448 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -40037,6 +40043,62 @@ function renderReviewFinishLine(snapshot, receipt) {
   `;
 }
 
+function reviewExportPolishConfig(latest, entries, roundReceipt) {
+  const fundNames = latest.funds.map((fund) => fund.name).slice(0, 4);
+  const queueItems = latest.queue.slice(0, 3);
+  const score = clampNumber(Math.round(
+    latest.score * 0.34 +
+    latest.metrics.evidence * 0.28 +
+    (roundReceipt.snapshotSaved ? 18 : 8) +
+    (queueItems.length <= 3 ? 12 : 6) +
+    (latest.metrics.attention === 0 ? 8 : 2)
+  ), 0, 100);
+  const status = score >= 78 ? "Share-safe review brief" : score >= 62 ? "Review brief needs one check" : "Review brief should stay private";
+  const exportId = ["NN", "REVIEW", "EXPORT", DATA_VERSION.replace(/-/g, ""), latest.id || "PREVIEW"].join("-").toUpperCase();
+  const shareLines = [
+    `Fund set: ${fundNames.length ? fundNames.join(" | ") : "Current preview"}`,
+    `Review stance: ${latest.focusLabel} | ${latest.score}/100 | evidence ${latest.metrics.evidence}/100`,
+    `Drift and TER: drift ${latest.metrics.drift.toFixed(1)}% | average TER ${latest.metrics.expense.toFixed(2)}%`,
+    `Next check: ${roundReceipt.nextLabel} - ${roundReceipt.nextDetail}`,
+    `Queue: ${queueItems.length ? queueItems.join(" | ") : "No major queue item in preview."}`,
+    "Boundary: research memory only; no PAN, folio, CAS, bank, credential, client identifier, or action instruction."
+  ];
+  return {
+    exportId,
+    excluded: ["PAN", "folio", "CAS", "bank data", "credentials", "contact data", "private notes", "transaction instructions"],
+    included: ["fund names", "review stance", "score", "evidence", "drift", "TER", "next check", "research boundary"],
+    lineBudget: `${shareLines.length} calm lines`,
+    score,
+    shareLines,
+    status,
+    summary: `Saved snapshots ${entries.length}. The export stays short and keeps private-data fields out of copied review text.`
+  };
+}
+
+function renderReviewExportPolish(config) {
+  return `
+    <div class="review-vault-panel review-export-polish">
+      <div class="review-vault-card-head">
+        <div>
+          <span class="metric-label">Share-safe export</span>
+          <h3>${escapeHtml(config.status)}</h3>
+          <p>${escapeHtml(config.summary)}</p>
+        </div>
+        <strong>${config.score}/100</strong>
+      </div>
+      <div class="review-vault-mini-grid">
+        <div><span>Budget</span><b>${escapeHtml(config.lineBudget)}</b></div>
+        <div><span>Included</span><b>${config.included.length}</b></div>
+        <div><span>Excluded</span><b>${config.excluded.length}</b></div>
+      </div>
+      <ul class="review-vault-list">
+        ${config.shareLines.slice(0, 4).map((line) => `<li>${escapeHtml(line)}</li>`).join("")}
+      </ul>
+      <button class="text-button" type="button" data-copy-review-export-polish>Copy safe export</button>
+    </div>
+  `;
+}
+
 function reviewSnapshotFromConfig(config) {
   return {
     id: `review-${Date.now()}-${Math.random().toString(16).slice(2)}`,
@@ -40106,6 +40168,7 @@ function renderReviewVault() {
   const scoreDelta = latest ? reviewVaultDelta(latest.score, prior?.score) : "New";
   const driftDelta = latest ? reviewVaultDelta(latest.metrics.drift, prior?.metrics.drift, "%") : "New";
   const evidenceDelta = latest ? reviewVaultDelta(latest.metrics.evidence, prior?.metrics.evidence) : "New";
+  const exportPolish = reviewExportPolishConfig(latest || current, entries, roundReceipt);
 
   els.reviewVaultSummary.textContent = `${entries.length} snapshot${entries.length === 1 ? "" : "s"}`;
 
@@ -40123,6 +40186,7 @@ function renderReviewVault() {
         </div>
       </div>
       ${renderResearchRoundReceipt(roundReceipt)}
+      ${renderReviewExportPolish(exportPolish)}
     `;
     return;
   }
@@ -40141,6 +40205,7 @@ function renderReviewVault() {
     </div>
     ${renderResearchRoundReceipt(roundReceipt)}
     ${renderReviewFinishLine(latest, roundReceipt)}
+    ${renderReviewExportPolish(exportPolish)}
     <div class="review-vault-metric-grid">
       <div><span>Score delta</span><strong>${escapeHtml(scoreDelta)}</strong></div>
       <div><span>Evidence delta</span><strong>${escapeHtml(evidenceDelta)}</strong></div>
@@ -40196,6 +40261,7 @@ function makeReviewVaultBrief() {
   const latest = entries[0] || current;
   const prior = entries[1] || null;
   const roundReceipt = researchRoundReceipt(current, entries);
+  const exportPolish = reviewExportPolishConfig(latest, entries, roundReceipt);
   return [
     "# NiveshNadi Review Vault",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -40206,6 +40272,8 @@ function makeReviewVaultBrief() {
     `Next review cue: ${roundReceipt.reviewCue.label} (${roundReceipt.reviewCue.date})`,
     `Review finish line: ${roundReceipt.snapshotSaved ? "Saved, dated, and bounded" : "Not saved yet"} - no transaction instruction`,
     `Start next round: ${roundReceipt.snapshotSaved ? "Available; clears guided-room progress only and keeps saved review history" : "Available after saving one round"}`,
+    `Share-safe export: ${exportPolish.status} | ${exportPolish.lineBudget}`,
+    `Safe export ID: ${exportPolish.exportId}`,
     `Latest score: ${latest.score}/100`,
     `Latest focus: ${latest.focusLabel}`,
     `Latest posture: ${latest.posture}`,
@@ -40224,11 +40292,41 @@ function makeReviewVaultBrief() {
     "## Latest Queue",
     ...latest.queue.map((item) => `- ${item}`),
     "",
+    "## Share-Safe Export",
+    ...exportPolish.shareLines.map((line) => `- ${line}`),
+    `- Excluded: ${exportPolish.excluded.join(", ")}`,
+    "",
     "## Recent Snapshots",
     ...(entries.length ? entries.slice(0, 6).map((entry) => `- ${new Date(entry.createdAt).toLocaleString("en-IN")}: ${entry.score}/100, ${entry.focusLabel}, drift ${entry.metrics.drift.toFixed(1)}%, evidence ${entry.metrics.evidence}/100`) : ["- No saved snapshots yet. This brief uses the current review preview."]),
     "",
     "## Guardrail",
     "Research support only. Review Vault stores browser-local workflow snapshots, not personalized advice, suitability approval, execution instruction, PAN, folio, CAS, or account data."
+  ].join("\n");
+}
+
+function makeReviewExportPolishBrief() {
+  const entries = loadReviewVault();
+  const current = reviewSnapshotFromConfig(portfolioReviewConfig());
+  const latest = entries[0] || current;
+  const roundReceipt = researchRoundReceipt(current, entries);
+  const exportPolish = reviewExportPolishConfig(latest, entries, roundReceipt);
+  return [
+    "# NiveshNadi Share-Safe Review Export",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Export ID: ${exportPolish.exportId}`,
+    `Status: ${exportPolish.status}`,
+    `Line budget: ${exportPolish.lineBudget}`,
+    "",
+    "## Copyable review brief",
+    ...exportPolish.shareLines.map((line) => `- ${line}`),
+    "",
+    "## Included",
+    ...exportPolish.included.map((item) => `- ${item}`),
+    "",
+    "## Excluded",
+    ...exportPolish.excluded.map((item) => `- ${item}`),
+    "",
+    "Research memory only. This export is not personalized advice, suitability approval, execution instruction, tax guidance, or a return guarantee."
   ].join("\n");
 }
 
@@ -62066,6 +62164,13 @@ function bindEvents() {
     if (!copySearchMemoHandoff) return;
     event.preventDefault();
     copyText(makeSearchMemoHandoffBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyReviewExportPolish = event.target.closest("[data-copy-review-export-polish]");
+    if (!copyReviewExportPolish) return;
+    event.preventDefault();
+    copyText(makeReviewExportPolishBrief());
   });
 
   document.addEventListener("click", (event) => {

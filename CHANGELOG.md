@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v467 Account Consent Migration Preview
+
+- Version: `0.467.0`
+- Data version: `20260706-v467-01`
+- Changes made: Added Account Consent Migration Preview inside Account Readiness with explicit consent gates, export-before-sync proof, account vault dry-run requirements, delete and rollback support routes, migration object rows, receipt fields, blocked-data rules, dedicated copy action, Account Readiness brief coverage, and Release Doctor memory rolled forward to v466.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v467 marker scan
+- Known risks: The preview is a consent and custody contract only; production still needs real account storage, explicit consent capture, export generation, migration workers, support redaction, deletion execution, rollback workflows, privacy/legal review, and backend audit receipts.
+
 ## NiveshNadi Phase 1 v466 Backend Custody Bridge
 
 - Version: `0.466.0`

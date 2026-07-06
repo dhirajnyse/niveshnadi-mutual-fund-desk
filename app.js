@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v466-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v466 Backend Custody Bridge";
+const DATA_VERSION = "20260706-v467-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v467 Account Consent Migration Preview";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v465 passed local release checks on commit fa83842. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v466 passed release checks on commit 3487077. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v465 local checks passed",
+      outcome: "Previous outcome: v466 live stamp verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46501",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46601",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10793,14 +10793,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Backend custody bridge is visible; keep the next batch focused on consent migration, receipt ownership, deletion support, visual baseline storage, and custody ticket closeout.",
+      rule: "Consent migration preview is visible; keep the next batch focused on receipt ownership, deletion support, visual baseline storage, custody ticket closeout, and consent migration closeout.",
       lanes: [
-        {
-          version: "v467",
-          label: "Account consent migration preview",
-          route: "#account-readiness",
-          detail: "Preview how browser-local saved research can migrate only after consent, export, and delete controls exist."
-        },
         {
           version: "v468",
           label: "Receipt owner audit",
@@ -10824,6 +10818,12 @@ function buildTrackerConfig() {
           label: "Custody ticket closeout",
           route: "#backend-audit-receipts",
           detail: "Close the first custody bridge tickets with owner signoff, accepted fields, deletion receipts, and no-private-data scans."
+        },
+        {
+          version: "v472",
+          label: "Consent migration closeout",
+          route: "#account-readiness",
+          detail: "Turn the consent preview into a closeout checklist with export proof, user confirmation, rollback, and support receipt boundaries."
         }
       ]
     },
@@ -10832,6 +10832,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v466",
+          key: "20260706-v466-01",
+          commit: "3487077",
+          receiptId: "NN-SHARE-RECEIPT-20260706V46601",
+          proof: "Backend Custody Bridge added, deployed, and live-stamp verified."
+        },
         {
           version: "v465",
           key: "20260706-v465-01",
@@ -10859,13 +10866,6 @@ function buildTrackerConfig() {
           commit: "018e149",
           receiptId: "NN-SHARE-RECEIPT-20260706V46201",
           proof: "Retention Action Router added and verified by static release checks."
-        },
-        {
-          version: "v461",
-          key: "20260706-v461-01",
-          commit: "f2a5d18",
-          receiptId: "NN-SHARE-RECEIPT-20260706V46101",
-          proof: "Source Custody Deletion Receipts added, deployed, and live-stamp verified."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10903,40 +10903,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "fa83842",
-        detail: "v465 source change shipped with matching release labels and stamp."
+        value: "v467",
+        detail: "Account Consent Migration Preview is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v465."
+        detail: "Syntax, static, security, diff hygiene, and marker scans pass before this release is committed."
       },
       {
         label: "03 Queued",
         value: "Batch push later",
-        detail: "This five-version batch will be pushed and live-verified after v466."
+        detail: "This five-version batch will be pushed and live-verified after v471."
       },
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v466 until this release returns the active release stamp."
+        detail: "Do not share v467 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "fa83842",
-        detail: "v465 source change that added Visual Regression Handoff."
+        value: "pending batch",
+        detail: "v467 source change adds Account Consent Migration Preview."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v465 passed syntax, static, security, diff hygiene, and marker scans."
+        detail: "v467 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "Share outcome",
-        value: "v465 held for batch deploy",
-        detail: "The final batch release will be pushed and live-stamp verified after v466."
+        value: "v467 held for batch deploy",
+        detail: "The final batch release will be pushed and live-stamp verified after v471."
       }
     ],
     actions: [
@@ -25662,6 +25662,87 @@ function accountReadinessLabConfig() {
       "Support views can show receipt metadata and status only; they must not expose private note bodies or identifiers."
     ]
   };
+  const accountConsentMigrationPreview = {
+    label: "Account consent migration preview",
+    status: "Consent before migration",
+    receiptId: ["NN", "CONSENT", "MIGRATION", "PREVIEW", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    score: 74,
+    rule: "No browser-local saved research moves into account custody until the user can see scope, export preview, delete route, support owner, and rollback wording before confirming.",
+    consentGates: [
+      {
+        label: "Scope shown",
+        owner: "Account Platform",
+        detail: "List each object family that can move: memo receipts, review snapshots, source receipt metadata, dossiers, packs, and watchlist state.",
+        proof: "Consent screen names object family, purpose, retention period, export format, and delete route."
+      },
+      {
+        label: "Export before sync",
+        owner: "Privacy owner",
+        detail: "Show a research-only export preview before migration starts so the user can inspect what will be kept.",
+        proof: "Export preview receipt matches the object count and excluded-data list."
+      },
+      {
+        label: "Account vault dry-run",
+        owner: "Backend worker",
+        detail: "Write a dry-run receipt with ids and hashes only before any durable account record is created.",
+        proof: "Dry-run receipt has request id, idempotency key, source room, object family, and redaction result."
+      },
+      {
+        label: "Delete and rollback route",
+        owner: "Support desk",
+        detail: "Name how migrated research can be deleted, frozen, or rolled back without exposing private data to support.",
+        proof: "Delete route, rollback wording, and support-safe status view are visible before confirmation."
+      }
+    ],
+    migrationRows: [
+      {
+        label: "Local profile context",
+        source: "Browser profile",
+        keep: "goal type, horizon, SIP comfort, drawdown comfort, research confidence",
+        hold: "Hold if free-form private notes or identity fields are mixed into the profile."
+      },
+      {
+        label: "Saved decision memory",
+        source: "Decision Pack and Review Vault",
+        keep: "fund id, compare set, reason receipt, review date, next review, score delta",
+        hold: "Hold if memo reason includes advisor-client notes, contact data, or personal identifiers."
+      },
+      {
+        label: "Evidence pointers",
+        source: "Evidence Ledger and Source Vault",
+        keep: "source date, citation path, source family, reviewer state, receipt id",
+        hold: "Hold if licensed source payload, credential, or raw upload body would migrate."
+      },
+      {
+        label: "Export packets",
+        source: "Research Dossier",
+        keep: "selected fund ids, evidence posture, boundary note, export receipt id",
+        hold: "Hold if export packets contain PAN, folio, CAS, bank, contact, or distributor-client data."
+      }
+    ],
+    receiptFields: [
+      "consent_migration_preview_id",
+      "account_id_hash",
+      "browser_workspace_id_hash",
+      "object_family",
+      "source_room",
+      "purpose",
+      "retention_period",
+      "export_preview_id",
+      "delete_route_id",
+      "rollback_receipt_id",
+      "support_view_policy",
+      "blocked_data_scan",
+      "created_at"
+    ],
+    blockedData: ["PAN", "folio", "CAS", "bank", "card", "UPI", "phone", "email body", "credentials", "payment token", "private notes", "ARN/EUIN", "distributor-client records"],
+    noGoRules: [
+      "Do not migrate anything until the user sees object scope, export preview, delete route, and support-safe wording.",
+      "Do not treat browser-local saved research as consent; consent must be fresh, explicit, and object-family specific.",
+      "Do not sync free-form private notes, raw uploads, identity documents, payment secrets, or distributor-client records.",
+      "Do not widen paid accounts until delete, rollback, support redaction, and owner audit receipts can be replayed."
+    ]
+  };
   const accountDeletionRehearsal = {
     label: "Account deletion rehearsal",
     status: "Rehearse before storage",
@@ -25719,6 +25800,7 @@ function accountReadinessLabConfig() {
     accountFlow,
     accountRules,
     accountScore,
+    accountConsentMigrationPreview,
     accountDeletionRehearsal,
     blocked,
     dataBuckets,
@@ -25779,6 +25861,30 @@ function renderAccountReadinessLab() {
           <p><strong>Sync:</strong> ${escapeHtml(item.sync)}</p>
           <p><strong>Delete:</strong> ${escapeHtml(item.deleteRule)}</p>
           <p><strong>Block:</strong> ${escapeHtml(item.blocked)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-data-grid" aria-label="Account consent migration preview">
+      <article class="draft">
+        <span>${escapeHtml(lab.accountConsentMigrationPreview.label)}</span>
+        <strong>${escapeHtml(lab.accountConsentMigrationPreview.status)} | ${lab.accountConsentMigrationPreview.score}/100</strong>
+        <p>${escapeHtml(lab.accountConsentMigrationPreview.rule)}</p>
+        <button class="text-button" type="button" data-copy-account-consent-migration-preview>Copy consent preview</button>
+      </article>
+      ${lab.accountConsentMigrationPreview.consentGates.map((gate) => `
+        <article>
+          <span>${escapeHtml(gate.owner)}</span>
+          <strong>${escapeHtml(gate.label)}</strong>
+          <p>${escapeHtml(gate.detail)}</p>
+          <p><strong>Proof:</strong> ${escapeHtml(gate.proof)}</p>
+        </article>
+      `).join("")}
+      ${lab.accountConsentMigrationPreview.migrationRows.map((row) => `
+        <article>
+          <span>${escapeHtml(row.source)}</span>
+          <strong>${escapeHtml(row.label)}</strong>
+          <p><strong>Keep:</strong> ${escapeHtml(row.keep)}</p>
+          <p><strong>Hold:</strong> ${escapeHtml(row.hold)}</p>
         </article>
       `).join("")}
     </div>
@@ -25866,6 +25972,17 @@ function makeAccountReadinessBrief() {
     ...lab.savedResearchCustodyMap.objects.map((item) => `- ${item.label}: ${item.source} | Keep ${item.keep} | Sync ${item.sync} | Delete ${item.deleteRule} | Block ${item.blocked}`),
     ...lab.savedResearchCustodyMap.guardrails.map((rule) => `- Custody guardrail: ${rule}`),
     "",
+    "## Account Consent Migration Preview",
+    `- Receipt ID: ${lab.accountConsentMigrationPreview.receiptId}`,
+    `- Status: ${lab.accountConsentMigrationPreview.status}`,
+    `- Score: ${lab.accountConsentMigrationPreview.score}/100`,
+    `- Rule: ${lab.accountConsentMigrationPreview.rule}`,
+    ...lab.accountConsentMigrationPreview.consentGates.map((gate) => `- Consent gate ${gate.label}: ${gate.detail} | Proof ${gate.proof}`),
+    ...lab.accountConsentMigrationPreview.migrationRows.map((row) => `- Migration row ${row.label}: ${row.source} | Keep ${row.keep} | Hold ${row.hold}`),
+    ...lab.accountConsentMigrationPreview.receiptFields.map((field) => `- Consent migration receipt field: ${field}`),
+    ...lab.accountConsentMigrationPreview.noGoRules.map((rule) => `- Consent migration no-go: ${rule}`),
+    `- Blocked data: ${lab.accountConsentMigrationPreview.blockedData.join(", ")}`,
+    "",
     "## Account Deletion Rehearsal",
     `- Receipt ID: ${lab.accountDeletionRehearsal.receiptId}`,
     `- Status: ${lab.accountDeletionRehearsal.status}`,
@@ -25905,6 +26022,42 @@ function makeSavedResearchCustodyMapBrief() {
     ...map.guardrails.map((rule) => `- ${rule}`),
     "",
     "Saved Research Custody Map is a migration design only. It does not create accounts, store investor identifiers, approve investing, execute transactions, or certify launch readiness."
+  ].join("\n");
+}
+
+function makeAccountConsentMigrationPreviewBrief() {
+  const preview = accountReadinessLabConfig().accountConsentMigrationPreview;
+  return [
+    "# NiveshNadi Account Consent Migration Preview",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${preview.receiptId}`,
+    `Status: ${preview.status}`,
+    `Score: ${preview.score}/100`,
+    `Rule: ${preview.rule}`,
+    "",
+    "## Consent Gates",
+    ...preview.consentGates.map((gate) => [
+      `- ${gate.label} (${gate.owner})`,
+      `  Detail: ${gate.detail}`,
+      `  Proof: ${gate.proof}`
+    ].join("\n")),
+    "",
+    "## Migration Rows",
+    ...preview.migrationRows.map((row) => [
+      `- ${row.label} (${row.source})`,
+      `  Keep: ${row.keep}`,
+      `  Hold if: ${row.hold}`
+    ].join("\n")),
+    "",
+    "## Receipt Fields",
+    ...preview.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## No-Go Rules",
+    ...preview.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    `Blocked data: ${preview.blockedData.join(", ")}`,
+    "",
+    "Account Consent Migration Preview is a consent and custody design only. It does not create real account storage, migrate real user data, approve investing, execute transactions, certify privacy compliance, or replace legal review."
   ].join("\n");
 }
 
@@ -63971,6 +64124,13 @@ function bindEvents() {
     if (!copySavedResearchCustody) return;
     event.preventDefault();
     copyText(makeSavedResearchCustodyMapBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyAccountConsentMigrationPreview = event.target.closest("[data-copy-account-consent-migration-preview]");
+    if (!copyAccountConsentMigrationPreview) return;
+    event.preventDefault();
+    copyText(makeAccountConsentMigrationPreviewBrief());
   });
 
   document.addEventListener("click", (event) => {

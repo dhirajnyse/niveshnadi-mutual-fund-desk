@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V467 Account Consent Migration Preview
+
+V467 adds Account Consent Migration Preview inside Account Readiness. It shows how browser-local saved research can move only after scope, export preview, account-vault dry run, delete route, rollback wording, support-safe status, receipt fields, blocked private data, and consent-specific no-go rules are visible.
+
 ## V466 Backend Custody Bridge
 
 V466 adds Backend Custody Bridge inside Backend Audit Receipts. It maps saved research, review memory, source cleanup, memo handoff, and visual QA baseline proof into backend-owned custody ticket IDs with allowed fields, acceptance rules, hold conditions, blocked-data guardrails, proof-route buttons, and a copyable bridge handoff.

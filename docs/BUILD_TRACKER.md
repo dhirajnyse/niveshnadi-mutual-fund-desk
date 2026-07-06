@@ -2,7 +2,7 @@
 
 ## V476 Custody API Readiness
 
-V476 adds Custody API Readiness inside Backend Audit Receipts. It converts custody closeout into endpoint rows, idempotency rules, permission policies, audit events, receipt fields, guardrails, no-go rules, and a copyable API readiness contract before production custody APIs can widen.
+V476 adds Custody API Readiness inside Backend Audit Receipts. It converts custody closeout into endpoint rows, idempotency rules, permission policies, audit events, receipt fields, guardrails, no-go rules, and a copyable API readiness contract before production custody APIs can widen. The v476-02 QA hotfix also clamps the compact shell so the sticky header, side rail, and workspace bands do not create horizontal overflow.
 
 ## V475 Baseline Compare Automation
 

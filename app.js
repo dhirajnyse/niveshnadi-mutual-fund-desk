@@ -1,4 +1,4 @@
-const DATA_VERSION = "20260707-v476-01";
+const DATA_VERSION = "20260707-v476-02";
 const RELEASE_LABEL = "NiveshNadi Phase 1 v476 Custody API Readiness";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";

@@ -10,6 +10,7 @@ For local browser testing, run `npm run preview -- 53205` and open `http://127.0
 
 - 3D-style corporate SVG logo and brand system.
 - Custody API Readiness in Backend Audit Receipts that converts custody closeout into endpoint rows, idempotency rules, permission policies, audit events, receipt fields, guardrails, and a copyable API readiness contract.
+- Compact shell QA hotfix that keeps the side rail below the sticky header, stacks the mobile header controls cleanly, and prevents horizontal overflow in the dense workspace layout.
 - Baseline Compare Automation in the Build Tracker Release Doctor that defines automated visual compare runs, failure thresholds, retry rules, receipt fields, deletion proof, and a copyable automation contract.
 - Support Case Audit in Account Readiness that maps support-safe case views, escalation windows, case receipts, reply rules, receipt fields, and no-go rules before account support can widen.
 - Account Export Proof in Account Readiness that defines export sections, manifest rows, redaction rules, receipt fields, no-go rules, and a copyable export proof before saved account research can be trusted.

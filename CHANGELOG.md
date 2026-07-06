@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v460 Viewport Proof History
+
+- Version: `0.460.0`
+- Data version: `20260706-v460-01`
+- Changes made: Added Viewport Proof History to the Release Doctor with compact phone, large phone, and tablet-bridge proof rows, retest triggers, retention policy, dedicated copyable viewport-history note, and Build Tracker brief coverage; rolled Release Doctor memory forward to v459.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v460 marker scan
+- Known risks: Viewport proof history is release UI evidence only; automated screenshot comparison, device testing, screenshot deletion receipts, and production visual-regression gates are still future work.
+
 ## NiveshNadi Phase 1 v459 Review Memory Persistence
 
 - Version: `0.459.0`

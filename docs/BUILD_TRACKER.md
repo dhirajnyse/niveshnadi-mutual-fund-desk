@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V460 Viewport Proof History
+
+V460 adds Viewport Proof History to the Release Doctor. It keeps compact phone, large phone, and tablet-bridge proof rows visible with retest triggers, retention rules, screenshot deletion boundaries, and a copyable viewport-history note before automated visual QA exists.
+
 ## V459 Review Memory Persistence
 
 V459 adds Review Memory Persistence to the Review Vault. It shows the future account-history receipt, memory owner, review cadence, keep/sync/supersede/exclude rules, and a copyable memory note so saved review history can move later without private investor identifiers.

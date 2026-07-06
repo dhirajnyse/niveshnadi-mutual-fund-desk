@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v459-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v459 Review Memory Persistence";
+const DATA_VERSION = "20260706-v460-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v460 Viewport Proof History";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10341,7 +10341,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, memo-handoff-receipt audit, review-export-retention audit, mobile-audit-retention audit, live-data-receipt-retention audit, retention-health-summary audit, memo-receipt-persistence audit, and review-memory-persistence audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, memo-handoff-receipt audit, review-export-retention audit, mobile-audit-retention audit, live-data-receipt-retention audit, retention-health-summary audit, memo-receipt-persistence audit, review-memory-persistence audit, and viewport-proof-history audit are complete."
   );
   const launchGates = [
     {
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v458 passed local release checks on commit 2a80444. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v459 passed local release checks on commit 11a6c96. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v458 local checks passed",
+      outcome: "Previous outcome: v459 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45801",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45901",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10594,6 +10594,54 @@ function buildTrackerConfig() {
         }
       ]
     },
+    viewportProofHistory: {
+      label: "Viewport proof history",
+      verdict: "Three viewport rows retained",
+      receiptId: ["NN", "VIEWPORT", "PROOF", "HISTORY", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      cadence: "Review after any sticky header, rail, command capsule, card grid, score ring, or action-strip change.",
+      owner: "Founder UI release desk",
+      rule: "Keep compact viewport proof rows now; future automated visual QA should store screenshot hashes, viewport metadata, comparison result, and deletion receipts.",
+      rows: [
+        {
+          label: "Compact phone",
+          viewport: "390 x 844",
+          status: "Pass required",
+          proof: "Rail hidden, header wraps, first card reads without horizontal scroll.",
+          next: "Retest after header, rail, card density, or button hierarchy changes."
+        },
+        {
+          label: "Large phone",
+          viewport: "430 x 932",
+          status: "Pass required",
+          proof: "Header utilities stay tappable and command controls do not crowd the brand line.",
+          next: "Retest after command capsule, search, select, or copy-action changes."
+        },
+        {
+          label: "Tablet bridge",
+          viewport: "900 x 1000",
+          status: "Pass required",
+          proof: "Content widens before side rail returns; score rings and cards stay separated.",
+          next: "Retest after grid, score ring, form, or workspace gutter changes."
+        }
+      ],
+      retentionPolicy: [
+        {
+          label: "Keep",
+          value: "Viewport, status, proof",
+          detail: "Retain viewport size, pass/fail state, release key, proof note, and next retest trigger."
+        },
+        {
+          label: "Compare later",
+          value: "Screenshot hash",
+          detail: "Automated visual QA should compare screenshots without retaining private investor content."
+        },
+        {
+          label: "Delete",
+          value: "Private screenshots",
+          detail: "Delete screenshots or logs that expose user identifiers, accounts, contacts, payments, PAN, folio, or CAS."
+        }
+      ]
+    },
     retentionHealthSummary: {
       label: "Retention health summary",
       verdict: "Five proof surfaces mapped",
@@ -10653,14 +10701,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Review memory persistence is visible; keep the remaining releases focused on viewport and source custody surfaces that can move from local memory to backend custody later.",
+      rule: "Viewport proof history is visible; keep the remaining releases focused on source custody and account deletion surfaces that can move from local memory to backend custody later.",
       lanes: [
-        {
-          version: "v460",
-          label: "Viewport proof history",
-          route: "#build-tracker",
-          detail: "Prepare retained mobile audit rows for future automated visual QA history."
-        },
         {
           version: "v461",
           label: "Source custody deletion receipts",
@@ -10684,6 +10726,12 @@ function buildTrackerConfig() {
           label: "Account deletion rehearsal",
           route: "#account-readiness",
           detail: "Rehearse account deletion, export, and receipt cleanup before production storage exists."
+        },
+        {
+          version: "v465",
+          label: "Visual regression handoff",
+          route: "#build-tracker",
+          detail: "Prepare the viewport proof history for future automated screenshot comparison and release gating."
         }
       ]
     },
@@ -10692,6 +10740,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v459",
+          key: "20260706-v459-01",
+          commit: "11a6c96",
+          receiptId: "NN-SHARE-RECEIPT-20260706V45901",
+          proof: "Review Memory Persistence added and verified by static release checks."
+        },
         {
           version: "v458",
           key: "20260706-v458-01",
@@ -10719,13 +10774,6 @@ function buildTrackerConfig() {
           commit: "99f208d",
           receiptId: "NN-SHARE-RECEIPT-20260706V45501",
           proof: "Mobile Audit Retention added and verified by static release checks."
-        },
-        {
-          version: "v454",
-          key: "20260706-v454-01",
-          commit: "d54cc4a",
-          receiptId: "NN-SHARE-RECEIPT-20260706V45401",
-          proof: "Review Export Retention added and verified by static release checks."
         }
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10763,13 +10811,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "2a80444",
-        detail: "v458 source change shipped with matching release labels and stamp."
+        value: "11a6c96",
+        detail: "v459 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v458."
+        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v459."
       },
       {
         label: "03 Queued",
@@ -10779,23 +10827,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Hold for live stamp",
-        detail: "Do not share v459 until the final batch deploy returns the active release stamp."
+        detail: "Do not share v460 until the final batch deploy returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "2a80444",
-        detail: "v458 source change that added Memo Receipt Persistence."
+        value: "11a6c96",
+        detail: "v459 source change that added Review Memory Persistence."
       },
       {
         label: "Local release checks",
         value: "Passed",
-        detail: "v458 passed syntax, static, security, diff hygiene, and marker scans before v459 started."
+        detail: "v459 passed syntax, static, security, diff hygiene, and marker scans before v460 started."
       },
       {
         label: "Share outcome",
-        value: "v458 held for batch deploy",
+        value: "v459 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v461."
       }
     ],
@@ -11174,6 +11222,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Viewport proof history">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.viewportProofHistory.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.viewportProofHistory.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.viewportProofHistory.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.viewportProofHistory.rows.map((row) => `
+          <article>
+            <span>${escapeHtml(row.label)} | ${escapeHtml(row.viewport)}</span>
+            <strong>${escapeHtml(row.status)}</strong>
+            <p>${escapeHtml(row.proof)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -11304,6 +11366,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-visual-qa-receipt>Copy visual QA</button>
         <button class="text-button" type="button" data-copy-mobile-calm-audit>Copy mobile audit</button>
         <button class="text-button" type="button" data-copy-mobile-audit-retention>Copy mobile retention</button>
+        <button class="text-button" type="button" data-copy-viewport-proof-history>Copy viewport history</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
         <button class="text-button" type="button" data-copy-release-proof-archive>Copy proof archive</button>
@@ -11455,6 +11518,13 @@ function makeBuildTrackerBrief() {
     `Mobile audit retention receipt: ${tracker.releaseDoctor.mobileCalmAudit.retentionReview.receiptId}`,
     `Mobile audit retention cadence: ${tracker.releaseDoctor.mobileCalmAudit.retentionReview.cadence}`,
     ...tracker.releaseDoctor.mobileCalmAudit.retentionPolicy.map((policy) => `- Mobile retention ${policy.label}: ${policy.value} | ${policy.detail}`),
+    `Viewport proof history: ${tracker.releaseDoctor.viewportProofHistory.verdict}`,
+    `Viewport proof receipt: ${tracker.releaseDoctor.viewportProofHistory.receiptId}`,
+    `Viewport proof cadence: ${tracker.releaseDoctor.viewportProofHistory.cadence}`,
+    `Viewport proof owner: ${tracker.releaseDoctor.viewportProofHistory.owner}`,
+    `Viewport proof rule: ${tracker.releaseDoctor.viewportProofHistory.rule}`,
+    ...tracker.releaseDoctor.viewportProofHistory.rows.map((row) => `- Viewport ${row.label}: ${row.viewport} | ${row.status} | ${row.proof} Next: ${row.next}`),
+    ...tracker.releaseDoctor.viewportProofHistory.retentionPolicy.map((policy) => `- Viewport retention ${policy.label}: ${policy.value} | ${policy.detail}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -11551,6 +11621,15 @@ function makeReleaseDoctorBrief() {
     `- Owner: ${tracker.releaseDoctor.mobileCalmAudit.retentionReview.owner}`,
     `- Boundary: ${tracker.releaseDoctor.mobileCalmAudit.retentionReview.boundary}`,
     ...tracker.releaseDoctor.mobileCalmAudit.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`),
+    "",
+    "## Viewport Proof History",
+    `- Receipt ID: ${tracker.releaseDoctor.viewportProofHistory.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.viewportProofHistory.verdict}`,
+    `- Cadence: ${tracker.releaseDoctor.viewportProofHistory.cadence}`,
+    `- Owner: ${tracker.releaseDoctor.viewportProofHistory.owner}`,
+    `- Rule: ${tracker.releaseDoctor.viewportProofHistory.rule}`,
+    ...tracker.releaseDoctor.viewportProofHistory.rows.map((row) => `- ${row.label}: ${row.viewport} | ${row.status} | ${row.proof} Next: ${row.next}`),
+    ...tracker.releaseDoctor.viewportProofHistory.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -11687,6 +11766,28 @@ function makeMobileAuditRetentionBrief() {
     "",
     `Mobile audit receipt: ${audit.receiptId}`,
     `Known risk: ${audit.knownRisk}`
+  ].join("\n");
+}
+
+function makeViewportProofHistoryBrief() {
+  const tracker = buildTrackerConfig();
+  const history = tracker.releaseDoctor.viewportProofHistory;
+  return [
+    "# NiveshNadi Viewport Proof History",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${history.receiptId}`,
+    `Verdict: ${history.verdict}`,
+    `Cadence: ${history.cadence}`,
+    `Owner: ${history.owner}`,
+    `Rule: ${history.rule}`,
+    "",
+    "## Viewport rows",
+    ...history.rows.map((row) => `- ${row.label} (${row.viewport}): ${row.status} | ${row.proof} Next: ${row.next}`),
+    "",
+    "## Retention policy",
+    ...history.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`),
+    "",
+    "Viewport Proof History is release UI evidence only. It does not prove live data, account custody, payments, legal readiness, security posture, or investment suitability."
   ].join("\n");
 }
 
@@ -63100,6 +63201,13 @@ function bindEvents() {
     if (!copyMobileAuditRetention) return;
     event.preventDefault();
     copyText(makeMobileAuditRetentionBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyViewportProofHistory = event.target.closest("[data-copy-viewport-proof-history]");
+    if (!copyViewportProofHistory) return;
+    event.preventDefault();
+    copyText(makeViewportProofHistoryBrief());
   });
 
   document.addEventListener("click", (event) => {

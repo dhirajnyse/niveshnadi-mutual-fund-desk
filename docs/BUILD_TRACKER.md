@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V451 Live Data Readiness Focus
+
+V451 adds a Live Data Readiness Focus to the Source Receipt Vault. It turns the active source receipt or preview into one clear source-proof action covering source date, citation path, TER/expense, holdings, riskometer, required receipt fields, production blockers, and a copyable live-readiness handoff.
+
 ## V450 Mobile Calm Audit
 
 V450 adds a copyable Mobile Calm Audit to the Release Doctor. It names phone and tablet-bridge viewport expectations, touch-control rhythm, no-horizontal-drift checks, and a small responsive CSS hardening pass for command and release action grids.

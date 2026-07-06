@@ -25692,6 +25692,160 @@ body.simple-mode .quiet-fund-shelf {
   padding-left: 18px;
 }
 
+.live-data-readiness-focus {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid rgba(31, 78, 121, 0.28);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(234, 242, 251, 0.96), rgba(255, 250, 240, 0.82));
+}
+
+.live-data-readiness-focus.ready {
+  border-color: rgba(15, 124, 107, 0.34);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.94), rgba(245, 249, 252, 0.94));
+}
+
+.live-data-readiness-focus.watch {
+  border-color: rgba(225, 160, 55, 0.38);
+}
+
+.live-data-readiness-focus.caution {
+  border-color: rgba(193, 75, 105, 0.34);
+  background: linear-gradient(135deg, rgba(255, 236, 239, 0.88), rgba(245, 249, 252, 0.94));
+}
+
+.live-data-readiness-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  gap: 12px;
+  align-items: center;
+}
+
+.live-data-readiness-head h3 {
+  margin: 4px 0 0;
+  color: var(--ink);
+  font-size: 23px;
+  line-height: 1.12;
+}
+
+.live-data-readiness-focus p,
+.live-data-readiness-focus li {
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.live-data-readiness-score {
+  position: relative;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: conic-gradient(var(--mint) calc(var(--score) * 1%), #d8e4ec 0);
+  color: #ffffff;
+}
+
+.live-data-readiness-score::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.live-data-readiness-score b,
+.live-data-readiness-score span {
+  position: relative;
+}
+
+.live-data-readiness-score b {
+  font-size: 23px;
+  line-height: 1;
+}
+
+.live-data-readiness-score span {
+  color: #dce7ed;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.live-data-readiness-metric-grid,
+.live-data-readiness-task-grid,
+.live-data-readiness-field-grid,
+.live-data-readiness-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.live-data-readiness-metric-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.live-data-readiness-task-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.live-data-readiness-field-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.live-data-readiness-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.live-data-readiness-metric-grid article,
+.live-data-readiness-task-grid article,
+.live-data-readiness-field-grid article {
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.live-data-readiness-task-grid article.ready {
+  border-color: rgba(15, 124, 107, 0.32);
+  background: var(--mint-soft);
+}
+
+.live-data-readiness-task-grid article.watch {
+  border-color: rgba(225, 160, 55, 0.36);
+  background: var(--gold-soft);
+}
+
+.live-data-readiness-task-grid article.caution {
+  border-color: rgba(193, 75, 105, 0.32);
+  background: var(--rose-soft);
+}
+
+.live-data-readiness-focus span,
+.live-data-readiness-metric-grid span,
+.live-data-readiness-task-grid span,
+.live-data-readiness-field-grid span {
+  color: var(--mint);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.live-data-readiness-metric-grid strong,
+.live-data-readiness-task-grid strong,
+.live-data-readiness-field-grid strong {
+  display: block;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+}
+
+.live-data-readiness-task-grid .text-button,
+.live-data-readiness-actions .text-button {
+  width: 100%;
+  justify-content: center;
+}
+
 .source-queue-layout {
   display: grid;
   grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1.58fr);
@@ -43089,6 +43243,10 @@ body.desk-rail-right .floating-dock {
   .source-production-field-grid,
   .source-production-surface-grid,
   .source-production-two,
+  .live-data-readiness-metric-grid,
+  .live-data-readiness-task-grid,
+  .live-data-readiness-field-grid,
+  .live-data-readiness-actions,
   .claim-surface-metric-grid,
   .claim-surface-focus,
   .claim-surface-grid,
@@ -43988,6 +44146,10 @@ body.desk-rail-right .floating-dock {
   .source-production-field-grid,
   .source-production-surface-grid,
   .source-production-two,
+  .live-data-readiness-metric-grid,
+  .live-data-readiness-task-grid,
+  .live-data-readiness-field-grid,
+  .live-data-readiness-actions,
   .claim-surface-metric-grid,
   .claim-surface-focus,
   .claim-surface-grid,
@@ -44335,6 +44497,7 @@ body.desk-rail-right .floating-dock {
   .source-receipt-empty,
   .source-receipt-hero,
   .source-production-head,
+  .live-data-readiness-head,
   .claim-surface-hero,
   .surface-queue-hero,
   .reviewer-workbench-hero,
@@ -44407,6 +44570,7 @@ body.desk-rail-right .floating-dock {
   .source-dry-score,
   .source-receipt-score,
   .source-production-score,
+  .live-data-readiness-score,
   .claim-surface-score,
   .surface-queue-score,
   .reviewer-workbench-score,

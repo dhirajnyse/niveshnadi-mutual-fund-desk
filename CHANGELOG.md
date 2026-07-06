@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v451 Live Data Readiness Focus
+
+- Version: `0.451.0`
+- Data version: `20260706-v451-01`
+- Changes made: Added a Live Data Readiness Focus inside the Source Receipt Vault with source-date, citation, TER/expense, holdings, riskometer, receipt-field, production-envelope, blocker, and copyable handoff checks; rolled Release Doctor memory forward to v450 and prepared the next batch plan.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `styles.css`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; browser visual QA across desktop, tablet, and mobile before final push
+- Known risks: The focus organizes source proof but still uses demo/browser-local receipt data until production source jobs, licensed feeds, backend receipts, reviewer sign-off, and legal launch controls are connected.
+
 ## NiveshNadi Phase 1 v450 Mobile Calm Audit
 
 - Version: `0.450.0`

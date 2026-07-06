@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v450-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v450 Mobile Calm Audit";
+const DATA_VERSION = "20260706-v451-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v451 Live Data Readiness Focus";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1296,8 +1296,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Mobile calm audit",
+    label: "Live-data readiness focus",
     status: "Shipping now",
+    route: "#source-receipts",
+    detail: "Bring source-date, citation, TER, holdings, and riskometer gaps into one next action."
+  },
+  {
+    label: "Mobile calm audit",
+    status: "Done",
     route: "#main",
     detail: "Tighten the first-screen mobile rhythm so the app feels peaceful on a phone."
   },
@@ -10335,7 +10341,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, and mobile-calm audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, and live-data-readiness-focus audit are complete."
   );
   const launchGates = [
     {
@@ -10412,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v449 is verified on commit 1b7e156. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v450 is verified on commit 96c76b6. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v449 verified",
+      outcome: "Previous outcome: v450 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44901",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45001",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10560,15 +10566,9 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "One release remains",
-      rule: "Finish the in-flight batch, then keep the next release small enough to prove in one calm pass.",
+      verdict: "Next batch ready",
+      rule: "The current five-release batch is closing; keep the next batch focused on retaining the proof surfaces just added.",
       lanes: [
-        {
-          version: "v451",
-          label: "Live-data readiness focus",
-          route: "#source-receipts",
-          detail: "Bring source-date, citation, TER, holding, and riskometer gaps into one next action."
-        },
         {
           version: "v452",
           label: "Proof archive retention",
@@ -10586,6 +10586,18 @@ function buildTrackerConfig() {
           label: "Review export retention",
           route: "#review-vault",
           detail: "Keep share-safe review exports short as saved history grows."
+        },
+        {
+          version: "v455",
+          label: "Mobile audit retention",
+          route: "#main",
+          detail: "Keep phone-width calm proof visible as more rooms and controls are added."
+        },
+        {
+          version: "v456",
+          label: "Live data receipt retention",
+          route: "#source-receipts",
+          detail: "Keep live-data readiness compact as real source receipt history grows."
         }
       ]
     },
@@ -10594,6 +10606,13 @@ function buildTrackerConfig() {
       verdict: "Five receipts visible",
       rule: "Keep the previous five verified release receipts visible before sharing a new build.",
       receipts: [
+        {
+          version: "v450",
+          key: "20260706-v450-01",
+          commit: "96c76b6",
+          receiptId: "NN-SHARE-RECEIPT-20260706V45001",
+          proof: "Mobile Calm Audit added and verified by static release checks."
+        },
         {
           version: "v449",
           key: "20260706-v449-01",
@@ -10621,13 +10640,6 @@ function buildTrackerConfig() {
           commit: "82544f9",
           receiptId: "NN-SHARE-RECEIPT-20260706V44601",
           proof: "Next Batch Planner verified live with matching stamp."
-        },
-        {
-          version: "v445",
-          key: "20260706-v445-01",
-          commit: "af57bbe",
-          receiptId: "NN-SHARE-RECEIPT-20260706V44501",
-          proof: "Workspace Fit Guard shipped and live stamp matched."
         }
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness."
@@ -10635,39 +10647,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "1b7e156",
-        detail: "v449 source change shipped with matching release labels and stamp."
+        value: "96c76b6",
+        detail: "v450 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v449 product commit."
+        detail: "The static Pages deployment completed for the v450 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v449-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v450-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v449 outcome is saved so the next release starts from proof."
+        detail: "The v450 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "1b7e156",
-        detail: "v449 source change that added Saved Review Export Polish."
+        value: "96c76b6",
+        detail: "v450 source change that added Mobile Calm Audit."
       },
       {
         label: "Live deploy commit",
-        value: "1b7e156",
-        detail: "v449 Pages deploy succeeded on the product commit."
+        value: "96c76b6",
+        detail: "v450 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v449 verified",
+        value: "v450 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -42305,6 +42317,138 @@ function sourceReceiptProductionEnvelope(receipt, entries = loadSourceReceipts()
   };
 }
 
+function liveDataReadinessFocusConfig(receipt = sourceReceiptSnapshotFromConfig(), entries = loadSourceReceipts()) {
+  const productionEnvelope = sourceReceiptProductionEnvelope(receipt, entries);
+  const sourceSlug = (receipt.source?.id || "source").replace(/[^a-z0-9]+/gi, "").toUpperCase();
+  const savedProof = entries.some((entry) => entry.id === receipt.id);
+  const firstBlocker = productionEnvelope.blockers.find((blocker) => !blocker.startsWith("No active production blocker")) || "Reviewer sign-off and launch note before public refresh.";
+  const proofTasks = [
+    {
+      label: "Source date",
+      value: receipt.metrics.staleDays ? "Refresh needed" : "Visible age",
+      detail: `${receipt.source.title} is ${receipt.metrics.age} day${receipt.metrics.age === 1 ? "" : "s"} old; freshness score ${receipt.metrics.freshness}/100.`,
+      route: "#source-intake",
+      tone: receipt.metrics.staleDays ? "caution" : "ready"
+    },
+    {
+      label: "Citation path",
+      value: receipt.metrics.citationVisible ? "Visible" : "Missing",
+      detail: receipt.metrics.citationVisible ? "Investor-facing citation can be checked before trust." : "Attach source URL, file path, or citation text before any live-looking claim.",
+      route: "#citation-binder",
+      tone: receipt.metrics.citationVisible ? "ready" : "caution"
+    },
+    {
+      label: "TER and expense",
+      value: receipt.source.id === "risk-ter" || receipt.source.id === "amc-factsheet" ? "Direct source" : "Cross-check",
+      detail: "Expense and TER values must reconcile against AMC factsheet or TER/risk feed before score cards move.",
+      route: "#data-readiness",
+      tone: ["risk-ter", "amc-factsheet"].includes(receipt.source.id) ? "ready" : "watch"
+    },
+    {
+      label: "Holdings proof",
+      value: receipt.source.id === "portfolio-disclosure" ? "Direct source" : "Needed before X-Ray",
+      detail: "Portfolio and overlap claims need holdings disclosure date, file proof, and affected-surface mapping.",
+      route: "#portfolio",
+      tone: receipt.source.id === "portfolio-disclosure" ? "ready" : "watch"
+    },
+    {
+      label: "Riskometer",
+      value: receipt.source.id === "risk-ter" || receipt.source.id === "sid-kim" ? "Direct source" : "Check SID/KIM",
+      detail: "Risk label, benchmark, and riskometer copy stay preview-only until SID/KIM or risk feed proof is visible.",
+      route: "#readiness-gate",
+      tone: ["risk-ter", "sid-kim"].includes(receipt.source.id) ? "ready" : "watch"
+    }
+  ];
+  const readyTasks = proofTasks.filter((task) => task.tone === "ready").length;
+  const blockedTasks = proofTasks.filter((task) => task.tone === "caution").length;
+  const score = Math.round(clampNumber(
+    productionEnvelope.readiness * 0.34 +
+      receipt.score * 0.22 +
+      receipt.metrics.freshness * 0.14 +
+      receipt.metrics.citation * 0.12 +
+      receipt.metrics.parser * 0.1 +
+      (savedProof ? 8 : 0) +
+      readyTasks * 2 -
+      blockedTasks * 4,
+    14,
+    96
+  ));
+  const verdict = score >= 82 && !blockedTasks && productionEnvelope.status === "Production receipt ready"
+    ? "Ready for reviewer release"
+    : score >= 68
+      ? "Live proof still needs one gate"
+      : "Keep live claims in preview";
+  const tone = verdict === "Ready for reviewer release" ? "ready" : verdict === "Keep live claims in preview" ? "caution" : "watch";
+  const receiptId = ["NN", "LIVE", "READINESS", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase();
+  const fields = [
+    { label: "source_date", value: `${receipt.metrics.age}d`, detail: receipt.metrics.staleDays ? `${receipt.metrics.staleDays} stale day${receipt.metrics.staleDays === 1 ? "" : "s"}.` : "Inside current freshness rule." },
+    { label: "citation_path", value: receipt.metrics.citationVisible ? "visible" : "missing", detail: "Must be investor-visible before public claim release." },
+    { label: "parser_confidence", value: `${receipt.metrics.parser}/100`, detail: "Parser confidence gates extracted fields before they reach cards." },
+    { label: "reviewer_status", value: receipt.status, detail: receipt.reviewer },
+    { label: "claim_surface", value: receipt.surfaceLabel, detail: receipt.claimSurface }
+  ];
+  return {
+    blockedTasks,
+    fields,
+    firstBlocker,
+    productionEnvelope,
+    proofTasks,
+    receipt,
+    receiptId,
+    readyTasks,
+    savedProof,
+    score,
+    tone,
+    verdict
+  };
+}
+
+function liveDataReadinessFocusMarkup(focus) {
+  return `
+    <div class="live-data-readiness-focus ${escapeHtml(focus.tone)}">
+      <div class="live-data-readiness-head">
+        <div>
+          <span>Live data readiness focus</span>
+          <h3>${escapeHtml(focus.verdict)}</h3>
+          <p>${escapeHtml(focus.firstBlocker)} This focus keeps source date, citation, TER, holdings, and riskometer proof in one next action.</p>
+        </div>
+        <div class="live-data-readiness-score" style="--score:${focus.score}">
+          <b>${focus.score}</b>
+          <span>Live</span>
+        </div>
+      </div>
+      <div class="live-data-readiness-metric-grid">
+        <article><span>Receipt ID</span><strong>${escapeHtml(focus.receiptId)}</strong><p>${focus.savedProof ? "Saved receipt proof is in the browser-local vault." : "Preview only until the dry-run receipt is saved."}</p></article>
+        <article><span>Production envelope</span><strong>${escapeHtml(focus.productionEnvelope.status)}</strong><p>${focus.productionEnvelope.readiness}/100 live-readiness envelope.</p></article>
+        <article><span>Ready checks</span><strong>${focus.readyTasks}/${focus.proofTasks.length}</strong><p>${focus.blockedTasks} hard blocker${focus.blockedTasks === 1 ? "" : "s"} in this focus.</p></article>
+      </div>
+      <div class="live-data-readiness-task-grid">
+        ${focus.proofTasks.map((task) => `
+          <article class="${escapeHtml(task.tone)}">
+            <span>${escapeHtml(task.label)}</span>
+            <strong>${escapeHtml(task.value)}</strong>
+            <p>${escapeHtml(task.detail)}</p>
+            <button class="text-button" type="button" data-build-route="${escapeHtml(task.route)}">Open proof</button>
+          </article>
+        `).join("")}
+      </div>
+      <div class="live-data-readiness-field-grid">
+        ${focus.fields.map((field) => `
+          <article>
+            <span>${escapeHtml(field.label)}</span>
+            <strong>${escapeHtml(field.value)}</strong>
+            <p>${escapeHtml(field.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
+      <div class="live-data-readiness-actions">
+        <button class="text-button" type="button" data-copy-live-data-readiness-focus>Copy live readiness</button>
+        <button class="text-button" type="button" data-build-route="#source-qa">Open source QA</button>
+      </div>
+    </div>
+  `;
+}
+
 function saveCurrentSourceReceipt() {
   const snapshot = sourceReceiptSnapshotFromConfig();
   const entries = [snapshot, ...loadSourceReceipts()].slice(0, 30);
@@ -42343,6 +42487,7 @@ function renderSourceReceiptVault() {
   const prior = entries[1] || null;
   const activeReceipt = latest || preview;
   const productionEnvelope = sourceReceiptProductionEnvelope(activeReceipt, entries);
+  const liveDataFocus = liveDataReadinessFocusConfig(activeReceipt, entries);
   const releaseCount = entries.filter((entry) => entry.status === "Release candidate").length;
   const previewCount = entries.filter((entry) => entry.status === "Preview only").length;
   const frozenCount = entries.filter((entry) => entry.status === "Frozen").length;
@@ -42386,6 +42531,7 @@ function renderSourceReceiptVault() {
           `).join("")}
         </div>
       </div>
+      ${liveDataReadinessFocusMarkup(liveDataFocus)}
     `;
     return;
   }
@@ -42410,6 +42556,7 @@ function renderSourceReceiptVault() {
       <div><span>Frozen</span><strong>${frozenCount}</strong></div>
       <div><span>Citation gaps</span><strong>${citationGaps}</strong></div>
     </div>
+    ${liveDataReadinessFocusMarkup(liveDataFocus)}
     <div class="source-production-envelope ${escapeHtml(productionEnvelope.tone)}">
       <div class="source-production-head">
         <div>
@@ -42521,6 +42668,7 @@ function makeSourceReceiptVaultBrief() {
   const latest = entries[0] || preview;
   const prior = entries[1] || null;
   const productionEnvelope = sourceReceiptProductionEnvelope(latest, entries);
+  const liveDataFocus = liveDataReadinessFocusConfig(latest, entries);
   return [
     "# NiveshNadi Source Receipt Vault",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -42531,6 +42679,17 @@ function makeSourceReceiptVaultBrief() {
     `Score delta: ${reviewVaultDelta(latest.score, prior?.score)}`,
     `Surface: ${latest.surfaceLabel}`,
     `Reviewer: ${latest.reviewer}`,
+    "",
+    "## Live Data Readiness Focus",
+    `Receipt ID: ${liveDataFocus.receiptId}`,
+    `Verdict: ${liveDataFocus.verdict}`,
+    `Readiness score: ${liveDataFocus.score}/100`,
+    `First blocker: ${liveDataFocus.firstBlocker}`,
+    `Saved proof: ${liveDataFocus.savedProof ? "yes" : "no"}`,
+    "Proof tasks:",
+    ...liveDataFocus.proofTasks.map((task) => `- ${task.label}: ${task.value} | ${task.detail} | Route ${task.route}`),
+    "Required fields:",
+    ...liveDataFocus.fields.map((field) => `- ${field.label}: ${field.value} | ${field.detail}`),
     "",
     "## Live Data Production Receipt",
     `Envelope ID: ${productionEnvelope.envelopeId}`,
@@ -42565,6 +42724,34 @@ function makeSourceReceiptVaultBrief() {
     "",
     "## Guardrail",
     "Source Receipt Vault stores source metadata only. It is not investment advice, suitability approval, execution approval, or a return guarantee. It excludes PAN, folio, CAS, bank data, credentials, contact data, private notes, and distributor client records."
+  ].join("\n");
+}
+
+function makeLiveDataReadinessFocusBrief() {
+  const entries = loadSourceReceipts();
+  const latest = entries[0] || sourceReceiptSnapshotFromConfig();
+  const focus = liveDataReadinessFocusConfig(latest, entries);
+  return [
+    "# NiveshNadi Live Data Readiness Focus",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${focus.receiptId}`,
+    `Source family: ${focus.receipt.source.title}`,
+    `Verdict: ${focus.verdict}`,
+    `Readiness score: ${focus.score}/100`,
+    `Production envelope: ${focus.productionEnvelope.status} (${focus.productionEnvelope.readiness}/100)`,
+    `Saved proof: ${focus.savedProof ? "yes" : "no"}`,
+    `First blocker: ${focus.firstBlocker}`,
+    "",
+    "## Required Proof Tasks",
+    ...focus.proofTasks.map((task) => `- ${task.label}: ${task.value} | ${task.detail} | Route ${task.route}`),
+    "",
+    "## Required Receipt Fields",
+    ...focus.fields.map((field) => `- ${field.label}: ${field.value} | ${field.detail}`),
+    "",
+    "## Production Blockers",
+    ...focus.productionEnvelope.blockers.map((blocker) => `- ${blocker}`),
+    "",
+    "Live Data Readiness Focus is source proof only. It is not personalized advice, suitability approval, execution approval, or a return guarantee, and it excludes PAN, folio, CAS, bank, contact, credentials, private notes, and distributor client records."
   ].join("\n");
 }
 
@@ -61788,6 +61975,12 @@ function bindEvents() {
   els.copySourceDryRun?.addEventListener("click", () => copyText(makeSourceDryRunBrief()));
   els.saveSourceReceiptVault?.addEventListener("click", saveCurrentSourceReceipt);
   els.copySourceReceiptVault?.addEventListener("click", () => copyText(makeSourceReceiptVaultBrief()));
+  document.addEventListener("click", (event) => {
+    const copyLiveDataReadiness = event.target.closest("[data-copy-live-data-readiness-focus]");
+    if (!copyLiveDataReadiness) return;
+    event.preventDefault();
+    copyText(makeLiveDataReadinessFocusBrief());
+  });
   els.clearSourceReceiptVault?.addEventListener("click", clearSourceReceipts);
   els.claimSurfaceForm?.addEventListener("submit", (event) => {
     renderClaimSurfaceMap(event);

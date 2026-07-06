@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v450 Mobile Calm Audit
+
+- Version: `0.450.0`
+- Data version: `20260706-v450-01`
+- Changes made: Added a copyable Mobile Calm Audit to the Release Doctor, rolled release proof memory forward to v449, narrowed the remaining batch plan to v451, and hardened phone-width command/action grids against crowded controls and horizontal drift.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `styles.css`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check
+- Known risks: The audit defines and supports mobile layout discipline, but full assurance still depends on the final browser visual QA pass across desktop, tablet, and phone before publishing the batch.
+
 ## NiveshNadi Phase 1 v449 Saved Review Export Polish
 
 - Version: `0.449.0`

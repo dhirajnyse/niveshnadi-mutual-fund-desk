@@ -43424,6 +43424,21 @@ body.desk-rail-right .floating-dock {
     align-items: stretch;
   }
 
+  .workspace-command {
+    width: min(100%, calc(100vw - 20px));
+  }
+
+  .workspace-command :where(button, select) {
+    min-height: 34px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .nav-layout-control,
+  .workspace-jump {
+    min-width: 0;
+  }
+
   body.simple-mode .header-next-action:not([hidden]) {
     display: inline-flex;
     width: 100%;
@@ -43444,6 +43459,22 @@ body.desk-rail-right .floating-dock {
 
   body.simple-mode .workspace-jump {
     grid-column: 1 / -1;
+  }
+
+  .release-doctor-actions,
+  .search-memo-handoff .release-doctor-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .release-doctor-actions .text-button,
+  .search-memo-handoff .release-doctor-actions .text-button {
+    min-height: 36px;
+  }
+
+  .search-memo-handoff,
+  .review-export-polish {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .nav-mode-strip a {

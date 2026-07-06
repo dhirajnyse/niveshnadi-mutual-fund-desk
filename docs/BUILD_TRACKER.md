@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V450 Mobile Calm Audit
+
+V450 adds a copyable Mobile Calm Audit to the Release Doctor. It names phone and tablet-bridge viewport expectations, touch-control rhythm, no-horizontal-drift checks, and a small responsive CSS hardening pass for command and release action grids.
+
 ## V449 Saved Review Export Polish
 
 V449 adds a share-safe export card to the Review Vault. It produces a short review brief with included fields, excluded private data, line budget, export ID, and a copy-safe research-only boundary.

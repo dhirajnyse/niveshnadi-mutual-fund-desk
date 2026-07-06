@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v449-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v449 Saved Review Export Polish";
+const DATA_VERSION = "20260706-v450-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v450 Mobile Calm Audit";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1296,8 +1296,14 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Saved review export polish",
+    label: "Mobile calm audit",
     status: "Shipping now",
+    route: "#main",
+    detail: "Tighten the first-screen mobile rhythm so the app feels peaceful on a phone."
+  },
+  {
+    label: "Saved review export polish",
+    status: "Done",
     route: "#review-vault",
     detail: "Make saved review output shorter, safer, and easier to share."
   },
@@ -10329,7 +10335,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, and saved-review-export-polish audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, and mobile-calm audit are complete."
   );
   const launchGates = [
     {
@@ -10406,11 +10412,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v448 is verified on commit 23e73bb. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v449 is verified on commit 1b7e156. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v448 verified",
+      outcome: "Previous outcome: v449 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44801",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V44901",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10511,17 +10517,52 @@ function buildTrackerConfig() {
         }
       ]
     },
+    mobileCalmAudit: {
+      label: "Mobile calm audit",
+      verdict: "First screen stays calm",
+      receiptId: ["NN", "MOBILE", "CALM", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      rule: "On phone width, hide the rail, keep one primary action, avoid horizontal scroll, and keep command controls tappable.",
+      viewports: [
+        {
+          label: "Compact phone",
+          value: "390 x 844",
+          detail: "Rail is hidden, header wraps cleanly, and the first research card reads without side-scroll."
+        },
+        {
+          label: "Large phone",
+          value: "430 x 932",
+          detail: "Header utilities stay tappable and workspace controls avoid crowding the brand line."
+        },
+        {
+          label: "Tablet bridge",
+          value: "900 x 1000",
+          detail: "Content widens calmly before the side rail returns, with no score-ring or command overlap."
+        }
+      ],
+      checks: [
+        {
+          label: "Primary action",
+          value: "One next move",
+          detail: "The first screen leads with the next Evidence move while secondary utilities stay quiet."
+        },
+        {
+          label: "Touch rhythm",
+          value: "Tappable controls",
+          detail: "Header buttons, selects, and copy actions keep stable minimum sizes on narrow screens."
+        },
+        {
+          label: "No sideways drift",
+          value: "Contained grids",
+          detail: "Release, review, and handoff grids collapse before they can create horizontal overflow."
+        }
+      ],
+      knownRisk: "This audit proves mobile layout discipline only; it does not prove live data, payments, accounts, legal, or security launch readiness."
+    },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "Two releases remain",
+      verdict: "One release remains",
       rule: "Finish the in-flight batch, then keep the next release small enough to prove in one calm pass.",
       lanes: [
-        {
-          version: "v450",
-          label: "Mobile calm audit",
-          route: "#main",
-          detail: "Tighten the first-screen mobile rhythm so the app feels peaceful on a phone."
-        },
         {
           version: "v451",
           label: "Live-data readiness focus",
@@ -10554,6 +10595,13 @@ function buildTrackerConfig() {
       rule: "Keep the previous five verified release receipts visible before sharing a new build.",
       receipts: [
         {
+          version: "v449",
+          key: "20260706-v449-01",
+          commit: "1b7e156",
+          receiptId: "NN-SHARE-RECEIPT-20260706V44901",
+          proof: "Saved Review Export Polish added and verified by static release checks."
+        },
+        {
           version: "v448",
           key: "20260706-v448-01",
           commit: "23e73bb",
@@ -10580,13 +10628,6 @@ function buildTrackerConfig() {
           commit: "af57bbe",
           receiptId: "NN-SHARE-RECEIPT-20260706V44501",
           proof: "Workspace Fit Guard shipped and live stamp matched."
-        },
-        {
-          version: "v444",
-          key: "20260706-v444-01",
-          commit: "6102871",
-          receiptId: "NN-VISUAL-QA-20260706V44401",
-          proof: "Visual QA Receipt added for desktop, tablet, and mobile proof."
         }
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness."
@@ -10594,39 +10635,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "23e73bb",
-        detail: "v448 source change shipped with matching release labels and stamp."
+        value: "1b7e156",
+        detail: "v449 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v448 product commit."
+        detail: "The static Pages deployment completed for the v449 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v448-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v449-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v448 outcome is saved so the next release starts from proof."
+        detail: "The v449 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "23e73bb",
-        detail: "v448 source change that added Search-to-Memo Handoff."
+        value: "1b7e156",
+        detail: "v449 source change that added Saved Review Export Polish."
       },
       {
         label: "Live deploy commit",
-        value: "23e73bb",
-        detail: "v448 Pages deploy succeeded on the product commit."
+        value: "1b7e156",
+        detail: "v449 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v448 verified",
+        value: "v449 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -10977,6 +11018,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Mobile calm audit">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.mobileCalmAudit.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.mobileCalmAudit.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.mobileCalmAudit.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.mobileCalmAudit.viewports.map((step) => `
+          <article>
+            <span>${escapeHtml(step.label)}</span>
+            <strong>${escapeHtml(step.value)}</strong>
+            <p>${escapeHtml(step.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Next batch planner">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.nextBatchPlan.label)}</span>
@@ -11077,6 +11132,7 @@ function releaseDoctorMarkup(tracker) {
         `).join("")}
         <button class="text-button" type="button" data-copy-release-share-receipt>Copy share receipt</button>
         <button class="text-button" type="button" data-copy-visual-qa-receipt>Copy visual QA</button>
+        <button class="text-button" type="button" data-copy-mobile-calm-audit>Copy mobile audit</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
         <button class="text-button" type="button" data-copy-release-proof-archive>Copy proof archive</button>
         <button class="text-button" type="button" data-copy-release-doctor>Copy doctor receipt</button>
@@ -11217,6 +11273,11 @@ function makeBuildTrackerBrief() {
     `Workspace fit guard: ${tracker.releaseDoctor.workspaceFitGuard.verdict}`,
     `Workspace fit rule: ${tracker.releaseDoctor.workspaceFitGuard.rule}`,
     ...tracker.releaseDoctor.workspaceFitGuard.checks.map((step) => `- Workspace fit ${step.label}: ${step.value} | ${step.detail}`),
+    `Mobile calm audit: ${tracker.releaseDoctor.mobileCalmAudit.verdict}`,
+    `Mobile calm audit receipt: ${tracker.releaseDoctor.mobileCalmAudit.receiptId}`,
+    `Mobile calm audit rule: ${tracker.releaseDoctor.mobileCalmAudit.rule}`,
+    ...tracker.releaseDoctor.mobileCalmAudit.viewports.map((step) => `- Mobile calm ${step.label}: ${step.value} | ${step.detail}`),
+    ...tracker.releaseDoctor.mobileCalmAudit.checks.map((step) => `- Mobile check ${step.label}: ${step.value} | ${step.detail}`),
     `Next batch plan: ${tracker.releaseDoctor.nextBatchPlan.verdict}`,
     `Next batch rule: ${tracker.releaseDoctor.nextBatchPlan.rule}`,
     ...tracker.releaseDoctor.nextBatchPlan.lanes.map((step) => `- ${step.version} ${step.label}: ${step.detail} (${step.route})`),
@@ -11288,6 +11349,14 @@ function makeReleaseDoctorBrief() {
     `- Verdict: ${tracker.releaseDoctor.workspaceFitGuard.verdict}`,
     `- Rule: ${tracker.releaseDoctor.workspaceFitGuard.rule}`,
     ...tracker.releaseDoctor.workspaceFitGuard.checks.map((step) => `- ${step.label}: ${step.value} | ${step.detail}`),
+    "",
+    "## Mobile Calm Audit",
+    `- Receipt ID: ${tracker.releaseDoctor.mobileCalmAudit.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.mobileCalmAudit.verdict}`,
+    `- Rule: ${tracker.releaseDoctor.mobileCalmAudit.rule}`,
+    ...tracker.releaseDoctor.mobileCalmAudit.viewports.map((step) => `- ${step.label}: ${step.value} | ${step.detail}`),
+    ...tracker.releaseDoctor.mobileCalmAudit.checks.map((step) => `- ${step.label}: ${step.value} | ${step.detail}`),
+    `- Known risk: ${tracker.releaseDoctor.mobileCalmAudit.knownRisk}`,
     "",
     "## Next Batch Planner",
     `- Verdict: ${tracker.releaseDoctor.nextBatchPlan.verdict}`,
@@ -11361,6 +11430,25 @@ function makeVisualQaReceiptBrief() {
     ...tracker.releaseDoctor.visualQaReceipt.viewports.map((step) => `- ${step.label} (${step.value}): ${step.detail}`),
     "",
     `Known risk: ${tracker.releaseDoctor.visualQaReceipt.knownRisk}`
+  ].join("\n");
+}
+
+function makeMobileCalmAuditBrief() {
+  const tracker = buildTrackerConfig();
+  return [
+    "# NiveshNadi Mobile Calm Audit",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${tracker.releaseDoctor.mobileCalmAudit.receiptId}`,
+    `Verdict: ${tracker.releaseDoctor.mobileCalmAudit.verdict}`,
+    `Rule: ${tracker.releaseDoctor.mobileCalmAudit.rule}`,
+    "",
+    "## Viewports",
+    ...tracker.releaseDoctor.mobileCalmAudit.viewports.map((step) => `- ${step.label} (${step.value}): ${step.detail}`),
+    "",
+    "## Checks",
+    ...tracker.releaseDoctor.mobileCalmAudit.checks.map((step) => `- ${step.label}: ${step.value} | ${step.detail}`),
+    "",
+    `Known risk: ${tracker.releaseDoctor.mobileCalmAudit.knownRisk}`
   ].join("\n");
 }
 
@@ -62143,6 +62231,13 @@ function bindEvents() {
     if (!copyVisualQaReceipt) return;
     event.preventDefault();
     copyText(makeVisualQaReceiptBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMobileCalmAudit = event.target.closest("[data-copy-mobile-calm-audit]");
+    if (!copyMobileCalmAudit) return;
+    event.preventDefault();
+    copyText(makeMobileCalmAuditBrief());
   });
 
   document.addEventListener("click", (event) => {

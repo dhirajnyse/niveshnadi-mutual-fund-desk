@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V455 Mobile Audit Retention
+
+V455 adds Mobile Audit Retention to the Release Doctor. It keeps compact phone, large phone, and tablet-bridge viewport proof visible, names retest triggers, excludes private screenshots, and gives the founder desk a copyable retention receipt.
+
 ## V454 Review Export Retention
 
 V454 adds Review Export Retention to the Review Vault export polish. It keeps saved review export memory short, private-data safe, deletable when the purpose changes, and copyable as a dedicated retention receipt.

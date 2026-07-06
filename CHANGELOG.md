@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v455 Mobile Audit Retention
+
+- Version: `0.455.0`
+- Data version: `20260706-v455-01`
+- Changes made: Added Mobile Audit Retention to the Release Doctor with a retention receipt ID, three-viewport keep rule, retest triggers, private-screenshot deletion boundary, future automated visual QA custody note, and a dedicated copyable retention note; rolled Release Doctor memory forward to v454.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v455 marker scan
+- Known risks: Mobile retention records compact viewport proof only; it still does not replace browser visual QA, automated screenshot comparison, device testing, or live production evidence.
+
 ## NiveshNadi Phase 1 v454 Review Export Retention
 
 - Version: `0.454.0`

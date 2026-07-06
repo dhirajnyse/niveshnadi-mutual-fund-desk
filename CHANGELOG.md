@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v463 Saved Research Custody Map
+
+- Version: `0.463.0`
+- Data version: `20260706-v463-01`
+- Changes made: Added Saved Research Custody Map to Account Readiness with memo receipts, review snapshots, source receipts, viewport proof, and dossier/export object families, each with keep fields, sync trigger, deletion rule, blocked private data, dedicated copyable custody map, and Account Readiness brief coverage; rolled Release Doctor memory forward to v462.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v463 marker scan
+- Known risks: The custody map is a migration design only; production still needs authentication, encrypted account storage, consent capture, export preview, deletion execution, support redaction, audit logs, reviewer ownership, privacy review, and migration tests.
+
 ## NiveshNadi Phase 1 v462 Retention Action Router
 
 - Version: `0.462.0`

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v462-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v462 Retention Action Router";
+const DATA_VERSION = "20260706-v463-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v463 Saved Research Custody Map";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v461 passed local checks, deploy checks, and live stamp verification on commit f2a5d18. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v462 passed local release checks on commit 018e149. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v461 live stamp verified",
+      outcome: "Previous outcome: v462 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46101",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46201",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10747,12 +10747,6 @@ function buildTrackerConfig() {
       rule: "Source custody deletion receipts are visible; keep the next batch focused on account deletion, visual regression, and backend custody surfaces.",
       lanes: [
         {
-          version: "v463",
-          label: "Saved research custody map",
-          route: "#build-tracker",
-          detail: "Map memo, review, source, deletion, and viewport receipts into a future account custody model."
-        },
-        {
           version: "v464",
           label: "Account deletion rehearsal",
           route: "#account-readiness",
@@ -10773,8 +10767,14 @@ function buildTrackerConfig() {
         {
           version: "v467",
           label: "Account consent migration preview",
-          route: "#backend-audit",
+          route: "#account-readiness",
           detail: "Preview how browser-local saved research can migrate only after consent, export, and delete controls exist."
+        },
+        {
+          version: "v468",
+          label: "Receipt owner audit",
+          route: "#backend-audit-receipts",
+          detail: "Name the owner, support view, audit boundary, and escalation route for every retained receipt family."
         }
       ]
     },
@@ -10783,6 +10783,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v462",
+          key: "20260706-v462-01",
+          commit: "018e149",
+          receiptId: "NN-SHARE-RECEIPT-20260706V46201",
+          proof: "Retention Action Router added and verified by static release checks."
+        },
         {
           version: "v461",
           key: "20260706-v461-01",
@@ -10810,13 +10817,6 @@ function buildTrackerConfig() {
           commit: "2a80444",
           receiptId: "NN-SHARE-RECEIPT-20260706V45801",
           proof: "Memo Receipt Persistence added and verified by static release checks."
-        },
-        {
-          version: "v457",
-          key: "20260706-v457-01",
-          commit: "5eb3b2a",
-          receiptId: "NN-SHARE-RECEIPT-20260706V45701",
-          proof: "Retention Health Summary added and verified by static release checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10854,40 +10854,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "f2a5d18",
-        detail: "v461 source change shipped with matching release labels and stamp."
+        value: "018e149",
+        detail: "v462 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Checked",
-        value: "Static plus visual pass",
-        detail: "Syntax, static, security, local preview, visual QA, Actions, and live stamp checks passed for v461."
+        value: "Static pass",
+        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v462."
       },
       {
-        label: "03 Deployed",
-        value: "Live stamp verified",
-        detail: "GitHub Pages served 20260706-v461-01 after the v461 batch push."
+        label: "03 Queued",
+        value: "Batch push later",
+        detail: "This five-version batch will be pushed and live-verified after v466."
       },
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v462 until this release returns the active release stamp."
+        detail: "Do not share v463 until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "f2a5d18",
-        detail: "v461 source change that added Source Custody Deletion Receipts."
+        value: "018e149",
+        detail: "v462 source change that added Retention Action Router."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v461 passed syntax, static, security, local preview, visual QA, Actions, and live Pages verification."
+        detail: "v462 passed syntax, static, security, diff hygiene, and marker scans."
       },
       {
         label: "Share outcome",
-        value: "v461 live verified",
-        detail: "The previous batch reached GitHub Pages with the expected release stamp."
+        value: "v462 held for batch deploy",
+        detail: "The final batch release will be pushed and live-stamp verified after v466."
       }
     ],
     actions: [
@@ -25509,6 +25509,61 @@ function accountReadinessLabConfig() {
     "Delete account clears saved packs and entitlement state according to the retention policy.",
     "Phase 2 distributor data cannot be added without a separate consent gate."
   ];
+  const savedResearchCustodyMap = {
+    label: "Saved research custody map",
+    status: "Map before migration",
+    receiptId: ["NN", "SAVED", "RESEARCH", "CUSTODY", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    score: 72,
+    rule: "Move only compact research receipts into future account custody after explicit consent, export preview, deletion route, and owner audit exist.",
+    objects: [
+      {
+        label: "Memo receipts",
+        source: "Decision Pack",
+        keep: "fund id, search context, blocker, memo prompt, persistence receipt",
+        sync: "after written reason and source-date check",
+        deleteRule: "delete or supersede when memo reason changes",
+        blocked: "private notes, PAN, folio, CAS, bank, contact, advice text"
+      },
+      {
+        label: "Review snapshots",
+        source: "Review Vault",
+        keep: "review date, score delta, evidence delta, next review, memory receipt",
+        sync: "after review round is completed",
+        deleteRule: "delete on purpose change or account deletion",
+        blocked: "free-form private notes, account numbers, payment tokens"
+      },
+      {
+        label: "Source receipts",
+        source: "Source Receipt Vault",
+        keep: "source date, citation path, parser version, reviewer status, cleanup receipt",
+        sync: "after reviewer release or freeze decision",
+        deleteRule: "supersede stale proof and quarantine failed receipts",
+        blocked: "licensed payload bodies, credentials, user identifiers"
+      },
+      {
+        label: "Viewport proof",
+        source: "Release Doctor",
+        keep: "viewport, status, hash placeholder, release key, retest trigger",
+        sync: "after visual QA pass",
+        deleteRule: "delete screenshots after hash and metadata are retained",
+        blocked: "screenshots containing private account, contact, PAN, folio, or CAS data"
+      },
+      {
+        label: "Dossiers and packs",
+        source: "Research Dossier",
+        keep: "selected fund, compare set, evidence posture, decision boundary, export receipt",
+        sync: "after export preview and redaction check",
+        deleteRule: "delete export packet on account deletion or expired consent",
+        blocked: "raw private uploads, advisor-client notes, distributor records"
+      }
+    ],
+    guardrails: [
+      "Consent must name object family, purpose, retention period, export format, deletion route, and support owner.",
+      "Every synced object needs a receipt id, version, source room, owner, deletion policy, and redaction boundary.",
+      "Account custody must never make a saved receipt look like advice, execution, recommendation, or distributor service.",
+      "Support views can show receipt metadata and status only; they must not expose private note bodies or identifiers."
+    ]
+  };
 
   return {
     accountFlow,
@@ -25518,6 +25573,7 @@ function accountReadinessLabConfig() {
     dataBuckets,
     launchTests,
     nextBlocker,
+    savedResearchCustodyMap,
     steps
   };
 }
@@ -25554,6 +25610,24 @@ function renderAccountReadinessLab() {
           <ul>
             ${bucket.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
           </ul>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-data-grid" aria-label="Saved research custody map">
+      <article class="draft">
+        <span>${escapeHtml(lab.savedResearchCustodyMap.label)}</span>
+        <strong>${escapeHtml(lab.savedResearchCustodyMap.status)} | ${lab.savedResearchCustodyMap.score}/100</strong>
+        <p>${escapeHtml(lab.savedResearchCustodyMap.rule)}</p>
+        <button class="text-button" type="button" data-copy-saved-research-custody>Copy custody map</button>
+      </article>
+      ${lab.savedResearchCustodyMap.objects.map((item) => `
+        <article>
+          <span>${escapeHtml(item.source)}</span>
+          <strong>${escapeHtml(item.label)}</strong>
+          <p><strong>Keep:</strong> ${escapeHtml(item.keep)}</p>
+          <p><strong>Sync:</strong> ${escapeHtml(item.sync)}</p>
+          <p><strong>Delete:</strong> ${escapeHtml(item.deleteRule)}</p>
+          <p><strong>Block:</strong> ${escapeHtml(item.blocked)}</p>
         </article>
       `).join("")}
     </div>
@@ -25616,10 +25690,44 @@ function makeAccountReadinessBrief() {
     "## Account Rules",
     ...lab.accountRules.map((rule) => `- ${rule}`),
     "",
+    "## Saved Research Custody Map",
+    `- Receipt ID: ${lab.savedResearchCustodyMap.receiptId}`,
+    `- Status: ${lab.savedResearchCustodyMap.status}`,
+    `- Score: ${lab.savedResearchCustodyMap.score}/100`,
+    `- Rule: ${lab.savedResearchCustodyMap.rule}`,
+    ...lab.savedResearchCustodyMap.objects.map((item) => `- ${item.label}: ${item.source} | Keep ${item.keep} | Sync ${item.sync} | Delete ${item.deleteRule} | Block ${item.blocked}`),
+    ...lab.savedResearchCustodyMap.guardrails.map((rule) => `- Custody guardrail: ${rule}`),
+    "",
     "## Launch Tests",
     ...lab.launchTests.map((test) => `- ${test}`),
     "",
     "Phase 1 account planning only. No PAN, folio, CAS, bank, card, UPI, nominee, or distributor client data should be collected in the retail account launch."
+  ].join("\n");
+}
+
+function makeSavedResearchCustodyMapBrief() {
+  const map = accountReadinessLabConfig().savedResearchCustodyMap;
+  return [
+    "# NiveshNadi Saved Research Custody Map",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${map.receiptId}`,
+    `Status: ${map.status}`,
+    `Score: ${map.score}/100`,
+    `Rule: ${map.rule}`,
+    "",
+    "## Object Families",
+    ...map.objects.map((item) => [
+      `- ${item.label} (${item.source})`,
+      `  Keep: ${item.keep}`,
+      `  Sync: ${item.sync}`,
+      `  Delete: ${item.deleteRule}`,
+      `  Block: ${item.blocked}`
+    ].join("\n")),
+    "",
+    "## Guardrails",
+    ...map.guardrails.map((rule) => `- ${rule}`),
+    "",
+    "Saved Research Custody Map is a migration design only. It does not create accounts, store investor identifiers, approve investing, execute transactions, or certify launch readiness."
   ].join("\n");
 }
 
@@ -63416,6 +63524,13 @@ function bindEvents() {
     if (!copyRetentionActionRouter) return;
     event.preventDefault();
     copyText(makeRetentionActionRouterBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copySavedResearchCustody = event.target.closest("[data-copy-saved-research-custody]");
+    if (!copySavedResearchCustody) return;
+    event.preventDefault();
+    copyText(makeSavedResearchCustodyMapBrief());
   });
 
   document.addEventListener("click", (event) => {

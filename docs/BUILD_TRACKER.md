@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V463 Saved Research Custody Map
+
+V463 adds Saved Research Custody Map to Account Readiness. It maps memo receipts, review snapshots, source receipts, viewport proof, and dossier/export packets into future account-backed object families with allowed fields, sync triggers, deletion rules, and blocked private-data boundaries.
+
 ## V462 Retention Action Router
 
 V462 adds Retention Action Router to the Release Doctor. It turns release proof, memo handoff, review memory, source cleanup, and viewport proof into one route, one next action, one proof lock, and one hold condition so the next custody work starts from a calm operating map.

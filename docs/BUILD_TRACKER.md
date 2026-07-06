@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V469 Deletion Support Closeout
+
+V469 adds Deletion Support Closeout inside Account Readiness. It turns deletion rehearsal into support-safe request, running, and closeout views with visible/hidden fields, support wording, escalation rules, post-delete audit receipts, redaction scan fields, and a copyable support handoff.
+
 ## V468 Receipt Owner Audit
 
 V468 adds Receipt Owner Audit inside Backend Audit Receipts. It assigns every custody bridge ticket to one accountable owner, one support-safe status view, one audit boundary, one escalation route, one stale-proof rule, blocked private-data language, and a copyable owner-audit handoff.

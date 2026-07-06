@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v469 Deletion Support Closeout
+
+- Version: `0.469.0`
+- Data version: `20260706-v469-01`
+- Changes made: Added Deletion Support Closeout inside Account Readiness with support-safe request/running/closeout views, closeout receipts, reply template, escalation rules, receipt fields, dedicated copy action, Account Readiness brief coverage, and Release Doctor memory rolled forward to v468.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v469 marker scan
+- Known risks: The support closeout is a rehearsal only; production still needs real account deletion workers, support permissions, notification delivery, redaction scans, retained-proof storage, privacy/legal review, recovery/escalation tooling, and audit-log enforcement.
+
 ## NiveshNadi Phase 1 v468 Receipt Owner Audit
 
 - Version: `0.468.0`

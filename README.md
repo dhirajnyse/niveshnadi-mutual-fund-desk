@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v468 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v469 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Deletion Support Closeout in Account Readiness that turns deletion rehearsal into support-safe status views, closeout receipts, reply wording, escalation rules, receipt fields, and a copyable support handoff before account storage widens.
 - Receipt Owner Audit in Backend Audit Receipts that assigns custody tickets to one owner, one support-safe status view, one escalation route, one stale-proof rule, audit boundary fields, private-data exclusions, and a copyable owner-audit handoff.
 - Account Consent Migration Preview in Account Readiness that shows consent gates, export-before-sync proof, account vault dry-run rows, delete/rollback support routes, receipt fields, blocked private data, and a copyable migration contract before saved research can move to account custody.
 - Backend Custody Bridge inside Backend Audit Receipts that maps saved research, review memory, source cleanup, memo handoff, and visual QA proof into backend-owned custody tickets with allowed fields, acceptance rules, hold conditions, guardrails, and a copyable engineering handoff.

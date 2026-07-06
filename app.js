@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v468-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v468 Receipt Owner Audit";
+const DATA_VERSION = "20260706-v469-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v469 Deletion Support Closeout";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v467 passed release checks on commit 0250a4a. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v468 passed release checks on commit 497c3fc. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v467 local checks passed",
+      outcome: "Previous outcome: v468 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46701",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46801",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10793,14 +10793,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Receipt ownership is visible; keep the next batch focused on deletion support, visual baseline storage, custody ticket closeout, consent migration closeout, and account export proof.",
+      rule: "Deletion support closeout is visible; keep the next batch focused on visual baseline storage, custody ticket closeout, consent migration closeout, account export proof, and support case audit.",
       lanes: [
-        {
-          version: "v469",
-          label: "Deletion support closeout",
-          route: "#account-readiness",
-          detail: "Turn deletion rehearsal into support-safe closeout wording, status views, and escalation receipts."
-        },
         {
           version: "v470",
           label: "Visual QA baseline store",
@@ -10824,6 +10818,12 @@ function buildTrackerConfig() {
           label: "Account export proof",
           route: "#account-readiness",
           detail: "Define the account export manifest, file boundary, redaction proof, retention line, and support-safe copy before account storage widens."
+        },
+        {
+          version: "v474",
+          label: "Support case audit",
+          route: "#account-readiness",
+          detail: "Map account support cases to redacted status views, owner receipts, escalation windows, and no-private-data case notes."
         }
       ]
     },
@@ -10832,6 +10832,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v468",
+          key: "20260706-v468-01",
+          commit: "497c3fc",
+          receiptId: "NN-SHARE-RECEIPT-20260706V46801",
+          proof: "Receipt Owner Audit added and verified by static release checks."
+        },
         {
           version: "v467",
           key: "20260706-v467-01",
@@ -10859,13 +10866,6 @@ function buildTrackerConfig() {
           commit: "ebfe020",
           receiptId: "NN-SHARE-RECEIPT-20260706V46401",
           proof: "Account Deletion Rehearsal added and verified by static release checks."
-        },
-        {
-          version: "v463",
-          key: "20260706-v463-01",
-          commit: "19433c1",
-          receiptId: "NN-SHARE-RECEIPT-20260706V46301",
-          proof: "Saved Research Custody Map added and verified by static release checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10903,8 +10903,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v468",
-        detail: "Receipt Owner Audit is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v469",
+        detail: "Deletion Support Closeout is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -10926,7 +10926,7 @@ function buildTrackerConfig() {
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v468 source change adds Receipt Owner Audit."
+        detail: "v469 source change adds Deletion Support Closeout."
       },
       {
         label: "Release checks",
@@ -10935,7 +10935,7 @@ function buildTrackerConfig() {
       },
       {
         label: "Share outcome",
-        value: "v468 held for batch deploy",
+        value: "v469 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v471."
       }
     ],
@@ -25795,6 +25795,76 @@ function accountReadinessLabConfig() {
       "Entitlement projection is removed or anonymized before account closeout."
     ]
   };
+  const deletionSupportCloseout = {
+    label: "Deletion support closeout",
+    status: "Support-safe closeout",
+    receiptId: ["NN", "DELETION", "SUPPORT", "CLOSEOUT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    score: 71,
+    rule: "Support can confirm deletion status only after export preview, sync freeze, delete job, retained-proof boundary, support notice, and escalation path all agree.",
+    supportViews: [
+      {
+        label: "Request received",
+        owner: "Support desk",
+        visible: "deletion request id, received timestamp, account hash, request state, next expected update",
+        hidden: "saved research payload, private notes, PAN, folio, CAS, bank, contact, credentials, payment token"
+      },
+      {
+        label: "Delete running",
+        owner: "Account worker",
+        visible: "object family counts, frozen state, worker receipt id, retry state, failed family if any",
+        hidden: "object payload bodies, memo text, uploaded files, raw source payload, account secrets"
+      },
+      {
+        label: "Closeout ready",
+        owner: "Privacy owner",
+        visible: "completion id, retained proof fields, legal-retention reason, support-safe wording, escalation id",
+        hidden: "deleted content, reconstructed history, payment credential, private contact data"
+      }
+    ],
+    closeoutReceipts: [
+      {
+        label: "Support wording",
+        detail: "Tell the user what was deleted, what remains as proof, and where to escalate a mistake without promising recovery, refund, advice, or transaction outcome.",
+        proof: "support_notice_receipt_id"
+      },
+      {
+        label: "Escalation route",
+        detail: "Route failed or disputed deletion to privacy owner, account platform owner, and release owner with one ticket id.",
+        proof: "deletion_escalation_receipt_id"
+      },
+      {
+        label: "Post-delete audit",
+        detail: "Confirm support status, retained proof, entitlement projection, and object-family counts match before closing the case.",
+        proof: "post_delete_audit_receipt_id"
+      },
+      {
+        label: "No-private-data scan",
+        detail: "Scan support copy, audit rows, retained proof, and exports for private identifiers before closeout.",
+        proof: "support_redaction_scan_id"
+      }
+    ],
+    replyTemplate: [
+      "Your research account deletion request has completed for the object families listed in the deletion receipt.",
+      "We retained only deletion proof metadata needed to evidence completion, legal retention, and support escalation.",
+      "This message is research-account support only; it is not investment advice, transaction confirmation, refund approval, or recovery promise."
+    ],
+    escalationRules: [
+      "Escalate if any object family is pending, retrying, mismatched, or cannot be explained without private payload access.",
+      "Escalate if the user disputes deletion, asks for recovery, requests refund, or reports missing export preview.",
+      "Escalate if support wording would reveal deleted content, private identifiers, payment secrets, or personalized advice notes."
+    ],
+    receiptFields: [
+      "deletion_support_closeout_id",
+      "deletion_request_id",
+      "delete_completion_id",
+      "support_notice_receipt_id",
+      "support_view_policy",
+      "retained_proof_boundary",
+      "redaction_scan_id",
+      "escalation_ticket_id",
+      "case_closed_at"
+    ]
+  };
 
   return {
     accountFlow,
@@ -25802,6 +25872,7 @@ function accountReadinessLabConfig() {
     accountScore,
     accountConsentMigrationPreview,
     accountDeletionRehearsal,
+    deletionSupportCloseout,
     blocked,
     dataBuckets,
     launchTests,
@@ -25905,6 +25976,29 @@ function renderAccountReadinessLab() {
         </article>
       `).join("")}
     </div>
+    <div class="account-data-grid" aria-label="Deletion support closeout">
+      <article class="draft">
+        <span>${escapeHtml(lab.deletionSupportCloseout.label)}</span>
+        <strong>${escapeHtml(lab.deletionSupportCloseout.status)} | ${lab.deletionSupportCloseout.score}/100</strong>
+        <p>${escapeHtml(lab.deletionSupportCloseout.rule)}</p>
+        <button class="text-button" type="button" data-copy-deletion-support-closeout>Copy support closeout</button>
+      </article>
+      ${lab.deletionSupportCloseout.supportViews.map((view) => `
+        <article>
+          <span>${escapeHtml(view.owner)}</span>
+          <strong>${escapeHtml(view.label)}</strong>
+          <p><strong>Visible:</strong> ${escapeHtml(view.visible)}</p>
+          <p><strong>Hidden:</strong> ${escapeHtml(view.hidden)}</p>
+        </article>
+      `).join("")}
+      ${lab.deletionSupportCloseout.closeoutReceipts.map((receipt) => `
+        <article>
+          <span>${escapeHtml(receipt.proof)}</span>
+          <strong>${escapeHtml(receipt.label)}</strong>
+          <p>${escapeHtml(receipt.detail)}</p>
+        </article>
+      `).join("")}
+    </div>
     <div class="account-step-grid">
       ${lab.steps.map((step) => `
         <article class="${escapeHtml(step.tone)}">
@@ -25991,6 +26085,16 @@ function makeAccountReadinessBrief() {
     ...lab.accountDeletionRehearsal.steps.map((step) => `- ${step.label}: ${step.action} | Proof ${step.proof} | Hold ${step.hold}`),
     ...lab.accountDeletionRehearsal.closeoutTests.map((test) => `- Closeout test: ${test}`),
     `- Blocked data: ${lab.accountDeletionRehearsal.blockedData.join(", ")}`,
+    "",
+    "## Deletion Support Closeout",
+    `- Receipt ID: ${lab.deletionSupportCloseout.receiptId}`,
+    `- Status: ${lab.deletionSupportCloseout.status}`,
+    `- Score: ${lab.deletionSupportCloseout.score}/100`,
+    `- Rule: ${lab.deletionSupportCloseout.rule}`,
+    ...lab.deletionSupportCloseout.supportViews.map((view) => `- Support view ${view.label}: visible ${view.visible} | hidden ${view.hidden}`),
+    ...lab.deletionSupportCloseout.closeoutReceipts.map((receipt) => `- Closeout receipt ${receipt.label}: ${receipt.detail} | Proof ${receipt.proof}`),
+    ...lab.deletionSupportCloseout.escalationRules.map((rule) => `- Escalation rule: ${rule}`),
+    ...lab.deletionSupportCloseout.receiptFields.map((field) => `- Support closeout receipt field: ${field}`),
     "",
     "## Launch Tests",
     ...lab.launchTests.map((test) => `- ${test}`),
@@ -26085,6 +26189,39 @@ function makeAccountDeletionRehearsalBrief() {
     `Blocked data: ${rehearsal.blockedData.join(", ")}`,
     "",
     "Account Deletion Rehearsal is a production-readiness plan only. It does not delete real data, create account storage, approve investing, execute transactions, or certify privacy compliance."
+  ].join("\n");
+}
+
+function makeDeletionSupportCloseoutBrief() {
+  const closeout = accountReadinessLabConfig().deletionSupportCloseout;
+  return [
+    "# NiveshNadi Deletion Support Closeout",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${closeout.receiptId}`,
+    `Status: ${closeout.status}`,
+    `Score: ${closeout.score}/100`,
+    `Rule: ${closeout.rule}`,
+    "",
+    "## Support Views",
+    ...closeout.supportViews.map((view) => [
+      `- ${view.label} (${view.owner})`,
+      `  Visible: ${view.visible}`,
+      `  Hidden: ${view.hidden}`
+    ].join("\n")),
+    "",
+    "## Closeout Receipts",
+    ...closeout.closeoutReceipts.map((receipt) => `- ${receipt.label}: ${receipt.detail} | Proof: ${receipt.proof}`),
+    "",
+    "## Reply Template",
+    ...closeout.replyTemplate.map((line) => `- ${line}`),
+    "",
+    "## Escalation Rules",
+    ...closeout.escalationRules.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...closeout.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Deletion Support Closeout is a support and privacy rehearsal only. It does not delete real data, promise recovery, approve refunds, execute transactions, provide advice, or replace legal/privacy review."
   ].join("\n");
 }
 
@@ -64317,6 +64454,13 @@ function bindEvents() {
     if (!copyAccountDeletionRehearsal) return;
     event.preventDefault();
     copyText(makeAccountDeletionRehearsalBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyDeletionSupportCloseout = event.target.closest("[data-copy-deletion-support-closeout]");
+    if (!copyDeletionSupportCloseout) return;
+    event.preventDefault();
+    copyText(makeDeletionSupportCloseoutBrief());
   });
 
   document.addEventListener("click", (event) => {

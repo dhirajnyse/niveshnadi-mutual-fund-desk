@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v457 Retention Health Summary
+
+- Version: `0.457.0`
+- Data version: `20260706-v457-01`
+- Changes made: Added a Retention Health Summary to the Release Doctor with proof-surface status, custody direction, private-data exclusion, a dedicated copyable retention health brief, and Build Tracker brief coverage; rolled Release Doctor proof memory forward to v456.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v457 marker scan
+- Known risks: The summary maps proof retention posture only; durable account storage, source custody, deletion receipts, backend audit logs, and production reviewer sign-off remain future work.
+
 ## NiveshNadi Phase 1 v456 Live Data Receipt Retention
 
 - Version: `0.456.0`

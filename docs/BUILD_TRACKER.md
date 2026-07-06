@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V457 Retention Health Summary
+
+V457 adds a Retention Health Summary to the Release Doctor. It shows which proof surfaces are retained, which are still browser-local, which must move to backend custody, which private-data categories stay excluded, and gives the founder desk a copyable health brief before deeper persistence work begins.
+
 ## V456 Live Data Receipt Retention
 
 V456 adds Live Data Receipt Retention inside the Source Receipt Vault. It keeps source-proof history compact, retires expired or superseded proof, excludes private investor data, and provides a copyable live-retention receipt before backend custody exists.

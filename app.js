@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v456-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v456 Live Data Receipt Retention";
+const DATA_VERSION = "20260706-v457-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v457 Retention Health Summary";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10341,7 +10341,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, memo-handoff-receipt audit, review-export-retention audit, mobile-audit-retention audit, and live-data-receipt-retention audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, memo-handoff-receipt audit, review-export-retention audit, mobile-audit-retention audit, live-data-receipt-retention audit, and retention-health-summary audit are complete."
   );
   const launchGates = [
     {
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v455 is verified on commit 99f208d. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v456 is verified on deploy retry commit 495a2b6. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v455 verified",
+      outcome: "Previous outcome: v456 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45501",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45601",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10594,17 +10594,67 @@ function buildTrackerConfig() {
         }
       ]
     },
+    retentionHealthSummary: {
+      label: "Retention health summary",
+      verdict: "Five proof surfaces mapped",
+      receiptId: ["NN", "RETENTION", "HEALTH", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 74,
+      rule: "Keep retention summaries compact, show what remains browser-local, and move durable custody to backend receipt stores before production launch.",
+      surfaces: [
+        {
+          label: "Release proof",
+          value: "Retained",
+          status: "Latest five receipts",
+          detail: "Release keys, commits, receipt IDs, proof notes, and risk boundaries stay in the Release Doctor."
+        },
+        {
+          label: "Memo handoff",
+          value: "Local",
+          status: "Persistence next",
+          detail: "Search-to-memo context is copyable now; saved research history still needs account-backed receipt custody."
+        },
+        {
+          label: "Review export",
+          value: "Local",
+          status: "Persistence next",
+          detail: "Review export memory stays short and private-data safe, but durable review history belongs behind account controls."
+        },
+        {
+          label: "Mobile audit",
+          value: "Retained",
+          status: "Viewport proof",
+          detail: "Phone and tablet bridge proof is retained as compact release evidence until automated visual QA exists."
+        },
+        {
+          label: "Live data",
+          value: "Local",
+          status: "Backend custody later",
+          detail: "Source proof records retention rules now; delete, supersede, reviewer sign-off, and rollback receipts still need backend custody."
+        }
+      ],
+      custody: [
+        {
+          label: "Keep local",
+          value: "Release and UI proof",
+          detail: "Safe summary fields can stay in copied release notes and browser-local prototype memory."
+        },
+        {
+          label: "Move backend",
+          value: "Account and source custody",
+          detail: "Saved research, review history, source receipts, deletion events, and reviewer sign-off require account-backed storage."
+        },
+        {
+          label: "Never retain",
+          value: "Private identifiers",
+          detail: "PAN, folio, CAS, bank, contact, credentials, payment tokens, private notes, and distributor-client data stay out."
+        }
+      ]
+    },
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "The current retention batch is underway; keep the remaining releases focused on proof surfaces that can stay small as history grows.",
+      rule: "The retention health layer is visible; keep the remaining releases focused on persistence surfaces that can move from local memory to backend custody later.",
       lanes: [
-        {
-          version: "v457",
-          label: "Retention health summary",
-          route: "#build-tracker",
-          detail: "Summarize which proof surfaces are retained, which stay local, and which must move to backend custody."
-        },
         {
           version: "v458",
           label: "Memo receipt persistence",
@@ -10628,6 +10678,12 @@ function buildTrackerConfig() {
           label: "Source custody deletion receipts",
           route: "#source-receipts",
           detail: "Prepare delete and supersede receipts for live-data proof history before backend account custody."
+        },
+        {
+          version: "v462",
+          label: "Retention action router",
+          route: "#build-tracker",
+          detail: "Turn retention health findings into one next action for the founder release desk."
         }
       ]
     },
@@ -10636,6 +10692,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v456",
+          key: "20260706-v456-01",
+          commit: "a09c6ec",
+          receiptId: "NN-SHARE-RECEIPT-20260706V45601",
+          proof: "Live Data Receipt Retention added and verified live after deploy retry 495a2b6."
+        },
         {
           version: "v455",
           key: "20260706-v455-01",
@@ -10663,13 +10726,6 @@ function buildTrackerConfig() {
           commit: "3fb1b30",
           receiptId: "NN-SHARE-RECEIPT-20260706V45201",
           proof: "Proof Archive Retention added and verified by static release checks."
-        },
-        {
-          version: "v451",
-          key: "20260706-v451-01",
-          commit: "c418f26",
-          receiptId: "NN-SHARE-RECEIPT-20260706V45101",
-          proof: "Live Data Readiness Focus added, visually checked, and verified live on GitHub Pages."
         }
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10707,39 +10763,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "99f208d",
-        detail: "v455 source change shipped with matching release labels and stamp."
+        value: "a09c6ec",
+        detail: "v456 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
-        value: "Pages success",
-        detail: "The static Pages deployment completed for the v455 product commit."
+        value: "495a2b6",
+        detail: "The static Pages deployment completed after one empty retry commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v455-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v456-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v455 outcome is saved so the next release starts from proof."
+        detail: "The v456 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "99f208d",
-        detail: "v455 source change that added Mobile Audit Retention."
+        value: "a09c6ec",
+        detail: "v456 source change that added Live Data Receipt Retention."
       },
       {
         label: "Live deploy commit",
-        value: "99f208d",
-        detail: "v455 Pages deploy succeeded on the product commit."
+        value: "495a2b6",
+        detail: "v456 Pages deploy succeeded after one empty deploy retry."
       },
       {
         label: "Share outcome",
-        value: "v455 verified",
+        value: "v456 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -11118,6 +11174,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Retention health summary">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.retentionHealthSummary.surfaces.map((surface) => `
+          <article>
+            <span>${escapeHtml(surface.label)} | ${escapeHtml(surface.value)}</span>
+            <strong>${escapeHtml(surface.status)}</strong>
+            <p>${escapeHtml(surface.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Next batch planner">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.nextBatchPlan.label)}</span>
@@ -11234,6 +11304,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-visual-qa-receipt>Copy visual QA</button>
         <button class="text-button" type="button" data-copy-mobile-calm-audit>Copy mobile audit</button>
         <button class="text-button" type="button" data-copy-mobile-audit-retention>Copy mobile retention</button>
+        <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
         <button class="text-button" type="button" data-copy-release-proof-archive>Copy proof archive</button>
         <button class="text-button" type="button" data-copy-proof-archive-retention>Copy archive retention</button>
@@ -11384,6 +11455,12 @@ function makeBuildTrackerBrief() {
     `Mobile audit retention receipt: ${tracker.releaseDoctor.mobileCalmAudit.retentionReview.receiptId}`,
     `Mobile audit retention cadence: ${tracker.releaseDoctor.mobileCalmAudit.retentionReview.cadence}`,
     ...tracker.releaseDoctor.mobileCalmAudit.retentionPolicy.map((policy) => `- Mobile retention ${policy.label}: ${policy.value} | ${policy.detail}`),
+    `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
+    `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
+    `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
+    `Retention health rule: ${tracker.releaseDoctor.retentionHealthSummary.rule}`,
+    ...tracker.releaseDoctor.retentionHealthSummary.surfaces.map((surface) => `- Retention surface ${surface.label}: ${surface.value} | ${surface.status} | ${surface.detail}`),
+    ...tracker.releaseDoctor.retentionHealthSummary.custody.map((item) => `- Retention custody ${item.label}: ${item.value} | ${item.detail}`),
     `Next batch plan: ${tracker.releaseDoctor.nextBatchPlan.verdict}`,
     `Next batch rule: ${tracker.releaseDoctor.nextBatchPlan.rule}`,
     ...tracker.releaseDoctor.nextBatchPlan.lanes.map((step) => `- ${step.version} ${step.label}: ${step.detail} (${step.route})`),
@@ -11474,6 +11551,14 @@ function makeReleaseDoctorBrief() {
     `- Owner: ${tracker.releaseDoctor.mobileCalmAudit.retentionReview.owner}`,
     `- Boundary: ${tracker.releaseDoctor.mobileCalmAudit.retentionReview.boundary}`,
     ...tracker.releaseDoctor.mobileCalmAudit.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`),
+    "",
+    "## Retention Health Summary",
+    `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
+    `- Score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.retentionHealthSummary.rule}`,
+    ...tracker.releaseDoctor.retentionHealthSummary.surfaces.map((surface) => `- ${surface.label}: ${surface.value} | ${surface.status} | ${surface.detail}`),
+    ...tracker.releaseDoctor.retentionHealthSummary.custody.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
     "",
     "## Next Batch Planner",
     `- Verdict: ${tracker.releaseDoctor.nextBatchPlan.verdict}`,
@@ -11615,6 +11700,27 @@ function makeNextBatchPlanBrief() {
     "",
     "## Proposed next five releases",
     ...tracker.releaseDoctor.nextBatchPlan.lanes.map((step) => `- ${step.version} ${step.label}: ${step.detail} Route: ${step.route}`)
+  ].join("\n");
+}
+
+function makeRetentionHealthSummaryBrief() {
+  const tracker = buildTrackerConfig();
+  const summary = tracker.releaseDoctor.retentionHealthSummary;
+  return [
+    "# NiveshNadi Retention Health Summary",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${summary.receiptId}`,
+    `Verdict: ${summary.verdict}`,
+    `Score: ${summary.score}/100`,
+    `Rule: ${summary.rule}`,
+    "",
+    "## Proof Surfaces",
+    ...summary.surfaces.map((surface) => `- ${surface.label}: ${surface.value} | ${surface.status} | ${surface.detail}`),
+    "",
+    "## Custody Boundary",
+    ...summary.custody.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "Retention Health Summary is a product build control. It does not approve investment action, launch readiness, account custody, payments, legal posture, or security posture."
   ].join("\n");
 }
 
@@ -62849,6 +62955,13 @@ function bindEvents() {
     if (!copyMobileAuditRetention) return;
     event.preventDefault();
     copyText(makeMobileAuditRetentionBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyRetentionHealthSummary = event.target.closest("[data-copy-retention-health-summary]");
+    if (!copyRetentionHealthSummary) return;
+    event.preventDefault();
+    copyText(makeRetentionHealthSummaryBrief());
   });
 
   document.addEventListener("click", (event) => {

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v452-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v452 Proof Archive Retention";
+const DATA_VERSION = "20260706-v453-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v453 Memo Handoff Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10341,7 +10341,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, and proof-archive-retention audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, and memo-handoff-receipt audit are complete."
   );
   const launchGates = [
     {
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v451 is verified on commit c418f26. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v452 is verified on commit 3fb1b30. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v451 verified",
+      outcome: "Previous outcome: v452 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45101",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45201",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10570,12 +10570,6 @@ function buildTrackerConfig() {
       rule: "The current retention batch is underway; keep the remaining releases focused on proof surfaces that can stay small as history grows.",
       lanes: [
         {
-          version: "v453",
-          label: "Memo handoff receipt",
-          route: "#decision-pack",
-          detail: "Save the memo handoff as a small receipt once accounts or review history can persist it."
-        },
-        {
           version: "v454",
           label: "Review export retention",
           route: "#review-vault",
@@ -10598,6 +10592,12 @@ function buildTrackerConfig() {
           label: "Retention health summary",
           route: "#build-tracker",
           detail: "Summarize which proof surfaces are retained, which stay local, and which must move to backend custody."
+        },
+        {
+          version: "v458",
+          label: "Memo receipt persistence",
+          route: "#decision-pack",
+          detail: "Prepare the memo handoff receipt for future account-backed saved research history."
         }
       ]
     },
@@ -10606,6 +10606,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v452",
+          key: "20260706-v452-01",
+          commit: "3fb1b30",
+          receiptId: "NN-SHARE-RECEIPT-20260706V45201",
+          proof: "Proof Archive Retention added and verified by static release checks."
+        },
         {
           version: "v451",
           key: "20260706-v451-01",
@@ -10633,13 +10640,6 @@ function buildTrackerConfig() {
           commit: "23e73bb",
           receiptId: "NN-SHARE-RECEIPT-20260706V44801",
           proof: "Search-to-Memo Handoff added and verified by static release checks."
-        },
-        {
-          version: "v447",
-          key: "20260706-v447-01",
-          commit: "f0cc8de",
-          receiptId: "NN-SHARE-RECEIPT-20260706V44701",
-          proof: "Release Proof Archive added and verified by static release checks."
         }
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10677,39 +10677,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "c418f26",
-        detail: "v451 source change shipped with matching release labels and stamp."
+        value: "3fb1b30",
+        detail: "v452 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v451 product commit."
+        detail: "The static Pages deployment completed for the v452 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v451-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v452-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v451 outcome is saved so the next release starts from proof."
+        detail: "The v452 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "c418f26",
-        detail: "v451 source change that added Live Data Readiness Focus."
+        value: "3fb1b30",
+        detail: "v452 source change that added Proof Archive Retention."
       },
       {
         label: "Live deploy commit",
-        value: "c418f26",
-        detail: "v451 Pages deploy succeeded on the product commit."
+        value: "3fb1b30",
+        detail: "v452 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v451 verified",
+        value: "v452 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -58449,6 +58449,7 @@ function renderDecisionPack(event) {
   const motive = decisionMotiveMri(pack, recorder, court, regret);
   const multiverse = decisionMultiverse(pack, recorder, court, regret, motive);
   const handoff = searchToMemoHandoff(pack);
+  const handoffReceipt = searchToMemoReceipt(pack, handoff);
   const watchItems = pack.watchTriggers.length
     ? pack.watchTriggers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")
     : "<li>No saved watch triggers yet. Add review or risk triggers before committing real money.</li>";
@@ -58537,9 +58538,27 @@ function renderDecisionPack(event) {
           <p>${handoff.receiptFields.map((field) => escapeHtml(field)).join(" | ")}</p>
         </article>
       </div>
+      <div class="pack-card-grid memo-handoff-receipt-grid">
+        <article class="pack-card">
+          <span>${escapeHtml(handoffReceipt.label)}</span>
+          <strong>${escapeHtml(handoffReceipt.verdict)}</strong>
+          <p>${escapeHtml(handoffReceipt.summary)}</p>
+        </article>
+        <article class="pack-card">
+          <span>Retain</span>
+          <strong>${escapeHtml(handoffReceipt.retention)}</strong>
+          <p>${handoffReceipt.retainedFields.map((field) => escapeHtml(field)).join(" | ")}</p>
+        </article>
+        <article class="pack-card caution">
+          <span>Hold if</span>
+          <strong>${escapeHtml(handoffReceipt.holdIf)}</strong>
+          <p>${escapeHtml(handoffReceipt.boundary)}</p>
+        </article>
+      </div>
       <div class="release-doctor-actions">
         <button class="text-button" type="button" data-build-route="${escapeHtml(handoff.topBlocker.route)}">Open top blocker</button>
         <button class="text-button" type="button" data-copy-search-memo-handoff>Copy memo handoff</button>
+        <button class="text-button" type="button" data-copy-search-memo-receipt>Copy handoff receipt</button>
       </div>
     </div>
     <div class="pack-flight-recorder ${escapeHtml(recorder.tone)}">
@@ -58888,6 +58907,40 @@ function searchToMemoHandoff(pack) {
     checks,
     memoPrompt: `Write one plain-English reason for ${pack.fund.name}: role, source date, fair peer, amount ${formatMoney(pack.amount)}, review date ${pack.reviewDate || "not set"}, and no-action boundary.`,
     receiptFields: ["handoff_id", "fund_id", "search_context", "top_blocker", "memo_prompt", "next_route", "created_at"]
+  };
+}
+
+function searchToMemoReceipt(pack, handoff = searchToMemoHandoff(pack)) {
+  const clearChecks = handoff.checks.filter((check) => check.score >= 72).length;
+  const blockedChecks = handoff.checks.length - clearChecks;
+  const reasonWords = pack.typedReason.split(/\s+/).filter(Boolean).length;
+  const receiptId = ["NN", "MEMO", "HANDOFF", "RECEIPT", DATA_VERSION.replace(/-/g, ""), pack.fund.id].join("-").toUpperCase();
+  const verdict = blockedChecks === 0 && reasonWords >= 18
+    ? "Receipt can travel with memo"
+    : blockedChecks <= 1
+      ? "Receipt needs one review"
+      : "Receipt stays draft";
+  return {
+    boundary: "Memo receipt is research memory only; it does not approve, recommend, execute, switch, redeem, guarantee returns, or store private identifiers.",
+    blockedChecks,
+    clearChecks,
+    holdIf: blockedChecks ? handoff.topBlocker.label : "source, peer, reason, or review date changes",
+    label: "Memo handoff receipt",
+    receiptId,
+    retainedFields: [
+      "handoff_id",
+      "fund_id",
+      "search_context",
+      "decision_stance",
+      "top_blocker",
+      "next_route",
+      "memo_prompt",
+      "review_date_status",
+      "created_at"
+    ],
+    retention: "Keep one compact receipt beside the memo; do not keep PAN, folio, CAS, bank, contact, credentials, private notes, or distributor-client data.",
+    summary: `${clearChecks}/${handoff.checks.length} handoff checks clear. ${reasonWords} own-word reason words captured.`,
+    verdict
   };
 }
 
@@ -59584,6 +59637,10 @@ function makeDecisionPackText() {
     `- Top blocker: ${handoff.topBlocker.label} | ${handoff.topBlocker.detail}`,
     `- Next route: ${handoff.topBlocker.route}`,
     `- Memo prompt: ${handoff.memoPrompt}`,
+    `- Receipt ID: ${handoffReceipt.receiptId}`,
+    `- Receipt verdict: ${handoffReceipt.verdict}`,
+    `- Receipt retention: ${handoffReceipt.retention}`,
+    `- Receipt hold-if: ${handoffReceipt.holdIf}`,
     "",
     "## Evidence Checklist",
     `- Role: ${pack.fund.role}`,
@@ -59694,6 +59751,7 @@ function makeDecisionPackText() {
 function makeSearchMemoHandoffBrief() {
   const pack = buildDecisionPack();
   const handoff = searchToMemoHandoff(pack);
+  const handoffReceipt = searchToMemoReceipt(pack, handoff);
   return [
     "# NiveshNadi Search-to-Memo Handoff",
     `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
@@ -59705,11 +59763,40 @@ function makeSearchMemoHandoffBrief() {
     `Blocker detail: ${handoff.topBlocker.detail}`,
     `Open next: ${handoff.topBlocker.route}`,
     `Memo prompt: ${handoff.memoPrompt}`,
+    `Handoff receipt: ${handoffReceipt.receiptId}`,
+    `Receipt verdict: ${handoffReceipt.verdict}`,
     "",
     "## Handoff checks",
     ...handoff.checks.map((check) => `- ${check.label}: ${check.score}/100 | ${check.detail} | Route ${check.route}`),
     "",
     "Research memo only. This handoff is not personalized advice, suitability approval, execution instruction, or a return guarantee."
+  ].join("\n");
+}
+
+function makeSearchMemoReceiptBrief() {
+  const pack = buildDecisionPack();
+  const handoff = searchToMemoHandoff(pack);
+  const receipt = searchToMemoReceipt(pack, handoff);
+  return [
+    "# NiveshNadi Memo Handoff Receipt",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${receipt.receiptId}`,
+    `Selected fund: ${pack.fund.name}`,
+    `Decision stance: ${pack.decision}`,
+    `Handoff ID: ${handoff.handoffId}`,
+    `Verdict: ${receipt.verdict}`,
+    `Summary: ${receipt.summary}`,
+    `Hold if: ${receipt.holdIf}`,
+    `Retention: ${receipt.retention}`,
+    `Boundary: ${receipt.boundary}`,
+    "",
+    "## Handoff checks",
+    ...handoff.checks.map((check) => `- ${check.label}: ${check.score}/100 | ${check.detail} | Route ${check.route}`),
+    "",
+    "## Retained fields",
+    ...receipt.retainedFields.map((field) => `- ${field}`),
+    "",
+    "This is research memory only. It is not personalized advice, suitability approval, execution instruction, switch instruction, redemption instruction, or a return guarantee."
   ].join("\n");
 }
 
@@ -62541,6 +62628,13 @@ function bindEvents() {
     if (!copySearchMemoHandoff) return;
     event.preventDefault();
     copyText(makeSearchMemoHandoffBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copySearchMemoReceipt = event.target.closest("[data-copy-search-memo-receipt]");
+    if (!copySearchMemoReceipt) return;
+    event.preventDefault();
+    copyText(makeSearchMemoReceiptBrief());
   });
 
   document.addEventListener("click", (event) => {

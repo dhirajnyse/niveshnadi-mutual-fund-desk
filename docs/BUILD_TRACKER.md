@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V453 Memo Handoff Receipt
+
+V453 adds a Memo Handoff Receipt inside the Decision Pack. It records what search context can travel into the memo, which handoff checks are clear, what field names are retained, when to hold, and which private identifiers are excluded.
+
 ## V452 Proof Archive Retention
 
 V452 adds a Proof Archive Retention layer to the Release Doctor. It keeps the latest five release receipts visible, rolls the oldest receipt out, states the no-private-data retention fields, and provides a copyable retention receipt for founder release review.

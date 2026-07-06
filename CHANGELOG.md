@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v453 Memo Handoff Receipt
+
+- Version: `0.453.0`
+- Data version: `20260706-v453-01`
+- Changes made: Added a Memo Handoff Receipt inside the Decision Pack with handoff readiness verdict, retained fields, no-private-data retention boundary, hold-if state, and a dedicated copyable receipt; rolled release proof memory forward to v452.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v453 marker scan
+- Known risks: The receipt organizes browser-local memo context only; it still depends on account-backed saved research, source verification, review dates, and user-written reasons before durable production memory exists.
+
 ## NiveshNadi Phase 1 v452 Proof Archive Retention
 
 - Version: `0.452.0`

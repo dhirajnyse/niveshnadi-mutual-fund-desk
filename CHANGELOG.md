@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v456 Live Data Receipt Retention
+
+- Version: `0.456.0`
+- Data version: `20260706-v456-01`
+- Changes made: Added Live Data Receipt Retention inside the Source Receipt Vault with a source-proof retention receipt ID, latest-receipt keep rule, expired/superseded proof retirement, private-investor-data exclusion boundary, future backend custody note, and a dedicated copyable live-retention brief; rolled Release Doctor memory forward to v455.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v456 marker scan
+- Known risks: Live-data retention still uses browser-local/demo receipt memory; production needs backend receipt custody, delete/supersede events, reviewer sign-off, licensed data feeds, and rollback evidence.
+
 ## NiveshNadi Phase 1 v455 Mobile Audit Retention
 
 - Version: `0.455.0`

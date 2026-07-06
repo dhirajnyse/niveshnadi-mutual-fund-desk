@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V456 Live Data Receipt Retention
+
+V456 adds Live Data Receipt Retention inside the Source Receipt Vault. It keeps source-proof history compact, retires expired or superseded proof, excludes private investor data, and provides a copyable live-retention receipt before backend custody exists.
+
 ## V455 Mobile Audit Retention
 
 V455 adds Mobile Audit Retention to the Release Doctor. It keeps compact phone, large phone, and tablet-bridge viewport proof visible, names retest triggers, excludes private screenshots, and gives the founder desk a copyable retention receipt.

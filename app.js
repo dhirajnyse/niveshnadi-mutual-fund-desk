@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v455-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v455 Mobile Audit Retention";
+const DATA_VERSION = "20260706-v456-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v456 Live Data Receipt Retention";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10341,7 +10341,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, memo-handoff-receipt audit, review-export-retention audit, and mobile-audit-retention audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, memo-handoff-receipt audit, review-export-retention audit, mobile-audit-retention audit, and live-data-receipt-retention audit are complete."
   );
   const launchGates = [
     {
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v454 is verified on commit d54cc4a. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v455 is verified on commit 99f208d. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v454 verified",
+      outcome: "Previous outcome: v455 verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45401",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45501",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10600,12 +10600,6 @@ function buildTrackerConfig() {
       rule: "The current retention batch is underway; keep the remaining releases focused on proof surfaces that can stay small as history grows.",
       lanes: [
         {
-          version: "v456",
-          label: "Live data receipt retention",
-          route: "#source-receipts",
-          detail: "Keep live-data readiness compact as real source receipt history grows."
-        },
-        {
           version: "v457",
           label: "Retention health summary",
           route: "#build-tracker",
@@ -10628,6 +10622,12 @@ function buildTrackerConfig() {
           label: "Viewport proof history",
           route: "#build-tracker",
           detail: "Prepare retained mobile audit rows for future automated visual QA history."
+        },
+        {
+          version: "v461",
+          label: "Source custody deletion receipts",
+          route: "#source-receipts",
+          detail: "Prepare delete and supersede receipts for live-data proof history before backend account custody."
         }
       ]
     },
@@ -10636,6 +10636,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v455",
+          key: "20260706-v455-01",
+          commit: "99f208d",
+          receiptId: "NN-SHARE-RECEIPT-20260706V45501",
+          proof: "Mobile Audit Retention added and verified by static release checks."
+        },
         {
           version: "v454",
           key: "20260706-v454-01",
@@ -10663,13 +10670,6 @@ function buildTrackerConfig() {
           commit: "c418f26",
           receiptId: "NN-SHARE-RECEIPT-20260706V45101",
           proof: "Live Data Readiness Focus added, visually checked, and verified live on GitHub Pages."
-        },
-        {
-          version: "v450",
-          key: "20260706-v450-01",
-          commit: "96c76b6",
-          receiptId: "NN-SHARE-RECEIPT-20260706V45001",
-          proof: "Mobile Calm Audit added and verified by static release checks."
         }
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10707,39 +10707,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "d54cc4a",
-        detail: "v454 source change shipped with matching release labels and stamp."
+        value: "99f208d",
+        detail: "v455 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Deployed",
         value: "Pages success",
-        detail: "The static Pages deployment completed for the v454 product commit."
+        detail: "The static Pages deployment completed for the v455 product commit."
       },
       {
         label: "03 Verified",
         value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v454-01 before sharing."
+        detail: "release-stamp.txt returned 20260706-v455-01 before sharing."
       },
       {
         label: "04 Share",
         value: "Share-ready",
-        detail: "The v454 outcome is saved so the next release starts from proof."
+        detail: "The v455 outcome is saved so the next release starts from proof."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "d54cc4a",
-        detail: "v454 source change that added Review Export Retention."
+        value: "99f208d",
+        detail: "v455 source change that added Mobile Audit Retention."
       },
       {
         label: "Live deploy commit",
-        value: "d54cc4a",
-        detail: "v454 Pages deploy succeeded on the product commit."
+        value: "99f208d",
+        detail: "v455 Pages deploy succeeded on the product commit."
       },
       {
         label: "Share outcome",
-        value: "v454 verified",
+        value: "v455 verified",
         detail: "Deployment succeeded and the live stamp matched before sharing."
       }
     ],
@@ -42611,6 +42611,37 @@ function liveDataReadinessFocusConfig(receipt = sourceReceiptSnapshotFromConfig(
     { label: "reviewer_status", value: receipt.status, detail: receipt.reviewer },
     { label: "claim_surface", value: receipt.surfaceLabel, detail: receipt.claimSurface }
   ];
+  const retainedReceiptCount = entries.length ? Math.min(entries.length, 12) : 0;
+  const retentionReview = {
+    label: "Live data receipt retention",
+    verdict: entries.length ? "Retain source proof trail" : "Preview retention only",
+    receiptId: ["NN", "LIVE", "DATA", "RETENTION", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    cadence: "Review whenever source date, parser, citation path, reviewer status, or claim surface changes.",
+    owner: "Source receipt vault",
+    boundary: "Retain source family, source date, citation status, parser version, reviewer status, claim surface, no-go reason, and release state only; exclude investor identifiers, PAN, folio, CAS, bank, contact, credentials, private notes, and distributor client data."
+  };
+  const retentionPolicy = [
+    {
+      label: "Keep",
+      value: entries.length ? `Latest ${retainedReceiptCount} receipts` : "Current preview only",
+      detail: "Carry compact source proof metadata forward without storing investor identity."
+    },
+    {
+      label: "Retire",
+      value: "Expired or superseded proof",
+      detail: "Retire stale, failed, or replaced receipts once a newer source date and reviewer status are visible."
+    },
+    {
+      label: "Exclude",
+      value: "Private investor data",
+      detail: "No PAN, folio, CAS, bank, contact, credentials, private notes, payment data, or distributor-client records."
+    },
+    {
+      label: "Move later",
+      value: "Backend receipt custody",
+      detail: "Production should store explicit source receipt, delete, supersede, reviewer sign-off, and rollback events."
+    }
+  ];
   return {
     blockedTasks,
     fields,
@@ -42620,6 +42651,9 @@ function liveDataReadinessFocusConfig(receipt = sourceReceiptSnapshotFromConfig(
     receipt,
     receiptId,
     readyTasks,
+    retainedReceiptCount,
+    retentionPolicy,
+    retentionReview,
     savedProof,
     score,
     tone,
@@ -42665,8 +42699,23 @@ function liveDataReadinessFocusMarkup(focus) {
           </article>
         `).join("")}
       </div>
+      <div class="live-data-readiness-field-grid" aria-label="Live data receipt retention">
+        <article>
+          <span>${escapeHtml(focus.retentionReview.label)}</span>
+          <strong>${escapeHtml(focus.retentionReview.verdict)}</strong>
+          <p>${escapeHtml(focus.retentionReview.cadence)}</p>
+        </article>
+        ${focus.retentionPolicy.map((policy) => `
+          <article>
+            <span>${escapeHtml(policy.label)}</span>
+            <strong>${escapeHtml(policy.value)}</strong>
+            <p>${escapeHtml(policy.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="live-data-readiness-actions">
         <button class="text-button" type="button" data-copy-live-data-readiness-focus>Copy live readiness</button>
+        <button class="text-button" type="button" data-copy-live-data-receipt-retention>Copy live retention</button>
         <button class="text-button" type="button" data-build-route="#source-qa">Open source QA</button>
       </div>
     </div>
@@ -42915,6 +42964,14 @@ function makeSourceReceiptVaultBrief() {
     "Required fields:",
     ...liveDataFocus.fields.map((field) => `- ${field.label}: ${field.value} | ${field.detail}`),
     "",
+    "## Live Data Receipt Retention",
+    `Retention receipt: ${liveDataFocus.retentionReview.receiptId}`,
+    `Verdict: ${liveDataFocus.retentionReview.verdict}`,
+    `Cadence: ${liveDataFocus.retentionReview.cadence}`,
+    `Owner: ${liveDataFocus.retentionReview.owner}`,
+    `Boundary: ${liveDataFocus.retentionReview.boundary}`,
+    ...liveDataFocus.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`),
+    "",
     "## Live Data Production Receipt",
     `Envelope ID: ${productionEnvelope.envelopeId}`,
     `Verdict: ${productionEnvelope.status}`,
@@ -42972,10 +43029,47 @@ function makeLiveDataReadinessFocusBrief() {
     "## Required Receipt Fields",
     ...focus.fields.map((field) => `- ${field.label}: ${field.value} | ${field.detail}`),
     "",
+    "## Live Data Receipt Retention",
+    `Receipt ID: ${focus.retentionReview.receiptId}`,
+    `Verdict: ${focus.retentionReview.verdict}`,
+    `Cadence: ${focus.retentionReview.cadence}`,
+    `Owner: ${focus.retentionReview.owner}`,
+    `Boundary: ${focus.retentionReview.boundary}`,
+    ...focus.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`),
+    "",
     "## Production Blockers",
     ...focus.productionEnvelope.blockers.map((blocker) => `- ${blocker}`),
     "",
     "Live Data Readiness Focus is source proof only. It is not personalized advice, suitability approval, execution approval, or a return guarantee, and it excludes PAN, folio, CAS, bank, contact, credentials, private notes, and distributor client records."
+  ].join("\n");
+}
+
+function makeLiveDataReceiptRetentionBrief() {
+  const entries = loadSourceReceipts();
+  const latest = entries[0] || sourceReceiptSnapshotFromConfig();
+  const focus = liveDataReadinessFocusConfig(latest, entries);
+  return [
+    "# NiveshNadi Live Data Receipt Retention",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${focus.retentionReview.receiptId}`,
+    `Verdict: ${focus.retentionReview.verdict}`,
+    `Cadence: ${focus.retentionReview.cadence}`,
+    `Owner: ${focus.retentionReview.owner}`,
+    `Boundary: ${focus.retentionReview.boundary}`,
+    "",
+    "## Retention policy",
+    ...focus.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`),
+    "",
+    "## Current source proof",
+    `Source family: ${focus.receipt.source.title}`,
+    `Live readiness receipt: ${focus.receiptId}`,
+    `Readiness score: ${focus.score}/100`,
+    `Production envelope: ${focus.productionEnvelope.status} (${focus.productionEnvelope.readiness}/100)`,
+    `Saved proof: ${focus.savedProof ? "yes" : "no"}`,
+    `Retained receipt count: ${focus.retainedReceiptCount}`,
+    `First blocker: ${focus.firstBlocker}`,
+    "",
+    "This retention note is source proof only. It is not advice, suitability approval, execution approval, or a return guarantee."
   ].join("\n");
 }
 
@@ -62291,6 +62385,12 @@ function bindEvents() {
     if (!copyLiveDataReadiness) return;
     event.preventDefault();
     copyText(makeLiveDataReadinessFocusBrief());
+  });
+  document.addEventListener("click", (event) => {
+    const copyLiveDataRetention = event.target.closest("[data-copy-live-data-receipt-retention]");
+    if (!copyLiveDataRetention) return;
+    event.preventDefault();
+    copyText(makeLiveDataReceiptRetentionBrief());
   });
   els.clearSourceReceiptVault?.addEventListener("click", clearSourceReceipts);
   els.claimSurfaceForm?.addEventListener("submit", (event) => {

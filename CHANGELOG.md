@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v458 Memo Receipt Persistence
+
+- Version: `0.458.0`
+- Data version: `20260706-v458-01`
+- Changes made: Added Memo Receipt Persistence to the Decision Pack with a saved-research custody receipt, keep/sync/retire/exclude policy cards, dedicated copyable persistence note, and Decision Pack export coverage; rolled Release Doctor memory forward to v457.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v458 marker scan
+- Known risks: Persistence is a product/custody plan only; durable account storage, consent, deletion events, backend audit logs, review-owner controls, and production privacy review are still future work.
+
 ## NiveshNadi Phase 1 v457 Retention Health Summary
 
 - Version: `0.457.0`

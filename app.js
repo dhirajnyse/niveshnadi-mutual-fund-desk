@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v457-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v457 Retention Health Summary";
+const DATA_VERSION = "20260706-v458-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v458 Memo Receipt Persistence";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10341,7 +10341,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, memo-handoff-receipt audit, review-export-retention audit, mobile-audit-retention audit, live-data-receipt-retention audit, and retention-health-summary audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, memo-handoff-receipt audit, review-export-retention audit, mobile-audit-retention audit, live-data-receipt-retention audit, retention-health-summary audit, and memo-receipt-persistence audit are complete."
   );
   const launchGates = [
     {
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v456 is verified on deploy retry commit 495a2b6. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v457 passed local release checks on commit 5eb3b2a. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v456 verified",
+      outcome: "Previous outcome: v457 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45601",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45701",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10653,14 +10653,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "The retention health layer is visible; keep the remaining releases focused on persistence surfaces that can move from local memory to backend custody later.",
+      rule: "Memo receipt persistence is visible; keep the remaining releases focused on review, viewport, and source custody surfaces that can move from local memory to backend custody later.",
       lanes: [
-        {
-          version: "v458",
-          label: "Memo receipt persistence",
-          route: "#decision-pack",
-          detail: "Prepare the memo handoff receipt for future account-backed saved research history."
-        },
         {
           version: "v459",
           label: "Review memory persistence",
@@ -10684,6 +10678,12 @@ function buildTrackerConfig() {
           label: "Retention action router",
           route: "#build-tracker",
           detail: "Turn retention health findings into one next action for the founder release desk."
+        },
+        {
+          version: "v463",
+          label: "Saved research custody map",
+          route: "#account-readiness",
+          detail: "Connect memo and review persistence into a future account-backed saved research custody model."
         }
       ]
     },
@@ -10692,6 +10692,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v457",
+          key: "20260706-v457-01",
+          commit: "5eb3b2a",
+          receiptId: "NN-SHARE-RECEIPT-20260706V45701",
+          proof: "Retention Health Summary added and verified by static release checks."
+        },
         {
           version: "v456",
           key: "20260706-v456-01",
@@ -10719,13 +10726,6 @@ function buildTrackerConfig() {
           commit: "2ba5f0c",
           receiptId: "NN-SHARE-RECEIPT-20260706V45301",
           proof: "Memo Handoff Receipt added and verified by static release checks."
-        },
-        {
-          version: "v452",
-          key: "20260706-v452-01",
-          commit: "3fb1b30",
-          receiptId: "NN-SHARE-RECEIPT-20260706V45201",
-          proof: "Proof Archive Retention added and verified by static release checks."
         }
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10763,40 +10763,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "a09c6ec",
-        detail: "v456 source change shipped with matching release labels and stamp."
+        value: "5eb3b2a",
+        detail: "v457 source change shipped with matching release labels and stamp."
       },
       {
-        label: "02 Deployed",
-        value: "495a2b6",
-        detail: "The static Pages deployment completed after one empty retry commit."
+        label: "02 Checked",
+        value: "Static pass",
+        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v457."
       },
       {
-        label: "03 Verified",
-        value: "Stamp matched",
-        detail: "release-stamp.txt returned 20260706-v456-01 before sharing."
+        label: "03 Queued",
+        value: "Batch push later",
+        detail: "This five-version batch will be pushed and live-verified after v461."
       },
       {
         label: "04 Share",
-        value: "Share-ready",
-        detail: "The v456 outcome is saved so the next release starts from proof."
+        value: "Hold for live stamp",
+        detail: "Do not share v458 until the final batch deploy returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "a09c6ec",
-        detail: "v456 source change that added Live Data Receipt Retention."
+        value: "5eb3b2a",
+        detail: "v457 source change that added the Retention Health Summary."
       },
       {
-        label: "Live deploy commit",
-        value: "495a2b6",
-        detail: "v456 Pages deploy succeeded after one empty deploy retry."
+        label: "Local release checks",
+        value: "Passed",
+        detail: "v457 passed syntax, static, security, diff hygiene, and marker scans before v458 started."
       },
       {
         label: "Share outcome",
-        value: "v456 verified",
-        detail: "Deployment succeeded and the live stamp matched before sharing."
+        value: "v457 held for batch deploy",
+        detail: "The final batch release will be pushed and live-stamp verified after v461."
       }
     ],
     actions: [
@@ -58897,10 +58897,25 @@ function renderDecisionPack(event) {
           <p>${escapeHtml(handoffReceipt.boundary)}</p>
         </article>
       </div>
+      <div class="pack-card-grid memo-persistence-grid">
+        <article class="pack-card">
+          <span>${escapeHtml(handoffReceipt.persistenceReview.label)}</span>
+          <strong>${escapeHtml(handoffReceipt.persistenceReview.verdict)}</strong>
+          <p>${escapeHtml(handoffReceipt.persistenceReview.rule)}</p>
+        </article>
+        ${handoffReceipt.persistencePolicy.map((item) => `
+          <article class="pack-card ${escapeHtml(item.tone || "")}">
+            <span>${escapeHtml(item.label)}</span>
+            <strong>${escapeHtml(item.value)}</strong>
+            <p>${escapeHtml(item.detail)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-actions">
         <button class="text-button" type="button" data-build-route="${escapeHtml(handoff.topBlocker.route)}">Open top blocker</button>
         <button class="text-button" type="button" data-copy-search-memo-handoff>Copy memo handoff</button>
         <button class="text-button" type="button" data-copy-search-memo-receipt>Copy handoff receipt</button>
+        <button class="text-button" type="button" data-copy-memo-receipt-persistence>Copy persistence note</button>
       </div>
     </div>
     <div class="pack-flight-recorder ${escapeHtml(recorder.tone)}">
@@ -59281,6 +59296,38 @@ function searchToMemoReceipt(pack, handoff = searchToMemoHandoff(pack)) {
       "created_at"
     ],
     retention: "Keep one compact receipt beside the memo; do not keep PAN, folio, CAS, bank, contact, credentials, private notes, or distributor-client data.",
+    persistenceReview: {
+      label: "Memo receipt persistence",
+      verdict: blockedChecks <= 1 ? "Ready for saved research custody" : "Draft until blockers clear",
+      receiptId: ["NN", "MEMO", "PERSISTENCE", DATA_VERSION.replace(/-/g, ""), pack.fund.id].join("-").toUpperCase(),
+      cadence: "Review when the fund, decision stance, reason, review date, or top blocker changes.",
+      owner: "Saved research desk",
+      rule: "Persist only the compact memo receipt fields first; move durable custody to account-backed storage after consent, deletion, and review-owner controls exist.",
+      boundary: "Saved memo history must exclude PAN, folio, CAS, bank, contact, account credentials, payment data, private notes, and distributor-client identifiers."
+    },
+    persistencePolicy: [
+      {
+        label: "Keep",
+        value: "Compact receipt fields",
+        detail: "Keep fund ID, search context, decision stance, top blocker, next route, memo prompt, review-date status, and created-at timestamp."
+      },
+      {
+        label: "Sync later",
+        value: "After reason is written",
+        detail: "Move to account-backed saved research only after the investor writes a reason and accepts the research-only boundary."
+      },
+      {
+        label: "Retire",
+        value: "Purpose or fund changes",
+        detail: "Supersede the saved receipt when the fund, goal, reason, review date, or top blocker changes materially."
+      },
+      {
+        label: "Exclude",
+        value: "Private identifiers",
+        detail: "Do not persist PAN, folio, CAS, bank, contact, credentials, payment details, private notes, or distributor-client data.",
+        tone: "caution"
+      }
+    ],
     summary: `${clearChecks}/${handoff.checks.length} handoff checks clear. ${reasonWords} own-word reason words captured.`,
     verdict
   };
@@ -59983,6 +60030,9 @@ function makeDecisionPackText() {
     `- Receipt verdict: ${handoffReceipt.verdict}`,
     `- Receipt retention: ${handoffReceipt.retention}`,
     `- Receipt hold-if: ${handoffReceipt.holdIf}`,
+    `- Persistence receipt: ${handoffReceipt.persistenceReview.receiptId}`,
+    `- Persistence verdict: ${handoffReceipt.persistenceReview.verdict}`,
+    `- Persistence rule: ${handoffReceipt.persistenceReview.rule}`,
     "",
     "## Evidence Checklist",
     `- Role: ${pack.fund.role}`,
@@ -60107,6 +60157,8 @@ function makeSearchMemoHandoffBrief() {
     `Memo prompt: ${handoff.memoPrompt}`,
     `Handoff receipt: ${handoffReceipt.receiptId}`,
     `Receipt verdict: ${handoffReceipt.verdict}`,
+    `Persistence receipt: ${handoffReceipt.persistenceReview.receiptId}`,
+    `Persistence verdict: ${handoffReceipt.persistenceReview.verdict}`,
     "",
     "## Handoff checks",
     ...handoff.checks.map((check) => `- ${check.label}: ${check.score}/100 | ${check.detail} | Route ${check.route}`),
@@ -60131,6 +60183,10 @@ function makeSearchMemoReceiptBrief() {
     `Hold if: ${receipt.holdIf}`,
     `Retention: ${receipt.retention}`,
     `Boundary: ${receipt.boundary}`,
+    `Persistence receipt: ${receipt.persistenceReview.receiptId}`,
+    `Persistence verdict: ${receipt.persistenceReview.verdict}`,
+    `Persistence cadence: ${receipt.persistenceReview.cadence}`,
+    `Persistence boundary: ${receipt.persistenceReview.boundary}`,
     "",
     "## Handoff checks",
     ...handoff.checks.map((check) => `- ${check.label}: ${check.score}/100 | ${check.detail} | Route ${check.route}`),
@@ -60138,7 +60194,34 @@ function makeSearchMemoReceiptBrief() {
     "## Retained fields",
     ...receipt.retainedFields.map((field) => `- ${field}`),
     "",
+    "## Persistence policy",
+    ...receipt.persistencePolicy.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
     "This is research memory only. It is not personalized advice, suitability approval, execution instruction, switch instruction, redemption instruction, or a return guarantee."
+  ].join("\n");
+}
+
+function makeMemoReceiptPersistenceBrief() {
+  const pack = buildDecisionPack();
+  const handoff = searchToMemoHandoff(pack);
+  const receipt = searchToMemoReceipt(pack, handoff);
+  return [
+    "# NiveshNadi Memo Receipt Persistence",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Persistence receipt: ${receipt.persistenceReview.receiptId}`,
+    `Selected fund: ${pack.fund.name}`,
+    `Decision stance: ${pack.decision}`,
+    `Memo receipt: ${receipt.receiptId}`,
+    `Verdict: ${receipt.persistenceReview.verdict}`,
+    `Cadence: ${receipt.persistenceReview.cadence}`,
+    `Owner: ${receipt.persistenceReview.owner}`,
+    `Rule: ${receipt.persistenceReview.rule}`,
+    `Boundary: ${receipt.persistenceReview.boundary}`,
+    "",
+    "## Persistence policy",
+    ...receipt.persistencePolicy.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "Memo Receipt Persistence is a saved-research custody plan. It does not create account storage, approve investing, execute transactions, guarantee returns, or permit private investor identifiers."
   ].join("\n");
 }
 
@@ -62997,6 +63080,13 @@ function bindEvents() {
     if (!copySearchMemoReceipt) return;
     event.preventDefault();
     copyText(makeSearchMemoReceiptBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyMemoReceiptPersistence = event.target.closest("[data-copy-memo-receipt-persistence]");
+    if (!copyMemoReceiptPersistence) return;
+    event.preventDefault();
+    copyText(makeMemoReceiptPersistenceBrief());
   });
 
   document.addEventListener("click", (event) => {

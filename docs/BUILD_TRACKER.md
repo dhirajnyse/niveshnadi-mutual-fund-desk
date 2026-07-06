@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V458 Memo Receipt Persistence
+
+V458 adds Memo Receipt Persistence to the Decision Pack. It shows which memo receipt fields can be kept, when saved research should sync later, when a receipt should be retired, which private identifiers must stay excluded, and gives the founder desk a copyable persistence note.
+
 ## V457 Retention Health Summary
 
 V457 adds a Retention Health Summary to the Release Doctor. It shows which proof surfaces are retained, which are still browser-local, which must move to backend custody, which private-data categories stay excluded, and gives the founder desk a copyable health brief before deeper persistence work begins.

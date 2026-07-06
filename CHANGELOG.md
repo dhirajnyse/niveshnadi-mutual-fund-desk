@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v475 Baseline Compare Automation
+
+- Version: `0.475.0`
+- Data version: `20260707-v475-01`
+- Changes made: Added Baseline Compare Automation to the Build Tracker Release Doctor with automated visual compare runs, failure thresholds, retry rules, receipt fields, deletion proof, dedicated copy action, Release Doctor brief coverage, and release markers rolled forward to v475.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v475 marker scan.
+- Known risks: Baseline compare automation is a contract in the static prototype only; production still needs an actual runner, screenshot capture service, perceptual diff thresholds, artifact deletion enforcement, CI integration, reviewer workflow, privacy review, and deployment verification.
+
 ## NiveshNadi Phase 1 v474 Support Case Audit
 
 - Version: `0.474.0`

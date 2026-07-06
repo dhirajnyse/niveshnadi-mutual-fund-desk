@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v474-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v474 Support Case Audit";
+const DATA_VERSION = "20260707-v475-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v475 Baseline Compare Automation";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v473 passed release checks on commit 4670331. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v474 passed release checks on commit b83e91a. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v473 local checks passed",
+      outcome: "Previous outcome: v474 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47301",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47401",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10755,6 +10755,80 @@ function buildTrackerConfig() {
         "Visual proof is release QA only; it does not certify live data, accounts, payments, legal readiness, or investment suitability."
       ]
     },
+    baselineCompareAutomation: {
+      label: "Baseline compare automation",
+      verdict: "Automation contract drafted",
+      receiptId: ["NN", "BASELINE", "COMPARE", "AUTOMATION", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      rule: "Automated visual compare may pass a release only when route markers load, viewport screenshots are nonblank, layout drift stays below threshold, failure routing is recorded, and raw images are deleted after hash capture.",
+      runs: [
+        {
+          label: "Desktop release desk",
+          route: "#build-tracker",
+          viewport: "1440 x 900",
+          marker: "release-doctor-lane",
+          threshold: "0.9% layout drift",
+          fail: "Fail if release marker, command capsule, side rail, progress lane, or score ring shifts into overlap."
+        },
+        {
+          label: "Account custody room",
+          route: "#account-readiness",
+          viewport: "900 x 1000",
+          marker: "account-data-grid",
+          threshold: "1.2% layout drift",
+          fail: "Fail if export, support, deletion, or consent cards clip text, hide buttons, or imply real data movement."
+        },
+        {
+          label: "Backend receipt room",
+          route: "#backend-audit-receipts",
+          viewport: "1280 x 900",
+          marker: "backend-source-receipt-job",
+          threshold: "1.0% layout drift",
+          fail: "Fail if custody, source, owner audit, API, or closeout receipt cards collide."
+        },
+        {
+          label: "Phone calm path",
+          route: "#main",
+          viewport: "390 x 844",
+          marker: "simple-room-guide",
+          threshold: "0 horizontal overflow",
+          fail: "Fail if rail appears, header controls become untappable, primary text clips, or horizontal scrolling appears."
+        }
+      ],
+      failureThresholds: [
+        "Blank screenshot, missing DOM marker, uncaught console error, or stale release key is an automatic fail.",
+        "Any horizontal overflow on mobile is an automatic fail.",
+        "Any overlap between sticky header, side rail, command capsule, score ring, or primary content is an automatic fail.",
+        "Layout drift above the route threshold opens a release hold until a human reviewer signs off or a fix lands."
+      ],
+      retryRules: [
+        "Retry once after a clean cache refresh when a route fails for network, stale asset, or delayed render timing.",
+        "Do not retry private-data failures; freeze the proof artifact and route to privacy-owner review.",
+        "Record original run id, retry run id, reason, reviewer state, and superseded screenshot hash.",
+        "A retry can clear only render instability, not real layout overlap or missing release markers."
+      ],
+      receiptFields: [
+        "baseline_compare_automation_id",
+        "release_key",
+        "route",
+        "viewport",
+        "dom_marker",
+        "baseline_hash",
+        "current_hash",
+        "diff_score",
+        "threshold",
+        "result",
+        "failure_reason",
+        "retry_run_id",
+        "reviewer_state",
+        "delete_image_receipt_id",
+        "created_at"
+      ],
+      deletionProof: [
+        "Raw screenshots are deleted after current hash, diff score, route, viewport, and marker metadata are retained.",
+        "Retain no DOM text if a route can contain account, support, payment, PAN, folio, CAS, contact, credential, or private-note content.",
+        "Compare receipts are release QA proof only; they do not certify live data, account custody, payments, legal, privacy, or security readiness."
+      ]
+    },
     retentionHealthSummary: {
       label: "Retention health summary",
       verdict: "Five proof surfaces mapped",
@@ -10857,14 +10931,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support case audit is visible; keep the next batch focused on baseline compare automation, custody API readiness, account recovery rehearsal, export download rehearsal, and support queue rehearsal.",
+      rule: "Baseline compare automation is visible; keep the next batch focused on custody API readiness, account recovery rehearsal, export download rehearsal, support queue rehearsal, and release compare runner.",
       lanes: [
-        {
-          version: "v475",
-          label: "Baseline compare automation",
-          route: "#build-tracker",
-          detail: "Define automated compare runs, failure thresholds, retry rules, reviewer signoff, and screenshot deletion receipts."
-        },
         {
           version: "v476",
           label: "Custody API readiness",
@@ -10888,6 +10956,12 @@ function buildTrackerConfig() {
           label: "Support queue rehearsal",
           route: "#account-readiness",
           detail: "Rehearse support queue triage, escalation windows, private-data freezes, owner handoff, and closeout receipt replay."
+        },
+        {
+          version: "v480",
+          label: "Release compare runner",
+          route: "#build-tracker",
+          detail: "Turn baseline compare automation into a runner checklist with inputs, outputs, retry receipts, and final share gate."
         }
       ]
     },
@@ -10896,6 +10970,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v474",
+          key: "20260707-v474-01",
+          commit: "b83e91a",
+          receiptId: "NN-SHARE-RECEIPT-20260707V47401",
+          proof: "Support Case Audit added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v473",
           key: "20260707-v473-01",
@@ -10923,13 +11004,6 @@ function buildTrackerConfig() {
           commit: "6e86343",
           receiptId: "NN-SHARE-RECEIPT-20260706V47001",
           proof: "Visual QA Baseline Store added and verified by static release checks."
-        },
-        {
-          version: "v469",
-          key: "20260706-v469-01",
-          commit: "914a9fe",
-          receiptId: "NN-SHARE-RECEIPT-20260706V46901",
-          proof: "Deletion Support Closeout added and verified by static release checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10967,8 +11041,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v474",
-        detail: "Support Case Audit is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v475",
+        detail: "Baseline Compare Automation is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -10983,23 +11057,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v474 as complete until this release returns the active release stamp."
+        detail: "Do not share v475 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v474 source change adds Support Case Audit."
+        detail: "v475 source change adds Baseline Compare Automation."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v474 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v475 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v474 held for batch deploy",
+        value: "v475 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v476."
       }
     ],
@@ -11420,6 +11494,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Baseline compare automation">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.baselineCompareAutomation.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.baselineCompareAutomation.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.baselineCompareAutomation.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.baselineCompareAutomation.runs.map((run) => `
+          <article>
+            <span>${escapeHtml(run.route)} | ${escapeHtml(run.viewport)}</span>
+            <strong>${escapeHtml(run.label)}</strong>
+            <p>${escapeHtml(run.threshold)}. ${escapeHtml(run.fail)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -11567,6 +11655,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-viewport-proof-history>Copy viewport history</button>
         <button class="text-button" type="button" data-copy-visual-regression-handoff>Copy visual handoff</button>
         <button class="text-button" type="button" data-copy-visual-qa-baseline-store>Copy baseline store</button>
+        <button class="text-button" type="button" data-copy-baseline-compare-automation>Copy compare automation</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -11737,6 +11826,12 @@ function makeBuildTrackerBrief() {
     ...tracker.releaseDoctor.visualQaBaselineStore.baselines.map((baseline) => `- Visual baseline store ${baseline.label}: ${baseline.route} | ${baseline.viewport} | Store ${baseline.store} | Hold ${baseline.hold}`),
     ...tracker.releaseDoctor.visualQaBaselineStore.storageFields.map((field) => `- Visual baseline field: ${field}`),
     ...tracker.releaseDoctor.visualQaBaselineStore.failureRouting.map((rule) => `- Visual baseline failure route: ${rule}`),
+    `Baseline compare automation: ${tracker.releaseDoctor.baselineCompareAutomation.verdict}`,
+    `Baseline compare receipt: ${tracker.releaseDoctor.baselineCompareAutomation.receiptId}`,
+    `Baseline compare rule: ${tracker.releaseDoctor.baselineCompareAutomation.rule}`,
+    ...tracker.releaseDoctor.baselineCompareAutomation.runs.map((run) => `- Baseline compare ${run.label}: ${run.route} | ${run.viewport} | Threshold ${run.threshold} | Fail ${run.fail}`),
+    ...tracker.releaseDoctor.baselineCompareAutomation.failureThresholds.map((rule) => `- Baseline compare failure threshold: ${rule}`),
+    ...tracker.releaseDoctor.baselineCompareAutomation.retryRules.map((rule) => `- Baseline compare retry rule: ${rule}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -11863,6 +11958,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.visualQaBaselineStore.storageFields.map((field) => `- Receipt field: ${field}`),
     ...tracker.releaseDoctor.visualQaBaselineStore.failureRouting.map((rule) => `- Failure route: ${rule}`),
     ...tracker.releaseDoctor.visualQaBaselineStore.deletionProof.map((rule) => `- Deletion proof: ${rule}`),
+    "",
+    "## Baseline Compare Automation",
+    `- Receipt ID: ${tracker.releaseDoctor.baselineCompareAutomation.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.baselineCompareAutomation.verdict}`,
+    `- Rule: ${tracker.releaseDoctor.baselineCompareAutomation.rule}`,
+    ...tracker.releaseDoctor.baselineCompareAutomation.runs.map((run) => `- ${run.label}: ${run.route} | ${run.viewport} | Marker ${run.marker} | Threshold ${run.threshold} | Fail ${run.fail}`),
+    ...tracker.releaseDoctor.baselineCompareAutomation.failureThresholds.map((rule) => `- Failure threshold: ${rule}`),
+    ...tracker.releaseDoctor.baselineCompareAutomation.retryRules.map((rule) => `- Retry rule: ${rule}`),
+    ...tracker.releaseDoctor.baselineCompareAutomation.receiptFields.map((field) => `- Receipt field: ${field}`),
+    ...tracker.releaseDoctor.baselineCompareAutomation.deletionProof.map((rule) => `- Deletion proof: ${rule}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -12078,6 +12183,39 @@ function makeVisualQaBaselineStoreBrief() {
     ...store.deletionProof.map((rule) => `- ${rule}`),
     "",
     "Visual QA Baseline Store is a release QA custody contract only. It does not retain private screenshots, prove live data, create account custody, approve investing, execute transactions, or certify legal/security readiness."
+  ].join("\n");
+}
+
+function makeBaselineCompareAutomationBrief() {
+  const automation = buildTrackerConfig().releaseDoctor.baselineCompareAutomation;
+  return [
+    "# NiveshNadi Baseline Compare Automation",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${automation.receiptId}`,
+    `Verdict: ${automation.verdict}`,
+    `Rule: ${automation.rule}`,
+    "",
+    "## Automated Runs",
+    ...automation.runs.map((run) => [
+      `- ${run.label}: ${run.route} | ${run.viewport}`,
+      `  Marker: ${run.marker}`,
+      `  Threshold: ${run.threshold}`,
+      `  Fail if: ${run.fail}`
+    ].join("\n")),
+    "",
+    "## Failure Thresholds",
+    ...automation.failureThresholds.map((rule) => `- ${rule}`),
+    "",
+    "## Retry Rules",
+    ...automation.retryRules.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...automation.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## Deletion Proof",
+    ...automation.deletionProof.map((rule) => `- ${rule}`),
+    "",
+    "Baseline Compare Automation is a release QA automation contract only. It does not retain private screenshots, prove live data, create account custody, approve investing, execute transactions, certify privacy/security/legal readiness, or replace human review of failures."
   ].join("\n");
 }
 
@@ -65238,6 +65376,13 @@ function bindEvents() {
     if (!copyVisualQaBaselineStore) return;
     event.preventDefault();
     copyText(makeVisualQaBaselineStoreBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyBaselineCompareAutomation = event.target.closest("[data-copy-baseline-compare-automation]");
+    if (!copyBaselineCompareAutomation) return;
+    event.preventDefault();
+    copyText(makeBaselineCompareAutomationBrief());
   });
 
   document.addEventListener("click", (event) => {

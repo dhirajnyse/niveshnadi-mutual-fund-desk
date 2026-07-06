@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v474 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v475 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Baseline Compare Automation in the Build Tracker Release Doctor that defines automated visual compare runs, failure thresholds, retry rules, receipt fields, deletion proof, and a copyable automation contract.
 - Support Case Audit in Account Readiness that maps support-safe case views, escalation windows, case receipts, reply rules, receipt fields, and no-go rules before account support can widen.
 - Account Export Proof in Account Readiness that defines export sections, manifest rows, redaction rules, receipt fields, no-go rules, and a copyable export proof before saved account research can be trusted.
 - Consent Migration Closeout in Account Readiness that turns the consent migration preview into proof gates, closeout rows, rollback rules, receipt fields, no-go lines, and a copyable closeout receipt before account migration can widen.

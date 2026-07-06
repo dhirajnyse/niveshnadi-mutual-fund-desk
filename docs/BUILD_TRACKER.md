@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V475 Baseline Compare Automation
+
+V475 adds Baseline Compare Automation to the Build Tracker Release Doctor. It defines automated visual compare runs, failure thresholds, retry rules, receipt fields, deletion proof, and a copyable automation contract so visual QA can move from memory toward repeatable release proof.
+
 ## V474 Support Case Audit
 
 V474 adds Support Case Audit inside Account Readiness. It maps support-safe case views, escalation windows, object-family case receipts, reply rules, receipt fields, no-go rules, and a copyable support audit so account support can help without exposing private identifiers or payload bodies.

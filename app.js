@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v473-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v473 Account Export Proof";
+const DATA_VERSION = "20260707-v474-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v474 Support Case Audit";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v472 passed release checks on commit 7b8d3af. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v473 passed release checks on commit 4670331. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v472 local checks passed",
+      outcome: "Previous outcome: v473 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47201",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47301",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10857,14 +10857,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account export proof is visible; keep the next batch focused on support case audit, baseline compare automation, custody API readiness, account recovery rehearsal, and export download rehearsal.",
+      rule: "Support case audit is visible; keep the next batch focused on baseline compare automation, custody API readiness, account recovery rehearsal, export download rehearsal, and support queue rehearsal.",
       lanes: [
-        {
-          version: "v474",
-          label: "Support case audit",
-          route: "#account-readiness",
-          detail: "Map account support cases to redacted status views, owner receipts, escalation windows, and no-private-data case notes."
-        },
         {
           version: "v475",
           label: "Baseline compare automation",
@@ -10888,6 +10882,12 @@ function buildTrackerConfig() {
           label: "Export download rehearsal",
           route: "#account-readiness",
           detail: "Rehearse export file generation, expiry, retry, redaction scan, download receipt, and support-safe status wording."
+        },
+        {
+          version: "v479",
+          label: "Support queue rehearsal",
+          route: "#account-readiness",
+          detail: "Rehearse support queue triage, escalation windows, private-data freezes, owner handoff, and closeout receipt replay."
         }
       ]
     },
@@ -10896,6 +10896,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v473",
+          key: "20260707-v473-01",
+          commit: "4670331",
+          receiptId: "NN-SHARE-RECEIPT-20260707V47301",
+          proof: "Account Export Proof added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v472",
           key: "20260707-v472-01",
@@ -10923,13 +10930,6 @@ function buildTrackerConfig() {
           commit: "914a9fe",
           receiptId: "NN-SHARE-RECEIPT-20260706V46901",
           proof: "Deletion Support Closeout added and verified by static release checks."
-        },
-        {
-          version: "v468",
-          key: "20260706-v468-01",
-          commit: "497c3fc",
-          receiptId: "NN-SHARE-RECEIPT-20260706V46801",
-          proof: "Receipt Owner Audit added and verified by static release checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10967,8 +10967,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v473",
-        detail: "Account Export Proof is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v474",
+        detail: "Support Case Audit is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -10983,23 +10983,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v473 as complete until this release returns the active release stamp."
+        detail: "Do not share v474 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v473 source change adds Account Export Proof."
+        detail: "v474 source change adds Support Case Audit."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v473 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v474 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v473 held for batch deploy",
+        value: "v474 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v476."
       }
     ],
@@ -26007,6 +26007,96 @@ function accountReadinessLabConfig() {
       "Do not widen paid accounts until export retry, deletion, redaction, and retention rules can be replayed."
     ]
   };
+  const accountSupportCaseAudit = {
+    label: "Support case audit",
+    status: "Support-safe status only",
+    receiptId: ["NN", "ACCOUNT", "SUPPORT", "CASE", "AUDIT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    score: 73,
+    rule: "Account support can help only when every case view exposes status, receipt ids, owner, escalation window, and next action without revealing private account data or research payload bodies.",
+    caseViews: [
+      {
+        label: "Export help",
+        owner: "Support desk",
+        status: "Preview or download issue",
+        visible: "case id, account hash, export manifest id, section count, expiry state, retry receipt, next owner",
+        hidden: "export payload body, private notes, PAN, folio, CAS, bank, card, UPI, contact, credentials"
+      },
+      {
+        label: "Deletion help",
+        owner: "Privacy owner",
+        status: "Delete request or closeout issue",
+        visible: "deletion request id, object-family counts, retained-proof boundary, support notice id, escalation id",
+        hidden: "deleted content, reconstructed history, source payloads, payment token, private contact data"
+      },
+      {
+        label: "Consent migration help",
+        owner: "Account Platform",
+        status: "Consent, rollback, or held object issue",
+        visible: "consent receipt id, closeout state, redaction scan id, rollback receipt id, held family label",
+        hidden: "free-form private notes, raw uploads, private identifiers, distributor-client records"
+      },
+      {
+        label: "Entitlement help",
+        owner: "Billing Boundary",
+        status: "Plan status or limit issue",
+        visible: "plan state, gateway receipt reference, entitlement projection id, renewal state, support case state",
+        hidden: "card, UPI, bank, payment token, gateway secret, refund-sensitive private note"
+      }
+    ],
+    escalationWindows: [
+      {
+        label: "Immediate hold",
+        window: "0-2 hours",
+        trigger: "Private data appears in support view, log, export, or copied case note.",
+        action: "Freeze case, redact view, notify privacy owner, and open incident receipt."
+      },
+      {
+        label: "Owner review",
+        window: "1 business day",
+        trigger: "Export, deletion, consent, or entitlement status is stale, mismatched, or blocked.",
+        action: "Route to named owner with receipt id and no payload body."
+      },
+      {
+        label: "Founder review",
+        window: "Before widening beta",
+        trigger: "More than three open support cases share the same account-readiness blocker.",
+        action: "Pause account widening until the blocker has a product fix and replay proof."
+      }
+    ],
+    caseReceipts: accountExportProof.manifestRows.map((row, index) => ({
+      label: row.family,
+      caseAuditId: ["NN", "SUPPORT", "CASE", "AUDIT", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      source: row.source,
+      owner: index % 2 === 0 ? "Support desk" : "Privacy owner",
+      visible: "status, manifest id, count proof, redaction scan state, escalation window, next owner",
+      hidden: "payload body, private notes, identifiers, payment secrets, raw uploads"
+    })),
+    replyRules: [
+      "Reply with status, receipt id, next owner, and expected next update only.",
+      "Do not paste account payload bodies, private notes, payment details, identifiers, raw source payloads, or deleted content into the case.",
+      "If a user asks for recommendation, return to research-only boundary and route them to their own evidence notes.",
+      "If a case exposes private data, freeze the support view and open privacy-owner review before replying."
+    ],
+    receiptFields: [
+      "support_case_audit_id",
+      "case_id_hash",
+      "account_id_hash",
+      "case_family",
+      "visible_fields_policy",
+      "hidden_fields_policy",
+      "owner",
+      "escalation_window",
+      "redaction_scan_id",
+      "next_update_at",
+      "closed_at"
+    ],
+    noGoRules: [
+      "Do not widen support if case views expose private identifiers, payload bodies, payment secrets, or deleted content.",
+      "Do not promise account recovery, refund, recommendation, tax outcome, or transaction execution from a support case.",
+      "Do not close a case until status, owner, next action, receipt id, and redaction scan agree.",
+      "Do not use support case notes as consent to migrate, export, delete, or restore account data."
+    ]
+  };
   const accountDeletionRehearsal = {
     label: "Account deletion rehearsal",
     status: "Rehearse before storage",
@@ -26137,6 +26227,7 @@ function accountReadinessLabConfig() {
     accountConsentMigrationPreview,
     accountConsentMigrationCloseout,
     accountExportProof,
+    accountSupportCaseAudit,
     accountDeletionRehearsal,
     deletionSupportCloseout,
     blocked,
@@ -26274,6 +26365,31 @@ function renderAccountReadinessLab() {
           <p><strong>Manifest:</strong> ${escapeHtml(row.manifestId)}</p>
           <p><strong>Count:</strong> ${escapeHtml(row.countProof)}</p>
           <p><strong>Scan:</strong> ${escapeHtml(row.redactionProof)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-data-grid" aria-label="Support case audit">
+      <article class="draft">
+        <span>${escapeHtml(lab.accountSupportCaseAudit.label)}</span>
+        <strong>${escapeHtml(lab.accountSupportCaseAudit.status)} | ${lab.accountSupportCaseAudit.score}/100</strong>
+        <p>${escapeHtml(lab.accountSupportCaseAudit.rule)}</p>
+        <button class="text-button" type="button" data-copy-support-case-audit>Copy support audit</button>
+      </article>
+      ${lab.accountSupportCaseAudit.caseViews.map((view) => `
+        <article>
+          <span>${escapeHtml(view.owner)}</span>
+          <strong>${escapeHtml(view.label)}</strong>
+          <p><strong>Status:</strong> ${escapeHtml(view.status)}</p>
+          <p><strong>Visible:</strong> ${escapeHtml(view.visible)}</p>
+          <p><strong>Hidden:</strong> ${escapeHtml(view.hidden)}</p>
+        </article>
+      `).join("")}
+      ${lab.accountSupportCaseAudit.escalationWindows.map((window) => `
+        <article>
+          <span>${escapeHtml(window.window)}</span>
+          <strong>${escapeHtml(window.label)}</strong>
+          <p><strong>Trigger:</strong> ${escapeHtml(window.trigger)}</p>
+          <p><strong>Action:</strong> ${escapeHtml(window.action)}</p>
         </article>
       `).join("")}
     </div>
@@ -26416,6 +26532,18 @@ function makeAccountReadinessBrief() {
     ...lab.accountExportProof.redactionRules.map((rule) => `- Export redaction rule: ${rule}`),
     ...lab.accountExportProof.receiptFields.map((field) => `- Export proof receipt field: ${field}`),
     ...lab.accountExportProof.noGoRules.map((rule) => `- Export no-go: ${rule}`),
+    "",
+    "## Support Case Audit",
+    `- Receipt ID: ${lab.accountSupportCaseAudit.receiptId}`,
+    `- Status: ${lab.accountSupportCaseAudit.status}`,
+    `- Score: ${lab.accountSupportCaseAudit.score}/100`,
+    `- Rule: ${lab.accountSupportCaseAudit.rule}`,
+    ...lab.accountSupportCaseAudit.caseViews.map((view) => `- Support view ${view.label}: ${view.status} | Visible ${view.visible} | Hidden ${view.hidden}`),
+    ...lab.accountSupportCaseAudit.escalationWindows.map((window) => `- Escalation ${window.label}: ${window.window} | Trigger ${window.trigger} | Action ${window.action}`),
+    ...lab.accountSupportCaseAudit.caseReceipts.map((receipt) => `- Case receipt ${receipt.label}: ${receipt.caseAuditId} | Owner ${receipt.owner} | Visible ${receipt.visible} | Hidden ${receipt.hidden}`),
+    ...lab.accountSupportCaseAudit.replyRules.map((rule) => `- Support reply rule: ${rule}`),
+    ...lab.accountSupportCaseAudit.receiptFields.map((field) => `- Support case audit receipt field: ${field}`),
+    ...lab.accountSupportCaseAudit.noGoRules.map((rule) => `- Support case no-go: ${rule}`),
     "",
     "## Account Deletion Rehearsal",
     `- Receipt ID: ${lab.accountDeletionRehearsal.receiptId}`,
@@ -26582,6 +26710,53 @@ function makeAccountExportProofBrief() {
     ...proof.noGoRules.map((rule) => `- ${rule}`),
     "",
     "Account Export Proof is an account-readiness contract only. It does not create real account storage, download real files, approve investing, execute transactions, certify privacy compliance, or replace legal review."
+  ].join("\n");
+}
+
+function makeSupportCaseAuditBrief() {
+  const audit = accountReadinessLabConfig().accountSupportCaseAudit;
+  return [
+    "# NiveshNadi Support Case Audit",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${audit.receiptId}`,
+    `Status: ${audit.status}`,
+    `Score: ${audit.score}/100`,
+    `Rule: ${audit.rule}`,
+    "",
+    "## Case Views",
+    ...audit.caseViews.map((view) => [
+      `- ${view.label} (${view.owner})`,
+      `  Status: ${view.status}`,
+      `  Visible: ${view.visible}`,
+      `  Hidden: ${view.hidden}`
+    ].join("\n")),
+    "",
+    "## Escalation Windows",
+    ...audit.escalationWindows.map((window) => [
+      `- ${window.label} (${window.window})`,
+      `  Trigger: ${window.trigger}`,
+      `  Action: ${window.action}`
+    ].join("\n")),
+    "",
+    "## Case Receipts",
+    ...audit.caseReceipts.map((receipt) => [
+      `- ${receipt.label} (${receipt.owner})`,
+      `  Case audit: ${receipt.caseAuditId}`,
+      `  Source: ${receipt.source}`,
+      `  Visible: ${receipt.visible}`,
+      `  Hidden: ${receipt.hidden}`
+    ].join("\n")),
+    "",
+    "## Reply Rules",
+    ...audit.replyRules.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...audit.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## No-Go Rules",
+    ...audit.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "Support Case Audit is a support-readiness contract only. It does not create real support tooling, recover accounts, approve refunds, provide advice, execute transactions, certify privacy compliance, or replace legal review."
   ].join("\n");
 }
 
@@ -65105,6 +65280,13 @@ function bindEvents() {
     if (!copyAccountExportProof) return;
     event.preventDefault();
     copyText(makeAccountExportProofBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copySupportCaseAudit = event.target.closest("[data-copy-support-case-audit]");
+    if (!copySupportCaseAudit) return;
+    event.preventDefault();
+    copyText(makeSupportCaseAuditBrief());
   });
 
   document.addEventListener("click", (event) => {

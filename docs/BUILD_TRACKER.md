@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V474 Support Case Audit
+
+V474 adds Support Case Audit inside Account Readiness. It maps support-safe case views, escalation windows, object-family case receipts, reply rules, receipt fields, no-go rules, and a copyable support audit so account support can help without exposing private identifiers or payload bodies.
+
 ## V473 Account Export Proof
 
 V473 adds Account Export Proof inside Account Readiness. It defines export sections, manifest rows, redaction rules, receipt fields, no-go rules, and a copyable export proof so saved account research has a visible preview, export, redaction, support-safe, and retention boundary before trust widens.

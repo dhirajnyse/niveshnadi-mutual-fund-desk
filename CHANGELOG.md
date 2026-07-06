@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v474 Support Case Audit
+
+- Version: `0.474.0`
+- Data version: `20260707-v474-01`
+- Changes made: Added Support Case Audit inside Account Readiness with support-safe case views, escalation windows, case receipts, reply rules, receipt fields, no-go rules, dedicated copy action, Account Readiness brief coverage, and release markers rolled forward to v474.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v474 marker scan.
+- Known risks: Support audit is a readiness contract only; production still needs real support tooling, authenticated case queues, role-based permissions, private-data redaction scans, incident freezes, escalation workflows, support analytics, privacy/legal review, and deployment verification.
+
 ## NiveshNadi Phase 1 v473 Account Export Proof
 
 - Version: `0.473.0`

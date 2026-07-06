@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V465 Visual Regression Handoff
+
+V465 adds Visual Regression Handoff to the Release Doctor. It defines route-and-viewport baselines, hash-first comparison rules, release-hold failure routing, screenshot deletion boundaries, and a copyable visual automation contract before screenshot QA becomes durable backend proof.
+
 ## V464 Account Deletion Rehearsal
 
 V464 adds Account Deletion Rehearsal to Account Readiness. It rehearses export preview, sync freeze, delete job, retained proof, support notice, blocked data, and closeout tests so account custody cannot widen until deletion behavior is explainable.

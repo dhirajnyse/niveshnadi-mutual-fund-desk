@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v464-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v464 Account Deletion Rehearsal";
+const DATA_VERSION = "20260706-v465-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v465 Visual Regression Handoff";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v463 passed local release checks on commit 19433c1. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v464 passed local release checks on commit ebfe020. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v463 local checks passed",
+      outcome: "Previous outcome: v464 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46301",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46401",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10642,6 +10642,55 @@ function buildTrackerConfig() {
         }
       ]
     },
+    visualRegressionHandoff: {
+      label: "Visual regression handoff",
+      verdict: "Automation contract drafted",
+      receiptId: ["NN", "VISUAL", "REGRESSION", "HANDOFF", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      rule: "Automated visual QA should compare stable route-and-viewport baselines, store hashes and metadata, route failures to a release hold, and delete private screenshots after proof extraction.",
+      baselineRoutes: [
+        {
+          label: "Build tracker",
+          route: "#build-tracker",
+          viewport: "1440 x 900",
+          proof: "Release Doctor, action router, progress link, and side rail stay readable without overlap."
+        },
+        {
+          label: "Account readiness",
+          route: "#account-readiness",
+          viewport: "900 x 1000",
+          proof: "Custody map and deletion rehearsal cards wrap without horizontal drift."
+        },
+        {
+          label: "Source receipts",
+          route: "#source-receipts",
+          viewport: "390 x 844",
+          proof: "Source custody and deletion receipt cards stack cleanly on phone width."
+        }
+      ],
+      comparisonRules: [
+        {
+          label: "Hash first",
+          value: "Metadata plus screenshot hash",
+          detail: "Store route, viewport, release key, DOM marker, screenshot hash, and pass/fail result."
+        },
+        {
+          label: "Fail safely",
+          value: "Hold release",
+          detail: "Hold if horizontal overflow, header/rail overlap, score-ring collision, clipped buttons, or missing release marker appears."
+        },
+        {
+          label: "Delete image",
+          value: "No private screenshots",
+          detail: "Discard screenshots after hash and metadata are retained, especially on account or support routes."
+        },
+        {
+          label: "Review owner",
+          value: "Founder UI release desk",
+          detail: "Manual review still signs off any failure before a release retry or code fix is shared."
+        }
+      ],
+      blockedData: "No screenshots, DOM dumps, logs, or diff artifacts that expose PAN, folio, CAS, bank, contact, credential, payment, support, account, or private-note content."
+    },
     retentionHealthSummary: {
       label: "Retention health summary",
       verdict: "Five proof surfaces mapped",
@@ -10744,24 +10793,12 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source custody deletion receipts are visible; keep the next batch focused on account deletion, visual regression, and backend custody surfaces.",
+      rule: "Visual regression handoff is visible; keep the next batch focused on backend custody, consent migration, receipt ownership, deletion support, and visual baseline storage.",
       lanes: [
-        {
-          version: "v464",
-          label: "Account deletion rehearsal",
-          route: "#account-readiness",
-          detail: "Rehearse account deletion, export, retained-proof, and support notice before production storage exists."
-        },
-        {
-          version: "v465",
-          label: "Visual regression handoff",
-          route: "#account-readiness",
-          detail: "Prepare viewport proof history for automated screenshot comparison and release gating."
-        },
         {
           version: "v466",
           label: "Backend custody bridge",
-          route: "#backend-audit",
+          route: "#backend-audit-receipts",
           detail: "Bridge memo, review, source, deletion, and viewport receipts into backend-ready custody tickets."
         },
         {
@@ -10781,6 +10818,12 @@ function buildTrackerConfig() {
           label: "Deletion support closeout",
           route: "#account-readiness",
           detail: "Turn deletion rehearsal into support-safe closeout wording, status views, and escalation receipts."
+        },
+        {
+          version: "v470",
+          label: "Visual QA baseline store",
+          route: "#build-tracker",
+          detail: "Turn the visual regression handoff into baseline metadata, hash retention, failure routing, and screenshot deletion proof."
         }
       ]
     },
@@ -10789,6 +10832,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v464",
+          key: "20260706-v464-01",
+          commit: "ebfe020",
+          receiptId: "NN-SHARE-RECEIPT-20260706V46401",
+          proof: "Account Deletion Rehearsal added and verified by static release checks."
+        },
         {
           version: "v463",
           key: "20260706-v463-01",
@@ -10816,13 +10866,6 @@ function buildTrackerConfig() {
           commit: "bb06c28",
           receiptId: "NN-SHARE-RECEIPT-20260706V46001",
           proof: "Viewport Proof History added and verified by static release checks."
-        },
-        {
-          version: "v459",
-          key: "20260706-v459-01",
-          commit: "11a6c96",
-          receiptId: "NN-SHARE-RECEIPT-20260706V45901",
-          proof: "Review Memory Persistence added and verified by static release checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10860,13 +10903,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "19433c1",
-        detail: "v463 source change shipped with matching release labels and stamp."
+        value: "ebfe020",
+        detail: "v464 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v463."
+        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v464."
       },
       {
         label: "03 Queued",
@@ -10876,23 +10919,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v464 until this release returns the active release stamp."
+        detail: "Do not share v465 until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "19433c1",
-        detail: "v463 source change that added Saved Research Custody Map."
+        value: "ebfe020",
+        detail: "v464 source change that added Account Deletion Rehearsal."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v463 passed syntax, static, security, diff hygiene, and marker scans."
+        detail: "v464 passed syntax, static, security, diff hygiene, and marker scans."
       },
       {
         label: "Share outcome",
-        value: "v463 held for batch deploy",
+        value: "v464 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v466."
       }
     ],
@@ -11285,6 +11328,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Visual regression handoff">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.visualRegressionHandoff.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.visualRegressionHandoff.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.visualRegressionHandoff.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.visualRegressionHandoff.baselineRoutes.map((route) => `
+          <article>
+            <span>${escapeHtml(route.route)} | ${escapeHtml(route.viewport)}</span>
+            <strong>${escapeHtml(route.label)}</strong>
+            <p>${escapeHtml(route.proof)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -11430,6 +11487,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-mobile-calm-audit>Copy mobile audit</button>
         <button class="text-button" type="button" data-copy-mobile-audit-retention>Copy mobile retention</button>
         <button class="text-button" type="button" data-copy-viewport-proof-history>Copy viewport history</button>
+        <button class="text-button" type="button" data-copy-visual-regression-handoff>Copy visual handoff</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -11589,6 +11647,11 @@ function makeBuildTrackerBrief() {
     `Viewport proof rule: ${tracker.releaseDoctor.viewportProofHistory.rule}`,
     ...tracker.releaseDoctor.viewportProofHistory.rows.map((row) => `- Viewport ${row.label}: ${row.viewport} | ${row.status} | ${row.proof} Next: ${row.next}`),
     ...tracker.releaseDoctor.viewportProofHistory.retentionPolicy.map((policy) => `- Viewport retention ${policy.label}: ${policy.value} | ${policy.detail}`),
+    `Visual regression handoff: ${tracker.releaseDoctor.visualRegressionHandoff.verdict}`,
+    `Visual regression receipt: ${tracker.releaseDoctor.visualRegressionHandoff.receiptId}`,
+    `Visual regression rule: ${tracker.releaseDoctor.visualRegressionHandoff.rule}`,
+    ...tracker.releaseDoctor.visualRegressionHandoff.baselineRoutes.map((route) => `- Visual baseline ${route.label}: ${route.route} | ${route.viewport} | ${route.proof}`),
+    ...tracker.releaseDoctor.visualRegressionHandoff.comparisonRules.map((rule) => `- Visual rule ${rule.label}: ${rule.value} | ${rule.detail}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -11698,6 +11761,14 @@ function makeReleaseDoctorBrief() {
     `- Rule: ${tracker.releaseDoctor.viewportProofHistory.rule}`,
     ...tracker.releaseDoctor.viewportProofHistory.rows.map((row) => `- ${row.label}: ${row.viewport} | ${row.status} | ${row.proof} Next: ${row.next}`),
     ...tracker.releaseDoctor.viewportProofHistory.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`),
+    "",
+    "## Visual Regression Handoff",
+    `- Receipt ID: ${tracker.releaseDoctor.visualRegressionHandoff.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.visualRegressionHandoff.verdict}`,
+    `- Rule: ${tracker.releaseDoctor.visualRegressionHandoff.rule}`,
+    ...tracker.releaseDoctor.visualRegressionHandoff.baselineRoutes.map((route) => `- ${route.label}: ${route.route} | ${route.viewport} | ${route.proof}`),
+    ...tracker.releaseDoctor.visualRegressionHandoff.comparisonRules.map((rule) => `- ${rule.label}: ${rule.value} | ${rule.detail}`),
+    `- Blocked data: ${tracker.releaseDoctor.visualRegressionHandoff.blockedData}`,
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -11862,6 +11933,27 @@ function makeViewportProofHistoryBrief() {
     ...history.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`),
     "",
     "Viewport Proof History is release UI evidence only. It does not prove live data, account custody, payments, legal readiness, security posture, or investment suitability."
+  ].join("\n");
+}
+
+function makeVisualRegressionHandoffBrief() {
+  const handoff = buildTrackerConfig().releaseDoctor.visualRegressionHandoff;
+  return [
+    "# NiveshNadi Visual Regression Handoff",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${handoff.receiptId}`,
+    `Verdict: ${handoff.verdict}`,
+    `Rule: ${handoff.rule}`,
+    "",
+    "## Baseline Routes",
+    ...handoff.baselineRoutes.map((route) => `- ${route.label}: ${route.route} | ${route.viewport} | ${route.proof}`),
+    "",
+    "## Comparison Rules",
+    ...handoff.comparisonRules.map((rule) => `- ${rule.label}: ${rule.value} | ${rule.detail}`),
+    "",
+    `Blocked data: ${handoff.blockedData}`,
+    "",
+    "Visual Regression Handoff is a release QA contract only. It does not store private screenshots, prove live data, create account custody, approve investing, execute transactions, or certify legal readiness."
   ].join("\n");
 }
 
@@ -63622,6 +63714,13 @@ function bindEvents() {
     if (!copyViewportProofHistory) return;
     event.preventDefault();
     copyText(makeViewportProofHistoryBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyVisualRegressionHandoff = event.target.closest("[data-copy-visual-regression-handoff]");
+    if (!copyVisualRegressionHandoff) return;
+    event.preventDefault();
+    copyText(makeVisualRegressionHandoffBrief());
   });
 
   document.addEventListener("click", (event) => {

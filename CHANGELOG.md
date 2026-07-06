@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v465 Visual Regression Handoff
+
+- Version: `0.465.0`
+- Data version: `20260706-v465-01`
+- Changes made: Added Visual Regression Handoff to the Release Doctor with route-and-viewport baselines, comparison rules, release-hold failure routing, screenshot deletion boundaries, a copyable visual handoff, Build Tracker brief coverage, and Release Doctor memory rolled forward to v464.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v465 marker scan
+- Known risks: Handoff is a QA contract only; production still needs screenshot automation, hash storage, CI baseline comparison, failure triage, screenshot deletion receipts, privacy review, and reviewer sign-off.
+
 ## NiveshNadi Phase 1 v464 Account Deletion Rehearsal
 
 - Version: `0.464.0`

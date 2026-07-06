@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v471-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v471 Custody Ticket Closeout";
+const DATA_VERSION = "20260707-v472-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v472 Consent Migration Closeout";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v470 passed release checks on commit 6e86343. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v471 passed release checks on commit ba7f6d2. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v470 local checks passed",
+      outcome: "Previous outcome: v471 local and visual checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V47001",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V47101",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10857,14 +10857,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Custody ticket closeout is visible; keep the next batch focused on consent migration closeout, account export proof, support case audit, baseline compare automation, and custody API readiness.",
+      rule: "Consent migration closeout is visible; keep the next batch focused on account export proof, support case audit, baseline compare automation, custody API readiness, and account recovery rehearsal.",
       lanes: [
-        {
-          version: "v472",
-          label: "Consent migration closeout",
-          route: "#account-readiness",
-          detail: "Turn the consent preview into a closeout checklist with export proof, user confirmation, rollback, and support receipt boundaries."
-        },
         {
           version: "v473",
           label: "Account export proof",
@@ -10888,6 +10882,12 @@ function buildTrackerConfig() {
           label: "Custody API readiness",
           route: "#backend-audit-receipts",
           detail: "Convert custody closeout contracts into endpoint, idempotency, audit-log, permission, and support-safe API readiness checks."
+        },
+        {
+          version: "v477",
+          label: "Account recovery rehearsal",
+          route: "#account-readiness",
+          detail: "Rehearse account restore, export replay, support evidence, user confirmation, and rollback proof before account storage widens."
         }
       ]
     },
@@ -10896,6 +10896,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v471",
+          key: "20260706-v471-01",
+          commit: "ba7f6d2",
+          receiptId: "NN-SHARE-RECEIPT-20260706V47101",
+          proof: "Custody Ticket Closeout and section heading fit guard added, pushed, and live-stamp verified."
+        },
         {
           version: "v470",
           key: "20260706-v470-01",
@@ -10923,13 +10930,6 @@ function buildTrackerConfig() {
           commit: "0250a4a",
           receiptId: "NN-SHARE-RECEIPT-20260706V46701",
           proof: "Account Consent Migration Preview added and verified by static release checks."
-        },
-        {
-          version: "v466",
-          key: "20260706-v466-01",
-          commit: "3487077",
-          receiptId: "NN-SHARE-RECEIPT-20260706V46601",
-          proof: "Backend Custody Bridge added, deployed, and live-stamp verified."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10967,8 +10967,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v471",
-        detail: "Custody Ticket Closeout is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v472",
+        detail: "Consent Migration Closeout is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -10978,29 +10978,29 @@ function buildTrackerConfig() {
       {
         label: "03 Queued",
         value: "Batch push later",
-        detail: "This five-version batch will be pushed and live-verified after v471."
+        detail: "This five-version batch will be pushed and live-verified after v476."
       },
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v471 as complete until this release returns the active release stamp."
+        detail: "Do not share v472 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v471 source change adds Custody Ticket Closeout."
+        detail: "v472 source change adds Consent Migration Closeout."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v471 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v472 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v471 held for batch deploy",
-        detail: "The final batch release will be pushed and live-stamp verified after v471."
+        value: "v472 held for batch deploy",
+        detail: "The final batch release will be pushed and live-stamp verified after v476."
       }
     ],
     actions: [
@@ -25867,6 +25867,71 @@ function accountReadinessLabConfig() {
       "Do not widen paid accounts until delete, rollback, support redaction, and owner audit receipts can be replayed."
     ]
   };
+  const accountConsentMigrationCloseout = {
+    label: "Consent migration closeout",
+    status: "Close only after proof",
+    receiptId: ["NN", "CONSENT", "MIGRATION", "CLOSEOUT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    score: 76,
+    rule: "A consent migration can close only when scope, export preview, vault dry-run, rollback wording, support-safe status, owner signoff, and blocked-data scan agree.",
+    proofGates: [
+      {
+        label: "Fresh consent receipt",
+        owner: "Privacy owner",
+        proof: "consent_receipt_id",
+        detail: "User confirmation names object families, purpose, retention period, export format, delete route, and support owner."
+      },
+      {
+        label: "Export preview match",
+        owner: "Account Platform",
+        proof: "export_preview_match_id",
+        detail: "Export preview object counts and excluded-data list match the migration closeout rows before sync starts."
+      },
+      {
+        label: "Vault dry-run replay",
+        owner: "Backend worker",
+        proof: "account_vault_dry_run_id",
+        detail: "Dry-run writes ids and hashes only, with request id, idempotency key, redaction result, and rollback receipt."
+      },
+      {
+        label: "Support-safe closeout",
+        owner: "Support desk",
+        proof: "support_status_policy_id",
+        detail: "Support can explain migrated, held, failed, or rolled-back status without seeing private payload bodies."
+      }
+    ],
+    closeoutRows: accountConsentMigrationPreview.migrationRows.map((row, index) => ({
+      ...row,
+      closeoutReceiptId: ["NN", "CONSENT", "CLOSEOUT", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      ownerSignoff: ["NN", "CONSENT", "OWNER", "SIGNOFF", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      redactionScan: ["NN", "CONSENT", "REDACTION", "SCAN", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      releaseCheck: "Close only after export count, consent scope, owner signoff, redaction scan, and rollback receipt match."
+    })),
+    rollbackRules: [
+      "Rollback must be available before any durable account object is created.",
+      "Rollback wording must explain what was not migrated, what was removed, and what metadata remains as proof.",
+      "A failed migration cannot be retried silently; it needs a fresh closeout attempt and support-safe status.",
+      "Expired, partial, or changed consent cancels the closeout until a new preview and export match are shown."
+    ],
+    receiptFields: [
+      "consent_migration_closeout_id",
+      "consent_receipt_id",
+      "export_preview_match_id",
+      "account_vault_dry_run_id",
+      "object_family",
+      "owner_signoff_id",
+      "redaction_scan_id",
+      "rollback_receipt_id",
+      "support_status_policy_id",
+      "closeout_state",
+      "created_at"
+    ],
+    noGoRules: [
+      "Do not close if consent scope and export preview counts differ.",
+      "Do not close if owner signoff, rollback receipt, redaction scan, or support-safe status is missing.",
+      "Do not migrate private notes, raw uploads, PAN, folio, CAS, bank, card, UPI, contact, credentials, ARN/EUIN, or distributor-client records.",
+      "Do not convert a consent closeout into advice, transaction approval, suitability approval, refund promise, or legal certification."
+    ]
+  };
   const accountDeletionRehearsal = {
     label: "Account deletion rehearsal",
     status: "Rehearse before storage",
@@ -25995,6 +26060,7 @@ function accountReadinessLabConfig() {
     accountRules,
     accountScore,
     accountConsentMigrationPreview,
+    accountConsentMigrationCloseout,
     accountDeletionRehearsal,
     deletionSupportCloseout,
     blocked,
@@ -26080,6 +26146,32 @@ function renderAccountReadinessLab() {
           <strong>${escapeHtml(row.label)}</strong>
           <p><strong>Keep:</strong> ${escapeHtml(row.keep)}</p>
           <p><strong>Hold:</strong> ${escapeHtml(row.hold)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-data-grid" aria-label="Consent migration closeout">
+      <article class="draft">
+        <span>${escapeHtml(lab.accountConsentMigrationCloseout.label)}</span>
+        <strong>${escapeHtml(lab.accountConsentMigrationCloseout.status)} | ${lab.accountConsentMigrationCloseout.score}/100</strong>
+        <p>${escapeHtml(lab.accountConsentMigrationCloseout.rule)}</p>
+        <button class="text-button" type="button" data-copy-account-consent-migration-closeout>Copy consent closeout</button>
+      </article>
+      ${lab.accountConsentMigrationCloseout.proofGates.map((gate) => `
+        <article>
+          <span>${escapeHtml(gate.owner)}</span>
+          <strong>${escapeHtml(gate.label)}</strong>
+          <p>${escapeHtml(gate.detail)}</p>
+          <p><strong>Proof:</strong> ${escapeHtml(gate.proof)}</p>
+        </article>
+      `).join("")}
+      ${lab.accountConsentMigrationCloseout.closeoutRows.map((row) => `
+        <article>
+          <span>${escapeHtml(row.source)}</span>
+          <strong>${escapeHtml(row.label)}</strong>
+          <p><strong>Closeout:</strong> ${escapeHtml(row.closeoutReceiptId)}</p>
+          <p><strong>Owner:</strong> ${escapeHtml(row.ownerSignoff)}</p>
+          <p><strong>Scan:</strong> ${escapeHtml(row.redactionScan)}</p>
+          <p><strong>Release:</strong> ${escapeHtml(row.releaseCheck)}</p>
         </article>
       `).join("")}
     </div>
@@ -26201,6 +26293,17 @@ function makeAccountReadinessBrief() {
     ...lab.accountConsentMigrationPreview.noGoRules.map((rule) => `- Consent migration no-go: ${rule}`),
     `- Blocked data: ${lab.accountConsentMigrationPreview.blockedData.join(", ")}`,
     "",
+    "## Consent Migration Closeout",
+    `- Receipt ID: ${lab.accountConsentMigrationCloseout.receiptId}`,
+    `- Status: ${lab.accountConsentMigrationCloseout.status}`,
+    `- Score: ${lab.accountConsentMigrationCloseout.score}/100`,
+    `- Rule: ${lab.accountConsentMigrationCloseout.rule}`,
+    ...lab.accountConsentMigrationCloseout.proofGates.map((gate) => `- Closeout gate ${gate.label}: ${gate.detail} | Owner ${gate.owner} | Proof ${gate.proof}`),
+    ...lab.accountConsentMigrationCloseout.closeoutRows.map((row) => `- Closeout row ${row.label}: ${row.source} | Closeout ${row.closeoutReceiptId} | Owner ${row.ownerSignoff} | Scan ${row.redactionScan} | Release ${row.releaseCheck}`),
+    ...lab.accountConsentMigrationCloseout.rollbackRules.map((rule) => `- Rollback rule: ${rule}`),
+    ...lab.accountConsentMigrationCloseout.receiptFields.map((field) => `- Consent closeout receipt field: ${field}`),
+    ...lab.accountConsentMigrationCloseout.noGoRules.map((rule) => `- Consent closeout no-go: ${rule}`),
+    "",
     "## Account Deletion Rehearsal",
     `- Receipt ID: ${lab.accountDeletionRehearsal.receiptId}`,
     `- Status: ${lab.accountDeletionRehearsal.status}`,
@@ -26286,6 +26389,46 @@ function makeAccountConsentMigrationPreviewBrief() {
     `Blocked data: ${preview.blockedData.join(", ")}`,
     "",
     "Account Consent Migration Preview is a consent and custody design only. It does not create real account storage, migrate real user data, approve investing, execute transactions, certify privacy compliance, or replace legal review."
+  ].join("\n");
+}
+
+function makeAccountConsentMigrationCloseoutBrief() {
+  const closeout = accountReadinessLabConfig().accountConsentMigrationCloseout;
+  return [
+    "# NiveshNadi Consent Migration Closeout",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${closeout.receiptId}`,
+    `Status: ${closeout.status}`,
+    `Score: ${closeout.score}/100`,
+    `Rule: ${closeout.rule}`,
+    "",
+    "## Proof Gates",
+    ...closeout.proofGates.map((gate) => [
+      `- ${gate.label} (${gate.owner})`,
+      `  Detail: ${gate.detail}`,
+      `  Proof: ${gate.proof}`
+    ].join("\n")),
+    "",
+    "## Closeout Rows",
+    ...closeout.closeoutRows.map((row) => [
+      `- ${row.label} (${row.source})`,
+      `  Closeout: ${row.closeoutReceiptId}`,
+      `  Owner signoff: ${row.ownerSignoff}`,
+      `  Redaction scan: ${row.redactionScan}`,
+      `  Release check: ${row.releaseCheck}`,
+      `  Hold if: ${row.hold}`
+    ].join("\n")),
+    "",
+    "## Rollback Rules",
+    ...closeout.rollbackRules.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...closeout.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## No-Go Rules",
+    ...closeout.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "Consent Migration Closeout is a custody and consent contract only. It does not create real account storage, migrate real data, approve investing, execute transactions, certify privacy compliance, or replace legal review."
   ].join("\n");
 }
 
@@ -64795,6 +64938,13 @@ function bindEvents() {
     if (!copyAccountConsentMigrationPreview) return;
     event.preventDefault();
     copyText(makeAccountConsentMigrationPreviewBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyAccountConsentMigrationCloseout = event.target.closest("[data-copy-account-consent-migration-closeout]");
+    if (!copyAccountConsentMigrationCloseout) return;
+    event.preventDefault();
+    copyText(makeAccountConsentMigrationCloseoutBrief());
   });
 
   document.addEventListener("click", (event) => {

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V472 Consent Migration Closeout
+
+V472 adds Consent Migration Closeout inside Account Readiness. It turns the consent migration preview into proof gates, object-family closeout rows, owner signoff IDs, redaction scans, rollback rules, receipt fields, no-go lines, and a copyable closeout receipt before account migration can widen.
+
 ## V471 Custody Ticket Closeout
 
 V471 adds Custody Ticket Closeout inside Backend Audit Receipts. It closes each custody bridge ticket only after owner signoff, accepted fields, support-safe status, no-private-data scan, delete-or-supersede proof, launch no-go rules, and a copyable closeout receipt are visible. It also adds a section-heading fit guard so long backend toolbars wrap without crushing room titles.

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v472 Consent Migration Closeout
+
+- Version: `0.472.0`
+- Data version: `20260707-v472-01`
+- Changes made: Added Consent Migration Closeout inside Account Readiness with proof gates, object-family closeout rows, owner signoff IDs, redaction scan IDs, rollback rules, receipt fields, no-go rules, dedicated copy action, Account Readiness brief coverage, and release markers rolled forward to v472.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v472 marker scan.
+- Known risks: The closeout is a consent and custody contract only; production still needs real explicit-consent capture, account storage, export generation, backend dry-run writes, rollback execution, support-safe status views, private-data scans, privacy/legal review, and deployment verification.
+
 ## NiveshNadi Phase 1 v471 Custody Ticket Closeout
 
 - Version: `0.471.0`

@@ -45799,12 +45799,16 @@ textarea:focus {
 
   .section-heading {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(260px, 1fr) minmax(280px, 680px);
     align-items: end;
     gap: 5px var(--section-heading-gap);
     padding: var(--section-heading-pad-y) var(--section-heading-pad-x);
     border-bottom: 1px solid var(--section-heading-line);
     background: var(--section-heading-bg);
+  }
+
+  .section-heading > div:first-child {
+    min-width: 260px;
   }
 
   .section-heading .eyebrow {
@@ -45815,6 +45819,8 @@ textarea:focus {
   .section-heading h2 {
     font-size: 22px;
     line-height: 1.08;
+    overflow-wrap: normal;
+    word-break: normal;
   }
 
   .section-heading > .status-chip,
@@ -45825,7 +45831,8 @@ textarea:focus {
   .section-heading .toolbar {
     gap: var(--action-strip-gap);
     justify-content: flex-end;
-    max-width: min(100%, 640px);
+    width: 100%;
+    max-width: none;
     padding: var(--section-toolbar-pad);
     border: 1px solid var(--section-toolbar-line);
     border-radius: var(--radius);

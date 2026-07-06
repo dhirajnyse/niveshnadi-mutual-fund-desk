@@ -2,7 +2,7 @@
 
 ## V471 Custody Ticket Closeout
 
-V471 adds Custody Ticket Closeout inside Backend Audit Receipts. It closes each custody bridge ticket only after owner signoff, accepted fields, support-safe status, no-private-data scan, delete-or-supersede proof, launch no-go rules, and a copyable closeout receipt are visible.
+V471 adds Custody Ticket Closeout inside Backend Audit Receipts. It closes each custody bridge ticket only after owner signoff, accepted fields, support-safe status, no-private-data scan, delete-or-supersede proof, launch no-go rules, and a copyable closeout receipt are visible. It also adds a section-heading fit guard so long backend toolbars wrap without crushing room titles.
 
 ## V470 Visual QA Baseline Store
 

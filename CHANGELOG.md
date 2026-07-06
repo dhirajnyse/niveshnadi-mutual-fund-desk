@@ -4,9 +4,9 @@
 
 - Version: `0.471.0`
 - Data version: `20260706-v471-01`
-- Changes made: Added Custody Ticket Closeout inside Backend Audit Receipts with owner-signoff rows for every custody bridge ticket, accepted field counts, support-safe views, no-private-data scan IDs, delete-or-supersede receipt IDs, launch no-go rules, guardrails, dedicated copy action, Backend Audit brief coverage, and Release Doctor memory rolled forward to v470.
-- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v471 marker scan
+- Changes made: Added Custody Ticket Closeout inside Backend Audit Receipts with owner-signoff rows for every custody bridge ticket, accepted field counts, support-safe views, no-private-data scan IDs, delete-or-supersede receipt IDs, launch no-go rules, guardrails, dedicated copy action, Backend Audit brief coverage, Release Doctor memory rolled forward to v470, and a desktop section-heading fit guard so long toolbars no longer crush titles into vertical letters.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `styles.css`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v471 marker scan; local browser visual QA for backend heading fit, overflow, toolbar wrap, and closeout visibility
 - Known risks: The closeout is a backend custody contract only; production still needs real account storage, permission checks, owner signoff, support tooling, delete/supersede execution, private-data scans, audit-log persistence, idempotent APIs, privacy/legal/security review, and deployment verification.
 
 ## NiveshNadi Phase 1 v470 Visual QA Baseline Store

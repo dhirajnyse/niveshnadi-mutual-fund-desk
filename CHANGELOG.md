@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v470 Visual QA Baseline Store
+
+- Version: `0.470.0`
+- Data version: `20260706-v470-01`
+- Changes made: Added Visual QA Baseline Store to the Release Doctor with route/viewport/DOM-marker baselines, screenshot-hash storage fields, comparison result fields, release-hold failure routing, raw-image deletion proof, dedicated copy action, Build Tracker and Release Doctor brief coverage, and Release Doctor memory rolled forward to v469.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v470 marker scan
+- Known risks: The baseline store is a QA custody contract only; production still needs automated screenshot capture, stable baseline storage, visual diff comparison, reviewer signoff, CI failure routing, raw-image deletion receipts, privacy review, and secure artifact retention.
+
 ## NiveshNadi Phase 1 v469 Deletion Support Closeout
 
 - Version: `0.469.0`

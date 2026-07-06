@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V470 Visual QA Baseline Store
+
+V470 adds Visual QA Baseline Store to the Release Doctor. It turns the visual regression handoff into route, viewport, DOM marker, screenshot hash, comparison result, reviewer state, failure routing, raw-image deletion proof, storage fields, and a copyable baseline-store contract.
+
 ## V469 Deletion Support Closeout
 
 V469 adds Deletion Support Closeout inside Account Readiness. It turns deletion rehearsal into support-safe request, running, and closeout views with visible/hidden fields, support wording, escalation rules, post-delete audit receipts, redaction scan fields, and a copyable support handoff.

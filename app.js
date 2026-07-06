@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v469-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v469 Deletion Support Closeout";
+const DATA_VERSION = "20260706-v470-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v470 Visual QA Baseline Store";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v468 passed release checks on commit 497c3fc. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v469 passed release checks on commit 914a9fe. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v468 local checks passed",
+      outcome: "Previous outcome: v469 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46801",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46901",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10691,6 +10691,70 @@ function buildTrackerConfig() {
       ],
       blockedData: "No screenshots, DOM dumps, logs, or diff artifacts that expose PAN, folio, CAS, bank, contact, credential, payment, support, account, or private-note content."
     },
+    visualQaBaselineStore: {
+      label: "Visual QA baseline store",
+      verdict: "Baseline custody drafted",
+      receiptId: ["NN", "VISUAL", "BASELINE", "STORE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      rule: "Store route, viewport, release key, DOM marker, screenshot hash, comparison result, reviewer state, and deletion receipt; delete screenshot images after proof extraction.",
+      baselines: [
+        {
+          label: "Build release desk",
+          route: "#build-tracker",
+          viewport: "1440 x 900",
+          marker: "release-doctor-lane",
+          store: "route, viewport, release key, DOM marker, screenshot hash, review status",
+          hold: "Hold if release marker, progress link, side rail, or command capsule overlaps."
+        },
+        {
+          label: "Account support custody",
+          route: "#account-readiness",
+          viewport: "900 x 1000",
+          marker: "account-data-grid",
+          store: "route, viewport, account section marker, screenshot hash, redaction result",
+          hold: "Hold if support/deletion/custody cards overflow, clip buttons, or imply real deletion."
+        },
+        {
+          label: "Backend receipts",
+          route: "#backend-audit-receipts",
+          viewport: "1280 x 900",
+          marker: "backend-source-receipt-job",
+          store: "route, viewport, backend receipt marker, owner audit hash, failure route",
+          hold: "Hold if custody bridge, owner audit, or source receipt sections collide."
+        },
+        {
+          label: "Phone calm path",
+          route: "#main",
+          viewport: "390 x 844",
+          marker: "simple-room-guide",
+          store: "route, viewport, mobile marker, screenshot hash, horizontal-overflow result",
+          hold: "Hold if header wraps over controls, rail appears, or horizontal scroll is detected."
+        }
+      ],
+      storageFields: [
+        "visual_baseline_store_id",
+        "route",
+        "viewport_width",
+        "viewport_height",
+        "release_key",
+        "dom_marker",
+        "screenshot_hash",
+        "comparison_result",
+        "failure_reason",
+        "reviewer_state",
+        "delete_image_receipt_id",
+        "created_at"
+      ],
+      failureRouting: [
+        "Open release hold when horizontal overflow, header/rail overlap, clipped controls, missing release marker, blank route, or score-ring collision appears.",
+        "Route failures to Founder UI release desk, affected room owner, and Release Doctor outcome memory before sharing.",
+        "Keep screenshot hash and metadata; delete raw images when they contain account, support, payment, PAN, folio, CAS, contact, or private-note content."
+      ],
+      deletionProof: [
+        "Screenshot image deleted after hash and route metadata are recorded.",
+        "DOM dump excluded unless it has been redacted and contains no private identifiers.",
+        "Visual proof is release QA only; it does not certify live data, accounts, payments, legal readiness, or investment suitability."
+      ]
+    },
     retentionHealthSummary: {
       label: "Retention health summary",
       verdict: "Five proof surfaces mapped",
@@ -10793,14 +10857,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Deletion support closeout is visible; keep the next batch focused on visual baseline storage, custody ticket closeout, consent migration closeout, account export proof, and support case audit.",
+      rule: "Visual QA baseline storage is visible; keep the next batch focused on custody ticket closeout, consent migration closeout, account export proof, support case audit, and baseline compare automation.",
       lanes: [
-        {
-          version: "v470",
-          label: "Visual QA baseline store",
-          route: "#build-tracker",
-          detail: "Turn the visual regression handoff into baseline metadata, hash retention, failure routing, and screenshot deletion proof."
-        },
         {
           version: "v471",
           label: "Custody ticket closeout",
@@ -10824,6 +10882,12 @@ function buildTrackerConfig() {
           label: "Support case audit",
           route: "#account-readiness",
           detail: "Map account support cases to redacted status views, owner receipts, escalation windows, and no-private-data case notes."
+        },
+        {
+          version: "v475",
+          label: "Baseline compare automation",
+          route: "#build-tracker",
+          detail: "Define automated compare runs, failure thresholds, retry rules, reviewer signoff, and screenshot deletion receipts."
         }
       ]
     },
@@ -10832,6 +10896,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v469",
+          key: "20260706-v469-01",
+          commit: "914a9fe",
+          receiptId: "NN-SHARE-RECEIPT-20260706V46901",
+          proof: "Deletion Support Closeout added and verified by static release checks."
+        },
         {
           version: "v468",
           key: "20260706-v468-01",
@@ -10859,13 +10930,6 @@ function buildTrackerConfig() {
           commit: "fa83842",
           receiptId: "NN-SHARE-RECEIPT-20260706V46501",
           proof: "Visual Regression Handoff added and verified by static release checks."
-        },
-        {
-          version: "v464",
-          key: "20260706-v464-01",
-          commit: "ebfe020",
-          receiptId: "NN-SHARE-RECEIPT-20260706V46401",
-          proof: "Account Deletion Rehearsal added and verified by static release checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10903,8 +10967,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v469",
-        detail: "Deletion Support Closeout is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v470",
+        detail: "Visual QA Baseline Store is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -10926,7 +10990,7 @@ function buildTrackerConfig() {
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v469 source change adds Deletion Support Closeout."
+        detail: "v470 source change adds Visual QA Baseline Store."
       },
       {
         label: "Release checks",
@@ -10935,7 +10999,7 @@ function buildTrackerConfig() {
       },
       {
         label: "Share outcome",
-        value: "v469 held for batch deploy",
+        value: "v470 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v471."
       }
     ],
@@ -11342,6 +11406,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Visual QA baseline store">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.visualQaBaselineStore.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.visualQaBaselineStore.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.visualQaBaselineStore.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.visualQaBaselineStore.baselines.map((baseline) => `
+          <article>
+            <span>${escapeHtml(baseline.route)} | ${escapeHtml(baseline.viewport)}</span>
+            <strong>${escapeHtml(baseline.label)}</strong>
+            <p>${escapeHtml(baseline.store)} Hold: ${escapeHtml(baseline.hold)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -11488,6 +11566,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-mobile-audit-retention>Copy mobile retention</button>
         <button class="text-button" type="button" data-copy-viewport-proof-history>Copy viewport history</button>
         <button class="text-button" type="button" data-copy-visual-regression-handoff>Copy visual handoff</button>
+        <button class="text-button" type="button" data-copy-visual-qa-baseline-store>Copy baseline store</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -11652,6 +11731,12 @@ function makeBuildTrackerBrief() {
     `Visual regression rule: ${tracker.releaseDoctor.visualRegressionHandoff.rule}`,
     ...tracker.releaseDoctor.visualRegressionHandoff.baselineRoutes.map((route) => `- Visual baseline ${route.label}: ${route.route} | ${route.viewport} | ${route.proof}`),
     ...tracker.releaseDoctor.visualRegressionHandoff.comparisonRules.map((rule) => `- Visual rule ${rule.label}: ${rule.value} | ${rule.detail}`),
+    `Visual QA baseline store: ${tracker.releaseDoctor.visualQaBaselineStore.verdict}`,
+    `Visual QA baseline receipt: ${tracker.releaseDoctor.visualQaBaselineStore.receiptId}`,
+    `Visual QA baseline rule: ${tracker.releaseDoctor.visualQaBaselineStore.rule}`,
+    ...tracker.releaseDoctor.visualQaBaselineStore.baselines.map((baseline) => `- Visual baseline store ${baseline.label}: ${baseline.route} | ${baseline.viewport} | Store ${baseline.store} | Hold ${baseline.hold}`),
+    ...tracker.releaseDoctor.visualQaBaselineStore.storageFields.map((field) => `- Visual baseline field: ${field}`),
+    ...tracker.releaseDoctor.visualQaBaselineStore.failureRouting.map((rule) => `- Visual baseline failure route: ${rule}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -11769,6 +11854,15 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.visualRegressionHandoff.baselineRoutes.map((route) => `- ${route.label}: ${route.route} | ${route.viewport} | ${route.proof}`),
     ...tracker.releaseDoctor.visualRegressionHandoff.comparisonRules.map((rule) => `- ${rule.label}: ${rule.value} | ${rule.detail}`),
     `- Blocked data: ${tracker.releaseDoctor.visualRegressionHandoff.blockedData}`,
+    "",
+    "## Visual QA Baseline Store",
+    `- Receipt ID: ${tracker.releaseDoctor.visualQaBaselineStore.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.visualQaBaselineStore.verdict}`,
+    `- Rule: ${tracker.releaseDoctor.visualQaBaselineStore.rule}`,
+    ...tracker.releaseDoctor.visualQaBaselineStore.baselines.map((baseline) => `- ${baseline.label}: ${baseline.route} | ${baseline.viewport} | Marker ${baseline.marker} | Store ${baseline.store} | Hold ${baseline.hold}`),
+    ...tracker.releaseDoctor.visualQaBaselineStore.storageFields.map((field) => `- Receipt field: ${field}`),
+    ...tracker.releaseDoctor.visualQaBaselineStore.failureRouting.map((rule) => `- Failure route: ${rule}`),
+    ...tracker.releaseDoctor.visualQaBaselineStore.deletionProof.map((rule) => `- Deletion proof: ${rule}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -11954,6 +12048,36 @@ function makeVisualRegressionHandoffBrief() {
     `Blocked data: ${handoff.blockedData}`,
     "",
     "Visual Regression Handoff is a release QA contract only. It does not store private screenshots, prove live data, create account custody, approve investing, execute transactions, or certify legal readiness."
+  ].join("\n");
+}
+
+function makeVisualQaBaselineStoreBrief() {
+  const store = buildTrackerConfig().releaseDoctor.visualQaBaselineStore;
+  return [
+    "# NiveshNadi Visual QA Baseline Store",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${store.receiptId}`,
+    `Verdict: ${store.verdict}`,
+    `Rule: ${store.rule}`,
+    "",
+    "## Baselines",
+    ...store.baselines.map((baseline) => [
+      `- ${baseline.label}: ${baseline.route} | ${baseline.viewport}`,
+      `  Marker: ${baseline.marker}`,
+      `  Store: ${baseline.store}`,
+      `  Hold if: ${baseline.hold}`
+    ].join("\n")),
+    "",
+    "## Storage Fields",
+    ...store.storageFields.map((field) => `- ${field}`),
+    "",
+    "## Failure Routing",
+    ...store.failureRouting.map((rule) => `- ${rule}`),
+    "",
+    "## Deletion Proof",
+    ...store.deletionProof.map((rule) => `- ${rule}`),
+    "",
+    "Visual QA Baseline Store is a release QA custody contract only. It does not retain private screenshots, prove live data, create account custody, approve investing, execute transactions, or certify legal/security readiness."
   ].join("\n");
 }
 
@@ -64419,6 +64543,13 @@ function bindEvents() {
     if (!copyVisualRegressionHandoff) return;
     event.preventDefault();
     copyText(makeVisualRegressionHandoffBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyVisualQaBaselineStore = event.target.closest("[data-copy-visual-qa-baseline-store]");
+    if (!copyVisualQaBaselineStore) return;
+    event.preventDefault();
+    copyText(makeVisualQaBaselineStoreBrief());
   });
 
   document.addEventListener("click", (event) => {

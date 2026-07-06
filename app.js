@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260706-v460-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v460 Viewport Proof History";
+const DATA_VERSION = "20260706-v461-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v461 Source Custody Deletion Receipts";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10341,7 +10341,7 @@ function buildTrackerConfig() {
   };
   progressSummary.targetWindow = progressSummary.targetWindow.replace(
     "and share-receipt-supersede audit are complete.",
-    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, memo-handoff-receipt audit, review-export-retention audit, mobile-audit-retention audit, live-data-receipt-retention audit, retention-health-summary audit, memo-receipt-persistence audit, review-memory-persistence audit, and viewport-proof-history audit are complete."
+    "share-receipt-supersede audit, share-receipt-lineage audit, batch-changelog-ledger audit, release-batch-checklist audit, visual-qa-receipt audit, workspace-fit-guard audit, next-batch-planner audit, release-proof-archive audit, search-to-memo-handoff audit, saved-review-export-polish audit, mobile-calm audit, live-data-readiness-focus audit, proof-archive-retention audit, memo-handoff-receipt audit, review-export-retention audit, mobile-audit-retention audit, live-data-receipt-retention audit, retention-health-summary audit, memo-receipt-persistence audit, review-memory-persistence audit, viewport-proof-history audit, and source-custody-deletion-receipts audit are complete."
   );
   const launchGates = [
     {
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v459 passed local release checks on commit 11a6c96. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v460 passed local release checks on commit bb06c28. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v459 local checks passed",
+      outcome: "Previous outcome: v460 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260706V45901",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260706V46001",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10701,14 +10701,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Viewport proof history is visible; keep the remaining releases focused on source custody and account deletion surfaces that can move from local memory to backend custody later.",
+      rule: "Source custody deletion receipts are visible; keep the next batch focused on account deletion, visual regression, and backend custody surfaces.",
       lanes: [
-        {
-          version: "v461",
-          label: "Source custody deletion receipts",
-          route: "#source-receipts",
-          detail: "Prepare delete and supersede receipts for live-data proof history before backend account custody."
-        },
         {
           version: "v462",
           label: "Retention action router",
@@ -10732,6 +10726,12 @@ function buildTrackerConfig() {
           label: "Visual regression handoff",
           route: "#build-tracker",
           detail: "Prepare the viewport proof history for future automated screenshot comparison and release gating."
+        },
+        {
+          version: "v466",
+          label: "Backend custody bridge",
+          route: "#backend-audit",
+          detail: "Bridge memo, review, source, deletion, and viewport receipts into backend-ready custody tickets."
         }
       ]
     },
@@ -10740,6 +10740,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v460",
+          key: "20260706-v460-01",
+          commit: "bb06c28",
+          receiptId: "NN-SHARE-RECEIPT-20260706V46001",
+          proof: "Viewport Proof History added and verified by static release checks."
+        },
         {
           version: "v459",
           key: "20260706-v459-01",
@@ -10767,13 +10774,6 @@ function buildTrackerConfig() {
           commit: "a09c6ec",
           receiptId: "NN-SHARE-RECEIPT-20260706V45601",
           proof: "Live Data Receipt Retention added and verified live after deploy retry 495a2b6."
-        },
-        {
-          version: "v455",
-          key: "20260706-v455-01",
-          commit: "99f208d",
-          receiptId: "NN-SHARE-RECEIPT-20260706V45501",
-          proof: "Mobile Audit Retention added and verified by static release checks."
         }
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -10811,13 +10811,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "11a6c96",
-        detail: "v459 source change shipped with matching release labels and stamp."
+        value: "bb06c28",
+        detail: "v460 source change shipped with matching release labels and stamp."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v459."
+        detail: "Syntax, static, security, diff hygiene, and marker scans passed for v460."
       },
       {
         label: "03 Queued",
@@ -10827,23 +10827,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Hold for live stamp",
-        detail: "Do not share v460 until the final batch deploy returns the active release stamp."
+        detail: "Do not share v461 until the final batch deploy returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "11a6c96",
-        detail: "v459 source change that added Review Memory Persistence."
+        value: "bb06c28",
+        detail: "v460 source change that added Viewport Proof History."
       },
       {
         label: "Local release checks",
         value: "Passed",
-        detail: "v459 passed syntax, static, security, diff hygiene, and marker scans before v460 started."
+        detail: "v460 passed syntax, static, security, diff hygiene, and marker scans before v461 started."
       },
       {
         label: "Share outcome",
-        value: "v459 held for batch deploy",
+        value: "v460 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v461."
       }
     ],
@@ -42911,8 +42911,52 @@ function liveDataReadinessFocusConfig(receipt = sourceReceiptSnapshotFromConfig(
       detail: "Production should store explicit source receipt, delete, supersede, reviewer sign-off, and rollback events."
     }
   ];
+  const custodyDeletionReview = {
+    label: "Source custody deletion receipts",
+    verdict: entries.length ? "Deletion route mapped" : "Preview deletion route",
+    receiptId: ["NN", "SOURCE", "CUSTODY", "DELETE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    cadence: "Review whenever source proof expires, parser fails, citation disappears, reviewer rejects, or a public claim surface is frozen.",
+    owner: "Source receipt vault",
+    boundary: "Deletion receipts store source metadata, reason, affected surface, reviewer status, and replacement receipt only; they exclude investor identifiers, PAN, folio, CAS, bank, contact, credentials, payment data, private notes, and distributor-client records."
+  };
+  const deletionReceipts = [
+    {
+      label: "Supersede stale source",
+      receiptId: ["NN", "SOURCE", "SUPERSEDE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      trigger: receipt.metrics.staleDays ? `${receipt.metrics.staleDays} stale day${receipt.metrics.staleDays === 1 ? "" : "s"}` : "Newer source date appears",
+      action: "Mark old proof superseded and attach the replacement source date, parser version, citation path, and reviewer status.",
+      route: "#source-intake",
+      tone: receipt.metrics.staleDays ? "caution" : "watch"
+    },
+    {
+      label: "Delete failed receipt",
+      receiptId: ["NN", "SOURCE", "DELETE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      trigger: receipt.metrics.parser < 72 || !receipt.metrics.citationVisible ? "Parser or citation failure" : "Rejected proof row",
+      action: "Delete or quarantine failed receipt metadata after a reviewer records why it cannot support a live-looking claim.",
+      route: "#source-qa",
+      tone: receipt.metrics.parser < 72 || !receipt.metrics.citationVisible ? "caution" : "watch"
+    },
+    {
+      label: "Freeze claim surface",
+      receiptId: ["NN", "SOURCE", "FREEZE", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      trigger: productionEnvelope.blockers[0] || "Claim proof unclear",
+      action: "Freeze affected score, card, X-Ray, dossier, or decision surface until replacement proof is accepted.",
+      route: "#claim-release",
+      tone: productionEnvelope.status === "Production receipt ready" ? "watch" : "caution"
+    },
+    {
+      label: "Reviewer sign-off",
+      receiptId: ["NN", "SOURCE", "DELETE", "SIGNOFF", sourceSlug, DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      trigger: "Deletion or supersede action requested",
+      action: "Require reviewer name, timestamp, reason, affected surface, and replacement receipt before deletion/supersede is treated as complete.",
+      route: "#reviewer-workbench",
+      tone: "ready"
+    }
+  ];
   return {
     blockedTasks,
+    custodyDeletionReview,
+    deletionReceipts,
     fields,
     firstBlocker,
     productionEnvelope,
@@ -42982,9 +43026,24 @@ function liveDataReadinessFocusMarkup(focus) {
           </article>
         `).join("")}
       </div>
+      <div class="live-data-readiness-field-grid" aria-label="Source custody deletion receipts">
+        <article>
+          <span>${escapeHtml(focus.custodyDeletionReview.label)}</span>
+          <strong>${escapeHtml(focus.custodyDeletionReview.verdict)}</strong>
+          <p>${escapeHtml(focus.custodyDeletionReview.cadence)}</p>
+        </article>
+        ${focus.deletionReceipts.map((receipt) => `
+          <article class="${escapeHtml(receipt.tone)}">
+            <span>${escapeHtml(receipt.label)}</span>
+            <strong>${escapeHtml(receipt.trigger)}</strong>
+            <p>${escapeHtml(receipt.action)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="live-data-readiness-actions">
         <button class="text-button" type="button" data-copy-live-data-readiness-focus>Copy live readiness</button>
         <button class="text-button" type="button" data-copy-live-data-receipt-retention>Copy live retention</button>
+        <button class="text-button" type="button" data-copy-source-custody-deletion>Copy deletion receipts</button>
         <button class="text-button" type="button" data-build-route="#source-qa">Open source QA</button>
       </div>
     </div>
@@ -43241,6 +43300,14 @@ function makeSourceReceiptVaultBrief() {
     `Boundary: ${liveDataFocus.retentionReview.boundary}`,
     ...liveDataFocus.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`),
     "",
+    "## Source Custody Deletion Receipts",
+    `Deletion receipt: ${liveDataFocus.custodyDeletionReview.receiptId}`,
+    `Verdict: ${liveDataFocus.custodyDeletionReview.verdict}`,
+    `Cadence: ${liveDataFocus.custodyDeletionReview.cadence}`,
+    `Owner: ${liveDataFocus.custodyDeletionReview.owner}`,
+    `Boundary: ${liveDataFocus.custodyDeletionReview.boundary}`,
+    ...liveDataFocus.deletionReceipts.map((item) => `- ${item.label}: ${item.receiptId} | Trigger: ${item.trigger} | Action: ${item.action} | Route ${item.route}`),
+    "",
     "## Live Data Production Receipt",
     `Envelope ID: ${productionEnvelope.envelopeId}`,
     `Verdict: ${productionEnvelope.status}`,
@@ -43306,6 +43373,14 @@ function makeLiveDataReadinessFocusBrief() {
     `Boundary: ${focus.retentionReview.boundary}`,
     ...focus.retentionPolicy.map((policy) => `- ${policy.label}: ${policy.value} | ${policy.detail}`),
     "",
+    "## Source Custody Deletion Receipts",
+    `Receipt ID: ${focus.custodyDeletionReview.receiptId}`,
+    `Verdict: ${focus.custodyDeletionReview.verdict}`,
+    `Cadence: ${focus.custodyDeletionReview.cadence}`,
+    `Owner: ${focus.custodyDeletionReview.owner}`,
+    `Boundary: ${focus.custodyDeletionReview.boundary}`,
+    ...focus.deletionReceipts.map((item) => `- ${item.label}: ${item.receiptId} | Trigger: ${item.trigger} | Action: ${item.action} | Route ${item.route}`),
+    "",
     "## Production Blockers",
     ...focus.productionEnvelope.blockers.map((blocker) => `- ${blocker}`),
     "",
@@ -43337,8 +43412,31 @@ function makeLiveDataReceiptRetentionBrief() {
     `Saved proof: ${focus.savedProof ? "yes" : "no"}`,
     `Retained receipt count: ${focus.retainedReceiptCount}`,
     `First blocker: ${focus.firstBlocker}`,
+    `Deletion receipt: ${focus.custodyDeletionReview.receiptId}`,
+    `Deletion verdict: ${focus.custodyDeletionReview.verdict}`,
     "",
     "This retention note is source proof only. It is not advice, suitability approval, execution approval, or a return guarantee."
+  ].join("\n");
+}
+
+function makeSourceCustodyDeletionBrief() {
+  const entries = loadSourceReceipts();
+  const latest = entries[0] || sourceReceiptSnapshotFromConfig();
+  const focus = liveDataReadinessFocusConfig(latest, entries);
+  return [
+    "# NiveshNadi Source Custody Deletion Receipts",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${focus.custodyDeletionReview.receiptId}`,
+    `Source family: ${focus.receipt.source.title}`,
+    `Verdict: ${focus.custodyDeletionReview.verdict}`,
+    `Cadence: ${focus.custodyDeletionReview.cadence}`,
+    `Owner: ${focus.custodyDeletionReview.owner}`,
+    `Boundary: ${focus.custodyDeletionReview.boundary}`,
+    "",
+    "## Deletion and supersede receipts",
+    ...focus.deletionReceipts.map((item) => `- ${item.label}: ${item.receiptId} | Trigger: ${item.trigger} | Action: ${item.action} | Route ${item.route}`),
+    "",
+    "Source Custody Deletion Receipts are source-proof cleanup controls. They do not delete production data yet, approve investing, execute transactions, guarantee returns, or permit private investor identifiers."
   ].join("\n");
 }
 
@@ -62743,6 +62841,12 @@ function bindEvents() {
     if (!copyLiveDataRetention) return;
     event.preventDefault();
     copyText(makeLiveDataReceiptRetentionBrief());
+  });
+  document.addEventListener("click", (event) => {
+    const copySourceCustodyDeletion = event.target.closest("[data-copy-source-custody-deletion]");
+    if (!copySourceCustodyDeletion) return;
+    event.preventDefault();
+    copyText(makeSourceCustodyDeletionBrief());
   });
   els.clearSourceReceiptVault?.addEventListener("click", clearSourceReceipts);
   els.claimSurfaceForm?.addEventListener("submit", (event) => {

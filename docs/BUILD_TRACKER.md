@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V461 Source Custody Deletion Receipts
+
+V461 adds Source Custody Deletion Receipts to the Source Receipt Vault. It maps stale-source supersede, failed-receipt delete/quarantine, claim-surface freeze, and reviewer sign-off receipts so live-source proof has a cleanup path before backend custody exists.
+
 ## V460 Viewport Proof History
 
 V460 adds Viewport Proof History to the Release Doctor. It keeps compact phone, large phone, and tablet-bridge proof rows visible with retest triggers, retention rules, screenshot deletion boundaries, and a copyable viewport-history note before automated visual QA exists.

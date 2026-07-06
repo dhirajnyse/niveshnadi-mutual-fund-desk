@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v461 Source Custody Deletion Receipts
+
+- Version: `0.461.0`
+- Data version: `20260706-v461-01`
+- Changes made: Added Source Custody Deletion Receipts to the Source Receipt Vault live-data focus with supersede stale source, delete failed receipt, freeze claim surface, reviewer sign-off routes, dedicated copyable deletion-receipts note, and Source Vault brief coverage; rolled Release Doctor memory forward to v460.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v461 marker scan
+- Known risks: Deletion receipts are a product cleanup model only; production still needs backend event storage, actual delete/supersede execution, reviewer identity, audit logs, source replacement binding, privacy review, and rollback evidence.
+
 ## NiveshNadi Phase 1 v460 Viewport Proof History
 
 - Version: `0.460.0`

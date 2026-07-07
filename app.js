@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v501-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v501 Live Beta Pilot Audit";
+const DATA_VERSION = "20260708-v502-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v502 Backend Repository Handoff Pack";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -12658,6 +12658,92 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    backendRepositoryHandoffPack: {
+      label: "Backend repository handoff pack",
+      verdict: "Private repo opening packet ready",
+      receiptId: ["NN", "BACKEND", "REPOSITORY", "HANDOFF", "PACK", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 65,
+      rule: "The private backend repository should open with route skeletons, issue bodies, fixture folders, secret boundaries, check commands, and rollback notes already mapped from the accepted frontend proof contracts.",
+      lanes: [
+        {
+          label: "Repository file map",
+          owner: "Engineering",
+          method: "PACK",
+          route: "repo.file-map",
+          proof: "Create route, service, fixture, test, docs, and receipt folders for source receipts, account fixtures, entitlements, support status, payment events, and release audit.",
+          readyWhen: "Ready when every folder has owner, purpose, accepted fields, blocked fields, and a matching check command.",
+          hold: "Hold if the repo starts with ad hoc routes, private sample data, unowned secrets, or no rollback tests.",
+          score: 68
+        },
+        {
+          label: "Issue body templates",
+          owner: "Product operations",
+          method: "PACK",
+          route: "repo.issue-templates",
+          proof: "Prepare issue templates for source worker, account custody, payment webhook, support console, pilot gate, retention, and deployment tasks.",
+          readyWhen: "Ready when every issue template asks for acceptance criteria, proof fixture, no-private-data scan, rollback path, and release key.",
+          hold: "Hold if issues can be opened without receipt fields, owner, check command, or blocked data line.",
+          score: 66
+        },
+        {
+          label: "Fixture starter kit",
+          owner: "QA desk",
+          method: "PACK",
+          route: "repo.fixtures",
+          proof: "Seed identity-light fixtures for account shell, saved research, export, deletion, entitlement, source receipt, webhook replay, and support closeout.",
+          readyWhen: "Ready when fixture ids are deterministic, private fields are excluded, and expected receipts are named.",
+          hold: "Hold if fixtures include name, email, phone, PAN, folio, CAS, bank, card, UPI, credentials, or private notes.",
+          score: 64
+        },
+        {
+          label: "Command ledger",
+          owner: "Release desk",
+          method: "PACK",
+          route: "repo.commands",
+          proof: "List syntax, unit, fixture, webhook replay, source-worker, no-private-data, smoke, and release-stamp commands before first backend merge.",
+          readyWhen: "Ready when every command has pass/fail meaning, artifact owner, and release hold condition.",
+          hold: "Hold if backend merges can happen without a repeatable command and retained receipt.",
+          score: 63
+        },
+        {
+          label: "Secret boundary",
+          owner: "Security review",
+          method: "PACK",
+          route: "repo.secret-boundary",
+          proof: "Name required environment variables, forbidden frontend storage, redaction policy, rotation owner, and local-development dummy values.",
+          readyWhen: "Ready when no real secret is needed to run local fixture checks and every production secret has owner and rotation note.",
+          hold: "Hold if real provider secrets, payment tokens, source credentials, or private identifiers enter code, fixtures, docs, or copied briefs.",
+          score: 64
+        }
+      ],
+      operatingRules: [
+        "Open the private repo with small route skeletons and deterministic fixtures before any live account, payment, or source credential is added.",
+        "Every backend issue must include owner, acceptance receipt, check command, rollback path, and blocked private-data line.",
+        "Fixture ids can be shared; fixture bodies must stay identity-light and exclude personal, payment, source-credential, and private-note data.",
+        "No endpoint is considered started until the command ledger says how it fails, how it passes, and where the receipt is stored.",
+        "Repository handoff is a build-start packet, not a live backend, deployment, security certification, or paid-beta approval."
+      ],
+      noGoLines: [
+        "No private repo seed may include PAN, folio, CAS, bank, card, UPI, contact, credential, distributor-client, or private-note data.",
+        "No backend issue may be accepted without owner, acceptance criteria, test command, rollback path, and release-hold rule.",
+        "No fixture may rely on screenshots, browser-local state, manual spreadsheets, support memory, or payment-provider secrets.",
+        "No repository handoff may imply production readiness while CI, environments, retention, invite copy, and pilot proof are still pending."
+      ],
+      receiptFields: [
+        "backend_repository_handoff_pack_id",
+        "release_key",
+        "repo_file_map_id",
+        "issue_template_set_id",
+        "fixture_starter_kit_id",
+        "command_ledger_id",
+        "secret_boundary_id",
+        "owner_map",
+        "blocked_private_fields",
+        "rollback_path",
+        "release_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -12828,14 +12914,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Live beta pilot audit closes this backend-to-beta batch; next releases should prepare repository, CI, deployment, retention, and pilot invite proof.",
+      rule: "Backend repository handoff opens the private-build lane; next releases should add CI, deployment, retention, pilot invite, and support dry-run proof.",
       lanes: [
-        {
-          version: "v502",
-          label: "Backend repository handoff pack",
-          route: "#backend-ticket-factory",
-          detail: "Turn backend service, worker, webhook, support, and pilot contracts into a private-repo issue pack with route skeletons and check commands."
-        },
         {
           version: "v503",
           label: "Backend CI proof harness",
@@ -12859,6 +12939,12 @@ function buildTrackerConfig() {
           label: "Pilot invite copy approval room",
           route: "#founder-invite-path",
           detail: "Approve paid-beta invite, support, refund, no-advice, data-boundary, and pause-trigger copy before any named cohort opens."
+        },
+        {
+          version: "v507",
+          label: "Pilot support dry run board",
+          route: "#paid-beta-support-ledger",
+          detail: "Rehearse support replies, escalation owners, refund stop, account hold, source correction, and cohort pause before founder invites widen."
         }
       ]
     },
@@ -12867,6 +12953,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v501",
+          key: "20260708-v501-01",
+          commit: "5b7e732",
+          receiptId: "NN-SHARE-RECEIPT-20260708V50101",
+          proof: "Live Beta Pilot Audit added, pushed to main, visually checked, and live stamp verified."
+        },
         {
           version: "v500",
           key: "20260708-v500-01",
@@ -12894,13 +12987,6 @@ function buildTrackerConfig() {
           commit: "9239425",
           receiptId: "NN-SHARE-RECEIPT-20260708V49701",
           proof: "Production Backend Starter Service added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v496",
-          key: "20260707-v496-01",
-          commit: "e9e9edb",
-          receiptId: "NN-SHARE-RECEIPT-20260707V49601",
-          proof: "Founder Release Audit Room added, pushed to main, visually checked, and live stamp verified."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -12938,13 +13024,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v501",
-        detail: "Live Beta Pilot Audit is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v502",
+        detail: "Backend Repository Handoff Pack is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v501 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v502 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -12953,25 +13039,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v501 held until live stamp",
-        detail: "Do not share v501 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v502 held until live stamp",
+        detail: "Do not share v502 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v501 source change",
-        detail: "Live Beta Pilot Audit adds a founder-facing go/no-go gate across source, account, payment, support, visual, legal/privacy, security, signoff, invite, refund, and support ceiling proof."
+        value: "v502 source change",
+        detail: "Backend Repository Handoff Pack turns accepted static contracts into a private-repo opening packet with file map, issue templates, fixtures, commands, and secret boundaries."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v501 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v502 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v501 held until live stamp",
-        detail: "The batch release is share-ready only after v501 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v502 held until live stamp",
+        detail: "The batch release is share-ready only after v506 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [
@@ -13685,6 +13771,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.paymentWebhookVerificationLab, "Payment webhook verification lab")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.accountSupportOperationsConsole, "Account support operations console")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.liveBetaPilotAudit, "Live beta pilot audit")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.backendRepositoryHandoffPack, "Backend repository handoff pack")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -13852,6 +13939,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-payment-webhook-verification-lab>Copy webhook lab</button>
         <button class="text-button" type="button" data-copy-account-support-operations-console>Copy support console</button>
         <button class="text-button" type="button" data-copy-live-beta-pilot-audit>Copy pilot audit</button>
+        <button class="text-button" type="button" data-copy-backend-repository-handoff-pack>Copy repo handoff</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -14130,6 +14218,11 @@ function makeBuildTrackerBrief() {
     `Live beta pilot audit score: ${tracker.releaseDoctor.liveBetaPilotAudit.score}/100`,
     `Live beta pilot audit rule: ${tracker.releaseDoctor.liveBetaPilotAudit.rule}`,
     ...tracker.releaseDoctor.liveBetaPilotAudit.lanes.map((lane) => `- Pilot audit ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Backend repository handoff pack: ${tracker.releaseDoctor.backendRepositoryHandoffPack.verdict}`,
+    `Backend repository handoff receipt: ${tracker.releaseDoctor.backendRepositoryHandoffPack.receiptId}`,
+    `Backend repository handoff score: ${tracker.releaseDoctor.backendRepositoryHandoffPack.score}/100`,
+    `Backend repository handoff rule: ${tracker.releaseDoctor.backendRepositoryHandoffPack.rule}`,
+    ...tracker.releaseDoctor.backendRepositoryHandoffPack.lanes.map((lane) => `- Repository handoff ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -14465,6 +14558,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.liveBetaPilotAudit.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.liveBetaPilotAudit.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.liveBetaPilotAudit.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Backend Repository Handoff Pack",
+    `- Receipt ID: ${tracker.releaseDoctor.backendRepositoryHandoffPack.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.backendRepositoryHandoffPack.verdict}`,
+    `- Score: ${tracker.releaseDoctor.backendRepositoryHandoffPack.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.backendRepositoryHandoffPack.rule}`,
+    ...tracker.releaseDoctor.backendRepositoryHandoffPack.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.backendRepositoryHandoffPack.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.backendRepositoryHandoffPack.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.backendRepositoryHandoffPack.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -15309,6 +15412,14 @@ function makeLiveBetaPilotAuditBrief() {
     "Live Beta Pilot Audit",
     buildTrackerConfig().releaseDoctor.liveBetaPilotAudit,
     "Live Beta Pilot Audit is a static go/no-go audit only. It does not open a real paid cohort, verify live data, create accounts, process payments, provide advice, certify legal/security readiness, or approve production launch."
+  );
+}
+
+function makeBackendRepositoryHandoffPackBrief() {
+  return makeOperationalProofBrief(
+    "Backend Repository Handoff Pack",
+    buildTrackerConfig().releaseDoctor.backendRepositoryHandoffPack,
+    "Backend Repository Handoff Pack is a static private-repo opening packet only. It does not create the repository, implement backend services, configure secrets, run CI, deploy environments, store private data, or approve paid beta launch."
   );
 }
 
@@ -69569,6 +69680,13 @@ function bindEvents() {
     if (!copyLiveBetaPilotAudit) return;
     event.preventDefault();
     copyText(makeLiveBetaPilotAuditBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyBackendRepositoryHandoffPack = event.target.closest("[data-copy-backend-repository-handoff-pack]");
+    if (!copyBackendRepositoryHandoffPack) return;
+    event.preventDefault();
+    copyText(makeBackendRepositoryHandoffPackBrief());
   });
 
   document.addEventListener("click", (event) => {

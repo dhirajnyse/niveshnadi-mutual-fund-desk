@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V502 Backend Repository Handoff Pack
+
+V502 adds Backend Repository Handoff Pack to the Build Tracker Release Doctor. It turns accepted frontend proof contracts into a private-repo opening packet with route skeletons, issue templates, fixture starter kit, command ledger, secret boundaries, rollback paths, no-private-data rules, and a copyable repo handoff brief before backend work starts.
+
 ## V501 Live Beta Pilot Audit
 
 V501 adds Live Beta Pilot Audit to the Build Tracker Release Doctor. It gives the founder a go/no-go gate across source proof, account custody, payment verification, support operations, visual QA, founder signoff, cohort cap, invite copy, refund route, support ceiling, no-go lines, receipt fields, and a copyable pilot-audit handoff before any named paid beta cohort opens.

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v502 Backend Repository Handoff Pack
+
+- Version: `0.502.0`
+- Data version: `20260708-v502-01`
+- Changes made: Added Backend Repository Handoff Pack to the Build Tracker Release Doctor with repository file map, issue body templates, fixture starter kit, command ledger, secret boundary, operating rules, no-go lines, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward with v501 live receipt, next-batch planner roll-forward to v503-v507, and release markers rolled forward to v502.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v502 marker scan.
+- Known risks: Backend Repository Handoff Pack is a static private-repo opening packet only; it does not create the repository, implement backend services, configure secrets, run CI, deploy environments, store private data, or approve paid beta launch.
+
 ## NiveshNadi Phase 1 v501 Live Beta Pilot Audit
 
 - Version: `0.501.0`

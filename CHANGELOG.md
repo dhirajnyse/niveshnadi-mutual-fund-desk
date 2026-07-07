@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v477 Account Object Schema Map
+
+- Version: `0.477.0`
+- Data version: `20260707-v477-01`
+- Changes made: Added Account Object Schema Map inside Account Readiness with future account object families, schema IDs, allowed fields, blocked fields, retention owners, support visibility, deletion policy, receipt fields, launch rules, dedicated copy action, Account Readiness brief coverage, and release markers rolled forward to v477.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v477 marker scan.
+- Known risks: Account object schema map is a static readiness contract only; production still needs real account storage, authentication, server-side schemas, migrations, redaction scanners, support permissions, deletion enforcement, privacy/legal/security review, and deployment verification.
+
 ## NiveshNadi Phase 1 v476 Custody API Readiness
 
 - Version: `0.476.0`

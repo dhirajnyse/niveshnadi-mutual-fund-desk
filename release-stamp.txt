@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v476 Custody API Readiness
-20260707-v476-02
+NiveshNadi Phase 1 v477 Account Object Schema Map
+20260707-v477-01

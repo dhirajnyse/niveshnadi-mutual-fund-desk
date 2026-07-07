@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v476-02";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v476 Custody API Readiness";
+const DATA_VERSION = "20260707-v477-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v477 Account Object Schema Map";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v475 passed release checks on commit 1ba68f5. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v476 passed release checks on commit 0023cef. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v475 local checks passed",
+      outcome: "Previous outcome: v476 local and visual checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47501",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47602",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10971,6 +10971,13 @@ function buildTrackerConfig() {
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         {
+          version: "v476",
+          key: "20260707-v476-02",
+          commit: "0023cef",
+          receiptId: "NN-SHARE-RECEIPT-20260707V47602",
+          proof: "Custody API Readiness plus QA shell hotfix verified by syntax, static, security, diff hygiene, marker checks, and browser visual QA."
+        },
+        {
           version: "v475",
           key: "20260707-v475-01",
           commit: "1ba68f5",
@@ -10997,13 +11004,6 @@ function buildTrackerConfig() {
           commit: "7b8d3af",
           receiptId: "NN-SHARE-RECEIPT-20260707V47201",
           proof: "Consent Migration Closeout added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v471",
-          key: "20260706-v471-01",
-          commit: "ba7f6d2",
-          receiptId: "NN-SHARE-RECEIPT-20260706V47101",
-          proof: "Custody Ticket Closeout and section heading fit guard added, pushed, and live-stamp verified."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11041,8 +11041,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v476",
-        detail: "Custody API Readiness is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v477",
+        detail: "Account Object Schema Map is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11052,29 +11052,29 @@ function buildTrackerConfig() {
       {
         label: "03 Queued",
         value: "Batch push later",
-        detail: "This five-version batch will be pushed and live-verified after v476."
+        detail: "This five-version batch will be pushed and live-verified after v481."
       },
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v476 as complete until this release returns the active release stamp."
+        detail: "Do not share v477 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v476 source change adds Custody API Readiness."
+        detail: "v477 source change adds Account Object Schema Map."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v476 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v477 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v476 held for batch deploy",
-        detail: "The final batch release will be pushed and live-stamp verified after v476."
+        value: "v477 held for batch deploy",
+        detail: "The final batch release will be pushed and live-stamp verified after v481."
       }
     ],
     actions: [
@@ -25924,6 +25924,43 @@ function accountReadinessLabConfig() {
       "Support views can show receipt metadata and status only; they must not expose private note bodies or identifiers."
     ]
   };
+  const accountObjectSchemaMap = {
+    label: "Account object schema map",
+    status: "Schema before storage",
+    receiptId: ["NN", "ACCOUNT", "OBJECT", "SCHEMA", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    score: 77,
+    rule: "Future account storage must name each object, allowed fields, blocked fields, retention owner, support visibility, and deletion policy before any saved research leaves browser-local custody.",
+    objects: savedResearchCustodyMap.objects.map((item, index) => ({
+      label: item.label,
+      schemaId: ["NN", "ACCT", "SCHEMA", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      sourceRoom: item.source,
+      allowedFields: item.keep,
+      blockedFields: item.blocked,
+      retentionOwner: index % 2 === 0 ? "Account Platform" : "Privacy owner",
+      supportVisibility: "receipt id, object family, sync state, owner, delete state",
+      deletePolicy: item.deleteRule
+    })),
+    schemaFields: [
+      "schema_id",
+      "object_family",
+      "source_room",
+      "account_id_hash",
+      "owner",
+      "allowed_field_list",
+      "blocked_field_list",
+      "support_visibility_policy",
+      "retention_period",
+      "delete_policy_id",
+      "redaction_scan_id",
+      "created_at"
+    ],
+    launchRules: [
+      "Do not create durable account objects until schema id, owner, allowed fields, blocked fields, and deletion policy are visible.",
+      "Do not store free-form private notes, raw source payloads, payment secrets, contact data, PAN, folio, CAS, ARN/EUIN, or distributor-client data.",
+      "Do not expose payload bodies to support; support sees status, receipt ids, owner, and next action only.",
+      "Do not treat schema readiness as investment advice, suitability approval, execution, refund approval, or privacy certification."
+    ]
+  };
   const accountConsentMigrationPreview = {
     label: "Account consent migration preview",
     status: "Consent before migration",
@@ -26362,6 +26399,7 @@ function accountReadinessLabConfig() {
     accountFlow,
     accountRules,
     accountScore,
+    accountObjectSchemaMap,
     accountConsentMigrationPreview,
     accountConsentMigrationCloseout,
     accountExportProof,
@@ -26427,6 +26465,25 @@ function renderAccountReadinessLab() {
           <p><strong>Sync:</strong> ${escapeHtml(item.sync)}</p>
           <p><strong>Delete:</strong> ${escapeHtml(item.deleteRule)}</p>
           <p><strong>Block:</strong> ${escapeHtml(item.blocked)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-data-grid" aria-label="Account object schema map">
+      <article class="ready">
+        <span>${escapeHtml(lab.accountObjectSchemaMap.label)}</span>
+        <strong>${escapeHtml(lab.accountObjectSchemaMap.status)} | ${lab.accountObjectSchemaMap.score}/100</strong>
+        <p>${escapeHtml(lab.accountObjectSchemaMap.rule)}</p>
+        <button class="text-button" type="button" data-copy-account-object-schema>Copy schema map</button>
+      </article>
+      ${lab.accountObjectSchemaMap.objects.map((item) => `
+        <article>
+          <span>${escapeHtml(item.sourceRoom)}</span>
+          <strong>${escapeHtml(item.label)}</strong>
+          <p><strong>Schema:</strong> ${escapeHtml(item.schemaId)}</p>
+          <p><strong>Allowed:</strong> ${escapeHtml(item.allowedFields)}</p>
+          <p><strong>Blocked:</strong> ${escapeHtml(item.blockedFields)}</p>
+          <p><strong>Support:</strong> ${escapeHtml(item.supportVisibility)}</p>
+          <p><strong>Delete:</strong> ${escapeHtml(item.deletePolicy)}</p>
         </article>
       `).join("")}
     </div>
@@ -26638,6 +26695,15 @@ function makeAccountReadinessBrief() {
     ...lab.savedResearchCustodyMap.objects.map((item) => `- ${item.label}: ${item.source} | Keep ${item.keep} | Sync ${item.sync} | Delete ${item.deleteRule} | Block ${item.blocked}`),
     ...lab.savedResearchCustodyMap.guardrails.map((rule) => `- Custody guardrail: ${rule}`),
     "",
+    "## Account Object Schema Map",
+    `- Receipt ID: ${lab.accountObjectSchemaMap.receiptId}`,
+    `- Status: ${lab.accountObjectSchemaMap.status}`,
+    `- Score: ${lab.accountObjectSchemaMap.score}/100`,
+    `- Rule: ${lab.accountObjectSchemaMap.rule}`,
+    ...lab.accountObjectSchemaMap.objects.map((item) => `- ${item.label}: ${item.schemaId} | Source ${item.sourceRoom} | Allowed ${item.allowedFields} | Blocked ${item.blockedFields} | Support ${item.supportVisibility} | Delete ${item.deletePolicy}`),
+    ...lab.accountObjectSchemaMap.schemaFields.map((field) => `- Schema field: ${field}`),
+    ...lab.accountObjectSchemaMap.launchRules.map((rule) => `- Schema launch rule: ${rule}`),
+    "",
     "## Account Consent Migration Preview",
     `- Receipt ID: ${lab.accountConsentMigrationPreview.receiptId}`,
     `- Status: ${lab.accountConsentMigrationPreview.status}`,
@@ -26732,6 +26798,38 @@ function makeSavedResearchCustodyMapBrief() {
     ...map.guardrails.map((rule) => `- ${rule}`),
     "",
     "Saved Research Custody Map is a migration design only. It does not create accounts, store investor identifiers, approve investing, execute transactions, or certify launch readiness."
+  ].join("\n");
+}
+
+function makeAccountObjectSchemaMapBrief() {
+  const schema = accountReadinessLabConfig().accountObjectSchemaMap;
+  return [
+    "# NiveshNadi Account Object Schema Map",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${schema.receiptId}`,
+    `Status: ${schema.status}`,
+    `Score: ${schema.score}/100`,
+    `Rule: ${schema.rule}`,
+    "",
+    "## Account Object Families",
+    ...schema.objects.map((item) => [
+      `- ${item.label}`,
+      `  Schema: ${item.schemaId}`,
+      `  Source room: ${item.sourceRoom}`,
+      `  Allowed fields: ${item.allowedFields}`,
+      `  Blocked fields: ${item.blockedFields}`,
+      `  Retention owner: ${item.retentionOwner}`,
+      `  Support visibility: ${item.supportVisibility}`,
+      `  Delete policy: ${item.deletePolicy}`
+    ].join("\n")),
+    "",
+    "## Required Schema Fields",
+    ...schema.schemaFields.map((field) => `- ${field}`),
+    "",
+    "## Launch Rules",
+    ...schema.launchRules.map((rule) => `- ${rule}`),
+    "",
+    "Account Object Schema Map is a storage-readiness contract only. It does not create account storage, migrate real data, approve investing, execute transactions, certify privacy compliance, or replace legal review."
   ].join("\n");
 }
 
@@ -65647,6 +65745,13 @@ function bindEvents() {
     if (!copySavedResearchCustody) return;
     event.preventDefault();
     copyText(makeSavedResearchCustodyMapBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyAccountObjectSchema = event.target.closest("[data-copy-account-object-schema]");
+    if (!copyAccountObjectSchema) return;
+    event.preventDefault();
+    copyText(makeAccountObjectSchemaMapBrief());
   });
 
   document.addEventListener("click", (event) => {

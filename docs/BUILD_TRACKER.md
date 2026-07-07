@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V477 Account Object Schema Map
+
+V477 adds Account Object Schema Map inside Account Readiness. It names future account object families, allowed fields, blocked fields, retention owner, support-visible status, deletion policy, schema receipt fields, launch rules, and a copyable schema contract before any saved research leaves browser-local custody.
+
 ## V476 Custody API Readiness
 
 V476 adds Custody API Readiness inside Backend Audit Receipts. It converts custody closeout into endpoint rows, idempotency rules, permission policies, audit events, receipt fields, guardrails, no-go rules, and a copyable API readiness contract before production custody APIs can widen. The v476-02 QA hotfix also clamps the compact shell so the sticky header, side rail, and workspace bands do not create horizontal overflow.

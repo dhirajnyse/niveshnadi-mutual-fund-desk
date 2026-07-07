@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v497 Production Backend Starter Service
+
+- Version: `0.497.0`
+- Data version: `20260708-v497-01`
+- Changes made: Added Production Backend Starter Service to the Build Tracker Release Doctor with source receipt, account fixture replay, entitlement state, support-safe status, and release audit endpoint boundaries; methods and routes; accepted proof; private-data blocks; operating rules; no-go lines; receipt fields; dedicated copy action; Build Tracker and Release Doctor brief coverage; proof archive roll-forward with v496 commit; next-batch planner roll-forward to v498-v502; and release markers rolled forward to v497.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v497 marker scan.
+- Known risks: Production Backend Starter Service is a static service-boundary contract only; production still needs actual server implementation, authentication, authorization, schema validation, durable storage, source workers, payment webhook verification, support tooling, privacy/security/legal review, deployment verification, and live backend tests.
+
 ## NiveshNadi Phase 1 v496 Founder Release Audit Room
 
 - Version: `0.496.0`

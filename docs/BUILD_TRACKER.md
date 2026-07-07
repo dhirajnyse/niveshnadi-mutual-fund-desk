@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V497 Production Backend Starter Service
+
+V497 adds Production Backend Starter Service to the Build Tracker Release Doctor. It defines source receipt, account fixture replay, entitlement state, support-safe status, and release audit endpoint boundaries with methods, routes, accepted proof, private-data blocks, operating rules, no-go lines, receipt fields, and a copyable backend-service handoff before runnable backend work widens.
+
 ## V496 Founder Release Audit Room
 
 V496 adds Founder Release Audit Room to the Build Tracker Release Doctor. It reads build, source, account, payment, support, visual QA, proof archive, live stamp, founder signoff, and no-private-data boundaries into one share-or-hold gate with audit checks, share rules, no-go lines, receipt fields, and a copyable founder release audit before any release is shared.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v496-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v496 Founder Release Audit Room";
+const DATA_VERSION = "20260708-v497-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v497 Production Backend Starter Service";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -12212,6 +12212,95 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    productionBackendStarterService: {
+      label: "Production backend starter service",
+      verdict: "Service boundary ready",
+      receiptId: ["NN", "PRODUCTION", "BACKEND", "STARTER", "SERVICE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 58,
+      rule: "The first production backend must start as a small deterministic service around source receipts, account fixtures, entitlement state, support-safe status, and release audits while private investor data stays out of prototype memory.",
+      lanes: [
+        {
+          label: "Source receipt API",
+          owner: "Source platform",
+          method: "POST",
+          route: "/api/source-receipts",
+          proof: "Accept source family, source date, citation path, checksum, parser confidence, quarantine state, and reviewer signoff.",
+          readyWhen: "Ready when every accepted source row has source date, citation path, checksum, parser confidence, reviewer signoff, and rollback surface.",
+          hold: "Hold if raw PDFs, PAN, folio, CAS, contact data, credentials, payment payloads, or private notes can enter the request.",
+          score: 64
+        },
+        {
+          label: "Account fixture replay API",
+          owner: "Account platform",
+          method: "POST",
+          route: "/api/account-fixtures/replay",
+          proof: "Replay account shell, saved research, export, deletion, support-safe status, and entitlement join fixtures without real identities.",
+          readyWhen: "Ready when create, save, export, delete, support, and entitlement fixture runs all produce pass/fail receipts and rollback ids.",
+          hold: "Hold if fixture payloads store real name, email, phone, PAN, folio, bank, CAS text, credentials, or contact data.",
+          score: 58
+        },
+        {
+          label: "Entitlement state API",
+          owner: "Billing boundary",
+          method: "GET",
+          route: "/api/entitlements/:account_fixture_id",
+          proof: "Read sandbox invoice receipt, webhook decision, refund receipt, and account fixture state before showing access.",
+          readyWhen: "Ready when entitlement changes only after invoice, webhook, account, refund, support, and release audit receipts agree.",
+          hold: "Hold if card, UPI, bank, payment token, provider secret, or raw webhook body can be stored in the frontend contract.",
+          score: 55
+        },
+        {
+          label: "Support-safe status API",
+          owner: "Support desk",
+          method: "GET",
+          route: "/api/support/status/:case_id",
+          proof: "Return public case state, escalation owner, hidden-field policy, safe reply, and closeout receipt.",
+          readyWhen: "Ready when support can answer status without reading private payloads or mutating source, account, or payment state.",
+          hold: "Hold if support can expose private notes, raw payloads, account identifiers, payment details, contact data, or source artifacts.",
+          score: 62
+        },
+        {
+          label: "Release audit API",
+          owner: "Release desk",
+          method: "POST",
+          route: "/api/release-audit",
+          proof: "Bind release key, build receipt, source gate, account fixture, payment simulator, support drill, visual QA, and founder signoff.",
+          readyWhen: "Ready when release label, package version, changelog, stamp, proof archive, and safe share line agree.",
+          hold: "Hold if the service allows a production-ready claim while source, account, payment, support, visual, legal, or security gates remain static.",
+          score: 68
+        }
+      ],
+      operatingRules: [
+        "Start with one service boundary and deterministic fixtures before any live user account data is accepted.",
+        "Every write endpoint must return a receipt id, idempotency key, rollback state, and no-private-data scan state.",
+        "Every read endpoint must show whether the result is demo, fixture, sandbox, live-looking, or production accepted.",
+        "Support can read support-safe status only; it cannot inspect private payloads or silently change account, payment, source, or release state.",
+        "Release audit stays blocked until source, account, payment, support, visual, legal/privacy, security, and founder signoff receipts agree."
+      ],
+      noGoLines: [
+        "No backend endpoint may accept PAN, folio, CAS, bank, card, UPI, contact, credential, distributor-client, or private-note data in this static prototype contract.",
+        "No entitlement state may change without invoice, webhook, account, refund, support, and audit receipts agreeing.",
+        "No source receipt may bypass checksum, source date, citation path, parser confidence, quarantine state, reviewer signoff, and rollback fields.",
+        "No release audit may imply production readiness while the implementation is still a static contract."
+      ],
+      receiptFields: [
+        "production_backend_starter_service_id",
+        "release_key",
+        "service_boundary",
+        "endpoint_name",
+        "method",
+        "route",
+        "accepted_field_list",
+        "blocked_private_field_list",
+        "idempotency_key",
+        "receipt_id",
+        "rollback_state",
+        "support_safe_state",
+        "entitlement_state",
+        "release_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -12382,14 +12471,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Founder release audit room closes this backend-readiness batch; next batch should turn contracts into runnable production scaffolding.",
+      rule: "Production backend starter service opens the runnable-scaffold batch; next releases should add worker, webhook, support, pilot, and repository handoff proof.",
       lanes: [
-        {
-          version: "v497",
-          label: "Production backend starter service",
-          route: "#backend-audit-receipts",
-          detail: "Create a local service skeleton around source receipt, account fixture, entitlement, support status, and release audit endpoints."
-        },
         {
           version: "v498",
           label: "Source fetcher proof worker",
@@ -12413,6 +12496,12 @@ function buildTrackerConfig() {
           label: "Live beta pilot audit",
           route: "#release-publisher",
           detail: "Add a founder-facing pilot audit that decides whether source, account, payment, support, visual, and signoff proof are ready for one tiny paid beta cohort."
+        },
+        {
+          version: "v502",
+          label: "Backend repository handoff pack",
+          route: "#backend-ticket-factory",
+          detail: "Turn backend service, worker, webhook, support, and pilot contracts into a private-repo issue pack with route skeletons and check commands."
         }
       ]
     },
@@ -12421,6 +12510,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v496",
+          key: "20260707-v496-01",
+          commit: "e9e9edb",
+          receiptId: "NN-SHARE-RECEIPT-20260707V49601",
+          proof: "Founder Release Audit Room added, pushed to main, visually checked, and live stamp verified."
+        },
         {
           version: "v495",
           key: "20260707-v495-01",
@@ -12448,13 +12544,6 @@ function buildTrackerConfig() {
           commit: "7ce5685",
           receiptId: "NN-SHARE-RECEIPT-20260707V49201",
           proof: "Live Backend API Skeleton added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v491",
-          key: "20260707-v491-01",
-          commit: "3a5b105",
-          receiptId: "NN-SHARE-RECEIPT-20260707V49101",
-          proof: "Production Data Source Gate added, pushed to main, visually checked, and live stamp verified."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -12492,40 +12581,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v496",
-        detail: "Founder Release Audit Room is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v497",
+        detail: "Production Backend Starter Service is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v496 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v497 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
-        value: "Visual QA next",
-        detail: "This five-version batch is ready for local browser QA, push, and live-stamp verification."
+        value: "v498 next",
+        detail: "Source fetcher proof worker is queued after the backend service boundary."
       },
       {
         label: "04 Share",
-        value: "v496 held until live stamp",
-        detail: "Do not share v496 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v497 held until live stamp",
+        detail: "Do not share v497 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v496 source change",
-        detail: "Founder Release Audit Room adds a final founder share gate across build, source, account, payment, support, visual QA, proof archive, live stamp, and no-private-data proof."
+        value: "v497 source change",
+        detail: "Production Backend Starter Service adds a deterministic endpoint boundary for source receipts, account fixtures, entitlement state, support-safe status, and release audit proof."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v496 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v497 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v496 held until live stamp",
-        detail: "The final batch release is share-ready only after v496 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v497 held until live stamp",
+        detail: "The batch release is share-ready only after v501 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [
@@ -12859,6 +12948,25 @@ function buildGuardrailMarkup(tracker) {
       <ul>
         ${tracker.guardrails.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
       </ul>
+    </div>
+  `;
+}
+
+function releaseDoctorOperationalProofMarkup(proof, ariaLabel) {
+  return `
+    <div class="release-doctor-proof" aria-label="${escapeHtml(ariaLabel)}">
+      <article>
+        <span>${escapeHtml(proof.label)}</span>
+        <strong>${escapeHtml(proof.verdict)} | ${proof.score}/100</strong>
+        <p>${escapeHtml(proof.rule)}</p>
+      </article>
+      ${proof.lanes.map((lane) => `
+        <article>
+          <span>${escapeHtml(lane.owner)} | ${lane.score}/100</span>
+          <strong>${escapeHtml(lane.label)}</strong>
+          <p>${escapeHtml(lane.method ? `${lane.method} ${lane.route}. ` : "")}${escapeHtml(lane.readyWhen)} Hold: ${escapeHtml(lane.hold)}</p>
+        </article>
+      `).join("")}
     </div>
   `;
 }
@@ -13215,6 +13323,7 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.productionBackendStarterService, "Production backend starter service")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -13377,6 +13486,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-payment-sandbox-event-simulator>Copy payment sim</button>
         <button class="text-button" type="button" data-copy-source-ingestion-checksum-runner>Copy checksum runner</button>
         <button class="text-button" type="button" data-copy-founder-release-audit-room>Copy release audit</button>
+        <button class="text-button" type="button" data-copy-production-backend-starter-service>Copy backend service</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -13630,6 +13740,11 @@ function makeBuildTrackerBrief() {
     `Founder release audit score: ${tracker.releaseDoctor.founderReleaseAuditRoom.score}/100`,
     `Founder release audit rule: ${tracker.releaseDoctor.founderReleaseAuditRoom.rule}`,
     ...tracker.releaseDoctor.founderReleaseAuditRoom.auditChecks.map((check) => `- Founder audit ${check.label}: ${check.owner} | Reads ${check.reads} | Ready ${check.readyWhen} | Hold ${check.hold}`),
+    `Production backend starter service: ${tracker.releaseDoctor.productionBackendStarterService.verdict}`,
+    `Production backend service receipt: ${tracker.releaseDoctor.productionBackendStarterService.receiptId}`,
+    `Production backend service score: ${tracker.releaseDoctor.productionBackendStarterService.score}/100`,
+    `Production backend service rule: ${tracker.releaseDoctor.productionBackendStarterService.rule}`,
+    ...tracker.releaseDoctor.productionBackendStarterService.lanes.map((lane) => `- Backend service ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -13915,6 +14030,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.founderReleaseAuditRoom.shareRules.map((rule) => `- Share rule: ${rule}`),
     ...tracker.releaseDoctor.founderReleaseAuditRoom.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.founderReleaseAuditRoom.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Production Backend Starter Service",
+    `- Receipt ID: ${tracker.releaseDoctor.productionBackendStarterService.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.productionBackendStarterService.verdict}`,
+    `- Score: ${tracker.releaseDoctor.productionBackendStarterService.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.productionBackendStarterService.rule}`,
+    ...tracker.releaseDoctor.productionBackendStarterService.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.productionBackendStarterService.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.productionBackendStarterService.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.productionBackendStarterService.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -14687,6 +14812,47 @@ function makeFounderReleaseAuditRoomBrief() {
     "",
     "Founder Release Audit Room is a release-sharing guard only. It does not certify live data, account custody, payment readiness, legal review, security posture, or production launch readiness unless the matching proof receipts are actually complete."
   ].join("\n");
+}
+
+function makeOperationalProofBrief(title, proof, boundary) {
+  return [
+    `# NiveshNadi ${title}`,
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${proof.receiptId}`,
+    `Verdict: ${proof.verdict}`,
+    `Score: ${proof.score}/100`,
+    `Rule: ${proof.rule}`,
+    "",
+    "## Lanes",
+    ...proof.lanes.map((lane) => [
+      `- ${lane.label}`,
+      `  Owner: ${lane.owner}`,
+      lane.method ? `  Route: ${lane.method} ${lane.route}` : "",
+      `  Proof: ${lane.proof}`,
+      `  Ready when: ${lane.readyWhen}`,
+      `  Hold: ${lane.hold}`,
+      `  Score: ${lane.score}/100`
+    ].filter(Boolean).join("\n")),
+    "",
+    "## Operating Rules",
+    ...proof.operatingRules.map((rule) => `- ${rule}`),
+    "",
+    "## No-Go Lines",
+    ...proof.noGoLines.map((line) => `- ${line}`),
+    "",
+    "## Receipt Fields",
+    ...proof.receiptFields.map((field) => `- ${field}`),
+    "",
+    boundary
+  ].join("\n");
+}
+
+function makeProductionBackendStarterServiceBrief() {
+  return makeOperationalProofBrief(
+    "Production Backend Starter Service",
+    buildTrackerConfig().releaseDoctor.productionBackendStarterService,
+    "Production Backend Starter Service is a static service-boundary contract only. It does not create a live backend, authenticate users, store account data, process payments, certify legal/security readiness, or prove production launch readiness."
+  );
 }
 
 function makeNextBatchPlanBrief() {
@@ -68911,6 +69077,13 @@ function bindEvents() {
     if (!copyFounderReleaseAuditRoom) return;
     event.preventDefault();
     copyText(makeFounderReleaseAuditRoomBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyProductionBackendStarterService = event.target.closest("[data-copy-production-backend-starter-service]");
+    if (!copyProductionBackendStarterService) return;
+    event.preventDefault();
+    copyText(makeProductionBackendStarterServiceBrief());
   });
 
   document.addEventListener("click", (event) => {

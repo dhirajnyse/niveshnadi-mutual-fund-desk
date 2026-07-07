@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V481 Launch Proof Dashboard Polish
+
+V481 adds Launch Proof Dashboard Polish to the Build Tracker Release Doctor. It summarizes static release proof, visual proof, account custody, payments, legal/security, and support lanes with next proof, no-go lines, receipt fields, and a copyable launch handoff before launch-readiness language widens.
+
 ## V480 Visual Regression Runner Contract
 
 V480 adds Visual Regression Runner Contract to the Build Tracker Release Doctor. It turns baseline comparison into route run envelopes, pass/hold rules, output states, final share gates, receipt fields, deletion proof, and a copyable runner contract so visual QA has a clear execution boundary before sharing.

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v481 Launch Proof Dashboard Polish
+
+- Version: `0.481.0`
+- Data version: `20260707-v481-01`
+- Changes made: Added Launch Proof Dashboard Polish to the Build Tracker Release Doctor with launch proof lanes for static release, visual proof, account custody, payments, legal/security, and support; next proof wording; share answers; no-go lines; receipt fields; dedicated copy action; Release Doctor brief coverage; Build Tracker brief coverage; proof archive roll-forward; next-batch planner roll-forward; and release markers rolled forward to v481.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v481 marker scan; browser visual QA across Build Tracker, Account Readiness, Backend Audit Receipts, and mobile main route.
+- Known risks: Launch proof dashboard is a static readiness summary only; production still needs real live-data integrations, authenticated account custody, payment gateway proof, legal/security/privacy review, support tooling, CI visual runner, deployment verification, and founder signoff before any public launch or production-ready claim.
+
 ## NiveshNadi Phase 1 v480 Visual Regression Runner Contract
 
 - Version: `0.480.0`

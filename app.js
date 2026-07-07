@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v480-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v480 Visual Regression Runner Contract";
+const DATA_VERSION = "20260707-v481-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v481 Launch Proof Dashboard Polish";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v479 passed release checks on commit 840217b. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v480 passed release checks on commit 4ac2583. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v479 local checks passed",
+      outcome: "Previous outcome: v480 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47901",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260707V48001",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10927,6 +10927,81 @@ function buildTrackerConfig() {
         "Retain no visual artifact that contains private investor or account identifiers."
       ]
     },
+    launchProofDashboard: {
+      label: "Launch proof dashboard",
+      verdict: `${launchReadiness}/100 launch readiness`,
+      score: launchReadiness,
+      receiptId: ["NN", "LAUNCH", "PROOF", "DASHBOARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      rule: "Treat launch readiness as gate proof, not a date promise: static release proof, visual proof, account custody, payments, legal/security, and support must each show one next proof before public launch language widens.",
+      lanes: [
+        {
+          label: "Static release proof",
+          value: "Ready after stamp",
+          score: 88,
+          state: "Share after live stamp",
+          next: "Confirm Pages deploy, fresh build URL, release stamp, and proof archive row match this release."
+        },
+        {
+          label: "Visual proof",
+          value: "Runner contract ready",
+          score: 82,
+          state: "Manual QA this batch",
+          next: "Run desktop, tablet, backend, and phone checks before calling v481 visually ready."
+        },
+        {
+          label: "Account custody",
+          value: "Contract only",
+          score: 58,
+          state: "Backend needed",
+          next: "Add authenticated storage, object schema enforcement, export/delete workers, and support-safe status events."
+        },
+        {
+          label: "Payments",
+          value: "Not production ready",
+          score: 46,
+          state: "Gateway proof later",
+          next: "Keep paid beta language held until checkout, invoice, refund, entitlement, webhook, and support receipts exist."
+        },
+        {
+          label: "Legal and security",
+          value: "Review gate open",
+          score: 54,
+          state: "Signoff needed",
+          next: "Review research-only copy, privacy posture, threat model, disclosure boundaries, and audit retention."
+        },
+        {
+          label: "Support",
+          value: "Console drafted",
+          score: 66,
+          state: "Queue proof later",
+          next: "Connect real support queue ownership, escalation windows, incident freezes, and closeout receipts."
+        }
+      ],
+      shareAnswer: [
+        "Product build is polished enough for prototype review, but launch readiness stays held at the proof gates.",
+        "A public 100% claim appears only after live data, account custody, payment, legal, security, support, and visual QA receipts agree.",
+        "The next founder action is to keep the release share narrow, verify the live stamp, and preserve the proof archive."
+      ],
+      noGo: [
+        "Do not market this as production-ready while account, payment, legal, security, support, and live data gates are static contracts.",
+        "Do not treat visual QA proof as investment suitability, live-data proof, payment readiness, or legal approval.",
+        "Do not retain screenshots, DOM dumps, logs, or support notes containing private investor or account identifiers."
+      ],
+      receiptFields: [
+        "launch_proof_dashboard_id",
+        "release_key",
+        "launch_readiness_score",
+        "static_release_state",
+        "visual_proof_state",
+        "account_custody_state",
+        "payment_state",
+        "legal_security_state",
+        "support_state",
+        "next_proof",
+        "known_risk",
+        "created_at"
+      ]
+    },
     retentionHealthSummary: {
       label: "Retention health summary",
       verdict: "Five proof surfaces mapped",
@@ -11029,37 +11104,37 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Custody API readiness is visible; keep the next batch focused on account recovery rehearsal, export download rehearsal, support queue rehearsal, release compare runner, and API contract smoke receipts.",
+      rule: "Launch proof is visible; keep the next batch focused on account lifecycle smoke receipts, support telemetry, runner result archive, launch proof cabinet, and calm executive compression.",
       lanes: [
         {
-          version: "v477",
-          label: "Account recovery rehearsal",
+          version: "v482",
+          label: "Account lifecycle smoke receipts",
           route: "#account-readiness",
-          detail: "Rehearse account restore, export replay, support evidence, user confirmation, and rollback proof before account storage widens."
+          detail: "Turn account object schema, export, deletion, support, and custody contracts into one smoke receipt checklist for future backend work."
         },
         {
-          version: "v478",
-          label: "Export download rehearsal",
+          version: "v483",
+          label: "Support case queue telemetry",
           route: "#account-readiness",
-          detail: "Rehearse export file generation, expiry, retry, redaction scan, download receipt, and support-safe status wording."
+          detail: "Add support queue counters, escalation age bands, incident freeze states, and closeout proof rows without exposing private payloads."
         },
         {
-          version: "v479",
-          label: "Support queue rehearsal",
-          route: "#account-readiness",
-          detail: "Rehearse support queue triage, escalation windows, private-data freezes, owner handoff, and closeout receipt replay."
-        },
-        {
-          version: "v480",
-          label: "Release compare runner",
+          version: "v484",
+          label: "Visual runner result archive",
           route: "#build-tracker",
-          detail: "Turn baseline compare automation into a runner checklist with inputs, outputs, retry receipts, and final share gate."
+          detail: "Add pass/fail result rows for the visual runner so route, viewport, hash, console, overflow, retry, and deletion states are retained compactly."
         },
         {
-          version: "v481",
-          label: "API contract smoke receipts",
-          route: "#backend-audit-receipts",
-          detail: "Add endpoint smoke receipt rows for request envelope, idempotency, permission, redaction, audit replay, and support-safe response proof."
+          version: "v485",
+          label: "Production launch proof cabinet",
+          route: "#build-tracker",
+          detail: "Group live data, account, payment, legal, security, support, visual QA, and founder signoff receipts into one production gate cabinet."
+        },
+        {
+          version: "v486",
+          label: "Calm executive workspace compression",
+          route: "#build-tracker",
+          detail: "Reduce Release Doctor density with clearer priority bands, fewer first-screen cards, and a calmer read path for founder review."
         }
       ]
     },
@@ -11068,6 +11143,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v480",
+          key: "20260707-v480-01",
+          commit: "4ac2583",
+          receiptId: "NN-SHARE-RECEIPT-20260707V48001",
+          proof: "Visual Regression Runner Contract added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v479",
           key: "20260707-v479-01",
@@ -11095,13 +11177,6 @@ function buildTrackerConfig() {
           commit: "0023cef",
           receiptId: "NN-SHARE-RECEIPT-20260707V47602",
           proof: "Custody API Readiness plus QA shell hotfix verified by syntax, static, security, diff hygiene, marker checks, and browser visual QA."
-        },
-        {
-          version: "v475",
-          key: "20260707-v475-01",
-          commit: "1ba68f5",
-          receiptId: "NN-SHARE-RECEIPT-20260707V47501",
-          proof: "Baseline Compare Automation added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11139,8 +11214,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v480",
-        detail: "Visual Regression Runner Contract is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v481",
+        detail: "Launch Proof Dashboard Polish is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11149,30 +11224,30 @@ function buildTrackerConfig() {
       },
       {
         label: "03 Queued",
-        value: "Batch push later",
-        detail: "This five-version batch will be pushed and live-verified after v481."
+        value: "Batch final",
+        detail: "This five-version batch is ready for browser visual QA, push, and live-stamp verification after v481 checks."
       },
       {
         label: "04 Share",
-        value: "Next build held",
-        detail: "Do not share v480 as complete until this release returns the active release stamp."
+        value: "Final release held",
+        detail: "Do not share v481 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v480 source change adds Visual Regression Runner Contract."
+        detail: "v481 source change adds Launch Proof Dashboard Polish."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v480 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v481 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v480 held for batch deploy",
-        detail: "The final batch release will be pushed and live-stamp verified after v481."
+        value: "v481 held for live stamp",
+        detail: "The final batch release is pushed and shared only after GitHub Pages serves the v481 stamp."
       }
     ],
     actions: [
@@ -11620,6 +11695,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Launch proof dashboard">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.launchProofDashboard.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.launchProofDashboard.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.launchProofDashboard.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.launchProofDashboard.lanes.map((lane) => `
+          <article>
+            <span>${escapeHtml(lane.label)} | ${lane.score}/100</span>
+            <strong>${escapeHtml(lane.value)}</strong>
+            <p>${escapeHtml(lane.state)}. Next: ${escapeHtml(lane.next)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -11769,6 +11858,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-visual-qa-baseline-store>Copy baseline store</button>
         <button class="text-button" type="button" data-copy-baseline-compare-automation>Copy compare automation</button>
         <button class="text-button" type="button" data-copy-visual-regression-runner-contract>Copy runner contract</button>
+        <button class="text-button" type="button" data-copy-launch-proof-dashboard>Copy launch dashboard</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -11951,6 +12041,12 @@ function makeBuildTrackerBrief() {
     ...tracker.releaseDoctor.visualRegressionRunnerContract.runEnvelope.map((run) => `- Visual runner ${run.label}: ${run.route} | ${run.viewport} | Marker ${run.marker} | Threshold ${run.threshold} | Pass ${run.pass} | Hold ${run.hold}`),
     ...tracker.releaseDoctor.visualRegressionRunnerContract.outputs.map((output) => `- Visual runner output ${output.label}: ${output.value} | ${output.detail}`),
     ...tracker.releaseDoctor.visualRegressionRunnerContract.finalGate.map((rule) => `- Visual runner final gate: ${rule}`),
+    `Launch proof dashboard: ${tracker.releaseDoctor.launchProofDashboard.verdict}`,
+    `Launch proof receipt: ${tracker.releaseDoctor.launchProofDashboard.receiptId}`,
+    `Launch proof rule: ${tracker.releaseDoctor.launchProofDashboard.rule}`,
+    ...tracker.releaseDoctor.launchProofDashboard.lanes.map((lane) => `- Launch proof ${lane.label}: ${lane.value} | ${lane.score}/100 | ${lane.state} | Next ${lane.next}`),
+    ...tracker.releaseDoctor.launchProofDashboard.shareAnswer.map((line) => `- Launch share answer: ${line}`),
+    ...tracker.releaseDoctor.launchProofDashboard.noGo.map((line) => `- Launch no-go: ${line}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -12097,6 +12193,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.visualRegressionRunnerContract.finalGate.map((rule) => `- Final gate: ${rule}`),
     ...tracker.releaseDoctor.visualRegressionRunnerContract.receiptFields.map((field) => `- Receipt field: ${field}`),
     ...tracker.releaseDoctor.visualRegressionRunnerContract.deletionProof.map((rule) => `- Deletion proof: ${rule}`),
+    "",
+    "## Launch Proof Dashboard",
+    `- Receipt ID: ${tracker.releaseDoctor.launchProofDashboard.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.launchProofDashboard.verdict}`,
+    `- Score: ${tracker.releaseDoctor.launchProofDashboard.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.launchProofDashboard.rule}`,
+    ...tracker.releaseDoctor.launchProofDashboard.lanes.map((lane) => `- ${lane.label}: ${lane.value} | ${lane.score}/100 | ${lane.state} | Next ${lane.next}`),
+    ...tracker.releaseDoctor.launchProofDashboard.shareAnswer.map((line) => `- Share answer: ${line}`),
+    ...tracker.releaseDoctor.launchProofDashboard.noGo.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.launchProofDashboard.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -12381,6 +12487,37 @@ function makeVisualRegressionRunnerContractBrief() {
     ...runner.deletionProof.map((rule) => `- ${rule}`),
     "",
     "Visual Regression Runner Contract is a release QA runner contract only. It does not retain private screenshots, prove live data, create account custody, approve investing, execute transactions, certify privacy/security/legal readiness, or replace human review of failures."
+  ].join("\n");
+}
+
+function makeLaunchProofDashboardBrief() {
+  const dashboard = buildTrackerConfig().releaseDoctor.launchProofDashboard;
+  return [
+    "# NiveshNadi Launch Proof Dashboard",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${dashboard.receiptId}`,
+    `Verdict: ${dashboard.verdict}`,
+    `Score: ${dashboard.score}/100`,
+    `Rule: ${dashboard.rule}`,
+    "",
+    "## Proof Lanes",
+    ...dashboard.lanes.map((lane) => [
+      `- ${lane.label}: ${lane.value}`,
+      `  Score: ${lane.score}/100`,
+      `  State: ${lane.state}`,
+      `  Next proof: ${lane.next}`
+    ].join("\n")),
+    "",
+    "## Share Answer",
+    ...dashboard.shareAnswer.map((line) => `- ${line}`),
+    "",
+    "## No-Go Lines",
+    ...dashboard.noGo.map((line) => `- ${line}`),
+    "",
+    "## Receipt Fields",
+    ...dashboard.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Launch Proof Dashboard is a founder release-readiness summary only. It does not prove live data, create account custody, approve investing, execute transactions, certify payment readiness, or replace privacy/security/legal review."
   ].join("\n");
 }
 
@@ -66184,6 +66321,13 @@ function bindEvents() {
     if (!copyVisualRegressionRunnerContract) return;
     event.preventDefault();
     copyText(makeVisualRegressionRunnerContractBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyLaunchProofDashboard = event.target.closest("[data-copy-launch-proof-dashboard]");
+    if (!copyLaunchProofDashboard) return;
+    event.preventDefault();
+    copyText(makeLaunchProofDashboardBrief());
   });
 
   document.addEventListener("click", (event) => {

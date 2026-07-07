@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V489 Visual QA CI Adapter
+
+V489 adds Visual QA CI Adapter to the Build Tracker Release Doctor. It converts visual runner proof into CI job rows with route, viewport, DOM marker, artifact policy, failure routing, deletion receipt, release hold, receipt fields, and a copyable visual CI handoff before automated screenshot QA widens.
+
 ## V488 Support Operations Incident Drill
 
 V488 adds Support Operations Incident Drill to the Build Tracker Release Doctor. It rehearses private-data exposure fear, deletion dispute, entitlement mismatch, stale queue, source correction, and refund confusion incidents with freeze commands, support-safe replies, recovery receipts, closeout rules, no-go lines, receipt fields, and a copyable support drill handoff before paid support widens.

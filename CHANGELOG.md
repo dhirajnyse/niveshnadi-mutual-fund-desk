@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v489 Visual QA CI Adapter
+
+- Version: `0.489.0`
+- Data version: `20260707-v489-01`
+- Changes made: Added Visual QA CI Adapter to the Build Tracker Release Doctor with visual CI job rows for Build Tracker, Account Readiness, Backend Audit, and Mobile Cockpit; route and viewport markers; artifact policies; pass/fail gates; failure routing; outputs; receipt fields; dedicated copy action; Build Tracker and Release Doctor brief coverage; proof archive roll-forward; next-batch planner roll-forward; and release markers rolled forward to v489.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v489 marker scan.
+- Known risks: Visual QA CI Adapter is a static automation contract only; production still needs a real CI runner, screenshot capture, baseline storage, perceptual diffing, artifact retention/deletion enforcement, reviewer workflow, deployment verification, and live visual regression tests.
+
 ## NiveshNadi Phase 1 v488 Support Operations Incident Drill
 
 - Version: `0.488.0`

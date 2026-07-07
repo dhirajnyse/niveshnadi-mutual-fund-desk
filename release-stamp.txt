@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v488 Support Operations Incident Drill
-20260707-v488-01
+NiveshNadi Phase 1 v489 Visual QA CI Adapter
+20260707-v489-01

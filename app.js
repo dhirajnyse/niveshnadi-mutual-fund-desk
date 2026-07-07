@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v488-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v488 Support Operations Incident Drill";
+const DATA_VERSION = "20260707-v489-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v489 Visual QA CI Adapter";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -11380,6 +11380,87 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    visualQaCiAdapter: {
+      label: "Visual QA CI adapter",
+      verdict: "CI handoff contract",
+      receiptId: ["NN", "VISUAL", "QA", "CI", "ADAPTER", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 78,
+      rule: "Visual QA can move into CI only when every route capture has a job id, viewport, release key, DOM marker, baseline hash, current hash, console state, overflow state, artifact policy, retry rule, release hold, and deletion receipt.",
+      jobs: [
+        {
+          label: "Build Tracker capture",
+          route: "#build-tracker",
+          viewport: "1440x900",
+          marker: "Calm executive workspace compression",
+          job: "visual-ci-build-tracker",
+          artifact: "hash metadata only after reviewer pass",
+          gate: "Hold if Release Doctor, score ring, command capsule, or launch proof text overlaps.",
+          score: 84
+        },
+        {
+          label: "Account readiness capture",
+          route: "#account-readiness",
+          viewport: "900x1000",
+          marker: "Account lifecycle smoke receipts",
+          job: "visual-ci-account-readiness",
+          artifact: "metadata plus redacted screenshot hash",
+          gate: "Hold if account, export/delete, support, or lifecycle smoke cards overflow.",
+          score: 79
+        },
+        {
+          label: "Backend audit capture",
+          route: "#backend-audit-receipts",
+          viewport: "1280x900",
+          marker: "Production Account and Payment Smoke",
+          job: "visual-ci-backend-audit",
+          artifact: "metadata only; no payload logs",
+          gate: "Hold if backend receipt rows, smoke gates, or copy buttons collide.",
+          score: 76
+        },
+        {
+          label: "Mobile cockpit capture",
+          route: "#main",
+          viewport: "390x844",
+          marker: "Mutual fund research cockpit",
+          job: "visual-ci-mobile-main",
+          artifact: "hash metadata plus viewport dimensions",
+          gate: "Hold if header controls, search, first decision rail, or side rail create horizontal scroll.",
+          score: 82
+        }
+      ],
+      outputs: [
+        { label: "ci_run_id", value: ["NN", "VISUAL", "CI", "RUN", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(), detail: "One run id binds all route captures to the release key." },
+        { label: "artifact_policy", value: "Hash first", detail: "Retain metadata, hashes, route, viewport, marker, and result; delete raw images unless a reviewer explicitly waives." },
+        { label: "failure_route", value: "Release Doctor hold", detail: "Any console error, blank canvas, stale marker, overflow, or overlap creates a release hold row." },
+        { label: "reviewer_state", value: "Founder UI desk", detail: "Human review remains required until CI proves stable across several releases." }
+      ],
+      failureRouting: [
+        "Stale release key routes to release freshness cue and blocks share receipt.",
+        "Blank screenshot or missing marker routes to retry once, then release hold.",
+        "Console error routes to startup issue log and blocks live share.",
+        "Horizontal overflow routes to workspace fit guard and mobile calm audit.",
+        "Private-data exposure routes to immediate artifact deletion and support incident drill."
+      ],
+      receiptFields: [
+        "visual_qa_ci_adapter_id",
+        "release_key",
+        "ci_run_id",
+        "route",
+        "viewport",
+        "dom_marker",
+        "job_name",
+        "baseline_hash",
+        "current_hash",
+        "console_state",
+        "overflow_state",
+        "artifact_policy",
+        "retry_state",
+        "reviewer_state",
+        "release_hold",
+        "delete_artifact_receipt_id",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -11399,8 +11480,8 @@ function buildTrackerConfig() {
         },
         {
           label: "Next proof",
-          value: "Visual QA CI adapter",
-          detail: "Turn visual runner evidence into CI-ready artifacts, failure routing, and release holds."
+          value: "Payment entitlement proof cabinet",
+          detail: "Group checkout, invoice, refund, entitlement, webhook, support, and redaction proof before paid beta widens."
         },
         {
           label: "100% rule",
@@ -11549,15 +11630,9 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "Three releases remain",
-      rule: "Support incident drills are visible; keep the remaining batch focused on visual QA CI adapter, payment entitlement proof, and production data source gate.",
+      verdict: "Two releases remain",
+      rule: "Visual QA CI adapter is visible; keep the remaining batch focused on payment entitlement proof and production data source gate.",
       lanes: [
-        {
-          version: "v489",
-          label: "Visual QA CI adapter",
-          route: "#build-tracker",
-          detail: "Convert visual runner result archive fields into a CI-friendly adapter contract with pass, fail, retry, artifact deletion, and release-hold outputs."
-        },
         {
           version: "v490",
           label: "Payment entitlement proof cabinet",
@@ -11577,6 +11652,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v488",
+          key: "20260707-v488-01",
+          commit: "a578377",
+          receiptId: "NN-SHARE-RECEIPT-20260707V48801",
+          proof: "Support Operations Incident Drill added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v487",
           key: "20260707-v487-01",
@@ -11604,13 +11686,6 @@ function buildTrackerConfig() {
           commit: "599e264",
           receiptId: "NN-SHARE-RECEIPT-20260707V48401",
           proof: "Visual Runner Result Archive added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v483",
-          key: "20260707-v483-01",
-          commit: "131b9c0",
-          receiptId: "NN-SHARE-RECEIPT-20260707V48301",
-          proof: "Support Case Queue Telemetry added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11648,8 +11723,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v488",
-        detail: "Support Operations Incident Drill is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v489",
+        detail: "Visual QA CI Adapter is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11664,23 +11739,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v488 as complete until this release returns the active release stamp."
+        detail: "Do not share v489 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v488 source change adds Support Operations Incident Drill."
+        detail: "v489 source change adds Visual QA CI Adapter."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v488 runs syntax, static, security, diff hygiene, and marker scans before the next release."
+        detail: "v489 runs syntax, static, security, diff hygiene, and marker scans before the next release."
       },
       {
         label: "Share outcome",
-        value: "v488 held until live stamp",
+        value: "v489 held until live stamp",
         detail: "The final batch release is pushed and live-stamp verified after visual QA passes."
       }
     ],
@@ -12259,6 +12334,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Visual QA CI adapter">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.visualQaCiAdapter.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.visualQaCiAdapter.verdict)} | ${tracker.releaseDoctor.visualQaCiAdapter.score}/100</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.visualQaCiAdapter.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.visualQaCiAdapter.jobs.map((job) => `
+          <article>
+            <span>${escapeHtml(job.viewport)} | ${job.score}/100</span>
+            <strong>${escapeHtml(job.label)}</strong>
+            <p>${escapeHtml(job.job)}. Gate: ${escapeHtml(job.gate)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -12413,6 +12502,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-production-launch-proof-cabinet>Copy proof cabinet</button>
         <button class="text-button" type="button" data-copy-backend-account-smoke-harness>Copy account smoke</button>
         <button class="text-button" type="button" data-copy-support-operations-incident-drill>Copy support drill</button>
+        <button class="text-button" type="button" data-copy-visual-qa-ci-adapter>Copy visual CI</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -12626,6 +12716,11 @@ function makeBuildTrackerBrief() {
     `Support operations incident score: ${tracker.releaseDoctor.supportOperationsIncidentDrill.score}/100`,
     `Support operations incident rule: ${tracker.releaseDoctor.supportOperationsIncidentDrill.rule}`,
     ...tracker.releaseDoctor.supportOperationsIncidentDrill.incidents.map((incident) => `- Support incident ${incident.label}: ${incident.severity} | ${incident.owner} | Trigger ${incident.trigger} | Freeze ${incident.freeze} | Recovery ${incident.recovery}`),
+    `Visual QA CI adapter: ${tracker.releaseDoctor.visualQaCiAdapter.verdict}`,
+    `Visual QA CI receipt: ${tracker.releaseDoctor.visualQaCiAdapter.receiptId}`,
+    `Visual QA CI score: ${tracker.releaseDoctor.visualQaCiAdapter.score}/100`,
+    `Visual QA CI rule: ${tracker.releaseDoctor.visualQaCiAdapter.rule}`,
+    ...tracker.releaseDoctor.visualQaCiAdapter.jobs.map((job) => `- Visual CI ${job.label}: ${job.job} | ${job.route} | ${job.viewport} | Marker ${job.marker} | Gate ${job.gate}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -12831,6 +12926,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.supportOperationsIncidentDrill.sequence.map((step) => `- Sequence: ${step}`),
     ...tracker.releaseDoctor.supportOperationsIncidentDrill.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.supportOperationsIncidentDrill.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Visual QA CI Adapter",
+    `- Receipt ID: ${tracker.releaseDoctor.visualQaCiAdapter.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.visualQaCiAdapter.verdict}`,
+    `- Score: ${tracker.releaseDoctor.visualQaCiAdapter.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.visualQaCiAdapter.rule}`,
+    ...tracker.releaseDoctor.visualQaCiAdapter.jobs.map((job) => `- ${job.label}: ${job.job} | ${job.route} | ${job.viewport} | Marker ${job.marker} | Artifact ${job.artifact} | Gate ${job.gate}`),
+    ...tracker.releaseDoctor.visualQaCiAdapter.outputs.map((output) => `- Output ${output.label}: ${output.value} | ${output.detail}`),
+    ...tracker.releaseDoctor.visualQaCiAdapter.failureRouting.map((rule) => `- Failure route: ${rule}`),
+    ...tracker.releaseDoctor.visualQaCiAdapter.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -13318,6 +13423,41 @@ function makeSupportOperationsIncidentDrillBrief() {
     ...drill.receiptFields.map((field) => `- ${field}`),
     "",
     "Support Operations Incident Drill is an operations rehearsal only. It does not store private payloads, approve investment action, execute account changes, process refunds, certify legal/security readiness, or replace live support tooling."
+  ].join("\n");
+}
+
+function makeVisualQaCiAdapterBrief() {
+  const adapter = buildTrackerConfig().releaseDoctor.visualQaCiAdapter;
+  return [
+    "# NiveshNadi Visual QA CI Adapter",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${adapter.receiptId}`,
+    `Verdict: ${adapter.verdict}`,
+    `Score: ${adapter.score}/100`,
+    `Rule: ${adapter.rule}`,
+    "",
+    "## CI Jobs",
+    ...adapter.jobs.map((job) => [
+      `- ${job.label}`,
+      `  Job: ${job.job}`,
+      `  Route: ${job.route}`,
+      `  Viewport: ${job.viewport}`,
+      `  DOM marker: ${job.marker}`,
+      `  Artifact policy: ${job.artifact}`,
+      `  Gate: ${job.gate}`,
+      `  Score: ${job.score}/100`
+    ].join("\n")),
+    "",
+    "## Outputs",
+    ...adapter.outputs.map((output) => `- ${output.label}: ${output.value} | ${output.detail}`),
+    "",
+    "## Failure Routing",
+    ...adapter.failureRouting.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...adapter.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Visual QA CI Adapter is a release automation contract only. It does not retain private screenshots, prove live data, create account custody, approve investing, execute transactions, certify privacy/security/legal readiness, or replace human review of failures."
   ].join("\n");
 }
 
@@ -67487,6 +67627,13 @@ function bindEvents() {
     if (!copySupportOperationsIncidentDrill) return;
     event.preventDefault();
     copyText(makeSupportOperationsIncidentDrillBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyVisualQaCiAdapter = event.target.closest("[data-copy-visual-qa-ci-adapter]");
+    if (!copyVisualQaCiAdapter) return;
+    event.preventDefault();
+    copyText(makeVisualQaCiAdapterBrief());
   });
 
   document.addEventListener("click", (event) => {

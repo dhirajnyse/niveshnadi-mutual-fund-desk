@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V492 Live Backend API Skeleton
+
+V492 adds Live Backend API Skeleton to the Build Tracker Release Doctor. It turns source receipts, account fixtures, entitlement status, support-safe status, and release audit into small endpoint contracts with methods, routes, owners, accepted fields, blocked fields, response states, rollback rules, no-go lines, receipt fields, and a copyable backend API handoff before server work widens.
+
 ## V491 Production Data Source Gate
 
 V491 adds Production Data Source Gate to the Build Tracker Release Doctor. It groups AMFI scheme/NAV, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, and benchmark/category proof into one source-readiness gate with owners, cadence, receipt names, source dates, citation paths, freshness states, no-go lines, receipt fields, and a copyable source gate handoff before any 100% claim.

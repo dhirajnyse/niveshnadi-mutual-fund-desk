@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v492 Live Backend API Skeleton
+
+- Version: `0.492.0`
+- Data version: `20260707-v492-01`
+- Changes made: Added Live Backend API Skeleton to the Build Tracker Release Doctor with source receipt, account fixture, entitlement status, support-safe status, and release audit endpoint contracts; methods; routes; owners; accepted fields; blocked fields; response states; hold rules; sequence; no-go lines; receipt fields; dedicated copy action; Build Tracker and Release Doctor brief coverage; proof archive roll-forward with v491 commit; next-batch planner roll-forward; and release markers rolled forward to v492.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v492 marker scan.
+- Known risks: Live Backend API Skeleton is a static endpoint contract only; production still needs actual server implementation, authentication, authorization, durable storage, schema validation, rate limiting, audit logging, privacy/security/legal review, deployment verification, and live backend tests.
+
 ## NiveshNadi Phase 1 v491 Production Data Source Gate
 
 - Version: `0.491.0`

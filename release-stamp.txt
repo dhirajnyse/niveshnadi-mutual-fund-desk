@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v491 Production Data Source Gate
-20260707-v491-01
+NiveshNadi Phase 1 v492 Live Backend API Skeleton
+20260707-v492-01

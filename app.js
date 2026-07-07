@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v491-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v491 Production Data Source Gate";
+const DATA_VERSION = "20260707-v492-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v492 Live Backend API Skeleton";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -11681,6 +11681,100 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    liveBackendApiSkeleton: {
+      label: "Live backend API skeleton",
+      verdict: "Endpoint contract before implementation",
+      receiptId: ["NN", "LIVE", "BACKEND", "API", "SKELETON", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 59,
+      rule: "Backend work may start only from small idempotent contracts that name route, method, owner, accepted fields, blocked fields, response state, audit receipt, rollback path, and launch hold before any server stores investor data.",
+      endpoints: [
+        {
+          label: "Source receipt API",
+          method: "POST",
+          route: "/api/source-receipts",
+          owner: "Source platform",
+          accepted: "source_family, source_date, citation_path, file_hash, parser_confidence, reviewer_signoff_id",
+          blocked: "PAN, folio, CAS, bank, contact, credential, payment, distributor-client, and private-note fields",
+          response: "201 receipt or 409 duplicate idempotency key",
+          hold: "Hold if source date, citation path, file hash, or reviewer signoff is absent.",
+          score: 66
+        },
+        {
+          label: "Account fixture API",
+          method: "POST",
+          route: "/api/account-fixtures",
+          owner: "Account platform",
+          accepted: "fixture_id, consent_state, research_memory_key, export_state, delete_state",
+          blocked: "Name, email, phone, PAN, folio, CAS, bank account, UPI, card, and credential fields",
+          response: "201 fixture shell with redacted audit id",
+          hold: "Hold if fixture payload can become real personal identity by accident.",
+          score: 58
+        },
+        {
+          label: "Entitlement status API",
+          method: "PUT",
+          route: "/api/entitlements/:accountId",
+          owner: "Access control",
+          accepted: "account_fixture_id, provider_event_id, plan_id, entitlement_state, expiry, audit_event_id",
+          blocked: "Raw payment payload, card, UPI, OTP, contact, gateway secret, and provider credential fields",
+          response: "200 entitlement state or 412 payment proof mismatch",
+          hold: "Hold if provider event, invoice, support case, and entitlement state cannot reconcile.",
+          score: 55
+        },
+        {
+          label: "Support-safe status API",
+          method: "GET",
+          route: "/api/support-status/:accountId",
+          owner: "Support platform",
+          accepted: "account_fixture_id, public_status, queue_state, escalation_state, closeout_receipt_id",
+          blocked: "Private note, contact, credential, raw provider payload, payment token, PAN, folio, CAS, bank data",
+          response: "200 support-safe status only",
+          hold: "Hold if support can see private payloads or payment identifiers.",
+          score: 61
+        },
+        {
+          label: "Release audit API",
+          method: "POST",
+          route: "/api/release-audits",
+          owner: "Founder release desk",
+          accepted: "release_key, build_receipt_id, source_gate_id, payment_gate_id, support_gate_id, visual_gate_id",
+          blocked: "Screenshots with identifiers, private investor data, credentials, payment payloads, and raw source files",
+          response: "202 audit queued or 423 release held",
+          hold: "Hold if any proof family is missing, stale, unsigned, or not replayable.",
+          score: 57
+        }
+      ],
+      sequence: [
+        "Start every backend route with a schema contract, idempotency key, audit event, and no-private-data filter.",
+        "Return hold states before storing any payload that lacks source, account, payment, support, or reviewer proof.",
+        "Keep endpoint responses boring: created, accepted, duplicate, mismatch, held, redacted, or queued.",
+        "Attach rollback receipt and support-safe status to every write path before live accounts widen.",
+        "Treat this skeleton as implementation prep, not a live backend."
+      ],
+      noGoLines: [
+        "No endpoint accepts personal identity, PAN, folio, CAS, bank, card, UPI, OTP, contact, credential, raw provider payload, distributor-client record, or private notes in this prototype.",
+        "No write route opens without idempotency, audit event, rollback rule, and support-safe status.",
+        "No entitlement state changes without matching provider event, account fixture, invoice/refund state, and audit receipt.",
+        "No release audit can return ready while any proof family is missing, stale, unsigned, or unreplayable."
+      ],
+      receiptFields: [
+        "live_backend_api_skeleton_id",
+        "release_key",
+        "endpoint_label",
+        "method",
+        "route",
+        "owner",
+        "accepted_fields",
+        "blocked_fields",
+        "idempotency_key",
+        "audit_event_id",
+        "response_state",
+        "rollback_receipt_id",
+        "support_safe_state",
+        "launch_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -11850,15 +11944,9 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "Next batch ready",
-      rule: "Production data source gate closes this proof batch; the next batch should turn the strongest static gates into executable backend and release-audit fixtures.",
+      verdict: "Four releases remain",
+      rule: "Live backend API skeleton is visible; continue by turning account persistence into replayable fixtures.",
       lanes: [
-        {
-          version: "v492",
-          label: "Live backend API skeleton",
-          route: "#backend-audit-receipts",
-          detail: "Create a thin endpoint contract for source receipt, account fixture, entitlement, support status, and release audit checks."
-        },
         {
           version: "v493",
           label: "Account persistence fixture runner",
@@ -11891,6 +11979,13 @@ function buildTrackerConfig() {
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         {
+          version: "v491",
+          key: "20260707-v491-01",
+          commit: "3a5b105",
+          receiptId: "NN-SHARE-RECEIPT-20260707V49101",
+          proof: "Production Data Source Gate added, pushed to main, visually checked, and live stamp verified."
+        },
+        {
           version: "v490",
           key: "20260707-v490-01",
           commit: "674e03d",
@@ -11917,13 +12012,6 @@ function buildTrackerConfig() {
           commit: "6f96990",
           receiptId: "NN-SHARE-RECEIPT-20260707V48701",
           proof: "Backend Account Smoke Harness added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v486",
-          key: "20260707-v486-01",
-          commit: "b1905ee",
-          receiptId: "NN-SHARE-RECEIPT-20260707V48601",
-          proof: "Calm Executive Workspace Compression added, startup-safe render guards added, pushed to main, and live stamp verified."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11961,8 +12049,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v491",
-        detail: "Production Data Source Gate is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v492",
+        detail: "Live Backend API Skeleton is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11972,29 +12060,29 @@ function buildTrackerConfig() {
       {
         label: "03 Queued",
         value: "Batch in progress",
-        detail: "This five-version batch will be pushed and live-verified after v491 checks and visual QA pass."
+        detail: "This five-version batch will be pushed and live-verified after v496 checks and visual QA pass."
       },
       {
         label: "04 Share",
         value: "Batch close held",
-        detail: "Do not share v491 as complete until the release stamp and fresh build URL return this release."
+        detail: "Do not share v492 as complete until this batch reaches v496 and the live release stamp is verified."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v491 source change adds Production Data Source Gate."
+        detail: "v492 source change adds Live Backend API Skeleton."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v491 runs syntax, static, security, diff hygiene, marker scans, and visual QA before push."
+        detail: "v492 runs syntax, static, security, diff hygiene, and marker scans before the next release."
       },
       {
         label: "Share outcome",
-        value: "v491 held until live stamp",
-        detail: "The final batch release is pushed and live-stamp verified after visual QA passes."
+        value: "v492 held in batch",
+        detail: "The final batch release is pushed and live-stamp verified after v496 visual QA passes."
       }
     ],
     actions: [
@@ -12614,6 +12702,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Live backend API skeleton">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.liveBackendApiSkeleton.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.liveBackendApiSkeleton.verdict)} | ${tracker.releaseDoctor.liveBackendApiSkeleton.score}/100</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.liveBackendApiSkeleton.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.liveBackendApiSkeleton.endpoints.map((endpoint) => `
+          <article>
+            <span>${escapeHtml(endpoint.method)} ${escapeHtml(endpoint.route)} | ${endpoint.score}/100</span>
+            <strong>${escapeHtml(endpoint.label)}</strong>
+            <p>${escapeHtml(endpoint.owner)}: ${escapeHtml(endpoint.response)} Hold: ${escapeHtml(endpoint.hold)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -12771,6 +12873,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-visual-qa-ci-adapter>Copy visual CI</button>
         <button class="text-button" type="button" data-copy-payment-entitlement-proof-cabinet>Copy payment proof</button>
         <button class="text-button" type="button" data-copy-production-data-source-gate>Copy source gate</button>
+        <button class="text-button" type="button" data-copy-live-backend-api-skeleton>Copy backend API</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -12999,6 +13102,11 @@ function makeBuildTrackerBrief() {
     `Production source score: ${tracker.releaseDoctor.productionDataSourceGate.score}/100`,
     `Production source rule: ${tracker.releaseDoctor.productionDataSourceGate.rule}`,
     ...tracker.releaseDoctor.productionDataSourceGate.sources.map((source) => `- Production source ${source.label}: ${source.owner} | ${source.cadence} | ${source.receipt} | ${source.score}/100 | Proof ${source.proof} | Hold ${source.hold}`),
+    `Live backend API skeleton: ${tracker.releaseDoctor.liveBackendApiSkeleton.verdict}`,
+    `Live backend API receipt: ${tracker.releaseDoctor.liveBackendApiSkeleton.receiptId}`,
+    `Live backend API score: ${tracker.releaseDoctor.liveBackendApiSkeleton.score}/100`,
+    `Live backend API rule: ${tracker.releaseDoctor.liveBackendApiSkeleton.rule}`,
+    ...tracker.releaseDoctor.liveBackendApiSkeleton.endpoints.map((endpoint) => `- Backend endpoint ${endpoint.label}: ${endpoint.method} ${endpoint.route} | ${endpoint.owner} | Accepts ${endpoint.accepted} | Blocks ${endpoint.blocked} | Response ${endpoint.response} | Hold ${endpoint.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -13234,6 +13342,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.productionDataSourceGate.sequence.map((step) => `- Sequence: ${step}`),
     ...tracker.releaseDoctor.productionDataSourceGate.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.productionDataSourceGate.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Live Backend API Skeleton",
+    `- Receipt ID: ${tracker.releaseDoctor.liveBackendApiSkeleton.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.liveBackendApiSkeleton.verdict}`,
+    `- Score: ${tracker.releaseDoctor.liveBackendApiSkeleton.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.liveBackendApiSkeleton.rule}`,
+    ...tracker.releaseDoctor.liveBackendApiSkeleton.endpoints.map((endpoint) => `- ${endpoint.label}: ${endpoint.method} ${endpoint.route} | ${endpoint.owner} | Accepts ${endpoint.accepted} | Blocks ${endpoint.blocked} | Response ${endpoint.response} | Hold ${endpoint.hold}`),
+    ...tracker.releaseDoctor.liveBackendApiSkeleton.sequence.map((step) => `- Sequence: ${step}`),
+    ...tracker.releaseDoctor.liveBackendApiSkeleton.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.liveBackendApiSkeleton.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -13826,6 +13944,42 @@ function makeProductionDataSourceGateBrief() {
     ...gate.receiptFields.map((field) => `- ${field}`),
     "",
     "Production Data Source Gate is a source-readiness contract only. It does not fetch live AMFI or AMC data, certify source accuracy, approve investment action, process personal data, or replace reviewer signoff and correction controls."
+  ].join("\n");
+}
+
+function makeLiveBackendApiSkeletonBrief() {
+  const skeleton = buildTrackerConfig().releaseDoctor.liveBackendApiSkeleton;
+  return [
+    "# NiveshNadi Live Backend API Skeleton",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${skeleton.receiptId}`,
+    `Verdict: ${skeleton.verdict}`,
+    `Score: ${skeleton.score}/100`,
+    `Rule: ${skeleton.rule}`,
+    "",
+    "## Endpoint Contracts",
+    ...skeleton.endpoints.map((endpoint) => [
+      `- ${endpoint.label}`,
+      `  Method: ${endpoint.method}`,
+      `  Route: ${endpoint.route}`,
+      `  Owner: ${endpoint.owner}`,
+      `  Accepted fields: ${endpoint.accepted}`,
+      `  Blocked fields: ${endpoint.blocked}`,
+      `  Response: ${endpoint.response}`,
+      `  Hold: ${endpoint.hold}`,
+      `  Score: ${endpoint.score}/100`
+    ].join("\n")),
+    "",
+    "## Sequence",
+    ...skeleton.sequence.map((step) => `- ${step}`),
+    "",
+    "## No-Go Lines",
+    ...skeleton.noGoLines.map((line) => `- ${line}`),
+    "",
+    "## Receipt Fields",
+    ...skeleton.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Live Backend API Skeleton is an implementation contract only. It does not run a server, store accounts, process payments, ingest live source data, expose private data, or replace security and privacy review."
   ].join("\n");
 }
 
@@ -68016,6 +68170,13 @@ function bindEvents() {
     if (!copyProductionDataSourceGate) return;
     event.preventDefault();
     copyText(makeProductionDataSourceGateBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyLiveBackendApiSkeleton = event.target.closest("[data-copy-live-backend-api-skeleton]");
+    if (!copyLiveBackendApiSkeleton) return;
+    event.preventDefault();
+    copyText(makeLiveBackendApiSkeletonBrief());
   });
 
   document.addEventListener("click", (event) => {

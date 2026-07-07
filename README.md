@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v491 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v492 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Live Backend API Skeleton in the Build Tracker Release Doctor that turns source receipts, account fixtures, entitlement status, support-safe status, and release audit into small endpoint contracts with accepted fields, blocked fields, response states, rollback rules, no-go lines, receipt fields, and a copyable backend API handoff.
 - Production Data Source Gate in the Build Tracker Release Doctor that groups AMFI scheme/NAV, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, and benchmark/category proof into one source-readiness gate with owners, cadence, receipts, source dates, citation paths, freshness states, no-go lines, receipt fields, and a copyable source gate handoff before any 100% claim.
 - Payment Entitlement Proof Cabinet in the Build Tracker Release Doctor that groups checkout, invoice, webhook, entitlement grant, refund rollback, support closeout, and redaction/audit proof into one paid-access gate with owners, receipts, replay rules, hold lines, no-go lines, receipt fields, and a copyable payment proof handoff.
 - Visual QA CI Adapter in the Build Tracker Release Doctor that converts visual runner proof into CI job rows, route and viewport markers, artifact policy, failure routing, receipt fields, deletion receipts, release holds, and a copyable visual CI handoff before automated screenshot QA widens.

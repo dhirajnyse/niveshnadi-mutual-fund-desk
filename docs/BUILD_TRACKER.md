@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V487 Backend Account Smoke Harness
+
+V487 adds Backend Account Smoke Harness to the Build Tracker Release Doctor. It turns account vault, saved research, export, deletion, support repair, and entitlement joins into request/response smoke rows with idempotency rules, rollback proof, no-private-data boundaries, receipt fields, no-go lines, and a copyable account smoke handoff before account custody widens.
+
 ## V486 Calm Executive Workspace Compression
 
 V486 adds Calm Executive Workspace Compression to the Build Tracker Release Doctor. It creates a compact first-read layer for current answer, top blocker, next proof, 100% rule, priority bands, compression rules, and a copyable calm brief before the deeper proof rooms. It also adds startup-safe render guards so one optional room cannot freeze the workspace at placeholder text during visual QA.

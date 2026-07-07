@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v486-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v486 Calm Executive Workspace Compression";
+const DATA_VERSION = "20260707-v487-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v487 Backend Account Smoke Harness";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -11158,6 +11158,117 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    backendAccountSmokeHarness: {
+      label: "Backend account smoke harness",
+      verdict: "Harness before account cohort",
+      receiptId: ["NN", "BACKEND", "ACCOUNT", "SMOKE", "HARNESS", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 68,
+      rule: "Account storage can widen only when account vault, saved research, export, deletion, support repair, entitlement join, and audit log checks each have a request shape, expected response, idempotency rule, rollback proof, and no-private-data boundary.",
+      harnessRows: [
+        {
+          label: "Account vault open",
+          owner: "Account Platform",
+          route: "#account-vault",
+          method: "POST /account/session",
+          expected: "201 account shell with scoped vault id",
+          score: 72,
+          state: "Harness drafted",
+          idempotency: "Same consent key returns the same pending shell until accepted.",
+          rollback: "Expire the shell and keep a non-PII audit receipt.",
+          hold: "Hold if contact data, PAN, folio, CAS, bank data, or private notes enter the smoke payload."
+        },
+        {
+          label: "Saved research sync",
+          owner: "Research Memory",
+          route: "#research-memory",
+          method: "PUT /account/research-packets/{packet_id}",
+          expected: "200 saved packet metadata with redaction scan pass",
+          score: 66,
+          state: "Schema review",
+          idempotency: "Packet id plus release key replaces metadata without duplicating content.",
+          rollback: "Supersede packet metadata and keep the prior receipt hash.",
+          hold: "Hold if free-form private notes or client identifiers are copied into account custody."
+        },
+        {
+          label: "Export bundle",
+          owner: "Privacy Ops",
+          route: "#privacy-control",
+          method: "POST /account/export-jobs",
+          expected: "202 export job with manifest and delete-safe redaction state",
+          score: 70,
+          state: "Receipt ready",
+          idempotency: "Duplicate export request returns the active job until it closes.",
+          rollback: "Cancel pending export and keep cancellation receipt.",
+          hold: "Hold if export manifest lacks included, excluded, redacted, and retained fields."
+        },
+        {
+          label: "Deletion rehearsal",
+          owner: "Privacy Ops",
+          route: "#account-readiness",
+          method: "POST /account/delete-jobs",
+          expected: "202 deletion job with frozen sync and support-safe status",
+          score: 64,
+          state: "Support join needed",
+          idempotency: "Duplicate delete request keeps the same active deletion job.",
+          rollback: "Rollback only while job is pending and receipt says what stayed retained.",
+          hold: "Hold if deletion cannot freeze sync, notify support, and retain only allowed release proof."
+        },
+        {
+          label: "Entitlement join",
+          owner: "Billing Boundary",
+          route: "#entitlement-bridge",
+          method: "POST /billing/entitlements/reconcile",
+          expected: "200 entitlement state tied to account id and receipt id",
+          score: 61,
+          state: "Payment proof later",
+          idempotency: "Provider event id and account id prevent duplicate access grants.",
+          rollback: "Revoke entitlement and keep invoice/refund/support receipt links.",
+          hold: "Hold if webhook, invoice, refund, or support receipt cannot be replayed."
+        },
+        {
+          label: "Support repair",
+          owner: "Support Desk",
+          route: "#account-readiness",
+          method: "POST /support/account-repair",
+          expected: "202 repair case with public status and private payload exclusion",
+          score: 73,
+          state: "Queue contract visible",
+          idempotency: "Open repair reason returns active support case until closeout.",
+          rollback: "Close or supersede the repair case with support-safe wording.",
+          hold: "Hold if support sees payload bodies, payment tokens, credentials, or private investor notes."
+        }
+      ],
+      sequence: [
+        "Seed a non-PII test account shell, consent scope, release key, and idempotency key.",
+        "Run vault, saved research, export, deletion, entitlement, and support repair requests with expected responses.",
+        "Attach redaction scan, audit event, retry result, rollback receipt, and support-safe state to each row.",
+        "Close the harness only when pass/review/blocked counts and no-go rules are visible in the release doctor.",
+        "Keep every payload private-data light; store metadata, hashes, status, receipt ids, and owner decisions only."
+      ],
+      noGoLines: [
+        "No account cohort widens while any smoke row lacks request shape, expected response, idempotency, rollback, or no-private-data proof.",
+        "No account smoke row may store PAN, folio, CAS, bank details, credentials, contact data, payment tokens, transaction instructions, distributor client records, or private notes.",
+        "No export or deletion promise is production-ready until support-safe status, redaction scan, and retained-proof rules are replayable.",
+        "No entitlement access grant is trusted until account id, provider event id, invoice, refund path, support receipt, and reconciliation receipt agree."
+      ],
+      receiptFields: [
+        "backend_account_smoke_harness_id",
+        "release_key",
+        "account_test_fixture_id",
+        "request_method",
+        "request_route",
+        "idempotency_key",
+        "expected_response",
+        "actual_response_state",
+        "redaction_scan_id",
+        "audit_event_id",
+        "rollback_receipt_id",
+        "support_safe_status",
+        "owner",
+        "hold_condition",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -11177,8 +11288,8 @@ function buildTrackerConfig() {
         },
         {
           label: "Next proof",
-          value: "Backend account smoke harness",
-          detail: "Turn the account lifecycle smoke rows into request/response harness checks before storage widens."
+          value: "Support operations incident drill",
+          detail: "Rehearse support freezes, replies, recovery, and closeout before paid account support widens."
         },
         {
           label: "100% rule",
@@ -11327,15 +11438,9 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "Next batch ready",
-      rule: "Calm executive compression is visible; keep the next batch focused on backend account smoke harness, support incident drills, visual QA CI adapter, payment entitlement proof, and production data source gate.",
+      verdict: "Four releases remain",
+      rule: "Backend account smoke harness is visible; keep the remaining batch focused on support incident drills, visual QA CI adapter, payment entitlement proof, and production data source gate.",
       lanes: [
-        {
-          version: "v487",
-          label: "Backend account smoke harness",
-          route: "#backend-audit-receipts",
-          detail: "Turn account lifecycle smoke receipts into backend harness rows with request shapes, expected responses, idempotency, and rollback checks."
-        },
         {
           version: "v488",
           label: "Support operations incident drill",
@@ -11368,6 +11473,13 @@ function buildTrackerConfig() {
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         {
+          version: "v486",
+          key: "20260707-v486-01",
+          commit: "b1905ee",
+          receiptId: "NN-SHARE-RECEIPT-20260707V48601",
+          proof: "Calm Executive Workspace Compression added, startup-safe render guards added, pushed to main, and live stamp verified."
+        },
+        {
           version: "v485",
           key: "20260707-v485-01",
           commit: "40d0017",
@@ -11394,13 +11506,6 @@ function buildTrackerConfig() {
           commit: "7846397",
           receiptId: "NN-SHARE-RECEIPT-20260707V48201",
           proof: "Account Lifecycle Smoke Receipts added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v481",
-          key: "20260707-v481-01",
-          commit: "da2f65b",
-          receiptId: "NN-SHARE-RECEIPT-20260707V48101",
-          proof: "Launch Proof Dashboard Polish added and verified by syntax, static, security, diff hygiene, marker checks, browser visual QA, push, and live stamp."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11438,8 +11543,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v486",
-        detail: "Calm Executive Workspace Compression is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v487",
+        detail: "Backend Account Smoke Harness is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11448,29 +11553,29 @@ function buildTrackerConfig() {
       },
       {
         label: "03 Queued",
-        value: "Final batch push",
-        detail: "This five-version batch will be pushed and live-verified after v486 checks and visual QA pass."
+        value: "Batch in progress",
+        detail: "This five-version batch will be pushed and live-verified after v491 checks and visual QA pass."
       },
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v486 as complete until this release returns the active release stamp."
+        detail: "Do not share v487 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v486 source change adds Calm Executive Workspace Compression."
+        detail: "v487 source change adds Backend Account Smoke Harness."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v486 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v487 runs syntax, static, security, diff hygiene, and marker scans before the next release."
       },
       {
         label: "Share outcome",
-        value: "v486 held until live stamp",
+        value: "v487 held until live stamp",
         detail: "The final batch release is pushed and live-stamp verified after visual QA passes."
       }
     ],
@@ -12021,6 +12126,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Backend account smoke harness">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.backendAccountSmokeHarness.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.backendAccountSmokeHarness.verdict)} | ${tracker.releaseDoctor.backendAccountSmokeHarness.score}/100</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.backendAccountSmokeHarness.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.backendAccountSmokeHarness.harnessRows.map((row) => `
+          <article>
+            <span>${escapeHtml(row.owner)} | ${row.score}/100</span>
+            <strong>${escapeHtml(row.label)}</strong>
+            <p>${escapeHtml(row.method)} -> ${escapeHtml(row.expected)}. Hold: ${escapeHtml(row.hold)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -12173,6 +12292,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-visual-runner-result-archive>Copy runner results</button>
         <button class="text-button" type="button" data-copy-launch-proof-dashboard>Copy launch dashboard</button>
         <button class="text-button" type="button" data-copy-production-launch-proof-cabinet>Copy proof cabinet</button>
+        <button class="text-button" type="button" data-copy-backend-account-smoke-harness>Copy account smoke</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -12376,6 +12496,11 @@ function makeBuildTrackerBrief() {
     `Production launch cabinet score: ${tracker.releaseDoctor.productionLaunchProofCabinet.score}/100`,
     `Production launch cabinet rule: ${tracker.releaseDoctor.productionLaunchProofCabinet.rule}`,
     ...tracker.releaseDoctor.productionLaunchProofCabinet.gates.map((gate) => `- Production gate ${gate.label}: ${gate.owner} | ${gate.requiredReceipt} | ${gate.score}/100 | ${gate.state} | Hold ${gate.hold}`),
+    `Backend account smoke harness: ${tracker.releaseDoctor.backendAccountSmokeHarness.verdict}`,
+    `Backend account smoke receipt: ${tracker.releaseDoctor.backendAccountSmokeHarness.receiptId}`,
+    `Backend account smoke score: ${tracker.releaseDoctor.backendAccountSmokeHarness.score}/100`,
+    `Backend account smoke rule: ${tracker.releaseDoctor.backendAccountSmokeHarness.rule}`,
+    ...tracker.releaseDoctor.backendAccountSmokeHarness.harnessRows.map((row) => `- Account smoke ${row.label}: ${row.owner} | ${row.method} | ${row.expected} | ${row.score}/100 | ${row.state} | Hold ${row.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -12561,6 +12686,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.productionLaunchProofCabinet.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.productionLaunchProofCabinet.signoffRules.map((rule) => `- Signoff rule: ${rule}`),
     ...tracker.releaseDoctor.productionLaunchProofCabinet.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Backend Account Smoke Harness",
+    `- Receipt ID: ${tracker.releaseDoctor.backendAccountSmokeHarness.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.backendAccountSmokeHarness.verdict}`,
+    `- Score: ${tracker.releaseDoctor.backendAccountSmokeHarness.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.backendAccountSmokeHarness.rule}`,
+    ...tracker.releaseDoctor.backendAccountSmokeHarness.harnessRows.map((row) => `- ${row.label}: ${row.owner} | ${row.method} | ${row.expected} | ${row.score}/100 | ${row.state} | Idempotency ${row.idempotency} | Rollback ${row.rollback} | Hold ${row.hold}`),
+    ...tracker.releaseDoctor.backendAccountSmokeHarness.sequence.map((step) => `- Sequence: ${step}`),
+    ...tracker.releaseDoctor.backendAccountSmokeHarness.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.backendAccountSmokeHarness.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -12974,6 +13109,43 @@ function makeProductionLaunchProofCabinetBrief() {
     ...cabinet.receiptFields.map((field) => `- ${field}`),
     "",
     "Production Launch Proof Cabinet is a release-readiness contract only. It does not prove live data, create account custody, approve investing, execute transactions, certify payment readiness, or replace privacy/security/legal review."
+  ].join("\n");
+}
+
+function makeBackendAccountSmokeHarnessBrief() {
+  const harness = buildTrackerConfig().releaseDoctor.backendAccountSmokeHarness;
+  return [
+    "# NiveshNadi Backend Account Smoke Harness",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${harness.receiptId}`,
+    `Verdict: ${harness.verdict}`,
+    `Score: ${harness.score}/100`,
+    `Rule: ${harness.rule}`,
+    "",
+    "## Harness Rows",
+    ...harness.harnessRows.map((row) => [
+      `- ${row.label}`,
+      `  Owner: ${row.owner}`,
+      `  Route: ${row.route}`,
+      `  Request: ${row.method}`,
+      `  Expected: ${row.expected}`,
+      `  Score: ${row.score}/100`,
+      `  State: ${row.state}`,
+      `  Idempotency: ${row.idempotency}`,
+      `  Rollback: ${row.rollback}`,
+      `  Hold if: ${row.hold}`
+    ].join("\n")),
+    "",
+    "## Smoke Sequence",
+    ...harness.sequence.map((step) => `- ${step}`),
+    "",
+    "## No-Go Lines",
+    ...harness.noGoLines.map((line) => `- ${line}`),
+    "",
+    "## Receipt Fields",
+    ...harness.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Backend Account Smoke Harness is a release-readiness contract only. It does not create live account custody, store private investor data, approve investing, execute transactions, certify payment readiness, or replace privacy/security/legal review."
   ].join("\n");
 }
 
@@ -67129,6 +67301,13 @@ function bindEvents() {
     if (!copyProductionLaunchProofCabinet) return;
     event.preventDefault();
     copyText(makeProductionLaunchProofCabinetBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyBackendAccountSmokeHarness = event.target.closest("[data-copy-backend-account-smoke-harness]");
+    if (!copyBackendAccountSmokeHarness) return;
+    event.preventDefault();
+    copyText(makeBackendAccountSmokeHarnessBrief());
   });
 
   document.addEventListener("click", (event) => {

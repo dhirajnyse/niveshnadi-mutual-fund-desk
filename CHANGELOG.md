@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v487 Backend Account Smoke Harness
+
+- Version: `0.487.0`
+- Data version: `20260707-v487-01`
+- Changes made: Added Backend Account Smoke Harness to the Build Tracker Release Doctor with account vault, saved research, export, deletion, support repair, and entitlement smoke rows; request shapes; expected responses; idempotency rules; rollback proof; hold lines; no-private-data boundaries; sequence; no-go lines; receipt fields; dedicated copy action; Build Tracker and Release Doctor brief coverage; proof archive roll-forward; next-batch planner roll-forward; and release markers rolled forward to v487.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v487 marker scan.
+- Known risks: Backend Account Smoke Harness is a static release-readiness contract only; production still needs authenticated account APIs, durable storage, real export and deletion workers, payment entitlement services, support tooling, redaction scanners, privacy/security/legal review, deployment verification, and live backend tests.
+
 ## NiveshNadi Phase 1 v486 Calm Executive Workspace Compression
 
 - Version: `0.486.0`

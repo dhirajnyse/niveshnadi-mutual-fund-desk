@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v486 Calm Executive Workspace Compression
-20260707-v486-01
+NiveshNadi Phase 1 v487 Backend Account Smoke Harness
+20260707-v487-01

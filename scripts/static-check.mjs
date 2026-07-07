@@ -171,6 +171,7 @@ assert(app.includes("function renderMemoryCapsule") && app.includes("function ma
 assert(app.includes("function renderBuildTracker") && app.includes("function makeBuildTrackerBrief"), "app.js is missing Nadi Build Tracker behavior.");
 assert(app.includes("function safeAppStep") && app.includes("function recordStartupIssue") && app.includes("render all"), "app.js is missing startup guard rendering.");
 assert(app.includes("executiveCalmCompression") && app.includes("release-doctor-compression") && app.includes("function makeCalmExecutiveCompressionBrief") && app.includes("data-copy-calm-executive-compression") && styles.includes(".release-doctor-compression"), "app/styles are missing v486 Calm Executive Workspace Compression.");
+assert(app.includes("backendAccountSmokeHarness") && app.includes("function makeBackendAccountSmokeHarnessBrief") && app.includes("data-copy-backend-account-smoke-harness"), "app.js is missing v487 Backend Account Smoke Harness.");
 assert(app.includes("visualRunnerResultArchive") && app.includes("productionLaunchProofCabinet"), "app.js is missing v484-v485 release doctor proof archives.");
 assert(app.includes("function visualRegressionRunnerEnvelopeRows") && !app.includes("resultRows: visualRegressionRunnerContract.runEnvelope"), "app.js has an unsafe visual runner sibling-object reference.");
 assert(app.includes("function renderBuildPhasesRoom") && app.includes("function makeBuildPhasesBrief") && app.includes("buildPhaseGridMarkup"), "app.js is missing Nadi Build Phases Room behavior.");

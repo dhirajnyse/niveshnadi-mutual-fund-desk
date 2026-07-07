@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v503 Backend CI Proof Harness
+
+- Version: `0.503.0`
+- Data version: `20260708-v503-01`
+- Changes made: Added Backend CI Proof Harness to the Build Tracker Release Doctor with unit contract, fixture replay, webhook replay, source-worker replay, no-private-data scan, smoke artifact, release-stamp, rollback, artifact-retention, and merge-hold lanes; operating rules; no-go lines; receipt fields; dedicated copy action; Build Tracker and Release Doctor brief coverage; proof archive roll-forward with v502 commit; next-batch planner roll-forward to v504-v508; and release markers rolled forward to v503.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v503 marker scan.
+- Known risks: Backend CI Proof Harness is a static CI contract only; it does not run a real backend pipeline, certify provider integrations, deploy environments, store private data, or approve production readiness.
+
 ## NiveshNadi Phase 1 v502 Backend Repository Handoff Pack
 
 - Version: `0.502.0`

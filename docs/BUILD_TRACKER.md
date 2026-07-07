@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V503 Backend CI Proof Harness
+
+V503 adds Backend CI Proof Harness to the Build Tracker Release Doctor. It defines unit contract, fixture replay, webhook replay, source-worker replay, no-private-data scan, smoke artifact, release-stamp, rollback, artifact-retention, and merge-hold checks before backend work is trusted.
+
 ## V502 Backend Repository Handoff Pack
 
 V502 adds Backend Repository Handoff Pack to the Build Tracker Release Doctor. It turns accepted frontend proof contracts into a private-repo opening packet with route skeletons, issue templates, fixture starter kit, command ledger, secret boundaries, rollback paths, no-private-data rules, and a copyable repo handoff brief before backend work starts.

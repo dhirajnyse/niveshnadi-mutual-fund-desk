@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v502-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v502 Backend Repository Handoff Pack";
+const DATA_VERSION = "20260708-v503-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v503 Backend CI Proof Harness";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -12744,6 +12744,102 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    backendCiProofHarness: {
+      label: "Backend CI proof harness",
+      verdict: "Merge gate contract ready",
+      receiptId: ["NN", "BACKEND", "CI", "PROOF", "HARNESS", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 66,
+      rule: "The backend repository should not merge production-adjacent work until unit, fixture, webhook, source-worker, no-private-data, smoke, artifact, and release-stamp checks produce retained receipts.",
+      lanes: [
+        {
+          label: "Unit contract suite",
+          owner: "Engineering",
+          method: "CI",
+          route: "ci.unit-contracts",
+          proof: "Run route and service unit tests for source receipts, account fixtures, entitlements, support status, payment events, and release audit.",
+          readyWhen: "Ready when each service fails closed on missing owner, missing release key, invalid receipt, and blocked private fields.",
+          hold: "Hold if any endpoint can pass without owner, receipt id, idempotency key, or no-private-data boundary.",
+          score: 68
+        },
+        {
+          label: "Fixture replay suite",
+          owner: "QA desk",
+          method: "CI",
+          route: "ci.fixture-replay",
+          proof: "Replay account create, save research, export, delete, entitlement join, source receipt, support closeout, and release audit fixtures.",
+          readyWhen: "Ready when deterministic fixture ids produce expected pass, fail, rollback, delete, and retained-proof receipts.",
+          hold: "Hold if fixture replay depends on screenshots, browser-local state, manual spreadsheets, support memory, or private sample data.",
+          score: 65
+        },
+        {
+          label: "Webhook replay suite",
+          owner: "Billing boundary",
+          method: "CI",
+          route: "ci.webhook-replay",
+          proof: "Replay signed, duplicate, out-of-order, bad-signature, refund, dispute, and dead-letter payment events without exposing raw payloads.",
+          readyWhen: "Ready when duplicate ids reuse prior decisions, bad signatures dead-letter, refunds rollback entitlements, and artifacts are redacted.",
+          hold: "Hold if duplicate events double-grant access, failed events disappear, or raw webhook bodies enter logs or artifacts.",
+          score: 63
+        },
+        {
+          label: "Source worker suite",
+          owner: "Source platform",
+          method: "CI",
+          route: "ci.source-worker",
+          proof: "Replay fetch envelope, checksum, freshness, parser quarantine, failed-run recovery, reviewer release, and rollback binder tests.",
+          readyWhen: "Ready when missing source date, low parser confidence, changed checksum, or failed retry cannot update accepted facts.",
+          hold: "Hold if a stale or low-confidence source artifact can reach screener, evidence, compare, or memo surfaces.",
+          score: 64
+        },
+        {
+          label: "No-private-data scan",
+          owner: "Security review",
+          method: "CI",
+          route: "ci.no-private-data",
+          proof: "Scan fixtures, docs, logs, copied briefs, snapshots, and response examples for blocked private fields and secret patterns.",
+          readyWhen: "Ready when every CI artifact records scan id, match count, owner, accepted exclusions, and deletion rule.",
+          hold: "Hold if PAN, folio, CAS, bank, card, UPI, contact, credential, provider secret, or private note appears in any artifact.",
+          score: 69
+        },
+        {
+          label: "Smoke artifact gate",
+          owner: "Release desk",
+          method: "CI",
+          route: "ci.smoke-artifacts",
+          proof: "Publish build stamp, health route, smoke route receipts, artifact manifest, known-risk line, and release hold state for every merge.",
+          readyWhen: "Ready when CI artifacts prove version, release key, routes checked, logs redacted, rollback command, and release hold decision.",
+          hold: "Hold if CI passes without retained artifacts, redaction scan, release stamp, or known-risk summary.",
+          score: 67
+        }
+      ],
+      operatingRules: [
+        "Every backend merge must produce a receipt bundle, not only a green status badge.",
+        "Unit tests prove fail-closed behavior before fixture or smoke tests can be trusted.",
+        "Fixture replay must use deterministic identity-light data and expected receipt ids.",
+        "Webhook and source-worker CI must replay failure states, duplicates, stale inputs, rollback, and dead-letter paths.",
+        "No-private-data scan blocks logs, fixtures, snapshots, docs, and artifacts before merge."
+      ],
+      noGoLines: [
+        "No backend merge may pass if CI artifacts contain PAN, folio, CAS, bank, card, UPI, contact, credentials, provider secrets, private notes, or distributor-client data.",
+        "No endpoint may merge without unit fail-closed proof, fixture replay, redaction scan, rollback path, and release hold state.",
+        "No payment or source worker path may merge without duplicate, failure, dead-letter, quarantine, and rollback replay.",
+        "No green CI result may be treated as production readiness without deployment environment, retention execution, pilot copy, support, legal, privacy, and security proof."
+      ],
+      receiptFields: [
+        "backend_ci_proof_harness_id",
+        "release_key",
+        "unit_contract_suite_id",
+        "fixture_replay_suite_id",
+        "webhook_replay_suite_id",
+        "source_worker_suite_id",
+        "no_private_data_scan_id",
+        "smoke_artifact_manifest_id",
+        "artifact_retention_rule",
+        "rollback_command",
+        "release_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -12914,14 +13010,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Backend repository handoff opens the private-build lane; next releases should add CI, deployment, retention, pilot invite, and support dry-run proof.",
+      rule: "Backend CI proof harness gives the private repo a merge gate; next releases should add deployment, retention, pilot invite, support dry-run, and cohort ledger proof.",
       lanes: [
-        {
-          version: "v503",
-          label: "Backend CI proof harness",
-          route: "#backend-audit-receipts",
-          detail: "Add a CI contract for unit, fixture, webhook, source-worker, no-private-data, and smoke-test gates before backend merge."
-        },
         {
           version: "v504",
           label: "Deployment environment readiness map",
@@ -12945,6 +13035,12 @@ function buildTrackerConfig() {
           label: "Pilot support dry run board",
           route: "#paid-beta-support-ledger",
           detail: "Rehearse support replies, escalation owners, refund stop, account hold, source correction, and cohort pause before founder invites widen."
+        },
+        {
+          version: "v508",
+          label: "Founder beta cohort ledger",
+          route: "#founder-cohort-control-room",
+          detail: "Track named cohort cap, receipt family, invite state, support capacity, refund stop, and expansion no-go before pilot widening."
         }
       ]
     },
@@ -12953,6 +13049,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v502",
+          key: "20260708-v502-01",
+          commit: "4f866e1",
+          receiptId: "NN-SHARE-RECEIPT-20260708V50201",
+          proof: "Backend Repository Handoff Pack added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v501",
           key: "20260708-v501-01",
@@ -12980,13 +13083,6 @@ function buildTrackerConfig() {
           commit: "ea3a2d3",
           receiptId: "NN-SHARE-RECEIPT-20260708V49801",
           proof: "Source Fetcher Proof Worker added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v497",
-          key: "20260708-v497-01",
-          commit: "9239425",
-          receiptId: "NN-SHARE-RECEIPT-20260708V49701",
-          proof: "Production Backend Starter Service added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -13024,13 +13120,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v502",
-        detail: "Backend Repository Handoff Pack is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v503",
+        detail: "Backend CI Proof Harness is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v502 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v503 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -13039,24 +13135,24 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v502 held until live stamp",
-        detail: "Do not share v502 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v503 held until live stamp",
+        detail: "Do not share v503 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v502 source change",
-        detail: "Backend Repository Handoff Pack turns accepted static contracts into a private-repo opening packet with file map, issue templates, fixtures, commands, and secret boundaries."
+        value: "v503 source change",
+        detail: "Backend CI Proof Harness names unit, fixture, webhook, source-worker, no-private-data, smoke, artifact, and release-stamp gates before backend merge."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v502 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v503 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v502 held until live stamp",
+        value: "v503 held until live stamp",
         detail: "The batch release is share-ready only after v506 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
@@ -13772,6 +13868,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.accountSupportOperationsConsole, "Account support operations console")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.liveBetaPilotAudit, "Live beta pilot audit")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.backendRepositoryHandoffPack, "Backend repository handoff pack")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.backendCiProofHarness, "Backend CI proof harness")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -13940,6 +14037,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-account-support-operations-console>Copy support console</button>
         <button class="text-button" type="button" data-copy-live-beta-pilot-audit>Copy pilot audit</button>
         <button class="text-button" type="button" data-copy-backend-repository-handoff-pack>Copy repo handoff</button>
+        <button class="text-button" type="button" data-copy-backend-ci-proof-harness>Copy CI harness</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -14223,6 +14321,11 @@ function makeBuildTrackerBrief() {
     `Backend repository handoff score: ${tracker.releaseDoctor.backendRepositoryHandoffPack.score}/100`,
     `Backend repository handoff rule: ${tracker.releaseDoctor.backendRepositoryHandoffPack.rule}`,
     ...tracker.releaseDoctor.backendRepositoryHandoffPack.lanes.map((lane) => `- Repository handoff ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Backend CI proof harness: ${tracker.releaseDoctor.backendCiProofHarness.verdict}`,
+    `Backend CI harness receipt: ${tracker.releaseDoctor.backendCiProofHarness.receiptId}`,
+    `Backend CI harness score: ${tracker.releaseDoctor.backendCiProofHarness.score}/100`,
+    `Backend CI harness rule: ${tracker.releaseDoctor.backendCiProofHarness.rule}`,
+    ...tracker.releaseDoctor.backendCiProofHarness.lanes.map((lane) => `- Backend CI ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -14568,6 +14671,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.backendRepositoryHandoffPack.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.backendRepositoryHandoffPack.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.backendRepositoryHandoffPack.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Backend CI Proof Harness",
+    `- Receipt ID: ${tracker.releaseDoctor.backendCiProofHarness.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.backendCiProofHarness.verdict}`,
+    `- Score: ${tracker.releaseDoctor.backendCiProofHarness.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.backendCiProofHarness.rule}`,
+    ...tracker.releaseDoctor.backendCiProofHarness.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.backendCiProofHarness.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.backendCiProofHarness.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.backendCiProofHarness.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -15420,6 +15533,14 @@ function makeBackendRepositoryHandoffPackBrief() {
     "Backend Repository Handoff Pack",
     buildTrackerConfig().releaseDoctor.backendRepositoryHandoffPack,
     "Backend Repository Handoff Pack is a static private-repo opening packet only. It does not create the repository, implement backend services, configure secrets, run CI, deploy environments, store private data, or approve paid beta launch."
+  );
+}
+
+function makeBackendCiProofHarnessBrief() {
+  return makeOperationalProofBrief(
+    "Backend CI Proof Harness",
+    buildTrackerConfig().releaseDoctor.backendCiProofHarness,
+    "Backend CI Proof Harness is a static CI contract only. It does not run a real backend pipeline, certify provider integrations, deploy environments, store private data, or approve production readiness."
   );
 }
 
@@ -69687,6 +69808,13 @@ function bindEvents() {
     if (!copyBackendRepositoryHandoffPack) return;
     event.preventDefault();
     copyText(makeBackendRepositoryHandoffPackBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyBackendCiProofHarness = event.target.closest("[data-copy-backend-ci-proof-harness]");
+    if (!copyBackendCiProofHarness) return;
+    event.preventDefault();
+    copyText(makeBackendCiProofHarnessBrief());
   });
 
   document.addEventListener("click", (event) => {

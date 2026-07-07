@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v487 Backend Account Smoke Harness
-20260707-v487-01
+NiveshNadi Phase 1 v488 Support Operations Incident Drill
+20260707-v488-01

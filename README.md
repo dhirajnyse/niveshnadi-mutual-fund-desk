@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v487 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v488 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Support Operations Incident Drill in the Build Tracker Release Doctor that rehearses private-data fear, deletion dispute, entitlement mismatch, stale support queue, source correction, and refund confusion incidents with freeze commands, support-safe replies, recovery receipts, closeout rules, no-go lines, receipt fields, and a copyable support drill handoff.
 - Backend Account Smoke Harness in the Build Tracker Release Doctor that turns account vault, saved research, export, deletion, support repair, and entitlement joins into request/response smoke rows with idempotency, rollback, no-private-data boundaries, receipt fields, no-go lines, and a copyable account smoke handoff before account custody widens.
 - Calm Executive Workspace Compression in the Build Tracker Release Doctor that adds a compact first-read layer for current answer, top blocker, next proof, 100% rule, priority bands, compression rules, and a copyable calm brief before the deeper proof rooms, with startup-safe render guards so one optional room cannot freeze the workspace at placeholders.
 - Production Launch Proof Cabinet in the Build Tracker Release Doctor that groups live data, account custody, payment, legal, security, support, visual QA, and founder signoff gates with owners, required receipts, hold lines, signoff rules, receipt fields, and a copyable launch cabinet handoff.

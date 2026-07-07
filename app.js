@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v487-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v487 Backend Account Smoke Harness";
+const DATA_VERSION = "20260707-v488-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v488 Support Operations Incident Drill";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -11269,6 +11269,117 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    supportOperationsIncidentDrill: {
+      label: "Support operations incident drill",
+      verdict: "Freeze before reply",
+      receiptId: ["NN", "SUPPORT", "OPERATIONS", "INCIDENT", "DRILL", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 71,
+      rule: "Support can widen only when privacy exposure, deletion dispute, entitlement mismatch, stale queue, source correction, and refund confusion incidents each have one freeze command, one support-safe reply, one owner route, one recovery receipt, and one closeout rule.",
+      incidents: [
+        {
+          label: "Private data exposure fear",
+          owner: "Support Desk",
+          severity: "High",
+          route: "#privacy-control",
+          trigger: "User worries PAN, folio, CAS, contact, bank, or private note data was captured.",
+          freeze: "Freeze account sync and suppress copied support payloads.",
+          reply: "Confirm excluded data categories and offer export/delete proof route.",
+          recovery: "Run redaction scan and attach privacy-safe incident receipt.",
+          closeout: "Close only after user-visible boundary and internal retained-proof receipt agree.",
+          score: 74
+        },
+        {
+          label: "Deletion dispute",
+          owner: "Privacy Ops",
+          severity: "High",
+          route: "#account-readiness",
+          trigger: "User says a deleted packet, memo, or review record still appears.",
+          freeze: "Stop sync, pause support edits, and lock the object family.",
+          reply: "Use support-safe status only; do not expose payload bodies.",
+          recovery: "Replay deletion job, retained-proof receipt, and supersede receipt.",
+          closeout: "Close when retained fields are named and deleted fields are absent.",
+          score: 67
+        },
+        {
+          label: "Entitlement mismatch",
+          owner: "Billing Boundary",
+          severity: "Medium",
+          route: "#entitlement-bridge",
+          trigger: "Paid user cannot access, unpaid user sees paid state, or refund changes access.",
+          freeze: "Freeze access change until provider event, invoice, refund, and support receipt match.",
+          reply: "Say access is under receipt review; avoid payment-detail exposure.",
+          recovery: "Replay provider event id, account id, entitlement state, and support case.",
+          closeout: "Close after entitlement, invoice/refund, support note, and audit event agree.",
+          score: 69
+        },
+        {
+          label: "Support queue stale",
+          owner: "Support Desk",
+          severity: "Medium",
+          route: "#account-readiness",
+          trigger: "Case age crosses SLA or no owner has acknowledged the queue.",
+          freeze: "Stop widening paid cohort until oldest case has owner and next reply.",
+          reply: "Use a short acknowledgement and a real next review window.",
+          recovery: "Attach owner, age band, escalation route, reply receipt, and closeout timer.",
+          closeout: "Close only after the queue returns below the founder-reviewed ceiling.",
+          score: 72
+        },
+        {
+          label: "Source correction support",
+          owner: "Source Desk",
+          severity: "Medium",
+          route: "#correction-notice",
+          trigger: "Investor asks why a visible claim changed after source refresh.",
+          freeze: "Freeze stale claim surface and route to correction notice.",
+          reply: "Explain source update without advice, recommendation, or return language.",
+          recovery: "Attach source receipt, correction notice, reviewer signoff, and rollback proof.",
+          closeout: "Close when public wording, support wording, and reviewer receipt match.",
+          score: 76
+        },
+        {
+          label: "Refund confusion",
+          owner: "Billing Support",
+          severity: "High",
+          route: "#payment-readiness",
+          trigger: "User asks for refund, cancellation, entitlement rollback, or paid access removal.",
+          freeze: "Pause new charges and entitlement changes until refund path is visible.",
+          reply: "State the refund route and next support step without exposing payment tokens.",
+          recovery: "Replay invoice, refund, entitlement revocation, and support closeout receipts.",
+          closeout: "Close after refund state, entitlement state, and user-facing support copy agree.",
+          score: 66
+        }
+      ],
+      sequence: [
+        "Name the incident, severity, owner, affected route, and release key before replying.",
+        "Apply the freeze command before any support copy, payment change, account sync, or source-surface update widens.",
+        "Use only support-safe wording and metadata; never paste payload bodies, payment tokens, private notes, PAN, folio, CAS, bank, contact, or credential data.",
+        "Replay recovery evidence and attach owner, route, receipt id, and closeout timer.",
+        "Close only when support-safe reply, internal proof, user-visible state, and no-go line agree."
+      ],
+      noGoLines: [
+        "No support incident may close without owner, severity, freeze command, support-safe reply, recovery receipt, and closeout rule.",
+        "No payment, entitlement, account, source, or deletion state changes while support incident proof is missing.",
+        "No support reply may include investment advice, transaction instruction, guarantee, private payload body, credential, payment token, PAN, folio, CAS, bank, contact, or private-note data.",
+        "No paid cohort widens while high-severity incidents are open or queue age exceeds founder-reviewed capacity."
+      ],
+      receiptFields: [
+        "support_operations_incident_drill_id",
+        "release_key",
+        "incident_label",
+        "severity",
+        "owner",
+        "affected_route",
+        "trigger",
+        "freeze_command",
+        "support_safe_reply_id",
+        "recovery_receipt_id",
+        "closeout_rule",
+        "queue_age_band",
+        "escalation_route",
+        "no_go_state",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -11288,8 +11399,8 @@ function buildTrackerConfig() {
         },
         {
           label: "Next proof",
-          value: "Support operations incident drill",
-          detail: "Rehearse support freezes, replies, recovery, and closeout before paid account support widens."
+          value: "Visual QA CI adapter",
+          detail: "Turn visual runner evidence into CI-ready artifacts, failure routing, and release holds."
         },
         {
           label: "100% rule",
@@ -11438,15 +11549,9 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "Four releases remain",
-      rule: "Backend account smoke harness is visible; keep the remaining batch focused on support incident drills, visual QA CI adapter, payment entitlement proof, and production data source gate.",
+      verdict: "Three releases remain",
+      rule: "Support incident drills are visible; keep the remaining batch focused on visual QA CI adapter, payment entitlement proof, and production data source gate.",
       lanes: [
-        {
-          version: "v488",
-          label: "Support operations incident drill",
-          route: "#account-readiness",
-          detail: "Rehearse private-data exposure, stale support queue, disputed deletion, and entitlement mismatch incidents before paid support widens."
-        },
         {
           version: "v489",
           label: "Visual QA CI adapter",
@@ -11472,6 +11577,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v487",
+          key: "20260707-v487-01",
+          commit: "6f96990",
+          receiptId: "NN-SHARE-RECEIPT-20260707V48701",
+          proof: "Backend Account Smoke Harness added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v486",
           key: "20260707-v486-01",
@@ -11499,13 +11611,6 @@ function buildTrackerConfig() {
           commit: "131b9c0",
           receiptId: "NN-SHARE-RECEIPT-20260707V48301",
           proof: "Support Case Queue Telemetry added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v482",
-          key: "20260707-v482-01",
-          commit: "7846397",
-          receiptId: "NN-SHARE-RECEIPT-20260707V48201",
-          proof: "Account Lifecycle Smoke Receipts added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11543,8 +11648,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v487",
-        detail: "Backend Account Smoke Harness is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v488",
+        detail: "Support Operations Incident Drill is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11559,23 +11664,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v487 as complete until this release returns the active release stamp."
+        detail: "Do not share v488 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v487 source change adds Backend Account Smoke Harness."
+        detail: "v488 source change adds Support Operations Incident Drill."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v487 runs syntax, static, security, diff hygiene, and marker scans before the next release."
+        detail: "v488 runs syntax, static, security, diff hygiene, and marker scans before the next release."
       },
       {
         label: "Share outcome",
-        value: "v487 held until live stamp",
+        value: "v488 held until live stamp",
         detail: "The final batch release is pushed and live-stamp verified after visual QA passes."
       }
     ],
@@ -12140,6 +12245,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Support operations incident drill">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.supportOperationsIncidentDrill.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.supportOperationsIncidentDrill.verdict)} | ${tracker.releaseDoctor.supportOperationsIncidentDrill.score}/100</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.supportOperationsIncidentDrill.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.supportOperationsIncidentDrill.incidents.map((incident) => `
+          <article>
+            <span>${escapeHtml(incident.severity)} | ${escapeHtml(incident.owner)}</span>
+            <strong>${escapeHtml(incident.label)}</strong>
+            <p>${escapeHtml(incident.freeze)} Reply: ${escapeHtml(incident.reply)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -12293,6 +12412,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-launch-proof-dashboard>Copy launch dashboard</button>
         <button class="text-button" type="button" data-copy-production-launch-proof-cabinet>Copy proof cabinet</button>
         <button class="text-button" type="button" data-copy-backend-account-smoke-harness>Copy account smoke</button>
+        <button class="text-button" type="button" data-copy-support-operations-incident-drill>Copy support drill</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -12501,6 +12621,11 @@ function makeBuildTrackerBrief() {
     `Backend account smoke score: ${tracker.releaseDoctor.backendAccountSmokeHarness.score}/100`,
     `Backend account smoke rule: ${tracker.releaseDoctor.backendAccountSmokeHarness.rule}`,
     ...tracker.releaseDoctor.backendAccountSmokeHarness.harnessRows.map((row) => `- Account smoke ${row.label}: ${row.owner} | ${row.method} | ${row.expected} | ${row.score}/100 | ${row.state} | Hold ${row.hold}`),
+    `Support operations incident drill: ${tracker.releaseDoctor.supportOperationsIncidentDrill.verdict}`,
+    `Support operations incident receipt: ${tracker.releaseDoctor.supportOperationsIncidentDrill.receiptId}`,
+    `Support operations incident score: ${tracker.releaseDoctor.supportOperationsIncidentDrill.score}/100`,
+    `Support operations incident rule: ${tracker.releaseDoctor.supportOperationsIncidentDrill.rule}`,
+    ...tracker.releaseDoctor.supportOperationsIncidentDrill.incidents.map((incident) => `- Support incident ${incident.label}: ${incident.severity} | ${incident.owner} | Trigger ${incident.trigger} | Freeze ${incident.freeze} | Recovery ${incident.recovery}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -12696,6 +12821,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.backendAccountSmokeHarness.sequence.map((step) => `- Sequence: ${step}`),
     ...tracker.releaseDoctor.backendAccountSmokeHarness.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.backendAccountSmokeHarness.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Support Operations Incident Drill",
+    `- Receipt ID: ${tracker.releaseDoctor.supportOperationsIncidentDrill.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.supportOperationsIncidentDrill.verdict}`,
+    `- Score: ${tracker.releaseDoctor.supportOperationsIncidentDrill.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.supportOperationsIncidentDrill.rule}`,
+    ...tracker.releaseDoctor.supportOperationsIncidentDrill.incidents.map((incident) => `- ${incident.label}: ${incident.severity} | ${incident.owner} | Trigger ${incident.trigger} | Freeze ${incident.freeze} | Reply ${incident.reply} | Recovery ${incident.recovery} | Closeout ${incident.closeout}`),
+    ...tracker.releaseDoctor.supportOperationsIncidentDrill.sequence.map((step) => `- Sequence: ${step}`),
+    ...tracker.releaseDoctor.supportOperationsIncidentDrill.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.supportOperationsIncidentDrill.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -13146,6 +13281,43 @@ function makeBackendAccountSmokeHarnessBrief() {
     ...harness.receiptFields.map((field) => `- ${field}`),
     "",
     "Backend Account Smoke Harness is a release-readiness contract only. It does not create live account custody, store private investor data, approve investing, execute transactions, certify payment readiness, or replace privacy/security/legal review."
+  ].join("\n");
+}
+
+function makeSupportOperationsIncidentDrillBrief() {
+  const drill = buildTrackerConfig().releaseDoctor.supportOperationsIncidentDrill;
+  return [
+    "# NiveshNadi Support Operations Incident Drill",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${drill.receiptId}`,
+    `Verdict: ${drill.verdict}`,
+    `Score: ${drill.score}/100`,
+    `Rule: ${drill.rule}`,
+    "",
+    "## Incident Drills",
+    ...drill.incidents.map((incident) => [
+      `- ${incident.label}`,
+      `  Owner: ${incident.owner}`,
+      `  Severity: ${incident.severity}`,
+      `  Route: ${incident.route}`,
+      `  Trigger: ${incident.trigger}`,
+      `  Freeze: ${incident.freeze}`,
+      `  Reply: ${incident.reply}`,
+      `  Recovery: ${incident.recovery}`,
+      `  Closeout: ${incident.closeout}`,
+      `  Score: ${incident.score}/100`
+    ].join("\n")),
+    "",
+    "## Drill Sequence",
+    ...drill.sequence.map((step) => `- ${step}`),
+    "",
+    "## No-Go Lines",
+    ...drill.noGoLines.map((line) => `- ${line}`),
+    "",
+    "## Receipt Fields",
+    ...drill.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Support Operations Incident Drill is an operations rehearsal only. It does not store private payloads, approve investment action, execute account changes, process refunds, certify legal/security readiness, or replace live support tooling."
   ].join("\n");
 }
 
@@ -67308,6 +67480,13 @@ function bindEvents() {
     if (!copyBackendAccountSmokeHarness) return;
     event.preventDefault();
     copyText(makeBackendAccountSmokeHarnessBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copySupportOperationsIncidentDrill = event.target.closest("[data-copy-support-operations-incident-drill]");
+    if (!copySupportOperationsIncidentDrill) return;
+    event.preventDefault();
+    copyText(makeSupportOperationsIncidentDrillBrief());
   });
 
   document.addEventListener("click", (event) => {

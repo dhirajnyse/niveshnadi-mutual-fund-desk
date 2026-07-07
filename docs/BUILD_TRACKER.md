@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V488 Support Operations Incident Drill
+
+V488 adds Support Operations Incident Drill to the Build Tracker Release Doctor. It rehearses private-data exposure fear, deletion dispute, entitlement mismatch, stale queue, source correction, and refund confusion incidents with freeze commands, support-safe replies, recovery receipts, closeout rules, no-go lines, receipt fields, and a copyable support drill handoff before paid support widens.
+
 ## V487 Backend Account Smoke Harness
 
 V487 adds Backend Account Smoke Harness to the Build Tracker Release Doctor. It turns account vault, saved research, export, deletion, support repair, and entitlement joins into request/response smoke rows with idempotency rules, rollback proof, no-private-data boundaries, receipt fields, no-go lines, and a copyable account smoke handoff before account custody widens.

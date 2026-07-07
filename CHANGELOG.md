@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v488 Support Operations Incident Drill
+
+- Version: `0.488.0`
+- Data version: `20260707-v488-01`
+- Changes made: Added Support Operations Incident Drill to the Build Tracker Release Doctor with private-data exposure fear, deletion dispute, entitlement mismatch, stale queue, source correction, and refund confusion incident rows; freeze commands; support-safe replies; recovery receipts; closeout rules; sequence; no-go lines; receipt fields; dedicated copy action; Build Tracker and Release Doctor brief coverage; proof archive roll-forward; next-batch planner roll-forward; and release markers rolled forward to v488.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v488 marker scan.
+- Known risks: Support Operations Incident Drill is a static operations rehearsal only; production still needs authenticated support tooling, real case queues, role permissions, incident automations, support SLAs, refund/payment integrations, redaction scanners, privacy/security/legal review, deployment verification, and live support tests.
+
 ## NiveshNadi Phase 1 v487 Backend Account Smoke Harness
 
 - Version: `0.487.0`

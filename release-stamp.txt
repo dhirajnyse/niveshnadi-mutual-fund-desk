@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v479 Support Safe Account Status Console
-20260707-v479-01
+NiveshNadi Phase 1 v480 Visual Regression Runner Contract
+20260707-v480-01

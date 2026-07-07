@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v480 Visual Regression Runner Contract
+
+- Version: `0.480.0`
+- Data version: `20260707-v480-01`
+- Changes made: Added Visual Regression Runner Contract to the Build Tracker Release Doctor with named route run envelopes, pass/hold rules, output states, final share gates, receipt fields, deletion proof, dedicated copy action, Release Doctor brief coverage, Build Tracker brief coverage, proof archive roll-forward, and release markers rolled forward to v480.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v480 marker scan.
+- Known risks: Visual regression runner contract is a static release QA contract only; production still needs an actual capture runner, screenshot hashing service, perceptual diff engine, CI integration, storage/deletion enforcement, reviewer workflow, privacy/security/legal review, and deployment verification.
+
 ## NiveshNadi Phase 1 v479 Support Safe Account Status Console
 
 - Version: `0.479.0`

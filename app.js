@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v479-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v479 Support Safe Account Status Console";
+const DATA_VERSION = "20260707-v480-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v480 Visual Regression Runner Contract";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v478 passed release checks on commit ed6183d. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v479 passed release checks on commit 840217b. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v478 local checks passed",
+      outcome: "Previous outcome: v479 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47801",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47901",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10829,6 +10829,104 @@ function buildTrackerConfig() {
         "Compare receipts are release QA proof only; they do not certify live data, account custody, payments, legal, privacy, or security readiness."
       ]
     },
+    visualRegressionRunnerContract: {
+      label: "Visual regression runner contract",
+      verdict: "Runner envelope ready",
+      receiptId: ["NN", "VISUAL", "RUNNER", "CONTRACT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      rule: "Run visual QA only inside a named envelope where route, viewport, DOM marker, release key, screenshot hash, diff score, console state, overflow result, retry state, reviewer state, and deletion receipt agree before the share gate opens.",
+      runEnvelope: [
+        {
+          label: "Desktop release desk",
+          runId: ["NN", "VISUAL", "RUNNER", "01", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+          route: "#build-tracker",
+          viewport: "1440 x 900",
+          marker: "release-doctor-lane",
+          threshold: "0.9% layout drift",
+          pass: "Pass only when Release Doctor, progress link, command capsule, side rail, score ring, and launch proof text remain readable without overlap.",
+          hold: "Hold if release marker, command capsule, side rail, progress lane, score ring, or launch proof text shifts into overlap."
+        },
+        {
+          label: "Account custody room",
+          runId: ["NN", "VISUAL", "RUNNER", "02", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+          route: "#account-readiness",
+          viewport: "900 x 1000",
+          marker: "account-data-grid",
+          threshold: "1.2% layout drift",
+          pass: "Pass only when custody, support, export, deletion, and schema cards wrap without clipped buttons or private-data wording drift.",
+          hold: "Hold if export, support, deletion, consent, or schema cards clip text, hide actions, or imply real data movement."
+        },
+        {
+          label: "Backend receipt room",
+          runId: ["NN", "VISUAL", "RUNNER", "03", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+          route: "#backend-audit-receipts",
+          viewport: "1280 x 900",
+          marker: "backend-source-receipt-job",
+          threshold: "1.0% layout drift",
+          pass: "Pass only when custody bridge, API readiness, owner audit, source receipt, and closeout cards stay separated.",
+          hold: "Hold if custody, source, owner audit, API, worker, or closeout receipt cards collide."
+        },
+        {
+          label: "Phone calm path",
+          runId: ["NN", "VISUAL", "RUNNER", "04", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+          route: "#main",
+          viewport: "390 x 844",
+          marker: "simple-room-guide",
+          threshold: "0 horizontal overflow",
+          pass: "Pass only when rail stays hidden, header controls remain tappable, first room text fits, and no horizontal scroll appears.",
+          hold: "Hold if rail appears, header controls become untappable, primary text clips, or horizontal scrolling appears."
+        }
+      ],
+      outputs: [
+        {
+          label: "Run result",
+          value: "pass, fail, or retry",
+          detail: "Every route produces one result with release key, route, viewport, marker, current hash, and comparison threshold."
+        },
+        {
+          label: "Console state",
+          value: "clean or held",
+          detail: "Uncaught runtime errors, stale release keys, blank screenshots, or missing route markers open a release hold."
+        },
+        {
+          label: "Overflow state",
+          value: "contained or held",
+          detail: "Mobile horizontal overflow, sticky-header overlap, score-ring collision, or clipped command controls block sharing."
+        },
+        {
+          label: "Deletion receipt",
+          value: "image removed",
+          detail: "Raw screenshot images are deleted after hash, route metadata, diff result, and reviewer state are retained."
+        }
+      ],
+      finalGate: [
+        "All runner rows pass or carry a human-reviewed waiver before the release share receipt is copied.",
+        "A retry can clear only stale cache, delayed render, or one-off capture timing; real overlap requires a code fix.",
+        "A private-data route keeps screenshot hash and metadata only; raw image and DOM text are deleted or excluded.",
+        "Runner receipt is release QA evidence only; it does not certify live data, account custody, payments, legal readiness, security posture, or investment suitability."
+      ],
+      receiptFields: [
+        "visual_runner_contract_id",
+        "release_key",
+        "route",
+        "viewport",
+        "dom_marker",
+        "baseline_hash",
+        "current_hash",
+        "diff_score",
+        "console_state",
+        "overflow_state",
+        "retry_state",
+        "reviewer_state",
+        "waiver_reason",
+        "delete_image_receipt_id",
+        "created_at"
+      ],
+      deletionProof: [
+        "Delete raw screenshot images after hash and comparison metadata are retained.",
+        "Exclude DOM dumps from account, support, payment, PAN, folio, CAS, contact, credential, or private-note routes.",
+        "Retain no visual artifact that contains private investor or account identifiers."
+      ]
+    },
     retentionHealthSummary: {
       label: "Retention health summary",
       verdict: "Five proof surfaces mapped",
@@ -10971,6 +11069,13 @@ function buildTrackerConfig() {
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         {
+          version: "v479",
+          key: "20260707-v479-01",
+          commit: "840217b",
+          receiptId: "NN-SHARE-RECEIPT-20260707V47901",
+          proof: "Support Safe Account Status Console added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
+        {
           version: "v478",
           key: "20260707-v478-01",
           commit: "ed6183d",
@@ -10997,13 +11102,6 @@ function buildTrackerConfig() {
           commit: "1ba68f5",
           receiptId: "NN-SHARE-RECEIPT-20260707V47501",
           proof: "Baseline Compare Automation added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v474",
-          key: "20260707-v474-01",
-          commit: "b83e91a",
-          receiptId: "NN-SHARE-RECEIPT-20260707V47401",
-          proof: "Support Case Audit added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11041,8 +11139,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v479",
-        detail: "Support Safe Account Status Console is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v480",
+        detail: "Visual Regression Runner Contract is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11057,23 +11155,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v479 as complete until this release returns the active release stamp."
+        detail: "Do not share v480 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v479 source change adds Support Safe Account Status Console."
+        detail: "v480 source change adds Visual Regression Runner Contract."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v479 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v480 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v479 held for batch deploy",
+        value: "v480 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v481."
       }
     ],
@@ -11508,6 +11606,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Visual regression runner contract">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.visualRegressionRunnerContract.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.visualRegressionRunnerContract.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.visualRegressionRunnerContract.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.visualRegressionRunnerContract.runEnvelope.map((run) => `
+          <article>
+            <span>${escapeHtml(run.route)} | ${escapeHtml(run.viewport)}</span>
+            <strong>${escapeHtml(run.label)}</strong>
+            <p>${escapeHtml(run.threshold)}. ${escapeHtml(run.pass)} Hold: ${escapeHtml(run.hold)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -11656,6 +11768,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-visual-regression-handoff>Copy visual handoff</button>
         <button class="text-button" type="button" data-copy-visual-qa-baseline-store>Copy baseline store</button>
         <button class="text-button" type="button" data-copy-baseline-compare-automation>Copy compare automation</button>
+        <button class="text-button" type="button" data-copy-visual-regression-runner-contract>Copy runner contract</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -11832,6 +11945,12 @@ function makeBuildTrackerBrief() {
     ...tracker.releaseDoctor.baselineCompareAutomation.runs.map((run) => `- Baseline compare ${run.label}: ${run.route} | ${run.viewport} | Threshold ${run.threshold} | Fail ${run.fail}`),
     ...tracker.releaseDoctor.baselineCompareAutomation.failureThresholds.map((rule) => `- Baseline compare failure threshold: ${rule}`),
     ...tracker.releaseDoctor.baselineCompareAutomation.retryRules.map((rule) => `- Baseline compare retry rule: ${rule}`),
+    `Visual regression runner contract: ${tracker.releaseDoctor.visualRegressionRunnerContract.verdict}`,
+    `Visual runner receipt: ${tracker.releaseDoctor.visualRegressionRunnerContract.receiptId}`,
+    `Visual runner rule: ${tracker.releaseDoctor.visualRegressionRunnerContract.rule}`,
+    ...tracker.releaseDoctor.visualRegressionRunnerContract.runEnvelope.map((run) => `- Visual runner ${run.label}: ${run.route} | ${run.viewport} | Marker ${run.marker} | Threshold ${run.threshold} | Pass ${run.pass} | Hold ${run.hold}`),
+    ...tracker.releaseDoctor.visualRegressionRunnerContract.outputs.map((output) => `- Visual runner output ${output.label}: ${output.value} | ${output.detail}`),
+    ...tracker.releaseDoctor.visualRegressionRunnerContract.finalGate.map((rule) => `- Visual runner final gate: ${rule}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -11968,6 +12087,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.baselineCompareAutomation.retryRules.map((rule) => `- Retry rule: ${rule}`),
     ...tracker.releaseDoctor.baselineCompareAutomation.receiptFields.map((field) => `- Receipt field: ${field}`),
     ...tracker.releaseDoctor.baselineCompareAutomation.deletionProof.map((rule) => `- Deletion proof: ${rule}`),
+    "",
+    "## Visual Regression Runner Contract",
+    `- Receipt ID: ${tracker.releaseDoctor.visualRegressionRunnerContract.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.visualRegressionRunnerContract.verdict}`,
+    `- Rule: ${tracker.releaseDoctor.visualRegressionRunnerContract.rule}`,
+    ...tracker.releaseDoctor.visualRegressionRunnerContract.runEnvelope.map((run) => `- ${run.label}: ${run.runId} | ${run.route} | ${run.viewport} | Marker ${run.marker} | Threshold ${run.threshold} | Pass ${run.pass} | Hold ${run.hold}`),
+    ...tracker.releaseDoctor.visualRegressionRunnerContract.outputs.map((output) => `- Output ${output.label}: ${output.value} | ${output.detail}`),
+    ...tracker.releaseDoctor.visualRegressionRunnerContract.finalGate.map((rule) => `- Final gate: ${rule}`),
+    ...tracker.releaseDoctor.visualRegressionRunnerContract.receiptFields.map((field) => `- Receipt field: ${field}`),
+    ...tracker.releaseDoctor.visualRegressionRunnerContract.deletionProof.map((rule) => `- Deletion proof: ${rule}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -12216,6 +12345,42 @@ function makeBaselineCompareAutomationBrief() {
     ...automation.deletionProof.map((rule) => `- ${rule}`),
     "",
     "Baseline Compare Automation is a release QA automation contract only. It does not retain private screenshots, prove live data, create account custody, approve investing, execute transactions, certify privacy/security/legal readiness, or replace human review of failures."
+  ].join("\n");
+}
+
+function makeVisualRegressionRunnerContractBrief() {
+  const runner = buildTrackerConfig().releaseDoctor.visualRegressionRunnerContract;
+  return [
+    "# NiveshNadi Visual Regression Runner Contract",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${runner.receiptId}`,
+    `Verdict: ${runner.verdict}`,
+    `Rule: ${runner.rule}`,
+    "",
+    "## Run Envelope",
+    ...runner.runEnvelope.map((run) => [
+      `- ${run.label}: ${run.runId}`,
+      `  Route: ${run.route}`,
+      `  Viewport: ${run.viewport}`,
+      `  DOM marker: ${run.marker}`,
+      `  Threshold: ${run.threshold}`,
+      `  Pass: ${run.pass}`,
+      `  Hold if: ${run.hold}`
+    ].join("\n")),
+    "",
+    "## Outputs",
+    ...runner.outputs.map((output) => `- ${output.label}: ${output.value} | ${output.detail}`),
+    "",
+    "## Final Gate",
+    ...runner.finalGate.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...runner.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## Deletion Proof",
+    ...runner.deletionProof.map((rule) => `- ${rule}`),
+    "",
+    "Visual Regression Runner Contract is a release QA runner contract only. It does not retain private screenshots, prove live data, create account custody, approve investing, execute transactions, certify privacy/security/legal readiness, or replace human review of failures."
   ].join("\n");
 }
 
@@ -66012,6 +66177,13 @@ function bindEvents() {
     if (!copyBaselineCompareAutomation) return;
     event.preventDefault();
     copyText(makeBaselineCompareAutomationBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyVisualRegressionRunnerContract = event.target.closest("[data-copy-visual-regression-runner-contract]");
+    if (!copyVisualRegressionRunnerContract) return;
+    event.preventDefault();
+    copyText(makeVisualRegressionRunnerContractBrief());
   });
 
   document.addEventListener("click", (event) => {

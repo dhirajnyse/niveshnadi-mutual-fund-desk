@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V480 Visual Regression Runner Contract
+
+V480 adds Visual Regression Runner Contract to the Build Tracker Release Doctor. It turns baseline comparison into route run envelopes, pass/hold rules, output states, final share gates, receipt fields, deletion proof, and a copyable runner contract so visual QA has a clear execution boundary before sharing.
+
 ## V479 Support Safe Account Status Console
 
 V479 adds Support Safe Account Status Console inside Account Readiness. It turns account support into public status rows, visible/hidden field policies, ticket links, escalation triggers, reply boundaries, receipt fields, no-go rules, and a copyable support handoff without exposing payload bodies or private identifiers.

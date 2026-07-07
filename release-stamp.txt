@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v497 Production Backend Starter Service
-20260708-v497-01
+NiveshNadi Phase 1 v498 Source Fetcher Proof Worker
+20260708-v498-01

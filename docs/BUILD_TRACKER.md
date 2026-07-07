@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V498 Source Fetcher Proof Worker
+
+V498 adds Source Fetcher Proof Worker to the Build Tracker Release Doctor. It rehearses source fetch envelopes, checksums, freshness comparison, parser quarantine, failed-run replay, reviewer release, rollback evidence, no-private-data rules, receipt fields, and a copyable source-worker handoff before live ingestion widens.
+
 ## V497 Production Backend Starter Service
 
 V497 adds Production Backend Starter Service to the Build Tracker Release Doctor. It defines source receipt, account fixture replay, entitlement state, support-safe status, and release audit endpoint boundaries with methods, routes, accepted proof, private-data blocks, operating rules, no-go lines, receipt fields, and a copyable backend-service handoff before runnable backend work widens.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v497-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v497 Production Backend Starter Service";
+const DATA_VERSION = "20260708-v498-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v498 Source Fetcher Proof Worker";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -12301,6 +12301,96 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    sourceFetcherProofWorker: {
+      label: "Source fetcher proof worker",
+      verdict: "Worker rehearsal ready",
+      receiptId: ["NN", "SOURCE", "FETCHER", "PROOF", "WORKER", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 61,
+      rule: "A source worker can widen only after it proves fetch envelope, checksum, parser quarantine, failed-run replay, reviewer signoff, and rollback evidence without pulling private investor data into the source pipeline.",
+      lanes: [
+        {
+          label: "Fetch envelope",
+          owner: "Source platform",
+          method: "JOB",
+          route: "source.fetch.envelope",
+          proof: "Create a job envelope for source family, source URL, source date, cadence, expected file type, and allowed parser.",
+          readyWhen: "Ready when every job stores source metadata, fetch status, retry state, timeout state, and no-private-data scan id.",
+          hold: "Hold if the worker accepts free-form uploads, unknown domains, credentials, personal identifiers, or payment payloads.",
+          score: 66
+        },
+        {
+          label: "Checksum and freshness",
+          owner: "Evidence desk",
+          method: "JOB",
+          route: "source.hash.freshness",
+          proof: "Hash source artifact bytes, source date, family id, parser version, and row count before any app surface updates.",
+          readyWhen: "Ready when checksum, source date, parser version, row count, freshness state, and previous hash comparison are visible.",
+          hold: "Hold if a changed artifact can overwrite current facts without checksum diff, reviewer queue, and affected-surface list.",
+          score: 64
+        },
+        {
+          label: "Parser quarantine",
+          owner: "Data parser",
+          method: "JOB",
+          route: "source.parser.quarantine",
+          proof: "Send stale, low-confidence, schema-drift, missing-date, or abnormal-row outputs into quarantine before fund cards update.",
+          readyWhen: "Ready when parser confidence, schema version, rejected rows, quarantine reason, and reviewer assignment are present.",
+          hold: "Hold if parser output with low confidence or missing source date reaches screener, evidence, compare, or memo rooms.",
+          score: 59
+        },
+        {
+          label: "Failed-run replay",
+          owner: "Worker operations",
+          method: "JOB",
+          route: "source.failed.replay",
+          proof: "Replay failed runs from the stored envelope with retry count, dead-letter reason, previous checksum, and recovery note.",
+          readyWhen: "Ready when retries are bounded, dead-letter state is visible, and recovery cannot silently mutate accepted source facts.",
+          hold: "Hold if retries loop forever, hide dead letters, or let failed parser output become accepted evidence.",
+          score: 58
+        },
+        {
+          label: "Reviewer release",
+          owner: "Reviewer workbench",
+          method: "JOB",
+          route: "source.reviewer.release",
+          proof: "Require reviewer signoff, correction notice, rollback binder, and release scope before quarantined rows return.",
+          readyWhen: "Ready when reviewer id, signoff state, release scope, rollback receipt, correction notice, and affected surfaces agree.",
+          hold: "Hold if a reviewer cannot see the changed rows, old values, new values, source date, citation path, and rollback path.",
+          score: 60
+        }
+      ],
+      operatingRules: [
+        "Fetch jobs must be source-family scoped and domain allowlisted before any parser runs.",
+        "Checksums are computed before parsing and compared before updating accepted source facts.",
+        "Parser confidence below threshold moves to quarantine, not to product cards.",
+        "Failed runs keep replay envelopes, dead-letter reasons, retry bounds, and recovery receipts.",
+        "Reviewer release requires correction notice, rollback binder, affected surfaces, and no-private-data scan."
+      ],
+      noGoLines: [
+        "No source worker may fetch from unknown domains or credential-protected private accounts.",
+        "No parser output may update fund facts without checksum, source date, citation path, parser confidence, and reviewer release state.",
+        "No failed source run may be hidden if it affects launch, memo, evidence, compare, or pricing surfaces.",
+        "No source artifact may carry PAN, folio, CAS, bank, card, contact, credential, distributor-client, or private-note data."
+      ],
+      receiptFields: [
+        "source_fetcher_proof_worker_id",
+        "release_key",
+        "source_family",
+        "source_url",
+        "source_date",
+        "fetch_status",
+        "file_hash",
+        "parser_version",
+        "parser_confidence",
+        "freshness_state",
+        "quarantine_reason",
+        "failed_run_replay_id",
+        "reviewer_signoff_id",
+        "rollback_binder_id",
+        "affected_surface_list",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -12471,14 +12561,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Production backend starter service opens the runnable-scaffold batch; next releases should add worker, webhook, support, pilot, and repository handoff proof.",
+      rule: "Source fetcher proof worker advances the runnable-scaffold batch; next releases should add webhook, support, pilot, repository, and CI handoff proof.",
       lanes: [
-        {
-          version: "v498",
-          label: "Source fetcher proof worker",
-          route: "#source-intake",
-          detail: "Turn source checksum contracts into a file-fetch, hash, quarantine, and reviewer-signoff worker rehearsal."
-        },
         {
           version: "v499",
           label: "Payment webhook verification lab",
@@ -12502,6 +12586,12 @@ function buildTrackerConfig() {
           label: "Backend repository handoff pack",
           route: "#backend-ticket-factory",
           detail: "Turn backend service, worker, webhook, support, and pilot contracts into a private-repo issue pack with route skeletons and check commands."
+        },
+        {
+          version: "v503",
+          label: "Backend CI proof harness",
+          route: "#backend-audit-receipts",
+          detail: "Add a CI contract for unit, fixture, webhook, source-worker, no-private-data, and smoke-test gates before backend merge."
         }
       ]
     },
@@ -12510,6 +12600,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v497",
+          key: "20260708-v497-01",
+          commit: "9239425",
+          receiptId: "NN-SHARE-RECEIPT-20260708V49701",
+          proof: "Production Backend Starter Service added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v496",
           key: "20260707-v496-01",
@@ -12537,13 +12634,6 @@ function buildTrackerConfig() {
           commit: "9c55bb0",
           receiptId: "NN-SHARE-RECEIPT-20260707V49301",
           proof: "Account Persistence Fixture Runner added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v492",
-          key: "20260707-v492-01",
-          commit: "7ce5685",
-          receiptId: "NN-SHARE-RECEIPT-20260707V49201",
-          proof: "Live Backend API Skeleton added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -12581,39 +12671,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v497",
-        detail: "Production Backend Starter Service is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v498",
+        detail: "Source Fetcher Proof Worker is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v497 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v498 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
-        value: "v498 next",
-        detail: "Source fetcher proof worker is queued after the backend service boundary."
+        value: "v499 next",
+        detail: "Payment webhook verification lab is queued after the source worker proof."
       },
       {
         label: "04 Share",
-        value: "v497 held until live stamp",
-        detail: "Do not share v497 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v498 held until live stamp",
+        detail: "Do not share v498 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v497 source change",
-        detail: "Production Backend Starter Service adds a deterministic endpoint boundary for source receipts, account fixtures, entitlement state, support-safe status, and release audit proof."
+        value: "v498 source change",
+        detail: "Source Fetcher Proof Worker adds fetch envelope, checksum, parser quarantine, failed-run replay, reviewer release, and rollback proof lanes."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v497 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v498 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v497 held until live stamp",
+        value: "v498 held until live stamp",
         detail: "The batch release is share-ready only after v501 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
@@ -13324,6 +13414,7 @@ function releaseDoctorMarkup(tracker) {
         `).join("")}
       </div>
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.productionBackendStarterService, "Production backend starter service")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.sourceFetcherProofWorker, "Source fetcher proof worker")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -13487,6 +13578,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-source-ingestion-checksum-runner>Copy checksum runner</button>
         <button class="text-button" type="button" data-copy-founder-release-audit-room>Copy release audit</button>
         <button class="text-button" type="button" data-copy-production-backend-starter-service>Copy backend service</button>
+        <button class="text-button" type="button" data-copy-source-fetcher-proof-worker>Copy fetch worker</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -13745,6 +13837,11 @@ function makeBuildTrackerBrief() {
     `Production backend service score: ${tracker.releaseDoctor.productionBackendStarterService.score}/100`,
     `Production backend service rule: ${tracker.releaseDoctor.productionBackendStarterService.rule}`,
     ...tracker.releaseDoctor.productionBackendStarterService.lanes.map((lane) => `- Backend service ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Source fetcher proof worker: ${tracker.releaseDoctor.sourceFetcherProofWorker.verdict}`,
+    `Source fetcher worker receipt: ${tracker.releaseDoctor.sourceFetcherProofWorker.receiptId}`,
+    `Source fetcher worker score: ${tracker.releaseDoctor.sourceFetcherProofWorker.score}/100`,
+    `Source fetcher worker rule: ${tracker.releaseDoctor.sourceFetcherProofWorker.rule}`,
+    ...tracker.releaseDoctor.sourceFetcherProofWorker.lanes.map((lane) => `- Source worker ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -14040,6 +14137,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.productionBackendStarterService.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.productionBackendStarterService.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.productionBackendStarterService.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Source Fetcher Proof Worker",
+    `- Receipt ID: ${tracker.releaseDoctor.sourceFetcherProofWorker.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.sourceFetcherProofWorker.verdict}`,
+    `- Score: ${tracker.releaseDoctor.sourceFetcherProofWorker.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.sourceFetcherProofWorker.rule}`,
+    ...tracker.releaseDoctor.sourceFetcherProofWorker.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.sourceFetcherProofWorker.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.sourceFetcherProofWorker.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.sourceFetcherProofWorker.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -14852,6 +14959,14 @@ function makeProductionBackendStarterServiceBrief() {
     "Production Backend Starter Service",
     buildTrackerConfig().releaseDoctor.productionBackendStarterService,
     "Production Backend Starter Service is a static service-boundary contract only. It does not create a live backend, authenticate users, store account data, process payments, certify legal/security readiness, or prove production launch readiness."
+  );
+}
+
+function makeSourceFetcherProofWorkerBrief() {
+  return makeOperationalProofBrief(
+    "Source Fetcher Proof Worker",
+    buildTrackerConfig().releaseDoctor.sourceFetcherProofWorker,
+    "Source Fetcher Proof Worker is a static worker-rehearsal contract only. It does not fetch live source files, parse production PDFs, certify source accuracy, store source artifacts, or replace reviewer signoff and rollback controls."
   );
 }
 
@@ -69084,6 +69199,13 @@ function bindEvents() {
     if (!copyProductionBackendStarterService) return;
     event.preventDefault();
     copyText(makeProductionBackendStarterServiceBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copySourceFetcherProofWorker = event.target.closest("[data-copy-source-fetcher-proof-worker]");
+    if (!copySourceFetcherProofWorker) return;
+    event.preventDefault();
+    copyText(makeSourceFetcherProofWorkerBrief());
   });
 
   document.addEventListener("click", (event) => {

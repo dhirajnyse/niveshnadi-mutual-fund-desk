@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v498 Source Fetcher Proof Worker
+
+- Version: `0.498.0`
+- Data version: `20260708-v498-01`
+- Changes made: Added Source Fetcher Proof Worker to the Build Tracker Release Doctor with source fetch envelopes, checksums, freshness comparison, parser quarantine, failed-run replay, reviewer release, rollback evidence, no-private-data operating rules, no-go lines, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward with v497 commit, next-batch planner roll-forward to v499-v503, and release markers rolled forward to v498.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v498 marker scan.
+- Known risks: Source Fetcher Proof Worker is a static worker-rehearsal contract only; production still needs real fetch jobs, allowlisted source domains, PDF extraction, durable checksum storage, parser quarantine queues, reviewer workflow, rollback automation, privacy/security/legal review, deployment verification, and live source ingestion tests.
+
 ## NiveshNadi Phase 1 v497 Production Backend Starter Service
 
 - Version: `0.497.0`

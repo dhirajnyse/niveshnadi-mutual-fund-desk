@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v499-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v499 Payment Webhook Verification Lab";
+const DATA_VERSION = "20260708-v500-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v500 Account Support Operations Console";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -12480,6 +12480,94 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    accountSupportOperationsConsole: {
+      label: "Account support operations console",
+      verdict: "Support-safe account lane ready",
+      receiptId: ["NN", "ACCOUNT", "SUPPORT", "OPERATIONS", "CONSOLE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 63,
+      rule: "Account support can widen only when support-safe status, export/delete requests, entitlement state, incident freeze, public reply, and closeout receipts are visible without exposing personal identifiers or mutable backend payloads.",
+      lanes: [
+        {
+          label: "Support-safe account state",
+          owner: "Support desk",
+          method: "VIEW",
+          route: "support.account.status",
+          proof: "Show account shell status, saved-research count, export state, deletion state, entitlement state, and support-safe labels only.",
+          readyWhen: "Ready when support sees public status, owner route, escalation age, hidden-field policy, and no mutable private fields.",
+          hold: "Hold if support can see PAN, folio, CAS, bank, contact, credential, payment, private notes, or raw account payloads.",
+          score: 66
+        },
+        {
+          label: "Export and deletion queue",
+          owner: "Account platform",
+          method: "QUEUE",
+          route: "account.export_delete.queue",
+          proof: "Track export request, manifest state, deletion freeze, retained proof receipt, user notice, and rollback state.",
+          readyWhen: "Ready when export-before-delete, deletion receipt, retained proof boundary, support notice, and closeout owner are visible.",
+          hold: "Hold if deletion can run before export proof, support notice, freeze state, and retained-proof boundary are accepted.",
+          score: 62
+        },
+        {
+          label: "Entitlement support bridge",
+          owner: "Billing boundary",
+          method: "VIEW",
+          route: "support.entitlement.bridge",
+          proof: "Show entitlement state, invoice receipt, webhook receipt, refund receipt, access reason, and support-safe recovery note.",
+          readyWhen: "Ready when support can explain access state without viewing payment payloads or changing billing records.",
+          hold: "Hold if support can grant, revoke, refund, or inspect provider payloads directly from the account console.",
+          score: 60
+        },
+        {
+          label: "Incident freeze lane",
+          owner: "Operations",
+          method: "COMMAND",
+          route: "support.incident.freeze",
+          proof: "Freeze affected source, account, payment, or release lane with incident id, owner, user-safe message, and recovery receipt.",
+          readyWhen: "Ready when incident freeze has scope, owner, affected surfaces, customer-safe reply, recovery action, and closeout rule.",
+          hold: "Hold if support can freeze globally without scope, owner, recovery route, or release audit notice.",
+          score: 64
+        },
+        {
+          label: "Closeout receipt",
+          owner: "Founder review",
+          method: "RECEIPT",
+          route: "support.closeout.receipt",
+          proof: "Close support case only after public reply, hidden-field audit, escalation outcome, account/payment/source state, and review note agree.",
+          readyWhen: "Ready when closeout receipt includes what changed, what stayed hidden, what was not promised, and what remains blocked.",
+          hold: "Hold if closeout implies investment advice, transaction execution, guaranteed outcome, or production certainty.",
+          score: 65
+        }
+      ],
+      operatingRules: [
+        "Support sees status and safe replies, not raw account, payment, source, or identity payloads.",
+        "Export must be available before deletion, and deletion must leave only permitted proof receipts.",
+        "Entitlement support explains state but cannot mutate billing or payment provider records.",
+        "Incident freeze requires scope, owner, affected surfaces, recovery route, and release audit notice.",
+        "Closeout receipts must state what changed, what stayed hidden, what was not promised, and what remains blocked."
+      ],
+      noGoLines: [
+        "No support view may expose PAN, folio, CAS, bank, contact, credential, card, UPI, payment token, raw source artifact, or private notes.",
+        "No support operator may grant access, revoke access, issue refund, delete account, or change source facts without the owning receipt path.",
+        "No deletion may complete before export proof, user-safe notice, retained-proof boundary, and closeout receipt exist.",
+        "No support closeout may imply personalized advice, execution, guaranteed returns, suitability approval, or live production certification."
+      ],
+      receiptFields: [
+        "account_support_operations_console_id",
+        "release_key",
+        "support_case_id",
+        "account_shell_state",
+        "export_request_state",
+        "delete_request_state",
+        "entitlement_state",
+        "incident_freeze_state",
+        "public_reply_id",
+        "hidden_field_policy_id",
+        "escalation_owner",
+        "closeout_receipt_id",
+        "release_audit_id",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -12650,14 +12738,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment webhook verification lab advances the runnable-scaffold batch; next releases should add support, pilot, repository, CI, and deployment handoff proof.",
+      rule: "Account support operations console advances the runnable-scaffold batch; next releases should add pilot, repository, CI, deployment, and data-retention proof.",
       lanes: [
-        {
-          version: "v500",
-          label: "Account support operations console",
-          route: "#account-readiness",
-          detail: "Unify support-safe account state, export/delete requests, entitlement status, and incident closeout into one console."
-        },
         {
           version: "v501",
           label: "Live beta pilot audit",
@@ -12681,6 +12763,12 @@ function buildTrackerConfig() {
           label: "Deployment environment readiness map",
           route: "#release-publisher",
           detail: "Map staging, production, secrets, environment variables, rollback, logs, and uptime proof before any launch claim widens."
+        },
+        {
+          version: "v505",
+          label: "Data retention execution checklist",
+          route: "#account-readiness",
+          detail: "Turn retention rules into concrete account, source, support, payment, visual, and release-proof deletion/exclusion tasks."
         }
       ]
     },
@@ -12689,6 +12777,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v499",
+          key: "20260708-v499-01",
+          commit: "7ffbed5",
+          receiptId: "NN-SHARE-RECEIPT-20260708V49901",
+          proof: "Payment Webhook Verification Lab added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v498",
           key: "20260708-v498-01",
@@ -12716,13 +12811,6 @@ function buildTrackerConfig() {
           commit: "dc22a05",
           receiptId: "NN-SHARE-RECEIPT-20260707V49501",
           proof: "Source Ingestion Checksum Runner added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v494",
-          key: "20260707-v494-01",
-          commit: "e9ef99f",
-          receiptId: "NN-SHARE-RECEIPT-20260707V49401",
-          proof: "Payment Sandbox Event Simulator added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -12760,39 +12848,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v499",
-        detail: "Payment Webhook Verification Lab is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v500",
+        detail: "Account Support Operations Console is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v499 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v500 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
-        value: "v500 next",
-        detail: "Account support operations console is queued after the webhook proof."
+        value: "v501 next",
+        detail: "Live beta pilot audit is queued after the support console proof."
       },
       {
         label: "04 Share",
-        value: "v499 held until live stamp",
-        detail: "Do not share v499 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v500 held until live stamp",
+        detail: "Do not share v500 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v499 source change",
-        detail: "Payment Webhook Verification Lab adds signature, idempotency, event-order, dead-letter, refund rollback, entitlement, redaction, and support closeout proof lanes."
+        value: "v500 source change",
+        detail: "Account Support Operations Console adds support-safe account, export/delete, entitlement, incident freeze, and closeout proof lanes."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v499 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v500 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v499 held until live stamp",
+        value: "v500 held until live stamp",
         detail: "The batch release is share-ready only after v501 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
@@ -13505,6 +13593,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.productionBackendStarterService, "Production backend starter service")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.sourceFetcherProofWorker, "Source fetcher proof worker")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.paymentWebhookVerificationLab, "Payment webhook verification lab")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.accountSupportOperationsConsole, "Account support operations console")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -13670,6 +13759,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-production-backend-starter-service>Copy backend service</button>
         <button class="text-button" type="button" data-copy-source-fetcher-proof-worker>Copy fetch worker</button>
         <button class="text-button" type="button" data-copy-payment-webhook-verification-lab>Copy webhook lab</button>
+        <button class="text-button" type="button" data-copy-account-support-operations-console>Copy support console</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -13938,6 +14028,11 @@ function makeBuildTrackerBrief() {
     `Payment webhook lab score: ${tracker.releaseDoctor.paymentWebhookVerificationLab.score}/100`,
     `Payment webhook lab rule: ${tracker.releaseDoctor.paymentWebhookVerificationLab.rule}`,
     ...tracker.releaseDoctor.paymentWebhookVerificationLab.lanes.map((lane) => `- Payment webhook ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Account support operations console: ${tracker.releaseDoctor.accountSupportOperationsConsole.verdict}`,
+    `Account support console receipt: ${tracker.releaseDoctor.accountSupportOperationsConsole.receiptId}`,
+    `Account support console score: ${tracker.releaseDoctor.accountSupportOperationsConsole.score}/100`,
+    `Account support console rule: ${tracker.releaseDoctor.accountSupportOperationsConsole.rule}`,
+    ...tracker.releaseDoctor.accountSupportOperationsConsole.lanes.map((lane) => `- Account support ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -14253,6 +14348,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.paymentWebhookVerificationLab.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.paymentWebhookVerificationLab.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.paymentWebhookVerificationLab.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Account Support Operations Console",
+    `- Receipt ID: ${tracker.releaseDoctor.accountSupportOperationsConsole.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.accountSupportOperationsConsole.verdict}`,
+    `- Score: ${tracker.releaseDoctor.accountSupportOperationsConsole.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.accountSupportOperationsConsole.rule}`,
+    ...tracker.releaseDoctor.accountSupportOperationsConsole.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.accountSupportOperationsConsole.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.accountSupportOperationsConsole.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.accountSupportOperationsConsole.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -15081,6 +15186,14 @@ function makePaymentWebhookVerificationLabBrief() {
     "Payment Webhook Verification Lab",
     buildTrackerConfig().releaseDoctor.paymentWebhookVerificationLab,
     "Payment Webhook Verification Lab is a static webhook-proof contract only. It does not verify live provider webhooks, process payments, store payment payloads, grant entitlements, issue refunds, or certify production billing readiness."
+  );
+}
+
+function makeAccountSupportOperationsConsoleBrief() {
+  return makeOperationalProofBrief(
+    "Account Support Operations Console",
+    buildTrackerConfig().releaseDoctor.accountSupportOperationsConsole,
+    "Account Support Operations Console is a static support-operations contract only. It does not create accounts, store personal data, execute exports or deletions, mutate entitlements, resolve real support cases, or certify production support readiness."
   );
 }
 
@@ -69327,6 +69440,13 @@ function bindEvents() {
     if (!copyPaymentWebhookVerificationLab) return;
     event.preventDefault();
     copyText(makePaymentWebhookVerificationLabBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyAccountSupportOperationsConsole = event.target.closest("[data-copy-account-support-operations-console]");
+    if (!copyAccountSupportOperationsConsole) return;
+    event.preventDefault();
+    copyText(makeAccountSupportOperationsConsoleBrief());
   });
 
   document.addEventListener("click", (event) => {

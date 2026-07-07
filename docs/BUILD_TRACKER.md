@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V500 Account Support Operations Console
+
+V500 adds Account Support Operations Console to the Build Tracker Release Doctor. It unifies support-safe account state, export/delete queue, entitlement support bridge, incident freeze, closeout receipts, hidden-field policy, no-go lines, receipt fields, and a copyable support-console handoff before account support widens.
+
 ## V499 Payment Webhook Verification Lab
 
 V499 adds Payment Webhook Verification Lab to the Build Tracker Release Doctor. It isolates signed webhook proof, idempotency replay, event ordering, dead-letter recovery, refund rollback, entitlement state, redaction rules, support-safe closeout, receipt fields, and a copyable webhook-lab handoff before billing widens.

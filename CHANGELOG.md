@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v500 Account Support Operations Console
+
+- Version: `0.500.0`
+- Data version: `20260708-v500-01`
+- Changes made: Added Account Support Operations Console to the Build Tracker Release Doctor with support-safe account state, export/delete queue, entitlement support bridge, incident freeze, closeout receipt lanes, hidden-field policy, operating rules, no-go lines, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward with v499 commit, next-batch planner roll-forward to v501-v505, and release markers rolled forward to v500.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v500 marker scan.
+- Known risks: Account Support Operations Console is a static support-operations contract only; production still needs authenticated accounts, support tooling, durable export/delete workers, entitlement reconciliation, incident workflows, redaction enforcement, privacy/security/legal review, deployment verification, and live support tests.
+
 ## NiveshNadi Phase 1 v499 Payment Webhook Verification Lab
 
 - Version: `0.499.0`

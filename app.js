@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v495-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v495 Source Ingestion Checksum Runner";
+const DATA_VERSION = "20260707-v496-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v496 Founder Release Audit Room";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -12110,6 +12110,108 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    founderReleaseAuditRoom: {
+      label: "Founder release audit room",
+      verdict: "Share only after all proof agrees",
+      receiptId: ["NN", "FOUNDER", "RELEASE", "AUDIT", "ROOM", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 72,
+      rule: "The founder can share a release only when build, source, account, payment, support, visual QA, proof archive, live stamp, and no-private-data boundaries all agree on one release key and one safe message.",
+      auditChecks: [
+        {
+          label: "Build proof",
+          owner: "Release desk",
+          receipt: "build_tracker_release_receipt",
+          reads: "release label, data key, changelog, static check, security audit, commit hash",
+          readyWhen: "Current release key, package version, changelog, docs, and stamp agree.",
+          hold: "Hold if release key, cache marker, package version, docs, or changelog disagree.",
+          score: 86
+        },
+        {
+          label: "Source proof",
+          owner: "Source desk",
+          receipt: "production_data_source_gate",
+          reads: "source date, citation path, checksum, parser confidence, reviewer signoff, rollback receipt",
+          readyWhen: "Source ingestion checksum runner has no stale, unsigned, or quarantined launch rows.",
+          hold: "Hold if any source family lacks checksum, reviewer signoff, correction path, or no-private-data scan.",
+          score: 64
+        },
+        {
+          label: "Account proof",
+          owner: "Account platform",
+          receipt: "account_persistence_fixture_runner",
+          reads: "account shell, saved research, export packet, deletion, support-safe status, entitlement join",
+          readyWhen: "Account fixtures replay with blocked private fields and rollback receipts visible.",
+          hold: "Hold if fixture payload can store real identity or support status exposes private data.",
+          score: 62
+        },
+        {
+          label: "Payment proof",
+          owner: "Billing boundary",
+          receipt: "payment_sandbox_event_simulator",
+          reads: "checkout, invoice, webhook, entitlement, refund, rollback, support closeout",
+          readyWhen: "Payment sandbox proves fake events only and rejects private payment payloads.",
+          hold: "Hold if entitlement can change without invoice, webhook, account, and audit agreement.",
+          score: 60
+        },
+        {
+          label: "Support proof",
+          owner: "Support desk",
+          receipt: "support_operations_incident_drill",
+          reads: "incident freeze, safe reply, recovery receipt, closeout state, escalation owner",
+          readyWhen: "Support incidents have freeze commands, support-safe replies, and closeout rules.",
+          hold: "Hold if support can see private payloads or payment/source/account states conflict.",
+          score: 66
+        },
+        {
+          label: "Visual proof",
+          owner: "Visual QA",
+          receipt: "visual_qa_ci_adapter",
+          reads: "route, viewport, DOM marker, overflow state, console state, artifact policy",
+          readyWhen: "Desktop and mobile visual QA show no console errors, no horizontal overflow, and current markers.",
+          hold: "Hold if current release marker is absent, console errors appear, or layout overflows.",
+          score: 74
+        },
+        {
+          label: "Founder signoff",
+          owner: "Founder",
+          receipt: "founder_release_signoff",
+          reads: "safe share line, known risks, proof archive, no-private-data boundary, live stamp",
+          readyWhen: "Founder can describe what improved, what remains static, what is not production-ready, and what comes next.",
+          hold: "Hold if share copy implies investment advice, production readiness, payment readiness, or live data certainty.",
+          score: 70
+        }
+      ],
+      shareRules: [
+        "Share only the current release key, what changed, checks passed, known risks, and next batch direction.",
+        "Say static proof contract when a feature is not a live backend, live data feed, payment integration, or legal/security certification.",
+        "Do not share screenshots, private notes, raw payloads, payment details, personal identifiers, or source artifacts.",
+        "If live stamp, visual QA, static checks, or proof archive disagree, hold the release until repaired.",
+        "A calm release is better than a loud claim: one safe message, one proof archive, one next step."
+      ],
+      noGoLines: [
+        "No release is shared if release-stamp.txt, index cache markers, package version, changelog, and app release label disagree.",
+        "No production-ready claim is allowed while source, account, payment, support, visual, legal, or security proof remains static or incomplete.",
+        "No investor-facing message may imply personalized advice, suitability approval, execution, guaranteed returns, or transaction instructions.",
+        "No private data, payment payload, credential, PAN, folio, CAS, bank, contact, distributor-client record, or raw source artifact may enter release proof."
+      ],
+      receiptFields: [
+        "founder_release_audit_room_id",
+        "release_key",
+        "build_receipt_id",
+        "source_gate_id",
+        "account_fixture_runner_id",
+        "payment_simulator_id",
+        "support_drill_id",
+        "visual_qa_id",
+        "proof_archive_id",
+        "live_stamp_state",
+        "safe_share_line",
+        "known_risk_summary",
+        "founder_signoff_state",
+        "release_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -12279,14 +12381,38 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "One release remains",
-      rule: "Source ingestion checksum runner is visible; finish this batch with the founder release audit room.",
+      verdict: "Next batch ready",
+      rule: "Founder release audit room closes this backend-readiness batch; next batch should turn contracts into runnable production scaffolding.",
       lanes: [
         {
-          version: "v496",
-          label: "Founder release audit room",
+          version: "v497",
+          label: "Production backend starter service",
+          route: "#backend-audit-receipts",
+          detail: "Create a local service skeleton around source receipt, account fixture, entitlement, support status, and release audit endpoints."
+        },
+        {
+          version: "v498",
+          label: "Source fetcher proof worker",
+          route: "#source-intake",
+          detail: "Turn source checksum contracts into a file-fetch, hash, quarantine, and reviewer-signoff worker rehearsal."
+        },
+        {
+          version: "v499",
+          label: "Payment webhook verification lab",
+          route: "#gateway-webhook-drill",
+          detail: "Add a webhook verification rehearsal for signature, idempotency, dead-letter, refund, and entitlement rollback states."
+        },
+        {
+          version: "v500",
+          label: "Account support operations console",
+          route: "#account-readiness",
+          detail: "Unify support-safe account state, export/delete requests, entitlement status, and incident closeout into one console."
+        },
+        {
+          version: "v501",
+          label: "Live beta pilot audit",
           route: "#release-publisher",
-          detail: "Create one calm release-audit room that reads build, source, account, payment, support, visual QA, and founder signoff receipts before sharing."
+          detail: "Add a founder-facing pilot audit that decides whether source, account, payment, support, visual, and signoff proof are ready for one tiny paid beta cohort."
         }
       ]
     },
@@ -12295,6 +12421,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v495",
+          key: "20260707-v495-01",
+          commit: "dc22a05",
+          receiptId: "NN-SHARE-RECEIPT-20260707V49501",
+          proof: "Source Ingestion Checksum Runner added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v494",
           key: "20260707-v494-01",
@@ -12322,13 +12455,6 @@ function buildTrackerConfig() {
           commit: "3a5b105",
           receiptId: "NN-SHARE-RECEIPT-20260707V49101",
           proof: "Production Data Source Gate added, pushed to main, visually checked, and live stamp verified."
-        },
-        {
-          version: "v490",
-          key: "20260707-v490-01",
-          commit: "674e03d",
-          receiptId: "NN-SHARE-RECEIPT-20260707V49001",
-          proof: "Payment Entitlement Proof Cabinet added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -12366,40 +12492,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v495",
-        detail: "Source Ingestion Checksum Runner is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v496",
+        detail: "Founder Release Audit Room is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "Syntax, static, security, diff hygiene, and marker scans pass before this release is committed."
+        detail: "v496 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
-        value: "Batch in progress",
-        detail: "This five-version batch will be pushed and live-verified after v496 checks and visual QA pass."
+        value: "Visual QA next",
+        detail: "This five-version batch is ready for local browser QA, push, and live-stamp verification."
       },
       {
         label: "04 Share",
-        value: "Batch close held",
-        detail: "Do not share v495 as complete until this batch reaches v496 and the live release stamp is verified."
+        value: "v496 held until live stamp",
+        detail: "Do not share v496 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "pending batch",
-        detail: "v495 source change adds Source Ingestion Checksum Runner."
+        value: "v496 source change",
+        detail: "Founder Release Audit Room adds a final founder share gate across build, source, account, payment, support, visual QA, proof archive, live stamp, and no-private-data proof."
       },
       {
         label: "Release checks",
-        value: "Passed",
-        detail: "v495 runs syntax, static, security, diff hygiene, and marker scans before the final release."
+        value: "Pending visual and live",
+        detail: "v496 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v495 held in batch",
-        detail: "The final batch release is pushed and live-stamp verified after v496 visual QA passes."
+        value: "v496 held until live stamp",
+        detail: "The final batch release is share-ready only after v496 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [
@@ -13075,6 +13201,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Founder release audit room">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.founderReleaseAuditRoom.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.founderReleaseAuditRoom.verdict)} | ${tracker.releaseDoctor.founderReleaseAuditRoom.score}/100</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.founderReleaseAuditRoom.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.founderReleaseAuditRoom.auditChecks.map((check) => `
+          <article>
+            <span>${escapeHtml(check.owner)} | ${check.score}/100</span>
+            <strong>${escapeHtml(check.label)}</strong>
+            <p>${escapeHtml(check.readyWhen)} Hold: ${escapeHtml(check.hold)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -13236,6 +13376,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-account-persistence-fixture-runner>Copy account fixtures</button>
         <button class="text-button" type="button" data-copy-payment-sandbox-event-simulator>Copy payment sim</button>
         <button class="text-button" type="button" data-copy-source-ingestion-checksum-runner>Copy checksum runner</button>
+        <button class="text-button" type="button" data-copy-founder-release-audit-room>Copy release audit</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -13484,6 +13625,11 @@ function makeBuildTrackerBrief() {
     `Source ingestion score: ${tracker.releaseDoctor.sourceIngestionChecksumRunner.score}/100`,
     `Source ingestion rule: ${tracker.releaseDoctor.sourceIngestionChecksumRunner.rule}`,
     ...tracker.releaseDoctor.sourceIngestionChecksumRunner.sourceRuns.map((run) => `- Source checksum ${run.label}: ${run.family} | ${run.cadence} | ${run.checksum} | Parser ${run.parser} | Pass ${run.pass} | Quarantine ${run.quarantine}`),
+    `Founder release audit room: ${tracker.releaseDoctor.founderReleaseAuditRoom.verdict}`,
+    `Founder release audit receipt: ${tracker.releaseDoctor.founderReleaseAuditRoom.receiptId}`,
+    `Founder release audit score: ${tracker.releaseDoctor.founderReleaseAuditRoom.score}/100`,
+    `Founder release audit rule: ${tracker.releaseDoctor.founderReleaseAuditRoom.rule}`,
+    ...tracker.releaseDoctor.founderReleaseAuditRoom.auditChecks.map((check) => `- Founder audit ${check.label}: ${check.owner} | Reads ${check.reads} | Ready ${check.readyWhen} | Hold ${check.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -13759,6 +13905,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.sourceIngestionChecksumRunner.runbook.map((step) => `- Runbook: ${step}`),
     ...tracker.releaseDoctor.sourceIngestionChecksumRunner.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.sourceIngestionChecksumRunner.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Founder Release Audit Room",
+    `- Receipt ID: ${tracker.releaseDoctor.founderReleaseAuditRoom.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.founderReleaseAuditRoom.verdict}`,
+    `- Score: ${tracker.releaseDoctor.founderReleaseAuditRoom.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.founderReleaseAuditRoom.rule}`,
+    ...tracker.releaseDoctor.founderReleaseAuditRoom.auditChecks.map((check) => `- ${check.label}: ${check.owner} | ${check.receipt} | Reads ${check.reads} | Ready ${check.readyWhen} | Hold ${check.hold}`),
+    ...tracker.releaseDoctor.founderReleaseAuditRoom.shareRules.map((rule) => `- Share rule: ${rule}`),
+    ...tracker.releaseDoctor.founderReleaseAuditRoom.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.founderReleaseAuditRoom.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -14496,6 +14652,40 @@ function makeSourceIngestionChecksumRunnerBrief() {
     ...runner.receiptFields.map((field) => `- ${field}`),
     "",
     "Source Ingestion Checksum Runner is a source-proof contract only. It does not fetch live source files, certify source accuracy, store private data, or replace reviewer signoff and correction controls."
+  ].join("\n");
+}
+
+function makeFounderReleaseAuditRoomBrief() {
+  const audit = buildTrackerConfig().releaseDoctor.founderReleaseAuditRoom;
+  return [
+    "# NiveshNadi Founder Release Audit Room",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${audit.receiptId}`,
+    `Verdict: ${audit.verdict}`,
+    `Score: ${audit.score}/100`,
+    `Rule: ${audit.rule}`,
+    "",
+    "## Audit Checks",
+    ...audit.auditChecks.map((check) => [
+      `- ${check.label}`,
+      `  Owner: ${check.owner}`,
+      `  Receipt: ${check.receipt}`,
+      `  Reads: ${check.reads}`,
+      `  Ready when: ${check.readyWhen}`,
+      `  Hold: ${check.hold}`,
+      `  Score: ${check.score}/100`
+    ].join("\n")),
+    "",
+    "## Share Rules",
+    ...audit.shareRules.map((rule) => `- ${rule}`),
+    "",
+    "## No-Go Lines",
+    ...audit.noGoLines.map((line) => `- ${line}`),
+    "",
+    "## Receipt Fields",
+    ...audit.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Founder Release Audit Room is a release-sharing guard only. It does not certify live data, account custody, payment readiness, legal review, security posture, or production launch readiness unless the matching proof receipts are actually complete."
   ].join("\n");
 }
 
@@ -68714,6 +68904,13 @@ function bindEvents() {
     if (!copySourceIngestionChecksumRunner) return;
     event.preventDefault();
     copyText(makeSourceIngestionChecksumRunnerBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyFounderReleaseAuditRoom = event.target.closest("[data-copy-founder-release-audit-room]");
+    if (!copyFounderReleaseAuditRoom) return;
+    event.preventDefault();
+    copyText(makeFounderReleaseAuditRoomBrief());
   });
 
   document.addEventListener("click", (event) => {

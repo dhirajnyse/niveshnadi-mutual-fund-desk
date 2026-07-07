@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v496 Founder Release Audit Room
+
+- Version: `0.496.0`
+- Data version: `20260707-v496-01`
+- Changes made: Added Founder Release Audit Room to the Build Tracker Release Doctor with build, source, account, payment, support, visual QA, proof archive, live stamp, founder signoff, and no-private-data audit checks; share rules; no-go lines; receipt fields; dedicated copy action; Build Tracker and Release Doctor brief coverage; proof archive roll-forward with v495 commit; next-batch planner roll-forward to v497-v501; and release markers rolled forward to v496.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v496 marker scan; browser visual QA across desktop and mobile routes.
+- Known risks: Founder Release Audit Room is a static release-sharing guard only; production still needs real backend services, live source fetchers, account custody, payment webhook verification, support tooling, legal/privacy/security review, CI visual automation, deployment verification, and live production tests before any production-ready claim.
+
 ## NiveshNadi Phase 1 v495 Source Ingestion Checksum Runner
 
 - Version: `0.495.0`

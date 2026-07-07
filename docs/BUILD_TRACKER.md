@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V496 Founder Release Audit Room
+
+V496 adds Founder Release Audit Room to the Build Tracker Release Doctor. It reads build, source, account, payment, support, visual QA, proof archive, live stamp, founder signoff, and no-private-data boundaries into one share-or-hold gate with audit checks, share rules, no-go lines, receipt fields, and a copyable founder release audit before any release is shared.
+
 ## V495 Source Ingestion Checksum Runner
 
 V495 adds Source Ingestion Checksum Runner to the Build Tracker Release Doctor. It turns AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, and benchmark/category source families into checksum, parser, freshness, quarantine, reviewer signoff, correction, rollback, no-private-data, receipt-field, and copyable source-run handoff rows.

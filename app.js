@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v478-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v478 Export Delete Backend Ticket Room";
+const DATA_VERSION = "20260707-v479-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v479 Support Safe Account Status Console";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v477 passed release checks on commit b7dc6a2. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v478 passed release checks on commit ed6183d. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v477 local checks passed",
+      outcome: "Previous outcome: v478 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47701",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47801",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10971,6 +10971,13 @@ function buildTrackerConfig() {
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         {
+          version: "v478",
+          key: "20260707-v478-01",
+          commit: "ed6183d",
+          receiptId: "NN-SHARE-RECEIPT-20260707V47801",
+          proof: "Export Delete Backend Ticket Room added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
+        {
           version: "v477",
           key: "20260707-v477-01",
           commit: "b7dc6a2",
@@ -10997,13 +11004,6 @@ function buildTrackerConfig() {
           commit: "b83e91a",
           receiptId: "NN-SHARE-RECEIPT-20260707V47401",
           proof: "Support Case Audit added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v473",
-          key: "20260707-v473-01",
-          commit: "4670331",
-          receiptId: "NN-SHARE-RECEIPT-20260707V47301",
-          proof: "Account Export Proof added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11041,8 +11041,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v478",
-        detail: "Export Delete Backend Ticket Room is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v479",
+        detail: "Support Safe Account Status Console is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11057,23 +11057,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v478 as complete until this release returns the active release stamp."
+        detail: "Do not share v479 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v478 source change adds Export Delete Backend Ticket Room."
+        detail: "v479 source change adds Support Safe Account Status Console."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v478 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v479 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v478 held for batch deploy",
+        value: "v479 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v481."
       }
     ],
@@ -26387,6 +26387,61 @@ function accountReadinessLabConfig() {
       "Do not widen paid accounts until export and deletion tickets can be replayed from support-safe status to closeout."
     ]
   };
+  const supportSafeAccountStatusConsole = {
+    label: "Support-safe account status console",
+    status: "Status without payloads",
+    receiptId: ["NN", "SUPPORT", "SAFE", "ACCOUNT", "STATUS", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    score: 76,
+    rule: "Support can help account users only through status labels, receipt ids, owner, next update, and escalation route; payload bodies, private notes, deleted content, identifiers, and payment secrets stay hidden.",
+    statusRows: accountSupportCaseAudit.caseViews.map((view, index) => ({
+      label: view.label,
+      statusId: ["NN", "ACCOUNT", "STATUS", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      owner: view.owner,
+      publicStatus: view.status,
+      visible: view.visible,
+      hidden: view.hidden,
+      nextUpdate: index === 0 ? "After export retry or expiry proof" : index === 1 ? "After deletion worker receipt" : index === 2 ? "After consent rollback review" : "After entitlement projection replay"
+    })),
+    ticketLinks: exportDeleteBackendTicketRoom.ticketRows.slice(0, 6).map((ticket) => ({
+      label: ticket.label,
+      ticketId: ticket.ticketId,
+      supportStatus: ticket.supportStatus,
+      owner: ticket.owner,
+      hold: ticket.hold
+    })),
+    escalationRules: [
+      "Escalate immediately if support view, case note, export preview, or status copy reveals private data.",
+      "Escalate to owner review if a ticket is stale, failed, retrying, disputed, or cannot be explained from receipt metadata.",
+      "Escalate to founder review if three or more cases share the same account-readiness blocker.",
+      "Freeze the case if the user asks support to recover deleted content, approve a refund, recommend a fund, or execute an action."
+    ],
+    replyBoundaries: [
+      "Reply with case status, receipt id, next owner, next update window, and research-only boundary.",
+      "Do not paste payload bodies, deleted content, raw source data, private notes, identifiers, or payment details.",
+      "Do not promise recovery, refund, recommendation, suitability approval, tax result, or transaction execution.",
+      "If the answer needs private data, escalate instead of asking the user to share it in chat."
+    ],
+    receiptFields: [
+      "support_safe_status_console_id",
+      "case_id_hash",
+      "account_id_hash",
+      "public_status",
+      "receipt_id",
+      "owner",
+      "next_update_at",
+      "visible_field_policy",
+      "hidden_field_policy",
+      "escalation_route_id",
+      "redaction_scan_id",
+      "created_at"
+    ],
+    noGoRules: [
+      "Do not widen account support until status rows and ticket links agree.",
+      "Do not let support status imply advice, refund approval, recovery promise, deletion reversal, or transaction execution.",
+      "Do not expose payload bodies, deleted content, payment secrets, contact data, PAN, folio, CAS, credentials, or distributor-client records.",
+      "Do not close a support case until public status, owner, receipt id, next action, and redaction scan agree."
+    ]
+  };
   const deletionSupportCloseout = {
     label: "Deletion support closeout",
     status: "Support-safe closeout",
@@ -26469,6 +26524,7 @@ function accountReadinessLabConfig() {
     accountSupportCaseAudit,
     accountDeletionRehearsal,
     exportDeleteBackendTicketRoom,
+    supportSafeAccountStatusConsole,
     deletionSupportCloseout,
     blocked,
     dataBuckets,
@@ -26649,6 +26705,33 @@ function renderAccountReadinessLab() {
           <strong>${escapeHtml(window.label)}</strong>
           <p><strong>Trigger:</strong> ${escapeHtml(window.trigger)}</p>
           <p><strong>Action:</strong> ${escapeHtml(window.action)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-data-grid" aria-label="Support safe account status console">
+      <article class="ready">
+        <span>${escapeHtml(lab.supportSafeAccountStatusConsole.label)}</span>
+        <strong>${escapeHtml(lab.supportSafeAccountStatusConsole.status)} | ${lab.supportSafeAccountStatusConsole.score}/100</strong>
+        <p>${escapeHtml(lab.supportSafeAccountStatusConsole.rule)}</p>
+        <button class="text-button" type="button" data-copy-support-safe-account-status-console>Copy status console</button>
+      </article>
+      ${lab.supportSafeAccountStatusConsole.statusRows.map((row) => `
+        <article>
+          <span>${escapeHtml(row.owner)}</span>
+          <strong>${escapeHtml(row.label)}</strong>
+          <p><strong>Status:</strong> ${escapeHtml(row.publicStatus)}</p>
+          <p><strong>Visible:</strong> ${escapeHtml(row.visible)}</p>
+          <p><strong>Hidden:</strong> ${escapeHtml(row.hidden)}</p>
+          <p><strong>Next:</strong> ${escapeHtml(row.nextUpdate)}</p>
+        </article>
+      `).join("")}
+      ${lab.supportSafeAccountStatusConsole.ticketLinks.map((ticket) => `
+        <article>
+          <span>${escapeHtml(ticket.owner)}</span>
+          <strong>${escapeHtml(ticket.label)}</strong>
+          <p><strong>Ticket:</strong> ${escapeHtml(ticket.ticketId)}</p>
+          <p><strong>Support:</strong> ${escapeHtml(ticket.supportStatus)}</p>
+          <p><strong>Hold:</strong> ${escapeHtml(ticket.hold)}</p>
         </article>
       `).join("")}
     </div>
@@ -26840,6 +26923,18 @@ function makeAccountReadinessBrief() {
     ...lab.accountSupportCaseAudit.replyRules.map((rule) => `- Support reply rule: ${rule}`),
     ...lab.accountSupportCaseAudit.receiptFields.map((field) => `- Support case audit receipt field: ${field}`),
     ...lab.accountSupportCaseAudit.noGoRules.map((rule) => `- Support case no-go: ${rule}`),
+    "",
+    "## Support Safe Account Status Console",
+    `- Receipt ID: ${lab.supportSafeAccountStatusConsole.receiptId}`,
+    `- Status: ${lab.supportSafeAccountStatusConsole.status}`,
+    `- Score: ${lab.supportSafeAccountStatusConsole.score}/100`,
+    `- Rule: ${lab.supportSafeAccountStatusConsole.rule}`,
+    ...lab.supportSafeAccountStatusConsole.statusRows.map((row) => `- Status row ${row.label}: ${row.statusId} | Owner ${row.owner} | Public ${row.publicStatus} | Visible ${row.visible} | Hidden ${row.hidden} | Next ${row.nextUpdate}`),
+    ...lab.supportSafeAccountStatusConsole.ticketLinks.map((ticket) => `- Ticket link ${ticket.label}: ${ticket.ticketId} | Support ${ticket.supportStatus} | Owner ${ticket.owner} | Hold ${ticket.hold}`),
+    ...lab.supportSafeAccountStatusConsole.escalationRules.map((rule) => `- Status escalation: ${rule}`),
+    ...lab.supportSafeAccountStatusConsole.replyBoundaries.map((rule) => `- Status reply boundary: ${rule}`),
+    ...lab.supportSafeAccountStatusConsole.receiptFields.map((field) => `- Status console receipt field: ${field}`),
+    ...lab.supportSafeAccountStatusConsole.noGoRules.map((rule) => `- Status console no-go: ${rule}`),
     "",
     "## Account Deletion Rehearsal",
     `- Receipt ID: ${lab.accountDeletionRehearsal.receiptId}`,
@@ -27096,6 +27191,52 @@ function makeSupportCaseAuditBrief() {
     ...audit.noGoRules.map((rule) => `- ${rule}`),
     "",
     "Support Case Audit is a support-readiness contract only. It does not create real support tooling, recover accounts, approve refunds, provide advice, execute transactions, certify privacy compliance, or replace legal review."
+  ].join("\n");
+}
+
+function makeSupportSafeAccountStatusConsoleBrief() {
+  const consoleRoom = accountReadinessLabConfig().supportSafeAccountStatusConsole;
+  return [
+    "# NiveshNadi Support Safe Account Status Console",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${consoleRoom.receiptId}`,
+    `Status: ${consoleRoom.status}`,
+    `Score: ${consoleRoom.score}/100`,
+    `Rule: ${consoleRoom.rule}`,
+    "",
+    "## Status Rows",
+    ...consoleRoom.statusRows.map((row) => [
+      `- ${row.label}`,
+      `  Status id: ${row.statusId}`,
+      `  Owner: ${row.owner}`,
+      `  Public status: ${row.publicStatus}`,
+      `  Visible: ${row.visible}`,
+      `  Hidden: ${row.hidden}`,
+      `  Next update: ${row.nextUpdate}`
+    ].join("\n")),
+    "",
+    "## Ticket Links",
+    ...consoleRoom.ticketLinks.map((ticket) => [
+      `- ${ticket.label}`,
+      `  Ticket: ${ticket.ticketId}`,
+      `  Support status: ${ticket.supportStatus}`,
+      `  Owner: ${ticket.owner}`,
+      `  Hold if: ${ticket.hold}`
+    ].join("\n")),
+    "",
+    "## Escalation Rules",
+    ...consoleRoom.escalationRules.map((rule) => `- ${rule}`),
+    "",
+    "## Reply Boundaries",
+    ...consoleRoom.replyBoundaries.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...consoleRoom.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## No-Go Rules",
+    ...consoleRoom.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "Support Safe Account Status Console is a support-readiness contract only. It does not create real support tooling, recover accounts, approve refunds, provide advice, execute transactions, certify privacy compliance, or replace legal review."
   ].join("\n");
 }
 
@@ -33588,8 +33729,8 @@ function profileInvestorTwin(profile) {
       trigger: "The investor stops reviewing after the first memo is saved.",
       route: "#review-rhythm",
       trap: "turning a one-time screen into a long-term decision",
-      rehearsal: "set 30/60/90-day review rhythm, watch triggers, and decision pack",
-      weight: [confidenceScore, profile.readiness, evidence]
+      rehearsal: "set 30/60/90-day review rhythm and translate review drift into rupee terms",
+      weight: [confidenceScore, profile.readiness, nadi]
     }
   ];
   const scenarios = scenarioTemplates.map((scenario, index) => {
@@ -65927,6 +66068,13 @@ function bindEvents() {
     if (!copySupportCaseAudit) return;
     event.preventDefault();
     copyText(makeSupportCaseAuditBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copySupportSafeAccountStatusConsole = event.target.closest("[data-copy-support-safe-account-status-console]");
+    if (!copySupportSafeAccountStatusConsole) return;
+    event.preventDefault();
+    copyText(makeSupportSafeAccountStatusConsoleBrief());
   });
 
   document.addEventListener("click", (event) => {

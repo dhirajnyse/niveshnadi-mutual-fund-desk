@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v478 Export Delete Backend Ticket Room
-20260707-v478-01
+NiveshNadi Phase 1 v479 Support Safe Account Status Console
+20260707-v479-01

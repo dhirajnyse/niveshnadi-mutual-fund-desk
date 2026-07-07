@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v479 Support Safe Account Status Console
+
+- Version: `0.479.0`
+- Data version: `20260707-v479-01`
+- Changes made: Added Support Safe Account Status Console inside Account Readiness with public status rows, visible and hidden field policies, ticket links, escalation rules, reply boundaries, receipt fields, no-go rules, dedicated copy action, Account Readiness brief coverage, and release markers rolled forward to v479.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v479 marker scan.
+- Known risks: Support-safe account status console is a static support contract only; production still needs authenticated support tooling, real case queues, role permissions, redaction scanners, incident freezes, support analytics, privacy/legal/security review, and deployment verification.
+
 ## NiveshNadi Phase 1 v478 Export Delete Backend Ticket Room
 
 - Version: `0.478.0`

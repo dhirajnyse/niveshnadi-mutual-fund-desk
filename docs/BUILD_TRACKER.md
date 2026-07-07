@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V479 Support Safe Account Status Console
+
+V479 adds Support Safe Account Status Console inside Account Readiness. It turns account support into public status rows, visible/hidden field policies, ticket links, escalation triggers, reply boundaries, receipt fields, no-go rules, and a copyable support handoff without exposing payload bodies or private identifiers.
+
 ## V478 Export Delete Backend Ticket Room
 
 V478 adds Export Delete Backend Ticket Room inside Account Readiness. It turns export and deletion promises into backend ticket rows with owners, accepted fields, blocked fields, acceptance proof, support-safe status, schema links, launch hold conditions, receipt fields, no-go rules, and a copyable engineering handoff.

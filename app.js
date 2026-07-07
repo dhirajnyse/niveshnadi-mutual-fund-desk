@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v489-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v489 Visual QA CI Adapter";
+const DATA_VERSION = "20260707-v490-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v490 Payment Entitlement Proof Cabinet";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -11461,6 +11461,116 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    paymentEntitlementProofCabinet: {
+      label: "Payment entitlement proof cabinet",
+      verdict: "Paid access held for proof",
+      receiptId: ["NN", "PAYMENT", "ENTITLEMENT", "PROOF", "CABINET", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 57,
+      rule: "Paid access can widen only when checkout, invoice, webhook, entitlement grant, refund rollback, support closeout, and redaction proof each show one owner, one receipt, one replay rule, one user-safe state, and one launch hold.",
+      gates: [
+        {
+          label: "Checkout session",
+          owner: "Billing Boundary",
+          route: "#payment-sandbox",
+          receipt: "checkout_session_created",
+          state: "Sandbox contract",
+          score: 62,
+          replay: "Replay provider session id, account fixture id, price id, and release key.",
+          hold: "Hold if card, UPI, gateway secret, OTP, contact data, or raw payment method enters front-end memory."
+        },
+        {
+          label: "Invoice receipt",
+          owner: "Billing Ops",
+          route: "#pilot-receipt-vault",
+          receipt: "invoice_paid_or_failed",
+          state: "Receipt vault needed",
+          score: 58,
+          replay: "Replay invoice id, provider event id, amount, plan, and entitlement candidate.",
+          hold: "Hold if invoice, payment status, plan, support case, and entitlement row cannot be joined."
+        },
+        {
+          label: "Webhook decision",
+          owner: "Backend",
+          route: "#gateway-webhook-drill",
+          receipt: "webhook_signature_verified",
+          state: "Backend proof later",
+          score: 52,
+          replay: "Replay event signature, idempotency key, accepted/rejected state, and dead-letter route.",
+          hold: "Hold if signature verification, idempotency, retry, dead-letter, or alert proof is missing."
+        },
+        {
+          label: "Entitlement grant",
+          owner: "Access Control",
+          route: "#entitlement-bridge",
+          receipt: "entitlement_granted_or_revoked",
+          state: "Join contract visible",
+          score: 61,
+          replay: "Replay account id, provider event id, plan, entitlement state, and expiry.",
+          hold: "Hold if unpaid users can see paid state or paid users cannot recover access safely."
+        },
+        {
+          label: "Refund rollback",
+          owner: "Billing Support",
+          route: "#payment-readiness",
+          receipt: "refund_entitlement_rollback",
+          state: "Support drill linked",
+          score: 55,
+          replay: "Replay refund id, invoice id, support case, entitlement revocation, and user-safe reply.",
+          hold: "Hold if cancellation, refund, access removal, and support closeout do not agree."
+        },
+        {
+          label: "Support closeout",
+          owner: "Support Desk",
+          route: "#account-readiness",
+          receipt: "payment_support_closeout",
+          state: "Queue proof needed",
+          score: 64,
+          replay: "Replay support case id, issue type, owner, reply boundary, and closeout state.",
+          hold: "Hold if support sees payment token, contact details, private notes, or raw provider payload."
+        },
+        {
+          label: "Redaction and audit",
+          owner: "Privacy/Security",
+          route: "#trust-center",
+          receipt: "payment_redaction_audit",
+          state: "Review gate open",
+          score: 49,
+          replay: "Replay redaction scan, secrets scan, audit event, retention rule, and deletion state.",
+          hold: "Hold if secrets, tokens, card/UPI data, contact data, credentials, or raw payloads are retained."
+        }
+      ],
+      sequence: [
+        "Create checkout session with test account fixture, plan id, release key, and idempotency key.",
+        "Receive invoice/webhook events and reject any unsigned, duplicate, stale, or malformed event.",
+        "Grant, deny, revoke, or repair entitlement only after provider event, account id, support state, and audit event agree.",
+        "Replay refund and cancellation before any wider paid cohort opens.",
+        "Close the cabinet only after redaction, support-safe reply, and no-private-data retention checks pass."
+      ],
+      noGoLines: [
+        "No paid beta widens while checkout, invoice, webhook, entitlement, refund, support, or redaction proof is missing.",
+        "No payment proof may retain card, UPI, OTP, gateway secret, credential, contact data, raw provider payload, PAN, folio, CAS, bank data, transaction instruction, distributor record, or private note.",
+        "No entitlement grant is trusted until provider event id, account id, plan, support state, and audit receipt agree.",
+        "No refund or cancellation is considered closed until entitlement rollback and support-safe user reply are replayable."
+      ],
+      receiptFields: [
+        "payment_entitlement_proof_cabinet_id",
+        "release_key",
+        "gate_label",
+        "owner",
+        "provider_event_id",
+        "account_fixture_id",
+        "invoice_id",
+        "refund_id",
+        "entitlement_state",
+        "idempotency_key",
+        "support_case_id",
+        "redaction_scan_id",
+        "audit_event_id",
+        "replay_state",
+        "hold_condition",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -11480,8 +11590,8 @@ function buildTrackerConfig() {
         },
         {
           label: "Next proof",
-          value: "Payment entitlement proof cabinet",
-          detail: "Group checkout, invoice, refund, entitlement, webhook, support, and redaction proof before paid beta widens."
+          value: "Production data source gate",
+          detail: "Lock source dates, citation paths, factsheets, portfolio disclosure, TER, riskometer, and benchmark proof before 100%."
         },
         {
           label: "100% rule",
@@ -11630,15 +11740,9 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "Two releases remain",
-      rule: "Visual QA CI adapter is visible; keep the remaining batch focused on payment entitlement proof and production data source gate.",
+      verdict: "One release remains",
+      rule: "Payment entitlement proof cabinet is visible; finish this batch with the production data source gate.",
       lanes: [
-        {
-          version: "v490",
-          label: "Payment entitlement proof cabinet",
-          route: "#pricing",
-          detail: "Group checkout, invoice, refund, entitlement, webhook, support, and redaction proof into one payment-readiness cabinet before paid beta widens."
-        },
         {
           version: "v491",
           label: "Production data source gate",
@@ -11652,6 +11756,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v489",
+          key: "20260707-v489-01",
+          commit: "7f3e99a",
+          receiptId: "NN-SHARE-RECEIPT-20260707V48901",
+          proof: "Visual QA CI Adapter added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v488",
           key: "20260707-v488-01",
@@ -11679,13 +11790,6 @@ function buildTrackerConfig() {
           commit: "40d0017",
           receiptId: "NN-SHARE-RECEIPT-20260707V48501",
           proof: "Production Launch Proof Cabinet added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v484",
-          key: "20260707-v484-01",
-          commit: "599e264",
-          receiptId: "NN-SHARE-RECEIPT-20260707V48401",
-          proof: "Visual Runner Result Archive added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11723,8 +11827,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v489",
-        detail: "Visual QA CI Adapter is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v490",
+        detail: "Payment Entitlement Proof Cabinet is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11739,23 +11843,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v489 as complete until this release returns the active release stamp."
+        detail: "Do not share v490 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v489 source change adds Visual QA CI Adapter."
+        detail: "v490 source change adds Payment Entitlement Proof Cabinet."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v489 runs syntax, static, security, diff hygiene, and marker scans before the next release."
+        detail: "v490 runs syntax, static, security, diff hygiene, and marker scans before the final release."
       },
       {
         label: "Share outcome",
-        value: "v489 held until live stamp",
+        value: "v490 held until live stamp",
         detail: "The final batch release is pushed and live-stamp verified after visual QA passes."
       }
     ],
@@ -12348,6 +12452,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Payment entitlement proof cabinet">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.paymentEntitlementProofCabinet.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.paymentEntitlementProofCabinet.verdict)} | ${tracker.releaseDoctor.paymentEntitlementProofCabinet.score}/100</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.paymentEntitlementProofCabinet.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.paymentEntitlementProofCabinet.gates.map((gate) => `
+          <article>
+            <span>${escapeHtml(gate.owner)} | ${gate.score}/100</span>
+            <strong>${escapeHtml(gate.label)}</strong>
+            <p>${escapeHtml(gate.receipt)}. Replay: ${escapeHtml(gate.replay)} Hold: ${escapeHtml(gate.hold)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -12503,6 +12621,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-backend-account-smoke-harness>Copy account smoke</button>
         <button class="text-button" type="button" data-copy-support-operations-incident-drill>Copy support drill</button>
         <button class="text-button" type="button" data-copy-visual-qa-ci-adapter>Copy visual CI</button>
+        <button class="text-button" type="button" data-copy-payment-entitlement-proof-cabinet>Copy payment proof</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -12721,6 +12840,11 @@ function makeBuildTrackerBrief() {
     `Visual QA CI score: ${tracker.releaseDoctor.visualQaCiAdapter.score}/100`,
     `Visual QA CI rule: ${tracker.releaseDoctor.visualQaCiAdapter.rule}`,
     ...tracker.releaseDoctor.visualQaCiAdapter.jobs.map((job) => `- Visual CI ${job.label}: ${job.job} | ${job.route} | ${job.viewport} | Marker ${job.marker} | Gate ${job.gate}`),
+    `Payment entitlement proof cabinet: ${tracker.releaseDoctor.paymentEntitlementProofCabinet.verdict}`,
+    `Payment entitlement receipt: ${tracker.releaseDoctor.paymentEntitlementProofCabinet.receiptId}`,
+    `Payment entitlement score: ${tracker.releaseDoctor.paymentEntitlementProofCabinet.score}/100`,
+    `Payment entitlement rule: ${tracker.releaseDoctor.paymentEntitlementProofCabinet.rule}`,
+    ...tracker.releaseDoctor.paymentEntitlementProofCabinet.gates.map((gate) => `- Payment entitlement ${gate.label}: ${gate.owner} | ${gate.receipt} | ${gate.state} | ${gate.score}/100 | Replay ${gate.replay} | Hold ${gate.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -12936,6 +13060,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.visualQaCiAdapter.outputs.map((output) => `- Output ${output.label}: ${output.value} | ${output.detail}`),
     ...tracker.releaseDoctor.visualQaCiAdapter.failureRouting.map((rule) => `- Failure route: ${rule}`),
     ...tracker.releaseDoctor.visualQaCiAdapter.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Payment Entitlement Proof Cabinet",
+    `- Receipt ID: ${tracker.releaseDoctor.paymentEntitlementProofCabinet.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.paymentEntitlementProofCabinet.verdict}`,
+    `- Score: ${tracker.releaseDoctor.paymentEntitlementProofCabinet.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.paymentEntitlementProofCabinet.rule}`,
+    ...tracker.releaseDoctor.paymentEntitlementProofCabinet.gates.map((gate) => `- ${gate.label}: ${gate.owner} | ${gate.receipt} | ${gate.state} | Replay ${gate.replay} | Hold ${gate.hold}`),
+    ...tracker.releaseDoctor.paymentEntitlementProofCabinet.sequence.map((step) => `- Sequence: ${step}`),
+    ...tracker.releaseDoctor.paymentEntitlementProofCabinet.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.paymentEntitlementProofCabinet.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -13458,6 +13592,41 @@ function makeVisualQaCiAdapterBrief() {
     ...adapter.receiptFields.map((field) => `- ${field}`),
     "",
     "Visual QA CI Adapter is a release automation contract only. It does not retain private screenshots, prove live data, create account custody, approve investing, execute transactions, certify privacy/security/legal readiness, or replace human review of failures."
+  ].join("\n");
+}
+
+function makePaymentEntitlementProofCabinetBrief() {
+  const cabinet = buildTrackerConfig().releaseDoctor.paymentEntitlementProofCabinet;
+  return [
+    "# NiveshNadi Payment Entitlement Proof Cabinet",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${cabinet.receiptId}`,
+    `Verdict: ${cabinet.verdict}`,
+    `Score: ${cabinet.score}/100`,
+    `Rule: ${cabinet.rule}`,
+    "",
+    "## Gates",
+    ...cabinet.gates.map((gate) => [
+      `- ${gate.label}`,
+      `  Owner: ${gate.owner}`,
+      `  Route: ${gate.route}`,
+      `  Receipt: ${gate.receipt}`,
+      `  State: ${gate.state}`,
+      `  Score: ${gate.score}/100`,
+      `  Replay: ${gate.replay}`,
+      `  Hold: ${gate.hold}`
+    ].join("\n")),
+    "",
+    "## Sequence",
+    ...cabinet.sequence.map((step) => `- ${step}`),
+    "",
+    "## No-Go Lines",
+    ...cabinet.noGoLines.map((line) => `- ${line}`),
+    "",
+    "## Receipt Fields",
+    ...cabinet.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Payment Entitlement Proof Cabinet is a launch-readiness proof map only. It does not process payments, store card/UPI data, approve investment action, grant live entitlement, issue refunds, certify legal/security readiness, or replace provider-side payment logs."
   ].join("\n");
 }
 
@@ -67634,6 +67803,13 @@ function bindEvents() {
     if (!copyVisualQaCiAdapter) return;
     event.preventDefault();
     copyText(makeVisualQaCiAdapterBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyPaymentEntitlementProofCabinet = event.target.closest("[data-copy-payment-entitlement-proof-cabinet]");
+    if (!copyPaymentEntitlementProofCabinet) return;
+    event.preventDefault();
+    copyText(makePaymentEntitlementProofCabinetBrief());
   });
 
   document.addEventListener("click", (event) => {

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V490 Payment Entitlement Proof Cabinet
+
+V490 adds Payment Entitlement Proof Cabinet to the Build Tracker Release Doctor. It groups checkout session, invoice receipt, webhook decision, entitlement grant, refund rollback, support closeout, and redaction/audit proof into one paid-access gate with owners, receipts, replay rules, hold lines, no-go lines, receipt fields, and a copyable payment proof handoff before paid access widens.
+
 ## V489 Visual QA CI Adapter
 
 V489 adds Visual QA CI Adapter to the Build Tracker Release Doctor. It converts visual runner proof into CI job rows with route, viewport, DOM marker, artifact policy, failure routing, deletion receipt, release hold, receipt fields, and a copyable visual CI handoff before automated screenshot QA widens.

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v490 Payment Entitlement Proof Cabinet
+
+- Version: `0.490.0`
+- Data version: `20260707-v490-01`
+- Changes made: Added Payment Entitlement Proof Cabinet to the Build Tracker Release Doctor with checkout, invoice, webhook, entitlement grant, refund rollback, support closeout, and redaction/audit gates; owners; routes; receipt names; replay rules; hold lines; no-go lines; receipt fields; dedicated copy action; Build Tracker and Release Doctor brief coverage; proof archive roll-forward; next-batch planner roll-forward; and release markers rolled forward to v490.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v490 marker scan.
+- Known risks: Payment Entitlement Proof Cabinet is a static release-readiness contract only; production still needs payment provider integration, signed webhook verification, durable entitlement storage, invoice/refund reconciliation, support tooling, redaction scanners, privacy/security/legal review, deployment verification, and live payment tests.
+
 ## NiveshNadi Phase 1 v489 Visual QA CI Adapter
 
 - Version: `0.489.0`

@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v489 Visual QA CI Adapter
-20260707-v489-01
+NiveshNadi Phase 1 v490 Payment Entitlement Proof Cabinet
+20260707-v490-01

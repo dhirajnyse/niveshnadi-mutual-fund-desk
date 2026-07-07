@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v498-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v498 Source Fetcher Proof Worker";
+const DATA_VERSION = "20260708-v499-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v499 Payment Webhook Verification Lab";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -12391,6 +12391,95 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    paymentWebhookVerificationLab: {
+      label: "Payment webhook verification lab",
+      verdict: "Webhook proof isolated",
+      receiptId: ["NN", "PAYMENT", "WEBHOOK", "VERIFICATION", "LAB", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 57,
+      rule: "Payment access can widen only after webhook signature, idempotency, event ordering, dead-letter recovery, refund rollback, entitlement sync, redaction, and support closeout are rehearsed without storing payment secrets or private payment payloads.",
+      lanes: [
+        {
+          label: "Signature envelope",
+          owner: "Billing boundary",
+          method: "EVENT",
+          route: "payment.webhook.signature",
+          proof: "Verify provider signature, timestamp tolerance, event id, sandbox mode, and raw-body custody outside browser memory.",
+          readyWhen: "Ready when accepted events show signature state, timestamp state, provider event id, sandbox/live state, and redacted raw-body custody.",
+          hold: "Hold if provider secret, card, UPI, bank, token, raw webhook body, or customer contact data can reach frontend storage.",
+          score: 58
+        },
+        {
+          label: "Idempotency replay",
+          owner: "Payment operations",
+          method: "EVENT",
+          route: "payment.webhook.idempotency",
+          proof: "Replay duplicate checkout, invoice, payment succeeded, refund, and failed-payment events without double-granting access.",
+          readyWhen: "Ready when duplicate event ids return previous decision, receipt id, entitlement state, and no second grant.",
+          hold: "Hold if duplicate events can create two entitlements, two refunds, or inconsistent support status.",
+          score: 56
+        },
+        {
+          label: "Event order gate",
+          owner: "Entitlement bridge",
+          method: "EVENT",
+          route: "payment.webhook.ordering",
+          proof: "Queue out-of-order invoice, payment, refund, dispute, and cancellation events until the required predecessor receipts exist.",
+          readyWhen: "Ready when payment access waits for invoice, account fixture, webhook decision, entitlement receipt, and release audit agreement.",
+          hold: "Hold if payment succeeded can grant access before invoice, account fixture, or entitlement bridge receipts exist.",
+          score: 54
+        },
+        {
+          label: "Dead-letter recovery",
+          owner: "Payment operations",
+          method: "EVENT",
+          route: "payment.webhook.deadletter",
+          proof: "Send bad signatures, schema drift, missing account, stale timestamp, and unsupported events into a repair queue.",
+          readyWhen: "Ready when repair rows include event id, reason, owner, retry policy, support-safe status, and closeout receipt.",
+          hold: "Hold if failed events disappear, retry silently, or expose raw payload details to support.",
+          score: 60
+        },
+        {
+          label: "Refund rollback",
+          owner: "Finance control",
+          method: "EVENT",
+          route: "payment.webhook.refund",
+          proof: "Link refund, entitlement revoke, invoice state, support notice, and account fixture rollback into one receipt.",
+          readyWhen: "Ready when refund rollback has invoice id, entitlement prior state, new state, support-safe reply, and audit note.",
+          hold: "Hold if a refund can revoke access without support-safe notice, account state, and audit receipt.",
+          score: 57
+        }
+      ],
+      operatingRules: [
+        "Webhook verification must occur server-side; the browser can show only redacted receipt states.",
+        "Every provider event id is idempotent and replayable before entitlement changes.",
+        "Out-of-order events wait for predecessor receipts rather than mutating access early.",
+        "Dead-letter repair rows need owner, reason, retry policy, and support-safe closeout.",
+        "Refund rollback must update entitlement, support status, account fixture state, and release audit memory together."
+      ],
+      noGoLines: [
+        "No payment secret, card, UPI, bank, token, raw webhook body, or contact data may enter this static prototype.",
+        "No duplicate event may grant duplicate access, duplicate refund, or conflicting entitlement states.",
+        "No failed payment event may disappear without dead-letter reason, owner, retry policy, and support-safe status.",
+        "No entitlement may change until invoice, webhook, account, refund, support, and audit receipts agree."
+      ],
+      receiptFields: [
+        "payment_webhook_verification_lab_id",
+        "release_key",
+        "provider_event_id",
+        "signature_state",
+        "timestamp_state",
+        "idempotency_key",
+        "event_order_state",
+        "dead_letter_reason",
+        "entitlement_previous_state",
+        "entitlement_next_state",
+        "refund_receipt_id",
+        "support_safe_status_id",
+        "audit_receipt_id",
+        "redaction_scan_id",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -12561,14 +12650,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source fetcher proof worker advances the runnable-scaffold batch; next releases should add webhook, support, pilot, repository, and CI handoff proof.",
+      rule: "Payment webhook verification lab advances the runnable-scaffold batch; next releases should add support, pilot, repository, CI, and deployment handoff proof.",
       lanes: [
-        {
-          version: "v499",
-          label: "Payment webhook verification lab",
-          route: "#gateway-webhook-drill",
-          detail: "Add a webhook verification rehearsal for signature, idempotency, dead-letter, refund, and entitlement rollback states."
-        },
         {
           version: "v500",
           label: "Account support operations console",
@@ -12592,6 +12675,12 @@ function buildTrackerConfig() {
           label: "Backend CI proof harness",
           route: "#backend-audit-receipts",
           detail: "Add a CI contract for unit, fixture, webhook, source-worker, no-private-data, and smoke-test gates before backend merge."
+        },
+        {
+          version: "v504",
+          label: "Deployment environment readiness map",
+          route: "#release-publisher",
+          detail: "Map staging, production, secrets, environment variables, rollback, logs, and uptime proof before any launch claim widens."
         }
       ]
     },
@@ -12600,6 +12689,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v498",
+          key: "20260708-v498-01",
+          commit: "ea3a2d3",
+          receiptId: "NN-SHARE-RECEIPT-20260708V49801",
+          proof: "Source Fetcher Proof Worker added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v497",
           key: "20260708-v497-01",
@@ -12627,13 +12723,6 @@ function buildTrackerConfig() {
           commit: "e9ef99f",
           receiptId: "NN-SHARE-RECEIPT-20260707V49401",
           proof: "Payment Sandbox Event Simulator added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v493",
-          key: "20260707-v493-01",
-          commit: "9c55bb0",
-          receiptId: "NN-SHARE-RECEIPT-20260707V49301",
-          proof: "Account Persistence Fixture Runner added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -12671,39 +12760,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v498",
-        detail: "Source Fetcher Proof Worker is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v499",
+        detail: "Payment Webhook Verification Lab is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v498 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v499 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
-        value: "v499 next",
-        detail: "Payment webhook verification lab is queued after the source worker proof."
+        value: "v500 next",
+        detail: "Account support operations console is queued after the webhook proof."
       },
       {
         label: "04 Share",
-        value: "v498 held until live stamp",
-        detail: "Do not share v498 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v499 held until live stamp",
+        detail: "Do not share v499 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v498 source change",
-        detail: "Source Fetcher Proof Worker adds fetch envelope, checksum, parser quarantine, failed-run replay, reviewer release, and rollback proof lanes."
+        value: "v499 source change",
+        detail: "Payment Webhook Verification Lab adds signature, idempotency, event-order, dead-letter, refund rollback, entitlement, redaction, and support closeout proof lanes."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v498 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v499 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v498 held until live stamp",
+        value: "v499 held until live stamp",
         detail: "The batch release is share-ready only after v501 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
@@ -13415,6 +13504,7 @@ function releaseDoctorMarkup(tracker) {
       </div>
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.productionBackendStarterService, "Production backend starter service")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.sourceFetcherProofWorker, "Source fetcher proof worker")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.paymentWebhookVerificationLab, "Payment webhook verification lab")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -13579,6 +13669,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-founder-release-audit-room>Copy release audit</button>
         <button class="text-button" type="button" data-copy-production-backend-starter-service>Copy backend service</button>
         <button class="text-button" type="button" data-copy-source-fetcher-proof-worker>Copy fetch worker</button>
+        <button class="text-button" type="button" data-copy-payment-webhook-verification-lab>Copy webhook lab</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -13842,6 +13933,11 @@ function makeBuildTrackerBrief() {
     `Source fetcher worker score: ${tracker.releaseDoctor.sourceFetcherProofWorker.score}/100`,
     `Source fetcher worker rule: ${tracker.releaseDoctor.sourceFetcherProofWorker.rule}`,
     ...tracker.releaseDoctor.sourceFetcherProofWorker.lanes.map((lane) => `- Source worker ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Payment webhook verification lab: ${tracker.releaseDoctor.paymentWebhookVerificationLab.verdict}`,
+    `Payment webhook lab receipt: ${tracker.releaseDoctor.paymentWebhookVerificationLab.receiptId}`,
+    `Payment webhook lab score: ${tracker.releaseDoctor.paymentWebhookVerificationLab.score}/100`,
+    `Payment webhook lab rule: ${tracker.releaseDoctor.paymentWebhookVerificationLab.rule}`,
+    ...tracker.releaseDoctor.paymentWebhookVerificationLab.lanes.map((lane) => `- Payment webhook ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -14147,6 +14243,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.sourceFetcherProofWorker.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.sourceFetcherProofWorker.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.sourceFetcherProofWorker.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Payment Webhook Verification Lab",
+    `- Receipt ID: ${tracker.releaseDoctor.paymentWebhookVerificationLab.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.paymentWebhookVerificationLab.verdict}`,
+    `- Score: ${tracker.releaseDoctor.paymentWebhookVerificationLab.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.paymentWebhookVerificationLab.rule}`,
+    ...tracker.releaseDoctor.paymentWebhookVerificationLab.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.paymentWebhookVerificationLab.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.paymentWebhookVerificationLab.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.paymentWebhookVerificationLab.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -14967,6 +15073,14 @@ function makeSourceFetcherProofWorkerBrief() {
     "Source Fetcher Proof Worker",
     buildTrackerConfig().releaseDoctor.sourceFetcherProofWorker,
     "Source Fetcher Proof Worker is a static worker-rehearsal contract only. It does not fetch live source files, parse production PDFs, certify source accuracy, store source artifacts, or replace reviewer signoff and rollback controls."
+  );
+}
+
+function makePaymentWebhookVerificationLabBrief() {
+  return makeOperationalProofBrief(
+    "Payment Webhook Verification Lab",
+    buildTrackerConfig().releaseDoctor.paymentWebhookVerificationLab,
+    "Payment Webhook Verification Lab is a static webhook-proof contract only. It does not verify live provider webhooks, process payments, store payment payloads, grant entitlements, issue refunds, or certify production billing readiness."
   );
 }
 
@@ -69206,6 +69320,13 @@ function bindEvents() {
     if (!copySourceFetcherProofWorker) return;
     event.preventDefault();
     copyText(makeSourceFetcherProofWorkerBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyPaymentWebhookVerificationLab = event.target.closest("[data-copy-payment-webhook-verification-lab]");
+    if (!copyPaymentWebhookVerificationLab) return;
+    event.preventDefault();
+    copyText(makePaymentWebhookVerificationLabBrief());
   });
 
   document.addEventListener("click", (event) => {

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v499 Payment Webhook Verification Lab
+
+- Version: `0.499.0`
+- Data version: `20260708-v499-01`
+- Changes made: Added Payment Webhook Verification Lab to the Build Tracker Release Doctor with signed webhook proof, idempotency replay, event ordering, dead-letter recovery, refund rollback, entitlement state, redaction rules, support-safe closeout, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward with v498 commit, next-batch planner roll-forward to v500-v504, and release markers rolled forward to v499.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v499 marker scan.
+- Known risks: Payment Webhook Verification Lab is a static webhook-proof contract only; production still needs real provider integration, server-side signature verification, secure secret storage, durable event persistence, entitlement reconciliation, refund processing, dead-letter tooling, privacy/security/legal review, deployment verification, and live billing tests.
+
 ## NiveshNadi Phase 1 v498 Source Fetcher Proof Worker
 
 - Version: `0.498.0`

@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v498 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v499 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Payment Webhook Verification Lab in the Build Tracker Release Doctor that isolates signed webhook proof, idempotency replay, event ordering, dead-letter recovery, refund rollback, entitlement state, redaction rules, support-safe closeout, receipt fields, and a copyable webhook-lab handoff before billing widens.
 - Source Fetcher Proof Worker in the Build Tracker Release Doctor that rehearses source fetch envelopes, checksums, freshness comparison, parser quarantine, failed-run replay, reviewer release, rollback evidence, no-private-data rules, receipt fields, and a copyable source-worker handoff before live ingestion widens.
 - Production Backend Starter Service in the Build Tracker Release Doctor that defines source receipt, account fixture replay, entitlement state, support-safe status, and release audit endpoint boundaries with methods, routes, accepted proof, private-data blocks, operating rules, no-go lines, receipt fields, and a copyable backend-service handoff before runnable backend work widens.
 - Founder Release Audit Room in the Build Tracker Release Doctor that checks build, source, account, payment, support, visual QA, proof archive, live stamp, founder signoff, no-private-data boundaries, share rules, no-go lines, receipt fields, and a copyable founder release audit before any release is shared.

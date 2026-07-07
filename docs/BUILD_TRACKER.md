@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V499 Payment Webhook Verification Lab
+
+V499 adds Payment Webhook Verification Lab to the Build Tracker Release Doctor. It isolates signed webhook proof, idempotency replay, event ordering, dead-letter recovery, refund rollback, entitlement state, redaction rules, support-safe closeout, receipt fields, and a copyable webhook-lab handoff before billing widens.
+
 ## V498 Source Fetcher Proof Worker
 
 V498 adds Source Fetcher Proof Worker to the Build Tracker Release Doctor. It rehearses source fetch envelopes, checksums, freshness comparison, parser quarantine, failed-run replay, reviewer release, rollback evidence, no-private-data rules, receipt fields, and a copyable source-worker handoff before live ingestion widens.

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v485 Production Launch Proof Cabinet
+
+- Version: `0.485.0`
+- Data version: `20260707-v485-01`
+- Changes made: Added Production Launch Proof Cabinet to the Build Tracker Release Doctor with live data, account custody, payment, legal, security, support, visual QA, and founder signoff gates; owners; required receipts; scores; hold lines; no-go lines; signoff rules; receipt fields; dedicated copy action; Build Tracker and Release Doctor brief coverage; proof archive roll-forward; next-batch planner roll-forward; and release markers rolled forward to v485.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v485 marker scan.
+- Known risks: Production launch proof cabinet is a static release-readiness contract only; production still needs live data integrations, authenticated account custody, payment gateway proof, legal/privacy/security review, support tooling, CI visual QA, founder signoff, deployment verification, and live backend tests before any production-ready claim.
+
 ## NiveshNadi Phase 1 v484 Visual Runner Result Archive
 
 - Version: `0.484.0`

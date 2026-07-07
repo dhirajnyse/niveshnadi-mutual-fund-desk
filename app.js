@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v484-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v484 Visual Runner Result Archive";
+const DATA_VERSION = "20260707-v485-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v485 Production Launch Proof Cabinet";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -11058,6 +11058,105 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    productionLaunchProofCabinet: {
+      label: "Production launch proof cabinet",
+      verdict: "Cabinet before claim",
+      receiptId: ["NN", "PRODUCTION", "LAUNCH", "PROOF", "CABINET", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 64,
+      rule: "A production-ready claim can open only when live data, account custody, payment, legal, security, support, visual QA, and founder signoff each have one accepted receipt, one owner, one no-go line, and one closeout state.",
+      gates: [
+        {
+          label: "Live data",
+          owner: "Source desk",
+          requiredReceipt: "source_date_citation_path_receipt",
+          state: "Static contract",
+          score: 62,
+          hold: "Hold if AMFI, AMC factsheet, NAV, TER, holdings, riskometer, or benchmark source date is missing."
+        },
+        {
+          label: "Account custody",
+          owner: "Account Platform",
+          requiredReceipt: "account_lifecycle_smoke_receipt",
+          state: "Backend needed",
+          score: 58,
+          hold: "Hold if authenticated storage, export/delete workers, redaction scan, or support-safe status is missing."
+        },
+        {
+          label: "Payment and entitlement",
+          owner: "Billing Boundary",
+          requiredReceipt: "checkout_invoice_refund_entitlement_receipt",
+          state: "Gateway proof later",
+          score: 46,
+          hold: "Hold if checkout, invoice, refund, webhook, entitlement, reconciliation, or support receipt is absent."
+        },
+        {
+          label: "Legal and privacy",
+          owner: "Founder/legal reviewer",
+          requiredReceipt: "research_only_privacy_disclosure_signoff",
+          state: "Review gate open",
+          score: 54,
+          hold: "Hold if research-only copy, risk warnings, no-advice boundary, privacy posture, or data-retention wording is unsigned."
+        },
+        {
+          label: "Security",
+          owner: "Security reviewer",
+          requiredReceipt: "threat_model_auth_storage_audit_receipt",
+          state: "Threat model needed",
+          score: 52,
+          hold: "Hold if auth, role permission, secrets, account storage, audit logs, or incident response proof is absent."
+        },
+        {
+          label: "Support operations",
+          owner: "Support desk",
+          requiredReceipt: "support_queue_telemetry_receipt",
+          state: "Queue contract visible",
+          score: 66,
+          hold: "Hold if support queue ownership, age bands, incident freezes, closeout receipt, or reply boundary is missing."
+        },
+        {
+          label: "Visual QA",
+          owner: "Founder UI release desk",
+          requiredReceipt: "visual_runner_result_archive",
+          state: "Static archive visible",
+          score: 82,
+          hold: "Hold if runner rows lack route, viewport, marker, result, console state, overflow state, reviewer state, or deletion receipt."
+        },
+        {
+          label: "Founder signoff",
+          owner: "Founder release desk",
+          requiredReceipt: "production_ready_claim_signoff",
+          state: "Manual signoff held",
+          score: 60,
+          hold: "Hold if founder cannot read every gate, top blocker, current score, and no-go reason in one pass."
+        }
+      ],
+      noGoLines: [
+        "Do not say production-ready until every cabinet gate has accepted proof and founder signoff.",
+        "Do not treat static contracts as live data, account custody, payment readiness, legal approval, security clearance, or support readiness.",
+        "Do not widen paid beta if account export/delete, support queue, payment refund, legal/privacy, or security incident proof is missing.",
+        "Do not retain private screenshots, account payloads, payment tokens, PAN, folio, CAS, contact data, credentials, or private notes in launch proof."
+      ],
+      signoffRules: [
+        "Each gate needs one owner, one receipt id, one accepted proof state, one top blocker, one no-go line, and one closeout state.",
+        "Founder signoff is valid only for the release key shown in release-stamp.txt.",
+        "Any stale gate, changed release key, failed visual row, or support incident supersedes the signoff.",
+        "A launch cabinet can support paid-beta decision review; it cannot authorize investment advice, transactions, refunds, or legal certification."
+      ],
+      receiptFields: [
+        "production_launch_proof_cabinet_id",
+        "release_key",
+        "gate_label",
+        "owner",
+        "required_receipt",
+        "score",
+        "state",
+        "top_blocker",
+        "hold_condition",
+        "signoff_state",
+        "founder_signoff_id",
+        "created_at"
+      ]
+    },
     retentionHealthSummary: {
       label: "Retention health summary",
       verdict: "Five proof surfaces mapped",
@@ -11160,14 +11259,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Runner result retention is visible; keep the next batch focused on launch proof cabinet, calm executive compression, backend account smoke harness, support incident drills, and visual QA CI adapter.",
+      rule: "Launch proof cabinet is visible; keep the next batch focused on calm executive compression, backend account smoke harness, support incident drills, visual QA CI adapter, and payment entitlement proof.",
       lanes: [
-        {
-          version: "v485",
-          label: "Production launch proof cabinet",
-          route: "#build-tracker",
-          detail: "Group live data, account, payment, legal, security, support, visual QA, and founder signoff receipts into one production gate cabinet."
-        },
         {
           version: "v486",
           label: "Calm executive workspace compression",
@@ -11191,6 +11284,12 @@ function buildTrackerConfig() {
           label: "Visual QA CI adapter",
           route: "#build-tracker",
           detail: "Convert visual runner result archive fields into a CI-friendly adapter contract with pass, fail, retry, artifact deletion, and release-hold outputs."
+        },
+        {
+          version: "v490",
+          label: "Payment entitlement proof cabinet",
+          route: "#pricing",
+          detail: "Group checkout, invoice, refund, entitlement, webhook, support, and redaction proof into one payment-readiness cabinet before paid beta widens."
         }
       ]
     },
@@ -11199,6 +11298,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v484",
+          key: "20260707-v484-01",
+          commit: "599e264",
+          receiptId: "NN-SHARE-RECEIPT-20260707V48401",
+          proof: "Visual Runner Result Archive added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v483",
           key: "20260707-v483-01",
@@ -11226,13 +11332,6 @@ function buildTrackerConfig() {
           commit: "4ac2583",
           receiptId: "NN-SHARE-RECEIPT-20260707V48001",
           proof: "Visual Regression Runner Contract added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v479",
-          key: "20260707-v479-01",
-          commit: "840217b",
-          receiptId: "NN-SHARE-RECEIPT-20260707V47901",
-          proof: "Support Safe Account Status Console added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11270,8 +11369,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v484",
-        detail: "Visual Runner Result Archive is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v485",
+        detail: "Production Launch Proof Cabinet is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11286,23 +11385,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v484 as complete until this release returns the active release stamp."
+        detail: "Do not share v485 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v484 source change adds Visual Runner Result Archive."
+        detail: "v485 source change adds Production Launch Proof Cabinet."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v484 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v485 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v484 held for batch deploy",
+        value: "v485 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v486."
       }
     ],
@@ -11779,6 +11878,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Production launch proof cabinet">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.productionLaunchProofCabinet.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.productionLaunchProofCabinet.verdict)} | ${tracker.releaseDoctor.productionLaunchProofCabinet.score}/100</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.productionLaunchProofCabinet.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.productionLaunchProofCabinet.gates.map((gate) => `
+          <article>
+            <span>${escapeHtml(gate.owner)} | ${gate.score}/100</span>
+            <strong>${escapeHtml(gate.label)}</strong>
+            <p>${escapeHtml(gate.state)}. Receipt: ${escapeHtml(gate.requiredReceipt)}. Hold: ${escapeHtml(gate.hold)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -11930,6 +12043,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-visual-regression-runner-contract>Copy runner contract</button>
         <button class="text-button" type="button" data-copy-visual-runner-result-archive>Copy runner results</button>
         <button class="text-button" type="button" data-copy-launch-proof-dashboard>Copy launch dashboard</button>
+        <button class="text-button" type="button" data-copy-production-launch-proof-cabinet>Copy proof cabinet</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -12122,6 +12236,11 @@ function makeBuildTrackerBrief() {
     ...tracker.releaseDoctor.launchProofDashboard.lanes.map((lane) => `- Launch proof ${lane.label}: ${lane.value} | ${lane.score}/100 | ${lane.state} | Next ${lane.next}`),
     ...tracker.releaseDoctor.launchProofDashboard.shareAnswer.map((line) => `- Launch share answer: ${line}`),
     ...tracker.releaseDoctor.launchProofDashboard.noGo.map((line) => `- Launch no-go: ${line}`),
+    `Production launch proof cabinet: ${tracker.releaseDoctor.productionLaunchProofCabinet.verdict}`,
+    `Production launch cabinet receipt: ${tracker.releaseDoctor.productionLaunchProofCabinet.receiptId}`,
+    `Production launch cabinet score: ${tracker.releaseDoctor.productionLaunchProofCabinet.score}/100`,
+    `Production launch cabinet rule: ${tracker.releaseDoctor.productionLaunchProofCabinet.rule}`,
+    ...tracker.releaseDoctor.productionLaunchProofCabinet.gates.map((gate) => `- Production gate ${gate.label}: ${gate.owner} | ${gate.requiredReceipt} | ${gate.score}/100 | ${gate.state} | Hold ${gate.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -12287,6 +12406,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.launchProofDashboard.shareAnswer.map((line) => `- Share answer: ${line}`),
     ...tracker.releaseDoctor.launchProofDashboard.noGo.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.launchProofDashboard.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Production Launch Proof Cabinet",
+    `- Receipt ID: ${tracker.releaseDoctor.productionLaunchProofCabinet.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.productionLaunchProofCabinet.verdict}`,
+    `- Score: ${tracker.releaseDoctor.productionLaunchProofCabinet.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.productionLaunchProofCabinet.rule}`,
+    ...tracker.releaseDoctor.productionLaunchProofCabinet.gates.map((gate) => `- ${gate.label}: ${gate.owner} | ${gate.requiredReceipt} | ${gate.score}/100 | ${gate.state} | Hold ${gate.hold}`),
+    ...tracker.releaseDoctor.productionLaunchProofCabinet.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.productionLaunchProofCabinet.signoffRules.map((rule) => `- Signoff rule: ${rule}`),
+    ...tracker.releaseDoctor.productionLaunchProofCabinet.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -12641,6 +12770,39 @@ function makeLaunchProofDashboardBrief() {
     ...dashboard.receiptFields.map((field) => `- ${field}`),
     "",
     "Launch Proof Dashboard is a founder release-readiness summary only. It does not prove live data, create account custody, approve investing, execute transactions, certify payment readiness, or replace privacy/security/legal review."
+  ].join("\n");
+}
+
+function makeProductionLaunchProofCabinetBrief() {
+  const cabinet = buildTrackerConfig().releaseDoctor.productionLaunchProofCabinet;
+  return [
+    "# NiveshNadi Production Launch Proof Cabinet",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${cabinet.receiptId}`,
+    `Verdict: ${cabinet.verdict}`,
+    `Score: ${cabinet.score}/100`,
+    `Rule: ${cabinet.rule}`,
+    "",
+    "## Production Gates",
+    ...cabinet.gates.map((gate) => [
+      `- ${gate.label}`,
+      `  Owner: ${gate.owner}`,
+      `  Required receipt: ${gate.requiredReceipt}`,
+      `  Score: ${gate.score}/100`,
+      `  State: ${gate.state}`,
+      `  Hold if: ${gate.hold}`
+    ].join("\n")),
+    "",
+    "## No-Go Lines",
+    ...cabinet.noGoLines.map((line) => `- ${line}`),
+    "",
+    "## Signoff Rules",
+    ...cabinet.signoffRules.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...cabinet.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Production Launch Proof Cabinet is a release-readiness contract only. It does not prove live data, create account custody, approve investing, execute transactions, certify payment readiness, or replace privacy/security/legal review."
   ].join("\n");
 }
 
@@ -66760,6 +66922,13 @@ function bindEvents() {
     if (!copyLaunchProofDashboard) return;
     event.preventDefault();
     copyText(makeLaunchProofDashboardBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyProductionLaunchProofCabinet = event.target.closest("[data-copy-production-launch-proof-cabinet]");
+    if (!copyProductionLaunchProofCabinet) return;
+    event.preventDefault();
+    copyText(makeProductionLaunchProofCabinetBrief());
   });
 
   document.addEventListener("click", (event) => {

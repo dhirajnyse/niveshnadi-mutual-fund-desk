@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V485 Production Launch Proof Cabinet
+
+V485 adds Production Launch Proof Cabinet to the Build Tracker Release Doctor. It groups live data, account custody, payment, legal, security, support, visual QA, and founder signoff gates with owners, required receipts, hold lines, signoff rules, receipt fields, and a copyable launch cabinet handoff.
+
 ## V484 Visual Runner Result Archive
 
 V484 adds Visual Runner Result Archive to the Build Tracker Release Doctor. It retains route, viewport, marker, result, hashes, console state, overflow state, retry state, reviewer state, release hold, image deletion receipt, share rules, and a copyable result handoff so launch proof can cite visual QA with clearer evidence.

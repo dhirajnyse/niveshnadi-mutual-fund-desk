@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v492-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v492 Live Backend API Skeleton";
+const DATA_VERSION = "20260707-v493-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v493 Account Persistence Fixture Runner";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -11775,6 +11775,111 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    accountPersistenceFixtureRunner: {
+      label: "Account persistence fixture runner",
+      verdict: "Account lifecycle replayable",
+      receiptId: ["NN", "ACCOUNT", "PERSISTENCE", "FIXTURE", "RUNNER", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 62,
+      rule: "Account persistence may widen only when create, save research, export, delete, support status, and entitlement join fixtures can replay with allowed fields, blocked fields, expected states, rollback receipts, and support-safe output.",
+      fixtures: [
+        {
+          label: "Create account shell",
+          route: "#account-readiness",
+          owner: "Account platform",
+          fixtureId: "acct_fixture_create_shell",
+          input: "fixture_id, consent_state, region, research_memory_key",
+          expected: "Account shell created with redacted audit id and no private identity.",
+          rollback: "Delete shell and retention pointer if consent is revoked before research save.",
+          blocked: "Name, email, phone, PAN, folio, CAS, bank, card, UPI, and credentials",
+          score: 68
+        },
+        {
+          label: "Save research memory",
+          route: "#review-vault",
+          owner: "Research memory",
+          fixtureId: "acct_fixture_save_research",
+          input: "account_fixture_id, fund_id, decision_reason, evidence_receipt_id, review_due_at",
+          expected: "Research memory saves with source receipt references and no transaction instruction.",
+          rollback: "Supersede saved memory if evidence receipt is stale or correction notice arrives.",
+          blocked: "Private notes, transaction orders, personal advice, contact details, PAN, folio, CAS",
+          score: 64
+        },
+        {
+          label: "Export account packet",
+          route: "#investor-record",
+          owner: "Export desk",
+          fixtureId: "acct_fixture_export_packet",
+          input: "account_fixture_id, export_sections, redaction_scan_id, requested_at",
+          expected: "Export manifest lists included sections, omitted private fields, and deletion receipt policy.",
+          rollback: "Invalidate export if redaction scan fails or private field appears.",
+          blocked: "Credentials, payment payload, bank data, contact data, raw source files, private support notes",
+          score: 60
+        },
+        {
+          label: "Delete account memory",
+          route: "#account-readiness",
+          owner: "Privacy desk",
+          fixtureId: "acct_fixture_delete_memory",
+          input: "account_fixture_id, delete_request_id, retention_reason, owner_signoff_id",
+          expected: "Saved research, export manifest, and support-visible status move to deleted or retained-by-rule.",
+          rollback: "Freeze account state if deletion and retention rules disagree.",
+          blocked: "Silent retention, hidden copy, unreconciled support status, payment entitlement mismatch",
+          score: 57
+        },
+        {
+          label: "Support-safe status",
+          route: "#account-readiness",
+          owner: "Support desk",
+          fixtureId: "acct_fixture_support_status",
+          input: "account_fixture_id, public_status, queue_state, escalation_state, closeout_receipt_id",
+          expected: "Support sees only safe status, owner, next step, and closeout receipt.",
+          rollback: "Escalate if support status exposes private payload or contradicts account state.",
+          blocked: "Private support note, payment token, contact data, raw provider payload, PAN, folio, CAS",
+          score: 63
+        },
+        {
+          label: "Entitlement join",
+          route: "#entitlement-bridge",
+          owner: "Access control",
+          fixtureId: "acct_fixture_entitlement_join",
+          input: "account_fixture_id, provider_event_id, plan_id, entitlement_state, audit_event_id",
+          expected: "Entitlement joins account fixture, invoice/refund event, and support-safe status.",
+          rollback: "Revoke or repair entitlement if invoice, refund, support, and audit state diverge.",
+          blocked: "Raw provider payload, payment method, gateway secret, OTP, contact data, credentials",
+          score: 59
+        }
+      ],
+      runOrder: [
+        "Create account shell from fixture-only identity and consent state.",
+        "Save research memory with evidence receipt references and no transaction instruction.",
+        "Export a redacted account packet and verify manifest fields.",
+        "Replay delete and retention decision with owner signoff.",
+        "Read support-safe status and entitlement join without exposing private payloads."
+      ],
+      noGoLines: [
+        "No account fixture may contain real name, email, phone, PAN, folio, CAS, bank, card, UPI, credential, or contact data.",
+        "No saved research can include buy, sell, switch, SIP, STP, redemption, allocation, or personalized advice instructions.",
+        "No export is valid until redaction scan, manifest, and deletion policy agree.",
+        "No entitlement is trusted until account fixture, provider event, invoice/refund state, support status, and audit event reconcile."
+      ],
+      receiptFields: [
+        "account_persistence_fixture_runner_id",
+        "release_key",
+        "fixture_id",
+        "account_fixture_id",
+        "allowed_fields",
+        "blocked_fields",
+        "expected_state",
+        "rollback_receipt_id",
+        "redaction_scan_id",
+        "support_safe_state",
+        "entitlement_state",
+        "audit_event_id",
+        "replay_result",
+        "launch_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -11944,15 +12049,9 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "Four releases remain",
-      rule: "Live backend API skeleton is visible; continue by turning account persistence into replayable fixtures.",
+      verdict: "Three releases remain",
+      rule: "Account persistence fixtures are visible; continue with a payment sandbox event simulator before live billing work widens.",
       lanes: [
-        {
-          version: "v493",
-          label: "Account persistence fixture runner",
-          route: "#account-readiness",
-          detail: "Turn account create, save research, export, delete, and support-safe status into replayable local test fixtures."
-        },
         {
           version: "v494",
           label: "Payment sandbox event simulator",
@@ -11978,6 +12077,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v492",
+          key: "20260707-v492-01",
+          commit: "7ce5685",
+          receiptId: "NN-SHARE-RECEIPT-20260707V49201",
+          proof: "Live Backend API Skeleton added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v491",
           key: "20260707-v491-01",
@@ -12005,13 +12111,6 @@ function buildTrackerConfig() {
           commit: "a578377",
           receiptId: "NN-SHARE-RECEIPT-20260707V48801",
           proof: "Support Operations Incident Drill added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v487",
-          key: "20260707-v487-01",
-          commit: "6f96990",
-          receiptId: "NN-SHARE-RECEIPT-20260707V48701",
-          proof: "Backend Account Smoke Harness added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -12049,8 +12148,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v492",
-        detail: "Live Backend API Skeleton is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v493",
+        detail: "Account Persistence Fixture Runner is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -12065,23 +12164,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Batch close held",
-        detail: "Do not share v492 as complete until this batch reaches v496 and the live release stamp is verified."
+        detail: "Do not share v493 as complete until this batch reaches v496 and the live release stamp is verified."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v492 source change adds Live Backend API Skeleton."
+        detail: "v493 source change adds Account Persistence Fixture Runner."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v492 runs syntax, static, security, diff hygiene, and marker scans before the next release."
+        detail: "v493 runs syntax, static, security, diff hygiene, and marker scans before the next release."
       },
       {
         label: "Share outcome",
-        value: "v492 held in batch",
+        value: "v493 held in batch",
         detail: "The final batch release is pushed and live-stamp verified after v496 visual QA passes."
       }
     ],
@@ -12716,6 +12815,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Account persistence fixture runner">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.accountPersistenceFixtureRunner.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.accountPersistenceFixtureRunner.verdict)} | ${tracker.releaseDoctor.accountPersistenceFixtureRunner.score}/100</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.accountPersistenceFixtureRunner.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.accountPersistenceFixtureRunner.fixtures.map((fixture) => `
+          <article>
+            <span>${escapeHtml(fixture.fixtureId)} | ${fixture.score}/100</span>
+            <strong>${escapeHtml(fixture.label)}</strong>
+            <p>${escapeHtml(fixture.expected)} Rollback: ${escapeHtml(fixture.rollback)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -12874,6 +12987,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-payment-entitlement-proof-cabinet>Copy payment proof</button>
         <button class="text-button" type="button" data-copy-production-data-source-gate>Copy source gate</button>
         <button class="text-button" type="button" data-copy-live-backend-api-skeleton>Copy backend API</button>
+        <button class="text-button" type="button" data-copy-account-persistence-fixture-runner>Copy account fixtures</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -13107,6 +13221,11 @@ function makeBuildTrackerBrief() {
     `Live backend API score: ${tracker.releaseDoctor.liveBackendApiSkeleton.score}/100`,
     `Live backend API rule: ${tracker.releaseDoctor.liveBackendApiSkeleton.rule}`,
     ...tracker.releaseDoctor.liveBackendApiSkeleton.endpoints.map((endpoint) => `- Backend endpoint ${endpoint.label}: ${endpoint.method} ${endpoint.route} | ${endpoint.owner} | Accepts ${endpoint.accepted} | Blocks ${endpoint.blocked} | Response ${endpoint.response} | Hold ${endpoint.hold}`),
+    `Account persistence fixture runner: ${tracker.releaseDoctor.accountPersistenceFixtureRunner.verdict}`,
+    `Account persistence receipt: ${tracker.releaseDoctor.accountPersistenceFixtureRunner.receiptId}`,
+    `Account persistence score: ${tracker.releaseDoctor.accountPersistenceFixtureRunner.score}/100`,
+    `Account persistence rule: ${tracker.releaseDoctor.accountPersistenceFixtureRunner.rule}`,
+    ...tracker.releaseDoctor.accountPersistenceFixtureRunner.fixtures.map((fixture) => `- Account fixture ${fixture.label}: ${fixture.fixtureId} | ${fixture.owner} | Input ${fixture.input} | Expected ${fixture.expected} | Rollback ${fixture.rollback} | Blocks ${fixture.blocked}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -13352,6 +13471,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.liveBackendApiSkeleton.sequence.map((step) => `- Sequence: ${step}`),
     ...tracker.releaseDoctor.liveBackendApiSkeleton.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.liveBackendApiSkeleton.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Account Persistence Fixture Runner",
+    `- Receipt ID: ${tracker.releaseDoctor.accountPersistenceFixtureRunner.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.accountPersistenceFixtureRunner.verdict}`,
+    `- Score: ${tracker.releaseDoctor.accountPersistenceFixtureRunner.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.accountPersistenceFixtureRunner.rule}`,
+    ...tracker.releaseDoctor.accountPersistenceFixtureRunner.fixtures.map((fixture) => `- ${fixture.label}: ${fixture.fixtureId} | ${fixture.owner} | Input ${fixture.input} | Expected ${fixture.expected} | Rollback ${fixture.rollback} | Blocks ${fixture.blocked}`),
+    ...tracker.releaseDoctor.accountPersistenceFixtureRunner.runOrder.map((step) => `- Run order: ${step}`),
+    ...tracker.releaseDoctor.accountPersistenceFixtureRunner.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.accountPersistenceFixtureRunner.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -13980,6 +14109,42 @@ function makeLiveBackendApiSkeletonBrief() {
     ...skeleton.receiptFields.map((field) => `- ${field}`),
     "",
     "Live Backend API Skeleton is an implementation contract only. It does not run a server, store accounts, process payments, ingest live source data, expose private data, or replace security and privacy review."
+  ].join("\n");
+}
+
+function makeAccountPersistenceFixtureRunnerBrief() {
+  const runner = buildTrackerConfig().releaseDoctor.accountPersistenceFixtureRunner;
+  return [
+    "# NiveshNadi Account Persistence Fixture Runner",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${runner.receiptId}`,
+    `Verdict: ${runner.verdict}`,
+    `Score: ${runner.score}/100`,
+    `Rule: ${runner.rule}`,
+    "",
+    "## Fixtures",
+    ...runner.fixtures.map((fixture) => [
+      `- ${fixture.label}`,
+      `  Fixture ID: ${fixture.fixtureId}`,
+      `  Route: ${fixture.route}`,
+      `  Owner: ${fixture.owner}`,
+      `  Input: ${fixture.input}`,
+      `  Expected: ${fixture.expected}`,
+      `  Rollback: ${fixture.rollback}`,
+      `  Blocked: ${fixture.blocked}`,
+      `  Score: ${fixture.score}/100`
+    ].join("\n")),
+    "",
+    "## Run Order",
+    ...runner.runOrder.map((step) => `- ${step}`),
+    "",
+    "## No-Go Lines",
+    ...runner.noGoLines.map((line) => `- ${line}`),
+    "",
+    "## Receipt Fields",
+    ...runner.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Account Persistence Fixture Runner is a local replay contract only. It does not create real accounts, persist personal data, store payment data, approve investment action, or replace authenticated backend custody."
   ].join("\n");
 }
 
@@ -68177,6 +68342,13 @@ function bindEvents() {
     if (!copyLiveBackendApiSkeleton) return;
     event.preventDefault();
     copyText(makeLiveBackendApiSkeletonBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyAccountPersistenceFixtureRunner = event.target.closest("[data-copy-account-persistence-fixture-runner]");
+    if (!copyAccountPersistenceFixtureRunner) return;
+    event.preventDefault();
+    copyText(makeAccountPersistenceFixtureRunnerBrief());
   });
 
   document.addEventListener("click", (event) => {

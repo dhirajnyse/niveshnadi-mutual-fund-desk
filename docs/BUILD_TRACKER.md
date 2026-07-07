@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V493 Account Persistence Fixture Runner
+
+V493 adds Account Persistence Fixture Runner to the Build Tracker Release Doctor. It rehearses account shell creation, research memory save, export packet, deletion, support-safe status, and entitlement join fixtures with allowed inputs, blocked fields, expected states, rollback receipts, no-go lines, receipt fields, and a copyable account fixture handoff before real account custody widens.
+
 ## V492 Live Backend API Skeleton
 
 V492 adds Live Backend API Skeleton to the Build Tracker Release Doctor. It turns source receipts, account fixtures, entitlement status, support-safe status, and release audit into small endpoint contracts with methods, routes, owners, accepted fields, blocked fields, response states, rollback rules, no-go lines, receipt fields, and a copyable backend API handoff before server work widens.

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v493 Account Persistence Fixture Runner
+
+- Version: `0.493.0`
+- Data version: `20260707-v493-01`
+- Changes made: Added Account Persistence Fixture Runner to the Build Tracker Release Doctor with account shell creation, research memory save, export packet, deletion, support-safe status, and entitlement join fixtures; allowed inputs; blocked fields; expected states; rollback rules; run order; no-go lines; receipt fields; dedicated copy action; Build Tracker and Release Doctor brief coverage; proof archive roll-forward with v492 commit; next-batch planner roll-forward; and release markers rolled forward to v493.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v493 marker scan.
+- Known risks: Account Persistence Fixture Runner is a static replay contract only; production still needs authenticated account APIs, durable storage, consent flows, export/delete workers, redaction enforcement, entitlement reconciliation, support tooling, privacy/security/legal review, deployment verification, and live backend tests.
+
 ## NiveshNadi Phase 1 v492 Live Backend API Skeleton
 
 - Version: `0.492.0`

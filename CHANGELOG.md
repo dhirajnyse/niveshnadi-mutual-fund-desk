@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v482 Account Lifecycle Smoke Receipts
+
+- Version: `0.482.0`
+- Data version: `20260707-v482-01`
+- Changes made: Added Account Lifecycle Smoke Receipts inside Account Readiness with account shell, saved research, export, deletion, and support smoke lanes; owners; routes; allowed and blocked fields; pass rules; hold rules; receipt fields; dedicated copy action; Account Readiness brief coverage; proof archive roll-forward; next-batch planner roll-forward; and release markers rolled forward to v482.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v482 marker scan.
+- Known risks: Account lifecycle smoke receipts are static backend-readiness proof only; production still needs authenticated account APIs, durable storage, real export and deletion workers, redaction scanners, support queue integration, permission enforcement, privacy/security/legal review, deployment verification, and live backend tests.
+
 ## NiveshNadi Phase 1 v481 Launch Proof Dashboard Polish
 
 - Version: `0.481.0`

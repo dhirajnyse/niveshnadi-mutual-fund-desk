@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V482 Account Lifecycle Smoke Receipts
+
+V482 adds Account Lifecycle Smoke Receipts inside Account Readiness. It ties account shell, saved research, export, deletion, and support status into smoke lanes with owners, allowed fields, blocked fields, pass rules, hold rules, receipt fields, and a copyable smoke handoff before account backend work widens.
+
 ## V481 Launch Proof Dashboard Polish
 
 V481 adds Launch Proof Dashboard Polish to the Build Tracker Release Doctor. It summarizes static release proof, visual proof, account custody, payments, legal/security, and support lanes with next proof, no-go lines, receipt fields, and a copyable launch handoff before launch-readiness language widens.

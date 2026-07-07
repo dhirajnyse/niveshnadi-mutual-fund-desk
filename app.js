@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v481-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v481 Launch Proof Dashboard Polish";
+const DATA_VERSION = "20260707-v482-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v482 Account Lifecycle Smoke Receipts";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v480 passed release checks on commit 4ac2583. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v481 passed release checks on commit da2f65b. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v480 local checks passed",
+      outcome: "Previous outcome: v481 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260707V48001",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260707V48101",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -11144,6 +11144,13 @@ function buildTrackerConfig() {
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         {
+          version: "v481",
+          key: "20260707-v481-01",
+          commit: "da2f65b",
+          receiptId: "NN-SHARE-RECEIPT-20260707V48101",
+          proof: "Launch Proof Dashboard Polish added and verified by syntax, static, security, diff hygiene, marker checks, browser visual QA, push, and live stamp."
+        },
+        {
           version: "v480",
           key: "20260707-v480-01",
           commit: "4ac2583",
@@ -11170,13 +11177,6 @@ function buildTrackerConfig() {
           commit: "b7dc6a2",
           receiptId: "NN-SHARE-RECEIPT-20260707V47701",
           proof: "Account Object Schema Map added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v476",
-          key: "20260707-v476-02",
-          commit: "0023cef",
-          receiptId: "NN-SHARE-RECEIPT-20260707V47602",
-          proof: "Custody API Readiness plus QA shell hotfix verified by syntax, static, security, diff hygiene, marker checks, and browser visual QA."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11214,8 +11214,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v481",
-        detail: "Launch Proof Dashboard Polish is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v482",
+        detail: "Account Lifecycle Smoke Receipts are wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11224,30 +11224,30 @@ function buildTrackerConfig() {
       },
       {
         label: "03 Queued",
-        value: "Batch final",
-        detail: "This five-version batch is ready for browser visual QA, push, and live-stamp verification after v481 checks."
+        value: "Batch push later",
+        detail: "This five-version batch will be pushed and live-verified after v486."
       },
       {
         label: "04 Share",
-        value: "Final release held",
-        detail: "Do not share v481 as complete until this release returns the active release stamp."
+        value: "Next build held",
+        detail: "Do not share v482 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v481 source change adds Launch Proof Dashboard Polish."
+        detail: "v482 source change adds Account Lifecycle Smoke Receipts."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v481 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v482 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v481 held for live stamp",
-        detail: "The final batch release is pushed and shared only after GitHub Pages serves the v481 stamp."
+        value: "v482 held for batch deploy",
+        detail: "The final batch release will be pushed and live-stamp verified after v486."
       }
     ],
     actions: [
@@ -26814,6 +26814,89 @@ function accountReadinessLabConfig() {
       "case_closed_at"
     ]
   };
+  const accountLifecycleSmokeReceipts = {
+    label: "Account lifecycle smoke receipts",
+    status: "Smoke before backend",
+    receiptId: ["NN", "ACCOUNT", "LIFECYCLE", "SMOKE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    score: 73,
+    rule: "Before account backend work widens, each lifecycle promise must have one smoke receipt for request shape, owner, allowed fields, blocked fields, support-safe status, retry path, and deletion or rollback proof.",
+    lanes: [
+      {
+        label: "Create account shell",
+        owner: "Account Platform",
+        route: "account_object_schema_map",
+        smokeId: ["NN", "SMOKE", "ACCOUNT", "CREATE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        expected: "account hash, profile context, consent scope, schema id, created state",
+        blocked: "PAN, folio, CAS, bank, card, UPI, contact, credentials, distributor-client data",
+        pass: "Schema id, owner, allowed fields, support visibility, and delete policy are present."
+      },
+      {
+        label: "Save research object",
+        owner: "Research Vault",
+        route: "saved_research_custody_map",
+        smokeId: ["NN", "SMOKE", "RESEARCH", "SAVE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        expected: "object family, source room, receipt id, release key, redaction result",
+        blocked: "free-form private notes, raw uploads, licensed payloads, advisor-client notes",
+        pass: "Saved object maps to custody family, sync trigger, delete rule, and support-safe status."
+      },
+      {
+        label: "Export account data",
+        owner: "Privacy owner",
+        route: "account_export_proof",
+        smokeId: ["NN", "SMOKE", "ACCOUNT", "EXPORT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        expected: "export manifest, object counts, redaction scan, expiry, download receipt",
+        blocked: "payment token, credential, deleted content, private identifiers, raw private notes",
+        pass: "Export preview, manifest row, redaction proof, support status, and expiry are visible."
+      },
+      {
+        label: "Delete account data",
+        owner: "Account worker",
+        route: "account_deletion_rehearsal",
+        smokeId: ["NN", "SMOKE", "ACCOUNT", "DELETE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        expected: "delete request, frozen state, object-family result, retained proof boundary",
+        blocked: "payload bodies, deleted content replay, payment credentials, private contact data",
+        pass: "Delete job, retained proof, support notice, redaction scan, and closeout state agree."
+      },
+      {
+        label: "Support account state",
+        owner: "Support desk",
+        route: "support_safe_account_status_console",
+        smokeId: ["NN", "SMOKE", "ACCOUNT", "SUPPORT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        expected: "public status, ticket id, owner, next update, escalation route",
+        blocked: "payload bodies, private notes, deleted content, credentials, PAN, folio, CAS",
+        pass: "Support can explain state without seeing private data or implying advice/refund/recovery."
+      }
+    ],
+    smokeSequence: [
+      "Run create shell with schema-only payload.",
+      "Save one demo research object and verify redaction result.",
+      "Generate export preview and manifest without private identifiers.",
+      "Freeze sync, run delete rehearsal, and check retained proof boundary.",
+      "Open support-safe status row and confirm next action without payload access."
+    ],
+    holdRules: [
+      "Hold if any smoke row lacks owner, route, receipt id, allowed fields, blocked fields, retry path, or delete/rollback proof.",
+      "Hold if support needs payload bodies to explain account state.",
+      "Hold if any smoke receipt stores PAN, folio, CAS, bank, card, UPI, contact, credentials, payment token, ARN/EUIN, or distributor-client data.",
+      "Hold if smoke results imply investment advice, transaction execution, refund approval, or production launch readiness."
+    ],
+    receiptFields: [
+      "account_lifecycle_smoke_id",
+      "release_key",
+      "route",
+      "object_family",
+      "owner",
+      "request_shape",
+      "allowed_field_list",
+      "blocked_field_list",
+      "support_status",
+      "retry_path",
+      "delete_or_rollback_receipt_id",
+      "redaction_scan_id",
+      "result",
+      "created_at"
+    ]
+  };
 
   return {
     accountFlow,
@@ -26827,6 +26910,7 @@ function accountReadinessLabConfig() {
     accountDeletionRehearsal,
     exportDeleteBackendTicketRoom,
     supportSafeAccountStatusConsole,
+    accountLifecycleSmokeReceipts,
     deletionSupportCloseout,
     blocked,
     dataBuckets,
@@ -27105,6 +27189,24 @@ function renderAccountReadinessLab() {
         </article>
       `).join("")}
     </div>
+    <div class="account-data-grid" aria-label="Account lifecycle smoke receipts">
+      <article class="ready">
+        <span>${escapeHtml(lab.accountLifecycleSmokeReceipts.label)}</span>
+        <strong>${escapeHtml(lab.accountLifecycleSmokeReceipts.status)} | ${lab.accountLifecycleSmokeReceipts.score}/100</strong>
+        <p>${escapeHtml(lab.accountLifecycleSmokeReceipts.rule)}</p>
+        <button class="text-button" type="button" data-copy-account-lifecycle-smoke-receipts>Copy smoke receipts</button>
+      </article>
+      ${lab.accountLifecycleSmokeReceipts.lanes.map((lane) => `
+        <article>
+          <span>${escapeHtml(lane.owner)}</span>
+          <strong>${escapeHtml(lane.label)}</strong>
+          <p><strong>Smoke:</strong> ${escapeHtml(lane.smokeId)}</p>
+          <p><strong>Expected:</strong> ${escapeHtml(lane.expected)}</p>
+          <p><strong>Blocked:</strong> ${escapeHtml(lane.blocked)}</p>
+          <p><strong>Pass:</strong> ${escapeHtml(lane.pass)}</p>
+        </article>
+      `).join("")}
+    </div>
     <div class="account-step-grid">
       ${lab.steps.map((step) => `
         <article class="${escapeHtml(step.tone)}">
@@ -27267,6 +27369,16 @@ function makeAccountReadinessBrief() {
     ...lab.deletionSupportCloseout.closeoutReceipts.map((receipt) => `- Closeout receipt ${receipt.label}: ${receipt.detail} | Proof ${receipt.proof}`),
     ...lab.deletionSupportCloseout.escalationRules.map((rule) => `- Escalation rule: ${rule}`),
     ...lab.deletionSupportCloseout.receiptFields.map((field) => `- Support closeout receipt field: ${field}`),
+    "",
+    "## Account Lifecycle Smoke Receipts",
+    `- Receipt ID: ${lab.accountLifecycleSmokeReceipts.receiptId}`,
+    `- Status: ${lab.accountLifecycleSmokeReceipts.status}`,
+    `- Score: ${lab.accountLifecycleSmokeReceipts.score}/100`,
+    `- Rule: ${lab.accountLifecycleSmokeReceipts.rule}`,
+    ...lab.accountLifecycleSmokeReceipts.lanes.map((lane) => `- Smoke lane ${lane.label}: ${lane.smokeId} | Owner ${lane.owner} | Route ${lane.route} | Expected ${lane.expected} | Blocked ${lane.blocked} | Pass ${lane.pass}`),
+    ...lab.accountLifecycleSmokeReceipts.smokeSequence.map((step) => `- Smoke sequence: ${step}`),
+    ...lab.accountLifecycleSmokeReceipts.holdRules.map((rule) => `- Smoke hold: ${rule}`),
+    ...lab.accountLifecycleSmokeReceipts.receiptFields.map((field) => `- Smoke receipt field: ${field}`),
     "",
     "## Launch Tests",
     ...lab.launchTests.map((test) => `- ${test}`),
@@ -27643,6 +27755,40 @@ function makeDeletionSupportCloseoutBrief() {
     ...closeout.receiptFields.map((field) => `- ${field}`),
     "",
     "Deletion Support Closeout is a support and privacy rehearsal only. It does not delete real data, promise recovery, approve refunds, execute transactions, provide advice, or replace legal/privacy review."
+  ].join("\n");
+}
+
+function makeAccountLifecycleSmokeReceiptsBrief() {
+  const smoke = accountReadinessLabConfig().accountLifecycleSmokeReceipts;
+  return [
+    "# NiveshNadi Account Lifecycle Smoke Receipts",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${smoke.receiptId}`,
+    `Status: ${smoke.status}`,
+    `Score: ${smoke.score}/100`,
+    `Rule: ${smoke.rule}`,
+    "",
+    "## Smoke Lanes",
+    ...smoke.lanes.map((lane) => [
+      `- ${lane.label}`,
+      `  Smoke: ${lane.smokeId}`,
+      `  Owner: ${lane.owner}`,
+      `  Route: ${lane.route}`,
+      `  Expected: ${lane.expected}`,
+      `  Blocked: ${lane.blocked}`,
+      `  Pass: ${lane.pass}`
+    ].join("\n")),
+    "",
+    "## Smoke Sequence",
+    ...smoke.smokeSequence.map((step) => `- ${step}`),
+    "",
+    "## Hold Rules",
+    ...smoke.holdRules.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...smoke.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Account Lifecycle Smoke Receipts are backend-readiness proof only. They do not create real accounts, store real user data, approve investing, execute transactions, certify privacy/security/legal readiness, or replace production tests."
   ].join("\n");
 }
 
@@ -66412,6 +66558,13 @@ function bindEvents() {
     if (!copyDeletionSupportCloseout) return;
     event.preventDefault();
     copyText(makeDeletionSupportCloseoutBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyAccountLifecycleSmokeReceipts = event.target.closest("[data-copy-account-lifecycle-smoke-receipts]");
+    if (!copyAccountLifecycleSmokeReceipts) return;
+    event.preventDefault();
+    copyText(makeAccountLifecycleSmokeReceiptsBrief());
   });
 
   document.addEventListener("click", (event) => {

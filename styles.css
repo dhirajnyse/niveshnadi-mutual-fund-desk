@@ -8308,6 +8308,58 @@ body.simple-mode.simple-review-focus .dossier-band {
   white-space: nowrap;
 }
 
+.release-doctor-compression {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  align-items: stretch;
+}
+
+.release-doctor-compression article {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(15, 124, 107, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.release-doctor-compression article.summary {
+  border-color: rgba(15, 124, 107, 0.28);
+  background: linear-gradient(135deg, rgba(229, 247, 241, 0.88), rgba(255, 255, 255, 0.86));
+}
+
+.release-doctor-compression span {
+  color: var(--mint);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.release-doctor-compression strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.18;
+}
+
+.release-doctor-compression article.summary strong {
+  font-size: 17px;
+}
+
+.release-doctor-compression p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.release-doctor-compression .text-button {
+  justify-content: center;
+  width: 100%;
+  min-height: 32px;
+  margin-top: 8px;
+}
+
 .release-doctor-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -43082,6 +43134,7 @@ body.desk-rail-right .floating-dock {
   .build-next-grid,
   .build-move-grid,
   .build-phase2-metrics,
+  .release-doctor-compression,
   .release-doctor-grid,
   .release-doctor-receipt,
   .release-doctor-share,
@@ -43989,6 +44042,7 @@ body.desk-rail-right .floating-dock {
   .build-next-grid,
   .build-move-grid,
   .build-phase2-metrics,
+  .release-doctor-compression,
   .release-doctor-grid,
   .release-doctor-receipt,
   .release-doctor-share,

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v486 Calm Executive Workspace Compression
+
+- Version: `0.486.0`
+- Data version: `20260707-v486-01`
+- Changes made: Added Calm Executive Workspace Compression to the Build Tracker Release Doctor with a compact first-read layer for current answer, top blocker, next proof, 100% rule, priority bands, compression rules, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward, next-batch planner roll-forward, responsive styling for the compact strip, startup-safe render guards so one optional room cannot freeze the workspace at placeholders, static-check coverage for v482-v486 contracts, and release markers rolled forward to v486.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`, `styles.css`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v486 marker scan; browser visual QA across Build Tracker, Account Readiness, Backend Audit Receipts, and mobile main route.
+- Known risks: Calm executive compression is a static first-read UI layer only; production still needs live data integrations, authenticated account custody, payment gateway proof, legal/privacy/security review, support tooling, CI visual QA, founder signoff, deployment verification, and live backend tests before any production-ready claim.
+
 ## NiveshNadi Phase 1 v485 Production Launch Proof Cabinet
 
 - Version: `0.485.0`

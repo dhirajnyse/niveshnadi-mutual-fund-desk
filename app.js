@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v485-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v485 Production Launch Proof Cabinet";
+const DATA_VERSION = "20260707-v486-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v486 Calm Executive Workspace Compression";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1073,6 +1073,7 @@ const state = {
   evidenceIntakeSlotId: "",
   investorRecordFocus: false,
   railKeepFrame: 0,
+  startupIssues: [],
   toolPaletteHost: null,
   workspaceJumpFullHtml: "",
   workspaceOptionIndex: new Map(),
@@ -10932,7 +10933,7 @@ function buildTrackerConfig() {
       verdict: "Result rows retained",
       receiptId: ["NN", "VISUAL", "RUNNER", "RESULT", "ARCHIVE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
       rule: "Each visual runner execution must retain route, viewport, marker, result, hashes, console state, overflow state, retry state, reviewer state, deletion receipt, and release-hold route before a launch proof can cite visual QA.",
-      resultRows: visualRegressionRunnerContract.runEnvelope.map((run, index) => {
+      resultRows: visualRegressionRunnerEnvelopeRows().map((run, index) => {
         const result = index === 0 ? "pass" : index === 1 ? "review" : index === 2 ? "pass" : "pass";
         const overflowState = index === 1 ? "watch" : "contained";
         return {
@@ -11157,6 +11158,74 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    executiveCalmCompression: {
+      label: "Calm executive workspace compression",
+      verdict: "One-read release desk",
+      receiptId: ["NN", "CALM", "EXECUTIVE", "COMPRESSION", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 86,
+      rule: "The first Release Doctor read should answer what is true now, what blocks 100%, what proof comes next, and what the founder can safely share before deeper proof rooms expand.",
+      firstRead: [
+        {
+          label: "Answer now",
+          value: `Build ${buildProgress}/100`,
+          detail: "Prototype polish is strong; production-ready claim remains held by account, payment, legal, security, support, and live-data proof."
+        },
+        {
+          label: "Top blocker",
+          value: "Production proof",
+          detail: "The cabinet must collect live data, account custody, payment, legal/privacy, security, support, visual QA, and founder signoff receipts."
+        },
+        {
+          label: "Next proof",
+          value: "Backend account smoke harness",
+          detail: "Turn the account lifecycle smoke rows into request/response harness checks before storage widens."
+        },
+        {
+          label: "100% rule",
+          value: "Gate-based",
+          detail: "100% is reached only after every production gate is accepted and live stamp proof matches the release key."
+        }
+      ],
+      priorityBands: [
+        {
+          label: "Read first",
+          value: "One answer",
+          detail: "Keep the first screen focused on current score, top blocker, next proof, and share boundary."
+        },
+        {
+          label: "Read second",
+          value: "Only proof gaps",
+          detail: "Open runner, account, support, and launch cabinets only when the first read names that proof gap."
+        },
+        {
+          label: "Read later",
+          value: "Archive rooms",
+          detail: "Archive, retention, and full proof history stay available below, but no longer compete with the first decision."
+        },
+        {
+          label: "Founder share",
+          value: "Simple truth",
+          detail: "Share the static prototype as polished, not production-ready, until all cabinet gates close."
+        }
+      ],
+      compressionRules: [
+        "Show one answer before showing proof history.",
+        "Name one blocker, one next proof, and one share boundary on the first screen.",
+        "Keep copy actions available but move deeper proof behind the first-read strip.",
+        "Do not hide risk; compress it into the clearest possible order."
+      ],
+      receiptFields: [
+        "calm_executive_compression_id",
+        "release_key",
+        "current_score",
+        "top_blocker",
+        "next_proof",
+        "share_boundary",
+        "hundred_percent_rule",
+        "compression_rule",
+        "created_at"
+      ]
+    },
     retentionHealthSummary: {
       label: "Retention health summary",
       verdict: "Five proof surfaces mapped",
@@ -11259,14 +11328,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Launch proof cabinet is visible; keep the next batch focused on calm executive compression, backend account smoke harness, support incident drills, visual QA CI adapter, and payment entitlement proof.",
+      rule: "Calm executive compression is visible; keep the next batch focused on backend account smoke harness, support incident drills, visual QA CI adapter, payment entitlement proof, and production data source gate.",
       lanes: [
-        {
-          version: "v486",
-          label: "Calm executive workspace compression",
-          route: "#build-tracker",
-          detail: "Reduce Release Doctor density with clearer priority bands, fewer first-screen cards, and a calmer read path for founder review."
-        },
         {
           version: "v487",
           label: "Backend account smoke harness",
@@ -11290,6 +11353,12 @@ function buildTrackerConfig() {
           label: "Payment entitlement proof cabinet",
           route: "#pricing",
           detail: "Group checkout, invoice, refund, entitlement, webhook, support, and redaction proof into one payment-readiness cabinet before paid beta widens."
+        },
+        {
+          version: "v491",
+          label: "Production data source gate",
+          route: "#source-receipts",
+          detail: "Turn source dates, citation paths, AMFI/AMC factsheets, NAV, TER, holdings, benchmark, and riskometer checks into one production data gate."
         }
       ]
     },
@@ -11298,6 +11367,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v485",
+          key: "20260707-v485-01",
+          commit: "40d0017",
+          receiptId: "NN-SHARE-RECEIPT-20260707V48501",
+          proof: "Production Launch Proof Cabinet added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v484",
           key: "20260707-v484-01",
@@ -11325,13 +11401,6 @@ function buildTrackerConfig() {
           commit: "da2f65b",
           receiptId: "NN-SHARE-RECEIPT-20260707V48101",
           proof: "Launch Proof Dashboard Polish added and verified by syntax, static, security, diff hygiene, marker checks, browser visual QA, push, and live stamp."
-        },
-        {
-          version: "v480",
-          key: "20260707-v480-01",
-          commit: "4ac2583",
-          receiptId: "NN-SHARE-RECEIPT-20260707V48001",
-          proof: "Visual Regression Runner Contract added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11369,8 +11438,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v485",
-        detail: "Production Launch Proof Cabinet is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v486",
+        detail: "Calm Executive Workspace Compression is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11379,30 +11448,30 @@ function buildTrackerConfig() {
       },
       {
         label: "03 Queued",
-        value: "Batch push later",
-        detail: "This five-version batch will be pushed and live-verified after v486."
+        value: "Final batch push",
+        detail: "This five-version batch will be pushed and live-verified after v486 checks and visual QA pass."
       },
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v485 as complete until this release returns the active release stamp."
+        detail: "Do not share v486 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v485 source change adds Production Launch Proof Cabinet."
+        detail: "v486 source change adds Calm Executive Workspace Compression."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v485 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v486 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v485 held for batch deploy",
-        detail: "The final batch release will be pushed and live-stamp verified after v486."
+        value: "v486 held until live stamp",
+        detail: "The final batch release is pushed and live-stamp verified after visual QA passes."
       }
     ],
     actions: [
@@ -11460,6 +11529,51 @@ function buildTrackerConfig() {
     releaseDoctor,
     statusCounts
   };
+}
+
+function visualRegressionRunnerEnvelopeRows() {
+  return [
+    {
+      label: "Desktop release desk",
+      runId: ["NN", "VISUAL", "RUNNER", "01", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      route: "#build-tracker",
+      viewport: "1440 x 900",
+      marker: "release-doctor-lane",
+      threshold: "0.9% layout drift",
+      pass: "Pass only when Release Doctor, progress link, command capsule, side rail, score ring, and launch proof text remain readable without overlap.",
+      hold: "Hold if release marker, command capsule, side rail, progress lane, score ring, or launch proof text shifts into overlap."
+    },
+    {
+      label: "Account custody room",
+      runId: ["NN", "VISUAL", "RUNNER", "02", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      route: "#account-readiness",
+      viewport: "900 x 1000",
+      marker: "account-data-grid",
+      threshold: "1.2% layout drift",
+      pass: "Pass only when custody, support, export, deletion, and schema cards wrap without clipped buttons or private-data wording drift.",
+      hold: "Hold if export, support, deletion, consent, or schema cards clip text, hide actions, or imply real data movement."
+    },
+    {
+      label: "Backend receipt room",
+      runId: ["NN", "VISUAL", "RUNNER", "03", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      route: "#backend-audit-receipts",
+      viewport: "1280 x 900",
+      marker: "backend-source-receipt-job",
+      threshold: "1.0% layout drift",
+      pass: "Pass only when custody bridge, API readiness, owner audit, source receipt, and closeout cards stay separated.",
+      hold: "Hold if custody, source, owner audit, API, worker, or closeout receipt cards collide."
+    },
+    {
+      label: "Phone calm path",
+      runId: ["NN", "VISUAL", "RUNNER", "04", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      route: "#main",
+      viewport: "390 x 844",
+      marker: "simple-room-guide",
+      threshold: "0 horizontal overflow",
+      pass: "Pass only when rail stays hidden, header controls remain tappable, first room text fits, and no horizontal scroll appears.",
+      hold: "Hold if rail appears, header controls become untappable, primary text clips, or horizontal scrolling appears."
+    }
+  ];
 }
 
 function publisherHandoffKit() {
@@ -11705,6 +11819,21 @@ function releaseDoctorMarkup(tracker) {
           <p>${escapeHtml(tracker.releaseDoctor.summary)}</p>
         </div>
         <code>${escapeHtml(tracker.releaseFreshness.key)}</code>
+      </div>
+      <div class="release-doctor-compression" aria-label="Calm executive workspace compression">
+        <article class="summary">
+          <span>${escapeHtml(tracker.releaseDoctor.executiveCalmCompression.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.executiveCalmCompression.verdict)} | ${tracker.releaseDoctor.executiveCalmCompression.score}/100</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.executiveCalmCompression.rule)}</p>
+          <button class="text-button" type="button" data-copy-calm-executive-compression>Copy calm brief</button>
+        </article>
+        ${tracker.releaseDoctor.executiveCalmCompression.firstRead.map((item) => `
+          <article>
+            <span>${escapeHtml(item.label)}</span>
+            <strong>${escapeHtml(item.value)}</strong>
+            <p>${escapeHtml(item.detail)}</p>
+          </article>
+        `).join("")}
       </div>
       <div class="release-doctor-grid">
         ${tracker.releaseDoctor.checks.map((check) => `
@@ -12180,6 +12309,12 @@ function makeBuildTrackerBrief() {
     `Share receipt valid when: ${tracker.releaseDoctor.shareReceipt.validWhen}`,
     `Share receipt recheck if: ${tracker.releaseDoctor.shareReceipt.recheckIf}`,
     `Share receipt superseded when: ${tracker.releaseDoctor.shareReceipt.supersededWhen}`,
+    `Calm executive compression: ${tracker.releaseDoctor.executiveCalmCompression.verdict}`,
+    `Calm executive receipt: ${tracker.releaseDoctor.executiveCalmCompression.receiptId}`,
+    `Calm executive score: ${tracker.releaseDoctor.executiveCalmCompression.score}/100`,
+    `Calm executive rule: ${tracker.releaseDoctor.executiveCalmCompression.rule}`,
+    ...tracker.releaseDoctor.executiveCalmCompression.firstRead.map((item) => `- Calm first read ${item.label}: ${item.value} | ${item.detail}`),
+    ...tracker.releaseDoctor.executiveCalmCompression.priorityBands.map((band) => `- Calm priority ${band.label}: ${band.value} | ${band.detail}`),
     ...tracker.releaseDoctor.batchChecklist.map((step) => `- Release checklist ${step.label}: ${step.value} | ${step.detail}`),
     `Visual QA receipt: ${tracker.releaseDoctor.visualQaReceipt.receiptId}`,
     `Visual QA rule: ${tracker.releaseDoctor.visualQaReceipt.rule}`,
@@ -12310,6 +12445,16 @@ function makeReleaseDoctorBrief() {
     `- Valid when: ${tracker.releaseDoctor.shareReceipt.validWhen}`,
     `- Recheck if: ${tracker.releaseDoctor.shareReceipt.recheckIf}`,
     `- Superseded when: ${tracker.releaseDoctor.shareReceipt.supersededWhen}`,
+    "",
+    "## Calm Executive Workspace Compression",
+    `- Receipt ID: ${tracker.releaseDoctor.executiveCalmCompression.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.executiveCalmCompression.verdict}`,
+    `- Score: ${tracker.releaseDoctor.executiveCalmCompression.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.executiveCalmCompression.rule}`,
+    ...tracker.releaseDoctor.executiveCalmCompression.firstRead.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    ...tracker.releaseDoctor.executiveCalmCompression.priorityBands.map((band) => `- Priority ${band.label}: ${band.value} | ${band.detail}`),
+    ...tracker.releaseDoctor.executiveCalmCompression.compressionRules.map((rule) => `- Compression rule: ${rule}`),
+    ...tracker.releaseDoctor.executiveCalmCompression.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Release Batch Checklist",
     ...tracker.releaseDoctor.batchChecklist.map((step) => `- ${step.label}: ${step.value} | ${step.detail}`),
@@ -12492,6 +12637,32 @@ function makeReleaseShareReceiptBrief() {
     `Next if held: ${tracker.releaseDoctor.shareGate.next}`,
     "",
     "This receipt proves only the static release handoff. It does not change live-data, account, payment, legal, or security launch readiness."
+  ].join("\n");
+}
+
+function makeCalmExecutiveCompressionBrief() {
+  const calm = buildTrackerConfig().releaseDoctor.executiveCalmCompression;
+  return [
+    "# NiveshNadi Calm Executive Workspace Compression",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${calm.receiptId}`,
+    `Verdict: ${calm.verdict}`,
+    `Score: ${calm.score}/100`,
+    `Rule: ${calm.rule}`,
+    "",
+    "## First Read",
+    ...calm.firstRead.map((item) => `- ${item.label}: ${item.value} | ${item.detail}`),
+    "",
+    "## Priority Bands",
+    ...calm.priorityBands.map((band) => `- ${band.label}: ${band.value} | ${band.detail}`),
+    "",
+    "## Compression Rules",
+    ...calm.compressionRules.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...calm.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Calm Executive Workspace Compression is a first-read release aid only. It does not hide production risk, prove live data, create account custody, approve investing, execute transactions, certify payment readiness, or replace privacy/security/legal review."
   ].join("\n");
 }
 
@@ -34272,11 +34443,13 @@ function syncSimpleFilterToggle() {
 }
 
 function renderCategoryFilter() {
+  if (!els.categoryFilter || els.categoryFilter.dataset.hydrated === "true") return;
   const categories = [...new Set(FUNDS.map((fund) => fund.category))].sort();
   els.categoryFilter.insertAdjacentHTML(
     "beforeend",
     categories.map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`).join("")
   );
+  els.categoryFilter.dataset.hydrated = "true";
 }
 
 function renderWatchFundSelect() {
@@ -40745,114 +40918,134 @@ function makeCompareNote() {
   ].join("\n");
 }
 
+function recordStartupIssue(label, error) {
+  const message = error instanceof Error ? error.message : String(error || "Unknown startup issue");
+  const issue = `${label}: ${message}`;
+  state.startupIssues.push(issue);
+  document.body.dataset.startupIssues = state.startupIssues.join(" | ");
+  if (els.workspaceAnnouncer) {
+    els.workspaceAnnouncer.textContent = `Startup guard held ${label}. Core workspace stayed available.`;
+  }
+  console.warn("NiveshNadi startup guard", issue);
+}
+
+function safeAppStep(label, fn, required = false) {
+  try {
+    fn();
+    return true;
+  } catch (error) {
+    recordStartupIssue(label, error);
+    if (required) throw error;
+    return false;
+  }
+}
+
 function renderAll() {
-  renderSignalStrip();
-  renderResearchAutopilot();
-  renderFundGenome();
-  renderFutureShockMap();
-  renderMemoryCapsule();
-  renderBuildTracker();
-  renderBuildPhasesRoom();
-  renderMarketStrategyRoom();
-  renderPaidBetaEvidencePack();
-  renderFounderInviteProofPath();
-  renderFounderCohortControlRoom();
-  renderCohortReceiptBackend();
-  renderCohortDecisionReplay();
-  renderPaidCohortExpansionGate();
-  renderFounderBetaOperatingRoom();
-  renderPaidBetaSupportLedger();
-  renderLaunchReadinessBoard();
-  renderPaymentReadinessLab();
-  renderPaymentWiringConsole();
-  renderPaymentGatewaySandbox();
-  renderGatewayWebhookDrill();
-  renderProviderPilotReceiptContract();
-  renderPilotReceiptVault();
-  renderPaidPilotLaunchGate();
-  renderBackendTicketFactory();
-  renderReceiptReplayEngine();
-  renderEntitlementBridge();
-  renderSubscriptionOpsConsole();
-  renderSubscriptionBackendBlueprint();
-  renderAccountReadinessLab();
-  renderAccountLaunchRoute();
-  renderAccountLaunchShell();
-  renderAccountVaultBlueprint();
-  renderProfileRoom();
-  renderSelectionFunnel();
-  renderShortlistReasonBoard();
-  renderProofGapQueue();
-  renderMemoClearanceDesk();
-  renderClearanceSprintBoard();
-  renderJourneyTimeline();
-  renderResearchBriefing();
-  renderBriefingVault();
-  renderResearchMemory();
-  renderPrivacyControlRoom();
-  renderShareSafeExportRoom();
-  renderConsentHandoffGate();
-  renderFundGrid();
-  renderStarterGuide();
-  renderInvestorPassport();
-  renderResearchLanes();
-  renderResearchPulse();
-  renderNadiCoach();
-  renderCategoryPlaybook();
-  renderFundDetail();
-  renderSuitabilityPassport();
-  renderGoalFundFitHeatmap();
-  renderRedFlagRadar();
-  renderPeerBenchmarkBoard();
-  renderPortfolioChoices();
-  renderBlueprintLab();
-  renderCompareMatrix();
-  renderStressLab();
-  renderCostRealityLab();
-  renderInvestorReadinessGate();
-  renderRebalanceGuard();
-  renderPortfolioReviewRoom();
-  renderReviewVault();
-  renderInvestorRecordDesk();
-  renderResearchDossier();
-  renderEvidenceLedger();
-  renderCitationBinder();
-  renderFundHouseLens();
-  renderDataReadinessRoom();
-  renderLiveDataContractLab();
-  renderSourceDryRunBoard();
-  renderSourceReceiptVault();
-  renderClaimSurfaceMap();
-  renderSurfaceReleaseQueue();
-  renderReviewerWorkbench();
-  renderReviewerDecisionLedger();
-  renderReviewerReleaseBinder();
-  renderBackendAuditReceipts();
-  renderSourceQaQueue();
-  renderSourceIntakeConsole();
-  renderSourceDriftMonitor();
-  renderClaimReleaseGate();
-  renderClaimReleaseLedger();
-  renderClaimRollbackConsole();
-  renderCorrectionNoticeBuilder();
-  renderCorrectionNoticeLedger();
-  renderTrustCenter();
-  renderActionPlanner();
-  renderResearchBriefing();
-  renderBriefingVault();
-  renderResearchMemory();
-  renderPrivacyControlRoom();
-  renderShareSafeExportRoom();
-  renderConsentHandoffGate();
-  renderDocDecoder();
-  renderGlossary();
-  renderBehaviorGuard();
-  renderClaimChecker();
-  renderResearchReceipt();
-  renderReceiptVault();
-  renderReviewRhythmBoard();
-  renderWatchlistRoom();
-  renderDecisionPack();
+  state.startupIssues = [];
+  document.body.dataset.startupIssues = "";
+  [
+    ["signal strip", renderSignalStrip],
+    ["research autopilot", renderResearchAutopilot],
+    ["fund genome", renderFundGenome],
+    ["future shock map", renderFutureShockMap],
+    ["memory capsule", renderMemoryCapsule],
+    ["build tracker", renderBuildTracker],
+    ["build phases", renderBuildPhasesRoom],
+    ["market strategy", renderMarketStrategyRoom],
+    ["paid beta evidence pack", renderPaidBetaEvidencePack],
+    ["founder invite proof path", renderFounderInviteProofPath],
+    ["founder cohort control", renderFounderCohortControlRoom],
+    ["cohort receipt backend", renderCohortReceiptBackend],
+    ["cohort decision replay", renderCohortDecisionReplay],
+    ["paid cohort expansion gate", renderPaidCohortExpansionGate],
+    ["founder beta operating room", renderFounderBetaOperatingRoom],
+    ["paid beta support ledger", renderPaidBetaSupportLedger],
+    ["launch readiness", renderLaunchReadinessBoard],
+    ["payment readiness", renderPaymentReadinessLab],
+    ["payment wiring", renderPaymentWiringConsole],
+    ["payment gateway sandbox", renderPaymentGatewaySandbox],
+    ["gateway webhook drill", renderGatewayWebhookDrill],
+    ["provider pilot receipt contract", renderProviderPilotReceiptContract],
+    ["pilot receipt vault", renderPilotReceiptVault],
+    ["paid pilot launch gate", renderPaidPilotLaunchGate],
+    ["backend ticket factory", renderBackendTicketFactory],
+    ["receipt replay engine", renderReceiptReplayEngine],
+    ["entitlement bridge", renderEntitlementBridge],
+    ["subscription ops", renderSubscriptionOpsConsole],
+    ["subscription backend", renderSubscriptionBackendBlueprint],
+    ["account readiness", renderAccountReadinessLab],
+    ["account launch route", renderAccountLaunchRoute],
+    ["account launch shell", renderAccountLaunchShell],
+    ["account vault", renderAccountVaultBlueprint],
+    ["profile room", renderProfileRoom],
+    ["selection funnel", renderSelectionFunnel],
+    ["shortlist reason board", renderShortlistReasonBoard],
+    ["proof gap queue", renderProofGapQueue],
+    ["memo clearance", renderMemoClearanceDesk],
+    ["clearance sprint", renderClearanceSprintBoard],
+    ["journey timeline", renderJourneyTimeline],
+    ["research briefing", renderResearchBriefing],
+    ["briefing vault", renderBriefingVault],
+    ["research memory", renderResearchMemory],
+    ["privacy control", renderPrivacyControlRoom],
+    ["share-safe export", renderShareSafeExportRoom],
+    ["consent handoff", renderConsentHandoffGate],
+    ["fund grid", renderFundGrid],
+    ["starter guide", renderStarterGuide],
+    ["investor passport", renderInvestorPassport],
+    ["research lanes", renderResearchLanes],
+    ["research pulse", renderResearchPulse],
+    ["nadi coach", renderNadiCoach],
+    ["category playbook", renderCategoryPlaybook],
+    ["fund detail", renderFundDetail],
+    ["suitability passport", renderSuitabilityPassport],
+    ["goal fund fit", renderGoalFundFitHeatmap],
+    ["red flag radar", renderRedFlagRadar],
+    ["peer benchmark", renderPeerBenchmarkBoard],
+    ["portfolio choices", renderPortfolioChoices],
+    ["blueprint lab", renderBlueprintLab],
+    ["compare matrix", renderCompareMatrix],
+    ["stress lab", renderStressLab],
+    ["cost lab", renderCostRealityLab],
+    ["investor readiness", renderInvestorReadinessGate],
+    ["rebalance guard", renderRebalanceGuard],
+    ["portfolio review", renderPortfolioReviewRoom],
+    ["review vault", renderReviewVault],
+    ["investor record", renderInvestorRecordDesk],
+    ["research dossier", renderResearchDossier],
+    ["evidence ledger", renderEvidenceLedger],
+    ["citation binder", renderCitationBinder],
+    ["fund house lens", renderFundHouseLens],
+    ["data readiness", renderDataReadinessRoom],
+    ["live data contract", renderLiveDataContractLab],
+    ["source dry run", renderSourceDryRunBoard],
+    ["source receipt vault", renderSourceReceiptVault],
+    ["claim surface map", renderClaimSurfaceMap],
+    ["surface release queue", renderSurfaceReleaseQueue],
+    ["reviewer workbench", renderReviewerWorkbench],
+    ["reviewer decision ledger", renderReviewerDecisionLedger],
+    ["reviewer release binder", renderReviewerReleaseBinder],
+    ["backend audit receipts", renderBackendAuditReceipts],
+    ["source QA queue", renderSourceQaQueue],
+    ["source intake", renderSourceIntakeConsole],
+    ["source drift", renderSourceDriftMonitor],
+    ["claim release gate", renderClaimReleaseGate],
+    ["claim ledger", renderClaimReleaseLedger],
+    ["claim rollback", renderClaimRollbackConsole],
+    ["correction notice", renderCorrectionNoticeBuilder],
+    ["correction ledger", renderCorrectionNoticeLedger],
+    ["trust center", renderTrustCenter],
+    ["action planner", renderActionPlanner],
+    ["doc decoder", renderDocDecoder],
+    ["glossary", renderGlossary],
+    ["behavior guard", renderBehaviorGuard],
+    ["claim checker", renderClaimChecker],
+    ["research receipt", renderResearchReceipt],
+    ["receipt vault", renderReceiptVault],
+    ["review rhythm", renderReviewRhythmBoard],
+    ["watchlist", renderWatchlistRoom],
+    ["decision pack", renderDecisionPack]
+  ].forEach(([label, fn]) => safeAppStep(label, fn));
 }
 
 function targetFromHash(hash) {
@@ -66855,6 +67048,13 @@ function bindEvents() {
   });
 
   document.addEventListener("click", (event) => {
+    const copyCalmExecutiveCompression = event.target.closest("[data-copy-calm-executive-compression]");
+    if (!copyCalmExecutiveCompression) return;
+    event.preventDefault();
+    copyText(makeCalmExecutiveCompressionBrief());
+  });
+
+  document.addEventListener("click", (event) => {
     const copyVisualQaReceipt = event.target.closest("[data-copy-visual-qa-receipt]");
     if (!copyVisualQaReceipt) return;
     event.preventDefault();
@@ -68818,54 +69018,60 @@ function cacheElements() {
 }
 
 function init() {
-  cacheElements();
-  bindDeskRailHeroClearance();
-  hydrateDeskRailHints();
-  bindNavSidePreference();
-  bindNavDensityPreference();
-  bindNavLayoutPreference();
-  bindSimpleModeToggle();
-  renderCategoryFilter();
-  renderWatchFundSelect();
-  bindWorkspaceJump();
-  bindToolPalette();
-  bindEvents();
-  renderAll();
-  renderGoalFitCompass();
-  renderFirstSipCoach();
-  renderStressLab();
-  renderCostRealityLab();
-  renderInvestorReadinessGate();
-  renderCitationBinder();
-  renderDataReadinessRoom();
-  renderSourceDryRunBoard();
-  renderSourceReceiptVault();
-  renderClaimSurfaceMap();
-  renderSurfaceReleaseQueue();
-  renderReviewerWorkbench();
-  renderReviewerDecisionLedger();
-  renderReviewerReleaseBinder();
-  renderBackendAuditReceipts();
-  renderSourceQaQueue();
-  renderSourceIntakeConsole();
-  renderSourceDriftMonitor();
-  renderClaimReleaseGate();
-  renderClaimReleaseLedger();
-  renderClaimRollbackConsole();
-  renderCorrectionNoticeBuilder();
-  renderCorrectionNoticeLedger();
-  renderTrustCenter();
-  renderActionPlanner();
-  renderDocDecoder();
-  renderGlossary();
-  renderBehaviorGuard();
-  renderClaimChecker();
-  renderResearchReceipt();
-  renderReceiptVault();
-  renderDecisionPack();
-  renderJournal();
-  analyzePortfolio();
-  settleHashNavigation();
+  try {
+    safeAppStep("cache elements", cacheElements, true);
+  } catch {
+    return;
+  }
+  [
+    ["bind desk rail clearance", bindDeskRailHeroClearance],
+    ["hydrate desk rail hints", hydrateDeskRailHints],
+    ["bind nav side", bindNavSidePreference],
+    ["bind nav density", bindNavDensityPreference],
+    ["bind nav layout", bindNavLayoutPreference],
+    ["bind simple mode", bindSimpleModeToggle],
+    ["hydrate category filter", renderCategoryFilter],
+    ["hydrate watch fund select", renderWatchFundSelect],
+    ["bind workspace jump", bindWorkspaceJump],
+    ["bind tool palette", bindToolPalette],
+    ["bind events", bindEvents],
+    ["render all", renderAll],
+    ["goal fit compass", renderGoalFitCompass],
+    ["first sip coach", renderFirstSipCoach],
+    ["stress lab", renderStressLab],
+    ["cost lab", renderCostRealityLab],
+    ["investor readiness", renderInvestorReadinessGate],
+    ["citation binder", renderCitationBinder],
+    ["data readiness", renderDataReadinessRoom],
+    ["source dry run", renderSourceDryRunBoard],
+    ["source receipt vault", renderSourceReceiptVault],
+    ["claim surface map", renderClaimSurfaceMap],
+    ["surface release queue", renderSurfaceReleaseQueue],
+    ["reviewer workbench", renderReviewerWorkbench],
+    ["reviewer decision ledger", renderReviewerDecisionLedger],
+    ["reviewer release binder", renderReviewerReleaseBinder],
+    ["backend audit receipts", renderBackendAuditReceipts],
+    ["source QA queue", renderSourceQaQueue],
+    ["source intake", renderSourceIntakeConsole],
+    ["source drift", renderSourceDriftMonitor],
+    ["claim release gate", renderClaimReleaseGate],
+    ["claim ledger", renderClaimReleaseLedger],
+    ["claim rollback", renderClaimRollbackConsole],
+    ["correction notice", renderCorrectionNoticeBuilder],
+    ["correction ledger", renderCorrectionNoticeLedger],
+    ["trust center", renderTrustCenter],
+    ["action planner", renderActionPlanner],
+    ["doc decoder", renderDocDecoder],
+    ["glossary", renderGlossary],
+    ["behavior guard", renderBehaviorGuard],
+    ["claim checker", renderClaimChecker],
+    ["research receipt", renderResearchReceipt],
+    ["receipt vault", renderReceiptVault],
+    ["decision pack", renderDecisionPack],
+    ["journal", renderJournal],
+    ["portfolio analysis", analyzePortfolio],
+    ["hash landing", settleHashNavigation]
+  ].forEach(([label, fn]) => safeAppStep(label, fn));
 }
 
 init();

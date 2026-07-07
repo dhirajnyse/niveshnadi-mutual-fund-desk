@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V486 Calm Executive Workspace Compression
+
+V486 adds Calm Executive Workspace Compression to the Build Tracker Release Doctor. It creates a compact first-read layer for current answer, top blocker, next proof, 100% rule, priority bands, compression rules, and a copyable calm brief before the deeper proof rooms. It also adds startup-safe render guards so one optional room cannot freeze the workspace at placeholder text during visual QA.
+
 ## V485 Production Launch Proof Cabinet
 
 V485 adds Production Launch Proof Cabinet to the Build Tracker Release Doctor. It groups live data, account custody, payment, legal, security, support, visual QA, and founder signoff gates with owners, required receipts, hold lines, signoff rules, receipt fields, and a copyable launch cabinet handoff.

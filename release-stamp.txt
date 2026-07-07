@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v503 Backend CI Proof Harness
-20260708-v503-01
+NiveshNadi Phase 1 v504 Deployment Environment Readiness Map
+20260708-v504-01

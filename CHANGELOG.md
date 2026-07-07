@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v504 Deployment Environment Readiness Map
+
+- Version: `0.504.0`
+- Data version: `20260708-v504-01`
+- Changes made: Added Deployment Environment Readiness Map to the Build Tracker Release Doctor with staging, production, secret inventory, rollback and freeze, observability and alerts, release-stamp verifier lanes, operating rules, no-go lines, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward with v503 commit, next-batch planner roll-forward to v505-v509, and release markers rolled forward to v504.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v504 marker scan.
+- Known risks: Deployment Environment Readiness Map is a static environment-readiness contract only; it does not create staging or production infrastructure, configure real secrets, deploy services, monitor live traffic, or certify launch readiness.
+
 ## NiveshNadi Phase 1 v503 Backend CI Proof Harness
 
 - Version: `0.503.0`

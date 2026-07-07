@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V504 Deployment Environment Readiness Map
+
+V504 adds Deployment Environment Readiness Map to the Build Tracker Release Doctor. It separates green CI from real release infrastructure by mapping staging, production, secret inventory, rollback, freeze, observability, alert owners, support notice, and release-stamp verification.
+
 ## V503 Backend CI Proof Harness
 
 V503 adds Backend CI Proof Harness to the Build Tracker Release Doctor. It defines unit contract, fixture replay, webhook replay, source-worker replay, no-private-data scan, smoke artifact, release-stamp, rollback, artifact-retention, and merge-hold checks before backend work is trusted.

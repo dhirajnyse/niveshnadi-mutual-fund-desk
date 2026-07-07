@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v503-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v503 Backend CI Proof Harness";
+const DATA_VERSION = "20260708-v504-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v504 Deployment Environment Readiness Map";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -12840,6 +12840,103 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    deploymentEnvironmentReadinessMap: {
+      label: "Deployment environment readiness map",
+      verdict: "Staging and production gates mapped",
+      receiptId: ["NN", "DEPLOYMENT", "ENVIRONMENT", "READINESS", "MAP", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 68,
+      rule: "Deployment can widen only when staging, production, secret inventory, rollback, observability, release stamp, and environment ownership are explicit and no private values leak into frontend code or copied proof.",
+      lanes: [
+        {
+          label: "Staging environment",
+          owner: "Platform",
+          method: "ENV",
+          route: "env.staging",
+          proof: "Map staging domain, app runtime, database fixture store, object storage, queue, mail sandbox, payment sandbox, source sandbox, and smoke URL.",
+          readyWhen: "Ready when staging can run backend CI artifacts against identity-light fixtures with redacted logs and a release-stamp preview.",
+          hold: "Hold if staging uses production secrets, real investor data, raw payment payloads, or source credentials outside the vault.",
+          score: 70
+        },
+        {
+          label: "Production environment",
+          owner: "Platform",
+          method: "ENV",
+          route: "env.production",
+          proof: "Map production domain, runtime owner, database owner, storage owner, queue owner, release stamp, uptime route, and incident freeze route.",
+          readyWhen: "Ready when production has owner, rollback command, observability, support contact, release captain, and proof that static labels match deployed code.",
+          hold: "Hold if production can deploy without release captain signoff, rollback command, release stamp check, or support notification.",
+          score: 66
+        },
+        {
+          label: "Secret inventory",
+          owner: "Security review",
+          method: "ENV",
+          route: "env.secrets",
+          proof: "Name required variable keys, purpose, owner, environment scope, rotation cadence, vault location, and local dummy policy without exposing values.",
+          readyWhen: "Ready when every secret has owner, vault path, rotation note, local dummy, and redaction rule.",
+          hold: "Hold if any real secret, API key, provider token, payment credential, source credential, or account secret appears in code, docs, fixtures, logs, or copy briefs.",
+          score: 69
+        },
+        {
+          label: "Rollback and freeze",
+          owner: "Release desk",
+          method: "COMMAND",
+          route: "env.rollback-freeze",
+          proof: "Define rollback command, deployment freeze command, entitlement freeze, source refresh freeze, support notice, and release-captain approval.",
+          readyWhen: "Ready when every deployment lane has previous version, rollback owner, freeze surface, support-safe notice, and closeout receipt.",
+          hold: "Hold if the team cannot freeze payments, source refresh, account writes, support copy, or release sharing during an incident.",
+          score: 67
+        },
+        {
+          label: "Observability and alerts",
+          owner: "Operations",
+          method: "ENV",
+          route: "env.observability",
+          proof: "Map health checks, smoke routes, error logs, job failures, webhook dead letters, source quarantines, support SLA alerts, and redaction scans.",
+          readyWhen: "Ready when alert owners, escalation windows, redaction policy, incident ids, and quiet-window closeout are visible.",
+          hold: "Hold if logs can expose private data or alerts route to nobody during source, payment, account, support, or release failures.",
+          score: 68
+        },
+        {
+          label: "Release stamp verifier",
+          owner: "Release captain",
+          method: "ENV",
+          route: "env.release-stamp",
+          proof: "Verify app label, package version, release-stamp.txt, cache keys, changelog entry, commit hash, and live page marker after deployment.",
+          readyWhen: "Ready when deployed stamp, HTML cache keys, app constants, package version, docs, changelog, and commit all agree.",
+          hold: "Hold if any deployed marker is stale, mismatched, cached, or missing after release.",
+          score: 70
+        }
+      ],
+      operatingRules: [
+        "Staging proves identity-light fixture behavior before production receives any live-adjacent configuration.",
+        "Production deploys only with owner, rollback, release stamp, observability, support notice, and release captain signoff.",
+        "Secret inventory records keys, purpose, owner, scope, vault path, and rotation cadence, never secret values.",
+        "Rollback, freeze, and support notice routes must be rehearsed before pilot access widens.",
+        "Release stamp verification is required after every deployment, even when CI is green."
+      ],
+      noGoLines: [
+        "No environment proof may contain real API keys, payment secrets, source credentials, private investor data, PAN, folio, CAS, bank, contact, or private notes.",
+        "No production deploy may proceed without rollback, freeze, support notice, observability, redaction, and release-stamp verification.",
+        "No staging proof may use production secrets or real investor account data.",
+        "No deployment may be called ready only because CI passed; live environment ownership and incident proof must exist."
+      ],
+      receiptFields: [
+        "deployment_environment_readiness_map_id",
+        "release_key",
+        "staging_environment_id",
+        "production_environment_id",
+        "secret_inventory_id",
+        "rollback_command_id",
+        "freeze_command_id",
+        "observability_map_id",
+        "alert_owner_map",
+        "release_stamp_verifier_id",
+        "support_notice_id",
+        "release_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -13010,14 +13107,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Backend CI proof harness gives the private repo a merge gate; next releases should add deployment, retention, pilot invite, support dry-run, and cohort ledger proof.",
+      rule: "Deployment environment readiness separates green CI from real release infrastructure; next releases should add retention, pilot invite, support dry-run, cohort ledger, and source connector proof.",
       lanes: [
-        {
-          version: "v504",
-          label: "Deployment environment readiness map",
-          route: "#release-publisher",
-          detail: "Map staging, production, secrets, environment variables, rollback, logs, and uptime proof before any launch claim widens."
-        },
         {
           version: "v505",
           label: "Data retention execution checklist",
@@ -13041,6 +13132,12 @@ function buildTrackerConfig() {
           label: "Founder beta cohort ledger",
           route: "#founder-cohort-control-room",
           detail: "Track named cohort cap, receipt family, invite state, support capacity, refund stop, and expansion no-go before pilot widening."
+        },
+        {
+          version: "v509",
+          label: "Live source connector spike plan",
+          route: "#source-receipts",
+          detail: "Prepare a limited official-source connector spike with source family, checksum, parser quarantine, reviewer release, and rollback proof."
         }
       ]
     },
@@ -13049,6 +13146,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v503",
+          key: "20260708-v503-01",
+          commit: "577ebc1",
+          receiptId: "NN-SHARE-RECEIPT-20260708V50301",
+          proof: "Backend CI Proof Harness added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v502",
           key: "20260708-v502-01",
@@ -13076,13 +13180,6 @@ function buildTrackerConfig() {
           commit: "7ffbed5",
           receiptId: "NN-SHARE-RECEIPT-20260708V49901",
           proof: "Payment Webhook Verification Lab added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v498",
-          key: "20260708-v498-01",
-          commit: "ea3a2d3",
-          receiptId: "NN-SHARE-RECEIPT-20260708V49801",
-          proof: "Source Fetcher Proof Worker added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -13120,13 +13217,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v503",
-        detail: "Backend CI Proof Harness is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v504",
+        detail: "Deployment Environment Readiness Map is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v503 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v504 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -13135,24 +13232,24 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v503 held until live stamp",
-        detail: "Do not share v503 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v504 held until live stamp",
+        detail: "Do not share v504 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v503 source change",
-        detail: "Backend CI Proof Harness names unit, fixture, webhook, source-worker, no-private-data, smoke, artifact, and release-stamp gates before backend merge."
+        value: "v504 source change",
+        detail: "Deployment Environment Readiness Map names staging, production, secret inventory, rollback, observability, alert routing, and release-stamp proof before deploys widen."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v503 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v504 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v503 held until live stamp",
+        value: "v504 held until live stamp",
         detail: "The batch release is share-ready only after v506 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
@@ -13869,6 +13966,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.liveBetaPilotAudit, "Live beta pilot audit")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.backendRepositoryHandoffPack, "Backend repository handoff pack")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.backendCiProofHarness, "Backend CI proof harness")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.deploymentEnvironmentReadinessMap, "Deployment environment readiness map")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -14038,6 +14136,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-live-beta-pilot-audit>Copy pilot audit</button>
         <button class="text-button" type="button" data-copy-backend-repository-handoff-pack>Copy repo handoff</button>
         <button class="text-button" type="button" data-copy-backend-ci-proof-harness>Copy CI harness</button>
+        <button class="text-button" type="button" data-copy-deployment-environment-readiness-map>Copy environment map</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -14326,6 +14425,11 @@ function makeBuildTrackerBrief() {
     `Backend CI harness score: ${tracker.releaseDoctor.backendCiProofHarness.score}/100`,
     `Backend CI harness rule: ${tracker.releaseDoctor.backendCiProofHarness.rule}`,
     ...tracker.releaseDoctor.backendCiProofHarness.lanes.map((lane) => `- Backend CI ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Deployment environment readiness map: ${tracker.releaseDoctor.deploymentEnvironmentReadinessMap.verdict}`,
+    `Deployment environment map receipt: ${tracker.releaseDoctor.deploymentEnvironmentReadinessMap.receiptId}`,
+    `Deployment environment map score: ${tracker.releaseDoctor.deploymentEnvironmentReadinessMap.score}/100`,
+    `Deployment environment map rule: ${tracker.releaseDoctor.deploymentEnvironmentReadinessMap.rule}`,
+    ...tracker.releaseDoctor.deploymentEnvironmentReadinessMap.lanes.map((lane) => `- Deployment environment ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -14681,6 +14785,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.backendCiProofHarness.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.backendCiProofHarness.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.backendCiProofHarness.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Deployment Environment Readiness Map",
+    `- Receipt ID: ${tracker.releaseDoctor.deploymentEnvironmentReadinessMap.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.deploymentEnvironmentReadinessMap.verdict}`,
+    `- Score: ${tracker.releaseDoctor.deploymentEnvironmentReadinessMap.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.deploymentEnvironmentReadinessMap.rule}`,
+    ...tracker.releaseDoctor.deploymentEnvironmentReadinessMap.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.deploymentEnvironmentReadinessMap.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.deploymentEnvironmentReadinessMap.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.deploymentEnvironmentReadinessMap.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -15541,6 +15655,14 @@ function makeBackendCiProofHarnessBrief() {
     "Backend CI Proof Harness",
     buildTrackerConfig().releaseDoctor.backendCiProofHarness,
     "Backend CI Proof Harness is a static CI contract only. It does not run a real backend pipeline, certify provider integrations, deploy environments, store private data, or approve production readiness."
+  );
+}
+
+function makeDeploymentEnvironmentReadinessMapBrief() {
+  return makeOperationalProofBrief(
+    "Deployment Environment Readiness Map",
+    buildTrackerConfig().releaseDoctor.deploymentEnvironmentReadinessMap,
+    "Deployment Environment Readiness Map is a static environment-readiness contract only. It does not create staging or production infrastructure, configure real secrets, deploy services, monitor live traffic, or certify launch readiness."
   );
 }
 
@@ -69815,6 +69937,13 @@ function bindEvents() {
     if (!copyBackendCiProofHarness) return;
     event.preventDefault();
     copyText(makeBackendCiProofHarnessBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyDeploymentEnvironmentReadinessMap = event.target.closest("[data-copy-deployment-environment-readiness-map]");
+    if (!copyDeploymentEnvironmentReadinessMap) return;
+    event.preventDefault();
+    copyText(makeDeploymentEnvironmentReadinessMapBrief());
   });
 
   document.addEventListener("click", (event) => {

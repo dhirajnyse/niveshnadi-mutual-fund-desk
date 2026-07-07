@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v503 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v504 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Deployment Environment Readiness Map in the Build Tracker Release Doctor that separates green CI from real release infrastructure by mapping staging, production, secret inventory, rollback, freeze, observability, alert owners, support notice, and release-stamp verification.
 - Backend CI Proof Harness in the Build Tracker Release Doctor that defines unit contract, fixture replay, webhook replay, source-worker replay, no-private-data scan, smoke artifact, release-stamp, rollback, artifact-retention, and merge-hold checks before backend work is trusted.
 - Backend Repository Handoff Pack in the Build Tracker Release Doctor that turns accepted frontend proof contracts into a private-repo opening packet with route skeletons, issue templates, fixture starter kit, command ledger, secret boundaries, rollback paths, no-private-data rules, and a copyable repo handoff brief.
 - Live Beta Pilot Audit in the Build Tracker Release Doctor that gives the founder a go/no-go gate across source proof, account custody, payment verification, support operations, visual QA, founder signoff, cohort cap, invite copy, refund route, support ceiling, no-go lines, receipt fields, and a copyable pilot-audit handoff before any named paid beta cohort opens.

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V501 Live Beta Pilot Audit
+
+V501 adds Live Beta Pilot Audit to the Build Tracker Release Doctor. It gives the founder a go/no-go gate across source proof, account custody, payment verification, support operations, visual QA, founder signoff, cohort cap, invite copy, refund route, support ceiling, no-go lines, receipt fields, and a copyable pilot-audit handoff before any named paid beta cohort opens.
+
 ## V500 Account Support Operations Console
 
 V500 adds Account Support Operations Console to the Build Tracker Release Doctor. It unifies support-safe account state, export/delete queue, entitlement support bridge, incident freeze, closeout receipts, hidden-field policy, no-go lines, receipt fields, and a copyable support-console handoff before account support widens.

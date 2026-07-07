@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v500-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v500 Account Support Operations Console";
+const DATA_VERSION = "20260708-v501-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v501 Live Beta Pilot Audit";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -12568,6 +12568,96 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    liveBetaPilotAudit: {
+      label: "Live beta pilot audit",
+      verdict: "Paid beta still gated",
+      receiptId: ["NN", "LIVE", "BETA", "PILOT", "AUDIT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 67,
+      rule: "One tiny paid beta cohort can open only when source proof, account custody, payment verification, support operations, visual QA, founder signoff, and cohort boundary receipts all agree on what is ready, what is blocked, and what remains a static prototype.",
+      lanes: [
+        {
+          label: "Source gate",
+          owner: "Evidence desk",
+          method: "GATE",
+          route: "pilot.source.acceptance",
+          proof: "AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, benchmark, checksum, quarantine, and reviewer release agree.",
+          readyWhen: "Ready when every pilot-visible fact has source date, citation path, checksum, parser confidence, reviewer signoff, and rollback evidence.",
+          hold: "Hold if any paid beta claim depends on demo data, stale source dates, unsigned parser output, or missing rollback evidence.",
+          score: 64
+        },
+        {
+          label: "Account custody gate",
+          owner: "Account platform",
+          method: "GATE",
+          route: "pilot.account.custody",
+          proof: "Account shell, saved research, export, deletion, support-safe status, and entitlement join are fixture-tested and no-private-data scanned.",
+          readyWhen: "Ready when account create/save/export/delete/support/entitlement fixtures pass with rollback receipts.",
+          hold: "Hold if real identity, PAN, folio, CAS, bank, contact, credential, or private notes can be stored before account controls are live.",
+          score: 62
+        },
+        {
+          label: "Payment gate",
+          owner: "Billing boundary",
+          method: "GATE",
+          route: "pilot.payment.acceptance",
+          proof: "Checkout, invoice, signed webhook, entitlement grant, refund rollback, dead-letter repair, and support closeout are rehearsed.",
+          readyWhen: "Ready when signed event proof, idempotency, event ordering, entitlement state, refund rollback, and redaction receipts agree.",
+          hold: "Hold if provider secrets, raw payment payloads, duplicate grants, missing refund rollback, or unsupported events remain unresolved.",
+          score: 57
+        },
+        {
+          label: "Support gate",
+          owner: "Support desk",
+          method: "GATE",
+          route: "pilot.support.acceptance",
+          proof: "Support-safe account status, export/delete queue, entitlement explanation, incident freeze, public reply, and closeout receipts are visible.",
+          readyWhen: "Ready when support can answer without seeing private payloads or mutating account, payment, source, or release state.",
+          hold: "Hold if support can expose private data, grant access, delete account, issue refund, or imply advice from the console.",
+          score: 63
+        },
+        {
+          label: "Founder go/no-go",
+          owner: "Founder",
+          method: "GATE",
+          route: "pilot.founder.signoff",
+          proof: "Founder signs cohort cap, what is static, what is live-looking, what is not promised, support ceiling, refund stop, and next audit date.",
+          readyWhen: "Ready when pilot invite copy, support copy, payment copy, source boundary, account boundary, and refund route are all founder-reviewed.",
+          hold: "Hold if the invite implies best-fund advice, guaranteed returns, execution, distributor service, production certainty, or unlimited support.",
+          score: 72
+        }
+      ],
+      operatingRules: [
+        "Pilot opens to a named, tiny cohort only after every gate has an accepted receipt or a visible hold reason.",
+        "Source, account, payment, support, visual, legal/privacy, security, and founder signoff must all name the same release key.",
+        "Pilot copy must say research discipline and saved memory, not fund recommendation or execution.",
+        "Support ceiling, refund route, data exclusion, and pause triggers must be visible before any paid invite.",
+        "A held gate is useful proof; it should stop the cohort instead of being hidden."
+      ],
+      noGoLines: [
+        "No paid beta invite may ship while source, account, payment, support, visual QA, legal/privacy, security, or founder signoff gates disagree.",
+        "No pilot copy may promise best fund, personalized advice, suitability approval, execution, guaranteed return, or distributor service.",
+        "No cohort may widen beyond founder-reviewed support capacity, refund route, and manual receipt review.",
+        "No personal identifiers, payment payloads, raw source artifacts, credentials, PAN, folio, CAS, bank, contact, or private notes may enter prototype memory."
+      ],
+      receiptFields: [
+        "live_beta_pilot_audit_id",
+        "release_key",
+        "cohort_cap",
+        "source_gate_state",
+        "account_gate_state",
+        "payment_gate_state",
+        "support_gate_state",
+        "visual_gate_state",
+        "legal_privacy_gate_state",
+        "security_gate_state",
+        "founder_signoff_state",
+        "invite_copy_state",
+        "refund_route_state",
+        "support_ceiling_state",
+        "pilot_hold_reason",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -12738,14 +12828,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account support operations console advances the runnable-scaffold batch; next releases should add pilot, repository, CI, deployment, and data-retention proof.",
+      rule: "Live beta pilot audit closes this backend-to-beta batch; next releases should prepare repository, CI, deployment, retention, and pilot invite proof.",
       lanes: [
-        {
-          version: "v501",
-          label: "Live beta pilot audit",
-          route: "#release-publisher",
-          detail: "Add a founder-facing pilot audit that decides whether source, account, payment, support, visual, and signoff proof are ready for one tiny paid beta cohort."
-        },
         {
           version: "v502",
           label: "Backend repository handoff pack",
@@ -12769,6 +12853,12 @@ function buildTrackerConfig() {
           label: "Data retention execution checklist",
           route: "#account-readiness",
           detail: "Turn retention rules into concrete account, source, support, payment, visual, and release-proof deletion/exclusion tasks."
+        },
+        {
+          version: "v506",
+          label: "Pilot invite copy approval room",
+          route: "#founder-invite-path",
+          detail: "Approve paid-beta invite, support, refund, no-advice, data-boundary, and pause-trigger copy before any named cohort opens."
         }
       ]
     },
@@ -12777,6 +12867,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v500",
+          key: "20260708-v500-01",
+          commit: "c0794eb",
+          receiptId: "NN-SHARE-RECEIPT-20260708V50001",
+          proof: "Account Support Operations Console added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v499",
           key: "20260708-v499-01",
@@ -12804,13 +12901,6 @@ function buildTrackerConfig() {
           commit: "e9e9edb",
           receiptId: "NN-SHARE-RECEIPT-20260707V49601",
           proof: "Founder Release Audit Room added, pushed to main, visually checked, and live stamp verified."
-        },
-        {
-          version: "v495",
-          key: "20260707-v495-01",
-          commit: "dc22a05",
-          receiptId: "NN-SHARE-RECEIPT-20260707V49501",
-          proof: "Source Ingestion Checksum Runner added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -12848,39 +12938,39 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v500",
-        detail: "Account Support Operations Console is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v501",
+        detail: "Live Beta Pilot Audit is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v500 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v501 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
-        value: "v501 next",
-        detail: "Live beta pilot audit is queued after the support console proof."
+        value: "Visual QA next",
+        detail: "This five-version batch is ready for local browser QA, push, and live-stamp verification."
       },
       {
         label: "04 Share",
-        value: "v500 held until live stamp",
-        detail: "Do not share v500 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v501 held until live stamp",
+        detail: "Do not share v501 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v500 source change",
-        detail: "Account Support Operations Console adds support-safe account, export/delete, entitlement, incident freeze, and closeout proof lanes."
+        value: "v501 source change",
+        detail: "Live Beta Pilot Audit adds a founder-facing go/no-go gate across source, account, payment, support, visual, legal/privacy, security, signoff, invite, refund, and support ceiling proof."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v500 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v501 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v500 held until live stamp",
+        value: "v501 held until live stamp",
         detail: "The batch release is share-ready only after v501 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
@@ -13594,6 +13684,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.sourceFetcherProofWorker, "Source fetcher proof worker")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.paymentWebhookVerificationLab, "Payment webhook verification lab")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.accountSupportOperationsConsole, "Account support operations console")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.liveBetaPilotAudit, "Live beta pilot audit")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -13760,6 +13851,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-source-fetcher-proof-worker>Copy fetch worker</button>
         <button class="text-button" type="button" data-copy-payment-webhook-verification-lab>Copy webhook lab</button>
         <button class="text-button" type="button" data-copy-account-support-operations-console>Copy support console</button>
+        <button class="text-button" type="button" data-copy-live-beta-pilot-audit>Copy pilot audit</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -14033,6 +14125,11 @@ function makeBuildTrackerBrief() {
     `Account support console score: ${tracker.releaseDoctor.accountSupportOperationsConsole.score}/100`,
     `Account support console rule: ${tracker.releaseDoctor.accountSupportOperationsConsole.rule}`,
     ...tracker.releaseDoctor.accountSupportOperationsConsole.lanes.map((lane) => `- Account support ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Live beta pilot audit: ${tracker.releaseDoctor.liveBetaPilotAudit.verdict}`,
+    `Live beta pilot audit receipt: ${tracker.releaseDoctor.liveBetaPilotAudit.receiptId}`,
+    `Live beta pilot audit score: ${tracker.releaseDoctor.liveBetaPilotAudit.score}/100`,
+    `Live beta pilot audit rule: ${tracker.releaseDoctor.liveBetaPilotAudit.rule}`,
+    ...tracker.releaseDoctor.liveBetaPilotAudit.lanes.map((lane) => `- Pilot audit ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -14358,6 +14455,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.accountSupportOperationsConsole.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.accountSupportOperationsConsole.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.accountSupportOperationsConsole.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Live Beta Pilot Audit",
+    `- Receipt ID: ${tracker.releaseDoctor.liveBetaPilotAudit.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.liveBetaPilotAudit.verdict}`,
+    `- Score: ${tracker.releaseDoctor.liveBetaPilotAudit.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.liveBetaPilotAudit.rule}`,
+    ...tracker.releaseDoctor.liveBetaPilotAudit.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.liveBetaPilotAudit.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.liveBetaPilotAudit.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.liveBetaPilotAudit.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -15194,6 +15301,14 @@ function makeAccountSupportOperationsConsoleBrief() {
     "Account Support Operations Console",
     buildTrackerConfig().releaseDoctor.accountSupportOperationsConsole,
     "Account Support Operations Console is a static support-operations contract only. It does not create accounts, store personal data, execute exports or deletions, mutate entitlements, resolve real support cases, or certify production support readiness."
+  );
+}
+
+function makeLiveBetaPilotAuditBrief() {
+  return makeOperationalProofBrief(
+    "Live Beta Pilot Audit",
+    buildTrackerConfig().releaseDoctor.liveBetaPilotAudit,
+    "Live Beta Pilot Audit is a static go/no-go audit only. It does not open a real paid cohort, verify live data, create accounts, process payments, provide advice, certify legal/security readiness, or approve production launch."
   );
 }
 
@@ -69447,6 +69562,13 @@ function bindEvents() {
     if (!copyAccountSupportOperationsConsole) return;
     event.preventDefault();
     copyText(makeAccountSupportOperationsConsoleBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyLiveBetaPilotAudit = event.target.closest("[data-copy-live-beta-pilot-audit]");
+    if (!copyLiveBetaPilotAudit) return;
+    event.preventDefault();
+    copyText(makeLiveBetaPilotAuditBrief());
   });
 
   document.addEventListener("click", (event) => {

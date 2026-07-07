@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v501 Live Beta Pilot Audit
+
+- Version: `0.501.0`
+- Data version: `20260708-v501-01`
+- Changes made: Added Live Beta Pilot Audit to the Build Tracker Release Doctor with source proof, account custody, payment verification, support operations, visual QA, founder signoff, cohort cap, invite copy, refund route, support ceiling, no-go lines, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward with v500 commit, next-batch planner roll-forward to v502-v506, and release markers rolled forward to v501.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v501 marker scan; browser visual QA across desktop and mobile routes.
+- Known risks: Live Beta Pilot Audit is a static go/no-go audit only; production still needs actual backend repositories, CI harnesses, deployment environments, live source integrations, authenticated accounts, payment provider verification, support tooling, privacy/security/legal review, deployment verification, and live beta tests before any paid cohort opens.
+
 ## NiveshNadi Phase 1 v500 Account Support Operations Console
 
 - Version: `0.500.0`

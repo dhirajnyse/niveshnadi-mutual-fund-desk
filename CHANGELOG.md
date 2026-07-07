@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v484 Visual Runner Result Archive
+
+- Version: `0.484.0`
+- Data version: `20260707-v484-01`
+- Changes made: Added Visual Runner Result Archive to the Build Tracker Release Doctor with route result rows, viewports, DOM markers, baseline and current hashes, console state, overflow state, retry state, reviewer state, release hold, image deletion receipt, share rules, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward, next-batch planner roll-forward, and release markers rolled forward to v484.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v484 marker scan.
+- Known risks: Visual runner result archive is static release QA proof only; production still needs a real screenshot runner, hash comparison, CI integration, artifact storage/deletion enforcement, reviewer workflow, privacy/security/legal review, deployment verification, and live visual regression tests.
+
 ## NiveshNadi Phase 1 v483 Support Case Queue Telemetry
 
 - Version: `0.483.0`

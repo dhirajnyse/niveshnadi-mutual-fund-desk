@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v483-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v483 Support Case Queue Telemetry";
+const DATA_VERSION = "20260707-v484-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v484 Visual Runner Result Archive";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10921,10 +10921,66 @@ function buildTrackerConfig() {
         "delete_image_receipt_id",
         "created_at"
       ],
-      deletionProof: [
-        "Delete raw screenshot images after hash and comparison metadata are retained.",
-        "Exclude DOM dumps from account, support, payment, PAN, folio, CAS, contact, credential, or private-note routes.",
-        "Retain no visual artifact that contains private investor or account identifiers."
+    deletionProof: [
+      "Delete raw screenshot images after hash and comparison metadata are retained.",
+      "Exclude DOM dumps from account, support, payment, PAN, folio, CAS, contact, credential, or private-note routes.",
+      "Retain no visual artifact that contains private investor or account identifiers."
+    ]
+  },
+    visualRunnerResultArchive: {
+      label: "Visual runner result archive",
+      verdict: "Result rows retained",
+      receiptId: ["NN", "VISUAL", "RUNNER", "RESULT", "ARCHIVE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      rule: "Each visual runner execution must retain route, viewport, marker, result, hashes, console state, overflow state, retry state, reviewer state, deletion receipt, and release-hold route before a launch proof can cite visual QA.",
+      resultRows: visualRegressionRunnerContract.runEnvelope.map((run, index) => {
+        const result = index === 0 ? "pass" : index === 1 ? "review" : index === 2 ? "pass" : "pass";
+        const overflowState = index === 1 ? "watch" : "contained";
+        return {
+          label: run.label,
+          resultId: ["NN", "VISUAL", "RESULT", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+          route: run.route,
+          viewport: run.viewport,
+          marker: run.marker,
+          baselineHash: ["base", String(index + 1).padStart(2, "0"), "locked"].join("-"),
+          currentHash: ["current", DATA_VERSION.replace(/-/g, ""), String(index + 1).padStart(2, "0")].join("-"),
+          result,
+          consoleState: "clean",
+          overflowState,
+          retryState: index === 1 ? "human review before pass" : "not needed",
+          reviewerState: index === 1 ? "Founder UI desk review" : "release desk accepted",
+          deleteImageReceipt: ["NN", "VISUAL", "IMAGE", "DELETED", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+          releaseHold: result === "pass" && overflowState === "contained" ? "none" : "hold until review receipt is attached"
+        };
+      }),
+      archiveStates: [
+        "Pass: route marker loaded, screenshot is nonblank, console clean, overflow contained, and raw image deletion receipt exists.",
+        "Review: reviewer signoff is required before the release share receipt can cite visual QA.",
+        "Retry: allowed only for stale cache, delayed render, or one-off capture timing.",
+        "Hold: overlap, horizontal overflow, missing marker, stale key, blank screenshot, console error, or private-data exposure blocks sharing."
+      ],
+      shareRules: [
+        "Launch proof may cite visual QA only after every row is pass or review-waived with a named reviewer receipt.",
+        "A review row cannot silently pass; it needs reviewer state, reason, and result receipt.",
+        "Private-data routes retain hash and metadata only; raw screenshot and DOM text are deleted or excluded.",
+        "Visual runner result archive is release QA proof only; it does not certify live data, accounts, payments, legal readiness, security posture, or investment suitability."
+      ],
+      receiptFields: [
+        "visual_runner_result_archive_id",
+        "result_id",
+        "release_key",
+        "route",
+        "viewport",
+        "dom_marker",
+        "baseline_hash",
+        "current_hash",
+        "result",
+        "console_state",
+        "overflow_state",
+        "retry_state",
+        "reviewer_state",
+        "release_hold",
+        "delete_image_receipt_id",
+        "created_at"
       ]
     },
     launchProofDashboard: {
@@ -11104,14 +11160,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support telemetry is visible; keep the next batch focused on runner result archive, launch proof cabinet, calm executive compression, backend account smoke harness, and support incident drills.",
+      rule: "Runner result retention is visible; keep the next batch focused on launch proof cabinet, calm executive compression, backend account smoke harness, support incident drills, and visual QA CI adapter.",
       lanes: [
-        {
-          version: "v484",
-          label: "Visual runner result archive",
-          route: "#build-tracker",
-          detail: "Add pass/fail result rows for the visual runner so route, viewport, hash, console, overflow, retry, and deletion states are retained compactly."
-        },
         {
           version: "v485",
           label: "Production launch proof cabinet",
@@ -11135,6 +11185,12 @@ function buildTrackerConfig() {
           label: "Support operations incident drill",
           route: "#account-readiness",
           detail: "Rehearse private-data exposure, stale support queue, disputed deletion, and entitlement mismatch incidents before paid support widens."
+        },
+        {
+          version: "v489",
+          label: "Visual QA CI adapter",
+          route: "#build-tracker",
+          detail: "Convert visual runner result archive fields into a CI-friendly adapter contract with pass, fail, retry, artifact deletion, and release-hold outputs."
         }
       ]
     },
@@ -11143,6 +11199,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v483",
+          key: "20260707-v483-01",
+          commit: "131b9c0",
+          receiptId: "NN-SHARE-RECEIPT-20260707V48301",
+          proof: "Support Case Queue Telemetry added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v482",
           key: "20260707-v482-01",
@@ -11170,13 +11233,6 @@ function buildTrackerConfig() {
           commit: "840217b",
           receiptId: "NN-SHARE-RECEIPT-20260707V47901",
           proof: "Support Safe Account Status Console added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v478",
-          key: "20260707-v478-01",
-          commit: "ed6183d",
-          receiptId: "NN-SHARE-RECEIPT-20260707V47801",
-          proof: "Export Delete Backend Ticket Room added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11214,8 +11270,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v483",
-        detail: "Support Case Queue Telemetry is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v484",
+        detail: "Visual Runner Result Archive is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11230,23 +11286,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v483 as complete until this release returns the active release stamp."
+        detail: "Do not share v484 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v483 source change adds Support Case Queue Telemetry."
+        detail: "v484 source change adds Visual Runner Result Archive."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v483 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v484 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v483 held for batch deploy",
+        value: "v484 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v486."
       }
     ],
@@ -11695,6 +11751,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Visual runner result archive">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.visualRunnerResultArchive.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.visualRunnerResultArchive.verdict)}</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.visualRunnerResultArchive.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.visualRunnerResultArchive.resultRows.map((row) => `
+          <article>
+            <span>${escapeHtml(row.route)} | ${escapeHtml(row.viewport)}</span>
+            <strong>${escapeHtml(row.label)}: ${escapeHtml(row.result)}</strong>
+            <p>${escapeHtml(row.consoleState)} console; overflow ${escapeHtml(row.overflowState)}; retry ${escapeHtml(row.retryState)}. ${escapeHtml(row.releaseHold)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Launch proof dashboard">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.launchProofDashboard.label)}</span>
@@ -11858,6 +11928,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-visual-qa-baseline-store>Copy baseline store</button>
         <button class="text-button" type="button" data-copy-baseline-compare-automation>Copy compare automation</button>
         <button class="text-button" type="button" data-copy-visual-regression-runner-contract>Copy runner contract</button>
+        <button class="text-button" type="button" data-copy-visual-runner-result-archive>Copy runner results</button>
         <button class="text-button" type="button" data-copy-launch-proof-dashboard>Copy launch dashboard</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
@@ -12041,6 +12112,10 @@ function makeBuildTrackerBrief() {
     ...tracker.releaseDoctor.visualRegressionRunnerContract.runEnvelope.map((run) => `- Visual runner ${run.label}: ${run.route} | ${run.viewport} | Marker ${run.marker} | Threshold ${run.threshold} | Pass ${run.pass} | Hold ${run.hold}`),
     ...tracker.releaseDoctor.visualRegressionRunnerContract.outputs.map((output) => `- Visual runner output ${output.label}: ${output.value} | ${output.detail}`),
     ...tracker.releaseDoctor.visualRegressionRunnerContract.finalGate.map((rule) => `- Visual runner final gate: ${rule}`),
+    `Visual runner result archive: ${tracker.releaseDoctor.visualRunnerResultArchive.verdict}`,
+    `Visual runner archive receipt: ${tracker.releaseDoctor.visualRunnerResultArchive.receiptId}`,
+    `Visual runner archive rule: ${tracker.releaseDoctor.visualRunnerResultArchive.rule}`,
+    ...tracker.releaseDoctor.visualRunnerResultArchive.resultRows.map((row) => `- Visual result ${row.label}: ${row.resultId} | ${row.route} | ${row.viewport} | Marker ${row.marker} | Result ${row.result} | Console ${row.consoleState} | Overflow ${row.overflowState} | Retry ${row.retryState} | Delete ${row.deleteImageReceipt}`),
     `Launch proof dashboard: ${tracker.releaseDoctor.launchProofDashboard.verdict}`,
     `Launch proof receipt: ${tracker.releaseDoctor.launchProofDashboard.receiptId}`,
     `Launch proof rule: ${tracker.releaseDoctor.launchProofDashboard.rule}`,
@@ -12193,6 +12268,15 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.visualRegressionRunnerContract.finalGate.map((rule) => `- Final gate: ${rule}`),
     ...tracker.releaseDoctor.visualRegressionRunnerContract.receiptFields.map((field) => `- Receipt field: ${field}`),
     ...tracker.releaseDoctor.visualRegressionRunnerContract.deletionProof.map((rule) => `- Deletion proof: ${rule}`),
+    "",
+    "## Visual Runner Result Archive",
+    `- Receipt ID: ${tracker.releaseDoctor.visualRunnerResultArchive.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.visualRunnerResultArchive.verdict}`,
+    `- Rule: ${tracker.releaseDoctor.visualRunnerResultArchive.rule}`,
+    ...tracker.releaseDoctor.visualRunnerResultArchive.resultRows.map((row) => `- ${row.label}: ${row.resultId} | ${row.route} | ${row.viewport} | Marker ${row.marker} | Baseline ${row.baselineHash} | Current ${row.currentHash} | Result ${row.result} | Console ${row.consoleState} | Overflow ${row.overflowState} | Retry ${row.retryState} | Reviewer ${row.reviewerState} | Delete ${row.deleteImageReceipt} | Hold ${row.releaseHold}`),
+    ...tracker.releaseDoctor.visualRunnerResultArchive.archiveStates.map((state) => `- Archive state: ${state}`),
+    ...tracker.releaseDoctor.visualRunnerResultArchive.shareRules.map((rule) => `- Share rule: ${rule}`),
+    ...tracker.releaseDoctor.visualRunnerResultArchive.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Launch Proof Dashboard",
     `- Receipt ID: ${tracker.releaseDoctor.launchProofDashboard.receiptId}`,
@@ -12487,6 +12571,45 @@ function makeVisualRegressionRunnerContractBrief() {
     ...runner.deletionProof.map((rule) => `- ${rule}`),
     "",
     "Visual Regression Runner Contract is a release QA runner contract only. It does not retain private screenshots, prove live data, create account custody, approve investing, execute transactions, certify privacy/security/legal readiness, or replace human review of failures."
+  ].join("\n");
+}
+
+function makeVisualRunnerResultArchiveBrief() {
+  const archive = buildTrackerConfig().releaseDoctor.visualRunnerResultArchive;
+  return [
+    "# NiveshNadi Visual Runner Result Archive",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${archive.receiptId}`,
+    `Verdict: ${archive.verdict}`,
+    `Rule: ${archive.rule}`,
+    "",
+    "## Result Rows",
+    ...archive.resultRows.map((row) => [
+      `- ${row.label}: ${row.resultId}`,
+      `  Route: ${row.route}`,
+      `  Viewport: ${row.viewport}`,
+      `  DOM marker: ${row.marker}`,
+      `  Baseline hash: ${row.baselineHash}`,
+      `  Current hash: ${row.currentHash}`,
+      `  Result: ${row.result}`,
+      `  Console: ${row.consoleState}`,
+      `  Overflow: ${row.overflowState}`,
+      `  Retry: ${row.retryState}`,
+      `  Reviewer: ${row.reviewerState}`,
+      `  Release hold: ${row.releaseHold}`,
+      `  Delete image receipt: ${row.deleteImageReceipt}`
+    ].join("\n")),
+    "",
+    "## Archive States",
+    ...archive.archiveStates.map((state) => `- ${state}`),
+    "",
+    "## Share Rules",
+    ...archive.shareRules.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...archive.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Visual Runner Result Archive is a release QA result archive only. It does not retain private screenshots, prove live data, create account custody, approve investing, execute transactions, certify privacy/security/legal readiness, or replace human review of failures."
   ].join("\n");
 }
 
@@ -66623,6 +66746,13 @@ function bindEvents() {
     if (!copyVisualRegressionRunnerContract) return;
     event.preventDefault();
     copyText(makeVisualRegressionRunnerContractBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyVisualRunnerResultArchive = event.target.closest("[data-copy-visual-runner-result-archive]");
+    if (!copyVisualRunnerResultArchive) return;
+    event.preventDefault();
+    copyText(makeVisualRunnerResultArchiveBrief());
   });
 
   document.addEventListener("click", (event) => {

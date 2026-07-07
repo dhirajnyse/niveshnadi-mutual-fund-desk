@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V484 Visual Runner Result Archive
+
+V484 adds Visual Runner Result Archive to the Build Tracker Release Doctor. It retains route, viewport, marker, result, hashes, console state, overflow state, retry state, reviewer state, release hold, image deletion receipt, share rules, and a copyable result handoff so launch proof can cite visual QA with clearer evidence.
+
 ## V483 Support Case Queue Telemetry
 
 V483 adds Support Case Queue Telemetry inside Account Readiness. It makes support queue counters, age bands, freeze states, redaction state, support-safe status, escalation routes, receipt fields, and a copyable queue handoff visible before account support widens.

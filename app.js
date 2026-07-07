@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v490-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v490 Payment Entitlement Proof Cabinet";
+const DATA_VERSION = "20260707-v491-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v491 Production Data Source Gate";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -11571,6 +11571,116 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    productionDataSourceGate: {
+      label: "Production data source gate",
+      verdict: "Source proof before 100%",
+      receiptId: ["NN", "PRODUCTION", "DATA", "SOURCE", "GATE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 63,
+      rule: "The production-ready claim can reach 100% only after AMFI scheme/NAV, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, and benchmark source rows each show source date, citation path, freshness state, parser or owner, reviewer signoff, and rollback or correction rule.",
+      sources: [
+        {
+          label: "AMFI scheme and NAV master",
+          owner: "Source Desk",
+          route: "#source-receipts",
+          receipt: "amfi_scheme_nav_source_receipt",
+          cadence: "Daily",
+          score: 70,
+          proof: "Source date, NAV file hash, scheme identity, category, and AUM reference.",
+          hold: "Hold if source date, citation path, file hash, or scheme identity is missing."
+        },
+        {
+          label: "AMC monthly factsheet",
+          owner: "Source Desk",
+          route: "#source-intake",
+          receipt: "amc_factsheet_source_receipt",
+          cadence: "Monthly",
+          score: 64,
+          proof: "Expense, returns, manager, style, holdings, and factsheet period are cited.",
+          hold: "Hold if factsheet month, PDF path, parser confidence, or reviewer signoff is absent."
+        },
+        {
+          label: "SID/KIM document",
+          owner: "Reviewer Desk",
+          route: "#citation-binder",
+          receipt: "sid_kim_citation_receipt",
+          cadence: "Event driven",
+          score: 58,
+          proof: "Objective, risk language, benchmark, expense, load, and disclosure text are cited.",
+          hold: "Hold if document version, citation anchor, or correction path is unclear."
+        },
+        {
+          label: "Portfolio disclosure",
+          owner: "Data Ops",
+          route: "#source-dry-run",
+          receipt: "portfolio_disclosure_source_receipt",
+          cadence: "Monthly",
+          score: 61,
+          proof: "Top holdings, sector, market-cap, overlap, and disclosure period are mapped.",
+          hold: "Hold if holdings period, row count, parser quarantine, or overlap caveat is missing."
+        },
+        {
+          label: "TER and expense",
+          owner: "Cost Lab",
+          route: "#cost-lab",
+          receipt: "ter_expense_source_receipt",
+          cadence: "Monthly",
+          score: 67,
+          proof: "TER, direct/regular boundary, expense period, and source citation are visible.",
+          hold: "Hold if expense ratio date, plan type, or stale TER caveat is missing."
+        },
+        {
+          label: "Riskometer",
+          owner: "Compliance",
+          route: "#claim-release",
+          receipt: "riskometer_source_receipt",
+          cadence: "Monthly or when changed",
+          score: 60,
+          proof: "Risk band, date, source path, and claim-surface wording are reviewed.",
+          hold: "Hold if riskometer date, band, or claim copy does not match the source."
+        },
+        {
+          label: "Benchmark and category",
+          owner: "Research Desk",
+          route: "#peer-bench",
+          receipt: "benchmark_category_source_receipt",
+          cadence: "Monthly",
+          score: 66,
+          proof: "Benchmark name, category peer set, comparison date, and correction rule are visible.",
+          hold: "Hold if category, benchmark, peer set, or correction notice path is not replayable."
+        }
+      ],
+      sequence: [
+        "Pull source family receipt before interpreting any fund score, comparison, or shortlist label.",
+        "Attach source date, citation path, parser confidence, reviewer signoff, and freshness state to every production claim.",
+        "Quarantine any row with stale date, missing citation, low parser confidence, mismatch, or absent rollback rule.",
+        "Publish source proof only after correction notice, rollback binder, and reviewer release scope are linked.",
+        "Keep 100% locked until source proof, account proof, payment proof, support proof, visual proof, and founder signoff all agree."
+      ],
+      noGoLines: [
+        "No fund fact is production-ready without source date, citation path, freshness state, and reviewer signoff.",
+        "No scraped, demo, inferred, or memory-only row may be used as live investor-facing proof.",
+        "No source import may store PAN, folio, CAS, bank data, contact data, credentials, distributor-client records, payment data, or private notes.",
+        "No 100% claim is allowed while any source gate is stale, quarantined, unsigned, or missing rollback proof."
+      ],
+      receiptFields: [
+        "production_data_source_gate_id",
+        "release_key",
+        "source_family",
+        "owner",
+        "cadence",
+        "source_date",
+        "citation_path",
+        "file_hash",
+        "parser_confidence",
+        "freshness_state",
+        "reviewer_signoff_id",
+        "quarantine_state",
+        "correction_notice_id",
+        "rollback_receipt_id",
+        "launch_claim_state",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -11590,8 +11700,8 @@ function buildTrackerConfig() {
         },
         {
           label: "Next proof",
-          value: "Production data source gate",
-          detail: "Lock source dates, citation paths, factsheets, portfolio disclosure, TER, riskometer, and benchmark proof before 100%."
+          value: "Founder release audit",
+          detail: "Use the production data source gate plus payment, account, support, visual, and founder signoff proof before any production-ready claim."
         },
         {
           label: "100% rule",
@@ -11740,14 +11850,38 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "One release remains",
-      rule: "Payment entitlement proof cabinet is visible; finish this batch with the production data source gate.",
+      verdict: "Next batch ready",
+      rule: "Production data source gate closes this proof batch; the next batch should turn the strongest static gates into executable backend and release-audit fixtures.",
       lanes: [
         {
-          version: "v491",
-          label: "Production data source gate",
-          route: "#source-receipts",
-          detail: "Turn source dates, citation paths, AMFI/AMC factsheets, NAV, TER, holdings, benchmark, and riskometer checks into one production data gate."
+          version: "v492",
+          label: "Live backend API skeleton",
+          route: "#backend-audit-receipts",
+          detail: "Create a thin endpoint contract for source receipt, account fixture, entitlement, support status, and release audit checks."
+        },
+        {
+          version: "v493",
+          label: "Account persistence fixture runner",
+          route: "#account-readiness",
+          detail: "Turn account create, save research, export, delete, and support-safe status into replayable local test fixtures."
+        },
+        {
+          version: "v494",
+          label: "Payment sandbox event simulator",
+          route: "#payment-sandbox",
+          detail: "Simulate checkout, invoice, webhook, entitlement grant, refund, and rollback events without touching real payment data."
+        },
+        {
+          version: "v495",
+          label: "Source ingestion checksum runner",
+          route: "#source-intake",
+          detail: "Add repeatable source-family checksum and quarantine checks for AMFI, AMC factsheet, SID/KIM, portfolio, TER, riskometer, and benchmark proof."
+        },
+        {
+          version: "v496",
+          label: "Founder release audit room",
+          route: "#release-publisher",
+          detail: "Create one calm release-audit room that reads build, source, account, payment, support, visual QA, and founder signoff receipts before sharing."
         }
       ]
     },
@@ -11756,6 +11890,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v490",
+          key: "20260707-v490-01",
+          commit: "674e03d",
+          receiptId: "NN-SHARE-RECEIPT-20260707V49001",
+          proof: "Payment Entitlement Proof Cabinet added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v489",
           key: "20260707-v489-01",
@@ -11783,13 +11924,6 @@ function buildTrackerConfig() {
           commit: "b1905ee",
           receiptId: "NN-SHARE-RECEIPT-20260707V48601",
           proof: "Calm Executive Workspace Compression added, startup-safe render guards added, pushed to main, and live stamp verified."
-        },
-        {
-          version: "v485",
-          key: "20260707-v485-01",
-          commit: "40d0017",
-          receiptId: "NN-SHARE-RECEIPT-20260707V48501",
-          proof: "Production Launch Proof Cabinet added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11827,8 +11961,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v490",
-        detail: "Payment Entitlement Proof Cabinet is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v491",
+        detail: "Production Data Source Gate is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11842,24 +11976,24 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "Next build held",
-        detail: "Do not share v490 as complete until this release returns the active release stamp."
+        value: "Batch close held",
+        detail: "Do not share v491 as complete until the release stamp and fresh build URL return this release."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v490 source change adds Payment Entitlement Proof Cabinet."
+        detail: "v491 source change adds Production Data Source Gate."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v490 runs syntax, static, security, diff hygiene, and marker scans before the final release."
+        detail: "v491 runs syntax, static, security, diff hygiene, marker scans, and visual QA before push."
       },
       {
         label: "Share outcome",
-        value: "v490 held until live stamp",
+        value: "v491 held until live stamp",
         detail: "The final batch release is pushed and live-stamp verified after visual QA passes."
       }
     ],
@@ -12466,6 +12600,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Production data source gate">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.productionDataSourceGate.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.productionDataSourceGate.verdict)} | ${tracker.releaseDoctor.productionDataSourceGate.score}/100</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.productionDataSourceGate.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.productionDataSourceGate.sources.map((source) => `
+          <article>
+            <span>${escapeHtml(source.cadence)} | ${source.score}/100</span>
+            <strong>${escapeHtml(source.label)}</strong>
+            <p>${escapeHtml(source.owner)}: ${escapeHtml(source.proof)} Hold: ${escapeHtml(source.hold)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -12622,6 +12770,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-support-operations-incident-drill>Copy support drill</button>
         <button class="text-button" type="button" data-copy-visual-qa-ci-adapter>Copy visual CI</button>
         <button class="text-button" type="button" data-copy-payment-entitlement-proof-cabinet>Copy payment proof</button>
+        <button class="text-button" type="button" data-copy-production-data-source-gate>Copy source gate</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -12845,6 +12994,11 @@ function makeBuildTrackerBrief() {
     `Payment entitlement score: ${tracker.releaseDoctor.paymentEntitlementProofCabinet.score}/100`,
     `Payment entitlement rule: ${tracker.releaseDoctor.paymentEntitlementProofCabinet.rule}`,
     ...tracker.releaseDoctor.paymentEntitlementProofCabinet.gates.map((gate) => `- Payment entitlement ${gate.label}: ${gate.owner} | ${gate.receipt} | ${gate.state} | ${gate.score}/100 | Replay ${gate.replay} | Hold ${gate.hold}`),
+    `Production data source gate: ${tracker.releaseDoctor.productionDataSourceGate.verdict}`,
+    `Production source receipt: ${tracker.releaseDoctor.productionDataSourceGate.receiptId}`,
+    `Production source score: ${tracker.releaseDoctor.productionDataSourceGate.score}/100`,
+    `Production source rule: ${tracker.releaseDoctor.productionDataSourceGate.rule}`,
+    ...tracker.releaseDoctor.productionDataSourceGate.sources.map((source) => `- Production source ${source.label}: ${source.owner} | ${source.cadence} | ${source.receipt} | ${source.score}/100 | Proof ${source.proof} | Hold ${source.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -13070,6 +13224,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.paymentEntitlementProofCabinet.sequence.map((step) => `- Sequence: ${step}`),
     ...tracker.releaseDoctor.paymentEntitlementProofCabinet.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.paymentEntitlementProofCabinet.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Production Data Source Gate",
+    `- Receipt ID: ${tracker.releaseDoctor.productionDataSourceGate.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.productionDataSourceGate.verdict}`,
+    `- Score: ${tracker.releaseDoctor.productionDataSourceGate.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.productionDataSourceGate.rule}`,
+    ...tracker.releaseDoctor.productionDataSourceGate.sources.map((source) => `- ${source.label}: ${source.owner} | ${source.cadence} | ${source.receipt} | ${source.proof} | Hold ${source.hold}`),
+    ...tracker.releaseDoctor.productionDataSourceGate.sequence.map((step) => `- Sequence: ${step}`),
+    ...tracker.releaseDoctor.productionDataSourceGate.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.productionDataSourceGate.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -13627,6 +13791,41 @@ function makePaymentEntitlementProofCabinetBrief() {
     ...cabinet.receiptFields.map((field) => `- ${field}`),
     "",
     "Payment Entitlement Proof Cabinet is a launch-readiness proof map only. It does not process payments, store card/UPI data, approve investment action, grant live entitlement, issue refunds, certify legal/security readiness, or replace provider-side payment logs."
+  ].join("\n");
+}
+
+function makeProductionDataSourceGateBrief() {
+  const gate = buildTrackerConfig().releaseDoctor.productionDataSourceGate;
+  return [
+    "# NiveshNadi Production Data Source Gate",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${gate.receiptId}`,
+    `Verdict: ${gate.verdict}`,
+    `Score: ${gate.score}/100`,
+    `Rule: ${gate.rule}`,
+    "",
+    "## Source Families",
+    ...gate.sources.map((source) => [
+      `- ${source.label}`,
+      `  Owner: ${source.owner}`,
+      `  Route: ${source.route}`,
+      `  Receipt: ${source.receipt}`,
+      `  Cadence: ${source.cadence}`,
+      `  Score: ${source.score}/100`,
+      `  Proof: ${source.proof}`,
+      `  Hold: ${source.hold}`
+    ].join("\n")),
+    "",
+    "## Sequence",
+    ...gate.sequence.map((step) => `- ${step}`),
+    "",
+    "## No-Go Lines",
+    ...gate.noGoLines.map((line) => `- ${line}`),
+    "",
+    "## Receipt Fields",
+    ...gate.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Production Data Source Gate is a source-readiness contract only. It does not fetch live AMFI or AMC data, certify source accuracy, approve investment action, process personal data, or replace reviewer signoff and correction controls."
   ].join("\n");
 }
 
@@ -67810,6 +68009,13 @@ function bindEvents() {
     if (!copyPaymentEntitlementProofCabinet) return;
     event.preventDefault();
     copyText(makePaymentEntitlementProofCabinetBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyProductionDataSourceGate = event.target.closest("[data-copy-production-data-source-gate]");
+    if (!copyProductionDataSourceGate) return;
+    event.preventDefault();
+    copyText(makeProductionDataSourceGateBrief());
   });
 
   document.addEventListener("click", (event) => {

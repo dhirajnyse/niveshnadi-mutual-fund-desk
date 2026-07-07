@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v491 Production Data Source Gate
+
+- Version: `0.491.0`
+- Data version: `20260707-v491-01`
+- Changes made: Added Production Data Source Gate to the Build Tracker Release Doctor with AMFI scheme/NAV, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, and benchmark/category source families; owners; routes; cadence; receipt names; source proof and hold rules; sequence; no-go lines; receipt fields; dedicated copy action; Build Tracker and Release Doctor brief coverage; proof archive roll-forward with v490 commit; next-batch planner roll-forward; and release markers rolled forward to v491.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v491 marker scan; browser visual QA across desktop and mobile routes.
+- Known risks: Production Data Source Gate is a static source-readiness contract only; production still needs live AMFI/AMC integrations, PDF extraction, parser quarantine, durable source storage, reviewer signoff workflow, correction/rollback automation, privacy/security/legal review, deployment verification, and live source ingestion tests.
+
 ## NiveshNadi Phase 1 v490 Payment Entitlement Proof Cabinet
 
 - Version: `0.490.0`

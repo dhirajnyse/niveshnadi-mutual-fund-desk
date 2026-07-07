@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V491 Production Data Source Gate
+
+V491 adds Production Data Source Gate to the Build Tracker Release Doctor. It groups AMFI scheme/NAV, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, and benchmark/category proof into one source-readiness gate with owners, cadence, receipt names, source dates, citation paths, freshness states, no-go lines, receipt fields, and a copyable source gate handoff before any 100% claim.
+
 ## V490 Payment Entitlement Proof Cabinet
 
 V490 adds Payment Entitlement Proof Cabinet to the Build Tracker Release Doctor. It groups checkout session, invoice receipt, webhook decision, entitlement grant, refund rollback, support closeout, and redaction/audit proof into one paid-access gate with owners, receipts, replay rules, hold lines, no-go lines, receipt fields, and a copyable payment proof handoff before paid access widens.

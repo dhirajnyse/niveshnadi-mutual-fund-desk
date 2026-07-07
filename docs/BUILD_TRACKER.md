@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V478 Export Delete Backend Ticket Room
+
+V478 adds Export Delete Backend Ticket Room inside Account Readiness. It turns export and deletion promises into backend ticket rows with owners, accepted fields, blocked fields, acceptance proof, support-safe status, schema links, launch hold conditions, receipt fields, no-go rules, and a copyable engineering handoff.
+
 ## V477 Account Object Schema Map
 
 V477 adds Account Object Schema Map inside Account Readiness. It names future account object families, allowed fields, blocked fields, retention owner, support-visible status, deletion policy, schema receipt fields, launch rules, and a copyable schema contract before any saved research leaves browser-local custody.

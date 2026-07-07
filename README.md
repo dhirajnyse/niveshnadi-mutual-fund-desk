@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v477 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v478 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Export Delete Backend Ticket Room in Account Readiness that turns export and deletion promises into backend tickets with owners, accepted fields, blocked fields, acceptance proof, support-safe status, schema links, receipt fields, no-go rules, and a copyable engineering handoff.
 - Account Object Schema Map in Account Readiness that defines future account object families, allowed fields, blocked fields, retention owner, support visibility, deletion policy, receipt fields, launch rules, and a copyable schema contract before saved research leaves browser-local custody.
 - Custody API Readiness in Backend Audit Receipts that converts custody closeout into endpoint rows, idempotency rules, permission policies, audit events, receipt fields, guardrails, and a copyable API readiness contract.
 - Compact shell QA hotfix that keeps the side rail below the sticky header, stacks the mobile header controls cleanly, and prevents horizontal overflow in the dense workspace layout.

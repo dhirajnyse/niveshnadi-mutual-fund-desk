@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v478 Export Delete Backend Ticket Room
+
+- Version: `0.478.0`
+- Data version: `20260707-v478-01`
+- Changes made: Added Export Delete Backend Ticket Room inside Account Readiness with export and deletion ticket rows, owners, accepted fields, blocked fields, acceptance proof, support-safe status, schema links, acceptance gates, receipt fields, no-go rules, dedicated copy action, Account Readiness brief coverage, and release markers rolled forward to v478.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v478 marker scan.
+- Known risks: Export/delete backend ticket room is a static implementation contract only; production still needs real backend queues, authenticated account jobs, generated export files, deletion workers, idempotent retries, support tooling, redaction scans, privacy/legal/security review, and deployment verification.
+
 ## NiveshNadi Phase 1 v477 Account Object Schema Map
 
 - Version: `0.477.0`

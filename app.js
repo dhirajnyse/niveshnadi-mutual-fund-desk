@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v477-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v477 Account Object Schema Map";
+const DATA_VERSION = "20260707-v478-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v478 Export Delete Backend Ticket Room";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10418,11 +10418,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v476 passed release checks on commit 0023cef. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v477 passed release checks on commit b7dc6a2. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v476 local and visual checks passed",
+      outcome: "Previous outcome: v477 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47602",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260707V47701",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -10971,6 +10971,13 @@ function buildTrackerConfig() {
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         {
+          version: "v477",
+          key: "20260707-v477-01",
+          commit: "b7dc6a2",
+          receiptId: "NN-SHARE-RECEIPT-20260707V47701",
+          proof: "Account Object Schema Map added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
+        {
           version: "v476",
           key: "20260707-v476-02",
           commit: "0023cef",
@@ -10997,13 +11004,6 @@ function buildTrackerConfig() {
           commit: "4670331",
           receiptId: "NN-SHARE-RECEIPT-20260707V47301",
           proof: "Account Export Proof added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v472",
-          key: "20260707-v472-01",
-          commit: "7b8d3af",
-          receiptId: "NN-SHARE-RECEIPT-20260707V47201",
-          proof: "Consent Migration Closeout added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11041,8 +11041,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v477",
-        detail: "Account Object Schema Map is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v478",
+        detail: "Export Delete Backend Ticket Room is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11057,23 +11057,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v477 as complete until this release returns the active release stamp."
+        detail: "Do not share v478 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v477 source change adds Account Object Schema Map."
+        detail: "v478 source change adds Export Delete Backend Ticket Room."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v477 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v478 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v477 held for batch deploy",
+        value: "v478 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v481."
       }
     ],
@@ -26324,6 +26324,69 @@ function accountReadinessLabConfig() {
       "Entitlement projection is removed or anonymized before account closeout."
     ]
   };
+  const exportDeleteBackendTicketRoom = {
+    label: "Export/delete backend ticket room",
+    status: "Tickets before build",
+    receiptId: ["NN", "EXPORT", "DELETE", "BACKEND", "TICKETS", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    score: 75,
+    rule: "Export and deletion promises become buildable only when every ticket has one owner, accepted fields, acceptance proof, support-safe status, retry rule, and launch hold condition.",
+    ticketRows: [
+      ...accountExportProof.exportSections.map((section, index) => ({
+        label: `${section.label} export`,
+        ticketId: ["NN", "EXPORT", "TICKET", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        owner: section.owner,
+        acceptedFields: section.includes,
+        blockedFields: section.excludes,
+        acceptanceProof: section.proof,
+        supportStatus: "previewed, generated, expired, retried, or failed",
+        hold: "Hold if manifest count, redaction scan, expiry, or download receipt is missing."
+      })),
+      ...accountDeletionRehearsal.steps.map((step, index) => ({
+        label: `${step.label} delete`,
+        ticketId: ["NN", "DELETE", "TICKET", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        owner: step.owner,
+        acceptedFields: step.action,
+        blockedFields: accountDeletionRehearsal.blockedData.join(", "),
+        acceptanceProof: step.proof,
+        supportStatus: "requested, frozen, running, complete, disputed, or escalated",
+        hold: step.hold
+      }))
+    ],
+    schemaLinks: accountObjectSchemaMap.objects.map((item) => ({
+      label: item.label,
+      schemaId: item.schemaId,
+      owner: item.retentionOwner,
+      status: "ticket must reference schema before storage",
+      hold: `Hold if ${item.label.toLowerCase()} ticket accepts fields outside the schema.`
+    })),
+    acceptanceGates: [
+      "Ticket id, owner, source room, object family, accepted fields, blocked fields, and support status are visible.",
+      "Export tickets prove file name, manifest id, expiry, redaction scan, and retry behavior before download.",
+      "Delete tickets prove freeze, object-family counts, completion receipt, retained-proof boundary, and support notice.",
+      "Every failed ticket routes to owner review without exposing payload bodies or private identifiers."
+    ],
+    receiptFields: [
+      "backend_ticket_room_id",
+      "ticket_id",
+      "ticket_family",
+      "owner",
+      "source_room",
+      "schema_id",
+      "accepted_fields",
+      "blocked_fields",
+      "support_status",
+      "acceptance_proof_id",
+      "retry_policy_id",
+      "hold_condition",
+      "created_at"
+    ],
+    noGoRules: [
+      "Do not build account export or deletion work without a ticket owner and acceptance proof.",
+      "Do not let support see payload bodies, deleted content, private notes, payment secrets, or identifiers.",
+      "Do not call export or deletion ready if schema fields, redaction scan, retry behavior, or retained-proof boundary is missing.",
+      "Do not widen paid accounts until export and deletion tickets can be replayed from support-safe status to closeout."
+    ]
+  };
   const deletionSupportCloseout = {
     label: "Deletion support closeout",
     status: "Support-safe closeout",
@@ -26405,6 +26468,7 @@ function accountReadinessLabConfig() {
     accountExportProof,
     accountSupportCaseAudit,
     accountDeletionRehearsal,
+    exportDeleteBackendTicketRoom,
     deletionSupportCloseout,
     blocked,
     dataBuckets,
@@ -26605,6 +26669,34 @@ function renderAccountReadinessLab() {
         </article>
       `).join("")}
     </div>
+    <div class="account-data-grid" aria-label="Export delete backend ticket room">
+      <article class="ready">
+        <span>${escapeHtml(lab.exportDeleteBackendTicketRoom.label)}</span>
+        <strong>${escapeHtml(lab.exportDeleteBackendTicketRoom.status)} | ${lab.exportDeleteBackendTicketRoom.score}/100</strong>
+        <p>${escapeHtml(lab.exportDeleteBackendTicketRoom.rule)}</p>
+        <button class="text-button" type="button" data-copy-export-delete-backend-ticket-room>Copy ticket room</button>
+      </article>
+      ${lab.exportDeleteBackendTicketRoom.ticketRows.map((ticket) => `
+        <article>
+          <span>${escapeHtml(ticket.owner)}</span>
+          <strong>${escapeHtml(ticket.label)}</strong>
+          <p><strong>Ticket:</strong> ${escapeHtml(ticket.ticketId)}</p>
+          <p><strong>Accept:</strong> ${escapeHtml(ticket.acceptedFields)}</p>
+          <p><strong>Block:</strong> ${escapeHtml(ticket.blockedFields)}</p>
+          <p><strong>Proof:</strong> ${escapeHtml(ticket.acceptanceProof)}</p>
+          <p><strong>Hold:</strong> ${escapeHtml(ticket.hold)}</p>
+        </article>
+      `).join("")}
+      ${lab.exportDeleteBackendTicketRoom.schemaLinks.map((link) => `
+        <article>
+          <span>${escapeHtml(link.owner)}</span>
+          <strong>${escapeHtml(link.label)}</strong>
+          <p><strong>Schema:</strong> ${escapeHtml(link.schemaId)}</p>
+          <p>${escapeHtml(link.status)}</p>
+          <p><strong>Hold:</strong> ${escapeHtml(link.hold)}</p>
+        </article>
+      `).join("")}
+    </div>
     <div class="account-data-grid" aria-label="Deletion support closeout">
       <article class="draft">
         <span>${escapeHtml(lab.deletionSupportCloseout.label)}</span>
@@ -26757,6 +26849,17 @@ function makeAccountReadinessBrief() {
     ...lab.accountDeletionRehearsal.steps.map((step) => `- ${step.label}: ${step.action} | Proof ${step.proof} | Hold ${step.hold}`),
     ...lab.accountDeletionRehearsal.closeoutTests.map((test) => `- Closeout test: ${test}`),
     `- Blocked data: ${lab.accountDeletionRehearsal.blockedData.join(", ")}`,
+    "",
+    "## Export Delete Backend Ticket Room",
+    `- Receipt ID: ${lab.exportDeleteBackendTicketRoom.receiptId}`,
+    `- Status: ${lab.exportDeleteBackendTicketRoom.status}`,
+    `- Score: ${lab.exportDeleteBackendTicketRoom.score}/100`,
+    `- Rule: ${lab.exportDeleteBackendTicketRoom.rule}`,
+    ...lab.exportDeleteBackendTicketRoom.ticketRows.map((ticket) => `- Ticket ${ticket.label}: ${ticket.ticketId} | Owner ${ticket.owner} | Accept ${ticket.acceptedFields} | Block ${ticket.blockedFields} | Proof ${ticket.acceptanceProof} | Support ${ticket.supportStatus} | Hold ${ticket.hold}`),
+    ...lab.exportDeleteBackendTicketRoom.schemaLinks.map((link) => `- Schema link ${link.label}: ${link.schemaId} | Owner ${link.owner} | Status ${link.status} | Hold ${link.hold}`),
+    ...lab.exportDeleteBackendTicketRoom.acceptanceGates.map((gate) => `- Acceptance gate: ${gate}`),
+    ...lab.exportDeleteBackendTicketRoom.receiptFields.map((field) => `- Ticket room receipt field: ${field}`),
+    ...lab.exportDeleteBackendTicketRoom.noGoRules.map((rule) => `- Ticket room no-go: ${rule}`),
     "",
     "## Deletion Support Closeout",
     `- Receipt ID: ${lab.deletionSupportCloseout.receiptId}`,
@@ -27020,6 +27123,50 @@ function makeAccountDeletionRehearsalBrief() {
     `Blocked data: ${rehearsal.blockedData.join(", ")}`,
     "",
     "Account Deletion Rehearsal is a production-readiness plan only. It does not delete real data, create account storage, approve investing, execute transactions, or certify privacy compliance."
+  ].join("\n");
+}
+
+function makeExportDeleteBackendTicketRoomBrief() {
+  const room = accountReadinessLabConfig().exportDeleteBackendTicketRoom;
+  return [
+    "# NiveshNadi Export Delete Backend Ticket Room",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${room.receiptId}`,
+    `Status: ${room.status}`,
+    `Score: ${room.score}/100`,
+    `Rule: ${room.rule}`,
+    "",
+    "## Ticket Rows",
+    ...room.ticketRows.map((ticket) => [
+      `- ${ticket.label}`,
+      `  Ticket: ${ticket.ticketId}`,
+      `  Owner: ${ticket.owner}`,
+      `  Accepted fields: ${ticket.acceptedFields}`,
+      `  Blocked fields: ${ticket.blockedFields}`,
+      `  Acceptance proof: ${ticket.acceptanceProof}`,
+      `  Support status: ${ticket.supportStatus}`,
+      `  Hold if: ${ticket.hold}`
+    ].join("\n")),
+    "",
+    "## Schema Links",
+    ...room.schemaLinks.map((link) => [
+      `- ${link.label}`,
+      `  Schema: ${link.schemaId}`,
+      `  Owner: ${link.owner}`,
+      `  Status: ${link.status}`,
+      `  Hold if: ${link.hold}`
+    ].join("\n")),
+    "",
+    "## Acceptance Gates",
+    ...room.acceptanceGates.map((gate) => `- ${gate}`),
+    "",
+    "## Receipt Fields",
+    ...room.receiptFields.map((field) => `- ${field}`),
+    "",
+    "## No-Go Rules",
+    ...room.noGoRules.map((rule) => `- ${rule}`),
+    "",
+    "Export Delete Backend Ticket Room is a backend-readiness contract only. It does not create real storage, export files, delete real data, approve investing, execute transactions, certify privacy compliance, or replace legal review."
   ].join("\n");
 }
 
@@ -65787,6 +65934,13 @@ function bindEvents() {
     if (!copyAccountDeletionRehearsal) return;
     event.preventDefault();
     copyText(makeAccountDeletionRehearsalBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyExportDeleteBackendTicketRoom = event.target.closest("[data-copy-export-delete-backend-ticket-room]");
+    if (!copyExportDeleteBackendTicketRoom) return;
+    event.preventDefault();
+    copyText(makeExportDeleteBackendTicketRoomBrief());
   });
 
   document.addEventListener("click", (event) => {

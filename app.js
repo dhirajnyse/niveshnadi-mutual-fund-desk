@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v493-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v493 Account Persistence Fixture Runner";
+const DATA_VERSION = "20260707-v494-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v494 Payment Sandbox Event Simulator";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -11880,6 +11880,112 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    paymentSandboxEventSimulator: {
+      label: "Payment sandbox event simulator",
+      verdict: "Fake payment events only",
+      receiptId: ["NN", "PAYMENT", "SANDBOX", "EVENT", "SIMULATOR", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 60,
+      rule: "Payment rehearsal may continue only with simulated event envelopes that prove checkout, invoice, webhook, entitlement, refund, rollback, and support closeout behavior without storing card, UPI, OTP, gateway secret, contact, credential, or raw provider payload data.",
+      events: [
+        {
+          label: "Checkout created",
+          eventType: "sandbox.checkout.created",
+          owner: "Billing boundary",
+          fixture: "pay_fixture_checkout_created",
+          emits: "session_id, account_fixture_id, price_id, release_key, idempotency_key",
+          expects: "Checkout session is created, held in sandbox, and linked to account fixture.",
+          rejects: "card, UPI, OTP, gateway secret, raw provider payload, contact data",
+          recovery: "Expire session and keep account unpaid if invoice event never arrives.",
+          score: 66
+        },
+        {
+          label: "Invoice paid",
+          eventType: "sandbox.invoice.paid",
+          owner: "Billing ops",
+          fixture: "pay_fixture_invoice_paid",
+          emits: "invoice_id, provider_event_id, amount, plan_id, account_fixture_id",
+          expects: "Invoice receipt joins checkout session and queues entitlement grant.",
+          rejects: "payment method, bank, card, UPI, customer contact, raw provider payload",
+          recovery: "Hold entitlement if invoice amount, plan, or account fixture mismatches.",
+          score: 62
+        },
+        {
+          label: "Webhook verified",
+          eventType: "sandbox.webhook.verified",
+          owner: "Backend",
+          fixture: "pay_fixture_webhook_verified",
+          emits: "provider_event_id, idempotency_key, signature_state, replay_count",
+          expects: "Duplicate events return duplicate-safe state and malformed events go to dead-letter.",
+          rejects: "gateway secret, signing secret, raw headers, token, credential, raw provider payload",
+          recovery: "Dead-letter unsigned, stale, duplicate-mutated, or malformed events.",
+          score: 57
+        },
+        {
+          label: "Entitlement granted",
+          eventType: "sandbox.entitlement.granted",
+          owner: "Access control",
+          fixture: "pay_fixture_entitlement_granted",
+          emits: "account_fixture_id, plan_id, entitlement_state, expiry, audit_event_id",
+          expects: "Paid state appears only after invoice, webhook, account, and audit proof agree.",
+          rejects: "raw payment event, payment token, contact data, account identity, credentials",
+          recovery: "Revoke entitlement if invoice, refund, support, or audit state diverges.",
+          score: 59
+        },
+        {
+          label: "Refund created",
+          eventType: "sandbox.refund.created",
+          owner: "Billing support",
+          fixture: "pay_fixture_refund_created",
+          emits: "refund_id, invoice_id, provider_event_id, support_case_id, reason_code",
+          expects: "Refund receipt queues entitlement rollback and support-safe reply.",
+          rejects: "bank data, payment method, card, UPI, customer contact, raw provider payload",
+          recovery: "Freeze account if refund and entitlement state cannot reconcile.",
+          score: 55
+        },
+        {
+          label: "Rollback complete",
+          eventType: "sandbox.entitlement.rollback.complete",
+          owner: "Support desk",
+          fixture: "pay_fixture_rollback_complete",
+          emits: "rollback_receipt_id, account_fixture_id, entitlement_state, support_closeout_id",
+          expects: "Entitlement is revoked or repaired and support-safe closeout is visible.",
+          rejects: "private notes, raw provider payload, contact data, payment tokens, credentials",
+          recovery: "Escalate if support closeout, account status, and entitlement state disagree.",
+          score: 61
+        }
+      ],
+      simulatorRules: [
+        "Every event is generated from a fixture envelope and release key; no provider secrets or real payment details are accepted.",
+        "Every event carries an idempotency key, replay count, expected state, and dead-letter rule.",
+        "Entitlement state changes only after checkout, invoice, webhook, account fixture, and audit state agree.",
+        "Refund and rollback events must close with support-safe status before paid cohort expansion resumes.",
+        "Sandbox output can guide backend work, but it is not payment provider proof."
+      ],
+      noGoLines: [
+        "No real card, UPI, OTP, bank, contact, credential, gateway secret, signing secret, or raw provider payload may enter the simulator.",
+        "No entitlement grant is trusted from a checkout event alone.",
+        "No refund is closed until entitlement rollback, account status, and support-safe reply agree.",
+        "No payment proof is production-ready until provider-side signed webhook and reconciliation checks exist."
+      ],
+      receiptFields: [
+        "payment_sandbox_event_simulator_id",
+        "release_key",
+        "event_type",
+        "fixture_id",
+        "account_fixture_id",
+        "provider_event_id",
+        "idempotency_key",
+        "invoice_id",
+        "refund_id",
+        "entitlement_state",
+        "replay_count",
+        "dead_letter_state",
+        "support_closeout_id",
+        "audit_event_id",
+        "launch_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -12049,15 +12155,9 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "Three releases remain",
-      rule: "Account persistence fixtures are visible; continue with a payment sandbox event simulator before live billing work widens.",
+      verdict: "Two releases remain",
+      rule: "Payment sandbox event simulator is visible; continue with source ingestion checksum proof before the final release audit room.",
       lanes: [
-        {
-          version: "v494",
-          label: "Payment sandbox event simulator",
-          route: "#payment-sandbox",
-          detail: "Simulate checkout, invoice, webhook, entitlement grant, refund, and rollback events without touching real payment data."
-        },
         {
           version: "v495",
           label: "Source ingestion checksum runner",
@@ -12077,6 +12177,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v493",
+          key: "20260707-v493-01",
+          commit: "9c55bb0",
+          receiptId: "NN-SHARE-RECEIPT-20260707V49301",
+          proof: "Account Persistence Fixture Runner added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v492",
           key: "20260707-v492-01",
@@ -12104,13 +12211,6 @@ function buildTrackerConfig() {
           commit: "7f3e99a",
           receiptId: "NN-SHARE-RECEIPT-20260707V48901",
           proof: "Visual QA CI Adapter added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v488",
-          key: "20260707-v488-01",
-          commit: "a578377",
-          receiptId: "NN-SHARE-RECEIPT-20260707V48801",
-          proof: "Support Operations Incident Drill added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -12148,8 +12248,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v493",
-        detail: "Account Persistence Fixture Runner is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v494",
+        detail: "Payment Sandbox Event Simulator is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -12164,23 +12264,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Batch close held",
-        detail: "Do not share v493 as complete until this batch reaches v496 and the live release stamp is verified."
+        detail: "Do not share v494 as complete until this batch reaches v496 and the live release stamp is verified."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v493 source change adds Account Persistence Fixture Runner."
+        detail: "v494 source change adds Payment Sandbox Event Simulator."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v493 runs syntax, static, security, diff hygiene, and marker scans before the next release."
+        detail: "v494 runs syntax, static, security, diff hygiene, and marker scans before the next release."
       },
       {
         label: "Share outcome",
-        value: "v493 held in batch",
+        value: "v494 held in batch",
         detail: "The final batch release is pushed and live-stamp verified after v496 visual QA passes."
       }
     ],
@@ -12829,6 +12929,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Payment sandbox event simulator">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.paymentSandboxEventSimulator.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.paymentSandboxEventSimulator.verdict)} | ${tracker.releaseDoctor.paymentSandboxEventSimulator.score}/100</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.paymentSandboxEventSimulator.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.paymentSandboxEventSimulator.events.map((eventRow) => `
+          <article>
+            <span>${escapeHtml(eventRow.eventType)} | ${eventRow.score}/100</span>
+            <strong>${escapeHtml(eventRow.label)}</strong>
+            <p>${escapeHtml(eventRow.expects)} Recovery: ${escapeHtml(eventRow.recovery)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -12988,6 +13102,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-production-data-source-gate>Copy source gate</button>
         <button class="text-button" type="button" data-copy-live-backend-api-skeleton>Copy backend API</button>
         <button class="text-button" type="button" data-copy-account-persistence-fixture-runner>Copy account fixtures</button>
+        <button class="text-button" type="button" data-copy-payment-sandbox-event-simulator>Copy payment sim</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -13226,6 +13341,11 @@ function makeBuildTrackerBrief() {
     `Account persistence score: ${tracker.releaseDoctor.accountPersistenceFixtureRunner.score}/100`,
     `Account persistence rule: ${tracker.releaseDoctor.accountPersistenceFixtureRunner.rule}`,
     ...tracker.releaseDoctor.accountPersistenceFixtureRunner.fixtures.map((fixture) => `- Account fixture ${fixture.label}: ${fixture.fixtureId} | ${fixture.owner} | Input ${fixture.input} | Expected ${fixture.expected} | Rollback ${fixture.rollback} | Blocks ${fixture.blocked}`),
+    `Payment sandbox event simulator: ${tracker.releaseDoctor.paymentSandboxEventSimulator.verdict}`,
+    `Payment sandbox receipt: ${tracker.releaseDoctor.paymentSandboxEventSimulator.receiptId}`,
+    `Payment sandbox score: ${tracker.releaseDoctor.paymentSandboxEventSimulator.score}/100`,
+    `Payment sandbox rule: ${tracker.releaseDoctor.paymentSandboxEventSimulator.rule}`,
+    ...tracker.releaseDoctor.paymentSandboxEventSimulator.events.map((eventRow) => `- Payment event ${eventRow.label}: ${eventRow.eventType} | ${eventRow.fixture} | Emits ${eventRow.emits} | Expects ${eventRow.expects} | Rejects ${eventRow.rejects} | Recovery ${eventRow.recovery}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -13481,6 +13601,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.accountPersistenceFixtureRunner.runOrder.map((step) => `- Run order: ${step}`),
     ...tracker.releaseDoctor.accountPersistenceFixtureRunner.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.accountPersistenceFixtureRunner.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Payment Sandbox Event Simulator",
+    `- Receipt ID: ${tracker.releaseDoctor.paymentSandboxEventSimulator.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.paymentSandboxEventSimulator.verdict}`,
+    `- Score: ${tracker.releaseDoctor.paymentSandboxEventSimulator.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.paymentSandboxEventSimulator.rule}`,
+    ...tracker.releaseDoctor.paymentSandboxEventSimulator.events.map((eventRow) => `- ${eventRow.label}: ${eventRow.eventType} | ${eventRow.fixture} | Emits ${eventRow.emits} | Expects ${eventRow.expects} | Rejects ${eventRow.rejects} | Recovery ${eventRow.recovery}`),
+    ...tracker.releaseDoctor.paymentSandboxEventSimulator.simulatorRules.map((rule) => `- Simulator rule: ${rule}`),
+    ...tracker.releaseDoctor.paymentSandboxEventSimulator.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.paymentSandboxEventSimulator.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -14145,6 +14275,42 @@ function makeAccountPersistenceFixtureRunnerBrief() {
     ...runner.receiptFields.map((field) => `- ${field}`),
     "",
     "Account Persistence Fixture Runner is a local replay contract only. It does not create real accounts, persist personal data, store payment data, approve investment action, or replace authenticated backend custody."
+  ].join("\n");
+}
+
+function makePaymentSandboxEventSimulatorBrief() {
+  const simulator = buildTrackerConfig().releaseDoctor.paymentSandboxEventSimulator;
+  return [
+    "# NiveshNadi Payment Sandbox Event Simulator",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${simulator.receiptId}`,
+    `Verdict: ${simulator.verdict}`,
+    `Score: ${simulator.score}/100`,
+    `Rule: ${simulator.rule}`,
+    "",
+    "## Simulated Events",
+    ...simulator.events.map((eventRow) => [
+      `- ${eventRow.label}`,
+      `  Event type: ${eventRow.eventType}`,
+      `  Fixture: ${eventRow.fixture}`,
+      `  Owner: ${eventRow.owner}`,
+      `  Emits: ${eventRow.emits}`,
+      `  Expects: ${eventRow.expects}`,
+      `  Rejects: ${eventRow.rejects}`,
+      `  Recovery: ${eventRow.recovery}`,
+      `  Score: ${eventRow.score}/100`
+    ].join("\n")),
+    "",
+    "## Simulator Rules",
+    ...simulator.simulatorRules.map((rule) => `- ${rule}`),
+    "",
+    "## No-Go Lines",
+    ...simulator.noGoLines.map((line) => `- ${line}`),
+    "",
+    "## Receipt Fields",
+    ...simulator.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Payment Sandbox Event Simulator is a fake-event rehearsal only. It does not process real payments, store payment methods, verify real provider signatures, grant live entitlement, issue refunds, or replace provider-side reconciliation."
   ].join("\n");
 }
 
@@ -68349,6 +68515,13 @@ function bindEvents() {
     if (!copyAccountPersistenceFixtureRunner) return;
     event.preventDefault();
     copyText(makeAccountPersistenceFixtureRunnerBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyPaymentSandboxEventSimulator = event.target.closest("[data-copy-payment-sandbox-event-simulator]");
+    if (!copyPaymentSandboxEventSimulator) return;
+    event.preventDefault();
+    copyText(makePaymentSandboxEventSimulatorBrief());
   });
 
   document.addEventListener("click", (event) => {

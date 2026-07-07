@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v493 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v494 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Payment Sandbox Event Simulator in the Build Tracker Release Doctor that replays fake checkout, invoice, webhook, entitlement, refund, and rollback events with fixture envelopes, expected states, rejected private fields, dead-letter rules, support closeout, receipt fields, and a copyable payment simulation handoff.
 - Account Persistence Fixture Runner in the Build Tracker Release Doctor that rehearses account shell creation, research memory save, export packet, deletion, support-safe status, and entitlement join fixtures with allowed inputs, blocked fields, expected states, rollback receipts, no-go lines, receipt fields, and a copyable account fixture handoff.
 - Live Backend API Skeleton in the Build Tracker Release Doctor that turns source receipts, account fixtures, entitlement status, support-safe status, and release audit into small endpoint contracts with accepted fields, blocked fields, response states, rollback rules, no-go lines, receipt fields, and a copyable backend API handoff.
 - Production Data Source Gate in the Build Tracker Release Doctor that groups AMFI scheme/NAV, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, and benchmark/category proof into one source-readiness gate with owners, cadence, receipts, source dates, citation paths, freshness states, no-go lines, receipt fields, and a copyable source gate handoff before any 100% claim.

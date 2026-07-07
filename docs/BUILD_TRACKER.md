@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V494 Payment Sandbox Event Simulator
+
+V494 adds Payment Sandbox Event Simulator to the Build Tracker Release Doctor. It replays fake checkout, invoice, webhook, entitlement, refund, and rollback events with fixture envelopes, expected states, rejected private fields, dead-letter rules, support closeout, receipt fields, and a copyable payment simulation handoff before live billing work widens.
+
 ## V493 Account Persistence Fixture Runner
 
 V493 adds Account Persistence Fixture Runner to the Build Tracker Release Doctor. It rehearses account shell creation, research memory save, export packet, deletion, support-safe status, and entitlement join fixtures with allowed inputs, blocked fields, expected states, rollback receipts, no-go lines, receipt fields, and a copyable account fixture handoff before real account custody widens.

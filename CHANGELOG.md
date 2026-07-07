@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v494 Payment Sandbox Event Simulator
+
+- Version: `0.494.0`
+- Data version: `20260707-v494-01`
+- Changes made: Added Payment Sandbox Event Simulator to the Build Tracker Release Doctor with fake checkout, invoice, webhook, entitlement, refund, and rollback event rows; fixture envelopes; emitted fields; expected states; rejected private fields; recovery rules; simulator rules; no-go lines; receipt fields; dedicated copy action; Build Tracker and Release Doctor brief coverage; proof archive roll-forward with v493 commit; next-batch planner roll-forward; and release markers rolled forward to v494.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v494 marker scan.
+- Known risks: Payment Sandbox Event Simulator is a fake-event contract only; production still needs real provider integration, signed webhook verification, payment reconciliation, durable entitlement storage, refund processing, support tooling, privacy/security/legal review, deployment verification, and live payment tests.
+
 ## NiveshNadi Phase 1 v493 Account Persistence Fixture Runner
 
 - Version: `0.493.0`

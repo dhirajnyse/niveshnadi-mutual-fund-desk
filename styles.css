@@ -8297,6 +8297,15 @@ body.simple-mode.simple-review-focus .dossier-band {
   line-height: 1.42;
 }
 
+.release-doctor-proof :is(span, strong, p),
+.build-room-bridge :is(span, strong, p),
+.build-progress-path :is(span, strong, p),
+.build-sprint-strip :is(span, strong, p) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .release-doctor-head code {
   max-width: 220px;
   padding: 8px 10px;

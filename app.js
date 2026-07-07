@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v505-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v505 Data Retention Execution Checklist";
+const DATA_VERSION = "20260708-v506-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v506 Pilot Invite Copy Approval Room";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -13036,6 +13036,106 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    pilotInviteCopyApprovalRoom: {
+      label: "Pilot invite copy approval room",
+      verdict: "Invite copy held for founder approval",
+      receiptId: ["NN", "PILOT", "INVITE", "COPY", "APPROVAL", "ROOM", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 72,
+      rule: "No named pilot cohort should receive invite copy until primary promise, research-only boundary, data boundary, payment and refund language, support limits, pause triggers, and founder approval are visible in one receipt.",
+      lanes: [
+        {
+          label: "Primary invite promise",
+          owner: "Founder",
+          method: "COPY",
+          route: "invite.primary-promise",
+          proof: "State that the pilot sells research discipline, saved decision memory, evidence habits, and review rhythm, not fund picks or execution.",
+          readyWhen: "Ready when the invite can be read without implying best fund, personalized advice, suitability approval, execution, or guaranteed return.",
+          hold: "Hold if the copy says or implies recommendation, buy/sell/switch/redeem instruction, guaranteed outcome, distributor service, or production certainty.",
+          score: 74
+        },
+        {
+          label: "Research-only boundary",
+          owner: "Compliance review",
+          method: "COPY",
+          route: "invite.research-boundary",
+          proof: "Add plain-English no-advice, no-execution, no-return-guarantee, no-tax/legal advice, and self-review boundary lines.",
+          readyWhen: "Ready when the boundary is short enough to read and strong enough to stop advice-like expectations.",
+          hold: "Hold if the boundary is hidden, legalistic, optional, or weaker than the feature claims.",
+          score: 73
+        },
+        {
+          label: "Data boundary copy",
+          owner: "Privacy review",
+          method: "COPY",
+          route: "invite.data-boundary",
+          proof: "Say what Phase 1 does not ask for: PAN, folio, CAS, bank, card, UPI, credentials, contact data, distributor-client records, or private notes.",
+          readyWhen: "Ready when the user can understand that the pilot is identity-light and that excluded data should not be entered.",
+          hold: "Hold if copy asks for, hints at, or leaves room for private identifiers, payment payloads, or account credentials.",
+          score: 75
+        },
+        {
+          label: "Payment and refund copy",
+          owner: "Finance control",
+          method: "COPY",
+          route: "invite.payment-refund",
+          proof: "State pilot price, manual founder cap, payment proof requirement, refund route, entitlement hold, and no automatic expansion.",
+          readyWhen: "Ready when payment copy names what is paid, what is not included, how refund requests pause access, and who reviews the receipt.",
+          hold: "Hold if price, refund path, cancellation route, support owner, or entitlement condition is unclear.",
+          score: 70
+        },
+        {
+          label: "Support and pause triggers",
+          owner: "Support desk",
+          method: "COPY",
+          route: "invite.support-pause",
+          proof: "Name support ceiling, response window, escalation owner, source correction trigger, payment confusion trigger, refund trigger, and cohort pause trigger.",
+          readyWhen: "Ready when support can reply from approved copy without exposing private data or promising advice.",
+          hold: "Hold if support capacity, pause trigger, refund stop, source correction route, or escalation owner is absent.",
+          score: 69
+        },
+        {
+          label: "Founder approval receipt",
+          owner: "Founder review",
+          method: "COPY",
+          route: "invite.founder-approval",
+          proof: "Founder signs the invite copy version, cohort cap, support ceiling, refund route, excluded-data line, no-advice line, and next review date.",
+          readyWhen: "Ready when the approval receipt names copy version, cohort cap, support cap, refund route, pause triggers, and known risk.",
+          hold: "Hold if founder signoff, copy version, cohort cap, support ceiling, refund route, or next review date is missing.",
+          score: 72
+        }
+      ],
+      operatingRules: [
+        "Invite copy must sell a research habit and memory system, not a fund recommendation or transaction path.",
+        "Boundary copy should be short, visible, and plain-English before any payment ask.",
+        "Excluded data must be named before a user can mistake the pilot for account onboarding.",
+        "Payment and refund copy must make manual founder review and cohort cap obvious.",
+        "Founder approval is versioned; copy cannot widen if support, refund, data, or no-advice lines change without a new receipt."
+      ],
+      noGoLines: [
+        "No invite may say best fund, personalized advice, suitability approval, execution, switch, redemption, guaranteed return, tax advice, legal advice, or distributor service.",
+        "No invite may request PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, or distributor-client records.",
+        "No paid pilot ask may ship without refund route, support ceiling, cohort cap, pause triggers, and founder approval.",
+        "No cohort may widen if support cases, source corrections, payment confusion, refund requests, or privacy questions exceed founder-reviewed capacity."
+      ],
+      receiptFields: [
+        "pilot_invite_copy_approval_room_id",
+        "release_key",
+        "invite_copy_version",
+        "primary_promise_state",
+        "research_boundary_state",
+        "data_boundary_state",
+        "payment_refund_copy_state",
+        "support_pause_copy_state",
+        "cohort_cap",
+        "support_ceiling",
+        "refund_route",
+        "pause_trigger_list",
+        "founder_approval_state",
+        "next_review_date",
+        "release_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -13206,14 +13306,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Data retention execution gives the platform a cleanup spine; next releases should add pilot invite, support dry-run, cohort ledger, source connector, and payment sandbox proof.",
+      rule: "Pilot invite copy approval closes this backend-to-beta bridge; next releases should rehearse support, cohort control, source connector, payment sandbox, and account auth decisions.",
       lanes: [
-        {
-          version: "v506",
-          label: "Pilot invite copy approval room",
-          route: "#founder-invite-path",
-          detail: "Approve paid-beta invite, support, refund, no-advice, data-boundary, and pause-trigger copy before any named cohort opens."
-        },
         {
           version: "v507",
           label: "Pilot support dry run board",
@@ -13237,6 +13331,12 @@ function buildTrackerConfig() {
           label: "Payment provider sandbox integration plan",
           route: "#payment-provider-pilot-receipt-contract",
           detail: "Prepare sandbox checkout, signed webhook, duplicate replay, refund rollback, entitlement sync, dead-letter, and redaction proof."
+        },
+        {
+          version: "v511",
+          label: "Account auth provider decision room",
+          route: "#founder-auth-decision-board",
+          detail: "Choose auth provider posture, session policy, account recovery, deletion, export, consent, support-safe status, and launch no-go proof."
         }
       ]
     },
@@ -13245,6 +13345,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v505",
+          key: "20260708-v505-01",
+          commit: "922cd35",
+          receiptId: "NN-SHARE-RECEIPT-20260708V50501",
+          proof: "Data Retention Execution Checklist added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v504",
           key: "20260708-v504-01",
@@ -13272,13 +13379,6 @@ function buildTrackerConfig() {
           commit: "5b7e732",
           receiptId: "NN-SHARE-RECEIPT-20260708V50101",
           proof: "Live Beta Pilot Audit added, pushed to main, visually checked, and live stamp verified."
-        },
-        {
-          version: "v500",
-          key: "20260708-v500-01",
-          commit: "c0794eb",
-          receiptId: "NN-SHARE-RECEIPT-20260708V50001",
-          proof: "Account Support Operations Console added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -13316,13 +13416,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v505",
-        detail: "Data Retention Execution Checklist is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v506",
+        detail: "Pilot Invite Copy Approval Room is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v505 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v506 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -13331,24 +13431,24 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v505 held until live stamp",
-        detail: "Do not share v505 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v506 held until live stamp",
+        detail: "Do not share v506 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v505 source change",
-        detail: "Data Retention Execution Checklist turns account, source, support, payment, visual, release-proof, deletion, supersede, and retained-proof rules into named jobs."
+        value: "v506 source change",
+        detail: "Pilot Invite Copy Approval Room gathers primary invite promise, research boundary, data boundary, payment/refund copy, support pause triggers, and founder approval before a named cohort opens."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v505 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v506 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v505 held until live stamp",
+        value: "v506 held until live stamp",
         detail: "The batch release is share-ready only after v506 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
@@ -14067,6 +14167,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.backendCiProofHarness, "Backend CI proof harness")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.deploymentEnvironmentReadinessMap, "Deployment environment readiness map")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.dataRetentionExecutionChecklist, "Data retention execution checklist")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.pilotInviteCopyApprovalRoom, "Pilot invite copy approval room")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -14238,6 +14339,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-backend-ci-proof-harness>Copy CI harness</button>
         <button class="text-button" type="button" data-copy-deployment-environment-readiness-map>Copy environment map</button>
         <button class="text-button" type="button" data-copy-data-retention-execution-checklist>Copy retention checklist</button>
+        <button class="text-button" type="button" data-copy-pilot-invite-copy-approval-room>Copy invite approval</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -14536,6 +14638,11 @@ function makeBuildTrackerBrief() {
     `Data retention checklist score: ${tracker.releaseDoctor.dataRetentionExecutionChecklist.score}/100`,
     `Data retention checklist rule: ${tracker.releaseDoctor.dataRetentionExecutionChecklist.rule}`,
     ...tracker.releaseDoctor.dataRetentionExecutionChecklist.lanes.map((lane) => `- Data retention ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Pilot invite copy approval room: ${tracker.releaseDoctor.pilotInviteCopyApprovalRoom.verdict}`,
+    `Pilot invite copy approval receipt: ${tracker.releaseDoctor.pilotInviteCopyApprovalRoom.receiptId}`,
+    `Pilot invite copy approval score: ${tracker.releaseDoctor.pilotInviteCopyApprovalRoom.score}/100`,
+    `Pilot invite copy approval rule: ${tracker.releaseDoctor.pilotInviteCopyApprovalRoom.rule}`,
+    ...tracker.releaseDoctor.pilotInviteCopyApprovalRoom.lanes.map((lane) => `- Pilot invite copy ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -14911,6 +15018,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.dataRetentionExecutionChecklist.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.dataRetentionExecutionChecklist.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.dataRetentionExecutionChecklist.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Pilot Invite Copy Approval Room",
+    `- Receipt ID: ${tracker.releaseDoctor.pilotInviteCopyApprovalRoom.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.pilotInviteCopyApprovalRoom.verdict}`,
+    `- Score: ${tracker.releaseDoctor.pilotInviteCopyApprovalRoom.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.pilotInviteCopyApprovalRoom.rule}`,
+    ...tracker.releaseDoctor.pilotInviteCopyApprovalRoom.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.pilotInviteCopyApprovalRoom.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.pilotInviteCopyApprovalRoom.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.pilotInviteCopyApprovalRoom.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -15787,6 +15904,14 @@ function makeDataRetentionExecutionChecklistBrief() {
     "Data Retention Execution Checklist",
     buildTrackerConfig().releaseDoctor.dataRetentionExecutionChecklist,
     "Data Retention Execution Checklist is a static retention-job contract only. It does not execute deletion, export, supersede, payment refund, support closeout, source cleanup, or legal retention workflows."
+  );
+}
+
+function makePilotInviteCopyApprovalRoomBrief() {
+  return makeOperationalProofBrief(
+    "Pilot Invite Copy Approval Room",
+    buildTrackerConfig().releaseDoctor.pilotInviteCopyApprovalRoom,
+    "Pilot Invite Copy Approval Room is a static copy-approval contract only. It does not send invites, collect payment, onboard users, provide advice, approve legal/compliance readiness, or open a paid cohort."
   );
 }
 
@@ -70075,6 +70200,13 @@ function bindEvents() {
     if (!copyDataRetentionExecutionChecklist) return;
     event.preventDefault();
     copyText(makeDataRetentionExecutionChecklistBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyPilotInviteCopyApprovalRoom = event.target.closest("[data-copy-pilot-invite-copy-approval-room]");
+    if (!copyPilotInviteCopyApprovalRoom) return;
+    event.preventDefault();
+    copyText(makePilotInviteCopyApprovalRoomBrief());
   });
 
   document.addEventListener("click", (event) => {

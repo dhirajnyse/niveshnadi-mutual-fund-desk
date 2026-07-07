@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v506 Pilot Invite Copy Approval Room
+
+- Version: `0.506.0`
+- Data version: `20260708-v506-01`
+- Changes made: Added Pilot Invite Copy Approval Room to the Build Tracker Release Doctor with primary invite promise, research-only boundary, data boundary, payment and refund copy, support and pause trigger, founder approval lanes, operating rules, no-go lines, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward with v505 commit, next-batch planner roll-forward to v507-v511, release markers rolled forward to v506, and compact proof-card wrapping hardened for long receipt text.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`, `styles.css`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v506 marker scan; browser visual QA across desktop and mobile Build Tracker routes; browser console error check.
+- Known risks: Pilot Invite Copy Approval Room is a static copy-approval contract only; it does not send invites, collect payment, onboard users, provide advice, approve legal/compliance readiness, or open a paid cohort.
+
 ## NiveshNadi Phase 1 v505 Data Retention Execution Checklist
 
 - Version: `0.505.0`

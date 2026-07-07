@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v505 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v506 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Pilot Invite Copy Approval Room in the Build Tracker Release Doctor that gathers primary invite promise, research-only boundary, data boundary, payment and refund copy, support limits, pause triggers, cohort cap, support ceiling, next review date, and founder approval before any named paid beta cohort opens.
 - Data Retention Execution Checklist in the Build Tracker Release Doctor that turns account, source, support, payment, visual, release-proof, deletion, supersede, retained-proof, and drill-closeout rules into named retention jobs with kept fields, purged fields, support notices, and hold conditions.
 - Deployment Environment Readiness Map in the Build Tracker Release Doctor that separates green CI from real release infrastructure by mapping staging, production, secret inventory, rollback, freeze, observability, alert owners, support notice, and release-stamp verification.
 - Backend CI Proof Harness in the Build Tracker Release Doctor that defines unit contract, fixture replay, webhook replay, source-worker replay, no-private-data scan, smoke artifact, release-stamp, rollback, artifact-retention, and merge-hold checks before backend work is trusted.

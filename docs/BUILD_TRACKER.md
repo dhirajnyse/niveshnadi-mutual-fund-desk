@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V506 Pilot Invite Copy Approval Room
+
+V506 adds Pilot Invite Copy Approval Room to the Build Tracker Release Doctor. It gathers primary invite promise, research-only boundary, data boundary, payment and refund copy, support limits, pause triggers, cohort cap, support ceiling, next review date, and founder approval before any named paid beta cohort opens.
+
 ## V505 Data Retention Execution Checklist
 
 V505 adds Data Retention Execution Checklist to the Build Tracker Release Doctor. It turns account, source, support, payment, visual, release-proof, deletion, supersede, retained-proof, and drill-closeout rules into named retention jobs with kept fields, purged fields, support notices, and hold conditions.

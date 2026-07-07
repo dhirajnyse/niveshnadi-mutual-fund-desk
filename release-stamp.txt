@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v504 Deployment Environment Readiness Map
-20260708-v504-01
+NiveshNadi Phase 1 v505 Data Retention Execution Checklist
+20260708-v505-01

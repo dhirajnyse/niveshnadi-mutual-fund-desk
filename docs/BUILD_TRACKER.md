@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V505 Data Retention Execution Checklist
+
+V505 adds Data Retention Execution Checklist to the Build Tracker Release Doctor. It turns account, source, support, payment, visual, release-proof, deletion, supersede, retained-proof, and drill-closeout rules into named retention jobs with kept fields, purged fields, support notices, and hold conditions.
+
 ## V504 Deployment Environment Readiness Map
 
 V504 adds Deployment Environment Readiness Map to the Build Tracker Release Doctor. It separates green CI from real release infrastructure by mapping staging, production, secret inventory, rollback, freeze, observability, alert owners, support notice, and release-stamp verification.

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v505 Data Retention Execution Checklist
+
+- Version: `0.505.0`
+- Data version: `20260708-v505-01`
+- Changes made: Added Data Retention Execution Checklist to the Build Tracker Release Doctor with account retention, source artifact retention, support case retention, payment event retention, visual and release proof retention, retention drill closeout lanes, operating rules, no-go lines, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward with v504 commit, next-batch planner roll-forward to v506-v510, and release markers rolled forward to v505.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v505 marker scan.
+- Known risks: Data Retention Execution Checklist is a static retention-job contract only; it does not execute deletion, export, supersede, payment refund, support closeout, source cleanup, or legal retention workflows.
+
 ## NiveshNadi Phase 1 v504 Deployment Environment Readiness Map
 
 - Version: `0.504.0`

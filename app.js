@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v504-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v504 Deployment Environment Readiness Map";
+const DATA_VERSION = "20260708-v505-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v505 Data Retention Execution Checklist";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -12937,6 +12937,105 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    dataRetentionExecutionChecklist: {
+      label: "Data retention execution checklist",
+      verdict: "Retention jobs named",
+      receiptId: ["NN", "DATA", "RETENTION", "EXECUTION", "CHECKLIST", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 70,
+      rule: "Retention is executable only when account, source, support, payment, visual, release-proof, deletion, supersede, and retained-proof jobs have owner, trigger, kept fields, purged fields, receipt, and hold condition.",
+      lanes: [
+        {
+          label: "Account retention job",
+          owner: "Account platform",
+          method: "JOB",
+          route: "retention.account",
+          proof: "Define saved research, review memory, export manifest, deletion request, retained proof, support-safe state, and account closeout retention fields.",
+          readyWhen: "Ready when account export-before-delete, deletion receipt, retained-proof exception, support notice, and rollback rule are tested.",
+          hold: "Hold if account data can be deleted without export proof, retained-proof boundary, support-safe notice, and closeout receipt.",
+          score: 70
+        },
+        {
+          label: "Source artifact retention",
+          owner: "Evidence desk",
+          method: "JOB",
+          route: "retention.source",
+          proof: "Keep source date, citation path, checksum, parser version, quarantine state, reviewer release, supersede receipt, and rollback binder.",
+          readyWhen: "Ready when stale artifacts can be superseded or deleted while accepted facts retain citation and rollback proof.",
+          hold: "Hold if raw PDFs, source credentials, or stale parser outputs can remain without quarantine, owner, or deletion/supersede receipt.",
+          score: 69
+        },
+        {
+          label: "Support case retention",
+          owner: "Support desk",
+          method: "JOB",
+          route: "retention.support",
+          proof: "Retain public reply, hidden-field policy, escalation owner, support-safe status, closeout receipt, and unresolved no-go line.",
+          readyWhen: "Ready when private notes, raw payloads, and identifiers are excluded while public case state remains auditable.",
+          hold: "Hold if support retention stores private notes, payment payloads, source artifacts, account identifiers, or unreviewed advice-like copy.",
+          score: 71
+        },
+        {
+          label: "Payment event retention",
+          owner: "Billing boundary",
+          method: "JOB",
+          route: "retention.payment",
+          proof: "Retain provider event id, signature state, timestamp state, idempotency key, entitlement delta, refund receipt, dead-letter reason, and redaction scan.",
+          readyWhen: "Ready when raw webhook bodies and secrets are excluded but refund, entitlement, and support-safe receipts are replayable.",
+          hold: "Hold if raw payment body, card, UPI, bank, token, provider secret, or contact data can enter retained artifacts.",
+          score: 68
+        },
+        {
+          label: "Visual and release proof retention",
+          owner: "Release desk",
+          method: "JOB",
+          route: "retention.visual-release",
+          proof: "Retain release key, commit, stamp result, viewport size, pass/fail note, screenshot deletion receipt, known-risk line, and share receipt.",
+          readyWhen: "Ready when visual proof can support release review without keeping private screenshots or identifiers.",
+          hold: "Hold if screenshot artifacts, local logs, or copied release notes can retain private data without deletion proof.",
+          score: 72
+        },
+        {
+          label: "Retention drill closeout",
+          owner: "Founder review",
+          method: "JOB",
+          route: "retention.drill-closeout",
+          proof: "Run account delete, source supersede, support closeout, payment refund rollback, visual deletion, and release proof archive drills.",
+          readyWhen: "Ready when every drill has owner, receipt id, kept fields, purged fields, support notice, no-go state, and next review date.",
+          hold: "Hold if any retention drill depends on manual memory, screenshots, browser-local state, private notes, or unowned jobs.",
+          score: 70
+        }
+      ],
+      operatingRules: [
+        "Retention rows must name kept fields, purged fields, owner, trigger, receipt, rollback, and support-safe notice.",
+        "Delete and supersede are different actions; source facts need rollback proof while private payloads need purge proof.",
+        "Payment and support retention can keep redacted receipts, not raw provider bodies, secrets, private notes, or identifiers.",
+        "Visual proof retains metadata and deletion receipts, not private screenshots.",
+        "A retention drill is not closed until account, source, support, payment, visual, and release proof rows agree."
+      ],
+      noGoLines: [
+        "No retention artifact may keep PAN, folio, CAS, bank, card, UPI, contact, credentials, provider secrets, distributor-client data, private notes, or raw payment payloads.",
+        "No delete job may run without export-before-delete, retained-proof boundary, support-safe notice, and closeout receipt.",
+        "No source artifact may be superseded without source date, citation path, checksum, reviewer release, and rollback binder.",
+        "No release proof archive may retain screenshots with identifiers or logs containing private data."
+      ],
+      receiptFields: [
+        "data_retention_execution_checklist_id",
+        "release_key",
+        "account_retention_job_id",
+        "source_artifact_retention_job_id",
+        "support_case_retention_job_id",
+        "payment_event_retention_job_id",
+        "visual_release_retention_job_id",
+        "retention_drill_closeout_id",
+        "kept_field_list",
+        "purged_field_list",
+        "support_notice_id",
+        "deletion_receipt_id",
+        "supersede_receipt_id",
+        "release_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -13107,14 +13206,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Deployment environment readiness separates green CI from real release infrastructure; next releases should add retention, pilot invite, support dry-run, cohort ledger, and source connector proof.",
+      rule: "Data retention execution gives the platform a cleanup spine; next releases should add pilot invite, support dry-run, cohort ledger, source connector, and payment sandbox proof.",
       lanes: [
-        {
-          version: "v505",
-          label: "Data retention execution checklist",
-          route: "#account-readiness",
-          detail: "Turn retention rules into concrete account, source, support, payment, visual, and release-proof deletion/exclusion tasks."
-        },
         {
           version: "v506",
           label: "Pilot invite copy approval room",
@@ -13138,6 +13231,12 @@ function buildTrackerConfig() {
           label: "Live source connector spike plan",
           route: "#source-receipts",
           detail: "Prepare a limited official-source connector spike with source family, checksum, parser quarantine, reviewer release, and rollback proof."
+        },
+        {
+          version: "v510",
+          label: "Payment provider sandbox integration plan",
+          route: "#payment-provider-pilot-receipt-contract",
+          detail: "Prepare sandbox checkout, signed webhook, duplicate replay, refund rollback, entitlement sync, dead-letter, and redaction proof."
         }
       ]
     },
@@ -13146,6 +13245,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v504",
+          key: "20260708-v504-01",
+          commit: "2492d4e",
+          receiptId: "NN-SHARE-RECEIPT-20260708V50401",
+          proof: "Deployment Environment Readiness Map added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v503",
           key: "20260708-v503-01",
@@ -13173,13 +13279,6 @@ function buildTrackerConfig() {
           commit: "c0794eb",
           receiptId: "NN-SHARE-RECEIPT-20260708V50001",
           proof: "Account Support Operations Console added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v499",
-          key: "20260708-v499-01",
-          commit: "7ffbed5",
-          receiptId: "NN-SHARE-RECEIPT-20260708V49901",
-          proof: "Payment Webhook Verification Lab added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -13217,13 +13316,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v504",
-        detail: "Deployment Environment Readiness Map is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v505",
+        detail: "Data Retention Execution Checklist is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v504 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v505 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -13232,24 +13331,24 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v504 held until live stamp",
-        detail: "Do not share v504 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v505 held until live stamp",
+        detail: "Do not share v505 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v504 source change",
-        detail: "Deployment Environment Readiness Map names staging, production, secret inventory, rollback, observability, alert routing, and release-stamp proof before deploys widen."
+        value: "v505 source change",
+        detail: "Data Retention Execution Checklist turns account, source, support, payment, visual, release-proof, deletion, supersede, and retained-proof rules into named jobs."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v504 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v505 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v504 held until live stamp",
+        value: "v505 held until live stamp",
         detail: "The batch release is share-ready only after v506 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
@@ -13967,6 +14066,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.backendRepositoryHandoffPack, "Backend repository handoff pack")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.backendCiProofHarness, "Backend CI proof harness")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.deploymentEnvironmentReadinessMap, "Deployment environment readiness map")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.dataRetentionExecutionChecklist, "Data retention execution checklist")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -14137,6 +14237,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-backend-repository-handoff-pack>Copy repo handoff</button>
         <button class="text-button" type="button" data-copy-backend-ci-proof-harness>Copy CI harness</button>
         <button class="text-button" type="button" data-copy-deployment-environment-readiness-map>Copy environment map</button>
+        <button class="text-button" type="button" data-copy-data-retention-execution-checklist>Copy retention checklist</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -14430,6 +14531,11 @@ function makeBuildTrackerBrief() {
     `Deployment environment map score: ${tracker.releaseDoctor.deploymentEnvironmentReadinessMap.score}/100`,
     `Deployment environment map rule: ${tracker.releaseDoctor.deploymentEnvironmentReadinessMap.rule}`,
     ...tracker.releaseDoctor.deploymentEnvironmentReadinessMap.lanes.map((lane) => `- Deployment environment ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Data retention execution checklist: ${tracker.releaseDoctor.dataRetentionExecutionChecklist.verdict}`,
+    `Data retention checklist receipt: ${tracker.releaseDoctor.dataRetentionExecutionChecklist.receiptId}`,
+    `Data retention checklist score: ${tracker.releaseDoctor.dataRetentionExecutionChecklist.score}/100`,
+    `Data retention checklist rule: ${tracker.releaseDoctor.dataRetentionExecutionChecklist.rule}`,
+    ...tracker.releaseDoctor.dataRetentionExecutionChecklist.lanes.map((lane) => `- Data retention ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -14795,6 +14901,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.deploymentEnvironmentReadinessMap.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.deploymentEnvironmentReadinessMap.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.deploymentEnvironmentReadinessMap.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Data Retention Execution Checklist",
+    `- Receipt ID: ${tracker.releaseDoctor.dataRetentionExecutionChecklist.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.dataRetentionExecutionChecklist.verdict}`,
+    `- Score: ${tracker.releaseDoctor.dataRetentionExecutionChecklist.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.dataRetentionExecutionChecklist.rule}`,
+    ...tracker.releaseDoctor.dataRetentionExecutionChecklist.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.dataRetentionExecutionChecklist.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.dataRetentionExecutionChecklist.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.dataRetentionExecutionChecklist.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -15663,6 +15779,14 @@ function makeDeploymentEnvironmentReadinessMapBrief() {
     "Deployment Environment Readiness Map",
     buildTrackerConfig().releaseDoctor.deploymentEnvironmentReadinessMap,
     "Deployment Environment Readiness Map is a static environment-readiness contract only. It does not create staging or production infrastructure, configure real secrets, deploy services, monitor live traffic, or certify launch readiness."
+  );
+}
+
+function makeDataRetentionExecutionChecklistBrief() {
+  return makeOperationalProofBrief(
+    "Data Retention Execution Checklist",
+    buildTrackerConfig().releaseDoctor.dataRetentionExecutionChecklist,
+    "Data Retention Execution Checklist is a static retention-job contract only. It does not execute deletion, export, supersede, payment refund, support closeout, source cleanup, or legal retention workflows."
   );
 }
 
@@ -69944,6 +70068,13 @@ function bindEvents() {
     if (!copyDeploymentEnvironmentReadinessMap) return;
     event.preventDefault();
     copyText(makeDeploymentEnvironmentReadinessMapBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyDataRetentionExecutionChecklist = event.target.closest("[data-copy-data-retention-execution-checklist]");
+    if (!copyDataRetentionExecutionChecklist) return;
+    event.preventDefault();
+    copyText(makeDataRetentionExecutionChecklistBrief());
   });
 
   document.addEventListener("click", (event) => {

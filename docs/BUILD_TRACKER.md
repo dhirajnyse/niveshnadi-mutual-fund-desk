@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V483 Support Case Queue Telemetry
+
+V483 adds Support Case Queue Telemetry inside Account Readiness. It makes support queue counters, age bands, freeze states, redaction state, support-safe status, escalation routes, receipt fields, and a copyable queue handoff visible before account support widens.
+
 ## V482 Account Lifecycle Smoke Receipts
 
 V482 adds Account Lifecycle Smoke Receipts inside Account Readiness. It ties account shell, saved research, export, deletion, and support status into smoke lanes with owners, allowed fields, blocked fields, pass rules, hold rules, receipt fields, and a copyable smoke handoff before account backend work widens.

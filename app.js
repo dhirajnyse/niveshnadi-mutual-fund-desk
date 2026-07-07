@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v482-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v482 Account Lifecycle Smoke Receipts";
+const DATA_VERSION = "20260707-v483-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v483 Support Case Queue Telemetry";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -11104,20 +11104,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Launch proof is visible; keep the next batch focused on account lifecycle smoke receipts, support telemetry, runner result archive, launch proof cabinet, and calm executive compression.",
+      rule: "Support telemetry is visible; keep the next batch focused on runner result archive, launch proof cabinet, calm executive compression, backend account smoke harness, and support incident drills.",
       lanes: [
-        {
-          version: "v482",
-          label: "Account lifecycle smoke receipts",
-          route: "#account-readiness",
-          detail: "Turn account object schema, export, deletion, support, and custody contracts into one smoke receipt checklist for future backend work."
-        },
-        {
-          version: "v483",
-          label: "Support case queue telemetry",
-          route: "#account-readiness",
-          detail: "Add support queue counters, escalation age bands, incident freeze states, and closeout proof rows without exposing private payloads."
-        },
         {
           version: "v484",
           label: "Visual runner result archive",
@@ -11135,6 +11123,18 @@ function buildTrackerConfig() {
           label: "Calm executive workspace compression",
           route: "#build-tracker",
           detail: "Reduce Release Doctor density with clearer priority bands, fewer first-screen cards, and a calmer read path for founder review."
+        },
+        {
+          version: "v487",
+          label: "Backend account smoke harness",
+          route: "#backend-audit-receipts",
+          detail: "Turn account lifecycle smoke receipts into backend harness rows with request shapes, expected responses, idempotency, and rollback checks."
+        },
+        {
+          version: "v488",
+          label: "Support operations incident drill",
+          route: "#account-readiness",
+          detail: "Rehearse private-data exposure, stale support queue, disputed deletion, and entitlement mismatch incidents before paid support widens."
         }
       ]
     },
@@ -11143,6 +11143,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v482",
+          key: "20260707-v482-01",
+          commit: "7846397",
+          receiptId: "NN-SHARE-RECEIPT-20260707V48201",
+          proof: "Account Lifecycle Smoke Receipts added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v481",
           key: "20260707-v481-01",
@@ -11170,13 +11177,6 @@ function buildTrackerConfig() {
           commit: "ed6183d",
           receiptId: "NN-SHARE-RECEIPT-20260707V47801",
           proof: "Export Delete Backend Ticket Room added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v477",
-          key: "20260707-v477-01",
-          commit: "b7dc6a2",
-          receiptId: "NN-SHARE-RECEIPT-20260707V47701",
-          proof: "Account Object Schema Map added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -11214,8 +11214,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v482",
-        detail: "Account Lifecycle Smoke Receipts are wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v483",
+        detail: "Support Case Queue Telemetry is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -11230,23 +11230,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Next build held",
-        detail: "Do not share v482 as complete until this release returns the active release stamp."
+        detail: "Do not share v483 as complete until this release returns the active release stamp."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v482 source change adds Account Lifecycle Smoke Receipts."
+        detail: "v483 source change adds Support Case Queue Telemetry."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v482 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
+        detail: "v483 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final handoff."
       },
       {
         label: "Share outcome",
-        value: "v482 held for batch deploy",
+        value: "v483 held for batch deploy",
         detail: "The final batch release will be pushed and live-stamp verified after v486."
       }
     ],
@@ -26744,6 +26744,82 @@ function accountReadinessLabConfig() {
       "Do not close a support case until public status, owner, receipt id, next action, and redaction scan agree."
     ]
   };
+  const supportCaseQueueTelemetry = {
+    label: "Support case queue telemetry",
+    status: "Queue before widening",
+    receiptId: ["NN", "SUPPORT", "QUEUE", "TELEMETRY", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+    score: 71,
+    rule: "Before account support widens, every support queue must expose case family, age band, owner, redaction state, support-safe status, freeze state, escalation route, and closeout proof without revealing payload bodies or private identifiers.",
+    counters: [
+      {
+        label: "Open queue",
+        value: "6 cases",
+        detail: "Demo support queue counts export, deletion, consent, entitlement, data exposure, and stale-status cases without payload bodies."
+      },
+      {
+        label: "Aging watch",
+        value: "2 cases",
+        detail: "Cases older than one business day require owner review before paid account support widens."
+      },
+      {
+        label: "Freeze lane",
+        value: "1 incident",
+        detail: "Any private-data exposure suspends support replies until privacy-owner review is complete."
+      },
+      {
+        label: "Closeout ready",
+        value: "3 cases",
+        detail: "Close only when status, owner, redaction scan, next action, and receipt id agree."
+      }
+    ],
+    queueRows: accountSupportCaseAudit.caseViews.map((view, index) => {
+      const ageBands = ["0-2 hours", "same day", "1 business day", "founder review"];
+      const freezeStates = ["normal", "watch", "owner review", "freeze"];
+      return {
+        label: view.label,
+        queueId: ["NN", "SUPPORT", "QUEUE", String(index + 1).padStart(2, "0"), DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        family: view.status,
+        owner: view.owner,
+        ageBand: ageBands[index] || "same day",
+        redactionState: index === 0 ? "scan ready" : index === 1 ? "delete proof pending" : index === 2 ? "rollback proof pending" : "billing boundary watch",
+        supportStatus: index === 0 ? "waiting on export retry receipt" : index === 1 ? "waiting on retained-proof match" : index === 2 ? "waiting on consent closeout" : "waiting on entitlement receipt",
+        freezeState: freezeStates[index] || "watch",
+        nextAction: index === 0 ? "Replay export manifest and expiry" : index === 1 ? "Match delete count to closeout receipt" : index === 2 ? "Confirm rollback wording and redaction scan" : "Confirm plan state without payment secrets"
+      };
+    }),
+    ageBands: [
+      "0-2 hours: respond with status and receipt id only.",
+      "Same day: owner must confirm next update or visible hold reason.",
+      "1 business day: escalate to owner review if status, receipt, or redaction scan is stale.",
+      "Founder review: pause widening when repeated cases share the same blocker or private-data risk."
+    ],
+    freezeStates: [
+      "Normal: support can reply from public status, receipt id, and next update only.",
+      "Watch: support can acknowledge delay but cannot widen scope.",
+      "Owner review: named owner must refresh receipt before support replies.",
+      "Freeze: private-data, deleted-content, payment-secret, or advice-risk exposure stops replies until incident closeout."
+    ],
+    escalationRules: [
+      "Escalate when age band moves past one business day without owner refresh.",
+      "Escalate immediately when a support view exposes payload body, private identifier, payment secret, deleted content, or personalized advice note.",
+      "Escalate before widening paid beta when three or more cases repeat the same export, deletion, consent, entitlement, or support-status blocker.",
+      "Do not close a case until support-safe status, owner, redaction scan, closeout receipt, and next action agree."
+    ],
+    receiptFields: [
+      "support_queue_telemetry_id",
+      "queue_id",
+      "case_family",
+      "age_band",
+      "owner",
+      "redaction_state",
+      "support_status",
+      "freeze_state",
+      "escalation_route",
+      "next_action",
+      "closeout_receipt_id",
+      "updated_at"
+    ]
+  };
   const deletionSupportCloseout = {
     label: "Deletion support closeout",
     status: "Support-safe closeout",
@@ -26910,6 +26986,7 @@ function accountReadinessLabConfig() {
     accountDeletionRehearsal,
     exportDeleteBackendTicketRoom,
     supportSafeAccountStatusConsole,
+    supportCaseQueueTelemetry,
     accountLifecycleSmokeReceipts,
     deletionSupportCloseout,
     blocked,
@@ -27118,6 +27195,31 @@ function renderAccountReadinessLab() {
           <p><strong>Ticket:</strong> ${escapeHtml(ticket.ticketId)}</p>
           <p><strong>Support:</strong> ${escapeHtml(ticket.supportStatus)}</p>
           <p><strong>Hold:</strong> ${escapeHtml(ticket.hold)}</p>
+        </article>
+      `).join("")}
+    </div>
+    <div class="account-data-grid" aria-label="Support case queue telemetry">
+      <article class="draft">
+        <span>${escapeHtml(lab.supportCaseQueueTelemetry.label)}</span>
+        <strong>${escapeHtml(lab.supportCaseQueueTelemetry.status)} | ${lab.supportCaseQueueTelemetry.score}/100</strong>
+        <p>${escapeHtml(lab.supportCaseQueueTelemetry.rule)}</p>
+        <button class="text-button" type="button" data-copy-support-case-queue-telemetry>Copy queue telemetry</button>
+      </article>
+      ${lab.supportCaseQueueTelemetry.counters.map((counter) => `
+        <article>
+          <span>${escapeHtml(counter.label)}</span>
+          <strong>${escapeHtml(counter.value)}</strong>
+          <p>${escapeHtml(counter.detail)}</p>
+        </article>
+      `).join("")}
+      ${lab.supportCaseQueueTelemetry.queueRows.map((row) => `
+        <article>
+          <span>${escapeHtml(row.ageBand)}</span>
+          <strong>${escapeHtml(row.label)}</strong>
+          <p><strong>Queue:</strong> ${escapeHtml(row.queueId)}</p>
+          <p><strong>Owner:</strong> ${escapeHtml(row.owner)}</p>
+          <p><strong>State:</strong> ${escapeHtml(row.freezeState)} | ${escapeHtml(row.redactionState)}</p>
+          <p><strong>Next:</strong> ${escapeHtml(row.nextAction)}</p>
         </article>
       `).join("")}
     </div>
@@ -27339,6 +27441,18 @@ function makeAccountReadinessBrief() {
     ...lab.supportSafeAccountStatusConsole.replyBoundaries.map((rule) => `- Status reply boundary: ${rule}`),
     ...lab.supportSafeAccountStatusConsole.receiptFields.map((field) => `- Status console receipt field: ${field}`),
     ...lab.supportSafeAccountStatusConsole.noGoRules.map((rule) => `- Status console no-go: ${rule}`),
+    "",
+    "## Support Case Queue Telemetry",
+    `- Receipt ID: ${lab.supportCaseQueueTelemetry.receiptId}`,
+    `- Status: ${lab.supportCaseQueueTelemetry.status}`,
+    `- Score: ${lab.supportCaseQueueTelemetry.score}/100`,
+    `- Rule: ${lab.supportCaseQueueTelemetry.rule}`,
+    ...lab.supportCaseQueueTelemetry.counters.map((counter) => `- Queue counter ${counter.label}: ${counter.value} | ${counter.detail}`),
+    ...lab.supportCaseQueueTelemetry.queueRows.map((row) => `- Queue row ${row.label}: ${row.queueId} | Family ${row.family} | Age ${row.ageBand} | Owner ${row.owner} | Redaction ${row.redactionState} | Freeze ${row.freezeState} | Next ${row.nextAction}`),
+    ...lab.supportCaseQueueTelemetry.ageBands.map((band) => `- Queue age band: ${band}`),
+    ...lab.supportCaseQueueTelemetry.freezeStates.map((state) => `- Queue freeze state: ${state}`),
+    ...lab.supportCaseQueueTelemetry.escalationRules.map((rule) => `- Queue escalation: ${rule}`),
+    ...lab.supportCaseQueueTelemetry.receiptFields.map((field) => `- Queue telemetry receipt field: ${field}`),
     "",
     "## Account Deletion Rehearsal",
     `- Receipt ID: ${lab.accountDeletionRehearsal.receiptId}`,
@@ -27651,6 +27765,48 @@ function makeSupportSafeAccountStatusConsoleBrief() {
     ...consoleRoom.noGoRules.map((rule) => `- ${rule}`),
     "",
     "Support Safe Account Status Console is a support-readiness contract only. It does not create real support tooling, recover accounts, approve refunds, provide advice, execute transactions, certify privacy compliance, or replace legal review."
+  ].join("\n");
+}
+
+function makeSupportCaseQueueTelemetryBrief() {
+  const queue = accountReadinessLabConfig().supportCaseQueueTelemetry;
+  return [
+    "# NiveshNadi Support Case Queue Telemetry",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${queue.receiptId}`,
+    `Status: ${queue.status}`,
+    `Score: ${queue.score}/100`,
+    `Rule: ${queue.rule}`,
+    "",
+    "## Queue Counters",
+    ...queue.counters.map((counter) => `- ${counter.label}: ${counter.value} | ${counter.detail}`),
+    "",
+    "## Queue Rows",
+    ...queue.queueRows.map((row) => [
+      `- ${row.label}`,
+      `  Queue: ${row.queueId}`,
+      `  Family: ${row.family}`,
+      `  Owner: ${row.owner}`,
+      `  Age band: ${row.ageBand}`,
+      `  Redaction: ${row.redactionState}`,
+      `  Support status: ${row.supportStatus}`,
+      `  Freeze state: ${row.freezeState}`,
+      `  Next action: ${row.nextAction}`
+    ].join("\n")),
+    "",
+    "## Age Bands",
+    ...queue.ageBands.map((band) => `- ${band}`),
+    "",
+    "## Freeze States",
+    ...queue.freezeStates.map((state) => `- ${state}`),
+    "",
+    "## Escalation Rules",
+    ...queue.escalationRules.map((rule) => `- ${rule}`),
+    "",
+    "## Receipt Fields",
+    ...queue.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Support Case Queue Telemetry is a support-readiness contract only. It does not create real support tooling, recover accounts, approve refunds, provide advice, execute transactions, certify privacy compliance, or replace legal review."
   ].join("\n");
 }
 
@@ -66537,6 +66693,13 @@ function bindEvents() {
     if (!copySupportSafeAccountStatusConsole) return;
     event.preventDefault();
     copyText(makeSupportSafeAccountStatusConsoleBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copySupportCaseQueueTelemetry = event.target.closest("[data-copy-support-case-queue-telemetry]");
+    if (!copySupportCaseQueueTelemetry) return;
+    event.preventDefault();
+    copyText(makeSupportCaseQueueTelemetryBrief());
   });
 
   document.addEventListener("click", (event) => {

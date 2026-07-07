@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v482 Account Lifecycle Smoke Receipts
-20260707-v482-01
+NiveshNadi Phase 1 v483 Support Case Queue Telemetry
+20260707-v483-01

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v483 Support Case Queue Telemetry
+
+- Version: `0.483.0`
+- Data version: `20260707-v483-01`
+- Changes made: Added Support Case Queue Telemetry inside Account Readiness with queue counters, support case rows, age bands, freeze states, redaction state, support-safe status, escalation routes, receipt fields, dedicated copy action, Account Readiness brief coverage, proof archive roll-forward, next-batch planner roll-forward, and release markers rolled forward to v483.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v483 marker scan.
+- Known risks: Support case queue telemetry is a static support-readiness contract only; production still needs authenticated support tooling, durable queue storage, real SLA timers, redaction scanners, incident workflow, role permissions, privacy/security/legal review, deployment verification, and live support tests.
+
 ## NiveshNadi Phase 1 v482 Account Lifecycle Smoke Receipts
 
 - Version: `0.482.0`

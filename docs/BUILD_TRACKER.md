@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V495 Source Ingestion Checksum Runner
+
+V495 adds Source Ingestion Checksum Runner to the Build Tracker Release Doctor. It turns AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, and benchmark/category source families into checksum, parser, freshness, quarantine, reviewer signoff, correction, rollback, no-private-data, receipt-field, and copyable source-run handoff rows.
+
 ## V494 Payment Sandbox Event Simulator
 
 V494 adds Payment Sandbox Event Simulator to the Build Tracker Release Doctor. It replays fake checkout, invoice, webhook, entitlement, refund, and rollback events with fixture envelopes, expected states, rejected private fields, dead-letter rules, support closeout, receipt fields, and a copyable payment simulation handoff before live billing work widens.

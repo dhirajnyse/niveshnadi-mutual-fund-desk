@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v495 Source Ingestion Checksum Runner
+
+- Version: `0.495.0`
+- Data version: `20260707-v495-01`
+- Changes made: Added Source Ingestion Checksum Runner to the Build Tracker Release Doctor with AMFI scheme/NAV, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, and benchmark/category source runs; checksums; parsers; pass rules; quarantine rules; runbook; no-go lines; receipt fields; dedicated copy action; Build Tracker and Release Doctor brief coverage; proof archive roll-forward with v494 commit; next-batch planner roll-forward; and release markers rolled forward to v495.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v495 marker scan.
+- Known risks: Source Ingestion Checksum Runner is a static source-proof contract only; production still needs real source fetchers, PDF extraction, checksum persistence, parser quarantine, reviewer signoff, correction/rollback automation, privacy/security/legal review, deployment verification, and live source ingestion tests.
+
 ## NiveshNadi Phase 1 v494 Payment Sandbox Event Simulator
 
 - Version: `0.494.0`

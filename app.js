@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260707-v494-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v494 Payment Sandbox Event Simulator";
+const DATA_VERSION = "20260707-v495-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v495 Source Ingestion Checksum Runner";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -11986,6 +11986,130 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    sourceIngestionChecksumRunner: {
+      label: "Source ingestion checksum runner",
+      verdict: "Checksum before source trust",
+      receiptId: ["NN", "SOURCE", "INGESTION", "CHECKSUM", "RUNNER", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 64,
+      rule: "Source ingestion may widen only when each source family has file hash, source date, citation path, parser confidence, freshness state, quarantine state, reviewer signoff, correction notice, rollback receipt, and no-private-data scan.",
+      sourceRuns: [
+        {
+          label: "AMFI scheme/NAV run",
+          family: "amfi_scheme_nav",
+          route: "#source-receipts",
+          owner: "Source desk",
+          cadence: "Daily",
+          checksum: "sha256:file_hash + source_date + row_count",
+          parser: "Scheme identity, category, NAV date, and AUM reference parser",
+          pass: "Hash, source date, row count, and reviewer signoff match prior receipt or accepted correction.",
+          quarantine: "Quarantine if date regresses, hash changes without correction notice, or row count jumps unexpectedly.",
+          score: 70
+        },
+        {
+          label: "AMC factsheet run",
+          family: "amc_factsheet_pdf",
+          route: "#source-intake",
+          owner: "PDF intake",
+          cadence: "Monthly",
+          checksum: "sha256:pdf_binary + period + scheme_id",
+          parser: "Expense, returns, manager, style, holdings, and factsheet period parser",
+          pass: "PDF period, source path, parser confidence, and reviewer signoff are present.",
+          quarantine: "Quarantine if PDF period is stale, parser confidence is low, or holdings rows are incomplete.",
+          score: 63
+        },
+        {
+          label: "SID/KIM run",
+          family: "sid_kim_document",
+          route: "#citation-binder",
+          owner: "Reviewer desk",
+          cadence: "When changed",
+          checksum: "sha256:document_binary + version + effective_date",
+          parser: "Objective, risk language, benchmark, expense, load, and disclosure parser",
+          pass: "Document version, citation anchors, effective date, and correction path are visible.",
+          quarantine: "Quarantine if version changes without reviewer signoff or citation anchor fails.",
+          score: 58
+        },
+        {
+          label: "Portfolio disclosure run",
+          family: "portfolio_disclosure",
+          route: "#source-dry-run",
+          owner: "Data ops",
+          cadence: "Monthly",
+          checksum: "sha256:holdings_rows + disclosure_period + scheme_id",
+          parser: "Holdings, sector, market-cap, overlap, and row-count parser",
+          pass: "Disclosure period, row count, top holdings, and overlap caveat are traceable.",
+          quarantine: "Quarantine if holdings period, row count, or overlap mapping is missing.",
+          score: 61
+        },
+        {
+          label: "TER expense run",
+          family: "ter_expense",
+          route: "#cost-lab",
+          owner: "Cost lab",
+          cadence: "Monthly",
+          checksum: "sha256:ter_value + plan_type + source_date",
+          parser: "Direct/regular boundary, TER value, expense period, and citation parser",
+          pass: "TER date, plan type, source path, and stale-cost caveat are visible.",
+          quarantine: "Quarantine if plan type, expense date, or TER source conflicts.",
+          score: 67
+        },
+        {
+          label: "Riskometer run",
+          family: "riskometer",
+          route: "#claim-release",
+          owner: "Compliance",
+          cadence: "Monthly or when changed",
+          checksum: "sha256:risk_band + source_date + claim_copy",
+          parser: "Risk band, date, claim surface, and disclosure wording parser",
+          pass: "Risk band, date, source path, and claim copy match the source.",
+          quarantine: "Quarantine if claim copy and source band disagree.",
+          score: 60
+        },
+        {
+          label: "Benchmark category run",
+          family: "benchmark_category",
+          route: "#peer-bench",
+          owner: "Research desk",
+          cadence: "Monthly",
+          checksum: "sha256:benchmark_name + category + peer_set + date",
+          parser: "Benchmark name, category peer set, and correction path parser",
+          pass: "Benchmark, category, peer set, comparison date, and correction route are replayable.",
+          quarantine: "Quarantine if benchmark, category, peer set, or comparison date is ambiguous.",
+          score: 65
+        }
+      ],
+      runbook: [
+        "Fetch or attach source artifact only through the source-family contract.",
+        "Compute checksum from source artifact, source date, family id, and row count before parsing.",
+        "Quarantine stale, regressed, low-confidence, unsigned, or mismatched rows before they reach fund cards.",
+        "Require reviewer signoff and correction/rollback receipt before a quarantined row can return.",
+        "Keep private identifiers out of every source run and store only source-proof metadata."
+      ],
+      noGoLines: [
+        "No source row reaches production without checksum, source date, citation path, parser confidence, and reviewer signoff.",
+        "No low-confidence parser output may silently overwrite an accepted source receipt.",
+        "No source artifact may carry PAN, folio, CAS, bank, contact, credential, payment, distributor-client, or private-note data.",
+        "No correction is complete until rollback receipt, correction notice, affected surface list, and reviewer release scope are visible."
+      ],
+      receiptFields: [
+        "source_ingestion_checksum_runner_id",
+        "release_key",
+        "source_family",
+        "source_date",
+        "citation_path",
+        "file_hash",
+        "row_count",
+        "parser_confidence",
+        "freshness_state",
+        "quarantine_state",
+        "reviewer_signoff_id",
+        "correction_notice_id",
+        "rollback_receipt_id",
+        "affected_surface_list",
+        "no_private_data_scan_id",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -12155,15 +12279,9 @@ function buildTrackerConfig() {
     },
     nextBatchPlan: {
       label: "Next batch planner",
-      verdict: "Two releases remain",
-      rule: "Payment sandbox event simulator is visible; continue with source ingestion checksum proof before the final release audit room.",
+      verdict: "One release remains",
+      rule: "Source ingestion checksum runner is visible; finish this batch with the founder release audit room.",
       lanes: [
-        {
-          version: "v495",
-          label: "Source ingestion checksum runner",
-          route: "#source-intake",
-          detail: "Add repeatable source-family checksum and quarantine checks for AMFI, AMC factsheet, SID/KIM, portfolio, TER, riskometer, and benchmark proof."
-        },
         {
           version: "v496",
           label: "Founder release audit room",
@@ -12177,6 +12295,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v494",
+          key: "20260707-v494-01",
+          commit: "e9ef99f",
+          receiptId: "NN-SHARE-RECEIPT-20260707V49401",
+          proof: "Payment Sandbox Event Simulator added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v493",
           key: "20260707-v493-01",
@@ -12204,13 +12329,6 @@ function buildTrackerConfig() {
           commit: "674e03d",
           receiptId: "NN-SHARE-RECEIPT-20260707V49001",
           proof: "Payment Entitlement Proof Cabinet added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v489",
-          key: "20260707-v489-01",
-          commit: "7f3e99a",
-          receiptId: "NN-SHARE-RECEIPT-20260707V48901",
-          proof: "Visual QA CI Adapter added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -12248,8 +12366,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v494",
-        detail: "Payment Sandbox Event Simulator is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v495",
+        detail: "Source Ingestion Checksum Runner is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -12264,23 +12382,23 @@ function buildTrackerConfig() {
       {
         label: "04 Share",
         value: "Batch close held",
-        detail: "Do not share v494 as complete until this batch reaches v496 and the live release stamp is verified."
+        detail: "Do not share v495 as complete until this batch reaches v496 and the live release stamp is verified."
       }
     ],
     memory: [
       {
         label: "Product commit",
         value: "pending batch",
-        detail: "v494 source change adds Payment Sandbox Event Simulator."
+        detail: "v495 source change adds Source Ingestion Checksum Runner."
       },
       {
         label: "Release checks",
         value: "Passed",
-        detail: "v494 runs syntax, static, security, diff hygiene, and marker scans before the next release."
+        detail: "v495 runs syntax, static, security, diff hygiene, and marker scans before the final release."
       },
       {
         label: "Share outcome",
-        value: "v494 held in batch",
+        value: "v495 held in batch",
         detail: "The final batch release is pushed and live-stamp verified after v496 visual QA passes."
       }
     ],
@@ -12943,6 +13061,20 @@ function releaseDoctorMarkup(tracker) {
           </article>
         `).join("")}
       </div>
+      <div class="release-doctor-proof" aria-label="Source ingestion checksum runner">
+        <article>
+          <span>${escapeHtml(tracker.releaseDoctor.sourceIngestionChecksumRunner.label)}</span>
+          <strong>${escapeHtml(tracker.releaseDoctor.sourceIngestionChecksumRunner.verdict)} | ${tracker.releaseDoctor.sourceIngestionChecksumRunner.score}/100</strong>
+          <p>${escapeHtml(tracker.releaseDoctor.sourceIngestionChecksumRunner.rule)}</p>
+        </article>
+        ${tracker.releaseDoctor.sourceIngestionChecksumRunner.sourceRuns.map((run) => `
+          <article>
+            <span>${escapeHtml(run.family)} | ${run.score}/100</span>
+            <strong>${escapeHtml(run.label)}</strong>
+            <p>${escapeHtml(run.pass)} Quarantine: ${escapeHtml(run.quarantine)}</p>
+          </article>
+        `).join("")}
+      </div>
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -13103,6 +13235,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-live-backend-api-skeleton>Copy backend API</button>
         <button class="text-button" type="button" data-copy-account-persistence-fixture-runner>Copy account fixtures</button>
         <button class="text-button" type="button" data-copy-payment-sandbox-event-simulator>Copy payment sim</button>
+        <button class="text-button" type="button" data-copy-source-ingestion-checksum-runner>Copy checksum runner</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -13346,6 +13479,11 @@ function makeBuildTrackerBrief() {
     `Payment sandbox score: ${tracker.releaseDoctor.paymentSandboxEventSimulator.score}/100`,
     `Payment sandbox rule: ${tracker.releaseDoctor.paymentSandboxEventSimulator.rule}`,
     ...tracker.releaseDoctor.paymentSandboxEventSimulator.events.map((eventRow) => `- Payment event ${eventRow.label}: ${eventRow.eventType} | ${eventRow.fixture} | Emits ${eventRow.emits} | Expects ${eventRow.expects} | Rejects ${eventRow.rejects} | Recovery ${eventRow.recovery}`),
+    `Source ingestion checksum runner: ${tracker.releaseDoctor.sourceIngestionChecksumRunner.verdict}`,
+    `Source ingestion receipt: ${tracker.releaseDoctor.sourceIngestionChecksumRunner.receiptId}`,
+    `Source ingestion score: ${tracker.releaseDoctor.sourceIngestionChecksumRunner.score}/100`,
+    `Source ingestion rule: ${tracker.releaseDoctor.sourceIngestionChecksumRunner.rule}`,
+    ...tracker.releaseDoctor.sourceIngestionChecksumRunner.sourceRuns.map((run) => `- Source checksum ${run.label}: ${run.family} | ${run.cadence} | ${run.checksum} | Parser ${run.parser} | Pass ${run.pass} | Quarantine ${run.quarantine}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -13611,6 +13749,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.paymentSandboxEventSimulator.simulatorRules.map((rule) => `- Simulator rule: ${rule}`),
     ...tracker.releaseDoctor.paymentSandboxEventSimulator.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.paymentSandboxEventSimulator.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Source Ingestion Checksum Runner",
+    `- Receipt ID: ${tracker.releaseDoctor.sourceIngestionChecksumRunner.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.sourceIngestionChecksumRunner.verdict}`,
+    `- Score: ${tracker.releaseDoctor.sourceIngestionChecksumRunner.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.sourceIngestionChecksumRunner.rule}`,
+    ...tracker.releaseDoctor.sourceIngestionChecksumRunner.sourceRuns.map((run) => `- ${run.label}: ${run.family} | ${run.cadence} | ${run.checksum} | Parser ${run.parser} | Pass ${run.pass} | Quarantine ${run.quarantine}`),
+    ...tracker.releaseDoctor.sourceIngestionChecksumRunner.runbook.map((step) => `- Runbook: ${step}`),
+    ...tracker.releaseDoctor.sourceIngestionChecksumRunner.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.sourceIngestionChecksumRunner.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -14311,6 +14459,43 @@ function makePaymentSandboxEventSimulatorBrief() {
     ...simulator.receiptFields.map((field) => `- ${field}`),
     "",
     "Payment Sandbox Event Simulator is a fake-event rehearsal only. It does not process real payments, store payment methods, verify real provider signatures, grant live entitlement, issue refunds, or replace provider-side reconciliation."
+  ].join("\n");
+}
+
+function makeSourceIngestionChecksumRunnerBrief() {
+  const runner = buildTrackerConfig().releaseDoctor.sourceIngestionChecksumRunner;
+  return [
+    "# NiveshNadi Source Ingestion Checksum Runner",
+    `Release: ${RELEASE_LABEL} (${DATA_VERSION})`,
+    `Receipt ID: ${runner.receiptId}`,
+    `Verdict: ${runner.verdict}`,
+    `Score: ${runner.score}/100`,
+    `Rule: ${runner.rule}`,
+    "",
+    "## Source Runs",
+    ...runner.sourceRuns.map((run) => [
+      `- ${run.label}`,
+      `  Family: ${run.family}`,
+      `  Route: ${run.route}`,
+      `  Owner: ${run.owner}`,
+      `  Cadence: ${run.cadence}`,
+      `  Checksum: ${run.checksum}`,
+      `  Parser: ${run.parser}`,
+      `  Pass: ${run.pass}`,
+      `  Quarantine: ${run.quarantine}`,
+      `  Score: ${run.score}/100`
+    ].join("\n")),
+    "",
+    "## Runbook",
+    ...runner.runbook.map((step) => `- ${step}`),
+    "",
+    "## No-Go Lines",
+    ...runner.noGoLines.map((line) => `- ${line}`),
+    "",
+    "## Receipt Fields",
+    ...runner.receiptFields.map((field) => `- ${field}`),
+    "",
+    "Source Ingestion Checksum Runner is a source-proof contract only. It does not fetch live source files, certify source accuracy, store private data, or replace reviewer signoff and correction controls."
   ].join("\n");
 }
 
@@ -68522,6 +68707,13 @@ function bindEvents() {
     if (!copyPaymentSandboxEventSimulator) return;
     event.preventDefault();
     copyText(makePaymentSandboxEventSimulatorBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copySourceIngestionChecksumRunner = event.target.closest("[data-copy-source-ingestion-checksum-runner]");
+    if (!copySourceIngestionChecksumRunner) return;
+    event.preventDefault();
+    copyText(makeSourceIngestionChecksumRunnerBrief());
   });
 
   document.addEventListener("click", (event) => {

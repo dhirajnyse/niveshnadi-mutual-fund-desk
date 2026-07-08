@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v514 Source Connector Failure Replay Board
+
+- Version: `0.514.0`
+- Data version: `20260708-v514-01`
+- Changes made: Added Source Connector Failure Replay Board to the Build Tracker Release Doctor with timeout and retry replay, stale source freeze, parser rejection quarantine, reviewer block, rollback and correction notice, dead-letter closeout, source-failure receipt fields, proof archive roll-forward with v513 commit, next-batch planner roll-forward to v515-v519, and release markers rolled forward to v514.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v514 marker scan.
+- Known risks: Source Connector Failure Replay Board is a static failure-replay contract only; it does not fetch live sources, run parsers, correct production data, publish notices, or approve connector widening.
+
 ## NiveshNadi Phase 1 v513 Beta Entitlement Replay Board
 
 - Version: `0.513.0`

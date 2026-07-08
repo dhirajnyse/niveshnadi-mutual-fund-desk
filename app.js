@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v513-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v513 Beta Entitlement Replay Board";
+const DATA_VERSION = "20260708-v514-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v514 Source Connector Failure Replay Board";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v512 passed release checks on commit a3e7f4c. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v513 passed release checks on commit 21e6811. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v512 local checks passed",
+      outcome: "Previous outcome: v513 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51201",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51301",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -13842,6 +13842,110 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Entitlement Replay Board is a static entitlement-state contract only; it does not grant access, verify payments, revoke features, recover accounts, store payment data, or approve paid launch."
+      },
+      {
+        key: "sourceConnectorFailureReplayBoard",
+        label: "Source connector failure replay board",
+        verdict: "Failure paths must replay before connector widening",
+        receiptId: ["NN", "SOURCE", "CONNECTOR", "FAILURE", "REPLAY", "BOARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-connector-failure-replay-board",
+        copyLabel: "Copy source failure replay",
+        score: 76,
+        rule: "No live connector should widen until timeout, stale source, parser rejection, reviewer block, rollback, correction notice, and dead-letter closeout cases replay with source dates, checksums, affected surfaces, and no-private-data boundaries.",
+        lanes: [
+          {
+            label: "Timeout and retry replay",
+            owner: "Source worker",
+            method: "REPLAY",
+            route: "source.failure.timeout-retry",
+            proof: "Replay timeout, retry ceiling, backoff, worker owner, failed-run receipt, and next retry state.",
+            readyWhen: "Ready when failed fetches cannot silently update claims or disappear from owner view.",
+            hold: "Hold if timeout can leave a stale-looking live claim without failed-run proof.",
+            score: 75
+          },
+          {
+            label: "Stale source freeze",
+            owner: "Evidence desk",
+            method: "REPLAY",
+            route: "source.failure.stale-freeze",
+            proof: "Replay stale source date, freshness threshold, freeze state, affected surfaces, user copy, and supersede receipt.",
+            readyWhen: "Ready when stale source freezes visible claims until replacement proof exists.",
+            hold: "Hold if stale source can be displayed as current or silently superseded.",
+            score: 77
+          },
+          {
+            label: "Parser rejection quarantine",
+            owner: "Parser owner",
+            method: "REPLAY",
+            route: "source.failure.parser-quarantine",
+            proof: "Replay rejected rows, invalid fields, parser warning, schema version, quarantine reason, and reviewer queue handoff.",
+            readyWhen: "Ready when rejected data cannot become accepted fund facts without reviewer release.",
+            hold: "Hold if parser can coerce missing TER, holdings, riskometer, benchmark, or source date values.",
+            score: 76
+          },
+          {
+            label: "Reviewer block",
+            owner: "Reviewer desk",
+            method: "REPLAY",
+            route: "source.failure.reviewer-block",
+            proof: "Replay reviewer hold, release denial, affected surface list, correction request, and public-claim freeze.",
+            readyWhen: "Ready when reviewer blocks can stop connector output before public surfaces change.",
+            hold: "Hold if connector output can bypass reviewer block or release queue.",
+            score: 76
+          },
+          {
+            label: "Rollback and correction notice",
+            owner: "Claim release desk",
+            method: "REPLAY",
+            route: "source.failure.rollback-correction",
+            proof: "Replay old value, new value, affected screen, rollback receipt, correction notice wording, and reviewer signoff.",
+            readyWhen: "Ready when every connector mistake has rollback evidence and correction copy.",
+            hold: "Hold if rollback does not name affected saved artifacts or public claim surfaces.",
+            score: 77
+          },
+          {
+            label: "Dead-letter closeout",
+            owner: "Founder release desk",
+            method: "REPLAY",
+            route: "source.failure.dead-letter-closeout",
+            proof: "Replay dead-letter reason, owner, retry decision, discard decision, source replacement, and founder closeout memo.",
+            readyWhen: "Ready when the founder can build, hold, replace, or discard the connector from one failure memo.",
+            hold: "Hold if failed connector runs accumulate without owner, retry rule, or discard receipt.",
+            score: 75
+          }
+        ],
+        operatingRules: [
+          "Failure replay is required before connector widening; a successful fetch alone is not enough.",
+          "Every connector failure names source family, source date, checksum, parser version, affected surfaces, and owner.",
+          "Stale, rejected, blocked, rolled back, and dead-letter states must keep claims frozen until release proof exists.",
+          "Correction notices are part of source trust, not a later documentation chore.",
+          "No connector failure receipt may store credentials, private investor files, contact data, payment data, or distributor-client records."
+        ],
+        noGoLines: [
+          "No connector may update visible claims after timeout, stale source, parser rejection, reviewer block, or dead-letter state.",
+          "No failure replay may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private files, distributor-client records, or raw payment payloads.",
+          "No source correction may publish without old value, corrected value, affected surface, rollback receipt, and reviewer signoff.",
+          "No production connector may widen while failed-run replay and dead-letter closeout remain manual or invisible."
+        ],
+        receiptFields: [
+          "source_connector_failure_replay_board_id",
+          "release_key",
+          "source_family",
+          "source_date",
+          "checksum",
+          "parser_version",
+          "failure_case",
+          "affected_surface_list",
+          "quarantine_reason",
+          "reviewer_block_state",
+          "rollback_receipt_id",
+          "correction_notice_id",
+          "dead_letter_reason",
+          "founder_closeout_memo_id",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Source Connector Failure Replay Board is a static failure-replay contract only; it does not fetch live sources, run parsers, correct production data, publish notices, or approve connector widening."
       }
     ],
     executiveCalmCompression: {
@@ -14014,14 +14118,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Entitlement replay closes the first access-state bridge; next releases should lock connector failure replay, billing observability, account recovery smoke proof, founder beta release evidence, and support escalation analytics.",
+      rule: "Connector failure replay closes the first source-failure bridge; next releases should lock billing observability, account recovery smoke proof, founder beta release evidence, support escalation analytics, and source incident release notes.",
       lanes: [
-        {
-          version: "v514",
-          label: "Source connector failure replay board",
-          route: "#backend-audit-receipts",
-          detail: "Replay timeout, stale source, parser rejection, reviewer block, rollback, and correction notice cases before connector widening."
-        },
         {
           version: "v515",
           label: "Payment observability receipt board",
@@ -14045,6 +14143,12 @@ function buildTrackerConfig() {
           label: "Support escalation analytics strip",
           route: "#paid-beta-support-ledger",
           detail: "Summarize support load, stale age, escalation family, refund stops, and next-wave freeze triggers in one compact strip."
+        },
+        {
+          version: "v519",
+          label: "Source incident release notes",
+          route: "#correction-notice",
+          detail: "Turn rollback, correction, affected surfaces, reviewer signoff, and user-safe wording into source incident notes."
         }
       ]
     },
@@ -14053,6 +14157,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v513",
+          key: "20260708-v513-01",
+          commit: "21e6811",
+          receiptId: "NN-SHARE-RECEIPT-20260708V51301",
+          proof: "Beta Entitlement Replay Board added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v512",
           key: "20260708-v512-01",
@@ -14080,13 +14191,6 @@ function buildTrackerConfig() {
           commit: "a451e52",
           receiptId: "NN-SHARE-RECEIPT-20260708V50901",
           proof: "Live Source Connector Spike Plan added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v508",
-          key: "20260708-v508-01",
-          commit: "6b17f1c",
-          receiptId: "NN-SHARE-RECEIPT-20260708V50801",
-          proof: "Founder Beta Cohort Ledger added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -14124,13 +14228,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v513",
-        detail: "Beta Entitlement Replay Board is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v514",
+        detail: "Source Connector Failure Replay Board is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v513 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v514 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -14139,25 +14243,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v513 held until live stamp",
-        detail: "Do not share v513 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v514 held until live stamp",
+        detail: "Do not share v514 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v513 entitlement replay",
-        detail: "Beta Entitlement Replay Board gathers paid, refunded, paused, expired, duplicate, support-held, and no-access states before account access widens."
+        value: "v514 source failure replay",
+        detail: "Source Connector Failure Replay Board gathers timeout, stale source, parser rejection, reviewer block, rollback, correction notice, and dead-letter closeout before connector widening."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v513 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v514 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v513 held until live stamp",
-        detail: "The release is share-ready only after v513 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v514 held until live stamp",
+        detail: "The release is share-ready only after v514 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

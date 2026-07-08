@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V514 Source Connector Failure Replay Board
+
+V514 adds Source Connector Failure Replay Board to the Build Tracker Release Doctor. It replays timeout and retry, stale source freeze, parser rejection quarantine, reviewer block, rollback and correction notice, and dead-letter closeout before live source connector widening.
+
 ## V513 Beta Entitlement Replay Board
 
 V513 adds Beta Entitlement Replay Board to the Build Tracker Release Doctor. It replays paid grant, refund rollback, paused and expired access, duplicate and out-of-order events, support-held states, and no-access copy before account access or paid beta entitlements widen.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v510-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v510 Payment Provider Sandbox Integration Plan";
+const DATA_VERSION = "20260708-v511-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v511 Account Auth Provider Decision Room";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -13535,6 +13535,106 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    accountAuthProviderDecisionRoom: {
+      label: "Account auth provider decision room",
+      verdict: "Auth provider decision held for security proof",
+      receiptId: ["NN", "ACCOUNT", "AUTH", "PROVIDER", "DECISION", "ROOM", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 77,
+      rule: "No account-backed saved research should widen until auth provider posture, session policy, recovery route, export/delete support, consent boundary, support-safe account status, security review, and launch no-go rules are written in one decision receipt.",
+      lanes: [
+        {
+          label: "Provider posture",
+          owner: "Founder engineering",
+          method: "DECIDE",
+          route: "auth.provider-posture",
+          proof: "Compare managed auth, custom auth, and no-account beta across cost, security, recovery, deletion, support, and implementation burden.",
+          readyWhen: "Ready when the decision names provider, non-choice, reason, fallback, and what remains browser-local.",
+          hold: "Hold if auth is chosen only because it is quick, fashionable, bundled, or convenient without support and deletion proof.",
+          score: 78
+        },
+        {
+          label: "Session and access policy",
+          owner: "Security review",
+          method: "DECIDE",
+          route: "auth.session-access-policy",
+          proof: "Define session duration, refresh behavior, device posture, logout, idle timeout, account lock, entitlement check, and support freeze.",
+          readyWhen: "Ready when support can explain session state and engineering can test lock, logout, refresh, and entitlement gates.",
+          hold: "Hold if sessions can stay open without idle policy, account lock, support freeze, or entitlement check.",
+          score: 76
+        },
+        {
+          label: "Recovery and deletion route",
+          owner: "Account platform",
+          method: "DECIDE",
+          route: "auth.recovery-deletion",
+          proof: "Write recovery, export-before-delete, deletion receipt, retained-proof boundary, support notice, and restore-no-go rules.",
+          readyWhen: "Ready when lost access, export, deletion, and retained proof can be handled without private-data leakage.",
+          hold: "Hold if recovery or deletion depends on manual founder memory, private notes, or unsupported provider screens.",
+          score: 76
+        },
+        {
+          label: "Consent and data boundary",
+          owner: "Privacy review",
+          method: "DECIDE",
+          route: "auth.consent-data-boundary",
+          proof: "Name what account storage may keep: saved research receipts, review memory, export manifest, support-safe status, and excluded private fields.",
+          readyWhen: "Ready when users can understand what is saved, what is excluded, how to export/delete, and what remains research-only.",
+          hold: "Hold if account copy can invite PAN, folio, CAS, bank, card, contact data, credentials, private notes, or distributor-client records.",
+          score: 77
+        },
+        {
+          label: "Support-safe account status",
+          owner: "Support desk",
+          method: "DECIDE",
+          route: "auth.support-safe-status",
+          proof: "Map visible account states, hidden fields, escalation route, reply wording, freeze command, and closeout receipt.",
+          readyWhen: "Ready when support can answer account questions without seeing private data or improvising status.",
+          hold: "Hold if support needs raw account payloads, private notes, provider secrets, or contact data to reply.",
+          score: 75
+        },
+        {
+          label: "Security launch no-go",
+          owner: "Founder release desk",
+          method: "DECIDE",
+          route: "auth.security-launch-no-go",
+          proof: "List auth threat checks, rate-limit posture, audit event names, incident freeze, support coverage, security review, and launch blockers.",
+          readyWhen: "Ready when account auth has one go/no-go memo before saved research leaves browser-local custody.",
+          hold: "Hold if auth widens before threat model, recovery test, export/delete test, support-safe status, and incident freeze are proven.",
+          score: 79
+        }
+      ],
+      operatingRules: [
+        "Auth provider choice is a product risk decision, not just an implementation preference.",
+        "Account storage starts with saved research receipts and review memory only; private identifiers remain excluded.",
+        "Recovery, export, deletion, session freeze, and support-safe status must be testable before account widening.",
+        "Support should see states and receipts, not raw account payloads, provider secrets, private notes, or contact data.",
+        "The decision room is complete only when the founder can choose build, hold, replace, or stay browser-local."
+      ],
+      noGoLines: [
+        "No account auth may request PAN, folio, CAS, bank, card, UPI, credentials, contact data, private notes, distributor-client records, or payment payloads.",
+        "No saved research may leave browser-local custody without consent copy, export-before-delete, deletion receipt, support-safe status, and recovery route.",
+        "No auth provider may be accepted without session policy, account lock, audit events, incident freeze, and security review.",
+        "No paid cohort may depend on account auth until entitlement, support, recovery, deletion, and privacy boundaries are replayed."
+      ],
+      receiptFields: [
+        "account_auth_provider_decision_room_id",
+        "release_key",
+        "provider_decision",
+        "provider_fallback",
+        "session_policy_id",
+        "access_policy_id",
+        "recovery_route_id",
+        "export_delete_route_id",
+        "consent_boundary_version",
+        "support_safe_status_map_id",
+        "security_review_state",
+        "incident_freeze_command_id",
+        "auth_launch_no_go_list",
+        "founder_decision_state",
+        "release_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -13705,14 +13805,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment sandbox scoping closes the first billing bridge; next releases should lock account auth, support SLA evidence, beta entitlement replay, connector failure replay, and billing observability.",
+      rule: "Account auth provider choice closes the first account-custody decision bridge; next releases should lock support SLA evidence, beta entitlement replay, connector failure replay, billing observability, and account recovery smoke proof.",
       lanes: [
-        {
-          version: "v511",
-          label: "Account auth provider decision room",
-          route: "#founder-auth-decision-board",
-          detail: "Choose auth provider posture, session policy, account recovery, deletion, export, consent, support-safe status, and launch no-go proof."
-        },
         {
           version: "v512",
           label: "Pilot support SLA evidence binder",
@@ -13736,6 +13830,12 @@ function buildTrackerConfig() {
           label: "Payment observability receipt board",
           route: "#payment-wiring",
           detail: "Name payment logs, alert thresholds, support notices, retry owners, and reconciliation proof before sandbox moves toward live mode."
+        },
+        {
+          version: "v516",
+          label: "Account recovery smoke proof board",
+          route: "#account-readiness",
+          detail: "Replay lost access, session freeze, export-before-delete, deletion receipt, restore hold, and support-safe account status."
         }
       ]
     },
@@ -13744,6 +13844,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v510",
+          key: "20260708-v510-01",
+          commit: "1827367",
+          receiptId: "NN-SHARE-RECEIPT-20260708V51001",
+          proof: "Payment Provider Sandbox Integration Plan added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v509",
           key: "20260708-v509-01",
@@ -13771,13 +13878,6 @@ function buildTrackerConfig() {
           commit: "ee19d28",
           receiptId: "NN-SHARE-RECEIPT-20260708V50601",
           proof: "Pilot Invite Copy Approval Room added, visually checked, pushed to main, and live stamp verified."
-        },
-        {
-          version: "v505",
-          key: "20260708-v505-01",
-          commit: "922cd35",
-          receiptId: "NN-SHARE-RECEIPT-20260708V50501",
-          proof: "Data Retention Execution Checklist added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -13815,8 +13915,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v510",
-        detail: "Payment Provider Sandbox Integration Plan is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v511",
+        detail: "Account Auth Provider Decision Room is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -14571,6 +14671,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.founderBetaCohortLedger, "Founder beta cohort ledger")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.liveSourceConnectorSpikePlan, "Live source connector spike plan")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan, "Payment provider sandbox integration plan")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.accountAuthProviderDecisionRoom, "Account auth provider decision room")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -14747,6 +14848,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-founder-beta-cohort-ledger>Copy cohort ledger</button>
         <button class="text-button" type="button" data-copy-live-source-connector-spike-plan>Copy source connector</button>
         <button class="text-button" type="button" data-copy-payment-provider-sandbox-integration-plan>Copy payment sandbox</button>
+        <button class="text-button" type="button" data-copy-account-auth-provider-decision-room>Copy auth decision</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -15070,6 +15172,11 @@ function makeBuildTrackerBrief() {
     `Payment provider sandbox score: ${tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.score}/100`,
     `Payment provider sandbox rule: ${tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.rule}`,
     ...tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.lanes.map((lane) => `- Payment sandbox ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Account auth provider decision room: ${tracker.releaseDoctor.accountAuthProviderDecisionRoom.verdict}`,
+    `Account auth provider decision receipt: ${tracker.releaseDoctor.accountAuthProviderDecisionRoom.receiptId}`,
+    `Account auth provider decision score: ${tracker.releaseDoctor.accountAuthProviderDecisionRoom.score}/100`,
+    `Account auth provider decision rule: ${tracker.releaseDoctor.accountAuthProviderDecisionRoom.rule}`,
+    ...tracker.releaseDoctor.accountAuthProviderDecisionRoom.lanes.map((lane) => `- Account auth ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -15495,6 +15602,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Account Auth Provider Decision Room",
+    `- Receipt ID: ${tracker.releaseDoctor.accountAuthProviderDecisionRoom.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.accountAuthProviderDecisionRoom.verdict}`,
+    `- Score: ${tracker.releaseDoctor.accountAuthProviderDecisionRoom.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.accountAuthProviderDecisionRoom.rule}`,
+    ...tracker.releaseDoctor.accountAuthProviderDecisionRoom.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.accountAuthProviderDecisionRoom.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.accountAuthProviderDecisionRoom.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.accountAuthProviderDecisionRoom.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -16411,6 +16528,14 @@ function makePaymentProviderSandboxIntegrationPlanBrief() {
     "Payment Provider Sandbox Integration Plan",
     buildTrackerConfig().releaseDoctor.paymentProviderSandboxIntegrationPlan,
     "Payment Provider Sandbox Integration Plan is a static billing-sandbox contract only. It does not process payments, verify live webhooks, store payment data, grant access, issue refunds, or approve paid launch."
+  );
+}
+
+function makeAccountAuthProviderDecisionRoomBrief() {
+  return makeOperationalProofBrief(
+    "Account Auth Provider Decision Room",
+    buildTrackerConfig().releaseDoctor.accountAuthProviderDecisionRoom,
+    "Account Auth Provider Decision Room is a static auth decision contract only. It does not configure an auth provider, create accounts, store user data, recover accounts, delete records, or approve account launch."
   );
 }
 
@@ -70734,6 +70859,13 @@ function bindEvents() {
     if (!copyPaymentProviderSandboxIntegrationPlan) return;
     event.preventDefault();
     copyText(makePaymentProviderSandboxIntegrationPlanBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyAccountAuthProviderDecisionRoom = event.target.closest("[data-copy-account-auth-provider-decision-room]");
+    if (!copyAccountAuthProviderDecisionRoom) return;
+    event.preventDefault();
+    copyText(makeAccountAuthProviderDecisionRoomBrief());
   });
 
   document.addEventListener("click", (event) => {

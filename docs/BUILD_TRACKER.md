@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V511 Account Auth Provider Decision Room
+
+V511 adds Account Auth Provider Decision Room to the Build Tracker Release Doctor. It decides managed/custom/no-account posture, session and access policy, recovery, export/delete, consent boundary, support-safe account status, security launch no-go checks, and founder decision state before saved research leaves browser-local custody.
+
 ## V510 Payment Provider Sandbox Integration Plan
 
 V510 adds Payment Provider Sandbox Integration Plan to the Build Tracker Release Doctor. It scopes fake checkout, signed webhook verifier, duplicate replay, out-of-order events, refund rollback, entitlement sync, dead-letter handling, redaction scan, support closeout, and no-live-payment rules before paid access widens.

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v511 Account Auth Provider Decision Room
+
+- Version: `0.511.0`
+- Data version: `20260708-v511-01`
+- Changes made: Added Account Auth Provider Decision Room to the Build Tracker Release Doctor with provider posture, session and access policy, recovery and deletion route, consent and data boundary, support-safe account status, security launch no-go, operating rules, no-go lines, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward with v510 commit, next-batch planner roll-forward to v512-v516, and release markers rolled forward to v511.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v511 marker scan.
+- Known risks: Account Auth Provider Decision Room is a static auth decision contract only; it does not configure an auth provider, create accounts, store user data, recover accounts, delete records, or approve account launch.
+
 ## NiveshNadi Phase 1 v510 Payment Provider Sandbox Integration Plan
 
 - Version: `0.510.0`

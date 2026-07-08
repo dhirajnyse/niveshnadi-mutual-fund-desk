@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v559-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v559 Source Correction Renewal Aging Guard";
+const DATA_VERSION = "20260709-v560-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v560 Payment Acceptance Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction renewal aging guard",
+    label: "Payment acceptance aging guard",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Warn when renewed correction receipts age past source, reviewer, support, or cache windows."
+    route: "#payment-wiring",
+    detail: "Warn when accepted payment replay receipts age past entitlement, refund, rollback, or support windows."
   },
   {
     label: "Mobile calm audit",
@@ -18473,6 +18473,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Renewal Aging Guard is a static correction-aging room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims."
+      },
+      {
+        key: "paymentAcceptanceAgingGuard",
+        label: "Payment acceptance aging guard",
+        verdict: "Accepted replay proof can age",
+        receiptId: ["NN", "PAYMENT", "ACCEPTANCE", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-acceptance-aging-guard",
+        copyLabel: "Copy payment aging",
+        score: 80,
+        rule: "Accepted payment replay receipts should warn when entitlement, refund wording, rollback, support copy, owner signoff, or founder finance review ages past the safe launch-language window.",
+        lanes: [
+          {
+            label: "Entitlement aging",
+            owner: "Entitlement desk",
+            method: "ENTITLEMENT",
+            route: "payment.acceptance.aging.entitlement",
+            proof: "Track entitlement acceptance date, expected access state, hold window, and expired entitlement warning.",
+            readyWhen: "Ready when entitlement acceptance is fresh or visibly held.",
+            hold: "Hold if entitlement effect or access hold has aged past review.",
+            score: 80
+          },
+          {
+            label: "Refund wording aging",
+            owner: "Refund review desk",
+            method: "REFUND",
+            route: "payment.acceptance.aging.refund",
+            proof: "Track refund wording review date, owner, promise boundary, and stale refund-copy warning.",
+            readyWhen: "Ready when refund wording is still current and non-promissory.",
+            hold: "Hold if refund wording or owner review has expired.",
+            score: 80
+          },
+          {
+            label: "Rollback aging",
+            owner: "Release engineering",
+            method: "ROLLBACK",
+            route: "payment.acceptance.aging.rollback",
+            proof: "Track rollback acceptance date, mismatch residue, retry state, and rollback-expired hold.",
+            readyWhen: "Ready when rollback proof still matches the accepted replay.",
+            hold: "Hold if mismatch residue or rollback state has aged past review.",
+            score: 80
+          },
+          {
+            label: "Support copy aging",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "payment.acceptance.aging.support_copy",
+            proof: "Track support copy date, escalation owner, refund boundary, account boundary, and expired support wording.",
+            readyWhen: "Ready when support copy still matches the payment acceptance state.",
+            hold: "Hold if support copy predates replay acceptance or escalation route changed.",
+            score: 81
+          },
+          {
+            label: "Owner signoff aging",
+            owner: "Payment owner",
+            method: "OWNER",
+            route: "payment.acceptance.aging.owner",
+            proof: "Track owner signoff date, fallback owner, next review, and payment launch-language hold.",
+            readyWhen: "Ready when payment acceptance owner and next review are current.",
+            hold: "Hold if owner signoff or fallback owner is stale.",
+            score: 80
+          },
+          {
+            label: "Founder finance aging",
+            owner: "Founder finance desk",
+            method: "SIGNOFF",
+            route: "payment.acceptance.aging.founder",
+            proof: "Track founder finance review date, accepted replay residue, launch wording decision, and next closeout route.",
+            readyWhen: "Ready when founder finance review can still defend the accepted payment replay proof.",
+            hold: "Hold if founder finance review expired or accepted residue is unresolved.",
+            score: 80
+          }
+        ],
+        operatingRules: [
+          "Payment acceptance aging guard warns about stale payment replay acceptance only; it does not process payments, issue refunds, grant access, or reconcile ledgers.",
+          "Every accepted payment replay row needs entitlement, refund wording, rollback, support copy, owner signoff, and founder finance aging states.",
+          "Aging warnings hold payment launch language until accepted replay proof is refreshed, superseded, or closed out.",
+          "Payment aging rows must exclude gateway payloads, payment tokens, card data, bank data, raw support notes, and identifiers.",
+          "No payment acceptance aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No accepted payment replay may stay trusted after entitlement, refund, rollback, support, owner, or founder finance windows expire.",
+          "No launch wording may widen while accepted replay residue is stale.",
+          "No refund or access copy may imply a real action from an aged replay receipt.",
+          "No payment acceptance aging guard may process payments, grant access, issue refunds, or approve payment launch."
+        ],
+        receiptFields: [
+          "payment_acceptance_aging_guard_id",
+          "release_key",
+          "payment_replay_acceptance_receipt_id",
+          "entitlement_age_state",
+          "refund_wording_age_state",
+          "rollback_age_state",
+          "support_copy_age_state",
+          "owner_signoff_age_state",
+          "founder_finance_age_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Payment Acceptance Aging Guard is a static payment-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -18645,14 +18744,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source correction renewals now have aging guards; next releases should lock payment acceptance aging guard, account retention dry-run aging guard, beta command renewal aging guard, support repair renewal aging guard, and source correction renewal closeout receipt.",
+      rule: "Payment acceptance receipts now have aging guards; next releases should lock account retention dry-run aging guard, beta command renewal aging guard, support repair renewal aging guard, source correction renewal closeout receipt, and payment acceptance closeout receipt.",
       lanes: [
-        {
-          version: "v560",
-          label: "Payment acceptance aging guard",
-          route: "#payment-wiring",
-          detail: "Warn when accepted payment replay receipts age past entitlement, refund, rollback, or support windows."
-        },
         {
           version: "v561",
           label: "Account retention dry-run aging guard",
@@ -18676,14 +18769,27 @@ function buildTrackerConfig() {
           label: "Source correction renewal closeout receipt",
           route: "#correction-ledger",
           detail: "Close stale renewal aging rows with supersede, refresh, public notice, support handoff, and founder signoff proof."
+        },
+        {
+          version: "v565",
+          label: "Payment acceptance closeout receipt",
+          route: "#payment-wiring",
+          detail: "Close stale payment acceptance rows with refresh, rollback, support copy, owner, and founder finance proof."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Source correction renewal aging proof visible",
+      verdict: "Payment acceptance aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v559",
+          key: "20260709-v559-01",
+          commit: "9dc7cec",
+          receiptId: "NN-SHARE-RECEIPT-20260709V55901",
+          proof: "Source Correction Renewal Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v558",
           key: "20260709-v558-01",
@@ -18711,13 +18817,6 @@ function buildTrackerConfig() {
           commit: "444efe5",
           receiptId: "NN-SHARE-RECEIPT-20260709V55501",
           proof: "Payment Replay Acceptance Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v554",
-          key: "20260709-v554-01",
-          commit: "16ba5cc",
-          receiptId: "NN-SHARE-RECEIPT-20260709V55401",
-          proof: "Source Correction Renewal Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -18755,13 +18854,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v559",
-        detail: "Source Correction Renewal Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v560",
+        detail: "Payment Acceptance Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v559 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v560 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -18770,25 +18869,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v559 held until live stamp",
-        detail: "Do not share v559 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v560 held until live stamp",
+        detail: "Do not share v560 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v559 correction aging",
-        detail: "Source Correction Renewal Aging Guard warns when renewed correction proof ages past reviewer, replacement source, support handoff, cache, public notice, or founder review windows."
+        value: "v560 payment aging",
+        detail: "Payment Acceptance Aging Guard warns when accepted replay proof ages past entitlement, refund wording, rollback, support copy, owner signoff, or founder finance windows."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v559 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v560 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v559 held until live stamp",
-        detail: "The release is share-ready only after v559 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v560 held until live stamp",
+        detail: "The release is share-ready only after v560 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

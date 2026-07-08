@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v560 Payment Acceptance Aging Guard
+
+- Version: `0.560.0`
+- Data version: `20260709-v560-01`
+- Changes made: Added Payment Acceptance Aging Guard to the Build Tracker Release Doctor with entitlement aging, refund wording aging, rollback aging, support copy aging, owner signoff aging, founder finance aging, payment acceptance aging receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v559 commit, next-batch planner roll-forward to v561-v565, and release markers rolled forward to v560.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v560 marker scan.
+- Known risks: Payment Acceptance Aging Guard is a static payment-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v559 Source Correction Renewal Aging Guard
 
 - Version: `0.559.0`

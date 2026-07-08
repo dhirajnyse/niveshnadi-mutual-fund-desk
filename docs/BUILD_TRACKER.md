@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V560 Payment Acceptance Aging Guard
+
+V560 adds Payment Acceptance Aging Guard to the Build Tracker Release Doctor. It warns when accepted replay proof ages past entitlement, refund wording, rollback, support copy, owner signoff, or founder finance windows.
+
+- Release label: `NiveshNadi Phase 1 v560 Payment Acceptance Aging Guard`
+- Data/version key: `20260709-v560-01`
+- Product surface: Build Tracker > Release Doctor > Payment acceptance aging guard
+- Risk boundary: Static payment-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V559 Source Correction Renewal Aging Guard
 
 V559 adds Source Correction Renewal Aging Guard to the Build Tracker Release Doctor. It warns when renewed correction proof ages past reviewer, replacement source, support handoff, cache, public notice, or founder review windows.

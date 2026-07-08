@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V557 Beta Command Renewal Receipt
+
+V557 adds Beta Command Renewal Receipt to the Build Tracker Release Doctor. It renews aged founder command rows with replacement, owner review, conflict cleanup, release-copy, founder memory, and next expiry proof.
+
+- Release label: `NiveshNadi Phase 1 v557 Beta Command Renewal Receipt`
+- Data/version key: `20260709-v557-01`
+- Product surface: Build Tracker > Release Doctor > Beta command renewal receipt
+- Risk boundary: Static command renewal room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V556 Account Retention Dry-Run Receipt Vault
 
 V556 adds Account Retention Dry-Run Receipt Vault to the Build Tracker Release Doctor. It collects dry-run, object family, owner, redaction, support-safe, failure replay, and founder vault signoff proof.

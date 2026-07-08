@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v556-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v556 Account Retention Dry-Run Receipt Vault";
+const DATA_VERSION = "20260709-v557-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v557 Beta Command Renewal Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account retention dry-run receipt vault",
+    label: "Beta command renewal receipt",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Collect accepted retention dry-run receipts with object family, owner, redaction, and support-safe proof."
+    route: "#founder-beta-operating-room",
+    detail: "Convert aged command archive rows into renewed founder receipts with replacement and release-copy proof."
   },
   {
     label: "Mobile calm audit",
@@ -18176,6 +18176,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Retention Dry-Run Receipt Vault is a static dry-run receipt vault only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandRenewalReceipt",
+        label: "Beta command renewal receipt",
+        verdict: "Aged commands need renewal receipts",
+        receiptId: ["NN", "BETA", "COMMAND", "RENEWAL", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-renewal-receipt",
+        copyLabel: "Copy command renewal",
+        score: 84,
+        rule: "Aged founder command rows should renew replacement proof, owner review, conflict cleanup, release-safe copy, founder memory, and next expiry before trusted beta decisions widen.",
+        lanes: [
+          {
+            label: "Replacement renewal",
+            owner: "Founder operating desk",
+            method: "REPLACE",
+            route: "beta.command.renewal.replacement",
+            proof: "Renew the replacement command, superseded row, live owner, and reason the old command can retire.",
+            readyWhen: "Ready when the renewed command clearly replaces or revalidates the aged row.",
+            hold: "Hold if replacement command or retirement reason is unclear.",
+            score: 84
+          },
+          {
+            label: "Owner review renewal",
+            owner: "Release owner",
+            method: "OWNER",
+            route: "beta.command.renewal.owner_review",
+            proof: "Record primary owner, fallback owner, review date, and next command review window.",
+            readyWhen: "Ready when every renewed command has owner accountability and a next review date.",
+            hold: "Hold if owner or review window is absent.",
+            score: 84
+          },
+          {
+            label: "Conflict cleanup renewal",
+            owner: "Decision hygiene desk",
+            method: "CONFLICT",
+            route: "beta.command.renewal.conflict_cleanup",
+            proof: "Clear conflicting go, hold, freeze, repair, or launch-language rows before the renewed command is trusted.",
+            readyWhen: "Ready when command conflicts are closed or named as residue.",
+            hold: "Hold if conflicting commands still point in different directions.",
+            score: 83
+          },
+          {
+            label: "Release-copy renewal",
+            owner: "Release notes desk",
+            method: "COPY",
+            route: "beta.command.renewal.release_copy",
+            proof: "Refresh release-safe copy, share boundary, no-private-data language, and beta widening caveat.",
+            readyWhen: "Ready when release copy matches the renewed command without overselling readiness.",
+            hold: "Hold if copied language implies launch approval or stores private detail.",
+            score: 84
+          },
+          {
+            label: "Founder memory renewal",
+            owner: "Founder desk",
+            method: "MEMORY",
+            route: "beta.command.renewal.founder_memory",
+            proof: "Record founder-readable memory, renewal reason, old-command archive link, and current go/hold/freeze state.",
+            readyWhen: "Ready when founder memory explains what changed and what remains held.",
+            hold: "Hold if founder memory cannot distinguish old and renewed command states.",
+            score: 85
+          },
+          {
+            label: "Next expiry renewal",
+            owner: "Release calendar",
+            method: "EXPIRY",
+            route: "beta.command.renewal.next_expiry",
+            proof: "Set next expiry window, renewal trigger, repair route, and freeze condition.",
+            readyWhen: "Ready when the renewed command has a visible next expiry and repair route.",
+            hold: "Hold if the command has no next expiry or freeze trigger.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "Beta command renewal receipt renews aged command memory only; it does not invite users, process payments, grant access, or approve beta expansion.",
+          "Every renewed command needs replacement, owner review, conflict cleanup, release-copy, founder memory, and next expiry states.",
+          "Renewed command memory cannot override production gates, support holds, payment holds, account holds, source holds, or founder signoff gaps.",
+          "Command renewal receipts must be release-safe and exclude private support notes, contact details, account payloads, and payment payloads.",
+          "No beta command renewal row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No aged command may be renewed without replacement proof and owner review.",
+          "No renewed command may widen beta language while conflicting go, hold, freeze, or repair rows remain unresolved.",
+          "No founder memory may hide the prior command state or next expiry.",
+          "No beta command renewal receipt may imply user invite, access grant, payment readiness, or production launch approval."
+        ],
+        receiptFields: [
+          "beta_command_renewal_receipt_id",
+          "release_key",
+          "aged_command_id",
+          "replacement_command_state",
+          "owner_review_state",
+          "conflict_cleanup_state",
+          "release_copy_state",
+          "founder_memory_state",
+          "next_expiry_at",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Beta Command Renewal Receipt is a static command renewal room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -18348,14 +18447,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account retention dry-run receipts now have vault memory; next releases should lock beta command renewal receipt, support repair renewal receipt, source correction renewal aging guard, payment acceptance aging guard, and account retention dry-run aging guard.",
+      rule: "Aged beta command rows now have renewal receipts; next releases should lock support repair renewal receipt, source correction renewal aging guard, payment acceptance aging guard, account retention dry-run aging guard, and beta command renewal aging guard.",
       lanes: [
-        {
-          version: "v557",
-          label: "Beta command renewal receipt",
-          route: "#founder-beta-operating-room",
-          detail: "Convert aged command archive rows into renewed founder receipts with replacement and release-copy proof."
-        },
         {
           version: "v558",
           label: "Support repair renewal receipt",
@@ -18379,14 +18472,27 @@ function buildTrackerConfig() {
           label: "Account retention dry-run aging guard",
           route: "#account-readiness",
           detail: "Warn when vaulted dry-run receipts age past owner, redaction, support-safe, or deletion-review windows."
+        },
+        {
+          version: "v562",
+          label: "Beta command renewal aging guard",
+          route: "#founder-beta-operating-room",
+          detail: "Warn when renewed beta commands age past owner review, conflict cleanup, release-copy, or expiry windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account retention dry-run vault proof visible",
+      verdict: "Beta command renewal proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v556",
+          key: "20260709-v556-01",
+          commit: "66a6488",
+          receiptId: "NN-SHARE-RECEIPT-20260709V55601",
+          proof: "Account Retention Dry-Run Receipt Vault added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
+        },
         {
           version: "v555",
           key: "20260709-v555-01",
@@ -18414,13 +18520,6 @@ function buildTrackerConfig() {
           commit: "ec8c9b5",
           receiptId: "NN-SHARE-RECEIPT-20260709V55201",
           proof: "Beta Command Archive Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v551",
-          key: "20260709-v551-01",
-          commit: "b5fe281",
-          receiptId: "NN-SHARE-RECEIPT-20260709V55101",
-          proof: "Account Retention Job Acceptance Harness added, header release marker fixed, and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -18458,13 +18557,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v556",
-        detail: "Account Retention Dry-Run Receipt Vault is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v557",
+        detail: "Beta Command Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v556 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v557 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -18473,25 +18572,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v556 held until live stamp",
-        detail: "Do not share v556 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v557 held until live stamp",
+        detail: "Do not share v557 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v556 account dry-run vault",
-        detail: "Account Retention Dry-Run Receipt Vault collects dry-run, object family, owner, redaction, support-safe, failure replay, and founder vault signoff proof."
+        value: "v557 beta command renewal",
+        detail: "Beta Command Renewal Receipt renews aged founder command rows with replacement, owner review, conflict cleanup, release-copy, founder memory, and next expiry proof."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v556 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v557 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v556 held until live stamp",
-        detail: "The release is share-ready only after v556 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v557 held until live stamp",
+        detail: "The release is share-ready only after v557 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

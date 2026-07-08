@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v557 Beta Command Renewal Receipt
+
+- Version: `0.557.0`
+- Data version: `20260709-v557-01`
+- Changes made: Added Beta Command Renewal Receipt to the Build Tracker Release Doctor with replacement renewal, owner review renewal, conflict cleanup renewal, release-copy renewal, founder memory renewal, next expiry renewal, beta command renewal receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v556 commit, next-batch planner roll-forward to v558-v562, and release markers rolled forward to v557.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v557 marker scan.
+- Known risks: Beta Command Renewal Receipt is a static command renewal room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v556 Account Retention Dry-Run Receipt Vault
 
 - Version: `0.556.0`

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V543 Support Repair Closeout Receipt
+
+V543 adds Support Repair Closeout Receipt to the Build Tracker Release Doctor. It stores accepted repair, support-safe copy, owner signoff, residual risk, regression trigger, and founder receipt.
+
+- Release label: `NiveshNadi Phase 1 v543 Support Repair Closeout Receipt`
+- Data/version key: `20260709-v543-01`
+- Product surface: Build Tracker > Release Doctor > Support repair closeout receipt
+- Risk boundary: Static support repair receipt only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+- Verification status: Pending batch checks.
+
 ## V542 Beta Command Expiry Closeout
 
 V542 adds Beta Command Expiry Closeout to the Build Tracker Release Doctor. It closes expired founder commands with replacement proof, retirement reason, conflict cleanup, release-safe memory, and founder closeout.

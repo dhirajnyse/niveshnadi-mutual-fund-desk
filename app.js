@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v542-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v542 Beta Command Expiry Closeout";
+const DATA_VERSION = "20260709-v543-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v543 Support Repair Closeout Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command expiry closeout",
+    label: "Support repair closeout receipt",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Close expired founder commands with replacement proof, retirement reason, and release-safe memory."
+    route: "#paid-beta-support-ledger",
+    detail: "Turn accepted support repairs into release receipts with support-safe copy, owner signoff, and residual-risk notes."
   },
   {
     label: "Mobile calm audit",
@@ -16785,6 +16785,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Expiry Closeout is a static command closeout room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion."
+      },
+      {
+        key: "supportRepairCloseoutReceipt",
+        label: "Support repair closeout receipt",
+        verdict: "Accepted repairs need release receipts",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "CLOSEOUT", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-closeout-receipt",
+        copyLabel: "Copy repair receipt",
+        score: 82,
+        rule: "No accepted support repair should become release memory unless support-safe copy, owner signoff, residual-risk note, regression trigger, and founder receipt are visible.",
+        lanes: [
+          {
+            label: "Accepted repair receipt",
+            owner: "Support repair desk",
+            method: "RECEIPT",
+            route: "support.repair.receipt-accepted",
+            proof: "Record repair ticket, accepted verdict, repaired surface, reviewer note, and closeout date.",
+            readyWhen: "Ready when accepted repairs become durable release receipts.",
+            hold: "Hold if accepted repair lacks ticket ID, reviewer note, or closeout date.",
+            score: 82
+          },
+          {
+            label: "Support-safe copy",
+            owner: "Support copy desk",
+            method: "COPY",
+            route: "support.repair.receipt-safe-copy",
+            proof: "Attach final approved wording, no-advice check, refund boundary, source boundary, and private-data exclusion.",
+            readyWhen: "Ready when support can reuse the copy without widening promises.",
+            hold: "Hold if final copy is missing or unsafe.",
+            score: 83
+          },
+          {
+            label: "Owner signoff",
+            owner: "Support captain",
+            method: "SIGNOFF",
+            route: "support.repair.receipt-owner-signoff",
+            proof: "Record repair owner, accepted copy owner, escalation owner, and next review date.",
+            readyWhen: "Ready when every accepted repair has accountable ownership.",
+            hold: "Hold if owner signoff or next review date is missing.",
+            score: 82
+          },
+          {
+            label: "Residual risk note",
+            owner: "Risk desk",
+            method: "RISK",
+            route: "support.repair.receipt-residual-risk",
+            proof: "Name remaining risk, user confusion risk, support pause condition, and release hold.",
+            readyWhen: "Ready when accepted repairs are not mistaken for zero-risk support launch.",
+            hold: "Hold if residual risk or pause condition is missing.",
+            score: 81
+          },
+          {
+            label: "Regression trigger",
+            owner: "QA desk",
+            method: "REGRESSION",
+            route: "support.repair.receipt-regression-trigger",
+            proof: "Record trigger that reopens the repair if copy drifts, refund wording changes, or source correction changes.",
+            readyWhen: "Ready when support repairs can reopen automatically when facts drift.",
+            hold: "Hold if regression trigger is blank.",
+            score: 82
+          },
+          {
+            label: "Founder support receipt",
+            owner: "Founder release desk",
+            method: "FOUNDER",
+            route: "support.repair.receipt-founder",
+            proof: "Record founder receipt, repair batch summary, accepted scope, held scope, and release-safe memory.",
+            readyWhen: "Ready when founder can see accepted and held repairs in one proof row.",
+            hold: "Hold if founder receipt or held-scope note is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Support repair closeout receipt stores repair metadata and approved copy summaries only.",
+          "Every accepted support repair has one ticket, one safe-copy state, one owner signoff, one residual-risk note, and one regression trigger.",
+          "Regression triggers reopen the repair when source correction, refund wording, private-data boundary, or advice boundary drifts.",
+          "Founder receipt separates accepted scope from held scope before support widening.",
+          "No support repair receipt row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No support repair may close without accepted ticket, safe copy, owner signoff, residual risk, and regression trigger.",
+          "No approved support copy may promise advice, refunds, access, payments, or guaranteed outcomes.",
+          "No founder receipt may hide held repair scope.",
+          "No support repair receipt row may expose private identifiers, credentials, auth tokens, payment payloads, or raw support notes."
+        ],
+        receiptFields: [
+          "support_repair_closeout_receipt_id",
+          "release_key",
+          "repair_ticket_id",
+          "accepted_copy_id",
+          "owner_signoff",
+          "residual_risk",
+          "regression_trigger",
+          "support_safe_status",
+          "founder_receipt",
+          "held_scope",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Support Repair Closeout Receipt is a static support repair receipt only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
       }
     ],
     executiveCalmCompression: {
@@ -16957,14 +17057,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta command expiry now has closeout proof; next releases should lock support repair closeout receipt, source correction archive compactor, payment incident replay rehearsal, account retention job blueprint, and beta command archive compactor.",
+      rule: "Support repairs now have closeout receipts; next releases should lock source correction archive compactor, payment incident replay rehearsal, account retention job blueprint, beta command archive compactor, and support repair aging guard.",
       lanes: [
-        {
-          version: "v543",
-          label: "Support repair closeout receipt",
-          route: "#paid-beta-support-ledger",
-          detail: "Turn accepted support repairs into release receipts with support-safe copy, owner signoff, and residual-risk notes."
-        },
         {
           version: "v544",
           label: "Source correction archive compactor",
@@ -16988,14 +17082,27 @@ function buildTrackerConfig() {
           label: "Beta command archive compactor",
           route: "#founder-beta-operating-room",
           detail: "Compact expired command closeouts into short archive receipts with replacement, conflict, and founder signoff proof."
+        },
+        {
+          version: "v548",
+          label: "Support repair aging guard",
+          route: "#paid-beta-support-ledger",
+          detail: "Warn when accepted support repair receipts age past source, refund, privacy, or founder review windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Command closeout proof visible",
+      verdict: "Support receipt proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v542",
+          key: "20260709-v542-01",
+          commit: "4feb465",
+          receiptId: "NN-SHARE-RECEIPT-20260709V54201",
+          proof: "Beta Command Expiry Closeout added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v541",
           key: "20260708-v541-01",
@@ -17023,13 +17130,6 @@ function buildTrackerConfig() {
           commit: "44aa266",
           receiptId: "NN-SHARE-RECEIPT-20260708V53801",
           proof: "Support Drift Repair Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v537",
-          key: "20260708-v537-01",
-          commit: "01fd81f",
-          receiptId: "NN-SHARE-RECEIPT-20260708V53701",
-          proof: "Beta Command Aging Monitor added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -17067,13 +17167,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v542",
-        detail: "Beta Command Expiry Closeout is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v543",
+        detail: "Support Repair Closeout Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v542 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v543 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -17082,25 +17182,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v542 held until live stamp",
-        detail: "Do not share v542 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v543 held until live stamp",
+        detail: "Do not share v543 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v542 command expiry closeout",
-        detail: "Beta Command Expiry Closeout closes expired founder commands with replacement proof, retirement reason, conflict cleanup, release-safe memory, and founder closeout."
+        value: "v543 support repair receipt",
+        detail: "Support Repair Closeout Receipt stores accepted repair, support-safe copy, owner signoff, residual risk, regression trigger, and founder receipt."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v542 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v543 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v542 held until live stamp",
-        detail: "The release is share-ready only after v542 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v543 held until live stamp",
+        detail: "The release is share-ready only after v543 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

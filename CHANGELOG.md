@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v543 Support Repair Closeout Receipt
+
+- Version: `0.543.0`
+- Data version: `20260709-v543-01`
+- Changes made: Added Support Repair Closeout Receipt to the Build Tracker Release Doctor with accepted repair receipt, support-safe copy, owner signoff, residual risk note, regression trigger, founder support receipt, support repair receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v542 commit, next-batch planner roll-forward to v544-v548, and release markers rolled forward to v543.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v543 marker scan.
+- Known risks: Support Repair Closeout Receipt is a static support repair receipt only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+
 ## NiveshNadi Phase 1 v542 Beta Command Expiry Closeout
 
 - Version: `0.542.0`

@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V512 Pilot Support SLA Evidence Binder
+
+V512 adds Pilot Support SLA Evidence Binder to the Build Tracker Release Doctor. It locks response windows, owner and escalation proof, open-case ceilings, refund and payment stop, source correction route, support-safe rules, and founder support closeout before founder beta support claims widen.
+
 ## V511 Account Auth Provider Decision Room
 
 V511 adds Account Auth Provider Decision Room to the Build Tracker Release Doctor. It decides managed/custom/no-account posture, session and access policy, recovery, export/delete, consent boundary, support-safe account status, security launch no-go checks, and founder decision state before saved research leaves browser-local custody.

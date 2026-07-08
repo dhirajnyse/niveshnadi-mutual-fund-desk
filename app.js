@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v511-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v511 Account Auth Provider Decision Room";
+const DATA_VERSION = "20260708-v512-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v512 Pilot Support SLA Evidence Binder";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v481 passed release checks on commit da2f65b. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v511 passed live-stamp checks on commit 47fdcce. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v481 local checks passed",
+      outcome: "Previous outcome: v511 live stamp verified",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260707V48101",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51101",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -13635,6 +13635,112 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    batchProofRooms: [
+      {
+        key: "pilotSupportSlaEvidenceBinder",
+        label: "Pilot support SLA evidence binder",
+        verdict: "Support promise needs evidence before widening",
+        receiptId: ["NN", "PILOT", "SUPPORT", "SLA", "EVIDENCE", "BINDER", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-pilot-support-sla-evidence-binder",
+        copyLabel: "Copy support SLA",
+        score: 78,
+        rule: "No founder beta wave should widen until response windows, owner receipts, open-case ceiling, escalation proof, refund stop, source correction route, and founder support closeout are visible in one support-safe binder.",
+        lanes: [
+          {
+            label: "Response window receipt",
+            owner: "Support desk",
+            method: "BIND",
+            route: "support.sla.response-window",
+            proof: "Name first-response, follow-up, closeout, weekend, and founder-review windows with receipt IDs.",
+            readyWhen: "Ready when every support promise has a measurable window and owner.",
+            hold: "Hold if support copy promises fast help without a measured window or reviewer owner.",
+            score: 79
+          },
+          {
+            label: "Owner and escalation proof",
+            owner: "Founder support",
+            method: "BIND",
+            route: "support.sla.owner-escalation",
+            proof: "Assign owner, backup, escalation reason, escalation window, and closeout state for each case family.",
+            readyWhen: "Ready when private-data fear, payment confusion, refund request, source correction, and account hold cases have owners.",
+            hold: "Hold if the founder must remember escalation rules from chat history or private notes.",
+            score: 77
+          },
+          {
+            label: "Open-case ceiling",
+            owner: "Support capacity",
+            method: "BIND",
+            route: "support.sla.case-ceiling",
+            proof: "Set active case cap, stale-case age, freeze trigger, next-invite stop, and founder review cadence.",
+            readyWhen: "Ready when the next invite wave stops automatically from support load evidence.",
+            hold: "Hold if invites can continue while open, stale, refund, or privacy cases exceed capacity.",
+            score: 78
+          },
+          {
+            label: "Refund and payment stop",
+            owner: "Finance support",
+            method: "BIND",
+            route: "support.sla.refund-payment-stop",
+            proof: "Show refund route, payment confusion reply, entitlement hold, support notice, and finance closeout receipt.",
+            readyWhen: "Ready when support can stop payment expansion without touching raw payment data.",
+            hold: "Hold if refund or payment confusion can be resolved only through manual founder judgment.",
+            score: 76
+          },
+          {
+            label: "Source correction route",
+            owner: "Evidence support",
+            method: "BIND",
+            route: "support.sla.source-correction",
+            proof: "Map stale source, wrong date, missing citation, correction notice, reviewer release, and user reply wording.",
+            readyWhen: "Ready when support can answer source issues without advice language or silent claim changes.",
+            hold: "Hold if source correction bypasses reviewer release or affected-surface rollback.",
+            score: 78
+          },
+          {
+            label: "Founder support closeout",
+            owner: "Founder release desk",
+            method: "BIND",
+            route: "support.sla.founder-closeout",
+            proof: "Close each support period with cases opened, cases closed, stale cases, refund holds, source holds, privacy holds, and next-wave decision.",
+            readyWhen: "Ready when the founder can repeat, pause, repair, or widen from one support SLA memo.",
+            hold: "Hold if support closeout is missing before the next named cohort wave opens.",
+            score: 80
+          }
+        ],
+        operatingRules: [
+          "Support SLA proof is founder-beta evidence only; it must not promise regulated advice, guaranteed response outcomes, or transaction execution.",
+          "Support records keep case family, owner, window, state, and closeout only; private identifiers stay outside the prototype.",
+          "Open support load can stop the next cohort even when payment intent exists.",
+          "Payment, refund, source correction, privacy fear, and advice confusion need approved replies before widening.",
+          "A support SLA binder is ready only when it can produce one founder closeout memo without private data."
+        ],
+        noGoLines: [
+          "No support binder may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, distributor-client records, or raw payment payloads.",
+          "No next cohort wave may open while open-case ceiling, stale-case age, refund confusion, source correction, or privacy fear is unresolved.",
+          "No support reply may tell an investor to buy, sell, switch, redeem, start SIP/STP, or treat the desk as personalized advice.",
+          "No support SLA may be marketed before owner, window, freeze, refund, source correction, and founder closeout receipts exist."
+        ],
+        receiptFields: [
+          "pilot_support_sla_evidence_binder_id",
+          "release_key",
+          "support_case_family",
+          "response_window",
+          "follow_up_window",
+          "case_owner",
+          "backup_owner",
+          "open_case_count",
+          "stale_case_age",
+          "refund_stop_state",
+          "payment_confusion_state",
+          "source_correction_state",
+          "privacy_case_state",
+          "founder_closeout_memo_id",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Pilot Support SLA Evidence Binder is a static support-readiness contract only; it does not provide live support, process refunds, correct source data, identify users, or approve cohort widening."
+      }
+    ],
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -13805,14 +13911,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account auth provider choice closes the first account-custody decision bridge; next releases should lock support SLA evidence, beta entitlement replay, connector failure replay, billing observability, and account recovery smoke proof.",
+      rule: "Support SLA evidence closes the first founder-support bridge; next releases should lock entitlement replay, connector failure replay, billing observability, account recovery smoke proof, and founder beta release evidence.",
       lanes: [
-        {
-          version: "v512",
-          label: "Pilot support SLA evidence binder",
-          route: "#paid-beta-support-ledger",
-          detail: "Attach response windows, owner receipts, open-case ceilings, escalation proof, and founder closeout before support claims widen."
-        },
         {
           version: "v513",
           label: "Beta entitlement replay board",
@@ -13836,6 +13936,12 @@ function buildTrackerConfig() {
           label: "Account recovery smoke proof board",
           route: "#account-readiness",
           detail: "Replay lost access, session freeze, export-before-delete, deletion receipt, restore hold, and support-safe account status."
+        },
+        {
+          version: "v517",
+          label: "Founder beta release evidence packet",
+          route: "#founder-beta-operating-room",
+          detail: "Bundle cohort, support, entitlement, source, payment, account, and founder signoff evidence into one release packet."
         }
       ]
     },
@@ -13844,6 +13950,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v511",
+          key: "20260708-v511-01",
+          commit: "47fdcce",
+          receiptId: "NN-SHARE-RECEIPT-20260708V51101",
+          proof: "Account Auth Provider Decision Room added, stale release pill fixed, visually checked, pushed to main, and live stamp verified."
+        },
         {
           version: "v510",
           key: "20260708-v510-01",
@@ -13871,13 +13984,6 @@ function buildTrackerConfig() {
           commit: "d52a9fd",
           receiptId: "NN-SHARE-RECEIPT-20260708V50701",
           proof: "Pilot Support Dry Run Board added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v506",
-          key: "20260708-v506-01",
-          commit: "ee19d28",
-          receiptId: "NN-SHARE-RECEIPT-20260708V50601",
-          proof: "Pilot Invite Copy Approval Room added, visually checked, pushed to main, and live stamp verified."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -13915,40 +14021,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v511",
-        detail: "Account Auth Provider Decision Room is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v512",
+        detail: "Pilot Support SLA Evidence Binder is wired with matching release label, data key, stamp, docs, changelog, and reusable batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v506 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v512 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
         value: "Visual QA next",
-        detail: "This five-version batch is ready for local browser QA, push, and live-stamp verification."
+        detail: "The batch proof pipeline is ready for local browser QA, push, and live-stamp verification."
       },
       {
         label: "04 Share",
-        value: "v506 held until live stamp",
-        detail: "Do not share v506 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v512 held until live stamp",
+        detail: "Do not share v512 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v506 source change",
-        detail: "Pilot Invite Copy Approval Room gathers primary invite promise, research boundary, data boundary, payment/refund copy, support pause triggers, and founder approval before a named cohort opens."
+        value: "v512 support SLA binder",
+        detail: "Pilot Support SLA Evidence Binder gathers response windows, owner receipts, case ceilings, escalation proof, refund stops, source correction, and founder closeout before support claims widen."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v506 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v512 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v506 held until live stamp",
-        detail: "The batch release is share-ready only after v506 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v512 held until live stamp",
+        detail: "The release is share-ready only after v512 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [
@@ -14672,6 +14778,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.liveSourceConnectorSpikePlan, "Live source connector spike plan")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan, "Payment provider sandbox integration plan")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.accountAuthProviderDecisionRoom, "Account auth provider decision room")}
+      ${tracker.releaseDoctor.batchProofRooms.map((proof) => releaseDoctorOperationalProofMarkup(proof, proof.label)).join("")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -14849,6 +14956,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-live-source-connector-spike-plan>Copy source connector</button>
         <button class="text-button" type="button" data-copy-payment-provider-sandbox-integration-plan>Copy payment sandbox</button>
         <button class="text-button" type="button" data-copy-account-auth-provider-decision-room>Copy auth decision</button>
+        ${tracker.releaseDoctor.batchProofRooms.map((proof) => `<button class="text-button" type="button" data-copy-release-doctor-batch-proof="${escapeHtml(proof.key)}" ${proof.copyAttr}>${escapeHtml(proof.copyLabel)}</button>`).join("")}
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -15612,6 +15720,19 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.accountAuthProviderDecisionRoom.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.accountAuthProviderDecisionRoom.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.accountAuthProviderDecisionRoom.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    ...tracker.releaseDoctor.batchProofRooms.flatMap((proof) => [
+      `## ${proof.label}`,
+      `- Receipt ID: ${proof.receiptId}`,
+      `- Verdict: ${proof.verdict}`,
+      `- Score: ${proof.score}/100`,
+      `- Rule: ${proof.rule}`,
+      ...proof.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+      ...proof.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+      ...proof.noGoLines.map((line) => `- No-go: ${line}`),
+      ...proof.receiptFields.map((field) => `- Receipt field: ${field}`),
+      ""
+    ]),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -16537,6 +16658,12 @@ function makeAccountAuthProviderDecisionRoomBrief() {
     buildTrackerConfig().releaseDoctor.accountAuthProviderDecisionRoom,
     "Account Auth Provider Decision Room is a static auth decision contract only. It does not configure an auth provider, create accounts, store user data, recover accounts, delete records, or approve account launch."
   );
+}
+
+function makeReleaseDoctorBatchProofBrief(key) {
+  const proof = buildTrackerConfig().releaseDoctor.batchProofRooms.find((room) => room.key === key);
+  if (!proof) return "";
+  return makeOperationalProofBrief(proof.label, proof, proof.boundary);
 }
 
 function makeNextBatchPlanBrief() {
@@ -70866,6 +70993,13 @@ function bindEvents() {
     if (!copyAccountAuthProviderDecisionRoom) return;
     event.preventDefault();
     copyText(makeAccountAuthProviderDecisionRoomBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyReleaseDoctorBatchProof = event.target.closest("[data-copy-release-doctor-batch-proof]");
+    if (!copyReleaseDoctorBatchProof) return;
+    event.preventDefault();
+    copyText(makeReleaseDoctorBatchProofBrief(copyReleaseDoctorBatchProof.dataset.copyReleaseDoctorBatchProof));
   });
 
   document.addEventListener("click", (event) => {

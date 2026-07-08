@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v512 Pilot Support SLA Evidence Binder
+
+- Version: `0.512.0`
+- Data version: `20260708-v512-01`
+- Changes made: Added Pilot Support SLA Evidence Binder to the Build Tracker Release Doctor with response windows, owner and escalation proof, open-case ceilings, refund and payment stop, source correction routing, founder support closeout, reusable current-batch proof room rendering, generic batch-room copy export, release memory cleanup from stale v506/v481 text, proof archive roll-forward with v511 live receipt, next-batch planner roll-forward to v513-v517, and release markers rolled forward to v512.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v512 marker scan.
+- Known risks: Pilot Support SLA Evidence Binder is a static support-readiness contract only; it does not provide live support, process refunds, correct source data, identify users, enforce support queues, or approve cohort widening.
+
 ## NiveshNadi Phase 1 v511 Account Auth Provider Decision Room
 
 - Version: `0.511.0`

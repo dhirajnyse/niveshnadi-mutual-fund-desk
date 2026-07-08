@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v544-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v544 Source Correction Archive Compactor";
+const DATA_VERSION = "20260709-v545-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v545 Payment Incident Replay Rehearsal";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction archive compactor",
+    label: "Payment incident replay rehearsal",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Compact retired correction proof into short archive receipts with replacement row, expiry, and cache proof."
+    route: "#payment-wiring",
+    detail: "Replay recent payment incidents against closeout audit states before payment launch claims widen."
   },
   {
     label: "Mobile calm audit",
@@ -16985,6 +16985,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Archive Compactor is a static archive-compaction room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims."
+      },
+      {
+        key: "paymentIncidentReplayRehearsal",
+        label: "Payment incident replay rehearsal",
+        verdict: "Incidents need replay before widening",
+        receiptId: ["NN", "PAYMENT", "INCIDENT", "REPLAY", "REHEARSAL", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-incident-replay-rehearsal",
+        copyLabel: "Copy incident replay",
+        score: 81,
+        rule: "Recent payment incident patterns should replay against closeout audit states before payment launch claims widen, with entitlement, support copy, refund, rollback, and founder verdict visible.",
+        lanes: [
+          {
+            label: "Incident replay set",
+            owner: "Payment operations",
+            method: "REPLAY",
+            route: "payment.incident.replay-set",
+            proof: "Select recent incident families, mismatch classes, failed assumptions, and replay owner.",
+            readyWhen: "Ready when the replay set covers recent payment failure patterns.",
+            hold: "Hold if incident families or replay owner are missing.",
+            score: 81
+          },
+          {
+            label: "Closeout state match",
+            owner: "Payment audit desk",
+            method: "MATCH",
+            route: "payment.incident.closeout-match",
+            proof: "Compare each incident to repaired, held, rollback, refund-review, support-held, or founder signoff state.",
+            readyWhen: "Ready when every incident lands in a current closeout state.",
+            hold: "Hold if incident state does not match the closeout audit.",
+            score: 82
+          },
+          {
+            label: "Entitlement replay",
+            owner: "Entitlement desk",
+            method: "ENTITLEMENT",
+            route: "payment.incident.entitlement-replay",
+            proof: "Replay access effect, entitlement hold, rollback result, and no-token boundary.",
+            readyWhen: "Ready when entitlement effects are explicit without payment payloads.",
+            hold: "Hold if entitlement effect or rollback result is unclear.",
+            score: 81
+          },
+          {
+            label: "Support copy replay",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "payment.incident.support-copy-replay",
+            proof: "Replay approved support copy against incident family, refund wording, access wording, and escalation owner.",
+            readyWhen: "Ready when support copy survives the incident replay without unsafe promises.",
+            hold: "Hold if support copy creates refund, access, or payment confusion.",
+            score: 81
+          },
+          {
+            label: "Refund and rollback replay",
+            owner: "Finance review desk",
+            method: "REFUND",
+            route: "payment.incident.refund-rollback-replay",
+            proof: "Replay refund-review state, rollback state, non-payment boundary, support wording, and next owner.",
+            readyWhen: "Ready when refund and rollback states are understandable before launch claims widen.",
+            hold: "Hold if refund or rollback path is ambiguous.",
+            score: 80
+          },
+          {
+            label: "Founder replay verdict",
+            owner: "Founder finance desk",
+            method: "VERDICT",
+            route: "payment.incident.founder-replay-verdict",
+            proof: "Record founder verdict, replay residue, blocked surfaces, and final payment launch hold.",
+            readyWhen: "Ready when founder sees which incident patterns still block widening.",
+            hold: "Hold if founder verdict or replay residue is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Payment incident replay rehearsal tracks payment incident metadata only.",
+          "Every replay row maps incident family to closeout state, entitlement effect, support copy, refund or rollback state, and founder verdict.",
+          "Replay output must never include gateway payloads, payment tokens, card data, bank data, or private support notes.",
+          "Support copy must stay research/support-safe and not promise refunds, access, or payment outcomes.",
+          "No payment incident replay row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, gateway secrets, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No payment launch claim may widen while recent incident patterns fail replay.",
+          "No incident replay row may close without closeout state match, entitlement effect, support copy, refund/rollback state, and founder verdict.",
+          "No replay copy may imply a payment, refund, or access action was executed.",
+          "No payment incident replay row may expose private identifiers, gateway secrets, auth tokens, payment payloads, or raw support notes."
+        ],
+        receiptFields: [
+          "payment_incident_replay_rehearsal_id",
+          "release_key",
+          "incident_id",
+          "replay_batch_id",
+          "closeout_state_match",
+          "entitlement_replay_state",
+          "support_copy_state",
+          "refund_rollback_state",
+          "founder_verdict",
+          "residual_risk",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Payment Incident Replay Rehearsal is a static incident replay room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -17157,14 +17257,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source corrections now have compact archive receipts; next releases should lock payment incident replay rehearsal, account retention job blueprint, beta command archive compactor, support repair aging guard, and source correction expiry guard.",
+      rule: "Payment incidents now have replay rehearsal; next releases should lock account retention job blueprint, beta command archive compactor, support repair aging guard, source correction expiry guard, and payment closeout SLA guard.",
       lanes: [
-        {
-          version: "v545",
-          label: "Payment incident replay rehearsal",
-          route: "#payment-wiring",
-          detail: "Replay recent payment incidents against closeout audit states before payment launch claims widen."
-        },
         {
           version: "v546",
           label: "Account retention job blueprint",
@@ -17188,14 +17282,27 @@ function buildTrackerConfig() {
           label: "Source correction expiry guard",
           route: "#correction-ledger",
           detail: "Warn when correction notices, archive receipts, or support handoffs pass expiry without review."
+        },
+        {
+          version: "v550",
+          label: "Payment closeout SLA guard",
+          route: "#payment-wiring",
+          detail: "Warn when payment closeout, refund review, rollback, or support-held rows age past owner SLA."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Correction archive proof visible",
+      verdict: "Payment replay proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v544",
+          key: "20260709-v544-01",
+          commit: "c833dc3",
+          receiptId: "NN-SHARE-RECEIPT-20260709V54401",
+          proof: "Source Correction Archive Compactor added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v543",
           key: "20260709-v543-01",
@@ -17223,13 +17330,6 @@ function buildTrackerConfig() {
           commit: "2a4cbed",
           receiptId: "NN-SHARE-RECEIPT-20260708V54001",
           proof: "Payment Repair Closeout Audit added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v539",
-          key: "20260708-v539-01",
-          commit: "0192d74",
-          receiptId: "NN-SHARE-RECEIPT-20260708V53901",
-          proof: "Source Correction Retirement Monitor added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -17267,13 +17367,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v544",
-        detail: "Source Correction Archive Compactor is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v545",
+        detail: "Payment Incident Replay Rehearsal is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v544 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v545 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -17282,25 +17382,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v544 held until live stamp",
-        detail: "Do not share v544 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v545 held until live stamp",
+        detail: "Do not share v545 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v544 correction archive compactor",
-        detail: "Source Correction Archive Compactor compresses retired correction proof into short receipts with replacement row, expiry, cache proof, reviewer scope, and support handoff."
+        value: "v545 payment replay rehearsal",
+        detail: "Payment Incident Replay Rehearsal replays recent incident families against closeout state, entitlement effect, support copy, refund/rollback state, and founder verdict."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v544 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v545 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v544 held until live stamp",
-        detail: "The release is share-ready only after v544 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v545 held until live stamp",
+        detail: "The release is share-ready only after v545 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

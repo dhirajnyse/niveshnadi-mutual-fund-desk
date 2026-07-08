@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V545 Payment Incident Replay Rehearsal
+
+V545 adds Payment Incident Replay Rehearsal to the Build Tracker Release Doctor. It replays recent incident families against closeout state, entitlement effect, support copy, refund/rollback state, and founder verdict.
+
+- Release label: `NiveshNadi Phase 1 v545 Payment Incident Replay Rehearsal`
+- Data/version key: `20260709-v545-01`
+- Product surface: Build Tracker > Release Doctor > Payment incident replay rehearsal
+- Risk boundary: Static incident replay room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V544 Source Correction Archive Compactor
 
 V544 adds Source Correction Archive Compactor to the Build Tracker Release Doctor. It compresses retired correction proof into short receipts with replacement row, expiry, cache proof, reviewer scope, and support handoff.

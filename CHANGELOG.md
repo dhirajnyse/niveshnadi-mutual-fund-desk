@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v545 Payment Incident Replay Rehearsal
+
+- Version: `0.545.0`
+- Data version: `20260709-v545-01`
+- Changes made: Added Payment Incident Replay Rehearsal to the Build Tracker Release Doctor with incident replay set, closeout state match, entitlement replay, support copy replay, refund and rollback replay, founder replay verdict, payment replay receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v544 commit, next-batch planner roll-forward to v546-v550, and release markers rolled forward to v545.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v545 marker scan.
+- Known risks: Payment Incident Replay Rehearsal is a static incident replay room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v544 Source Correction Archive Compactor
 
 - Version: `0.544.0`

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v540-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v540 Payment Repair Closeout Audit";
+const DATA_VERSION = "20260708-v541-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v541 Account Custody Expiry Rehearsal";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment repair closeout audit",
+    label: "Account custody expiry rehearsal",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Check repaired, held, rolled back, refund-review, and support-held rows before launch claims widen."
+    route: "#account-readiness",
+    detail: "Rehearse expiring retained receipts, replacement owners, export/delete copy, and support-safe closeout."
   },
   {
     label: "Mobile calm audit",
@@ -16585,6 +16585,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Repair Closeout Audit is a static payment closeout audit only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountCustodyExpiryRehearsal",
+        label: "Account custody expiry rehearsal",
+        verdict: "Expiry path needs rehearsal",
+        receiptId: ["NN", "ACCOUNT", "CUSTODY", "EXPIRY", "REHEARSAL", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-custody-expiry-rehearsal",
+        copyLabel: "Copy expiry rehearsal",
+        score: 82,
+        rule: "No retained account receipt should survive expiry unless calendar, owner replacement, receipt retirement, export/delete copy, support-safe closeout, and founder signoff are rehearsed before custody widens.",
+        lanes: [
+          {
+            label: "Expiry calendar",
+            owner: "Account custody desk",
+            method: "CALENDAR",
+            route: "account.custody.expiry-calendar",
+            proof: "Record retained object family, expiry date, warning window, owner, and release hold.",
+            readyWhen: "Ready when every retained account receipt has a visible expiry date.",
+            hold: "Hold if expiry date, warning window, or owner is missing.",
+            score: 82
+          },
+          {
+            label: "Owner replacement",
+            owner: "Founder operations",
+            method: "OWNER",
+            route: "account.custody.owner-replacement",
+            proof: "Record outgoing owner, replacement owner, handoff reason, review date, and escalation route.",
+            readyWhen: "Ready when expired or stale owners cannot leave custody rows orphaned.",
+            hold: "Hold if replacement owner or handoff reason is missing.",
+            score: 83
+          },
+          {
+            label: "Receipt retirement",
+            owner: "Retention desk",
+            method: "RETIRE",
+            route: "account.custody.receipt-retirement",
+            proof: "Record retained receipt, retirement rule, retention purpose, expiry effect, and archive state.",
+            readyWhen: "Ready when receipts retire into proof-only state or get refreshed deliberately.",
+            hold: "Hold if retirement rule or archive state is unclear.",
+            score: 82
+          },
+          {
+            label: "Export/delete copy",
+            owner: "Account platform",
+            method: "COPY",
+            route: "account.custody.export-delete-copy",
+            proof: "Record export wording, delete wording, irreversible-state warning, support handoff, and no-identifier boundary.",
+            readyWhen: "Ready when export/delete copy is clear before any real account operation exists.",
+            hold: "Hold if export/delete wording is unclear, risky, or contains identifiers.",
+            score: 81
+          },
+          {
+            label: "Support-safe closeout",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "account.custody.support-safe-closeout",
+            proof: "Record support-safe status, approved reply copy, escalation owner, and private-data exclusion.",
+            readyWhen: "Ready when support can explain expiry without touching private account data.",
+            hold: "Hold if support-safe copy or escalation owner is missing.",
+            score: 82
+          },
+          {
+            label: "Founder expiry signoff",
+            owner: "Founder release desk",
+            method: "SIGNOFF",
+            route: "account.custody.expiry-signoff",
+            proof: "Record founder signoff, expiry rehearsal result, residual risk, and custody release hold.",
+            readyWhen: "Ready when founder sees what expires, what retires, and what remains held.",
+            hold: "Hold if founder signoff or residual-risk note is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Account custody expiry rehearsal tracks retention metadata and rehearsal copy only.",
+          "Every retained receipt has one expiry date, one owner, one replacement path, one retirement rule, and one support-safe closeout.",
+          "Export/delete copy must be clear before real account export or delete functionality exists.",
+          "Expired receipt rows stay held until founder signoff and support-safe wording are visible.",
+          "No expiry rehearsal row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No retained receipt may survive expiry without owner, expiry date, retirement rule, and support-safe closeout.",
+          "No account custody widening may proceed while replacement owner or founder signoff is missing.",
+          "No export/delete wording may imply a real operation exists before backend proof exists.",
+          "No expiry rehearsal row may expose private identifiers, credentials, auth tokens, payment payloads, or raw support notes."
+        ],
+        receiptFields: [
+          "account_custody_expiry_rehearsal_id",
+          "release_key",
+          "object_family",
+          "expiry_date",
+          "replacement_owner",
+          "retirement_rule",
+          "export_delete_copy_state",
+          "support_safe_closeout",
+          "founder_expiry_signoff",
+          "residual_risk",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Account Custody Expiry Rehearsal is a static expiry rehearsal only; it does not authenticate users, export data, delete data, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -16757,14 +16857,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment repair closeout now has audit states; next releases should lock account custody expiry rehearsal, beta command expiry closeout, support repair closeout receipt, source correction archive compactor, and payment incident replay rehearsal.",
+      rule: "Account custody expiry now has rehearsal proof; next releases should lock beta command expiry closeout, support repair closeout receipt, source correction archive compactor, payment incident replay rehearsal, and account retention job blueprint.",
       lanes: [
-        {
-          version: "v541",
-          label: "Account custody expiry rehearsal",
-          route: "#account-readiness",
-          detail: "Rehearse expiring retained receipts, replacement owners, export/delete copy, and support-safe closeout."
-        },
         {
           version: "v542",
           label: "Beta command expiry closeout",
@@ -16788,14 +16882,27 @@ function buildTrackerConfig() {
           label: "Payment incident replay rehearsal",
           route: "#payment-wiring",
           detail: "Replay recent payment incidents against closeout audit states before payment launch claims widen."
+        },
+        {
+          version: "v546",
+          label: "Account retention job blueprint",
+          route: "#account-readiness",
+          detail: "Translate expiry rehearsal into scheduled retention job contracts, owner reviews, and support-safe evidence."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Closeout proof visible",
+      verdict: "Expiry proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v540",
+          key: "20260708-v540-01",
+          commit: "2a4cbed",
+          receiptId: "NN-SHARE-RECEIPT-20260708V54001",
+          proof: "Payment Repair Closeout Audit added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v539",
           key: "20260708-v539-01",
@@ -16823,13 +16930,6 @@ function buildTrackerConfig() {
           commit: "29cb5ef",
           receiptId: "NN-SHARE-RECEIPT-20260708V53601",
           proof: "Account Retention Stale-State Monitor added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
-        },
-        {
-          version: "v535",
-          key: "20260708-v535-01",
-          commit: "9200f0d",
-          receiptId: "NN-SHARE-RECEIPT-20260708V53501",
-          proof: "Payment Repair Scoreboard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -16867,13 +16967,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v540",
-        detail: "Payment Repair Closeout Audit is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v541",
+        detail: "Account Custody Expiry Rehearsal is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v540 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v541 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -16882,25 +16982,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v540 held until live stamp",
-        detail: "Do not share v540 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v541 held until live stamp",
+        detail: "Do not share v541 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v540 payment closeout audit",
-        detail: "Payment Repair Closeout Audit checks repaired, held, rollback, refund-review, support-held, and founder finance signoff states before launch claims widen."
+        value: "v541 account expiry rehearsal",
+        detail: "Account Custody Expiry Rehearsal checks expiry calendar, replacement owners, receipt retirement, export/delete copy, support-safe closeout, and founder expiry signoff."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v540 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v541 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v540 held until live stamp",
-        detail: "The release is share-ready only after v540 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v541 held until live stamp",
+        detail: "The release is share-ready only after v541 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

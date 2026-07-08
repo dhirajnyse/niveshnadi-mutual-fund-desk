@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V541 Account Custody Expiry Rehearsal
+
+V541 adds Account Custody Expiry Rehearsal to the Build Tracker Release Doctor. It checks expiry calendar, replacement owners, receipt retirement, export/delete copy, support-safe closeout, and founder expiry signoff.
+
+- Release label: `NiveshNadi Phase 1 v541 Account Custody Expiry Rehearsal`
+- Data/version key: `20260708-v541-01`
+- Product surface: Build Tracker > Release Doctor > Account custody expiry rehearsal
+- Risk boundary: Static expiry rehearsal only; it does not authenticate users, export data, delete data, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Pending batch checks.
+
 ## V540 Payment Repair Closeout Audit
 
 V540 adds Payment Repair Closeout Audit to the Build Tracker Release Doctor. It checks repaired, held, rollback, refund-review, support-held, and founder finance signoff states before launch claims widen.

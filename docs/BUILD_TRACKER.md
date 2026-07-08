@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V536 Account Retention Stale-State Monitor
+
+V536 adds Account Retention Stale-State Monitor to the Build Tracker Release Doctor. It flags stale owners, redaction scans, review cadence, support-safe status, retirement rules, export/delete state, and release holds before custody widens.
+
+- Release label: `NiveshNadi Phase 1 v536 Account Retention Stale-State Monitor`
+- Data/version key: `20260708-v536-01`
+- Product surface: Build Tracker > Release Doctor > Account retention stale-state monitor
+- Risk boundary: Static retention freshness monitor only; it does not authenticate users, export data, delete data, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Pending batch checks.
+
 ## V535 Payment Repair Scoreboard
 
 V535 adds Payment Repair Scoreboard to the Build Tracker Release Doctor. It shows open, repaired, held, rolled back, refund-review, and support-held payment repair states with owner, entitlement effect, support notice, and no-payload boundary.

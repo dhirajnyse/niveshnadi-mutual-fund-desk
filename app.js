@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v535-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v535 Payment Repair Scoreboard";
+const DATA_VERSION = "20260708-v536-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v536 Account Retention Stale-State Monitor";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment repair scoreboard",
+    label: "Account retention stale-state monitor",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Show open, repaired, held, rollback, refund-review, and support-held payment repair states."
+    route: "#account-readiness",
+    detail: "Flag stale owners, redaction scans, review cadence, support-safe statuses, and retirement rules."
   },
   {
     label: "Mobile calm audit",
@@ -16084,6 +16084,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Repair Scoreboard is a static payment-repair state board only; it does not process payments, fetch gateway logs, issue refunds, grant access, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountRetentionStaleStateMonitor",
+        label: "Account retention stale-state monitor",
+        verdict: "Custody stale states need alerts",
+        receiptId: ["NN", "ACCOUNT", "RETENTION", "STALE", "STATE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-retention-stale-state-monitor",
+        copyLabel: "Copy stale monitor",
+        score: 82,
+        rule: "No account retention row should stay trusted unless owner, redaction scan, review cadence, support-safe status, export/delete state, and retirement rule are fresh enough for the current release.",
+        lanes: [
+          {
+            label: "Owner stale",
+            owner: "Data custody desk",
+            method: "OWNER",
+            route: "account.retention.stale-owner",
+            proof: "Flag retained object family, owner, last review date, stale age, replacement owner, and escalation route.",
+            readyWhen: "Ready when every retained object has a current owner.",
+            hold: "Hold if owner is missing, inactive, or past review cadence.",
+            score: 82
+          },
+          {
+            label: "Redaction scan age",
+            owner: "Privacy desk",
+            method: "SCAN",
+            route: "account.retention.scan-age",
+            proof: "Flag scan ID, scan age, blocked classes, exception owner, and rescan deadline.",
+            readyWhen: "Ready when retained metadata has a current redaction scan.",
+            hold: "Hold if scan is stale or exception has no owner.",
+            score: 83
+          },
+          {
+            label: "Review cadence miss",
+            owner: "Founder release desk",
+            method: "CADENCE",
+            route: "account.retention.cadence-miss",
+            proof: "Flag monthly, release, incident, delete, and supersede reviews that missed cadence.",
+            readyWhen: "Ready when stale retention rows cannot pass silently into a release.",
+            hold: "Hold if review cadence or next review date is missing.",
+            score: 81
+          },
+          {
+            label: "Support-safe stale",
+            owner: "Support captain",
+            method: "STATUS",
+            route: "account.retention.support-stale",
+            proof: "Flag support-safe status, last support wording, escalation owner, and private-data exclusion review.",
+            readyWhen: "Ready when support sees current status without private content.",
+            hold: "Hold if support status is stale, unclear, or exposes private data.",
+            score: 82
+          },
+          {
+            label: "Retirement rule stale",
+            owner: "Backend custody",
+            method: "RETIRE",
+            route: "account.retention.rule-stale",
+            proof: "Flag retirement rule, retention purpose, legal-safe receipt, expiry date, and founder review state.",
+            readyWhen: "Ready when retained receipts have a current retirement path.",
+            hold: "Hold if retention purpose or retirement rule is stale.",
+            score: 81
+          },
+          {
+            label: "Export/delete stale",
+            owner: "Account platform",
+            method: "STATE",
+            route: "account.retention.export-delete-stale",
+            proof: "Flag export manifest, delete request state, retained receipt, support-safe status, and irreversible-state review.",
+            readyWhen: "Ready when export and delete states match the latest retention register.",
+            hold: "Hold if export or delete state is stale or contradicts support copy.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Stale-state monitor watches retention metadata freshness, not private saved content.",
+          "Every stale row has one owner, one stale reason, one escalation route, one refresh action, and one hold rule.",
+          "Support-safe status must be current before support can use a retention row.",
+          "Redaction scan age and retirement rule are release-blocking when stale.",
+          "No stale-state monitor row may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No stale retention row may be treated as current without owner, scan age, review cadence, support-safe status, and retirement rule.",
+          "No account custody widening may proceed while stale owner, stale scan, or stale support status is unresolved.",
+          "No export or delete state may contradict the current retention register.",
+          "No stale-state monitor row may expose private saved research, identifiers, credentials, payment payloads, or raw support notes."
+        ],
+        receiptFields: [
+          "account_retention_stale_state_monitor_id",
+          "release_key",
+          "object_family",
+          "stale_reason",
+          "retention_owner",
+          "last_review_at",
+          "redaction_scan_age",
+          "support_safe_status",
+          "retirement_rule_state",
+          "export_delete_state",
+          "refresh_action",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Account Retention Stale-State Monitor is a static retention freshness monitor only; it does not authenticate users, export data, delete data, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -16256,14 +16357,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment repairs now have a founder-safe scoreboard; next releases should lock account retention stale-state monitor, beta command aging monitor, support drift repair queue, source correction retirement monitor, and payment repair closeout audit.",
+      rule: "Account retention stale states now have freshness alerts; next releases should lock beta command aging monitor, support drift repair queue, source correction retirement monitor, payment repair closeout audit, and account custody expiry rehearsal.",
       lanes: [
-        {
-          version: "v536",
-          label: "Account retention stale-state monitor",
-          route: "#account-readiness",
-          detail: "Watch retained receipt owners, review cadence, redaction scan age, support-safe status, and retirement rules for stale custody states."
-        },
         {
           version: "v537",
           label: "Beta command aging monitor",
@@ -16287,6 +16382,12 @@ function buildTrackerConfig() {
           label: "Payment repair closeout audit",
           route: "#payment-wiring",
           detail: "Check repaired, held, rolled back, refund-review, and support-held payment rows before launch claims widen."
+        },
+        {
+          version: "v541",
+          label: "Account custody expiry rehearsal",
+          route: "#account-readiness",
+          detail: "Rehearse expiring retained receipts, replacement owners, export/delete copy, and support-safe closeout."
         }
       ]
     },
@@ -16295,6 +16396,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v535",
+          key: "20260708-v535-01",
+          commit: "9200f0d",
+          receiptId: "NN-SHARE-RECEIPT-20260708V53501",
+          proof: "Payment Repair Scoreboard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v534",
           key: "20260708-v534-01",
@@ -16322,13 +16430,6 @@ function buildTrackerConfig() {
           commit: "69191ab",
           receiptId: "NN-SHARE-RECEIPT-20260708V53101",
           proof: "Account Custody Retention Register added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
-        },
-        {
-          version: "v530",
-          key: "20260708-v530-01",
-          commit: "bd4b407",
-          receiptId: "NN-SHARE-RECEIPT-20260708V53001",
-          proof: "Payment Incident Archive added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -16366,13 +16467,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v535",
-        detail: "Payment Repair Scoreboard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v536",
+        detail: "Account Retention Stale-State Monitor is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v535 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v536 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -16381,25 +16482,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v535 held until live stamp",
-        detail: "Do not share v535 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v536 held until live stamp",
+        detail: "Do not share v536 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v535 payment repair scoreboard",
-        detail: "Payment Repair Scoreboard shows open, repaired, held, rollback, refund-review, and support-held states with entitlement effect and support notice."
+        value: "v536 account stale monitor",
+        detail: "Account Retention Stale-State Monitor flags stale owners, redaction scans, review cadence, support-safe status, retirement rules, and export/delete state."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v535 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v536 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v535 held until live stamp",
-        detail: "The release is share-ready only after v535 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v536 held until live stamp",
+        detail: "The release is share-ready only after v536 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

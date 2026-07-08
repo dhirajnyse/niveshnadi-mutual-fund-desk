@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v526 Account Custody Export Drill
+
+- Version: `0.526.0`
+- Data version: `20260708-v526-01`
+- Changes made: Added Account Custody Export Drill to the Build Tracker Release Doctor with export scope receipt, expiry and download boundary, delete request rehearsal, retained receipt map, support-safe status, founder custody closeout, account custody export receipt fields, proof archive roll-forward with v525 commit, next-batch planner roll-forward to v527-v531, and release markers rolled forward to v526.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v526 marker scan.
+- Known risks: Account Custody Export Drill is a static account-custody rehearsal only; it does not authenticate users, export data, delete data, collect identifiers, contact users, recover accounts, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v525 Payment Reconciliation Drill
 
 - Version: `0.525.0`

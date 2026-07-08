@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V526 Account Custody Export Drill
+
+V526 adds Account Custody Export Drill to the Build Tracker Release Doctor. It rehearses export scope, expiry and download boundaries, delete request, retained receipt map, support-safe status, restore boundary, and founder closeout before account custody widens.
+
+- Release label: `NiveshNadi Phase 1 v526 Account Custody Export Drill`
+- Data/version key: `20260708-v526-01`
+- Product surface: Build Tracker > Release Doctor > Account custody export drill
+- Risk boundary: Static account-custody rehearsal only; it does not authenticate users, export data, delete data, collect identifiers, contact users, recover accounts, or approve account custody widening.
+- Verification status: Pending batch checks.
+
 ## V525 Payment Reconciliation Drill
 
 V525 adds Payment Reconciliation Drill to the Build Tracker Release Doctor. It matches checkout, invoice, webhook, entitlement, refund rollback, support notice, daily mismatch repair, and founder closeout states before paid beta access widens.

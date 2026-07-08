@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v525-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v525 Payment Reconciliation Drill";
+const DATA_VERSION = "20260708-v526-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v526 Account Custody Export Drill";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v524 passed release checks on commit 9168b25. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v525 passed release checks on commit ddf3931. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v524 local checks passed",
+      outcome: "Previous outcome: v525 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52401",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52501",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -15075,6 +15075,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Reconciliation Drill is a static proof-matching contract only; it does not process payments, fetch gateway logs, issue refunds, grant access, reconcile production ledgers, or approve payment launch."
+      },
+      {
+        key: "accountCustodyExportDrill",
+        label: "Account custody export drill",
+        verdict: "Export and delete promises need rehearsal",
+        receiptId: ["NN", "ACCOUNT", "CUSTODY", "EXPORT", "DRILL", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-custody-export-drill",
+        copyLabel: "Copy custody export drill",
+        score: 82,
+        rule: "No account custody promise should widen until export scope, download expiry, deletion request, retained receipt, support-safe status, restore boundary, and founder closeout are rehearsed without private identifiers.",
+        lanes: [
+          {
+            label: "Export scope receipt",
+            owner: "Data custody desk",
+            method: "SCOPE",
+            route: "account.custody.export-scope",
+            proof: "Define included research objects, excluded private fields, generated-at time, schema version, and manifest ID.",
+            readyWhen: "Ready when users can see what export includes and what it never includes.",
+            hold: "Hold if export scope implies PAN, folio, CAS, bank, card, UPI, contact, credentials, or raw payment data are stored.",
+            score: 84
+          },
+          {
+            label: "Expiry and download boundary",
+            owner: "Security desk",
+            method: "BOUNDARY",
+            route: "account.custody.export-expiry",
+            proof: "Write link expiry, download limit, reissue route, support-safe status, and no-guarantee copy.",
+            readyWhen: "Ready when expired exports have a calm reissue route without panic copy.",
+            hold: "Hold if expiry copy promises permanent links or hides support limits.",
+            score: 81
+          },
+          {
+            label: "Delete request rehearsal",
+            owner: "Account platform",
+            method: "REHEARSE",
+            route: "account.custody.delete-request",
+            proof: "Replay delete request, freeze sync, affected object list, irreversible state, retained receipt, and support status.",
+            readyWhen: "Ready when deletion can be explained as done, held, denied, or partially retained for release proof.",
+            hold: "Hold if deletion copy promises total removal of legal-safe release receipts.",
+            score: 82
+          },
+          {
+            label: "Retained receipt map",
+            owner: "Backend custody",
+            method: "MAP",
+            route: "account.custody.retained-receipt",
+            proof: "Map retained release key, receipt ID, object family, redaction scan, deletion state, and retention owner.",
+            readyWhen: "Ready when retained metadata is minimal, explainable, and private-data safe.",
+            hold: "Hold if retained receipt fields are broader than necessary or user-private.",
+            score: 83
+          },
+          {
+            label: "Support-safe status",
+            owner: "Support captain",
+            method: "STATUS",
+            route: "account.custody.support-safe-status",
+            proof: "Write export ready, export expired, delete requested, delete complete, retained receipt, restore denied, and escalation copy.",
+            readyWhen: "Ready when support can reply without seeing private objects or raw payloads.",
+            hold: "Hold if support copy exposes private content, promises restoration, or hides escalation owner.",
+            score: 82
+          },
+          {
+            label: "Founder custody closeout",
+            owner: "Founder release desk",
+            method: "CLOSE",
+            route: "account.custody.founder-closeout",
+            proof: "Founder sees export scope, delete rehearsal, retained receipt, support status, no-private-data scan, and release hold.",
+            readyWhen: "Ready when founder can explain account custody as rehearsed, held, or ready without overclaiming.",
+            hold: "Hold if closeout treats static export/delete proof as live account readiness.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Export and deletion copy should be plain before any saved research leaves browser-local custody.",
+          "Every custody state has one support-safe status and one retained receipt boundary.",
+          "Deletion may remove account objects while retaining minimal release-proof receipts; the copy must say so clearly.",
+          "Support can see status and owner, not private saved research content.",
+          "No custody drill may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No account custody promise may ship without export scope, expiry copy, deletion state, retained receipt map, and support-safe status.",
+          "No export or deletion copy may imply private identifiers, payment payloads, or credentials are retained in the prototype.",
+          "No support reply may promise account recovery, permanent export links, full deletion of legal-safe receipts, or restoration guarantee.",
+          "No account custody lane may widen while static drill proof is being mistaken for live backend account readiness."
+        ],
+        receiptFields: [
+          "account_custody_export_drill_id",
+          "release_key",
+          "export_manifest_id",
+          "export_scope",
+          "excluded_private_fields",
+          "download_expiry",
+          "delete_request_state",
+          "retained_receipt_id",
+          "support_safe_status",
+          "restore_boundary",
+          "founder_closeout_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Account Custody Export Drill is a static account-custody rehearsal only; it does not authenticate users, export data, delete data, collect identifiers, contact users, recover accounts, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -15247,14 +15348,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment reconciliation now has a static drill; next releases should lock account custody export drill, beta readiness command scoring, support knowledge handoff, source correction public changelog, and payment incident archive.",
+      rule: "Account custody export and deletion promises now have a static drill; next releases should lock beta readiness command scoring, support knowledge handoff, source correction public changelog, payment incident archive, and account custody retention register.",
       lanes: [
-        {
-          version: "v526",
-          label: "Account custody export drill",
-          route: "#account-readiness",
-          detail: "Rehearse export scope, expiry, delete request, retained receipt, support-safe status, and no-private-data proof before account custody."
-        },
         {
           version: "v527",
           label: "Beta readiness command score",
@@ -15278,6 +15373,12 @@ function buildTrackerConfig() {
           label: "Payment incident archive",
           route: "#payment-wiring",
           detail: "Retain payment incident decisions, mismatch classes, repair outcomes, support notices, and founder closeouts without payment payloads."
+        },
+        {
+          version: "v531",
+          label: "Account custody retention register",
+          route: "#account-readiness",
+          detail: "Register export, deletion, retained receipt, redaction scan, support-safe status, and owner review states for future account custody."
         }
       ]
     },
@@ -15286,6 +15387,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v525",
+          key: "20260708-v525-01",
+          commit: "ddf3931",
+          receiptId: "NN-SHARE-RECEIPT-20260708V52501",
+          proof: "Payment Reconciliation Drill added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v524",
           key: "20260708-v524-01",
@@ -15313,13 +15421,6 @@ function buildTrackerConfig() {
           commit: "df8c141",
           receiptId: "NN-SHARE-RECEIPT-20260708V52101",
           proof: "Account Recovery Policy Copy Room added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v520",
-          key: "20260708-v520-01",
-          commit: "c9f56de",
-          receiptId: "NN-SHARE-RECEIPT-20260708V52001",
-          proof: "Payment Incident Command Memo added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -15357,13 +15458,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v525",
-        detail: "Payment Reconciliation Drill is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v526",
+        detail: "Account Custody Export Drill is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v525 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v526 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -15372,25 +15473,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v525 held until live stamp",
-        detail: "Do not share v525 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v526 held until live stamp",
+        detail: "Do not share v526 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v525 reconciliation drill",
-        detail: "Payment Reconciliation Drill matches checkout, invoice, webhook, entitlement, refund, support notice, mismatch repair, and founder closeout states."
+        value: "v526 custody export drill",
+        detail: "Account Custody Export Drill rehearses export scope, expiry, deletion request, retained receipt, support-safe status, restore boundary, and founder closeout."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v525 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v526 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v525 held until live stamp",
-        detail: "The release is share-ready only after v525 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v526 held until live stamp",
+        detail: "The release is share-ready only after v526 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

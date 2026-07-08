@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v546 Account Retention Job Blueprint
+
+- Version: `0.546.0`
+- Data version: `20260709-v546-01`
+- Changes made: Added Account Retention Job Blueprint to the Build Tracker Release Doctor with job contract, schedule cadence, owner review, support-safe evidence, failure replay, founder job signoff, account retention job receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v545 commit, next-batch planner roll-forward to v547-v551, and release markers rolled forward to v546.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v546 marker scan.
+- Known risks: Account Retention Job Blueprint is a static job blueprint only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v545 Payment Incident Replay Rehearsal
 
 - Version: `0.545.0`

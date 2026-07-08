@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v545-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v545 Payment Incident Replay Rehearsal";
+const DATA_VERSION = "20260709-v546-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v546 Account Retention Job Blueprint";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment incident replay rehearsal",
+    label: "Account retention job blueprint",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Replay recent payment incidents against closeout audit states before payment launch claims widen."
+    route: "#account-readiness",
+    detail: "Translate expiry rehearsal into scheduled retention job contracts, owner reviews, and support-safe evidence."
   },
   {
     label: "Mobile calm audit",
@@ -17085,6 +17085,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Incident Replay Rehearsal is a static incident replay room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountRetentionJobBlueprint",
+        label: "Account retention job blueprint",
+        verdict: "Retention jobs need owner-safe contracts",
+        receiptId: ["NN", "ACCOUNT", "RETENTION", "JOB", "BLUEPRINT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-retention-job-blueprint",
+        copyLabel: "Copy job blueprint",
+        score: 83,
+        rule: "Account retention jobs should not move from rehearsal to production until job contract, schedule cadence, owner review, support-safe evidence, failure replay, and founder signoff are visible.",
+        lanes: [
+          {
+            label: "Job contract",
+            owner: "Account platform",
+            method: "CONTRACT",
+            route: "account.retention.job-contract",
+            proof: "Define job purpose, object family, retention rule, expiry effect, dry-run mode, and no-private-payload boundary.",
+            readyWhen: "Ready when the job contract explains exactly what it may and may not touch.",
+            hold: "Hold if object family, purpose, or no-private-payload boundary is missing.",
+            score: 83
+          },
+          {
+            label: "Schedule cadence",
+            owner: "Backend custody",
+            method: "SCHEDULE",
+            route: "account.retention.schedule-cadence",
+            proof: "Record cadence, owner review window, dry-run deadline, retry policy, and release hold.",
+            readyWhen: "Ready when schedule cadence cannot run without owner review.",
+            hold: "Hold if cadence, retry policy, or owner review window is missing.",
+            score: 82
+          },
+          {
+            label: "Owner review",
+            owner: "Data custody desk",
+            method: "OWNER",
+            route: "account.retention.owner-review",
+            proof: "Record owner review state, stale-owner fallback, replacement owner, and escalation route.",
+            readyWhen: "Ready when retention jobs cannot run under stale ownership.",
+            hold: "Hold if owner review or replacement owner is missing.",
+            score: 83
+          },
+          {
+            label: "Support-safe evidence",
+            owner: "Support captain",
+            method: "EVIDENCE",
+            route: "account.retention.support-evidence",
+            proof: "Record support-safe status, public-safe wording, private-data exclusion, and evidence receipt ID.",
+            readyWhen: "Ready when support can explain the retention job without touching private content.",
+            hold: "Hold if support-safe evidence or wording is missing.",
+            score: 82
+          },
+          {
+            label: "Failure replay",
+            owner: "Reliability desk",
+            method: "REPLAY",
+            route: "account.retention.failure-replay",
+            proof: "Replay missed schedule, stale owner, redaction failure, delete conflict, export conflict, and rollback-safe result.",
+            readyWhen: "Ready when the job can explain its failure modes before production.",
+            hold: "Hold if failure replay or rollback-safe result is missing.",
+            score: 82
+          },
+          {
+            label: "Founder job signoff",
+            owner: "Founder release desk",
+            method: "SIGNOFF",
+            route: "account.retention.founder-job-signoff",
+            proof: "Record founder signoff, production-blocking gaps, dry-run requirement, and final release hold.",
+            readyWhen: "Ready when founder can see what must be true before retention jobs go live.",
+            hold: "Hold if founder signoff or production-blocking gap list is missing.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "Account retention job blueprint defines job contracts and evidence only; it does not schedule or execute jobs.",
+          "Every job blueprint has one object family, one retention rule, one schedule cadence, one owner review, one support-safe evidence row, and one failure replay.",
+          "Dry-run mode is mandatory before production retention jobs.",
+          "Support-safe evidence must not include private saved content or identifiers.",
+          "No retention job blueprint row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No retention job may move toward production without contract, cadence, owner review, support evidence, failure replay, and founder signoff.",
+          "No retention job may run under stale owner or unclear object-family scope.",
+          "No support evidence may expose private saved research or identifiers.",
+          "No retention job blueprint row may expose private identifiers, credentials, auth tokens, payment payloads, or raw support notes."
+        ],
+        receiptFields: [
+          "account_retention_job_blueprint_id",
+          "release_key",
+          "job_contract_id",
+          "schedule_cadence",
+          "retained_object_family",
+          "owner_review_state",
+          "support_evidence_state",
+          "failure_replay_state",
+          "founder_signoff",
+          "dry_run_requirement",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Account Retention Job Blueprint is a static job blueprint only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -17257,14 +17357,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment incidents now have replay rehearsal; next releases should lock account retention job blueprint, beta command archive compactor, support repair aging guard, source correction expiry guard, and payment closeout SLA guard.",
+      rule: "Account retention jobs now have blueprint proof; next releases should lock beta command archive compactor, support repair aging guard, source correction expiry guard, payment closeout SLA guard, and account retention job acceptance harness.",
       lanes: [
-        {
-          version: "v546",
-          label: "Account retention job blueprint",
-          route: "#account-readiness",
-          detail: "Translate expiry rehearsal into scheduled retention job contracts, owner reviews, and support-safe evidence."
-        },
         {
           version: "v547",
           label: "Beta command archive compactor",
@@ -17288,14 +17382,27 @@ function buildTrackerConfig() {
           label: "Payment closeout SLA guard",
           route: "#payment-wiring",
           detail: "Warn when payment closeout, refund review, rollback, or support-held rows age past owner SLA."
+        },
+        {
+          version: "v551",
+          label: "Account retention job acceptance harness",
+          route: "#account-readiness",
+          detail: "Turn retention job blueprint rows into dry-run acceptance checks with owner, failure, and support-safe proof."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Payment replay proof visible",
+      verdict: "Retention job proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v545",
+          key: "20260709-v545-01",
+          commit: "63c3b0f",
+          receiptId: "NN-SHARE-RECEIPT-20260709V54501",
+          proof: "Payment Incident Replay Rehearsal added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v544",
           key: "20260709-v544-01",
@@ -17323,13 +17430,6 @@ function buildTrackerConfig() {
           commit: "b440457",
           receiptId: "NN-SHARE-RECEIPT-20260708V54101",
           proof: "Account Custody Expiry Rehearsal added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
-        },
-        {
-          version: "v540",
-          key: "20260708-v540-01",
-          commit: "2a4cbed",
-          receiptId: "NN-SHARE-RECEIPT-20260708V54001",
-          proof: "Payment Repair Closeout Audit added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -17367,13 +17467,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v545",
-        detail: "Payment Incident Replay Rehearsal is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v546",
+        detail: "Account Retention Job Blueprint is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v545 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v546 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -17382,25 +17482,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v545 held until live stamp",
-        detail: "Do not share v545 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v546 held until live stamp",
+        detail: "Do not share v546 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v545 payment replay rehearsal",
-        detail: "Payment Incident Replay Rehearsal replays recent incident families against closeout state, entitlement effect, support copy, refund/rollback state, and founder verdict."
+        value: "v546 retention job blueprint",
+        detail: "Account Retention Job Blueprint defines job contract, schedule cadence, owner review, support-safe evidence, failure replay, and founder signoff."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v545 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v546 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v545 held until live stamp",
-        detail: "The release is share-ready only after v545 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v546 held until live stamp",
+        detail: "The release is share-ready only after v546 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

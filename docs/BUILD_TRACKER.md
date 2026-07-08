@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V546 Account Retention Job Blueprint
+
+V546 adds Account Retention Job Blueprint to the Build Tracker Release Doctor. It defines job contract, schedule cadence, owner review, support-safe evidence, failure replay, and founder signoff.
+
+- Release label: `NiveshNadi Phase 1 v546 Account Retention Job Blueprint`
+- Data/version key: `20260709-v546-01`
+- Product surface: Build Tracker > Release Doctor > Account retention job blueprint
+- Risk boundary: Static job blueprint only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Pending batch checks.
+
 ## V545 Payment Incident Replay Rehearsal
 
 V545 adds Payment Incident Replay Rehearsal to the Build Tracker Release Doctor. It replays recent incident families against closeout state, entitlement effect, support copy, refund/rollback state, and founder verdict.

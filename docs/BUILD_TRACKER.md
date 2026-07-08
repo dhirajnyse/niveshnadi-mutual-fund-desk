@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V525 Payment Reconciliation Drill
+
+V525 adds Payment Reconciliation Drill to the Build Tracker Release Doctor. It matches checkout, invoice, webhook, entitlement, refund rollback, support notice, daily mismatch repair, and founder closeout states before paid beta access widens.
+
+- Release label: `NiveshNadi Phase 1 v525 Payment Reconciliation Drill`
+- Data/version key: `20260708-v525-01`
+- Product surface: Build Tracker > Release Doctor > Payment reconciliation drill
+- Risk boundary: Static proof-matching contract only; it does not process payments, fetch gateway logs, issue refunds, grant access, reconcile production ledgers, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V524 Source Correction Archive
 
 V524 adds Source Correction Archive to the Build Tracker Release Doctor. It retains incident IDs, affected surfaces, correction wording, reviewer signoff, rollback proof, supersede state, and retirement rules without private data.

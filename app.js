@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v524-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v524 Source Correction Archive";
+const DATA_VERSION = "20260708-v525-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v525 Payment Reconciliation Drill";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v523 passed release checks on commit aa079c5. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v524 passed release checks on commit 9168b25. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v523 local checks passed",
+      outcome: "Previous outcome: v524 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52301",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52401",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -14973,6 +14973,108 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Archive is a static archive contract only; it does not fetch live data, publish notices, alter saved records, contact users, approve corrected claims, or replace reviewer release."
+      },
+      {
+        key: "paymentReconciliationDrill",
+        label: "Payment reconciliation drill",
+        verdict: "Paid access needs matching proof before trust",
+        receiptId: ["NN", "PAYMENT", "RECONCILIATION", "DRILL", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-reconciliation-drill",
+        copyLabel: "Copy reconciliation drill",
+        score: 79,
+        rule: "No paid beta access should widen until checkout, invoice, webhook, entitlement, refund rollback, support notice, mismatch repair, and founder closeout can be reconciled from static proof without live gateway data.",
+        lanes: [
+          {
+            label: "Checkout to invoice match",
+            owner: "Billing boundary",
+            method: "MATCH",
+            route: "payment.reconcile.checkout-invoice",
+            proof: "Match checkout intent, invoice ID, plan, amount, currency, tax mode, and beta cohort label.",
+            readyWhen: "Ready when one checkout cannot create an ambiguous invoice state.",
+            hold: "Hold if amount, plan, invoice, cohort, or tax copy differs across surfaces.",
+            score: 80
+          },
+          {
+            label: "Webhook to entitlement match",
+            owner: "Entitlement bridge",
+            method: "REPLAY",
+            route: "payment.reconcile.webhook-entitlement",
+            proof: "Replay signed webhook fixture, idempotency key, event order, entitlement grant, account state, and audit receipt.",
+            readyWhen: "Ready when duplicate and out-of-order events cannot grant extra access.",
+            hold: "Hold if entitlement changes without invoice, webhook, account, and audit agreement.",
+            score: 78
+          },
+          {
+            label: "Refund rollback match",
+            owner: "Refund desk",
+            method: "ROLLBACK",
+            route: "payment.reconcile.refund-rollback",
+            proof: "Replay refund event, entitlement rollback, support notice, retained receipt, and no-access state.",
+            readyWhen: "Ready when refunded users cannot keep paid access by accident.",
+            hold: "Hold if refund status, access state, or support copy disagree.",
+            score: 79
+          },
+          {
+            label: "Support notice match",
+            owner: "Support captain",
+            method: "NOTICE",
+            route: "payment.reconcile.support-notice",
+            proof: "Match user-safe notice with payment state, entitlement state, refund route, escalation owner, and no-private-data line.",
+            readyWhen: "Ready when support can explain the state without seeing gateway payloads.",
+            hold: "Hold if support copy exposes private payment data or promises an outcome.",
+            score: 80
+          },
+          {
+            label: "Daily mismatch repair",
+            owner: "Ops repair desk",
+            method: "REPAIR",
+            route: "payment.reconcile.daily-mismatch",
+            proof: "List mismatched invoice, webhook, entitlement, refund, support, and account states with owner and repair path.",
+            readyWhen: "Ready when daily repair can classify every mismatch before access widens.",
+            hold: "Hold if mismatch states lack owner, severity, or replay path.",
+            score: 77
+          },
+          {
+            label: "Founder reconciliation closeout",
+            owner: "Founder release desk",
+            method: "CLOSE",
+            route: "payment.reconcile.founder-closeout",
+            proof: "Founder sees paid access verdict, known misses, next repair, support load, refund stop, and release hold state.",
+            readyWhen: "Ready when founder can say paid beta remains held, repair, or ready for the next tiny wave.",
+            hold: "Hold if closeout blurs payment confidence with production payment readiness.",
+            score: 80
+          }
+        ],
+        operatingRules: [
+          "Payment reconciliation is proof matching, not payment processing.",
+          "Checkout, invoice, webhook, entitlement, refund, support, and account states must agree before a paid-access claim widens.",
+          "Support sees user-safe state summaries, never gateway payloads or payment secrets.",
+          "Mismatch repair beats optimistic access; unresolved mismatch keeps release hold active.",
+          "No reconciliation row may retain card, UPI, bank, gateway secret, PAN, folio, CAS, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No paid beta access may widen while checkout, invoice, webhook, entitlement, refund, support, or account states disagree.",
+          "No support notice may expose gateway payloads, payment secrets, private identifiers, credentials, or raw user contact data.",
+          "No reconciliation proof may promise payment success, refund success, entitlement restoration, personalized advice, or production readiness.",
+          "No founder closeout may treat static fake-event proof as live payment launch proof."
+        ],
+        receiptFields: [
+          "payment_reconciliation_drill_id",
+          "release_key",
+          "checkout_intent_id",
+          "invoice_id",
+          "webhook_event_id",
+          "idempotency_key",
+          "entitlement_state",
+          "refund_state",
+          "support_notice_id",
+          "mismatch_state",
+          "repair_owner",
+          "founder_closeout_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Payment Reconciliation Drill is a static proof-matching contract only; it does not process payments, fetch gateway logs, issue refunds, grant access, reconcile production ledgers, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -15145,14 +15247,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source correction proof is now archived; next releases should lock payment reconciliation drill, account custody export drill, beta readiness command scoring, support knowledge handoff, and source correction public changelog.",
+      rule: "Payment reconciliation now has a static drill; next releases should lock account custody export drill, beta readiness command scoring, support knowledge handoff, source correction public changelog, and payment incident archive.",
       lanes: [
-        {
-          version: "v525",
-          label: "Payment reconciliation drill",
-          route: "#payment-wiring",
-          detail: "Rehearse checkout, invoice, webhook, entitlement, refund, support notice, and daily reconciliation mismatch repair."
-        },
         {
           version: "v526",
           label: "Account custody export drill",
@@ -15176,6 +15272,12 @@ function buildTrackerConfig() {
           label: "Source correction public changelog",
           route: "#correction-ledger",
           detail: "Translate accepted correction archive rows into calm public changelog wording with affected-surface and reviewer-scope boundaries."
+        },
+        {
+          version: "v530",
+          label: "Payment incident archive",
+          route: "#payment-wiring",
+          detail: "Retain payment incident decisions, mismatch classes, repair outcomes, support notices, and founder closeouts without payment payloads."
         }
       ]
     },
@@ -15184,6 +15286,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v524",
+          key: "20260708-v524-01",
+          commit: "9168b25",
+          receiptId: "NN-SHARE-RECEIPT-20260708V52401",
+          proof: "Source Correction Archive added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v523",
           key: "20260708-v523-01",
@@ -15211,13 +15320,6 @@ function buildTrackerConfig() {
           commit: "c9f56de",
           receiptId: "NN-SHARE-RECEIPT-20260708V52001",
           proof: "Payment Incident Command Memo added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v519",
-          key: "20260708-v519-01",
-          commit: "6f99845",
-          receiptId: "NN-SHARE-RECEIPT-20260708V51901",
-          proof: "Source Incident Release Notes added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -15255,13 +15357,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v524",
-        detail: "Source Correction Archive is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v525",
+        detail: "Payment Reconciliation Drill is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v524 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v525 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -15270,25 +15372,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v524 held until live stamp",
-        detail: "Do not share v524 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v525 held until live stamp",
+        detail: "Do not share v525 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v524 correction archive",
-        detail: "Source Correction Archive keeps incident ID, affected surface, correction wording, reviewer signoff, rollback proof, and retirement rule visible."
+        value: "v525 reconciliation drill",
+        detail: "Payment Reconciliation Drill matches checkout, invoice, webhook, entitlement, refund, support notice, mismatch repair, and founder closeout states."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v524 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v525 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v524 held until live stamp",
-        detail: "The release is share-ready only after v524 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v525 held until live stamp",
+        detail: "The release is share-ready only after v525 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

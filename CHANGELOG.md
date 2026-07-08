@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v525 Payment Reconciliation Drill
+
+- Version: `0.525.0`
+- Data version: `20260708-v525-01`
+- Changes made: Added Payment Reconciliation Drill to the Build Tracker Release Doctor with checkout to invoice match, webhook to entitlement match, refund rollback match, support notice match, daily mismatch repair, founder reconciliation closeout, payment reconciliation receipt fields, proof archive roll-forward with v524 commit, next-batch planner roll-forward to v526-v530, and release markers rolled forward to v525.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v525 marker scan.
+- Known risks: Payment Reconciliation Drill is a static proof-matching contract only; it does not process payments, fetch gateway logs, issue refunds, grant access, reconcile production ledgers, or approve payment launch.
+
 ## NiveshNadi Phase 1 v524 Source Correction Archive
 
 - Version: `0.524.0`

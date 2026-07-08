@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v518 Support Escalation Analytics Strip
+
+- Version: `0.518.0`
+- Data version: `20260708-v518-01`
+- Changes made: Added Support Escalation Analytics Strip to the Build Tracker Release Doctor with support load pulse, stale age ladder, escalation family mix, refund and payment stop, private-data fear radar, next-wave freeze trigger, support analytics receipt fields, proof archive roll-forward with v517 commit, next-batch planner roll-forward to v519-v523, and release markers rolled forward to v518.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v518 marker scan.
+- Known risks: Support Escalation Analytics Strip is a static support-decision summary only; it does not connect to support systems, process refunds, collect private data, resolve tickets, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v517 Founder Beta Release Evidence Packet
 
 - Version: `0.517.0`

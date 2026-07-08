@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v517-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v517 Founder Beta Release Evidence Packet";
+const DATA_VERSION = "20260708-v518-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v518 Support Escalation Analytics Strip";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v516 passed release checks on commit 1ff9426. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v517 passed release checks on commit 2c6a7d2. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v516 local checks passed",
+      outcome: "Previous outcome: v517 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51601",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51701",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -14265,6 +14265,108 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Founder Beta Release Evidence Packet is a static release-decision packet only; it does not invite users, process payments, grant access, verify live data, recover accounts, or approve production launch."
+      },
+      {
+        key: "supportEscalationAnalyticsStrip",
+        label: "Support escalation analytics strip",
+        verdict: "Support load must be visible before next wave",
+        receiptId: ["NN", "SUPPORT", "ESCALATION", "ANALYTICS", "STRIP", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-escalation-analytics-strip",
+        copyLabel: "Copy support analytics",
+        score: 80,
+        rule: "No next beta wave should widen until support load, stale case age, escalation family, refund and payment stops, private-data fear, source correction, and founder closeout signals are visible in one compact strip.",
+        lanes: [
+          {
+            label: "Support load pulse",
+            owner: "Support captain",
+            method: "MEASURE",
+            route: "support.analytics.load-pulse",
+            proof: "Count open cases, new cases, closed cases, queue ceiling, owner capacity, and next-wave pressure.",
+            readyWhen: "Ready when support load can be read before invites widen.",
+            hold: "Hold if open cases exceed founder-reviewed capacity or owner coverage is unclear.",
+            score: 81
+          },
+          {
+            label: "Stale age ladder",
+            owner: "Support captain",
+            method: "MEASURE",
+            route: "support.analytics.stale-age",
+            proof: "Group cases by fresh, watch, stale, overdue, and freeze bands with response-window receipt IDs.",
+            readyWhen: "Ready when stale age drives escalation instead of calendar memory.",
+            hold: "Hold if any case can age past the SLA without owner-visible escalation.",
+            score: 80
+          },
+          {
+            label: "Escalation family mix",
+            owner: "Founder support desk",
+            method: "CLASSIFY",
+            route: "support.analytics.escalation-family",
+            proof: "Classify source correction, account recovery, payment confusion, refund risk, advice confusion, and private-data fear.",
+            readyWhen: "Ready when support pressure names the family causing the next-wave hold.",
+            hold: "Hold if support cases are only counted but not classified by risk family.",
+            score: 79
+          },
+          {
+            label: "Refund and payment stop",
+            owner: "Payment support desk",
+            method: "STOP",
+            route: "support.analytics.refund-payment-stop",
+            proof: "Name refund trigger, payment confusion trigger, entitlement mismatch, user-safe notice, and owner closeout.",
+            readyWhen: "Ready when payment-related support issues freeze widening before trust erodes.",
+            hold: "Hold if refund or payment confusion cases can continue without owner decision.",
+            score: 80
+          },
+          {
+            label: "Private-data fear radar",
+            owner: "Privacy desk",
+            method: "SCAN",
+            route: "support.analytics.private-data-fear",
+            proof: "Name private-data fear, requested identifier, safe reply, redaction route, and no-collection boundary.",
+            readyWhen: "Ready when private-data anxiety is visible before the product asks for anything sensitive.",
+            hold: "Hold if support replies request PAN, folio, CAS, bank, contact, credentials, or private files.",
+            score: 80
+          },
+          {
+            label: "Next-wave freeze trigger",
+            owner: "Founder release desk",
+            method: "FREEZE",
+            route: "support.analytics.next-wave-freeze",
+            proof: "Summarize load ceiling, stale threshold, escalation mix, refund stop, source correction, and founder freeze decision.",
+            readyWhen: "Ready when one analytics strip can justify go, hold, or freeze for the next wave.",
+            hold: "Hold if the next wave can open without reading support load and escalation proof.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Support analytics must be compact enough to read before the next invite decision.",
+          "Every support signal names count, age, family, owner, hold trigger, and safe reply route.",
+          "Refund, payment confusion, account recovery, source correction, and private-data fear always outrank growth.",
+          "The next-wave decision must read support load before cohort widening.",
+          "No analytics strip may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No next beta wave may widen while support load, stale age, escalation family, refund stop, or private-data fear is unreviewed.",
+          "No support analytics row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records.",
+          "No refund, payment confusion, account recovery, source correction, or private-data fear case may be treated as a normal support count.",
+          "No founder wave decision may skip the support ceiling and stale-age trigger."
+        ],
+        receiptFields: [
+          "support_escalation_analytics_strip_id",
+          "release_key",
+          "open_case_count",
+          "stale_case_count",
+          "overdue_case_count",
+          "support_ceiling",
+          "escalation_family_mix",
+          "refund_stop_state",
+          "payment_confusion_state",
+          "private_data_fear_count",
+          "next_wave_decision",
+          "founder_closeout_memo_id",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Support Escalation Analytics Strip is a static support-decision summary only; it does not connect to support systems, process refunds, collect private data, resolve tickets, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -14437,14 +14539,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Founder beta evidence is now packeted; next releases should lock support escalation analytics, source incident release notes, payment incident command memos, account recovery policy copy, and beta founder closeout scoring.",
+      rule: "Support escalation analytics now summarizes wave pressure; next releases should lock source incident release notes, payment incident command memos, account recovery policy copy, beta founder closeout scoring, and support reply quality audit.",
       lanes: [
-        {
-          version: "v518",
-          label: "Support escalation analytics strip",
-          route: "#paid-beta-support-ledger",
-          detail: "Summarize support load, stale age, escalation family, refund stops, and next-wave freeze triggers in one compact strip."
-        },
         {
           version: "v519",
           label: "Source incident release notes",
@@ -14468,6 +14564,12 @@ function buildTrackerConfig() {
           label: "Beta founder closeout scorecard",
           route: "#founder-beta-operating-room",
           detail: "Score founder go, hold, freeze, support, source, payment, account, and evidence states before another beta wave opens."
+        },
+        {
+          version: "v523",
+          label: "Support reply quality audit",
+          route: "#paid-beta-support-ledger",
+          detail: "Audit support replies for research-only boundary, no-advice phrasing, refund clarity, source correction, and private-data restraint."
         }
       ]
     },
@@ -14476,6 +14578,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v517",
+          key: "20260708-v517-01",
+          commit: "2c6a7d2",
+          receiptId: "NN-SHARE-RECEIPT-20260708V51701",
+          proof: "Founder Beta Release Evidence Packet added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v516",
           key: "20260708-v516-01",
@@ -14503,13 +14612,6 @@ function buildTrackerConfig() {
           commit: "21e6811",
           receiptId: "NN-SHARE-RECEIPT-20260708V51301",
           proof: "Beta Entitlement Replay Board added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v512",
-          key: "20260708-v512-01",
-          commit: "a3e7f4c",
-          receiptId: "NN-SHARE-RECEIPT-20260708V51201",
-          proof: "Pilot Support SLA Evidence Binder added with reusable batch-proof rendering and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -14547,13 +14649,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v517",
-        detail: "Founder Beta Release Evidence Packet is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v518",
+        detail: "Support Escalation Analytics Strip is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v517 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v518 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -14562,25 +14664,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v517 held until live stamp",
-        detail: "Do not share v517 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v518 held until live stamp",
+        detail: "Do not share v518 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v517 founder beta packet",
-        detail: "Founder Beta Release Evidence Packet bundles cohort, support, entitlement, source, payment, account, and founder signoff proof before beta widening."
+        value: "v518 support analytics",
+        detail: "Support Escalation Analytics Strip summarizes support load, stale age, escalation families, refund/payment stops, private-data fear, and next-wave freeze triggers."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v517 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v518 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v517 held until live stamp",
-        detail: "The release is share-ready only after v517 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v518 held until live stamp",
+        detail: "The release is share-ready only after v518 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

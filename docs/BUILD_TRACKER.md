@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V518 Support Escalation Analytics Strip
+
+V518 adds Support Escalation Analytics Strip to the Build Tracker Release Doctor. It compresses support load, stale case age, escalation family mix, refund and payment stops, private-data fear, and next-wave freeze triggers into one founder-readable strip.
+
+- Release label: `NiveshNadi Phase 1 v518 Support Escalation Analytics Strip`
+- Data/version key: `20260708-v518-01`
+- Product surface: Build Tracker > Release Doctor > Support escalation analytics strip
+- Risk boundary: Static support-decision summary only; it does not connect to support systems, process refunds, collect private data, resolve tickets, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V517 Founder Beta Release Evidence Packet
 
 V517 adds Founder Beta Release Evidence Packet to the Build Tracker Release Doctor. It bundles cohort, support, entitlement, source, payment, account, and founder signoff evidence into one go/hold/freeze release packet before beta widening.

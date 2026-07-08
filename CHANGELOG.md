@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v533 Support Handoff Drift Audit
+
+- Version: `0.533.0`
+- Data version: `20260708-v533-01`
+- Changes made: Added Support Handoff Drift Audit to the Build Tracker Release Doctor with reply script drift, refund wording drift, source correction drift, privacy exclusion drift, escalation owner drift, founder signoff drift, support drift receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v532 commit, next-batch planner roll-forward to v534-v538, and release markers rolled forward to v533.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v533 marker scan.
+- Known risks: Support Handoff Drift Audit is a static support-copy audit only; it does not send replies, resolve tickets, process refunds, alter correction rows, collect private data, or approve beta support widening.
+
 ## NiveshNadi Phase 1 v532 Beta Command Decision Ledger
 
 - Version: `0.532.0`

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v532-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v532 Beta Command Decision Ledger";
+const DATA_VERSION = "20260708-v533-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v533 Support Handoff Drift Audit";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command decision ledger",
+    label: "Support handoff drift audit",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Retain go, hold, freeze, and repair commands with owner, proof state, review date, and boundary."
+    route: "#paid-beta-support-ledger",
+    detail: "Catch support script, refund, source correction, privacy, escalation, and signoff drift before beta support widens."
   },
   {
     label: "Mobile calm audit",
@@ -15781,6 +15781,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Decision Ledger is a static founder-command ledger only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion."
+      },
+      {
+        key: "supportHandoffDriftAudit",
+        label: "Support handoff drift audit",
+        verdict: "Support copy needs drift locks",
+        receiptId: ["NN", "SUPPORT", "HANDOFF", "DRIFT", "AUDIT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-handoff-drift-audit",
+        copyLabel: "Copy drift audit",
+        score: 82,
+        rule: "No beta support script should widen until approved reply copy, refund wording, source correction scope, privacy exclusions, escalation owner, and founder signoff are checked for drift from the current support handoff.",
+        lanes: [
+          {
+            label: "Reply script drift",
+            owner: "Support captain",
+            method: "COMPARE",
+            route: "support.drift.reply-script",
+            proof: "Compare approved reply ID, current script hash, changed sentence, risk class, and reviewer decision.",
+            readyWhen: "Ready when support can see whether a reply is approved, held, or superseded.",
+            hold: "Hold if reply script changed without reviewer scope.",
+            score: 83
+          },
+          {
+            label: "Refund wording drift",
+            owner: "Payment support",
+            method: "SCAN",
+            route: "support.drift.refund-wording",
+            proof: "Scan refund copy for guarantee language, timing promise, gateway blame, support owner, and escalation route.",
+            readyWhen: "Ready when refund copy stays clear without promising outcome.",
+            hold: "Hold if wording implies refund success, payment success, or instant resolution.",
+            score: 82
+          },
+          {
+            label: "Source correction drift",
+            owner: "Source reviewer",
+            method: "SCOPE",
+            route: "support.drift.source-correction",
+            proof: "Match support wording to correction row, affected surface, old value, corrected value, and reviewer scope.",
+            readyWhen: "Ready when support cannot overstate a source correction.",
+            hold: "Hold if support copy names a correction not released by reviewer.",
+            score: 84
+          },
+          {
+            label: "Privacy exclusion drift",
+            owner: "Privacy desk",
+            method: "EXCLUDE",
+            route: "support.drift.privacy-exclusion",
+            proof: "Check PAN, folio, CAS, bank, contact, credential, private-note, payment payload, and distributor-client exclusions.",
+            readyWhen: "Ready when support asks for no excluded private data.",
+            hold: "Hold if support wording invites private identifiers or credentials.",
+            score: 82
+          },
+          {
+            label: "Escalation owner drift",
+            owner: "Support operations",
+            method: "OWNER",
+            route: "support.drift.escalation-owner",
+            proof: "Verify escalation family, owner, response window, support ceiling, and founder closeout path.",
+            readyWhen: "Ready when every escalation route still has one owner.",
+            hold: "Hold if escalation owner or response window is stale.",
+            score: 81
+          },
+          {
+            label: "Founder signoff drift",
+            owner: "Founder release desk",
+            method: "SIGNOFF",
+            route: "support.drift.founder-signoff",
+            proof: "Record support packet version, changed lane, founder review state, no-go reason, and next review date.",
+            readyWhen: "Ready when support drift is signed, held, or repaired before sharing.",
+            hold: "Hold if support handoff changed after founder signoff.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Support drift audit compares approved support memory against current support wording.",
+          "Every drift row has one changed sentence, one risk class, one owner, one review state, and one support-safe route.",
+          "Refund and payment copy stay factual, never outcome-guaranteed.",
+          "Source correction copy cannot exceed reviewer-released scope.",
+          "No drift audit row may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No changed support script may reach beta users without drift class, owner, reviewer scope, and founder signoff.",
+          "No refund wording may promise gateway success, refund success, timing certainty, or entitlement restoration.",
+          "No source correction support copy may claim more than the reviewer-released correction row.",
+          "No support handoff drift audit may store private identifiers, credentials, payment payloads, or raw support notes."
+        ],
+        receiptFields: [
+          "support_handoff_drift_audit_id",
+          "release_key",
+          "handoff_version",
+          "drift_lane",
+          "changed_sentence",
+          "risk_class",
+          "approved_reply_id",
+          "reviewer_scope",
+          "escalation_owner",
+          "founder_signoff_state",
+          "support_safe_route",
+          "next_review_at",
+          "created_at"
+        ],
+        boundary: "Support Handoff Drift Audit is a static support-copy audit only; it does not send replies, resolve tickets, process refunds, alter correction rows, collect private data, or approve beta support widening."
       }
     ],
     executiveCalmCompression: {
@@ -15953,14 +16054,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta command decisions now have owner-led ledger memory; next releases should lock support handoff drift audit, source correction supersede queue, payment repair scoreboard, account retention stale-state monitor, and beta command aging monitor.",
+      rule: "Support handoff drift now has copy locks; next releases should lock source correction supersede queue, payment repair scoreboard, account retention stale-state monitor, beta command aging monitor, and support drift repair queue.",
       lanes: [
-        {
-          version: "v533",
-          label: "Support handoff drift audit",
-          route: "#paid-beta-support-ledger",
-          detail: "Detect when support scripts, refund wording, source correction scope, or privacy exclusions drift from the approved handoff."
-        },
         {
           version: "v534",
           label: "Source correction supersede queue",
@@ -15984,6 +16079,12 @@ function buildTrackerConfig() {
           label: "Beta command aging monitor",
           route: "#founder-beta-operating-room",
           detail: "Flag stale go, hold, freeze, and repair commands before founder memory becomes outdated."
+        },
+        {
+          version: "v538",
+          label: "Support drift repair queue",
+          route: "#paid-beta-support-ledger",
+          detail: "Turn drift findings into repair tickets with owner, copy fix, review state, and support-safe closeout."
         }
       ]
     },
@@ -15992,6 +16093,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v532",
+          key: "20260708-v532-01",
+          commit: "a415c79",
+          receiptId: "NN-SHARE-RECEIPT-20260708V53201",
+          proof: "Beta Command Decision Ledger added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v531",
           key: "20260708-v531-01",
@@ -16019,13 +16127,6 @@ function buildTrackerConfig() {
           commit: "94d6edf",
           receiptId: "NN-SHARE-RECEIPT-20260708V52801",
           proof: "Support Knowledge Handoff added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v527",
-          key: "20260708-v527-01",
-          commit: "dea6e52",
-          receiptId: "NN-SHARE-RECEIPT-20260708V52701",
-          proof: "Beta Readiness Command Score added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -16063,13 +16164,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v532",
-        detail: "Beta Command Decision Ledger is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v533",
+        detail: "Support Handoff Drift Audit is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v532 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v533 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -16078,25 +16179,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v532 held until live stamp",
-        detail: "Do not share v532 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v533 held until live stamp",
+        detail: "Do not share v533 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v532 beta command ledger",
-        detail: "Beta Command Decision Ledger names command state, owner, proof source, review date, expiry rule, repair route, founder closeout, and share boundary."
+        value: "v533 support drift audit",
+        detail: "Support Handoff Drift Audit checks reply script, refund wording, source correction scope, privacy exclusions, escalation owner, and founder signoff drift."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v532 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v533 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v532 held until live stamp",
-        detail: "The release is share-ready only after v532 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v533 held until live stamp",
+        detail: "The release is share-ready only after v533 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

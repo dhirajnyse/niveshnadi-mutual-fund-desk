@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v532 Beta Command Decision Ledger
-20260708-v532-01
+NiveshNadi Phase 1 v533 Support Handoff Drift Audit
+20260708-v533-01

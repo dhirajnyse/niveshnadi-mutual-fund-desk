@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V533 Support Handoff Drift Audit
+
+V533 adds Support Handoff Drift Audit to the Build Tracker Release Doctor. It compares approved support memory against current reply copy, refund wording, source correction scope, privacy exclusions, escalation owners, and founder signoff.
+
+- Release label: `NiveshNadi Phase 1 v533 Support Handoff Drift Audit`
+- Data/version key: `20260708-v533-01`
+- Product surface: Build Tracker > Release Doctor > Support handoff drift audit
+- Risk boundary: Static support-copy audit only; it does not send replies, resolve tickets, process refunds, alter correction rows, collect private data, or approve beta support widening.
+- Verification status: Pending batch checks.
+
 ## V532 Beta Command Decision Ledger
 
 V532 adds Beta Command Decision Ledger to the Build Tracker Release Doctor. It retains go, hold, freeze, and repair commands with owner, proof state, next review date, expiry rule, repair route, founder closeout, and no-private-data boundary.

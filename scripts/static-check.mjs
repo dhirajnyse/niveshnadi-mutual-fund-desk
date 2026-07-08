@@ -156,6 +156,8 @@ assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event hand
 assert(app.includes("const DATA_VERSION"), "app.js is missing DATA_VERSION.");
 assert(Boolean(releaseLabel), "app.js is missing a parseable RELEASE_LABEL.");
 assert(Boolean(dataVersion), "app.js is missing a parseable DATA_VERSION.");
+assert(index.includes(releaseLabel), "index.html is missing the current release label.");
+assert(index.includes(dataVersion), "index.html is missing the current data version.");
 assert(changelog.includes(releaseLabel), "CHANGELOG.md is missing the current release label.");
 assert(changelog.includes(dataVersion), "CHANGELOG.md is missing the current data version.");
 assert(changelog.includes("Files changed"), "CHANGELOG.md entries must record files changed.");

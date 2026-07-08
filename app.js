@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v560-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v560 Payment Acceptance Aging Guard";
+const DATA_VERSION = "20260709-v561-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v561 Account Retention Dry-Run Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment acceptance aging guard",
+    label: "Account retention dry-run aging guard",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Warn when accepted payment replay receipts age past entitlement, refund, rollback, or support windows."
+    route: "#account-readiness",
+    detail: "Warn when vaulted dry-run receipts age past owner, redaction, support-safe, or deletion-review windows."
   },
   {
     label: "Mobile calm audit",
@@ -18572,6 +18572,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Acceptance Aging Guard is a static payment-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountRetentionDryRunAgingGuard",
+        label: "Account retention dry-run aging guard",
+        verdict: "Vaulted dry-run proof can age",
+        receiptId: ["NN", "ACCOUNT", "RETENTION", "DRY", "RUN", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-retention-dry-run-aging-guard",
+        copyLabel: "Copy dry-run aging",
+        score: 82,
+        rule: "Vaulted account retention dry-run receipts should warn when owner review, redaction proof, support-safe copy, deletion review, object family, or founder vault signoff ages past the safe custody window.",
+        lanes: [
+          {
+            label: "Owner aging",
+            owner: "Release owner",
+            method: "OWNER",
+            route: "account.retention.dry_run_aging.owner",
+            proof: "Track owner signoff date, fallback owner, next review, and owner-expired hold.",
+            readyWhen: "Ready when owner accountability is fresh or visibly held.",
+            hold: "Hold if owner signoff or fallback owner has aged past review.",
+            score: 82
+          },
+          {
+            label: "Redaction aging",
+            owner: "Privacy reviewer",
+            method: "REDACTION",
+            route: "account.retention.dry_run_aging.redaction",
+            proof: "Track redaction review date, rejected private field classes, scan window, and expired-redaction warning.",
+            readyWhen: "Ready when redaction proof still covers the vaulted dry-run output.",
+            hold: "Hold if redaction proof is stale or a private field class changed.",
+            score: 83
+          },
+          {
+            label: "Support-safe aging",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "account.retention.dry_run_aging.support_safe",
+            proof: "Track support-safe copy date, hidden-field policy, escalation owner, and expired support-state warning.",
+            readyWhen: "Ready when support-visible account state still matches the dry-run vault.",
+            hold: "Hold if support-safe copy or hidden-field policy has aged.",
+            score: 82
+          },
+          {
+            label: "Deletion review aging",
+            owner: "Data custody desk",
+            method: "DELETE",
+            route: "account.retention.dry_run_aging.deletion",
+            proof: "Track deletion behavior review, retained proof exception, export-before-delete state, and delete-window hold.",
+            readyWhen: "Ready when deletion behavior and retained exceptions are still current.",
+            hold: "Hold if deletion behavior or retained exception has aged past review.",
+            score: 82
+          },
+          {
+            label: "Object family aging",
+            owner: "Schema desk",
+            method: "OBJECT",
+            route: "account.retention.dry_run_aging.object_family",
+            proof: "Track object family purpose, schema version, retention owner, and stale family warning.",
+            readyWhen: "Ready when every vaulted object family has current purpose and retention owner.",
+            hold: "Hold if schema, purpose, or retention owner has changed without renewal.",
+            score: 82
+          },
+          {
+            label: "Founder vault aging",
+            owner: "Founder desk",
+            method: "SIGNOFF",
+            route: "account.retention.dry_run_aging.founder",
+            proof: "Track founder vault signoff date, failure replay residue, custody decision, and next closeout route.",
+            readyWhen: "Ready when founder vault signoff can still defend the dry-run proof.",
+            hold: "Hold if founder signoff expired or failure replay residue remains unresolved.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Account retention dry-run aging guard warns about stale dry-run vault proof only; it does not authenticate users, export data, delete data, schedule jobs, or run jobs.",
+          "Every vaulted dry-run row needs owner, redaction, support-safe, deletion review, object family, and founder vault aging states.",
+          "Aging warnings hold account custody language until dry-run proof is refreshed, superseded, or closed out.",
+          "Dry-run aging rows must exclude identifiers, credentials, contact details, payment payloads, raw support notes, and distributor-client records.",
+          "No account dry-run aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No dry-run vault proof may stay trusted after owner, redaction, support-safe, deletion, object, or founder windows expire.",
+          "No account custody language may widen while deletion behavior or redaction proof is stale.",
+          "No support copy may describe account state from an aged dry-run vault.",
+          "No account dry-run aging guard may authenticate users, export data, delete data, recover accounts, or approve account custody."
+        ],
+        receiptFields: [
+          "account_retention_dry_run_aging_guard_id",
+          "release_key",
+          "account_retention_dry_run_receipt_vault_id",
+          "owner_age_state",
+          "redaction_age_state",
+          "support_safe_age_state",
+          "deletion_review_age_state",
+          "object_family_age_state",
+          "founder_vault_age_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Account Retention Dry-Run Aging Guard is a static dry-run aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -18744,14 +18843,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment acceptance receipts now have aging guards; next releases should lock account retention dry-run aging guard, beta command renewal aging guard, support repair renewal aging guard, source correction renewal closeout receipt, and payment acceptance closeout receipt.",
+      rule: "Account dry-run vaults now have aging guards; next releases should lock beta command renewal aging guard, support repair renewal aging guard, source correction renewal closeout receipt, payment acceptance closeout receipt, and account retention dry-run closeout receipt.",
       lanes: [
-        {
-          version: "v561",
-          label: "Account retention dry-run aging guard",
-          route: "#account-readiness",
-          detail: "Warn when vaulted dry-run receipts age past owner, redaction, support-safe, or deletion-review windows."
-        },
         {
           version: "v562",
           label: "Beta command renewal aging guard",
@@ -18775,14 +18868,27 @@ function buildTrackerConfig() {
           label: "Payment acceptance closeout receipt",
           route: "#payment-wiring",
           detail: "Close stale payment acceptance rows with refresh, rollback, support copy, owner, and founder finance proof."
+        },
+        {
+          version: "v566",
+          label: "Account retention dry-run closeout receipt",
+          route: "#account-readiness",
+          detail: "Close stale dry-run vault rows with refresh, delete/export behavior, support-safe copy, and founder signoff proof."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Payment acceptance aging proof visible",
+      verdict: "Account dry-run aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v560",
+          key: "20260709-v560-01",
+          commit: "84f8f1a",
+          receiptId: "NN-SHARE-RECEIPT-20260709V56001",
+          proof: "Payment Acceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v559",
           key: "20260709-v559-01",
@@ -18810,13 +18916,6 @@ function buildTrackerConfig() {
           commit: "66a6488",
           receiptId: "NN-SHARE-RECEIPT-20260709V55601",
           proof: "Account Retention Dry-Run Receipt Vault added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
-        },
-        {
-          version: "v555",
-          key: "20260709-v555-01",
-          commit: "444efe5",
-          receiptId: "NN-SHARE-RECEIPT-20260709V55501",
-          proof: "Payment Replay Acceptance Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -18854,13 +18953,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v560",
-        detail: "Payment Acceptance Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v561",
+        detail: "Account Retention Dry-Run Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v560 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v561 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -18869,25 +18968,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v560 held until live stamp",
-        detail: "Do not share v560 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v561 held until live stamp",
+        detail: "Do not share v561 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v560 payment aging",
-        detail: "Payment Acceptance Aging Guard warns when accepted replay proof ages past entitlement, refund wording, rollback, support copy, owner signoff, or founder finance windows."
+        value: "v561 account dry-run aging",
+        detail: "Account Retention Dry-Run Aging Guard warns when vaulted dry-run proof ages past owner, redaction, support-safe, deletion review, object family, or founder vault windows."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v560 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v561 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v560 held until live stamp",
-        detail: "The release is share-ready only after v560 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v561 held until live stamp",
+        detail: "The release is share-ready only after v561 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

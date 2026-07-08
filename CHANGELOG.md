@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v561 Account Retention Dry-Run Aging Guard
+
+- Version: `0.561.0`
+- Data version: `20260709-v561-01`
+- Changes made: Added Account Retention Dry-Run Aging Guard to the Build Tracker Release Doctor with owner aging, redaction aging, support-safe aging, deletion review aging, object family aging, founder vault aging, account dry-run aging receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v560 commit, next-batch planner roll-forward to v562-v566, and release markers rolled forward to v561.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v561 marker scan; local browser visual QA on desktop and mobile.
+- Known risks: Account Retention Dry-Run Aging Guard is a static dry-run aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v560 Payment Acceptance Aging Guard
 
 - Version: `0.560.0`

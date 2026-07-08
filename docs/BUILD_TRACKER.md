@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V561 Account Retention Dry-Run Aging Guard
+
+V561 adds Account Retention Dry-Run Aging Guard to the Build Tracker Release Doctor. It warns when vaulted dry-run proof ages past owner, redaction, support-safe, deletion review, object family, or founder vault windows.
+
+- Release label: `NiveshNadi Phase 1 v561 Account Retention Dry-Run Aging Guard`
+- Data/version key: `20260709-v561-01`
+- Product surface: Build Tracker > Release Doctor > Account retention dry-run aging guard
+- Risk boundary: Static dry-run aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Pending batch checks.
+
 ## V560 Payment Acceptance Aging Guard
 
 V560 adds Payment Acceptance Aging Guard to the Build Tracker Release Doctor. It warns when accepted replay proof ages past entitlement, refund wording, rollback, support copy, owner signoff, or founder finance windows.

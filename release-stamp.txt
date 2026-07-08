@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v509 Live Source Connector Spike Plan
-20260708-v509-01
+NiveshNadi Phase 1 v510 Payment Provider Sandbox Integration Plan
+20260708-v510-01

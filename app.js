@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v509-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v509 Live Source Connector Spike Plan";
+const DATA_VERSION = "20260708-v510-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v510 Payment Provider Sandbox Integration Plan";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -13436,6 +13436,105 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    paymentProviderSandboxIntegrationPlan: {
+      label: "Payment provider sandbox integration plan",
+      verdict: "Sandbox billing proof scoped",
+      receiptId: ["NN", "PAYMENT", "PROVIDER", "SANDBOX", "INTEGRATION", "PLAN", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 76,
+      rule: "No paid beta access should widen until sandbox checkout, signed webhook, duplicate replay, refund rollback, entitlement sync, dead-letter handling, redaction scan, and support closeout are replayable without storing raw payment data.",
+      lanes: [
+        {
+          label: "Sandbox checkout fixture",
+          owner: "Finance control",
+          method: "SANDBOX",
+          route: "payment.sandbox.checkout-fixture",
+          proof: "Create a fake checkout session with plan label, amount, currency, provider session id, receipt id, and entitlement hold state.",
+          readyWhen: "Ready when checkout can be replayed without card, UPI, bank, token, contact, or gateway secret data.",
+          hold: "Hold if checkout proof depends on production provider credentials, raw customer data, or live payment links.",
+          score: 77
+        },
+        {
+          label: "Signed webhook verifier",
+          owner: "Backend billing",
+          method: "SANDBOX",
+          route: "payment.sandbox.signed-webhook",
+          proof: "Define signature header, timestamp tolerance, event id, event type, idempotency key, replay result, and rejection reason.",
+          readyWhen: "Ready when accepted, rejected, stale, tampered, and duplicate webhook fixtures produce deterministic receipts.",
+          hold: "Hold if webhook proof stores provider secret, raw payload, card, UPI, bank, contact, or credentials in front-end memory.",
+          score: 76
+        },
+        {
+          label: "Duplicate replay and ordering",
+          owner: "Billing QA",
+          method: "SANDBOX",
+          route: "payment.sandbox.replay-ordering",
+          proof: "Replay paid, duplicate paid, refund before paid, failed then paid, entitlement revoke, and retry cases.",
+          readyWhen: "Ready when event order cannot double-grant, miss-refund, or leave entitlement unclear.",
+          hold: "Hold if duplicate event handling or out-of-order events can change access without audit receipt.",
+          score: 74
+        },
+        {
+          label: "Refund rollback route",
+          owner: "Finance support",
+          method: "SANDBOX",
+          route: "payment.sandbox.refund-rollback",
+          proof: "Rehearse refund request, approved refund, failed refund, entitlement pause, support reply, and finance closeout receipt.",
+          readyWhen: "Ready when a refund event pauses or rolls back access and support can answer from approved copy.",
+          hold: "Hold if refunds can be handled manually without entitlement rollback and support-safe receipt.",
+          score: 75
+        },
+        {
+          label: "Entitlement sync receipt",
+          owner: "Account platform",
+          method: "SANDBOX",
+          route: "payment.sandbox.entitlement-sync",
+          proof: "Map payment event to trial, active, paused, refunded, expired, support-held, and no-access states.",
+          readyWhen: "Ready when each entitlement state can be replayed from event receipts and does not require private identifiers.",
+          hold: "Hold if account access can be granted from payment intent alone or without provider event receipt.",
+          score: 76
+        },
+        {
+          label: "Dead-letter and redaction closeout",
+          owner: "Security review",
+          method: "SANDBOX",
+          route: "payment.sandbox.dead-letter-redaction",
+          proof: "Define dead-letter queue reason, retry owner, redaction scan, support notice, closeout id, and blocked private fields.",
+          readyWhen: "Ready when failed events are quarantined, redacted, support-safe, and replayable before retry.",
+          hold: "Hold if failed provider events can disappear, leak raw payloads, or remain unresolved while access widens.",
+          score: 77
+        }
+      ],
+      operatingRules: [
+        "Sandbox payment proof must use fake provider events and must never store card, UPI, bank, token, credentials, contact, or gateway secrets.",
+        "Webhook signature, timestamp, event id, and idempotency result must be visible before entitlement changes.",
+        "Refund, duplicate, failed, and out-of-order events are first-class test cases, not edge-case notes.",
+        "Entitlement state changes require provider event receipt plus account/support-safe closeout.",
+        "Dead-letter events must be redacted, owned, replayable, and blocked from widening access until closeout."
+      ],
+      noGoLines: [
+        "No sandbox plan may use production checkout links, live customer payment data, provider secrets, cards, UPI, bank data, contact data, credentials, or raw payment payloads.",
+        "No entitlement may be granted from payment intent alone; signed provider receipt and idempotency proof are required.",
+        "No refund or failed payment may leave access active without explicit support-safe status and rollback receipt.",
+        "No paid cohort may widen while dead-letter events, duplicate event behavior, webhook verification, or redaction checks are unresolved."
+      ],
+      receiptFields: [
+        "payment_provider_sandbox_integration_plan_id",
+        "release_key",
+        "sandbox_checkout_fixture_id",
+        "provider_event_id",
+        "signature_state",
+        "idempotency_key",
+        "event_order_case",
+        "refund_rollback_state",
+        "entitlement_sync_state",
+        "dead_letter_reason",
+        "redaction_scan_id",
+        "support_closeout_id",
+        "finance_review_state",
+        "release_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -13606,14 +13705,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Live source connector scoping closes the first data-ingestion bridge; next releases should lock payment sandbox, account auth, support SLA evidence, beta entitlement replay, and connector failure replay.",
+      rule: "Payment sandbox scoping closes the first billing bridge; next releases should lock account auth, support SLA evidence, beta entitlement replay, connector failure replay, and billing observability.",
       lanes: [
-        {
-          version: "v510",
-          label: "Payment provider sandbox integration plan",
-          route: "#payment-provider-pilot-receipt-contract",
-          detail: "Prepare sandbox checkout, signed webhook, duplicate replay, refund rollback, entitlement sync, dead-letter, and redaction proof."
-        },
         {
           version: "v511",
           label: "Account auth provider decision room",
@@ -13637,6 +13730,12 @@ function buildTrackerConfig() {
           label: "Source connector failure replay board",
           route: "#backend-audit-receipts",
           detail: "Replay timeout, stale source, parser rejection, reviewer block, rollback, and correction notice cases before connector widening."
+        },
+        {
+          version: "v515",
+          label: "Payment observability receipt board",
+          route: "#payment-wiring",
+          detail: "Name payment logs, alert thresholds, support notices, retry owners, and reconciliation proof before sandbox moves toward live mode."
         }
       ]
     },
@@ -13645,6 +13744,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v509",
+          key: "20260708-v509-01",
+          commit: "a451e52",
+          receiptId: "NN-SHARE-RECEIPT-20260708V50901",
+          proof: "Live Source Connector Spike Plan added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v508",
           key: "20260708-v508-01",
@@ -13672,13 +13778,6 @@ function buildTrackerConfig() {
           commit: "922cd35",
           receiptId: "NN-SHARE-RECEIPT-20260708V50501",
           proof: "Data Retention Execution Checklist added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v504",
-          key: "20260708-v504-01",
-          commit: "2492d4e",
-          receiptId: "NN-SHARE-RECEIPT-20260708V50401",
-          proof: "Deployment Environment Readiness Map added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -13716,8 +13815,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v509",
-        detail: "Live Source Connector Spike Plan is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v510",
+        detail: "Payment Provider Sandbox Integration Plan is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -14471,6 +14570,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.pilotSupportDryRunBoard, "Pilot support dry run board")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.founderBetaCohortLedger, "Founder beta cohort ledger")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.liveSourceConnectorSpikePlan, "Live source connector spike plan")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan, "Payment provider sandbox integration plan")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -14646,6 +14746,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-pilot-support-dry-run-board>Copy support dry run</button>
         <button class="text-button" type="button" data-copy-founder-beta-cohort-ledger>Copy cohort ledger</button>
         <button class="text-button" type="button" data-copy-live-source-connector-spike-plan>Copy source connector</button>
+        <button class="text-button" type="button" data-copy-payment-provider-sandbox-integration-plan>Copy payment sandbox</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -14964,6 +15065,11 @@ function makeBuildTrackerBrief() {
     `Live source connector spike score: ${tracker.releaseDoctor.liveSourceConnectorSpikePlan.score}/100`,
     `Live source connector spike rule: ${tracker.releaseDoctor.liveSourceConnectorSpikePlan.rule}`,
     ...tracker.releaseDoctor.liveSourceConnectorSpikePlan.lanes.map((lane) => `- Source connector ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Payment provider sandbox integration plan: ${tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.verdict}`,
+    `Payment provider sandbox receipt: ${tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.receiptId}`,
+    `Payment provider sandbox score: ${tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.score}/100`,
+    `Payment provider sandbox rule: ${tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.rule}`,
+    ...tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.lanes.map((lane) => `- Payment sandbox ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -15379,6 +15485,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.liveSourceConnectorSpikePlan.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.liveSourceConnectorSpikePlan.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.liveSourceConnectorSpikePlan.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Payment Provider Sandbox Integration Plan",
+    `- Receipt ID: ${tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.verdict}`,
+    `- Score: ${tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.rule}`,
+    ...tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -16287,6 +16403,14 @@ function makeLiveSourceConnectorSpikePlanBrief() {
     "Live Source Connector Spike Plan",
     buildTrackerConfig().releaseDoctor.liveSourceConnectorSpikePlan,
     "Live Source Connector Spike Plan is a static source-connector contract only. It does not fetch live data, run parsers, certify source rights, update fund facts, or approve production ingestion."
+  );
+}
+
+function makePaymentProviderSandboxIntegrationPlanBrief() {
+  return makeOperationalProofBrief(
+    "Payment Provider Sandbox Integration Plan",
+    buildTrackerConfig().releaseDoctor.paymentProviderSandboxIntegrationPlan,
+    "Payment Provider Sandbox Integration Plan is a static billing-sandbox contract only. It does not process payments, verify live webhooks, store payment data, grant access, issue refunds, or approve paid launch."
   );
 }
 
@@ -70603,6 +70727,13 @@ function bindEvents() {
     if (!copyLiveSourceConnectorSpikePlan) return;
     event.preventDefault();
     copyText(makeLiveSourceConnectorSpikePlanBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyPaymentProviderSandboxIntegrationPlan = event.target.closest("[data-copy-payment-provider-sandbox-integration-plan]");
+    if (!copyPaymentProviderSandboxIntegrationPlan) return;
+    event.preventDefault();
+    copyText(makePaymentProviderSandboxIntegrationPlanBrief());
   });
 
   document.addEventListener("click", (event) => {

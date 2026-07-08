@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V510 Payment Provider Sandbox Integration Plan
+
+V510 adds Payment Provider Sandbox Integration Plan to the Build Tracker Release Doctor. It scopes fake checkout, signed webhook verifier, duplicate replay, out-of-order events, refund rollback, entitlement sync, dead-letter handling, redaction scan, support closeout, and no-live-payment rules before paid access widens.
+
 ## V509 Live Source Connector Spike Plan
 
 V509 adds Live Source Connector Spike Plan to the Build Tracker Release Doctor. It scopes one official source family at a time with endpoint envelope, checksum, source date, freshness state, parser quarantine, reviewer release, rollback evidence, accepted and rejected fields, and no-private-data connector rules before live ingestion widens.

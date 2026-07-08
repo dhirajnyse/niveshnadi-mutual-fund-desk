@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v510 Payment Provider Sandbox Integration Plan
+
+- Version: `0.510.0`
+- Data version: `20260708-v510-01`
+- Changes made: Added Payment Provider Sandbox Integration Plan to the Build Tracker Release Doctor with sandbox checkout fixture, signed webhook verifier, duplicate replay and ordering, refund rollback route, entitlement sync receipt, dead-letter and redaction closeout, operating rules, no-go lines, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward with v509 commit, next-batch planner roll-forward to v511-v515, and release markers rolled forward to v510.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v510 marker scan.
+- Known risks: Payment Provider Sandbox Integration Plan is a static billing-sandbox contract only; it does not process payments, verify live webhooks, store payment data, grant access, issue refunds, or approve paid launch.
+
 ## NiveshNadi Phase 1 v509 Live Source Connector Spike Plan
 
 - Version: `0.509.0`

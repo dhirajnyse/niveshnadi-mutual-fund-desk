@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V556 Account Retention Dry-Run Receipt Vault
+
+V556 adds Account Retention Dry-Run Receipt Vault to the Build Tracker Release Doctor. It collects dry-run, object family, owner, redaction, support-safe, failure replay, and founder vault signoff proof.
+
+- Release label: `NiveshNadi Phase 1 v556 Account Retention Dry-Run Receipt Vault`
+- Data/version key: `20260709-v556-01`
+- Product surface: Build Tracker > Release Doctor > Account retention dry-run receipt vault
+- Risk boundary: Static dry-run receipt vault only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Pending batch checks.
+
 ## V555 Payment Replay Acceptance Receipt
 
 V555 adds Payment Replay Acceptance Receipt to the Build Tracker Release Doctor. It turns accepted replay rows into entitlement, refund, rollback, support copy, owner signoff, and founder finance proof.

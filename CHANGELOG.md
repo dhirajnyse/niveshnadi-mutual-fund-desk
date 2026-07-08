@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v556 Account Retention Dry-Run Receipt Vault
+
+- Version: `0.556.0`
+- Data version: `20260709-v556-01`
+- Changes made: Added Account Retention Dry-Run Receipt Vault to the Build Tracker Release Doctor with dry-run receipt, object family receipt, owner receipt, redaction receipt, support-safe receipt, founder vault signoff, account dry-run vault receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v555 commit, next-batch planner roll-forward to v557-v561, and release markers rolled forward to v556.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v556 marker scan; local browser visual QA on desktop and mobile.
+- Known risks: Account Retention Dry-Run Receipt Vault is a static dry-run receipt vault only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v555 Payment Replay Acceptance Receipt
 
 - Version: `0.555.0`

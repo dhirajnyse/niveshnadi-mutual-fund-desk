@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v555 Payment Replay Acceptance Receipt
-20260709-v555-01
+NiveshNadi Phase 1 v556 Account Retention Dry-Run Receipt Vault
+20260709-v556-01

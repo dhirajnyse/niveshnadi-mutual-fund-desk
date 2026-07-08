@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v555-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v555 Payment Replay Acceptance Receipt";
+const DATA_VERSION = "20260709-v556-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v556 Account Retention Dry-Run Receipt Vault";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment replay acceptance receipt",
+    label: "Account retention dry-run receipt vault",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Turn accepted payment replay rows into owner-signed receipts with refund, rollback, and support-safe proof."
+    route: "#account-readiness",
+    detail: "Collect accepted retention dry-run receipts with object family, owner, redaction, and support-safe proof."
   },
   {
     label: "Mobile calm audit",
@@ -18077,6 +18077,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Replay Acceptance Receipt is a static payment replay acceptance room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountRetentionDryRunReceiptVault",
+        label: "Account retention dry-run receipt vault",
+        verdict: "Dry-run receipts need vault memory",
+        receiptId: ["NN", "ACCOUNT", "RETENTION", "DRY", "RUN", "RECEIPT", "VAULT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-retention-dry-run-receipt-vault",
+        copyLabel: "Copy dry-run vault",
+        score: 83,
+        rule: "Accepted retention dry-run receipts should collect object family, owner, redaction, support-safe evidence, failure replay, and founder vault signoff before retention jobs approach production.",
+        lanes: [
+          {
+            label: "Dry-run receipt",
+            owner: "Account QA",
+            method: "DRY RUN",
+            route: "account.retention.dry_run_receipt",
+            proof: "Store dry-run receipt ID, job family, run result, expected retained fields, and rejected private fields.",
+            readyWhen: "Ready when the dry-run receipt proves what stayed and what was excluded.",
+            hold: "Hold if dry-run receipt ID, job family, or rejected-field proof is missing.",
+            score: 84
+          },
+          {
+            label: "Object family receipt",
+            owner: "Data custody desk",
+            method: "OBJECTS",
+            route: "account.retention.object_family",
+            proof: "Name saved research, export, deletion, support-safe status, entitlement bridge, and audit object families.",
+            readyWhen: "Ready when every retained family has purpose, retention owner, and deletion behavior.",
+            hold: "Hold if object purpose, owner, or deletion behavior is unclear.",
+            score: 83
+          },
+          {
+            label: "Owner receipt",
+            owner: "Release owner",
+            method: "OWNER",
+            route: "account.retention.owner_receipt",
+            proof: "Record primary owner, fallback owner, review cadence, support route, and founder escalation path.",
+            readyWhen: "Ready when every retention row has a named owner and review date.",
+            hold: "Hold if fallback owner or review cadence is absent.",
+            score: 83
+          },
+          {
+            label: "Redaction receipt",
+            owner: "Privacy reviewer",
+            method: "REDACTION",
+            route: "account.retention.redaction_receipt",
+            proof: "Confirm no PAN, folio, CAS, bank, contact, credential, payment, or private support note remains in dry-run output.",
+            readyWhen: "Ready when redaction state is passed or the row stays blocked.",
+            hold: "Hold if any private field class is untested or unresolved.",
+            score: 84
+          },
+          {
+            label: "Support-safe receipt",
+            owner: "Support captain",
+            method: "SUPPORT SAFE",
+            route: "account.retention.support_safe_receipt",
+            proof: "Map retained account states to support-visible copy, hidden fields, recovery route, and escalation owner.",
+            readyWhen: "Ready when support can describe the retained state without exposing private data.",
+            hold: "Hold if support-visible copy or hidden-field policy is unclear.",
+            score: 82
+          },
+          {
+            label: "Founder vault signoff",
+            owner: "Founder desk",
+            method: "SIGNOFF",
+            route: "account.retention.founder_vault_signoff",
+            proof: "Record founder signoff, failure replay state, release hold, and production custody decision.",
+            readyWhen: "Ready when founder can accept, hold, or block the dry-run vault.",
+            hold: "Hold if founder signoff or failure replay state is missing.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Account retention dry-run receipt vault stores dry-run proof only; it does not authenticate users, export data, delete data, schedule jobs, or run jobs.",
+          "Every accepted dry-run row needs dry-run receipt, object family, owner, redaction, support-safe, and founder vault signoff.",
+          "Dry-run vault acceptance does not equal production account custody readiness; account launch stays blocked until backend, support, privacy, and deletion gates close.",
+          "Dry-run receipts must be browser-safe and exclude identifiers, credentials, contact details, payment payloads, raw support notes, and distributor-client records.",
+          "No account dry-run receipt may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No dry-run receipt may be vaulted without object family, owner, redaction, support-safe, and founder signoff states.",
+          "No retention job may approach production if failure replay or deletion behavior is unclear.",
+          "No support copy may expose hidden account fields or private notes.",
+          "No account dry-run vault row may imply real account custody, export, deletion, recovery, or entitlement action."
+        ],
+        receiptFields: [
+          "account_retention_dry_run_receipt_vault_id",
+          "release_key",
+          "dry_run_receipt_id",
+          "object_family",
+          "owner_state",
+          "redaction_state",
+          "support_safe_state",
+          "failure_replay_state",
+          "founder_signoff",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Account Retention Dry-Run Receipt Vault is a static dry-run receipt vault only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -18249,14 +18348,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment replay rows now have acceptance receipts; next releases should lock account retention dry-run receipt vault, beta command renewal receipt, support repair renewal receipt, source correction renewal aging guard, and payment acceptance aging guard.",
+      rule: "Account retention dry-run receipts now have vault memory; next releases should lock beta command renewal receipt, support repair renewal receipt, source correction renewal aging guard, payment acceptance aging guard, and account retention dry-run aging guard.",
       lanes: [
-        {
-          version: "v556",
-          label: "Account retention dry-run receipt vault",
-          route: "#account-readiness",
-          detail: "Collect accepted retention dry-run receipts with object family, owner, redaction, and support-safe proof."
-        },
         {
           version: "v557",
           label: "Beta command renewal receipt",
@@ -18280,14 +18373,27 @@ function buildTrackerConfig() {
           label: "Payment acceptance aging guard",
           route: "#payment-wiring",
           detail: "Warn when accepted payment replay receipts age past entitlement, refund, rollback, or support windows."
+        },
+        {
+          version: "v561",
+          label: "Account retention dry-run aging guard",
+          route: "#account-readiness",
+          detail: "Warn when vaulted dry-run receipts age past owner, redaction, support-safe, or deletion-review windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Payment replay acceptance proof visible",
+      verdict: "Account retention dry-run vault proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v555",
+          key: "20260709-v555-01",
+          commit: "444efe5",
+          receiptId: "NN-SHARE-RECEIPT-20260709V55501",
+          proof: "Payment Replay Acceptance Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v554",
           key: "20260709-v554-01",
@@ -18315,13 +18421,6 @@ function buildTrackerConfig() {
           commit: "b5fe281",
           receiptId: "NN-SHARE-RECEIPT-20260709V55101",
           proof: "Account Retention Job Acceptance Harness added, header release marker fixed, and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
-        },
-        {
-          version: "v550",
-          key: "20260709-v550-01",
-          commit: "7e0474f",
-          receiptId: "NN-SHARE-RECEIPT-20260709V55001",
-          proof: "Payment Closeout SLA Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -18359,13 +18458,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v555",
-        detail: "Payment Replay Acceptance Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v556",
+        detail: "Account Retention Dry-Run Receipt Vault is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v555 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v556 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -18374,25 +18473,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v555 held until live stamp",
-        detail: "Do not share v555 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v556 held until live stamp",
+        detail: "Do not share v556 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v555 payment acceptance",
-        detail: "Payment Replay Acceptance Receipt turns accepted replay rows into entitlement, refund, rollback, support copy, owner signoff, and founder finance proof."
+        value: "v556 account dry-run vault",
+        detail: "Account Retention Dry-Run Receipt Vault collects dry-run, object family, owner, redaction, support-safe, failure replay, and founder vault signoff proof."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v555 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v556 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v555 held until live stamp",
-        detail: "The release is share-ready only after v555 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v556 held until live stamp",
+        detail: "The release is share-ready only after v556 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

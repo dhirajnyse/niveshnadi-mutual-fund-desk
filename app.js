@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v530-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v530 Payment Incident Archive";
+const DATA_VERSION = "20260708-v531-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v531 Account Custody Retention Register";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment incident archive",
+    label: "Account custody retention register",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Retain payment incident decisions, mismatch classes, repair outcomes, support notices, and founder closeouts without payloads."
+    route: "#account-readiness",
+    detail: "Register export, deletion, retained receipt, redaction, support-safe status, and owner review states."
   },
   {
     label: "Mobile calm audit",
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v529 passed release checks on commit f4b5008. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v530 passed release checks on commit bd4b407. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v529 local checks passed",
+      outcome: "Previous outcome: v530 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52901",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V53001",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -15579,6 +15579,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Incident Archive is a static incident-retention contract only; it does not process payments, fetch gateway logs, issue refunds, grant access, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountCustodyRetentionRegister",
+        label: "Account custody retention register",
+        verdict: "Custody needs named retention owners",
+        receiptId: ["NN", "ACCOUNT", "CUSTODY", "RETENTION", "REGISTER", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-custody-retention-register",
+        copyLabel: "Copy custody register",
+        score: 83,
+        rule: "No account custody lane should widen until export objects, deletion states, retained receipts, redaction scans, support-safe statuses, owner reviews, and expiry rules are registered without private identifiers.",
+        lanes: [
+          {
+            label: "Export retention row",
+            owner: "Data custody desk",
+            method: "REGISTER",
+            route: "account.retention.export-row",
+            proof: "Register export manifest ID, object families, generated-at time, expiry, schema version, and excluded fields.",
+            readyWhen: "Ready when export retention is visible without exposing exported content.",
+            hold: "Hold if export row implies private identifiers or raw payment data are stored.",
+            score: 84
+          },
+          {
+            label: "Deletion retention row",
+            owner: "Account platform",
+            method: "REGISTER",
+            route: "account.retention.deletion-row",
+            proof: "Register delete request state, affected object family, irreversible state, retained receipt, and support-safe status.",
+            readyWhen: "Ready when deletion can be tracked without retaining deleted content.",
+            hold: "Hold if deletion row promises full removal of legal-safe release receipts.",
+            score: 83
+          },
+          {
+            label: "Retained receipt owner",
+            owner: "Backend custody",
+            method: "OWNER",
+            route: "account.retention.receipt-owner",
+            proof: "Name retention owner, receipt family, release key, redaction state, review date, and retirement rule.",
+            readyWhen: "Ready when every retained receipt has a single accountable owner.",
+            hold: "Hold if retained receipt owner, purpose, or retirement rule is missing.",
+            score: 82
+          },
+          {
+            label: "Redaction scan state",
+            owner: "Privacy desk",
+            method: "SCAN",
+            route: "account.retention.redaction-scan",
+            proof: "Register scan ID, blocked field classes, scan result, exception owner, and no-private-data attestation.",
+            readyWhen: "Ready when retained metadata is redaction-scanned before support can see it.",
+            hold: "Hold if scan state is absent or exceptions have no owner.",
+            score: 84
+          },
+          {
+            label: "Support-safe status",
+            owner: "Support captain",
+            method: "STATUS",
+            route: "account.retention.support-status",
+            proof: "Register export ready, expired, delete requested, delete complete, retained receipt, restore denied, or escalation status.",
+            readyWhen: "Ready when support sees status without private object content.",
+            hold: "Hold if support-safe status exposes private data or promises restoration.",
+            score: 83
+          },
+          {
+            label: "Owner review cadence",
+            owner: "Founder release desk",
+            method: "REVIEW",
+            route: "account.retention.owner-review",
+            proof: "Set monthly review, release review, supersede review, deletion review, and incident review cadence.",
+            readyWhen: "Ready when retention cannot become stale or ownerless.",
+            hold: "Hold if review cadence, stale-state rule, or founder closeout is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Account custody retention stores minimal proof metadata, not private saved content.",
+          "Every retained object has one owner, one status, one redaction state, one review cadence, and one retirement rule.",
+          "Support sees status and owner, never private research body, identifiers, credentials, or payment payloads.",
+          "Export and deletion copy must match the retention register before account storage widens.",
+          "No retention register row may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No account custody retention row may exist without owner, purpose, status, redaction scan, review cadence, and retirement rule.",
+          "No support-safe status may expose private saved research, identifiers, credentials, payment payloads, or raw contact data.",
+          "No deletion row may promise deletion of release-proof receipts that must be retained for legal-safe audit memory.",
+          "No account custody lane may widen while retention owner, redaction scan, or support-safe status is unclear."
+        ],
+        receiptFields: [
+          "account_custody_retention_register_id",
+          "release_key",
+          "object_family",
+          "retention_owner",
+          "retention_purpose",
+          "support_safe_status",
+          "redaction_scan_id",
+          "export_manifest_id",
+          "delete_request_state",
+          "retained_receipt_id",
+          "review_cadence",
+          "retirement_rule",
+          "created_at"
+        ],
+        boundary: "Account Custody Retention Register is a static retention register only; it does not authenticate users, export data, delete data, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -15751,14 +15852,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment incidents now have archive memory; next releases should lock account custody retention register, beta command decision ledger, support handoff drift audit, source correction supersede queue, and payment repair scoreboard.",
+      rule: "Account custody retention now has named owners; next releases should lock beta command decision ledger, support handoff drift audit, source correction supersede queue, payment repair scoreboard, and account retention stale-state monitor.",
       lanes: [
-        {
-          version: "v531",
-          label: "Account custody retention register",
-          route: "#account-readiness",
-          detail: "Register export, deletion, retained receipt, redaction scan, support-safe status, and owner review states for future account custody."
-        },
         {
           version: "v532",
           label: "Beta command decision ledger",
@@ -15782,6 +15877,12 @@ function buildTrackerConfig() {
           label: "Payment repair scoreboard",
           route: "#payment-wiring",
           detail: "Show open, repaired, held, rolled back, refund-review, and support-held payment repair states in one founder-safe scoreboard."
+        },
+        {
+          version: "v536",
+          label: "Account retention stale-state monitor",
+          route: "#account-readiness",
+          detail: "Watch retained receipt owners, review cadence, redaction scan age, support-safe status, and retirement rules for stale custody states."
         }
       ]
     },
@@ -15790,6 +15891,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v530",
+          key: "20260708-v530-01",
+          commit: "bd4b407",
+          receiptId: "NN-SHARE-RECEIPT-20260708V53001",
+          proof: "Payment Incident Archive added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v529",
           key: "20260708-v529-01",
@@ -15817,13 +15925,6 @@ function buildTrackerConfig() {
           commit: "29e5c41",
           receiptId: "NN-SHARE-RECEIPT-20260708V52601",
           proof: "Account Custody Export Drill added and verified by syntax, static, security, diff hygiene, visual QA, push, and live stamp checks."
-        },
-        {
-          version: "v525",
-          key: "20260708-v525-01",
-          commit: "ddf3931",
-          receiptId: "NN-SHARE-RECEIPT-20260708V52501",
-          proof: "Payment Reconciliation Drill added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -15861,13 +15962,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v530",
-        detail: "Payment Incident Archive is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v531",
+        detail: "Account Custody Retention Register is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v530 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v531 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -15876,25 +15977,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v530 held until live stamp",
-        detail: "Do not share v530 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v531 held until live stamp",
+        detail: "Do not share v531 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v530 payment incident archive",
-        detail: "Payment Incident Archive retains incident decisions, mismatch classes, repair outcomes, support notices, entitlement effects, and founder closeouts without payloads."
+        value: "v531 custody retention register",
+        detail: "Account Custody Retention Register names object family, owner, purpose, support-safe status, redaction scan, review cadence, and retirement rule."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v530 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v531 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v530 held until live stamp",
-        detail: "The release is share-ready only after v530 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v531 held until live stamp",
+        detail: "The release is share-ready only after v531 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

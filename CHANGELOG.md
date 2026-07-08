@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v531 Account Custody Retention Register
+
+- Version: `0.531.0`
+- Data version: `20260708-v531-01`
+- Changes made: Added Account Custody Retention Register to the Build Tracker Release Doctor with export retention row, deletion retention row, retained receipt owner, redaction scan state, support-safe status, owner review cadence, account custody retention receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v530 commit, next-batch planner roll-forward to v532-v536, and release markers rolled forward to v531.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v531 marker scan.
+- Known risks: Account Custody Retention Register is a static retention register only; it does not authenticate users, export data, delete data, collect identifiers, recover accounts, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v530 Payment Incident Archive
 
 - Version: `0.530.0`

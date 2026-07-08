@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V531 Account Custody Retention Register
+
+V531 adds Account Custody Retention Register to the Build Tracker Release Doctor. It names retained object families, owners, purposes, support-safe statuses, redaction scans, review cadence, and retirement rules before account custody widens.
+
+- Release label: `NiveshNadi Phase 1 v531 Account Custody Retention Register`
+- Data/version key: `20260708-v531-01`
+- Product surface: Build Tracker > Release Doctor > Account custody retention register
+- Risk boundary: Static retention register only; it does not authenticate users, export data, delete data, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Pending batch checks.
+
 ## V530 Payment Incident Archive
 
 V530 adds Payment Incident Archive to the Build Tracker Release Doctor. It retains payment incident decisions, mismatch classes, repair outcomes, support notices, refund and entitlement effects, and founder closeouts without payment payloads.

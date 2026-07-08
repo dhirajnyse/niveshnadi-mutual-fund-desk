@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v519-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v519 Source Incident Release Notes";
+const DATA_VERSION = "20260708-v520-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v520 Payment Incident Command Memo";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v518 passed release checks on commit 7f247df. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v519 passed release checks on commit 6f99845. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v518 local checks passed",
+      outcome: "Previous outcome: v519 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51801",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51901",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -14470,6 +14470,108 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Incident Release Notes is a static correction-note contract only; it does not fetch live data, publish notices, alter saved records, contact users, or approve corrected claims without reviewer release."
+      },
+      {
+        key: "paymentIncidentCommandMemo",
+        label: "Payment incident command memo",
+        verdict: "Payment incidents need one founder command",
+        receiptId: ["NN", "PAYMENT", "INCIDENT", "COMMAND", "MEMO", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-incident-command-memo",
+        copyLabel: "Copy payment command memo",
+        score: 78,
+        rule: "No payment incident should close until alert trigger, dead-letter state, reconciliation miss, entitlement effect, support notice, freeze decision, repair owner, and founder command are captured in one memo.",
+        lanes: [
+          {
+            label: "Alert trigger",
+            owner: "Payment owner",
+            method: "COMMAND",
+            route: "payment.incident.alert-trigger",
+            proof: "Name alert family, threshold, event family, provider event ID, idempotency key, and owner response window.",
+            readyWhen: "Ready when a payment incident begins from an owner-visible alert rather than a user complaint alone.",
+            hold: "Hold if alert source, threshold, or owner is unclear.",
+            score: 78
+          },
+          {
+            label: "Dead-letter state",
+            owner: "Backend owner",
+            method: "COMMAND",
+            route: "payment.incident.dead-letter-state",
+            proof: "Name failed event, retry count, retry ceiling, discard rule, repair queue, and support impact.",
+            readyWhen: "Ready when failed payment events cannot silently block entitlement or refund status.",
+            hold: "Hold if dead-letter events do not have retry, discard, and owner decisions.",
+            score: 78
+          },
+          {
+            label: "Reconciliation miss",
+            owner: "Finance desk",
+            method: "COMMAND",
+            route: "payment.incident.reconciliation-miss",
+            proof: "Compare checkout, invoice, webhook, entitlement, refund, support notice, and daily reconciliation result.",
+            readyWhen: "Ready when disagreement between payment and access states becomes a repair command.",
+            hold: "Hold if payment, invoice, entitlement, refund, or support status cannot be matched.",
+            score: 79
+          },
+          {
+            label: "Entitlement effect",
+            owner: "Access owner",
+            method: "COMMAND",
+            route: "payment.incident.entitlement-effect",
+            proof: "Name grant, pause, revoke, refund rollback, support hold, downgrade copy, and no-access state.",
+            readyWhen: "Ready when payment incidents cannot create contradictory access states.",
+            hold: "Hold if paid, refunded, paused, support-held, or no-access states conflict.",
+            score: 78
+          },
+          {
+            label: "Support notice",
+            owner: "Support captain",
+            method: "COPY",
+            route: "payment.incident.support-notice",
+            proof: "Write pending, failed, refunded, duplicate, support-held, repaired, and closed status copy with refund route.",
+            readyWhen: "Ready when support can explain payment status without exposing gateway payloads.",
+            hold: "Hold if notice pressures payment, hides refund path, or mentions private gateway details.",
+            score: 78
+          },
+          {
+            label: "Founder command",
+            owner: "Founder release desk",
+            method: "DECIDE",
+            route: "payment.incident.founder-command",
+            proof: "Choose continue, freeze, repair, refund-review, or rollback with command owner, due time, and closeout memo.",
+            readyWhen: "Ready when one founder command controls payment incident state before beta widening.",
+            hold: "Hold if incident closeout is spread across chat, logs, and support memory.",
+            score: 79
+          }
+        ],
+        operatingRules: [
+          "A payment incident memo must decide continue, freeze, repair, refund-review, or rollback.",
+          "Every memo names event family, owner, support effect, entitlement effect, reconciliation result, and closeout receipt.",
+          "Support copy must be user-safe and never reveal gateway payloads or private payment data.",
+          "Beta widening pauses while payment command state is freeze, repair, refund-review, or rollback.",
+          "No memo may retain card, UPI, bank, gateway secret, PAN, folio, CAS, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No payment incident may close without alert trigger, dead-letter state, reconciliation result, entitlement effect, support notice, and founder command.",
+          "No payment command memo may store card, UPI, bank, gateway secret, PAN, folio, CAS, contact data, credentials, private notes, payment payloads, or distributor-client records.",
+          "No support notice may promise refund, access, advice, or recovery beyond the recorded state.",
+          "No beta wave may widen while payment command state is unresolved."
+        ],
+        receiptFields: [
+          "payment_incident_command_memo_id",
+          "release_key",
+          "alert_family",
+          "provider_event_id",
+          "idempotency_key",
+          "dead_letter_state",
+          "reconciliation_miss",
+          "entitlement_effect",
+          "support_notice_id",
+          "founder_command",
+          "repair_owner",
+          "closeout_memo_id",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Payment Incident Command Memo is a static incident-decision contract only; it does not process payments, fetch gateway logs, issue refunds, grant access, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -14642,14 +14744,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source incident notes now make corrections release-safe; next releases should lock payment incident command memos, account recovery policy copy, beta founder closeout scoring, support reply quality audit, and source correction archive.",
+      rule: "Payment incident command now has a founder memo; next releases should lock account recovery policy copy, beta founder closeout scoring, support reply quality audit, source correction archive, and payment reconciliation drill.",
       lanes: [
-        {
-          version: "v520",
-          label: "Payment incident command memo",
-          route: "#payment-wiring",
-          detail: "Convert payment alerts, dead letters, reconciliation misses, support notices, and founder decisions into one incident command memo."
-        },
         {
           version: "v521",
           label: "Account recovery policy copy room",
@@ -14673,6 +14769,12 @@ function buildTrackerConfig() {
           label: "Source correction archive",
           route: "#source-receipts",
           detail: "Retain source incident IDs, affected surfaces, correction wording, reviewer signoff, and rollback proof without private data."
+        },
+        {
+          version: "v525",
+          label: "Payment reconciliation drill",
+          route: "#payment-wiring",
+          detail: "Rehearse checkout, invoice, webhook, entitlement, refund, support notice, and daily reconciliation mismatch repair."
         }
       ]
     },
@@ -14681,6 +14783,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v519",
+          key: "20260708-v519-01",
+          commit: "6f99845",
+          receiptId: "NN-SHARE-RECEIPT-20260708V51901",
+          proof: "Source Incident Release Notes added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v518",
           key: "20260708-v518-01",
@@ -14708,13 +14817,6 @@ function buildTrackerConfig() {
           commit: "87c2a63",
           receiptId: "NN-SHARE-RECEIPT-20260708V51501",
           proof: "Payment Observability Receipt Board added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v514",
-          key: "20260708-v514-01",
-          commit: "b54a68e",
-          receiptId: "NN-SHARE-RECEIPT-20260708V51401",
-          proof: "Source Connector Failure Replay Board added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -14752,13 +14854,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v519",
-        detail: "Source Incident Release Notes is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v520",
+        detail: "Payment Incident Command Memo is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v519 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v520 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -14767,25 +14869,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v519 held until live stamp",
-        detail: "Do not share v519 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v520 held until live stamp",
+        detail: "Do not share v520 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v519 source incident notes",
-        detail: "Source Incident Release Notes turns rollback, correction, affected surfaces, reviewer signoff, and user-safe wording into a release-safe correction note."
+        value: "v520 payment incident command",
+        detail: "Payment Incident Command Memo turns alert triggers, dead letters, reconciliation misses, entitlement effects, support notices, and founder commands into one incident memo."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v519 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v520 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v519 held until live stamp",
-        detail: "The release is share-ready only after v519 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v520 held until live stamp",
+        detail: "The release is share-ready only after v520 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v520 Payment Incident Command Memo
+
+- Version: `0.520.0`
+- Data version: `20260708-v520-01`
+- Changes made: Added Payment Incident Command Memo to the Build Tracker Release Doctor with alert trigger, dead-letter state, reconciliation miss, entitlement effect, support notice, founder command, payment incident receipt fields, proof archive roll-forward with v519 commit, next-batch planner roll-forward to v521-v525, and release markers rolled forward to v520.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v520 marker scan.
+- Known risks: Payment Incident Command Memo is a static incident-decision contract only; it does not process payments, fetch gateway logs, issue refunds, grant access, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v519 Source Incident Release Notes
 
 - Version: `0.519.0`

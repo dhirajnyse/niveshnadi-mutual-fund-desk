@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V520 Payment Incident Command Memo
+
+V520 adds Payment Incident Command Memo to the Build Tracker Release Doctor. It converts alert triggers, dead-letter state, reconciliation misses, entitlement effects, support notices, and founder commands into one incident decision memo.
+
+- Release label: `NiveshNadi Phase 1 v520 Payment Incident Command Memo`
+- Data/version key: `20260708-v520-01`
+- Product surface: Build Tracker > Release Doctor > Payment incident command memo
+- Risk boundary: Static incident-decision contract only; it does not process payments, fetch gateway logs, issue refunds, grant access, contact users, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V519 Source Incident Release Notes
 
 V519 adds Source Incident Release Notes to the Build Tracker Release Doctor. It turns incident cause, affected surfaces, old and corrected value, rollback proof, user-safe wording, and reviewer signoff into calm correction notes.

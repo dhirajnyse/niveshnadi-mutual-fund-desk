@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v536 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v537 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Beta Command Aging Monitor in the Build Tracker Release Doctor that flags stale go, hold, freeze, repair, review-miss, and supersede commands before founder memory trusts them.
 - Account Retention Stale-State Monitor in the Build Tracker Release Doctor that flags stale owners, redaction scans, review cadence, support-safe status, retirement rules, export/delete state, and release holds before custody widens.
 - Payment Repair Scoreboard in the Build Tracker Release Doctor that shows open, repaired, held, rolled back, refund-review, and support-held payment repair states with owner, entitlement effect, support notice, and no-payload boundary.
 - Source Correction Supersede Queue in the Build Tracker Release Doctor that keeps accepted, held, superseded, and retired correction rows tied to reviewer scope, replacement rows, support handoff, and no-advice boundaries.

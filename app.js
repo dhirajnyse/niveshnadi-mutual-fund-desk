@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v536-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v536 Account Retention Stale-State Monitor";
+const DATA_VERSION = "20260708-v537-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v537 Beta Command Aging Monitor";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account retention stale-state monitor",
+    label: "Beta command aging monitor",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Flag stale owners, redaction scans, review cadence, support-safe statuses, and retirement rules."
+    route: "#founder-beta-operating-room",
+    detail: "Flag stale go, hold, freeze, and repair commands before founder memory becomes outdated."
   },
   {
     label: "Mobile calm audit",
@@ -16185,6 +16185,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Retention Stale-State Monitor is a static retention freshness monitor only; it does not authenticate users, export data, delete data, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandAgingMonitor",
+        label: "Beta command aging monitor",
+        verdict: "Founder commands need aging alerts",
+        receiptId: ["NN", "BETA", "COMMAND", "AGING", "MONITOR", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-aging-monitor",
+        copyLabel: "Copy aging monitor",
+        score: 83,
+        rule: "No founder beta command should stay trusted unless its age, owner, review date, supersede state, stale reason, and release hold are visible before the next beta action.",
+        lanes: [
+          {
+            label: "Go command age",
+            owner: "Founder command desk",
+            method: "AGE",
+            route: "beta.command.age-go",
+            proof: "Flag go command, issue date, last review date, owner, proof dependency, and stale threshold.",
+            readyWhen: "Ready when every go command has a current review date.",
+            hold: "Hold if go command age exceeds the release threshold.",
+            score: 84
+          },
+          {
+            label: "Hold command age",
+            owner: "Launch control",
+            method: "HOLD",
+            route: "beta.command.age-hold",
+            proof: "Flag hold reason, owner, blocker family, next review date, and release dependency.",
+            readyWhen: "Ready when hold commands cannot become invisible backlog.",
+            hold: "Hold if the command has no next review or owner.",
+            score: 83
+          },
+          {
+            label: "Freeze command age",
+            owner: "Risk desk",
+            method: "FREEZE",
+            route: "beta.command.age-freeze",
+            proof: "Flag freeze scope, stale age, affected surface, release hold, and thaw criteria.",
+            readyWhen: "Ready when each freeze has a thaw or supersede path.",
+            hold: "Hold if freeze scope is stale or thaw criteria are missing.",
+            score: 82
+          },
+          {
+            label: "Repair command age",
+            owner: "Repair captain",
+            method: "REPAIR",
+            route: "beta.command.age-repair",
+            proof: "Flag repair command, owner, repair route, stale reason, and evidence needed for closeout.",
+            readyWhen: "Ready when repair commands age into review instead of memory drift.",
+            hold: "Hold if repair action is stale or has no closeout proof.",
+            score: 83
+          },
+          {
+            label: "Review date miss",
+            owner: "Founder review desk",
+            method: "REVIEW",
+            route: "beta.command.review-miss",
+            proof: "Flag missed review date, owner, command state, and immediate review action.",
+            readyWhen: "Ready when missed reviews become visible before new commands are trusted.",
+            hold: "Hold if command review date is blank or missed.",
+            score: 82
+          },
+          {
+            label: "Founder supersede",
+            owner: "Founder release desk",
+            method: "SUPERSEDE",
+            route: "beta.command.supersede",
+            proof: "Flag superseded command, replacement command, supersede reason, owner, and release hold.",
+            readyWhen: "Ready when old commands cannot compete with newer founder decisions.",
+            hold: "Hold if supersede state is unclear or replacement command is missing.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "Command aging watches founder beta command freshness, not private user data.",
+          "Every command has one state, one owner, one age, one next review date, and one stale rule.",
+          "Go, hold, freeze, and repair commands cannot pass as current when review dates are missed.",
+          "Superseded commands must point to the replacement command before release memory trusts them.",
+          "No command aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No stale founder command may be treated as current without age, owner, and review date.",
+          "No beta action may widen while go, hold, freeze, or repair commands disagree.",
+          "No superseded command may remain active without replacement proof.",
+          "No aging monitor row may expose private identifiers, credentials, payment payloads, or raw support notes."
+        ],
+        receiptFields: [
+          "beta_command_aging_monitor_id",
+          "release_key",
+          "command_state",
+          "command_age",
+          "last_review_at",
+          "next_review_at",
+          "owner",
+          "stale_reason",
+          "repair_route",
+          "supersede_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Beta Command Aging Monitor is a static command freshness monitor only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -16357,14 +16457,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account retention stale states now have freshness alerts; next releases should lock beta command aging monitor, support drift repair queue, source correction retirement monitor, payment repair closeout audit, and account custody expiry rehearsal.",
+      rule: "Beta command aging now has freshness alerts; next releases should lock support drift repair queue, source correction retirement monitor, payment repair closeout audit, account custody expiry rehearsal, and beta command expiry closeout.",
       lanes: [
-        {
-          version: "v537",
-          label: "Beta command aging monitor",
-          route: "#founder-beta-operating-room",
-          detail: "Flag stale go, hold, freeze, and repair commands before founder memory becomes outdated."
-        },
         {
           version: "v538",
           label: "Support drift repair queue",
@@ -16388,14 +16482,27 @@ function buildTrackerConfig() {
           label: "Account custody expiry rehearsal",
           route: "#account-readiness",
           detail: "Rehearse expiring retained receipts, replacement owners, export/delete copy, and support-safe closeout."
+        },
+        {
+          version: "v542",
+          label: "Beta command expiry closeout",
+          route: "#founder-beta-operating-room",
+          detail: "Close expired founder commands with replacement proof, retirement reason, and release-safe memory."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Retention rules visible",
+      verdict: "Aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v536",
+          key: "20260708-v536-01",
+          commit: "29cb5ef",
+          receiptId: "NN-SHARE-RECEIPT-20260708V53601",
+          proof: "Account Retention Stale-State Monitor added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
+        },
         {
           version: "v535",
           key: "20260708-v535-01",
@@ -16423,13 +16530,6 @@ function buildTrackerConfig() {
           commit: "a415c79",
           receiptId: "NN-SHARE-RECEIPT-20260708V53201",
           proof: "Beta Command Decision Ledger added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v531",
-          key: "20260708-v531-01",
-          commit: "69191ab",
-          receiptId: "NN-SHARE-RECEIPT-20260708V53101",
-          proof: "Account Custody Retention Register added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -16467,13 +16567,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v536",
-        detail: "Account Retention Stale-State Monitor is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v537",
+        detail: "Beta Command Aging Monitor is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v536 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v537 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -16482,25 +16582,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v536 held until live stamp",
-        detail: "Do not share v536 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v537 held until live stamp",
+        detail: "Do not share v537 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v536 account stale monitor",
-        detail: "Account Retention Stale-State Monitor flags stale owners, redaction scans, review cadence, support-safe status, retirement rules, and export/delete state."
+        value: "v537 beta aging monitor",
+        detail: "Beta Command Aging Monitor flags stale go, hold, freeze, repair, review-miss, and supersede commands before founder memory trusts them."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v536 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v537 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v536 held until live stamp",
-        detail: "The release is share-ready only after v536 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v537 held until live stamp",
+        detail: "The release is share-ready only after v537 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

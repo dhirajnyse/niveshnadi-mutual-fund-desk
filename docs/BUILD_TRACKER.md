@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V537 Beta Command Aging Monitor
+
+V537 adds Beta Command Aging Monitor to the Build Tracker Release Doctor. It flags stale go, hold, freeze, repair, review-miss, and supersede commands before founder memory trusts them.
+
+- Release label: `NiveshNadi Phase 1 v537 Beta Command Aging Monitor`
+- Data/version key: `20260708-v537-01`
+- Product surface: Build Tracker > Release Doctor > Beta command aging monitor
+- Risk boundary: Static command freshness monitor only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V536 Account Retention Stale-State Monitor
 
 V536 adds Account Retention Stale-State Monitor to the Build Tracker Release Doctor. It flags stale owners, redaction scans, review cadence, support-safe status, retirement rules, export/delete state, and release holds before custody widens.

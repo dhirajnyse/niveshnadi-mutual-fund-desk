@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V523 Support Reply Quality Audit
+
+V523 adds Support Reply Quality Audit to the Build Tracker Release Doctor. It checks research-only boundary, no-advice phrasing, refund clarity, source correction, private-data restraint, and escalation closeout before founder beta support widens.
+
+- Release label: `NiveshNadi Phase 1 v523 Support Reply Quality Audit`
+- Data/version key: `20260708-v523-01`
+- Product surface: Build Tracker > Release Doctor > Support reply quality audit
+- Risk boundary: Static support-copy contract only; it does not send replies, resolve tickets, process refunds, collect private data, approve recommendations, or approve beta support widening.
+- Verification status: Pending batch checks.
+
 ## V522 Beta Founder Closeout Scorecard
 
 V522 adds Beta Founder Closeout Scorecard to the Build Tracker Release Doctor. It converts support readiness, source trust, payment confidence, account custody, evidence packet, and founder command states into one go, hold, or freeze decision before the next beta wave widens.

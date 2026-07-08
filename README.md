@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v522 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v523 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Support Reply Quality Audit in the Build Tracker Release Doctor that checks research-only boundary, no-advice phrasing, refund clarity, source correction, private-data restraint, and escalation closeout before beta support widens.
 - Beta Founder Closeout Scorecard in the Build Tracker Release Doctor that turns support, source, payment, account, evidence packet, and founder command states into one go, hold, or freeze score before the next beta wave widens.
 - Account Recovery Policy Copy Room in the Build Tracker Release Doctor that writes lost access, session freeze, export, deletion, restore, denial, and support-boundary copy before account custody widens.
 - Payment Incident Command Memo in the Build Tracker Release Doctor that converts alert triggers, dead-letter state, reconciliation misses, entitlement effects, support notices, and founder commands into one incident decision memo.

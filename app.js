@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v522-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v522 Beta Founder Closeout Scorecard";
+const DATA_VERSION = "20260708-v523-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v523 Support Reply Quality Audit";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v521 passed release checks on commit df8c141. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v522 passed release checks on commit 2d36ec2. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v521 local checks passed",
+      outcome: "Previous outcome: v522 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52101",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52201",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -14772,6 +14772,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Founder Closeout Scorecard is a static founder-decision summary only; it does not invite users, process payments, grant access, verify live data, recover accounts, or approve beta expansion."
+      },
+      {
+        key: "supportReplyQualityAudit",
+        label: "Support reply quality audit",
+        verdict: "Replies need calm proof before the next wave",
+        receiptId: ["NN", "SUPPORT", "REPLY", "QUALITY", "AUDIT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-reply-quality-audit",
+        copyLabel: "Copy reply audit",
+        score: 81,
+        rule: "No founder beta support reply should widen until research-only boundary, no-advice wording, refund clarity, source correction, private-data restraint, and escalation closeout are auditable in plain language.",
+        lanes: [
+          {
+            label: "Research-only boundary",
+            owner: "Support captain",
+            method: "COPY",
+            route: "support.reply.research-boundary",
+            proof: "Reply says the desk organizes research and does not approve, recommend, execute, or guarantee.",
+            readyWhen: "Ready when a confused user can see the no-advice boundary in one sentence.",
+            hold: "Hold if reply drifts into best-fund, suitability, transaction, or return language.",
+            score: 83
+          },
+          {
+            label: "No-advice phrasing",
+            owner: "Compliance research",
+            method: "AUDIT",
+            route: "support.reply.no-advice",
+            proof: "Check every reply for advice verbs, performance promises, urgency pressure, and allocation commands.",
+            readyWhen: "Ready when the reply helps the user slow down without telling them what to buy or sell.",
+            hold: "Hold if wording says buy, sell, switch, invest, redeem, allocate, or best fund.",
+            score: 80
+          },
+          {
+            label: "Refund clarity",
+            owner: "Billing boundary",
+            method: "CHECK",
+            route: "support.reply.refund-clarity",
+            proof: "Reply names where refund policy is visible, what state is known, and who owns next review.",
+            readyWhen: "Ready when refund copy is specific without promising outcome or timing beyond proof.",
+            hold: "Hold if reply promises refund, payment success, entitlement, or manual override.",
+            score: 79
+          },
+          {
+            label: "Source correction reply",
+            owner: "Source desk",
+            method: "TRACE",
+            route: "support.reply.source-correction",
+            proof: "Reply names source date, correction status, affected claim, reviewer state, and recheck route.",
+            readyWhen: "Ready when source doubt receives a correction path instead of defensive copy.",
+            hold: "Hold if source correction is unknown, hidden, or not tied to reviewer release.",
+            score: 81
+          },
+          {
+            label: "Private-data restraint",
+            owner: "Privacy desk",
+            method: "SCAN",
+            route: "support.reply.private-data",
+            proof: "Reply refuses PAN, folio, CAS, bank, card, UPI, contact, credentials, private notes, and raw payment payloads.",
+            readyWhen: "Ready when the support route remains identity-light and privacy-safe.",
+            hold: "Hold if reply asks for private identifiers or invites unsupported uploads.",
+            score: 84
+          },
+          {
+            label: "Escalation closeout",
+            owner: "Support captain",
+            method: "CLOSE",
+            route: "support.reply.escalation-closeout",
+            proof: "Reply names escalation owner, safe status, next review window, closeout receipt, and hold trigger.",
+            readyWhen: "Ready when support can close or escalate without leaving the user in fog.",
+            hold: "Hold if owner, status, or review window is missing.",
+            score: 80
+          }
+        ],
+        operatingRules: [
+          "Support replies should reduce urgency, not create action pressure.",
+          "Every support reply keeps research-only, no-advice, refund, source, privacy, and escalation wording visible.",
+          "A reply can acknowledge a blocker without promising payment, account, refund, data, or investment outcomes.",
+          "Support copy pauses beta widening when confusion, private-data fear, refund doubt, or source correction is unresolved.",
+          "No reply audit may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No support reply may recommend, approve, execute, or guarantee an investment action.",
+          "No support reply may promise refund, payment success, account recovery, live data accuracy, or entitlement state without proof.",
+          "No support reply may request PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records.",
+          "No beta support lane may widen while reply quality, escalation owner, or private-data boundary is unclear."
+        ],
+        receiptFields: [
+          "support_reply_quality_audit_id",
+          "release_key",
+          "reply_template_id",
+          "research_boundary_state",
+          "no_advice_scan",
+          "refund_clarity_state",
+          "source_correction_state",
+          "private_data_exclusion",
+          "escalation_owner",
+          "closeout_receipt_id",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Support Reply Quality Audit is a static support-copy contract only; it does not send replies, resolve tickets, process refunds, collect private data, approve recommendations, or approve beta support widening."
       }
     ],
     executiveCalmCompression: {
@@ -14944,14 +15044,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta founder closeout now has a go/hold/freeze scorecard; next releases should lock support reply quality audit, source correction archive, payment reconciliation drill, account custody export drill, and beta readiness command scoring.",
+      rule: "Support reply quality is now auditable; next releases should lock source correction archive, payment reconciliation drill, account custody export drill, beta readiness command scoring, and support knowledge handoff.",
       lanes: [
-        {
-          version: "v523",
-          label: "Support reply quality audit",
-          route: "#paid-beta-support-ledger",
-          detail: "Audit support replies for research-only boundary, no-advice phrasing, refund clarity, source correction, and private-data restraint."
-        },
         {
           version: "v524",
           label: "Source correction archive",
@@ -14975,6 +15069,12 @@ function buildTrackerConfig() {
           label: "Beta readiness command score",
           route: "#founder-beta-operating-room",
           detail: "Convert founder closeout, support, source, payment, account, and evidence states into one beta readiness command."
+        },
+        {
+          version: "v528",
+          label: "Support knowledge handoff",
+          route: "#paid-beta-support-ledger",
+          detail: "Turn approved support replies, escalation routes, refund boundaries, and private-data exclusions into a compact handoff pack."
         }
       ]
     },
@@ -14983,6 +15083,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v522",
+          key: "20260708-v522-01",
+          commit: "2d36ec2",
+          receiptId: "NN-SHARE-RECEIPT-20260708V52201",
+          proof: "Beta Founder Closeout Scorecard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v521",
           key: "20260708-v521-01",
@@ -15010,13 +15117,6 @@ function buildTrackerConfig() {
           commit: "7f247df",
           receiptId: "NN-SHARE-RECEIPT-20260708V51801",
           proof: "Support Escalation Analytics Strip added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v517",
-          key: "20260708-v517-01",
-          commit: "2c6a7d2",
-          receiptId: "NN-SHARE-RECEIPT-20260708V51701",
-          proof: "Founder Beta Release Evidence Packet added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -15054,13 +15154,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v522",
-        detail: "Beta Founder Closeout Scorecard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v523",
+        detail: "Support Reply Quality Audit is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v522 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v523 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -15069,25 +15169,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v522 held until live stamp",
-        detail: "Do not share v522 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v523 held until live stamp",
+        detail: "Do not share v523 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v522 founder closeout score",
-        detail: "Beta Founder Closeout Scorecard writes one go, hold, or freeze command before the next founder beta wave widens."
+        value: "v523 support reply audit",
+        detail: "Support Reply Quality Audit keeps research-only, no-advice, refund, source correction, privacy, and escalation copy visible before support widens."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v522 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v523 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v522 held until live stamp",
-        detail: "The release is share-ready only after v522 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v523 held until live stamp",
+        detail: "The release is share-ready only after v523 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

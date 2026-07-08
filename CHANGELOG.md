@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v523 Support Reply Quality Audit
+
+- Version: `0.523.0`
+- Data version: `20260708-v523-01`
+- Changes made: Added Support Reply Quality Audit to the Build Tracker Release Doctor with research-only boundary, no-advice phrasing, refund clarity, source correction reply, private-data restraint, escalation closeout, support reply receipt fields, proof archive roll-forward with v522 commit, next-batch planner roll-forward to v524-v528, and release markers rolled forward to v523.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v523 marker scan.
+- Known risks: Support Reply Quality Audit is a static support-copy contract only; it does not send replies, resolve tickets, process refunds, collect private data, approve recommendations, or approve beta support widening.
+
 ## NiveshNadi Phase 1 v522 Beta Founder Closeout Scorecard
 
 - Version: `0.522.0`

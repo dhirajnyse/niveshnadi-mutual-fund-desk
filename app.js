@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v529-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v529 Source Correction Public Changelog";
+const DATA_VERSION = "20260708-v530-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v530 Payment Incident Archive";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction public changelog",
+    label: "Payment incident archive",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Convert accepted correction archive rows into calm public wording with affected surface and reviewer scope."
+    route: "#payment-wiring",
+    detail: "Retain payment incident decisions, mismatch classes, repair outcomes, support notices, and founder closeouts without payloads."
   },
   {
     label: "Mobile calm audit",
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v528 passed release checks on commit 94d6edf. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v529 passed release checks on commit f4b5008. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v528 local checks passed",
+      outcome: "Previous outcome: v529 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52801",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52901",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -15478,6 +15478,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Public Changelog is a static correction-wording contract only; it does not fetch live data, publish notices, alter saved records, contact users, approve corrected claims, or replace reviewer release."
+      },
+      {
+        key: "paymentIncidentArchive",
+        label: "Payment incident archive",
+        verdict: "Payment incidents need replayable memory",
+        receiptId: ["NN", "PAYMENT", "INCIDENT", "ARCHIVE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-incident-archive",
+        copyLabel: "Copy payment archive",
+        score: 80,
+        rule: "No payment incident should close until decision state, mismatch class, repair outcome, support notice, refund and entitlement effect, founder closeout, and retention boundary are archived without payment payloads.",
+        lanes: [
+          {
+            label: "Incident decision receipt",
+            owner: "Billing boundary",
+            method: "DECIDE",
+            route: "payment.incident.archive-decision",
+            proof: "Store continue, freeze, repair, refund-review, rollback, or no-op decision with owner and timestamp.",
+            readyWhen: "Ready when the incident has one decision and one owner.",
+            hold: "Hold if incident state is spread across chat, logs, and support memory.",
+            score: 81
+          },
+          {
+            label: "Mismatch class",
+            owner: "Ops repair desk",
+            method: "CLASSIFY",
+            route: "payment.incident.archive-mismatch",
+            proof: "Classify checkout, invoice, webhook, entitlement, refund, support, or account mismatch.",
+            readyWhen: "Ready when every mismatch belongs to one class with a repair path.",
+            hold: "Hold if mismatch class is unknown or has multiple conflicting causes.",
+            score: 79
+          },
+          {
+            label: "Repair outcome",
+            owner: "Ops repair desk",
+            method: "REPAIR",
+            route: "payment.incident.archive-repair",
+            proof: "Archive repaired, held, rolled back, refund-review, support-held, or dead-letter outcome.",
+            readyWhen: "Ready when the incident can be replayed without gateway payloads.",
+            hold: "Hold if repair outcome lacks owner, proof, or rollback note.",
+            score: 80
+          },
+          {
+            label: "Support notice retention",
+            owner: "Support captain",
+            method: "NOTICE",
+            route: "payment.incident.archive-support-notice",
+            proof: "Keep user-safe notice ID, visible state, escalation owner, and no-private-data line.",
+            readyWhen: "Ready when support can answer from state summary only.",
+            hold: "Hold if notice exposes gateway payload, private identifiers, or payment secrets.",
+            score: 82
+          },
+          {
+            label: "Refund and entitlement effect",
+            owner: "Entitlement bridge",
+            method: "EFFECT",
+            route: "payment.incident.archive-entitlement-effect",
+            proof: "Archive refund state, entitlement effect, access rollback, account state, and reconciliation receipt.",
+            readyWhen: "Ready when access and refund state cannot drift silently.",
+            hold: "Hold if refund, access, account, and support states disagree.",
+            score: 79
+          },
+          {
+            label: "Founder closeout retention",
+            owner: "Founder release desk",
+            method: "CLOSE",
+            route: "payment.incident.archive-founder-closeout",
+            proof: "Keep founder command, known risk, next repair, support load, release hold, and archive state.",
+            readyWhen: "Ready when founder can review incident history without raw payment data.",
+            hold: "Hold if closeout implies payment launch readiness or hides unresolved repair.",
+            score: 80
+          }
+        ],
+        operatingRules: [
+          "Payment incident memory stores state and proof, not payloads.",
+          "Every archived incident has one decision, one mismatch class, one repair outcome, and one support-safe notice.",
+          "Refund, entitlement, account, support, and founder states must agree before closeout.",
+          "Archived incidents feed future reconciliation drills and support handoffs.",
+          "No payment archive may retain card, UPI, bank, gateway secret, PAN, folio, CAS, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No payment incident may close without decision, mismatch class, repair outcome, support notice, entitlement effect, and founder closeout.",
+          "No archive row may expose gateway payloads, payment secrets, private identifiers, credentials, or raw contact data.",
+          "No support notice may promise refund success, payment success, entitlement restoration, or production readiness.",
+          "No incident archive may be treated as live payment launch proof."
+        ],
+        receiptFields: [
+          "payment_incident_archive_id",
+          "release_key",
+          "incident_id",
+          "decision_state",
+          "mismatch_class",
+          "repair_outcome",
+          "support_notice_id",
+          "refund_state",
+          "entitlement_effect",
+          "founder_closeout_state",
+          "retention_boundary",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Payment Incident Archive is a static incident-retention contract only; it does not process payments, fetch gateway logs, issue refunds, grant access, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -15650,14 +15751,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source corrections now have public wording; next releases should lock payment incident archive, account custody retention register, beta command decision ledger, support handoff drift audit, and source correction supersede queue.",
+      rule: "Payment incidents now have archive memory; next releases should lock account custody retention register, beta command decision ledger, support handoff drift audit, source correction supersede queue, and payment repair scoreboard.",
       lanes: [
-        {
-          version: "v530",
-          label: "Payment incident archive",
-          route: "#payment-wiring",
-          detail: "Retain payment incident decisions, mismatch classes, repair outcomes, support notices, and founder closeouts without payment payloads."
-        },
         {
           version: "v531",
           label: "Account custody retention register",
@@ -15681,6 +15776,12 @@ function buildTrackerConfig() {
           label: "Source correction supersede queue",
           route: "#correction-ledger",
           detail: "Queue accepted, held, superseded, and retired correction rows so public wording never outruns reviewer scope."
+        },
+        {
+          version: "v535",
+          label: "Payment repair scoreboard",
+          route: "#payment-wiring",
+          detail: "Show open, repaired, held, rolled back, refund-review, and support-held payment repair states in one founder-safe scoreboard."
         }
       ]
     },
@@ -15689,6 +15790,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v529",
+          key: "20260708-v529-01",
+          commit: "f4b5008",
+          receiptId: "NN-SHARE-RECEIPT-20260708V52901",
+          proof: "Source Correction Public Changelog added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v528",
           key: "20260708-v528-01",
@@ -15716,13 +15824,6 @@ function buildTrackerConfig() {
           commit: "ddf3931",
           receiptId: "NN-SHARE-RECEIPT-20260708V52501",
           proof: "Payment Reconciliation Drill added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v524",
-          key: "20260708-v524-01",
-          commit: "9168b25",
-          receiptId: "NN-SHARE-RECEIPT-20260708V52401",
-          proof: "Source Correction Archive added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -15760,13 +15861,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v529",
-        detail: "Source Correction Public Changelog is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v530",
+        detail: "Payment Incident Archive is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v529 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v530 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -15775,25 +15876,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v529 held until live stamp",
-        detail: "Do not share v529 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v530 held until live stamp",
+        detail: "Do not share v530 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v529 public correction changelog",
-        detail: "Source Correction Public Changelog turns accepted correction rows into calm public wording with affected surfaces and reviewer scope."
+        value: "v530 payment incident archive",
+        detail: "Payment Incident Archive retains incident decisions, mismatch classes, repair outcomes, support notices, entitlement effects, and founder closeouts without payloads."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v529 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v530 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v529 held until live stamp",
-        detail: "The release is share-ready only after v529 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v530 held until live stamp",
+        detail: "The release is share-ready only after v530 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

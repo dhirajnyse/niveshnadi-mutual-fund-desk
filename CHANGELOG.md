@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v530 Payment Incident Archive
+
+- Version: `0.530.0`
+- Data version: `20260708-v530-01`
+- Changes made: Added Payment Incident Archive to the Build Tracker Release Doctor with incident decision receipt, mismatch class, repair outcome, support notice retention, refund and entitlement effect, founder closeout retention, payment incident archive receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v529 commit, next-batch planner roll-forward to v531-v535, and release markers rolled forward to v530.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v530 marker scan.
+- Known risks: Payment Incident Archive is a static incident-retention contract only; it does not process payments, fetch gateway logs, issue refunds, grant access, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v529 Source Correction Public Changelog
 
 - Version: `0.529.0`

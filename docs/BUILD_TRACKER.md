@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V530 Payment Incident Archive
+
+V530 adds Payment Incident Archive to the Build Tracker Release Doctor. It retains payment incident decisions, mismatch classes, repair outcomes, support notices, refund and entitlement effects, and founder closeouts without payment payloads.
+
+- Release label: `NiveshNadi Phase 1 v530 Payment Incident Archive`
+- Data/version key: `20260708-v530-01`
+- Product surface: Build Tracker > Release Doctor > Payment incident archive
+- Risk boundary: Static incident-retention contract only; it does not process payments, fetch gateway logs, issue refunds, grant access, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V529 Source Correction Public Changelog
 
 V529 adds Source Correction Public Changelog to the Build Tracker Release Doctor. It translates accepted correction rows into calm public wording with affected surfaces, old and corrected values, reviewer scope, no-advice caveat, and support handoff.

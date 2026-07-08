@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v534 Source Correction Supersede Queue
+
+- Version: `0.534.0`
+- Data version: `20260708-v534-01`
+- Changes made: Added Source Correction Supersede Queue to the Build Tracker Release Doctor with accepted correction, held correction, supersede link, retired wording, reviewer scope, public notice guard, correction supersede receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v533 commit, next-batch planner roll-forward to v535-v539, and release markers rolled forward to v534.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v534 marker scan.
+- Known risks: Source Correction Supersede Queue is a static correction-state queue only; it does not fetch live data, publish notices, alter saved records, contact users, verify facts, or approve corrected claims.
+
 ## NiveshNadi Phase 1 v533 Support Handoff Drift Audit
 
 - Version: `0.533.0`

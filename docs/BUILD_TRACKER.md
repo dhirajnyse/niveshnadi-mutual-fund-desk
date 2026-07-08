@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V534 Source Correction Supersede Queue
+
+V534 adds Source Correction Supersede Queue to the Build Tracker Release Doctor. It keeps accepted, held, superseded, and retired correction rows tied to reviewer scope, replacement rows, support handoff, and no-advice boundaries.
+
+- Release label: `NiveshNadi Phase 1 v534 Source Correction Supersede Queue`
+- Data/version key: `20260708-v534-01`
+- Product surface: Build Tracker > Release Doctor > Source correction supersede queue
+- Risk boundary: Static correction-state queue only; it does not fetch live data, publish notices, alter saved records, contact users, verify facts, or approve corrected claims.
+- Verification status: Pending batch checks.
+
 ## V533 Support Handoff Drift Audit
 
 V533 adds Support Handoff Drift Audit to the Build Tracker Release Doctor. It compares approved support memory against current reply copy, refund wording, source correction scope, privacy exclusions, escalation owners, and founder signoff.

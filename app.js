@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v533-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v533 Support Handoff Drift Audit";
+const DATA_VERSION = "20260708-v534-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v534 Source Correction Supersede Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Support handoff drift audit",
+    label: "Source correction supersede queue",
     status: "Shipping now",
-    route: "#paid-beta-support-ledger",
-    detail: "Catch support script, refund, source correction, privacy, escalation, and signoff drift before beta support widens."
+    route: "#correction-ledger",
+    detail: "Queue accepted, held, superseded, and retired correction rows before public wording moves."
   },
   {
     label: "Mobile calm audit",
@@ -15882,6 +15882,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Handoff Drift Audit is a static support-copy audit only; it does not send replies, resolve tickets, process refunds, alter correction rows, collect private data, or approve beta support widening."
+      },
+      {
+        key: "sourceCorrectionSupersedeQueue",
+        label: "Source correction supersede queue",
+        verdict: "Corrections need supersede control",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "SUPERSEDE", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-supersede-queue",
+        copyLabel: "Copy supersede queue",
+        score: 81,
+        rule: "No public correction wording should move until accepted, held, superseded, and retired correction rows name affected surface, reviewer scope, replacement row, support handoff, and no-advice boundary.",
+        lanes: [
+          {
+            label: "Accepted correction",
+            owner: "Source reviewer",
+            method: "ACCEPT",
+            route: "source.correction.accepted",
+            proof: "Record accepted correction ID, affected surface, old value, corrected value, evidence source, and reviewer release.",
+            readyWhen: "Ready when public wording can point to a reviewed correction row.",
+            hold: "Hold if reviewer release or evidence source is missing.",
+            score: 83
+          },
+          {
+            label: "Held correction",
+            owner: "Review desk",
+            method: "HOLD",
+            route: "source.correction.held",
+            proof: "Record held reason, missing proof, owner, next review date, and public-notice freeze.",
+            readyWhen: "Ready when a correction cannot leak into public copy before review.",
+            hold: "Hold if public wording exists before accepted status.",
+            score: 80
+          },
+          {
+            label: "Supersede link",
+            owner: "Correction ledger",
+            method: "LINK",
+            route: "source.correction.supersede-link",
+            proof: "Map superseded row, replacement row, supersede reason, effective date, and support handoff ID.",
+            readyWhen: "Ready when old correction copy can be traced to the new row.",
+            hold: "Hold if replacement row or effective date is unclear.",
+            score: 81
+          },
+          {
+            label: "Retired wording",
+            owner: "Public copy desk",
+            method: "RETIRE",
+            route: "source.correction.retired-wording",
+            proof: "Retire old public wording, route stale pages, and record cache refresh, support copy, and no-advice caveat.",
+            readyWhen: "Ready when stale correction wording cannot be shared as current.",
+            hold: "Hold if retired wording remains visible in copied briefs.",
+            score: 80
+          },
+          {
+            label: "Reviewer scope",
+            owner: "Reviewer release desk",
+            method: "SCOPE",
+            route: "source.correction.reviewer-scope",
+            proof: "Record surfaces reviewed, surfaces excluded, date scope, source family, and confidence boundary.",
+            readyWhen: "Ready when every correction clearly says what it does and does not cover.",
+            hold: "Hold if support or public copy extends beyond reviewed surface.",
+            score: 82
+          },
+          {
+            label: "Public notice guard",
+            owner: "Trust copy desk",
+            method: "NOTICE",
+            route: "source.correction.public-notice",
+            proof: "Attach calm public wording, old/corrected value, affected surface, reviewer scope, support route, and no-advice boundary.",
+            readyWhen: "Ready when users can read the correction without mistaking it for advice.",
+            hold: "Hold if public notice implies recommendation, return promise, or live certainty.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Correction queue controls wording state, not live source ingestion.",
+          "Every correction row is accepted, held, superseded, or retired before public copy changes.",
+          "Superseded rows point to one replacement row and one support handoff.",
+          "Reviewer scope must be visible beside every correction state.",
+          "No correction queue row may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No public correction notice may publish without accepted correction ID, affected surface, reviewer scope, and support route.",
+          "No superseded row may disappear without replacement row, supersede reason, and retired wording state.",
+          "No held correction may leak into support or public copy.",
+          "No correction queue row may store private identifiers, credentials, payment payloads, or raw support notes."
+        ],
+        receiptFields: [
+          "source_correction_supersede_queue_id",
+          "release_key",
+          "correction_id",
+          "correction_state",
+          "affected_surface",
+          "old_value_hash",
+          "corrected_value_hash",
+          "reviewer_scope",
+          "replacement_row_id",
+          "support_handoff_id",
+          "public_notice_state",
+          "no_advice_boundary",
+          "created_at"
+        ],
+        boundary: "Source Correction Supersede Queue is a static correction-state queue only; it does not fetch live data, publish notices, alter saved records, contact users, verify facts, or approve corrected claims."
       }
     ],
     executiveCalmCompression: {
@@ -16054,14 +16155,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support handoff drift now has copy locks; next releases should lock source correction supersede queue, payment repair scoreboard, account retention stale-state monitor, beta command aging monitor, and support drift repair queue.",
+      rule: "Source corrections now have supersede control; next releases should lock payment repair scoreboard, account retention stale-state monitor, beta command aging monitor, support drift repair queue, and source correction retirement monitor.",
       lanes: [
-        {
-          version: "v534",
-          label: "Source correction supersede queue",
-          route: "#correction-ledger",
-          detail: "Queue accepted, held, superseded, and retired correction rows so public wording never outruns reviewer scope."
-        },
         {
           version: "v535",
           label: "Payment repair scoreboard",
@@ -16085,6 +16180,12 @@ function buildTrackerConfig() {
           label: "Support drift repair queue",
           route: "#paid-beta-support-ledger",
           detail: "Turn drift findings into repair tickets with owner, copy fix, review state, and support-safe closeout."
+        },
+        {
+          version: "v539",
+          label: "Source correction retirement monitor",
+          route: "#correction-ledger",
+          detail: "Watch retired correction wording, stale support copy, replacement rows, and cache refresh proof."
         }
       ]
     },
@@ -16093,6 +16194,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v533",
+          key: "20260708-v533-01",
+          commit: "a5b22ef",
+          receiptId: "NN-SHARE-RECEIPT-20260708V53301",
+          proof: "Support Handoff Drift Audit added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v532",
           key: "20260708-v532-01",
@@ -16120,13 +16228,6 @@ function buildTrackerConfig() {
           commit: "f4b5008",
           receiptId: "NN-SHARE-RECEIPT-20260708V52901",
           proof: "Source Correction Public Changelog added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v528",
-          key: "20260708-v528-01",
-          commit: "94d6edf",
-          receiptId: "NN-SHARE-RECEIPT-20260708V52801",
-          proof: "Support Knowledge Handoff added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -16164,13 +16265,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v533",
-        detail: "Support Handoff Drift Audit is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v534",
+        detail: "Source Correction Supersede Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v533 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v534 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -16179,25 +16280,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v533 held until live stamp",
-        detail: "Do not share v533 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v534 held until live stamp",
+        detail: "Do not share v534 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v533 support drift audit",
-        detail: "Support Handoff Drift Audit checks reply script, refund wording, source correction scope, privacy exclusions, escalation owner, and founder signoff drift."
+        value: "v534 correction supersede queue",
+        detail: "Source Correction Supersede Queue records accepted, held, superseded, and retired correction rows with reviewer scope and support handoff."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v533 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v534 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v533 held until live stamp",
-        detail: "The release is share-ready only after v533 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v534 held until live stamp",
+        detail: "The release is share-ready only after v534 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

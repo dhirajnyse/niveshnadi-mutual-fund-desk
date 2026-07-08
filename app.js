@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v534-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v534 Source Correction Supersede Queue";
+const DATA_VERSION = "20260708-v535-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v535 Payment Repair Scoreboard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction supersede queue",
+    label: "Payment repair scoreboard",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Queue accepted, held, superseded, and retired correction rows before public wording moves."
+    route: "#payment-wiring",
+    detail: "Show open, repaired, held, rollback, refund-review, and support-held payment repair states."
   },
   {
     label: "Mobile calm audit",
@@ -15983,6 +15983,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Supersede Queue is a static correction-state queue only; it does not fetch live data, publish notices, alter saved records, contact users, verify facts, or approve corrected claims."
+      },
+      {
+        key: "paymentRepairScoreboard",
+        label: "Payment repair scoreboard",
+        verdict: "Payment repairs need one visible state",
+        receiptId: ["NN", "PAYMENT", "REPAIR", "SCOREBOARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-repair-scoreboard",
+        copyLabel: "Copy repair scoreboard",
+        score: 80,
+        rule: "No payment repair should close until open, repaired, held, rolled back, refund-review, and support-held states are visible with owner, event family, entitlement effect, support notice, and no-payload boundary.",
+        lanes: [
+          {
+            label: "Open repair",
+            owner: "Payment operations",
+            method: "OPEN",
+            route: "payment.repair.open",
+            proof: "Record incident family, mismatch class, owner, user-safe notice, entitlement hold, and next repair step.",
+            readyWhen: "Ready when open repairs are visible without gateway payloads.",
+            hold: "Hold if event family, owner, or entitlement effect is missing.",
+            score: 80
+          },
+          {
+            label: "Repaired state",
+            owner: "Payment reviewer",
+            method: "REPAIRED",
+            route: "payment.repair.repaired",
+            proof: "Record accepted repair proof, idempotency check, invoice/entitlement match, and support closeout notice.",
+            readyWhen: "Ready when repaired means ledger, entitlement, and support notice agree.",
+            hold: "Hold if repair proof is accepted but support notice is stale.",
+            score: 82
+          },
+          {
+            label: "Held state",
+            owner: "Founder finance",
+            method: "HOLD",
+            route: "payment.repair.held",
+            proof: "Record hold reason, missing evidence, gateway uncertainty, support route, and review date.",
+            readyWhen: "Ready when held repairs cannot silently become active access.",
+            hold: "Hold if repair reason or next review date is unclear.",
+            score: 79
+          },
+          {
+            label: "Rollback state",
+            owner: "Entitlement desk",
+            method: "ROLLBACK",
+            route: "payment.repair.rollback",
+            proof: "Record rollback trigger, entitlement before/after, support notice ID, refund impact, and founder signoff.",
+            readyWhen: "Ready when rollback cannot double-grant or double-revoke access.",
+            hold: "Hold if entitlement effect or support notice is missing.",
+            score: 80
+          },
+          {
+            label: "Refund review",
+            owner: "Payment support",
+            method: "REVIEW",
+            route: "payment.repair.refund-review",
+            proof: "Record refund review state, no-guarantee wording, gateway status, support owner, and closeout rule.",
+            readyWhen: "Ready when refund review is clear without promising refund success.",
+            hold: "Hold if refund copy promises a result or timing certainty.",
+            score: 79
+          },
+          {
+            label: "Support-held state",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "payment.repair.support-held",
+            proof: "Record support case state, response window, escalation owner, private-data exclusion, and closeout note.",
+            readyWhen: "Ready when support can respond without payment payloads or private data.",
+            hold: "Hold if support needs data the product must not collect.",
+            score: 80
+          }
+        ],
+        operatingRules: [
+          "Payment repair scoreboard tracks repair state, not gateway payloads.",
+          "Every payment repair row has one state, one owner, one entitlement effect, one support notice, and one closeout route.",
+          "Repaired state requires ledger, entitlement, and support notice agreement.",
+          "Refund review stays factual and cannot promise refund success.",
+          "No payment repair scoreboard row may retain card, UPI, bank, gateway secret, PAN, folio, CAS, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No payment repair may close without state, owner, entitlement effect, support notice, and founder closeout.",
+          "No repaired state may grant access until invoice, webhook, entitlement, and support closeout agree.",
+          "No refund review copy may promise success, timing, or gateway outcome.",
+          "No payment repair scoreboard may expose gateway payloads, payment secrets, private identifiers, or raw support notes."
+        ],
+        receiptFields: [
+          "payment_repair_scoreboard_id",
+          "release_key",
+          "repair_state",
+          "incident_family",
+          "mismatch_class",
+          "owner",
+          "entitlement_effect",
+          "support_notice_id",
+          "refund_review_state",
+          "rollback_state",
+          "founder_closeout_state",
+          "payload_exclusion",
+          "created_at"
+        ],
+        boundary: "Payment Repair Scoreboard is a static payment-repair state board only; it does not process payments, fetch gateway logs, issue refunds, grant access, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -16155,14 +16256,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source corrections now have supersede control; next releases should lock payment repair scoreboard, account retention stale-state monitor, beta command aging monitor, support drift repair queue, and source correction retirement monitor.",
+      rule: "Payment repairs now have a founder-safe scoreboard; next releases should lock account retention stale-state monitor, beta command aging monitor, support drift repair queue, source correction retirement monitor, and payment repair closeout audit.",
       lanes: [
-        {
-          version: "v535",
-          label: "Payment repair scoreboard",
-          route: "#payment-wiring",
-          detail: "Show open, repaired, held, rolled back, refund-review, and support-held payment repair states in one founder-safe scoreboard."
-        },
         {
           version: "v536",
           label: "Account retention stale-state monitor",
@@ -16186,6 +16281,12 @@ function buildTrackerConfig() {
           label: "Source correction retirement monitor",
           route: "#correction-ledger",
           detail: "Watch retired correction wording, stale support copy, replacement rows, and cache refresh proof."
+        },
+        {
+          version: "v540",
+          label: "Payment repair closeout audit",
+          route: "#payment-wiring",
+          detail: "Check repaired, held, rolled back, refund-review, and support-held payment rows before launch claims widen."
         }
       ]
     },
@@ -16194,6 +16295,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v534",
+          key: "20260708-v534-01",
+          commit: "ce9bb71",
+          receiptId: "NN-SHARE-RECEIPT-20260708V53401",
+          proof: "Source Correction Supersede Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v533",
           key: "20260708-v533-01",
@@ -16221,13 +16329,6 @@ function buildTrackerConfig() {
           commit: "bd4b407",
           receiptId: "NN-SHARE-RECEIPT-20260708V53001",
           proof: "Payment Incident Archive added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v529",
-          key: "20260708-v529-01",
-          commit: "f4b5008",
-          receiptId: "NN-SHARE-RECEIPT-20260708V52901",
-          proof: "Source Correction Public Changelog added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -16265,13 +16366,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v534",
-        detail: "Source Correction Supersede Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v535",
+        detail: "Payment Repair Scoreboard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v534 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v535 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -16280,25 +16381,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v534 held until live stamp",
-        detail: "Do not share v534 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v535 held until live stamp",
+        detail: "Do not share v535 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v534 correction supersede queue",
-        detail: "Source Correction Supersede Queue records accepted, held, superseded, and retired correction rows with reviewer scope and support handoff."
+        value: "v535 payment repair scoreboard",
+        detail: "Payment Repair Scoreboard shows open, repaired, held, rollback, refund-review, and support-held states with entitlement effect and support notice."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v534 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v535 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v534 held until live stamp",
-        detail: "The release is share-ready only after v534 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v535 held until live stamp",
+        detail: "The release is share-ready only after v535 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

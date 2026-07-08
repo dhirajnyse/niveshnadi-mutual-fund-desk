@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V535 Payment Repair Scoreboard
+
+V535 adds Payment Repair Scoreboard to the Build Tracker Release Doctor. It shows open, repaired, held, rolled back, refund-review, and support-held payment repair states with owner, entitlement effect, support notice, and no-payload boundary.
+
+- Release label: `NiveshNadi Phase 1 v535 Payment Repair Scoreboard`
+- Data/version key: `20260708-v535-01`
+- Product surface: Build Tracker > Release Doctor > Payment repair scoreboard
+- Risk boundary: Static payment-repair state board only; it does not process payments, fetch gateway logs, issue refunds, grant access, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V534 Source Correction Supersede Queue
 
 V534 adds Source Correction Supersede Queue to the Build Tracker Release Doctor. It keeps accepted, held, superseded, and retired correction rows tied to reviewer scope, replacement rows, support handoff, and no-advice boundaries.

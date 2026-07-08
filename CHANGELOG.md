@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v535 Payment Repair Scoreboard
+
+- Version: `0.535.0`
+- Data version: `20260708-v535-01`
+- Changes made: Added Payment Repair Scoreboard to the Build Tracker Release Doctor with open repair, repaired state, held state, rollback state, refund review, support-held state, payment repair receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v534 commit, next-batch planner roll-forward to v536-v540, and release markers rolled forward to v535.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v535 marker scan.
+- Known risks: Payment Repair Scoreboard is a static payment-repair state board only; it does not process payments, fetch gateway logs, issue refunds, grant access, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v534 Source Correction Supersede Queue
 
 - Version: `0.534.0`

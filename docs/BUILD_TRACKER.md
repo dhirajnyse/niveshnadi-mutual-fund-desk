@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V521 Account Recovery Policy Copy Room
+
+V521 adds Account Recovery Policy Copy Room to the Build Tracker Release Doctor. It writes lost access, session freeze, export, deletion, restore, denial, and support-boundary copy before account custody widens.
+
+- Release label: `NiveshNadi Phase 1 v521 Account Recovery Policy Copy Room`
+- Data/version key: `20260708-v521-01`
+- Product surface: Build Tracker > Release Doctor > Account recovery policy copy room
+- Risk boundary: Static copy contract only; it does not authenticate users, recover accounts, export or delete data, collect identifiers, contact users, or approve account custody widening.
+- Verification status: Pending batch checks.
+
 ## V520 Payment Incident Command Memo
 
 V520 adds Payment Incident Command Memo to the Build Tracker Release Doctor. It converts alert triggers, dead-letter state, reconciliation misses, entitlement effects, support notices, and founder commands into one incident decision memo.

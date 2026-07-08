@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v520-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v520 Payment Incident Command Memo";
+const DATA_VERSION = "20260708-v521-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v521 Account Recovery Policy Copy Room";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v519 passed release checks on commit 6f99845. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v520 passed release checks on commit c9f56de. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v519 local checks passed",
+      outcome: "Previous outcome: v520 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51901",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52001",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -14572,6 +14572,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Incident Command Memo is a static incident-decision contract only; it does not process payments, fetch gateway logs, issue refunds, grant access, contact users, or approve payment launch."
+      },
+      {
+        key: "accountRecoveryPolicyCopyRoom",
+        label: "Account recovery policy copy room",
+        verdict: "Recovery copy must be plain before custody widens",
+        receiptId: ["NN", "ACCOUNT", "RECOVERY", "POLICY", "COPY", "ROOM", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-recovery-policy-copy-room",
+        copyLabel: "Copy recovery policy",
+        score: 81,
+        rule: "No account custody copy should ship until lost access, session freeze, export, deletion, restore, denial, and support boundary wording is plain, non-promissory, no-advice, and free of sensitive identifier requests.",
+        lanes: [
+          {
+            label: "Lost access copy",
+            owner: "Support captain",
+            method: "COPY",
+            route: "account.policy.lost-access",
+            proof: "Write lost access status, support route, identity-light boundary, what we can check, and what we will not ask for.",
+            readyWhen: "Ready when lost access copy is useful without requesting private identifiers.",
+            hold: "Hold if copy asks for PAN, folio, CAS, bank, contact, credentials, or private files.",
+            score: 82
+          },
+          {
+            label: "Session freeze copy",
+            owner: "Security desk",
+            method: "COPY",
+            route: "account.policy.session-freeze",
+            proof: "Write freeze reason category, account safety status, unlock path, support owner, and no-guarantee line.",
+            readyWhen: "Ready when freeze copy is calm, specific, and does not imply account compromise proof.",
+            hold: "Hold if freeze copy causes panic, promises recovery, or hides next owner.",
+            score: 81
+          },
+          {
+            label: "Export copy",
+            owner: "Data custody desk",
+            method: "COPY",
+            route: "account.policy.export",
+            proof: "Write export scope, excluded fields, expiry, download boundary, and support route.",
+            readyWhen: "Ready when users can understand what export includes and what it excludes.",
+            hold: "Hold if export copy implies private identifiers or payment payloads are retained.",
+            score: 81
+          },
+          {
+            label: "Deletion copy",
+            owner: "Data custody desk",
+            method: "COPY",
+            route: "account.policy.deletion",
+            proof: "Write deletion request, retained minimal receipt, irreversible state, support-safe status, and no-private-content line.",
+            readyWhen: "Ready when deletion wording is plain about what remains and what is removed.",
+            hold: "Hold if deletion copy promises full removal of legal-safe release receipts or hides retained metadata.",
+            score: 81
+          },
+          {
+            label: "Restore and denial copy",
+            owner: "Support captain",
+            method: "COPY",
+            route: "account.policy.restore-denial",
+            proof: "Write restore-possible, restore-held, restore-denied, expired export, deleted account, and no-restoration-guarantee copy.",
+            readyWhen: "Ready when restore states are understandable without promising an outcome.",
+            hold: "Hold if restore copy sounds guaranteed or blurs deleted, frozen, and support-held states.",
+            score: 80
+          },
+          {
+            label: "Support boundary copy",
+            owner: "Founder release desk",
+            method: "COPY",
+            route: "account.policy.support-boundary",
+            proof: "Write support can/cannot lines, no-advice boundary, no-payment promise, no-private-data request, and founder signoff.",
+            readyWhen: "Ready when account recovery support replies stay calm, bounded, and non-advisory.",
+            hold: "Hold if support copy asks for private data, promises recovery, or creates financial advice confusion.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Recovery policy copy should reduce anxiety, not increase action pressure.",
+          "Every copy block includes what can happen, what cannot be promised, who owns the next step, and what data is not requested.",
+          "Deletion, export, freeze, restore, and denial copy must match the static recovery smoke proof room.",
+          "Support boundaries must be visible before saved research leaves browser-local custody.",
+          "No policy copy may request PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No account recovery copy may ask for PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records.",
+          "No recovery copy may promise restoration, refund, advice, suitability, or guaranteed account access.",
+          "No deletion or export copy may hide retained minimal receipt fields, expiry, or excluded private data.",
+          "No account custody path may widen while lost access, freeze, export, deletion, restore, denial, and support boundary copy remain unwritten."
+        ],
+        receiptFields: [
+          "account_recovery_policy_copy_room_id",
+          "release_key",
+          "lost_access_copy_version",
+          "session_freeze_copy_version",
+          "export_copy_version",
+          "deletion_copy_version",
+          "restore_denial_copy_version",
+          "support_boundary_copy_version",
+          "private_data_exclusion",
+          "founder_signoff_memo_id",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Account Recovery Policy Copy Room is a static copy contract only; it does not authenticate users, recover accounts, export or delete data, collect identifiers, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -14744,14 +14844,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment incident command now has a founder memo; next releases should lock account recovery policy copy, beta founder closeout scoring, support reply quality audit, source correction archive, and payment reconciliation drill.",
+      rule: "Account recovery copy is now plain-language ready; next releases should lock beta founder closeout scoring, support reply quality audit, source correction archive, payment reconciliation drill, and account custody export drill.",
       lanes: [
-        {
-          version: "v521",
-          label: "Account recovery policy copy room",
-          route: "#account-readiness",
-          detail: "Write plain-language lost access, freeze, export, delete, restore, denial, and support boundary copy for account custody."
-        },
         {
           version: "v522",
           label: "Beta founder closeout scorecard",
@@ -14775,6 +14869,12 @@ function buildTrackerConfig() {
           label: "Payment reconciliation drill",
           route: "#payment-wiring",
           detail: "Rehearse checkout, invoice, webhook, entitlement, refund, support notice, and daily reconciliation mismatch repair."
+        },
+        {
+          version: "v526",
+          label: "Account custody export drill",
+          route: "#account-readiness",
+          detail: "Rehearse export scope, expiry, delete request, retained receipt, support-safe status, and no-private-data proof before account custody."
         }
       ]
     },
@@ -14783,6 +14883,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v520",
+          key: "20260708-v520-01",
+          commit: "c9f56de",
+          receiptId: "NN-SHARE-RECEIPT-20260708V52001",
+          proof: "Payment Incident Command Memo added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v519",
           key: "20260708-v519-01",
@@ -14810,13 +14917,6 @@ function buildTrackerConfig() {
           commit: "1ff9426",
           receiptId: "NN-SHARE-RECEIPT-20260708V51601",
           proof: "Account Recovery Smoke Proof Board added, visually checked, pushed to main, and live stamp verified."
-        },
-        {
-          version: "v515",
-          key: "20260708-v515-01",
-          commit: "87c2a63",
-          receiptId: "NN-SHARE-RECEIPT-20260708V51501",
-          proof: "Payment Observability Receipt Board added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -14854,13 +14954,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v520",
-        detail: "Payment Incident Command Memo is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v521",
+        detail: "Account Recovery Policy Copy Room is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v520 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v521 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -14869,25 +14969,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v520 held until live stamp",
-        detail: "Do not share v520 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v521 held until live stamp",
+        detail: "Do not share v521 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v520 payment incident command",
-        detail: "Payment Incident Command Memo turns alert triggers, dead letters, reconciliation misses, entitlement effects, support notices, and founder commands into one incident memo."
+        value: "v521 account recovery copy",
+        detail: "Account Recovery Policy Copy Room writes lost access, freeze, export, deletion, restore, denial, and support boundary copy before account custody widens."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v520 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v521 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v520 held until live stamp",
-        detail: "The release is share-ready only after v520 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v521 held until live stamp",
+        detail: "The release is share-ready only after v521 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

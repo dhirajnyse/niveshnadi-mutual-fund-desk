@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v521 Account Recovery Policy Copy Room
+
+- Version: `0.521.0`
+- Data version: `20260708-v521-01`
+- Changes made: Added Account Recovery Policy Copy Room to the Build Tracker Release Doctor with lost access copy, session freeze copy, export copy, deletion copy, restore and denial copy, support boundary copy, account recovery policy receipt fields, proof archive roll-forward with v520 commit, next-batch planner roll-forward to v522-v526, and release markers rolled forward to v521.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v521 marker scan.
+- Known risks: Account Recovery Policy Copy Room is a static copy contract only; it does not authenticate users, recover accounts, export or delete data, collect identifiers, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v520 Payment Incident Command Memo
 
 - Version: `0.520.0`

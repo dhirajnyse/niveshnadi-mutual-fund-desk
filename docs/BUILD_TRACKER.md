@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V529 Source Correction Public Changelog
+
+V529 adds Source Correction Public Changelog to the Build Tracker Release Doctor. It translates accepted correction rows into calm public wording with affected surfaces, old and corrected values, reviewer scope, no-advice caveat, and support handoff.
+
+- Release label: `NiveshNadi Phase 1 v529 Source Correction Public Changelog`
+- Data/version key: `20260708-v529-01`
+- Product surface: Build Tracker > Release Doctor > Source correction public changelog
+- Risk boundary: Static correction-wording contract only; it does not fetch live data, publish notices, alter saved records, contact users, approve corrected claims, or replace reviewer release.
+- Verification status: Pending batch checks.
+
 ## V528 Support Knowledge Handoff
 
 V528 adds Support Knowledge Handoff to the Build Tracker Release Doctor. It turns approved replies, escalation routes, refund boundaries, source correction wording, private-data exclusions, and founder signoff into one support-safe packet.

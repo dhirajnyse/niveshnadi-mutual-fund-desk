@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v529 Source Correction Public Changelog
+
+- Version: `0.529.0`
+- Data version: `20260708-v529-01`
+- Changes made: Added Source Correction Public Changelog to the Build Tracker Release Doctor with public correction title, affected surface summary, old and corrected value, reviewer scope, no-advice caveat, support handoff copy, public correction receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v528 commit, next-batch planner roll-forward to v530-v534, and release markers rolled forward to v529.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v529 marker scan.
+- Known risks: Source Correction Public Changelog is a static correction-wording contract only; it does not fetch live data, publish notices, alter saved records, contact users, approve corrected claims, or replace reviewer release.
+
 ## NiveshNadi Phase 1 v528 Support Knowledge Handoff
 
 - Version: `0.528.0`

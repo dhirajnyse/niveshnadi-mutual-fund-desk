@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v528-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v528 Support Knowledge Handoff";
+const DATA_VERSION = "20260708-v529-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v529 Source Correction Public Changelog";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Support knowledge handoff",
+    label: "Source correction public changelog",
     status: "Shipping now",
-    route: "#paid-beta-support-ledger",
-    detail: "Turn approved replies, escalation routes, refund boundaries, and privacy exclusions into one support handoff."
+    route: "#correction-ledger",
+    detail: "Convert accepted correction archive rows into calm public wording with affected surface and reviewer scope."
   },
   {
     label: "Mobile calm audit",
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v527 passed release checks on commit dea6e52. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v528 passed release checks on commit 94d6edf. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v527 local checks passed",
+      outcome: "Previous outcome: v528 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52701",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52801",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -15377,6 +15377,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Knowledge Handoff is a static support-memory packet only; it does not send replies, resolve tickets, process refunds, collect private data, approve recommendations, or approve beta support widening."
+      },
+      {
+        key: "sourceCorrectionPublicChangelog",
+        label: "Source correction public changelog",
+        verdict: "Corrections need calm public wording",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "PUBLIC", "CHANGELOG", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-public-changelog",
+        copyLabel: "Copy correction changelog",
+        score: 81,
+        rule: "No accepted source correction should become public until title, affected surface, old value, corrected value, reviewer scope, user-safe caveat, support handoff, and supersede state are written without advice or private data.",
+        lanes: [
+          {
+            label: "Public correction title",
+            owner: "Release desk",
+            method: "TITLE",
+            route: "source.correction.public-title",
+            proof: "Write one short title naming the corrected claim family without blame or hype.",
+            readyWhen: "Ready when the correction title is understandable without opening internal logs.",
+            hold: "Hold if title hides the claim, sounds defensive, or implies final source certainty.",
+            score: 82
+          },
+          {
+            label: "Affected surface summary",
+            owner: "Source desk",
+            method: "SURFACE",
+            route: "source.correction.public-surfaces",
+            proof: "List affected fund card, compare, dossier, pack, memo, launch, support, or public copy surfaces.",
+            readyWhen: "Ready when users can see where the corrected statement appeared.",
+            hold: "Hold if affected surface list is incomplete or inconsistent with the archive.",
+            score: 80
+          },
+          {
+            label: "Old and corrected value",
+            owner: "Compliance research",
+            method: "WORD",
+            route: "source.correction.public-values",
+            proof: "Write old wording, corrected wording, source date, citation path, and plain-English reason.",
+            readyWhen: "Ready when correction can be understood without raw source files.",
+            hold: "Hold if old value, corrected value, source date, or reason is missing.",
+            score: 81
+          },
+          {
+            label: "Reviewer scope",
+            owner: "Reviewer desk",
+            method: "SCOPE",
+            route: "source.correction.public-reviewer-scope",
+            proof: "State accepted scope, held scope, reviewer release ID, and recheck condition.",
+            readyWhen: "Ready when the changelog does not overstate reviewer approval.",
+            hold: "Hold if reviewer scope is broader than the accepted correction.",
+            score: 82
+          },
+          {
+            label: "No-advice caveat",
+            owner: "Compliance research",
+            method: "CAVEAT",
+            route: "source.correction.public-caveat",
+            proof: "Add research-only, no-advice, no-transaction, no-return-guarantee, and recheck lines.",
+            readyWhen: "Ready when correction wording informs without creating action pressure.",
+            hold: "Hold if changelog sounds like investment advice or a recommendation.",
+            score: 83
+          },
+          {
+            label: "Support handoff copy",
+            owner: "Support captain",
+            method: "HANDOFF",
+            route: "source.correction.public-support-handoff",
+            proof: "Connect public changelog wording to support reply script, escalation owner, and private-data refusal.",
+            readyWhen: "Ready when support can answer correction questions from the same wording.",
+            hold: "Hold if public wording and support handoff disagree.",
+            score: 80
+          }
+        ],
+        operatingRules: [
+          "Public correction wording should be plain, humble, and bounded by reviewer scope.",
+          "Every changelog row names affected surfaces and what changed.",
+          "Correction copy informs; it never recommends action or promises source certainty.",
+          "Support replies must reuse the same accepted wording so the product speaks with one voice.",
+          "No public correction row may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No public correction may publish without old value, corrected value, source date, affected surfaces, reviewer scope, and support handoff.",
+          "No correction copy may imply personalized advice, suitability approval, execution, guaranteed returns, or final live-data certainty.",
+          "No public changelog may expose raw source artifacts, internal logs, private support notes, payment payloads, or user identifiers.",
+          "No accepted correction may be treated as production-ready source proof beyond the reviewer scope."
+        ],
+        receiptFields: [
+          "source_correction_public_changelog_id",
+          "release_key",
+          "correction_incident_id",
+          "public_title",
+          "affected_surface_list",
+          "old_value",
+          "corrected_value",
+          "source_date",
+          "citation_path",
+          "reviewer_scope",
+          "support_handoff_id",
+          "supersede_state",
+          "created_at"
+        ],
+        boundary: "Source Correction Public Changelog is a static correction-wording contract only; it does not fetch live data, publish notices, alter saved records, contact users, approve corrected claims, or replace reviewer release."
       }
     ],
     executiveCalmCompression: {
@@ -15549,14 +15650,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support knowledge now has a safe handoff; next releases should lock source correction public changelog, payment incident archive, account custody retention register, beta command decision ledger, and support handoff drift audit.",
+      rule: "Source corrections now have public wording; next releases should lock payment incident archive, account custody retention register, beta command decision ledger, support handoff drift audit, and source correction supersede queue.",
       lanes: [
-        {
-          version: "v529",
-          label: "Source correction public changelog",
-          route: "#correction-ledger",
-          detail: "Translate accepted correction archive rows into calm public changelog wording with affected-surface and reviewer-scope boundaries."
-        },
         {
           version: "v530",
           label: "Payment incident archive",
@@ -15580,6 +15675,12 @@ function buildTrackerConfig() {
           label: "Support handoff drift audit",
           route: "#paid-beta-support-ledger",
           detail: "Detect when support scripts, refund wording, source correction scope, or privacy exclusions drift from the approved handoff."
+        },
+        {
+          version: "v534",
+          label: "Source correction supersede queue",
+          route: "#correction-ledger",
+          detail: "Queue accepted, held, superseded, and retired correction rows so public wording never outruns reviewer scope."
         }
       ]
     },
@@ -15588,6 +15689,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v528",
+          key: "20260708-v528-01",
+          commit: "94d6edf",
+          receiptId: "NN-SHARE-RECEIPT-20260708V52801",
+          proof: "Support Knowledge Handoff added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v527",
           key: "20260708-v527-01",
@@ -15615,13 +15723,6 @@ function buildTrackerConfig() {
           commit: "9168b25",
           receiptId: "NN-SHARE-RECEIPT-20260708V52401",
           proof: "Source Correction Archive added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v523",
-          key: "20260708-v523-01",
-          commit: "aa079c5",
-          receiptId: "NN-SHARE-RECEIPT-20260708V52301",
-          proof: "Support Reply Quality Audit added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -15659,13 +15760,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v528",
-        detail: "Support Knowledge Handoff is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v529",
+        detail: "Source Correction Public Changelog is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v528 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v529 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -15674,25 +15775,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v528 held until live stamp",
-        detail: "Do not share v528 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v529 held until live stamp",
+        detail: "Do not share v529 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v528 support handoff",
-        detail: "Support Knowledge Handoff turns approved replies, escalation routes, refund boundaries, source correction wording, and privacy exclusions into one safe packet."
+        value: "v529 public correction changelog",
+        detail: "Source Correction Public Changelog turns accepted correction rows into calm public wording with affected surfaces and reviewer scope."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v528 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v529 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v528 held until live stamp",
-        detail: "The release is share-ready only after v528 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v529 held until live stamp",
+        detail: "The release is share-ready only after v529 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

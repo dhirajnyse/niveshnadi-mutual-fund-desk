@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v518-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v518 Support Escalation Analytics Strip";
+const DATA_VERSION = "20260708-v519-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v519 Source Incident Release Notes";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v517 passed release checks on commit 2c6a7d2. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v518 passed release checks on commit 7f247df. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v517 local checks passed",
+      outcome: "Previous outcome: v518 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51701",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51801",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -14367,6 +14367,109 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Escalation Analytics Strip is a static support-decision summary only; it does not connect to support systems, process refunds, collect private data, resolve tickets, or approve beta expansion."
+      },
+      {
+        key: "sourceIncidentReleaseNotes",
+        label: "Source incident release notes",
+        verdict: "Corrections need public-safe notes before trust widens",
+        receiptId: ["NN", "SOURCE", "INCIDENT", "RELEASE", "NOTES", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-incident-release-notes",
+        copyLabel: "Copy source incident notes",
+        score: 79,
+        rule: "No corrected source claim should be released until incident cause, affected surfaces, old value, corrected value, rollback receipt, reviewer signoff, user-safe wording, and support route are captured in a release note.",
+        lanes: [
+          {
+            label: "Incident cause",
+            owner: "Evidence desk",
+            method: "NOTE",
+            route: "source.incident.cause",
+            proof: "Name stale source, parser rejection, checksum mismatch, reviewer block, failed fetch, or manual correction cause.",
+            readyWhen: "Ready when source incidents are classified before wording is written.",
+            hold: "Hold if the incident cause is vague or hidden behind a generic correction label.",
+            score: 79
+          },
+          {
+            label: "Affected surface map",
+            owner: "Claim release desk",
+            method: "MAP",
+            route: "source.incident.affected-surfaces",
+            proof: "List affected card, memo, dossier, compare, X-Ray, export, source receipt, and saved review surfaces.",
+            readyWhen: "Ready when every visible claim touched by the source incident is named.",
+            hold: "Hold if affected saved artifacts or copied briefs are unknown.",
+            score: 80
+          },
+          {
+            label: "Old and corrected value",
+            owner: "Reviewer desk",
+            method: "COMPARE",
+            route: "source.incident.value-change",
+            proof: "Record old value, corrected value, source date, citation path, checksum, parser version, and reviewer note.",
+            readyWhen: "Ready when the correction explains exactly what changed and why.",
+            hold: "Hold if old value, corrected value, or source date is missing.",
+            score: 80
+          },
+          {
+            label: "Rollback proof",
+            owner: "Release engineer",
+            method: "ROLLBACK",
+            route: "source.incident.rollback-proof",
+            proof: "Record rollback receipt, freeze state, replacement source, rejected row, and release recheck state.",
+            readyWhen: "Ready when a bad claim can be frozen or rolled back before it spreads.",
+            hold: "Hold if rollback cannot identify the affected release key or freeze state.",
+            score: 79
+          },
+          {
+            label: "User-safe wording",
+            owner: "Support captain",
+            method: "COPY",
+            route: "source.incident.user-safe-wording",
+            proof: "Write plain-language correction note with research-only boundary, no-advice phrasing, and support route.",
+            readyWhen: "Ready when a user can understand the correction without being pushed toward an action.",
+            hold: "Hold if wording sounds like advice, panic, blame, or a guaranteed outcome.",
+            score: 78
+          },
+          {
+            label: "Reviewer signoff",
+            owner: "Reviewer desk",
+            method: "SIGNOFF",
+            route: "source.incident.reviewer-signoff",
+            proof: "Capture reviewer name/role label, signoff state, open objections, release hold, and founder closeout.",
+            readyWhen: "Ready when source incident notes cannot publish without reviewer release.",
+            hold: "Hold if reviewer signoff is missing or objections remain open.",
+            score: 79
+          }
+        ],
+        operatingRules: [
+          "A correction is not complete until affected surfaces and user-safe wording are visible.",
+          "Every incident note names old value, corrected value, source date, citation path, rollback receipt, and reviewer signoff.",
+          "User-safe wording must be calm, plain English, research-only, and non-advisory.",
+          "Support gets the correction route before the incident note is shared.",
+          "No incident note may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No corrected source claim may publish without incident cause, affected surfaces, old value, corrected value, rollback proof, and reviewer signoff.",
+          "No source incident note may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records.",
+          "No correction wording may imply advice, action urgency, return promise, or personal suitability.",
+          "No source incident may close while affected exported briefs or saved records remain unknown."
+        ],
+        receiptFields: [
+          "source_incident_release_notes_id",
+          "release_key",
+          "incident_cause",
+          "affected_surface_list",
+          "old_value",
+          "corrected_value",
+          "source_date",
+          "citation_path",
+          "checksum",
+          "rollback_receipt_id",
+          "reviewer_signoff_state",
+          "support_notice_id",
+          "founder_closeout_memo_id",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Source Incident Release Notes is a static correction-note contract only; it does not fetch live data, publish notices, alter saved records, contact users, or approve corrected claims without reviewer release."
       }
     ],
     executiveCalmCompression: {
@@ -14539,14 +14642,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support escalation analytics now summarizes wave pressure; next releases should lock source incident release notes, payment incident command memos, account recovery policy copy, beta founder closeout scoring, and support reply quality audit.",
+      rule: "Source incident notes now make corrections release-safe; next releases should lock payment incident command memos, account recovery policy copy, beta founder closeout scoring, support reply quality audit, and source correction archive.",
       lanes: [
-        {
-          version: "v519",
-          label: "Source incident release notes",
-          route: "#correction-notice",
-          detail: "Turn rollback, correction, affected surfaces, reviewer signoff, and user-safe wording into source incident notes."
-        },
         {
           version: "v520",
           label: "Payment incident command memo",
@@ -14570,6 +14667,12 @@ function buildTrackerConfig() {
           label: "Support reply quality audit",
           route: "#paid-beta-support-ledger",
           detail: "Audit support replies for research-only boundary, no-advice phrasing, refund clarity, source correction, and private-data restraint."
+        },
+        {
+          version: "v524",
+          label: "Source correction archive",
+          route: "#source-receipts",
+          detail: "Retain source incident IDs, affected surfaces, correction wording, reviewer signoff, and rollback proof without private data."
         }
       ]
     },
@@ -14578,6 +14681,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v518",
+          key: "20260708-v518-01",
+          commit: "7f247df",
+          receiptId: "NN-SHARE-RECEIPT-20260708V51801",
+          proof: "Support Escalation Analytics Strip added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v517",
           key: "20260708-v517-01",
@@ -14605,13 +14715,6 @@ function buildTrackerConfig() {
           commit: "b54a68e",
           receiptId: "NN-SHARE-RECEIPT-20260708V51401",
           proof: "Source Connector Failure Replay Board added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v513",
-          key: "20260708-v513-01",
-          commit: "21e6811",
-          receiptId: "NN-SHARE-RECEIPT-20260708V51301",
-          proof: "Beta Entitlement Replay Board added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -14649,13 +14752,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v518",
-        detail: "Support Escalation Analytics Strip is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v519",
+        detail: "Source Incident Release Notes is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v518 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v519 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -14664,25 +14767,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v518 held until live stamp",
-        detail: "Do not share v518 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v519 held until live stamp",
+        detail: "Do not share v519 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v518 support analytics",
-        detail: "Support Escalation Analytics Strip summarizes support load, stale age, escalation families, refund/payment stops, private-data fear, and next-wave freeze triggers."
+        value: "v519 source incident notes",
+        detail: "Source Incident Release Notes turns rollback, correction, affected surfaces, reviewer signoff, and user-safe wording into a release-safe correction note."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v518 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v519 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v518 held until live stamp",
-        detail: "The release is share-ready only after v518 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v519 held until live stamp",
+        detail: "The release is share-ready only after v519 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

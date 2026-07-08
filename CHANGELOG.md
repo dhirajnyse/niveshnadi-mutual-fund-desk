@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v519 Source Incident Release Notes
+
+- Version: `0.519.0`
+- Data version: `20260708-v519-01`
+- Changes made: Added Source Incident Release Notes to the Build Tracker Release Doctor with incident cause, affected surface map, old and corrected value, rollback proof, user-safe wording, reviewer signoff, source incident receipt fields, proof archive roll-forward with v518 commit, next-batch planner roll-forward to v520-v524, and release markers rolled forward to v519.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v519 marker scan.
+- Known risks: Source Incident Release Notes is a static correction-note contract only; it does not fetch live data, publish notices, alter saved records, contact users, or approve corrected claims without reviewer release.
+
 ## NiveshNadi Phase 1 v518 Support Escalation Analytics Strip
 
 - Version: `0.518.0`

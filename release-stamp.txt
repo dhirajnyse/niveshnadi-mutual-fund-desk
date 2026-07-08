@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v518 Support Escalation Analytics Strip
-20260708-v518-01
+NiveshNadi Phase 1 v519 Source Incident Release Notes
+20260708-v519-01

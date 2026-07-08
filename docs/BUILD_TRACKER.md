@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V519 Source Incident Release Notes
+
+V519 adds Source Incident Release Notes to the Build Tracker Release Doctor. It turns incident cause, affected surfaces, old and corrected value, rollback proof, user-safe wording, and reviewer signoff into calm correction notes.
+
+- Release label: `NiveshNadi Phase 1 v519 Source Incident Release Notes`
+- Data/version key: `20260708-v519-01`
+- Product surface: Build Tracker > Release Doctor > Source incident release notes
+- Risk boundary: Static correction-note contract only; it does not fetch live data, publish notices, alter saved records, contact users, or approve corrected claims without reviewer release.
+- Verification status: Pending batch checks.
+
 ## V518 Support Escalation Analytics Strip
 
 V518 adds Support Escalation Analytics Strip to the Build Tracker Release Doctor. It compresses support load, stale case age, escalation family mix, refund and payment stops, private-data fear, and next-wave freeze triggers into one founder-readable strip.

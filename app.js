@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v543-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v543 Support Repair Closeout Receipt";
+const DATA_VERSION = "20260709-v544-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v544 Source Correction Archive Compactor";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Support repair closeout receipt",
+    label: "Source correction archive compactor",
     status: "Shipping now",
-    route: "#paid-beta-support-ledger",
-    detail: "Turn accepted support repairs into release receipts with support-safe copy, owner signoff, and residual-risk notes."
+    route: "#correction-ledger",
+    detail: "Compact retired correction proof into short archive receipts with replacement row, expiry, and cache proof."
   },
   {
     label: "Mobile calm audit",
@@ -16885,6 +16885,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Repair Closeout Receipt is a static support repair receipt only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
+      },
+      {
+        key: "sourceCorrectionArchiveCompactor",
+        label: "Source correction archive compactor",
+        verdict: "Retired proof needs compact receipts",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "ARCHIVE", "COMPACTOR", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-archive-compactor",
+        copyLabel: "Copy archive compactor",
+        score: 82,
+        rule: "Retired source corrections should compress into short receipts that preserve replacement row, expiry, cache proof, reviewer scope, and support handoff without carrying heavy archive noise.",
+        lanes: [
+          {
+            label: "Archive receipt compaction",
+            owner: "Correction archive desk",
+            method: "COMPACT",
+            route: "source.correction.archive-compact",
+            proof: "Create compact receipt with retired correction ID, affected surface, replacement row, expiry, and cache proof summary.",
+            readyWhen: "Ready when retired correction proof can be reviewed in one short receipt.",
+            hold: "Hold if compact receipt omits replacement, expiry, or cache proof.",
+            score: 82
+          },
+          {
+            label: "Replacement row link",
+            owner: "Source reviewer",
+            method: "LINK",
+            route: "source.correction.archive-replacement-link",
+            proof: "Link replacement row, reviewer scope, source date, and accepted wording digest.",
+            readyWhen: "Ready when every archived correction points to the row that replaced it.",
+            hold: "Hold if replacement row link or reviewer scope is missing.",
+            score: 83
+          },
+          {
+            label: "Expiry proof",
+            owner: "Release archive desk",
+            method: "EXPIRY",
+            route: "source.correction.archive-expiry",
+            proof: "Record notice expiry, archive-retention rule, owner review date, and retirement state.",
+            readyWhen: "Ready when correction notices can expire without losing proof.",
+            hold: "Hold if expiry or archive-retention rule is missing.",
+            score: 81
+          },
+          {
+            label: "Cache proof",
+            owner: "Publishing desk",
+            method: "CACHE",
+            route: "source.correction.archive-cache-proof",
+            proof: "Record cache key, fresh page proof, copied proof state, and retest owner.",
+            readyWhen: "Ready when the compact receipt proves retired wording is not visible in fresh surfaces.",
+            hold: "Hold if cache proof or retest owner is missing.",
+            score: 81
+          },
+          {
+            label: "Reviewer scope digest",
+            owner: "Reviewer desk",
+            method: "SCOPE",
+            route: "source.correction.archive-scope-digest",
+            proof: "Compress reviewer scope, accepted facts, held facts, and no-advice caveat into one digest.",
+            readyWhen: "Ready when archive readers know exactly what was and was not reviewed.",
+            hold: "Hold if reviewed and held scope are not separated.",
+            score: 82
+          },
+          {
+            label: "Support handoff digest",
+            owner: "Support copy desk",
+            method: "HANDOFF",
+            route: "source.correction.archive-support-digest",
+            proof: "Record support handoff state, repaired copy ID, escalation owner, and private-data exclusion.",
+            readyWhen: "Ready when support can find the compact correction proof without reading raw archive notes.",
+            hold: "Hold if support handoff digest is missing or unsafe.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Source correction archive compactor stores compact correction proof only.",
+          "Every compact receipt preserves retired row, replacement row, expiry, cache proof, reviewer scope, and support handoff.",
+          "Compaction removes noise but not release-critical proof.",
+          "Reviewer scope digest must separate accepted facts from held facts.",
+          "No correction archive compactor row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No retired correction may compact without replacement row, expiry, cache proof, reviewer scope, and support handoff.",
+          "No compact archive receipt may erase a held fact or residual risk.",
+          "No support handoff digest may include private notes or advice-like instructions.",
+          "No correction archive compactor row may expose private identifiers, credentials, auth tokens, payment payloads, or raw support notes."
+        ],
+        receiptFields: [
+          "source_correction_archive_compactor_id",
+          "release_key",
+          "archive_receipt_id",
+          "retired_correction_id",
+          "replacement_row_id",
+          "expiry_state",
+          "cache_proof",
+          "reviewer_scope",
+          "support_handoff_state",
+          "compact_summary",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Source Correction Archive Compactor is a static archive-compaction room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims."
       }
     ],
     executiveCalmCompression: {
@@ -17057,14 +17157,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support repairs now have closeout receipts; next releases should lock source correction archive compactor, payment incident replay rehearsal, account retention job blueprint, beta command archive compactor, and support repair aging guard.",
+      rule: "Source corrections now have compact archive receipts; next releases should lock payment incident replay rehearsal, account retention job blueprint, beta command archive compactor, support repair aging guard, and source correction expiry guard.",
       lanes: [
-        {
-          version: "v544",
-          label: "Source correction archive compactor",
-          route: "#correction-ledger",
-          detail: "Compact retired correction proof into short archive receipts with replacement row, expiry, and cache proof."
-        },
         {
           version: "v545",
           label: "Payment incident replay rehearsal",
@@ -17088,14 +17182,27 @@ function buildTrackerConfig() {
           label: "Support repair aging guard",
           route: "#paid-beta-support-ledger",
           detail: "Warn when accepted support repair receipts age past source, refund, privacy, or founder review windows."
+        },
+        {
+          version: "v549",
+          label: "Source correction expiry guard",
+          route: "#correction-ledger",
+          detail: "Warn when correction notices, archive receipts, or support handoffs pass expiry without review."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Support receipt proof visible",
+      verdict: "Correction archive proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v543",
+          key: "20260709-v543-01",
+          commit: "274e10c",
+          receiptId: "NN-SHARE-RECEIPT-20260709V54301",
+          proof: "Support Repair Closeout Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v542",
           key: "20260709-v542-01",
@@ -17123,13 +17230,6 @@ function buildTrackerConfig() {
           commit: "0192d74",
           receiptId: "NN-SHARE-RECEIPT-20260708V53901",
           proof: "Source Correction Retirement Monitor added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v538",
-          key: "20260708-v538-01",
-          commit: "44aa266",
-          receiptId: "NN-SHARE-RECEIPT-20260708V53801",
-          proof: "Support Drift Repair Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -17167,13 +17267,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v543",
-        detail: "Support Repair Closeout Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v544",
+        detail: "Source Correction Archive Compactor is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v543 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v544 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -17182,25 +17282,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v543 held until live stamp",
-        detail: "Do not share v543 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v544 held until live stamp",
+        detail: "Do not share v544 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v543 support repair receipt",
-        detail: "Support Repair Closeout Receipt stores accepted repair, support-safe copy, owner signoff, residual risk, regression trigger, and founder receipt."
+        value: "v544 correction archive compactor",
+        detail: "Source Correction Archive Compactor compresses retired correction proof into short receipts with replacement row, expiry, cache proof, reviewer scope, and support handoff."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v543 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v544 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v543 held until live stamp",
-        detail: "The release is share-ready only after v543 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v544 held until live stamp",
+        detail: "The release is share-ready only after v544 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

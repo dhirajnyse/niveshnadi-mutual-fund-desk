@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v544 Source Correction Archive Compactor
+
+- Version: `0.544.0`
+- Data version: `20260709-v544-01`
+- Changes made: Added Source Correction Archive Compactor to the Build Tracker Release Doctor with archive receipt compaction, replacement row link, expiry proof, cache proof, reviewer scope digest, support handoff digest, source correction archive receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v543 commit, next-batch planner roll-forward to v545-v549, and release markers rolled forward to v544.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v544 marker scan.
+- Known risks: Source Correction Archive Compactor is a static archive-compaction room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims.
+
 ## NiveshNadi Phase 1 v543 Support Repair Closeout Receipt
 
 - Version: `0.543.0`

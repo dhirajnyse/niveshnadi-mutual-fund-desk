@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V544 Source Correction Archive Compactor
+
+V544 adds Source Correction Archive Compactor to the Build Tracker Release Doctor. It compresses retired correction proof into short receipts with replacement row, expiry, cache proof, reviewer scope, and support handoff.
+
+- Release label: `NiveshNadi Phase 1 v544 Source Correction Archive Compactor`
+- Data/version key: `20260709-v544-01`
+- Product surface: Build Tracker > Release Doctor > Source correction archive compactor
+- Risk boundary: Static archive-compaction room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims.
+- Verification status: Pending batch checks.
+
 ## V543 Support Repair Closeout Receipt
 
 V543 adds Support Repair Closeout Receipt to the Build Tracker Release Doctor. It stores accepted repair, support-safe copy, owner signoff, residual risk, regression trigger, and founder receipt.

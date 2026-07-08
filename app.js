@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v516-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v516 Account Recovery Smoke Proof Board";
+const DATA_VERSION = "20260708-v517-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v517 Founder Beta Release Evidence Packet";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v515 passed release checks on commit 87c2a63. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v516 passed release checks on commit 1ff9426. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v515 local checks passed",
+      outcome: "Previous outcome: v516 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51501",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51601",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -14153,6 +14153,118 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Recovery Smoke Proof Board is a static recovery contract only; it does not authenticate users, recover accounts, export or delete data, store private identifiers, unlock sessions, or approve account custody widening."
+      },
+      {
+        key: "founderBetaReleaseEvidencePacket",
+        label: "Founder beta release evidence packet",
+        verdict: "Founder beta needs one packet before widening",
+        receiptId: ["NN", "FOUNDER", "BETA", "RELEASE", "EVIDENCE", "PACKET", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-founder-beta-release-evidence-packet",
+        copyLabel: "Copy beta evidence packet",
+        score: 79,
+        rule: "No founder beta wave should widen until cohort, support, entitlement, source, payment, account, and founder signoff evidence can be read in one packet with no-private-data exclusions and live-stamp release proof.",
+        lanes: [
+          {
+            label: "Cohort evidence",
+            owner: "Founder desk",
+            method: "PACK",
+            route: "founder.beta.packet.cohort",
+            proof: "Name cohort cap, invite version, wave label, accepted receipt family, no-public-checkout boundary, and expansion stop.",
+            readyWhen: "Ready when the founder can explain who is included, why the wave is capped, and what stops widening.",
+            hold: "Hold if invite wave, cap, or expansion stop depends on memory instead of receipt fields.",
+            score: 80
+          },
+          {
+            label: "Support evidence",
+            owner: "Support captain",
+            method: "PACK",
+            route: "founder.beta.packet.support",
+            proof: "Bundle support ceiling, open cases, escalation owner, refund/payment stop, private-data reply, and closeout memo.",
+            readyWhen: "Ready when support load can be replayed before another invite is sent.",
+            hold: "Hold if support queue age, owner, or escalation route is unclear.",
+            score: 78
+          },
+          {
+            label: "Entitlement evidence",
+            owner: "Access owner",
+            method: "PACK",
+            route: "founder.beta.packet.entitlement",
+            proof: "Bundle grant, pause, expiry, refund rollback, duplicate event, support hold, downgrade copy, and no-access copy.",
+            readyWhen: "Ready when every beta access state has a receipt and support-safe explanation.",
+            hold: "Hold if paid, refunded, paused, expired, or support-held states can contradict account access.",
+            score: 79
+          },
+          {
+            label: "Source evidence",
+            owner: "Evidence desk",
+            method: "PACK",
+            route: "founder.beta.packet.source",
+            proof: "Bundle source family, source date, checksum, parser state, reviewer release, rollback, correction notice, and dead-letter closeout.",
+            readyWhen: "Ready when beta claims can be frozen, corrected, or released from one source evidence row.",
+            hold: "Hold if source dates, citation paths, checksums, or rollback evidence are missing.",
+            score: 79
+          },
+          {
+            label: "Payment evidence",
+            owner: "Payment owner",
+            method: "PACK",
+            route: "founder.beta.packet.payment",
+            proof: "Bundle checkout state, webhook receipt, alert state, dead-letter state, reconciliation result, refund route, and support notice.",
+            readyWhen: "Ready when payment incidents can pause widening without exposing gateway payloads.",
+            hold: "Hold if payment, invoice, refund, entitlement, and support states cannot reconcile.",
+            score: 78
+          },
+          {
+            label: "Account evidence",
+            owner: "Account owner",
+            method: "PACK",
+            route: "founder.beta.packet.account",
+            proof: "Bundle saved research custody, recovery smoke, session freeze, export-before-delete, deletion receipt, restore hold, and support-safe account status.",
+            readyWhen: "Ready when account custody can widen only after recovery and deletion paths are explainable.",
+            hold: "Hold if recovery, export, delete, or support status copy is not receipt-backed.",
+            score: 79
+          },
+          {
+            label: "Founder signoff",
+            owner: "Founder release desk",
+            method: "SIGNOFF",
+            route: "founder.beta.packet.signoff",
+            proof: "Write go, hold, or freeze decision with release key, proof archive, known risks, next blocker, and live-stamp condition.",
+            readyWhen: "Ready when the founder can sign one packet instead of collecting scattered proof rooms.",
+            hold: "Hold if signoff skips known risks, live stamp, support load, payment state, account recovery, or source freshness.",
+            score: 80
+          }
+        ],
+        operatingRules: [
+          "The packet is a release decision surface, not a marketing claim.",
+          "Every included proof row names owner, receipt ID, hold condition, and no-private-data boundary.",
+          "Founder signoff must choose go, hold, or freeze; ambiguous widen language is not accepted.",
+          "Live stamp and release proof archive remain required before sharing the packet.",
+          "No packet field may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No founder beta wave may widen while cohort, support, entitlement, source, payment, account, or signoff proof is missing.",
+          "No release packet may describe the product as production-ready, advice-ready, or live-data certified from static proof alone.",
+          "No packet may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records.",
+          "No founder signoff may override a failed live stamp, stale source, unresolved support ceiling, payment incident, or account recovery hold."
+        ],
+        receiptFields: [
+          "founder_beta_release_evidence_packet_id",
+          "release_key",
+          "cohort_wave_id",
+          "support_ceiling_state",
+          "entitlement_state_summary",
+          "source_evidence_state",
+          "payment_observability_state",
+          "account_recovery_state",
+          "known_risk_list",
+          "founder_decision",
+          "signoff_memo_id",
+          "live_stamp_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Founder Beta Release Evidence Packet is a static release-decision packet only; it does not invite users, process payments, grant access, verify live data, recover accounts, or approve production launch."
       }
     ],
     executiveCalmCompression: {
@@ -14325,14 +14437,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account recovery smoke proof closes the first custody-recovery bridge; next releases should lock founder beta release evidence, support escalation analytics, source incident release notes, payment incident command memos, and account recovery policy copy.",
+      rule: "Founder beta evidence is now packeted; next releases should lock support escalation analytics, source incident release notes, payment incident command memos, account recovery policy copy, and beta founder closeout scoring.",
       lanes: [
-        {
-          version: "v517",
-          label: "Founder beta release evidence packet",
-          route: "#founder-beta-operating-room",
-          detail: "Bundle cohort, support, entitlement, source, payment, account, and founder signoff evidence into one release packet."
-        },
         {
           version: "v518",
           label: "Support escalation analytics strip",
@@ -14356,6 +14462,12 @@ function buildTrackerConfig() {
           label: "Account recovery policy copy room",
           route: "#account-readiness",
           detail: "Write plain-language lost access, freeze, export, delete, restore, denial, and support boundary copy for account custody."
+        },
+        {
+          version: "v522",
+          label: "Beta founder closeout scorecard",
+          route: "#founder-beta-operating-room",
+          detail: "Score founder go, hold, freeze, support, source, payment, account, and evidence states before another beta wave opens."
         }
       ]
     },
@@ -14364,6 +14476,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v516",
+          key: "20260708-v516-01",
+          commit: "1ff9426",
+          receiptId: "NN-SHARE-RECEIPT-20260708V51601",
+          proof: "Account Recovery Smoke Proof Board added, visually checked, pushed to main, and live stamp verified."
+        },
         {
           version: "v515",
           key: "20260708-v515-01",
@@ -14391,13 +14510,6 @@ function buildTrackerConfig() {
           commit: "a3e7f4c",
           receiptId: "NN-SHARE-RECEIPT-20260708V51201",
           proof: "Pilot Support SLA Evidence Binder added with reusable batch-proof rendering and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v511",
-          key: "20260708-v511-01",
-          commit: "47fdcce",
-          receiptId: "NN-SHARE-RECEIPT-20260708V51101",
-          proof: "Account Auth Provider Decision Room added, stale release pill fixed, visually checked, pushed to main, and live stamp verified."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -14435,13 +14547,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v516",
-        detail: "Account Recovery Smoke Proof Board is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v517",
+        detail: "Founder Beta Release Evidence Packet is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v516 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v517 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -14450,25 +14562,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v516 held until live stamp",
-        detail: "Do not share v516 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v517 held until live stamp",
+        detail: "Do not share v517 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v516 account recovery smoke",
-        detail: "Account Recovery Smoke Proof Board gathers lost access, session freeze, export-before-delete, deletion receipt, restore hold, and support-safe closeout before account custody widening."
+        value: "v517 founder beta packet",
+        detail: "Founder Beta Release Evidence Packet bundles cohort, support, entitlement, source, payment, account, and founder signoff proof before beta widening."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v516 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v517 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v516 held until live stamp",
-        detail: "The release is share-ready only after v516 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v517 held until live stamp",
+        detail: "The release is share-ready only after v517 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

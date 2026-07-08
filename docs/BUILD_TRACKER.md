@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V517 Founder Beta Release Evidence Packet
+
+V517 adds Founder Beta Release Evidence Packet to the Build Tracker Release Doctor. It bundles cohort, support, entitlement, source, payment, account, and founder signoff evidence into one go/hold/freeze release packet before beta widening.
+
+- Release label: `NiveshNadi Phase 1 v517 Founder Beta Release Evidence Packet`
+- Data/version key: `20260708-v517-01`
+- Product surface: Build Tracker > Release Doctor > Founder beta release evidence packet
+- Risk boundary: Static release-decision packet only; it does not invite users, process payments, grant access, verify live data, recover accounts, or approve production launch.
+- Verification status: Pending batch checks.
+
 ## V516 Account Recovery Smoke Proof Board
 
 V516 adds Account Recovery Smoke Proof Board to the Build Tracker Release Doctor. It replays lost access, session freeze and unlock, export-before-delete, deletion receipt, restore hold and denial, and support-safe status closeout before account custody widening.

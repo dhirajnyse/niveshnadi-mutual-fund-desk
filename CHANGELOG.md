@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v517 Founder Beta Release Evidence Packet
+
+- Version: `0.517.0`
+- Data version: `20260708-v517-01`
+- Changes made: Added Founder Beta Release Evidence Packet to the Build Tracker Release Doctor with cohort evidence, support evidence, entitlement evidence, source evidence, payment evidence, account evidence, founder signoff, release packet receipt fields, proof archive roll-forward with v516 commit, next-batch planner roll-forward to v518-v522, and release markers rolled forward to v517.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v517 marker scan.
+- Known risks: Founder Beta Release Evidence Packet is a static release-decision packet only; it does not invite users, process payments, grant access, verify live data, recover accounts, or approve production launch.
+
 ## NiveshNadi Phase 1 v516 Account Recovery Smoke Proof Board
 
 - Version: `0.516.0`

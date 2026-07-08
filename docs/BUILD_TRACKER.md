@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V513 Beta Entitlement Replay Board
+
+V513 adds Beta Entitlement Replay Board to the Build Tracker Release Doctor. It replays paid grant, refund rollback, paused and expired access, duplicate and out-of-order events, support-held states, and no-access copy before account access or paid beta entitlements widen.
+
 ## V512 Pilot Support SLA Evidence Binder
 
 V512 adds Pilot Support SLA Evidence Binder to the Build Tracker Release Doctor. It locks response windows, owner and escalation proof, open-case ceilings, refund and payment stop, source correction route, support-safe rules, and founder support closeout before founder beta support claims widen.

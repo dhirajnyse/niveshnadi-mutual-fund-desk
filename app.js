@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v512-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v512 Pilot Support SLA Evidence Binder";
+const DATA_VERSION = "20260708-v513-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v513 Beta Entitlement Replay Board";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v511 passed live-stamp checks on commit 47fdcce. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v512 passed release checks on commit a3e7f4c. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v511 live stamp verified",
+      outcome: "Previous outcome: v512 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51101",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51201",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -13739,6 +13739,109 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Pilot Support SLA Evidence Binder is a static support-readiness contract only; it does not provide live support, process refunds, correct source data, identify users, or approve cohort widening."
+      },
+      {
+        key: "betaEntitlementReplayBoard",
+        label: "Beta entitlement replay board",
+        verdict: "Access states need replay before account widening",
+        receiptId: ["NN", "BETA", "ENTITLEMENT", "REPLAY", "BOARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-entitlement-replay-board",
+        copyLabel: "Copy entitlement replay",
+        score: 77,
+        rule: "No paid or founder beta access should widen until paid, refunded, paused, expired, duplicate, support-held, and no-access entitlement states replay from receipts without private payment or account data.",
+        lanes: [
+          {
+            label: "Paid access grant",
+            owner: "Account platform",
+            method: "REPLAY",
+            route: "entitlement.replay.paid-grant",
+            proof: "Replay paid provider event, idempotency key, account access state, feature policy, and support-safe receipt.",
+            readyWhen: "Ready when paid access can be granted from verified receipt state rather than editable browser memory.",
+            hold: "Hold if access can open from checkout intent, manual note, or unverified payment copy.",
+            score: 78
+          },
+          {
+            label: "Refund rollback",
+            owner: "Finance support",
+            method: "REPLAY",
+            route: "entitlement.replay.refund-rollback",
+            proof: "Replay refund approved, refund failed, chargeback, entitlement revoke, support reply, and finance closeout.",
+            readyWhen: "Ready when refund proof changes access state and explains what remains available.",
+            hold: "Hold if refund can leave paid features active or support cannot cite the rollback receipt.",
+            score: 76
+          },
+          {
+            label: "Paused and expired access",
+            owner: "Subscription operations",
+            method: "REPLAY",
+            route: "entitlement.replay.paused-expired",
+            proof: "Replay paused, grace, expired, renewal retry, support hold, and restored states with dates and no-private-data fields.",
+            readyWhen: "Ready when user-facing access copy matches backend entitlement state.",
+            hold: "Hold if expiry, grace, and support-held states can contradict each other.",
+            score: 76
+          },
+          {
+            label: "Duplicate and out-of-order event",
+            owner: "Billing QA",
+            method: "REPLAY",
+            route: "entitlement.replay.duplicate-order",
+            proof: "Replay duplicate paid, duplicate refund, refund-before-paid, failed-then-paid, and retry-after-closeout cases.",
+            readyWhen: "Ready when duplicate and out-of-order events cannot double-grant, double-revoke, or erase support state.",
+            hold: "Hold if replay ordering can mutate access without idempotency receipt.",
+            score: 77
+          },
+          {
+            label: "Support-held entitlement",
+            owner: "Support desk",
+            method: "REPLAY",
+            route: "entitlement.replay.support-held",
+            proof: "Replay entitlement held by payment confusion, privacy fear, source correction, refund review, or account recovery.",
+            readyWhen: "Ready when support can freeze access with approved wording and founder-visible closeout.",
+            hold: "Hold if support hold needs raw payment payload, contact data, or private notes.",
+            score: 77
+          },
+          {
+            label: "No-access and downgrade copy",
+            owner: "Product copy",
+            method: "REPLAY",
+            route: "entitlement.replay.no-access-copy",
+            proof: "Show no-access, downgraded, research-only, and expired copy without shame, pressure, or hidden paid claims.",
+            readyWhen: "Ready when each entitlement state has calm user copy and support-safe status.",
+            hold: "Hold if access copy creates urgency, advice expectation, or payment pressure.",
+            score: 78
+          }
+        ],
+        operatingRules: [
+          "Entitlement replay uses state receipts only; it does not store card, UPI, bank, contact, or raw provider payload data.",
+          "Access state changes require verified provider event, idempotency result, account status, and support-safe copy.",
+          "Refunded, paused, expired, support-held, and no-access states must be as visible as paid access.",
+          "Support can freeze or explain access state without private notes or payment secrets.",
+          "The replay board is complete only when every state can be copied into a founder closeout memo."
+        ],
+        noGoLines: [
+          "No entitlement may be granted from checkout intent, payment screenshot, founder memory, or editable browser-local state.",
+          "No replay may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, distributor-client records, or raw payment payloads.",
+          "No paid cohort may widen while duplicate, refund, expired, paused, or support-held states can produce contradictory access.",
+          "No access copy may pressure payment, imply advice, or hide what remains available after downgrade."
+        ],
+        receiptFields: [
+          "beta_entitlement_replay_board_id",
+          "release_key",
+          "provider_event_id",
+          "idempotency_key",
+          "entitlement_state",
+          "account_access_state",
+          "feature_policy_id",
+          "refund_rollback_state",
+          "expiry_or_pause_date",
+          "support_hold_reason",
+          "downgrade_copy_version",
+          "support_safe_status_id",
+          "founder_closeout_memo_id",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Beta Entitlement Replay Board is a static entitlement-state contract only; it does not grant access, verify payments, revoke features, recover accounts, store payment data, or approve paid launch."
       }
     ],
     executiveCalmCompression: {
@@ -13911,14 +14014,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support SLA evidence closes the first founder-support bridge; next releases should lock entitlement replay, connector failure replay, billing observability, account recovery smoke proof, and founder beta release evidence.",
+      rule: "Entitlement replay closes the first access-state bridge; next releases should lock connector failure replay, billing observability, account recovery smoke proof, founder beta release evidence, and support escalation analytics.",
       lanes: [
-        {
-          version: "v513",
-          label: "Beta entitlement replay board",
-          route: "#entitlement-bridge",
-          detail: "Replay paid, refunded, paused, expired, and support-held entitlement states before any account access widens."
-        },
         {
           version: "v514",
           label: "Source connector failure replay board",
@@ -13942,6 +14039,12 @@ function buildTrackerConfig() {
           label: "Founder beta release evidence packet",
           route: "#founder-beta-operating-room",
           detail: "Bundle cohort, support, entitlement, source, payment, account, and founder signoff evidence into one release packet."
+        },
+        {
+          version: "v518",
+          label: "Support escalation analytics strip",
+          route: "#paid-beta-support-ledger",
+          detail: "Summarize support load, stale age, escalation family, refund stops, and next-wave freeze triggers in one compact strip."
         }
       ]
     },
@@ -13950,6 +14053,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v512",
+          key: "20260708-v512-01",
+          commit: "a3e7f4c",
+          receiptId: "NN-SHARE-RECEIPT-20260708V51201",
+          proof: "Pilot Support SLA Evidence Binder added with reusable batch-proof rendering and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v511",
           key: "20260708-v511-01",
@@ -13977,13 +14087,6 @@ function buildTrackerConfig() {
           commit: "6b17f1c",
           receiptId: "NN-SHARE-RECEIPT-20260708V50801",
           proof: "Founder Beta Cohort Ledger added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v507",
-          key: "20260708-v507-01",
-          commit: "d52a9fd",
-          receiptId: "NN-SHARE-RECEIPT-20260708V50701",
-          proof: "Pilot Support Dry Run Board added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -14021,13 +14124,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v512",
-        detail: "Pilot Support SLA Evidence Binder is wired with matching release label, data key, stamp, docs, changelog, and reusable batch-proof rendering."
+        value: "v513",
+        detail: "Beta Entitlement Replay Board is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v512 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v513 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -14036,25 +14139,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v512 held until live stamp",
-        detail: "Do not share v512 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v513 held until live stamp",
+        detail: "Do not share v513 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v512 support SLA binder",
-        detail: "Pilot Support SLA Evidence Binder gathers response windows, owner receipts, case ceilings, escalation proof, refund stops, source correction, and founder closeout before support claims widen."
+        value: "v513 entitlement replay",
+        detail: "Beta Entitlement Replay Board gathers paid, refunded, paused, expired, duplicate, support-held, and no-access states before account access widens."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v512 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v513 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v512 held until live stamp",
-        detail: "The release is share-ready only after v512 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v513 held until live stamp",
+        detail: "The release is share-ready only after v513 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

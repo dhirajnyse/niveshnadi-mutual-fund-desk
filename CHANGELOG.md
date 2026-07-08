@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v513 Beta Entitlement Replay Board
+
+- Version: `0.513.0`
+- Data version: `20260708-v513-01`
+- Changes made: Added Beta Entitlement Replay Board to the Build Tracker Release Doctor with paid grant, refund rollback, paused and expired access, duplicate and out-of-order event replay, support-held entitlement, no-access and downgrade copy, batch-room copy coverage, proof archive roll-forward with v512 commit, next-batch planner roll-forward to v514-v518, and release markers rolled forward to v513.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v513 marker scan.
+- Known risks: Beta Entitlement Replay Board is a static entitlement-state contract only; it does not grant access, verify payments, revoke features, recover accounts, store payment data, or approve paid launch.
+
 ## NiveshNadi Phase 1 v512 Pilot Support SLA Evidence Binder
 
 - Version: `0.512.0`

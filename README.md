@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v508 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v509 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Live Source Connector Spike Plan in the Build Tracker Release Doctor that scopes one official source family at a time with endpoint envelope, checksum, source date, freshness state, parser quarantine, reviewer release, rollback evidence, accepted and rejected fields, and no-private-data connector rules before live ingestion widens.
 - Founder Beta Cohort Ledger in the Build Tracker Release Doctor that controls cohort cap, invite copy version, receipt family, invite state, support load, refund stop, payment confusion, source correction, privacy cases, expansion decision, and founder closeout before any pilot wave widens.
 - Pilot Support Dry Run Board in the Build Tracker Release Doctor that rehearses approved support replies, escalation owners, refund and payment stops, account hold copy, source correction routing, cohort pause triggers, support closeout receipts, and no-go support language before founder invites widen.
 - Pilot Invite Copy Approval Room in the Build Tracker Release Doctor that gathers primary invite promise, research-only boundary, data boundary, payment and refund copy, support limits, pause triggers, cohort cap, support ceiling, next review date, and founder approval before any named paid beta cohort opens.

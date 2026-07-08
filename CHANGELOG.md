@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v509 Live Source Connector Spike Plan
+
+- Version: `0.509.0`
+- Data version: `20260708-v509-01`
+- Changes made: Added Live Source Connector Spike Plan to the Build Tracker Release Doctor with source family contract, endpoint and fetch envelope, checksum and freshness rule, parser quarantine, reviewer release and rollback, connector spike closeout, operating rules, no-go lines, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward with v508 commit, next-batch planner roll-forward to v510-v514, and release markers rolled forward to v509.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v509 marker scan.
+- Known risks: Live Source Connector Spike Plan is a static source-connector contract only; it does not fetch live data, run parsers, certify source rights, update fund facts, or approve production ingestion.
+
 ## NiveshNadi Phase 1 v508 Founder Beta Cohort Ledger
 
 - Version: `0.508.0`

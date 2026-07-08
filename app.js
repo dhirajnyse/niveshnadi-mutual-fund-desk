@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v508-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v508 Founder Beta Cohort Ledger";
+const DATA_VERSION = "20260708-v509-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v509 Live Source Connector Spike Plan";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -13335,6 +13335,107 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    liveSourceConnectorSpikePlan: {
+      label: "Live source connector spike plan",
+      verdict: "Connector spike scoped before ingestion",
+      receiptId: ["NN", "LIVE", "SOURCE", "CONNECTOR", "SPIKE", "PLAN", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 75,
+      rule: "No live source connector should run beyond a spike until source family, endpoint, checksum, source date, parser quarantine, freshness threshold, reviewer release, rollback evidence, and no-private-data boundaries are visible.",
+      lanes: [
+        {
+          label: "Source family contract",
+          owner: "Evidence desk",
+          method: "SPIKE",
+          route: "source.connector.family-contract",
+          proof: "Choose one official source family first, with source owner, citation path, expected fields, cadence, and blocked fields.",
+          readyWhen: "Ready when AMFI, AMC factsheet, SID/KIM, portfolio disclosure, TER, riskometer, or benchmark source is scoped as one connector.",
+          hold: "Hold if the spike combines multiple source families, scraped pages, credentials, or user-provided private files.",
+          score: 76
+        },
+        {
+          label: "Endpoint and fetch envelope",
+          owner: "Backend source worker",
+          method: "SPIKE",
+          route: "source.connector.fetch-envelope",
+          proof: "Define method, URL owner, request cadence, timeout, retry ceiling, user agent, fetch timestamp, content length, and raw artifact boundary.",
+          readyWhen: "Ready when fetch can produce a receipt without storing credentials, private investor files, or uncontrolled raw artifacts.",
+          hold: "Hold if endpoint access depends on secrets in front-end memory, manual downloads, or unclear licensing/usage boundary.",
+          score: 74
+        },
+        {
+          label: "Checksum and freshness rule",
+          owner: "Data quality",
+          method: "SPIKE",
+          route: "source.connector.checksum-freshness",
+          proof: "Store checksum, source date, retrieved-at, parser version, freshness threshold, stale state, and supersede receipt.",
+          readyWhen: "Ready when stale, unchanged, changed, failed, and superseded source states are deterministic.",
+          hold: "Hold if the connector can update claims without source date, checksum, freshness state, or supersede proof.",
+          score: 75
+        },
+        {
+          label: "Parser quarantine",
+          owner: "Parser owner",
+          method: "SPIKE",
+          route: "source.connector.parser-quarantine",
+          proof: "Define accepted fields, rejected rows, parser warnings, schema version, quarantine reason, and reviewer queue handoff.",
+          readyWhen: "Ready when parse failures do not leak into public claims and rejected rows have owner-visible reasons.",
+          hold: "Hold if parsing can silently coerce TER, holdings, benchmark, riskometer, category, or source date fields.",
+          score: 73
+        },
+        {
+          label: "Reviewer release and rollback",
+          owner: "Reviewer desk",
+          method: "SPIKE",
+          route: "source.connector.reviewer-release",
+          proof: "Reviewer approves, freezes, rolls back, or requests correction with affected surface list and release receipt.",
+          readyWhen: "Ready when a source update cannot affect visible claims until reviewer release and rollback path are saved.",
+          hold: "Hold if source updates can bypass reviewer release, correction notice, or affected-surface rollback.",
+          score: 76
+        },
+        {
+          label: "Connector spike closeout",
+          owner: "Founder release desk",
+          method: "SPIKE",
+          route: "source.connector.closeout",
+          proof: "Close the spike with run ID, source family, pass/fail state, accepted fields, rejected fields, reviewer decision, rollback proof, and next connector decision.",
+          readyWhen: "Ready when the founder can decide build, hold, replace, or discard from one receipt.",
+          hold: "Hold if the spike cannot explain what it fetched, parsed, rejected, released, rolled back, or avoided.",
+          score: 77
+        }
+      ],
+      operatingRules: [
+        "A connector spike handles one source family at a time and must keep citation path, source date, and checksum visible.",
+        "Fetch proof is not release proof; parser quarantine and reviewer release decide whether any surface changes.",
+        "Rejected rows need owner-readable reasons before another run widens.",
+        "Rollback evidence must name affected surfaces before live connector output touches visible claims.",
+        "No private investor data, payment payload, credentials, contact data, or distributor-client records can enter source connector receipts."
+      ],
+      noGoLines: [
+        "No connector may run from front-end secrets, user credentials, private files, PAN, folio, CAS, bank data, contact data, or distributor-client books.",
+        "No source update may change public or demo claims without source date, checksum, parser state, reviewer release, and rollback evidence.",
+        "No parser may silently coerce missing, stale, or rejected rows into accepted fund facts.",
+        "No production connector claim may ship from a spike until endpoint rights, artifact retention, observability, and failure replay are owned."
+      ],
+      receiptFields: [
+        "live_source_connector_spike_plan_id",
+        "release_key",
+        "source_family",
+        "endpoint_owner",
+        "fetch_envelope_id",
+        "retrieved_at",
+        "source_date",
+        "checksum",
+        "parser_version",
+        "accepted_field_list",
+        "rejected_row_count",
+        "quarantine_reason",
+        "reviewer_release_state",
+        "rollback_receipt_id",
+        "next_connector_decision",
+        "release_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -13505,14 +13606,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Founder beta cohort control closes the second invite-readiness bridge; next releases should lock source connector, payment sandbox, account auth, support SLA evidence, and beta entitlement replay before widening.",
+      rule: "Live source connector scoping closes the first data-ingestion bridge; next releases should lock payment sandbox, account auth, support SLA evidence, beta entitlement replay, and connector failure replay.",
       lanes: [
-        {
-          version: "v509",
-          label: "Live source connector spike plan",
-          route: "#source-receipts",
-          detail: "Prepare a limited official-source connector spike with source family, checksum, parser quarantine, reviewer release, and rollback proof."
-        },
         {
           version: "v510",
           label: "Payment provider sandbox integration plan",
@@ -13536,6 +13631,12 @@ function buildTrackerConfig() {
           label: "Beta entitlement replay board",
           route: "#entitlement-bridge",
           detail: "Replay paid, refunded, paused, expired, and support-held entitlement states before any account access widens."
+        },
+        {
+          version: "v514",
+          label: "Source connector failure replay board",
+          route: "#backend-audit-receipts",
+          detail: "Replay timeout, stale source, parser rejection, reviewer block, rollback, and correction notice cases before connector widening."
         }
       ]
     },
@@ -13544,6 +13645,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v508",
+          key: "20260708-v508-01",
+          commit: "6b17f1c",
+          receiptId: "NN-SHARE-RECEIPT-20260708V50801",
+          proof: "Founder Beta Cohort Ledger added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v507",
           key: "20260708-v507-01",
@@ -13571,13 +13679,6 @@ function buildTrackerConfig() {
           commit: "2492d4e",
           receiptId: "NN-SHARE-RECEIPT-20260708V50401",
           proof: "Deployment Environment Readiness Map added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v503",
-          key: "20260708-v503-01",
-          commit: "577ebc1",
-          receiptId: "NN-SHARE-RECEIPT-20260708V50301",
-          proof: "Backend CI Proof Harness added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -13615,8 +13716,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v508",
-        detail: "Founder Beta Cohort Ledger is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v509",
+        detail: "Live Source Connector Spike Plan is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -14369,6 +14470,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.pilotInviteCopyApprovalRoom, "Pilot invite copy approval room")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.pilotSupportDryRunBoard, "Pilot support dry run board")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.founderBetaCohortLedger, "Founder beta cohort ledger")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.liveSourceConnectorSpikePlan, "Live source connector spike plan")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -14543,6 +14645,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-pilot-invite-copy-approval-room>Copy invite approval</button>
         <button class="text-button" type="button" data-copy-pilot-support-dry-run-board>Copy support dry run</button>
         <button class="text-button" type="button" data-copy-founder-beta-cohort-ledger>Copy cohort ledger</button>
+        <button class="text-button" type="button" data-copy-live-source-connector-spike-plan>Copy source connector</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -14856,6 +14959,11 @@ function makeBuildTrackerBrief() {
     `Founder beta cohort ledger score: ${tracker.releaseDoctor.founderBetaCohortLedger.score}/100`,
     `Founder beta cohort ledger rule: ${tracker.releaseDoctor.founderBetaCohortLedger.rule}`,
     ...tracker.releaseDoctor.founderBetaCohortLedger.lanes.map((lane) => `- Founder cohort ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Live source connector spike plan: ${tracker.releaseDoctor.liveSourceConnectorSpikePlan.verdict}`,
+    `Live source connector spike receipt: ${tracker.releaseDoctor.liveSourceConnectorSpikePlan.receiptId}`,
+    `Live source connector spike score: ${tracker.releaseDoctor.liveSourceConnectorSpikePlan.score}/100`,
+    `Live source connector spike rule: ${tracker.releaseDoctor.liveSourceConnectorSpikePlan.rule}`,
+    ...tracker.releaseDoctor.liveSourceConnectorSpikePlan.lanes.map((lane) => `- Source connector ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -15261,6 +15369,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.founderBetaCohortLedger.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.founderBetaCohortLedger.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.founderBetaCohortLedger.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Live Source Connector Spike Plan",
+    `- Receipt ID: ${tracker.releaseDoctor.liveSourceConnectorSpikePlan.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.liveSourceConnectorSpikePlan.verdict}`,
+    `- Score: ${tracker.releaseDoctor.liveSourceConnectorSpikePlan.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.liveSourceConnectorSpikePlan.rule}`,
+    ...tracker.releaseDoctor.liveSourceConnectorSpikePlan.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.liveSourceConnectorSpikePlan.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.liveSourceConnectorSpikePlan.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.liveSourceConnectorSpikePlan.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -16161,6 +16279,14 @@ function makeFounderBetaCohortLedgerBrief() {
     "Founder Beta Cohort Ledger",
     buildTrackerConfig().releaseDoctor.founderBetaCohortLedger,
     "Founder Beta Cohort Ledger is a static cohort-control contract only. It does not identify users, send invites, collect payments, grant entitlements, store account data, or approve expansion."
+  );
+}
+
+function makeLiveSourceConnectorSpikePlanBrief() {
+  return makeOperationalProofBrief(
+    "Live Source Connector Spike Plan",
+    buildTrackerConfig().releaseDoctor.liveSourceConnectorSpikePlan,
+    "Live Source Connector Spike Plan is a static source-connector contract only. It does not fetch live data, run parsers, certify source rights, update fund facts, or approve production ingestion."
   );
 }
 
@@ -70470,6 +70596,13 @@ function bindEvents() {
     if (!copyFounderBetaCohortLedger) return;
     event.preventDefault();
     copyText(makeFounderBetaCohortLedgerBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyLiveSourceConnectorSpikePlan = event.target.closest("[data-copy-live-source-connector-spike-plan]");
+    if (!copyLiveSourceConnectorSpikePlan) return;
+    event.preventDefault();
+    copyText(makeLiveSourceConnectorSpikePlanBrief());
   });
 
   document.addEventListener("click", (event) => {

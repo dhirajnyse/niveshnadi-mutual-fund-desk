@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V509 Live Source Connector Spike Plan
+
+V509 adds Live Source Connector Spike Plan to the Build Tracker Release Doctor. It scopes one official source family at a time with endpoint envelope, checksum, source date, freshness state, parser quarantine, reviewer release, rollback evidence, accepted and rejected fields, and no-private-data connector rules before live ingestion widens.
+
 ## V508 Founder Beta Cohort Ledger
 
 V508 adds Founder Beta Cohort Ledger to the Build Tracker Release Doctor. It controls cohort cap, invite copy version, receipt family, invite state, support load, refund stop, payment confusion, source correction, privacy cases, expansion decision, and founder closeout before any pilot wave widens.

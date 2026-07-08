@@ -193,6 +193,7 @@ assert(app.includes("dataRetentionExecutionChecklist") && app.includes("function
 assert(app.includes("pilotInviteCopyApprovalRoom") && app.includes("function makePilotInviteCopyApprovalRoomBrief") && app.includes("data-copy-pilot-invite-copy-approval-room"), "app.js is missing v506 Pilot Invite Copy Approval Room.");
 assert(app.includes("pilotSupportDryRunBoard") && app.includes("function makePilotSupportDryRunBoardBrief") && app.includes("data-copy-pilot-support-dry-run-board"), "app.js is missing v507 Pilot Support Dry Run Board.");
 assert(app.includes("founderBetaCohortLedger") && app.includes("function makeFounderBetaCohortLedgerBrief") && app.includes("data-copy-founder-beta-cohort-ledger"), "app.js is missing v508 Founder Beta Cohort Ledger.");
+assert(app.includes("liveSourceConnectorSpikePlan") && app.includes("function makeLiveSourceConnectorSpikePlanBrief") && app.includes("data-copy-live-source-connector-spike-plan"), "app.js is missing v509 Live Source Connector Spike Plan.");
 assert(app.includes("visualRunnerResultArchive") && app.includes("productionLaunchProofCabinet"), "app.js is missing v484-v485 release doctor proof archives.");
 assert(app.includes("function visualRegressionRunnerEnvelopeRows") && !app.includes("resultRows: visualRegressionRunnerContract.runEnvelope"), "app.js has an unsafe visual runner sibling-object reference.");
 assert(app.includes("function renderBuildPhasesRoom") && app.includes("function makeBuildPhasesBrief") && app.includes("buildPhaseGridMarkup"), "app.js is missing Nadi Build Phases Room behavior.");

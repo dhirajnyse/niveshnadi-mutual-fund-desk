@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v516 Account Recovery Smoke Proof Board
+
+- Version: `0.516.0`
+- Data version: `20260708-v516-01`
+- Changes made: Added Account Recovery Smoke Proof Board to the Build Tracker Release Doctor with lost access rehearsal, session freeze and unlock, export-before-delete proof, deletion receipt replay, restore hold and denial, support-safe status closeout, account recovery receipt fields, proof archive roll-forward with v515 commit, next-batch planner roll-forward to v517-v521, and release markers rolled forward to v516.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v516 marker scan.
+- Known risks: Account Recovery Smoke Proof Board is a static recovery contract only; it does not authenticate users, recover accounts, export or delete data, store private identifiers, unlock sessions, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v515 Payment Observability Receipt Board
 
 - Version: `0.515.0`

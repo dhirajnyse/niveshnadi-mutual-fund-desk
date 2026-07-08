@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v515 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v516 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Account Recovery Smoke Proof Board in the Build Tracker Release Doctor that replays lost access, session freeze, export-before-delete, deletion receipt, restore hold, and support-safe closeout before account custody widening.
 - Payment Observability Receipt Board in the Build Tracker Release Doctor that names webhook logs, alert thresholds, dead-letter monitoring, reconciliation proof, support notices, and incident closeout before live payment mode.
 - Source Connector Failure Replay Board in the Build Tracker Release Doctor that replays timeout, stale source freeze, parser quarantine, reviewer block, rollback, correction notice, and dead-letter closeout before live source connector widening.
 - Beta Entitlement Replay Board in the Build Tracker Release Doctor that replays paid, refunded, paused, expired, duplicate, support-held, downgraded, and no-access states before account access or paid beta entitlements widen.

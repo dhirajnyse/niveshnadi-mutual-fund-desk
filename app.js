@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v515-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v515 Payment Observability Receipt Board";
+const DATA_VERSION = "20260708-v516-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v516 Account Recovery Smoke Proof Board";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v514 passed release checks on commit b54a68e. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v515 passed release checks on commit 87c2a63. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v514 local checks passed",
+      outcome: "Previous outcome: v515 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51401",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51501",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -14050,6 +14050,109 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Observability Receipt Board is a static observability contract only; it does not process payments, fetch gateway events, store payment data, reconcile production ledgers, issue refunds, or approve live payment mode."
+      },
+      {
+        key: "accountRecoverySmokeProofBoard",
+        label: "Account recovery smoke proof board",
+        verdict: "Recovery paths need proof before account custody",
+        receiptId: ["NN", "ACCOUNT", "RECOVERY", "SMOKE", "PROOF", "BOARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-recovery-smoke-proof-board",
+        copyLabel: "Copy recovery smoke",
+        score: 78,
+        rule: "No account custody path should widen until lost access, session freeze, export-before-delete, deletion receipt, restore hold, and support-safe status cases can be replayed without private data exposure.",
+        lanes: [
+          {
+            label: "Lost access rehearsal",
+            owner: "Account owner",
+            method: "SMOKE",
+            route: "account.recovery.lost-access",
+            proof: "Replay lost access trigger, identity-light verification route, support owner, user-safe status, and recovery denial path.",
+            readyWhen: "Ready when a user can lose access without losing the visible support route or receiving unsafe identity requests.",
+            hold: "Hold if recovery asks for PAN, folio, CAS, bank, contact, credentials, or private portfolio files.",
+            score: 78
+          },
+          {
+            label: "Session freeze and unlock",
+            owner: "Security desk",
+            method: "SMOKE",
+            route: "account.recovery.session-freeze",
+            proof: "Replay suspicious session freeze, unlock owner, timeout rule, support notice, and audit receipt.",
+            readyWhen: "Ready when a session can be frozen and unlocked with owner-visible proof and no silent account mutation.",
+            hold: "Hold if freeze state can hide saved research, deletion, export, or payment status without user-safe copy.",
+            score: 79
+          },
+          {
+            label: "Export-before-delete proof",
+            owner: "Data custody desk",
+            method: "SMOKE",
+            route: "account.recovery.export-before-delete",
+            proof: "Replay export request, export scope, private-data exclusion, download expiry, deletion window, and user acknowledgement.",
+            readyWhen: "Ready when delete flows can prove what was exportable, excluded, expired, and acknowledged.",
+            hold: "Hold if deletion can run before export scope and expiry copy are visible.",
+            score: 78
+          },
+          {
+            label: "Deletion receipt replay",
+            owner: "Data custody desk",
+            method: "REPLAY",
+            route: "account.recovery.deletion-receipt",
+            proof: "Replay deletion request, irreversible fields, retained legal-safe receipts, deletion receipt ID, and support-safe closeout.",
+            readyWhen: "Ready when deletion leaves a minimal receipt without retaining private user content.",
+            hold: "Hold if deletion receipt stores private notes, portfolio files, account secrets, or payment payloads.",
+            score: 78
+          },
+          {
+            label: "Restore hold and denial",
+            owner: "Support captain",
+            method: "COPY",
+            route: "account.recovery.restore-hold",
+            proof: "Write restore-possible, restore-held, restore-denied, expired export, deleted account, and no-private-data copy.",
+            readyWhen: "Ready when support can explain restore status without promising recovery or exposing private data.",
+            hold: "Hold if restore copy creates a guarantee, advice claim, or unclear refund/account boundary.",
+            score: 77
+          },
+          {
+            label: "Support-safe status closeout",
+            owner: "Founder release desk",
+            method: "CLOSEOUT",
+            route: "account.recovery.support-safe-closeout",
+            proof: "Replay account status, recovery route, freeze state, export/delete state, support notice, and founder closeout memo.",
+            readyWhen: "Ready when the founder can decide account-custody widening from one recovery smoke memo.",
+            hold: "Hold if support-safe status depends on private chat memory instead of receipt fields.",
+            score: 78
+          }
+        ],
+        operatingRules: [
+          "Recovery smoke proof is required before account custody widens; login success alone is not enough.",
+          "Every recovery case names trigger, owner, status copy, retained receipt fields, excluded private data, and closeout route.",
+          "Export, delete, freeze, unlock, restore, and denial paths must be explainable without collecting sensitive identifiers.",
+          "Support-safe copy must name what can happen next and what cannot be promised.",
+          "No recovery receipt may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No account custody path may widen while lost access, session freeze, export-before-delete, deletion receipt, restore hold, or support-safe closeout is untested.",
+          "No recovery flow may request or retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records in this prototype.",
+          "No deletion or restore path may be described as complete without export scope, retained receipt boundary, user-safe status copy, and owner closeout.",
+          "No support reply may promise recovery, advice, refund, or account restoration beyond the recorded status."
+        ],
+        receiptFields: [
+          "account_recovery_smoke_proof_board_id",
+          "release_key",
+          "recovery_case",
+          "account_status",
+          "session_freeze_state",
+          "unlock_owner",
+          "export_scope",
+          "delete_request_state",
+          "delete_receipt_id",
+          "restore_state",
+          "support_notice_id",
+          "private_data_exclusion",
+          "founder_closeout_memo_id",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Account Recovery Smoke Proof Board is a static recovery contract only; it does not authenticate users, recover accounts, export or delete data, store private identifiers, unlock sessions, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -14222,14 +14325,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment observability receipts close the billing incident bridge; next releases should lock account recovery smoke proof, founder beta release evidence, support escalation analytics, source incident release notes, and payment incident command memos.",
+      rule: "Account recovery smoke proof closes the first custody-recovery bridge; next releases should lock founder beta release evidence, support escalation analytics, source incident release notes, payment incident command memos, and account recovery policy copy.",
       lanes: [
-        {
-          version: "v516",
-          label: "Account recovery smoke proof board",
-          route: "#account-readiness",
-          detail: "Replay lost access, session freeze, export-before-delete, deletion receipt, restore hold, and support-safe account status."
-        },
         {
           version: "v517",
           label: "Founder beta release evidence packet",
@@ -14253,6 +14350,12 @@ function buildTrackerConfig() {
           label: "Payment incident command memo",
           route: "#payment-wiring",
           detail: "Convert payment alerts, dead letters, reconciliation misses, support notices, and founder decisions into one incident command memo."
+        },
+        {
+          version: "v521",
+          label: "Account recovery policy copy room",
+          route: "#account-readiness",
+          detail: "Write plain-language lost access, freeze, export, delete, restore, denial, and support boundary copy for account custody."
         }
       ]
     },
@@ -14261,6 +14364,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v515",
+          key: "20260708-v515-01",
+          commit: "87c2a63",
+          receiptId: "NN-SHARE-RECEIPT-20260708V51501",
+          proof: "Payment Observability Receipt Board added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v514",
           key: "20260708-v514-01",
@@ -14288,13 +14398,6 @@ function buildTrackerConfig() {
           commit: "47fdcce",
           receiptId: "NN-SHARE-RECEIPT-20260708V51101",
           proof: "Account Auth Provider Decision Room added, stale release pill fixed, visually checked, pushed to main, and live stamp verified."
-        },
-        {
-          version: "v510",
-          key: "20260708-v510-01",
-          commit: "1827367",
-          receiptId: "NN-SHARE-RECEIPT-20260708V51001",
-          proof: "Payment Provider Sandbox Integration Plan added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -14332,13 +14435,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v515",
-        detail: "Payment Observability Receipt Board is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v516",
+        detail: "Account Recovery Smoke Proof Board is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v515 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v516 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -14347,25 +14450,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v515 held until live stamp",
-        detail: "Do not share v515 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v516 held until live stamp",
+        detail: "Do not share v516 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v515 payment observability",
-        detail: "Payment Observability Receipt Board gathers webhook logs, alert thresholds, dead letters, reconciliation proof, support notices, and incident closeout before live payment widening."
+        value: "v516 account recovery smoke",
+        detail: "Account Recovery Smoke Proof Board gathers lost access, session freeze, export-before-delete, deletion receipt, restore hold, and support-safe closeout before account custody widening."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v515 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v516 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v515 held until live stamp",
-        detail: "The release is share-ready only after v515 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v516 held until live stamp",
+        detail: "The release is share-ready only after v516 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

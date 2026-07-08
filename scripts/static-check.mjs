@@ -200,6 +200,7 @@ assert(app.includes("pilotSupportSlaEvidenceBinder") && app.includes("function m
 assert(app.includes("betaEntitlementReplayBoard") && app.includes("data-copy-beta-entitlement-replay-board"), "app.js is missing v513 Beta Entitlement Replay Board.");
 assert(app.includes("sourceConnectorFailureReplayBoard") && app.includes("data-copy-source-connector-failure-replay-board"), "app.js is missing v514 Source Connector Failure Replay Board.");
 assert(app.includes("paymentObservabilityReceiptBoard") && app.includes("data-copy-payment-observability-receipt-board"), "app.js is missing v515 Payment Observability Receipt Board.");
+assert(app.includes("accountRecoverySmokeProofBoard") && app.includes("data-copy-account-recovery-smoke-proof-board"), "app.js is missing v516 Account Recovery Smoke Proof Board.");
 assert(app.includes("visualRunnerResultArchive") && app.includes("productionLaunchProofCabinet"), "app.js is missing v484-v485 release doctor proof archives.");
 assert(app.includes("function visualRegressionRunnerEnvelopeRows") && !app.includes("resultRows: visualRegressionRunnerContract.runEnvelope"), "app.js has an unsafe visual runner sibling-object reference.");
 assert(app.includes("function renderBuildPhasesRoom") && app.includes("function makeBuildPhasesBrief") && app.includes("buildPhaseGridMarkup"), "app.js is missing Nadi Build Phases Room behavior.");

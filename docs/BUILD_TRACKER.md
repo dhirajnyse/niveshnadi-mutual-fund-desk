@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V516 Account Recovery Smoke Proof Board
+
+V516 adds Account Recovery Smoke Proof Board to the Build Tracker Release Doctor. It replays lost access, session freeze and unlock, export-before-delete, deletion receipt, restore hold and denial, and support-safe status closeout before account custody widening.
+
+- Release label: `NiveshNadi Phase 1 v516 Account Recovery Smoke Proof Board`
+- Data/version key: `20260708-v516-01`
+- Product surface: Build Tracker > Release Doctor > Account recovery smoke proof board
+- Risk boundary: Static recovery contract only; it does not authenticate users, recover accounts, export or delete data, store private identifiers, unlock sessions, or approve account custody widening.
+- Verification status: Pending batch checks.
+
 ## V515 Payment Observability Receipt Board
 
 V515 adds Payment Observability Receipt Board to the Build Tracker Release Doctor. It names webhook log envelopes, alert threshold registers, dead-letter monitors, reconciliation proof, support notice routes, and incident replay closeout before live payment mode can widen.

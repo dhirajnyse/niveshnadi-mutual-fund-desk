@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V540 Payment Repair Closeout Audit
+
+V540 adds Payment Repair Closeout Audit to the Build Tracker Release Doctor. It checks repaired, held, rollback, refund-review, support-held, and founder finance signoff states before launch claims widen.
+
+- Release label: `NiveshNadi Phase 1 v540 Payment Repair Closeout Audit`
+- Data/version key: `20260708-v540-01`
+- Product surface: Build Tracker > Release Doctor > Payment repair closeout audit
+- Risk boundary: Static payment closeout audit only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V539 Source Correction Retirement Monitor
 
 V539 adds Source Correction Retirement Monitor to the Build Tracker Release Doctor. It watches retired correction wording, replacement proof, stale support copy, cache refresh, archive owner, and public notice expiry.

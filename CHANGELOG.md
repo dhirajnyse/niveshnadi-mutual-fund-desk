@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v540 Payment Repair Closeout Audit
+
+- Version: `0.540.0`
+- Data version: `20260708-v540-01`
+- Changes made: Added Payment Repair Closeout Audit to the Build Tracker Release Doctor with repaired closeout, held closeout, rollback closeout, refund review closeout, support-held closeout, founder finance signoff, payment repair closeout receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v539 commit, next-batch planner roll-forward to v541-v545, and release markers rolled forward to v540.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v540 marker scan.
+- Known risks: Payment Repair Closeout Audit is a static payment closeout audit only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v539 Source Correction Retirement Monitor
 
 - Version: `0.539.0`

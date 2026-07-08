@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v539-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v539 Source Correction Retirement Monitor";
+const DATA_VERSION = "20260708-v540-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v540 Payment Repair Closeout Audit";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction retirement monitor",
+    label: "Payment repair closeout audit",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Watch retired correction wording, stale support copy, replacement rows, and cache refresh proof."
+    route: "#payment-wiring",
+    detail: "Check repaired, held, rolled back, refund-review, and support-held rows before launch claims widen."
   },
   {
     label: "Mobile calm audit",
@@ -16485,6 +16485,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Retirement Monitor is a static correction-retirement monitor only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims."
+      },
+      {
+        key: "paymentRepairCloseoutAudit",
+        label: "Payment repair closeout audit",
+        verdict: "Repair closeout needs proof",
+        receiptId: ["NN", "PAYMENT", "REPAIR", "CLOSEOUT", "AUDIT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-repair-closeout-audit",
+        copyLabel: "Copy repair closeout audit",
+        score: 81,
+        rule: "No payment repair row should close unless repaired, held, rollback, refund-review, support-held, and founder finance signoff states are explicit before launch claims widen.",
+        lanes: [
+          {
+            label: "Repaired closeout",
+            owner: "Payment operations",
+            method: "REPAIRED",
+            route: "payment.repair.closeout-repaired",
+            proof: "Record repaired row ID, mismatch class, entitlement effect, support notice, and closeout owner.",
+            readyWhen: "Ready when repaired rows show what changed and what evidence closed them.",
+            hold: "Hold if repaired state lacks owner, evidence, or entitlement effect.",
+            score: 82
+          },
+          {
+            label: "Held closeout",
+            owner: "Payment risk desk",
+            method: "HELD",
+            route: "payment.repair.closeout-held",
+            proof: "Record held reason, customer-safe support copy, next review date, and release hold.",
+            readyWhen: "Ready when held rows cannot be mistaken for repaired rows.",
+            hold: "Hold if held reason or next review date is missing.",
+            score: 81
+          },
+          {
+            label: "Rollback closeout",
+            owner: "Entitlement desk",
+            method: "ROLLBACK",
+            route: "payment.repair.closeout-rollback",
+            proof: "Record rollback effect, access state, support notice, and replay blocker.",
+            readyWhen: "Ready when rollback rows show access impact without private payloads.",
+            hold: "Hold if rollback effect or access state is unclear.",
+            score: 81
+          },
+          {
+            label: "Refund review closeout",
+            owner: "Finance review desk",
+            method: "REFUND",
+            route: "payment.repair.closeout-refund-review",
+            proof: "Record refund review state, non-payment boundary, support wording, and next owner.",
+            readyWhen: "Ready when refund-review rows are explicit without issuing refunds.",
+            hold: "Hold if refund state or support wording is unclear.",
+            score: 80
+          },
+          {
+            label: "Support-held closeout",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "payment.repair.closeout-support-held",
+            proof: "Record support-held reason, approved copy, escalation owner, and private-data exclusion.",
+            readyWhen: "Ready when support knows what to say and what not to promise.",
+            hold: "Hold if support-held copy is missing or unsafe.",
+            score: 81
+          },
+          {
+            label: "Founder finance signoff",
+            owner: "Founder finance desk",
+            method: "SIGNOFF",
+            route: "payment.repair.closeout-founder-signoff",
+            proof: "Record founder signoff, residual risk, launch hold, and incident replay requirement.",
+            readyWhen: "Ready when founder can see payment repair residue before launch claims widen.",
+            hold: "Hold if founder signoff or residual-risk note is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Payment repair closeout audit tracks payment repair metadata only.",
+          "Every payment repair row has one state, one owner, one closeout proof, one support-safe note, and one launch hold rule.",
+          "Refund review rows describe review status only; they do not issue refunds.",
+          "Rollback rows describe entitlement effect without storing payment payloads.",
+          "No payment repair closeout row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, gateway secrets, payment tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No payment repair row may close without owner, state, support-safe note, and closeout proof.",
+          "No repaired row may hide entitlement effect, rollback effect, refund review, or residual risk.",
+          "No support-held row may promise payment, refund, access, or entitlement outcomes beyond approved copy.",
+          "No closeout audit row may expose private identifiers, gateway secrets, payment tokens, or raw support notes."
+        ],
+        receiptFields: [
+          "payment_repair_closeout_audit_id",
+          "release_key",
+          "repair_row_id",
+          "repair_state",
+          "mismatch_class",
+          "entitlement_effect",
+          "rollback_state",
+          "refund_review_state",
+          "support_held_state",
+          "founder_finance_signoff",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Payment Repair Closeout Audit is a static payment closeout audit only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -16657,14 +16757,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source correction retirement now has stale-wording proof; next releases should lock payment repair closeout audit, account custody expiry rehearsal, beta command expiry closeout, support repair closeout receipt, and source correction archive compactor.",
+      rule: "Payment repair closeout now has audit states; next releases should lock account custody expiry rehearsal, beta command expiry closeout, support repair closeout receipt, source correction archive compactor, and payment incident replay rehearsal.",
       lanes: [
-        {
-          version: "v540",
-          label: "Payment repair closeout audit",
-          route: "#payment-wiring",
-          detail: "Check repaired, held, rolled back, refund-review, and support-held payment rows before launch claims widen."
-        },
         {
           version: "v541",
           label: "Account custody expiry rehearsal",
@@ -16688,14 +16782,27 @@ function buildTrackerConfig() {
           label: "Source correction archive compactor",
           route: "#correction-ledger",
           detail: "Compact retired correction proof into short archive receipts with replacement row, expiry, and cache proof."
+        },
+        {
+          version: "v545",
+          label: "Payment incident replay rehearsal",
+          route: "#payment-wiring",
+          detail: "Replay recent payment incidents against closeout audit states before payment launch claims widen."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Retirement proof visible",
+      verdict: "Closeout proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v539",
+          key: "20260708-v539-01",
+          commit: "0192d74",
+          receiptId: "NN-SHARE-RECEIPT-20260708V53901",
+          proof: "Source Correction Retirement Monitor added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v538",
           key: "20260708-v538-01",
@@ -16723,13 +16830,6 @@ function buildTrackerConfig() {
           commit: "9200f0d",
           receiptId: "NN-SHARE-RECEIPT-20260708V53501",
           proof: "Payment Repair Scoreboard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v534",
-          key: "20260708-v534-01",
-          commit: "ce9bb71",
-          receiptId: "NN-SHARE-RECEIPT-20260708V53401",
-          proof: "Source Correction Supersede Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -16767,13 +16867,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v539",
-        detail: "Source Correction Retirement Monitor is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v540",
+        detail: "Payment Repair Closeout Audit is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v539 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v540 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -16782,25 +16882,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v539 held until live stamp",
-        detail: "Do not share v539 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v540 held until live stamp",
+        detail: "Do not share v540 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v539 source retirement monitor",
-        detail: "Source Correction Retirement Monitor watches retired wording age, replacement proof, stale support copy, cache refresh, archive owner, and public notice expiry."
+        value: "v540 payment closeout audit",
+        detail: "Payment Repair Closeout Audit checks repaired, held, rollback, refund-review, support-held, and founder finance signoff states before launch claims widen."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v539 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v540 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v539 held until live stamp",
-        detail: "The release is share-ready only after v539 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v540 held until live stamp",
+        detail: "The release is share-ready only after v540 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

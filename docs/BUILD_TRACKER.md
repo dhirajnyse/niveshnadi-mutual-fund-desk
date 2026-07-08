@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V554 Source Correction Renewal Receipt
+
+V554 adds Source Correction Renewal Receipt to the Build Tracker Release Doctor. It converts expired correction proof into reviewer, replacement source, support handoff, cache, and founder renewal proof.
+
+- Release label: `NiveshNadi Phase 1 v554 Source Correction Renewal Receipt`
+- Data/version key: `20260709-v554-01`
+- Product surface: Build Tracker > Release Doctor > Source correction renewal receipt
+- Risk boundary: Static correction renewal room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims.
+- Verification status: Pending batch checks.
+
 ## V553 Support Repair Owner SLA Lane
 
 V553 adds Support Repair Owner SLA Lane to the Build Tracker Release Doctor. It gives aged support repairs primary owner, fallback owner, refresh SLA, escalation window, release hold, and founder support signoff.

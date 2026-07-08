@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v554 Source Correction Renewal Receipt
+
+- Version: `0.554.0`
+- Data version: `20260709-v554-01`
+- Changes made: Added Source Correction Renewal Receipt to the Build Tracker Release Doctor with expired proof intake, reviewer renewal, replacement source, support handoff renewal, cache renewal, founder renewal signoff, source correction renewal receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v553 commit, next-batch planner roll-forward to v555-v559, and release markers rolled forward to v554.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v554 marker scan.
+- Known risks: Source Correction Renewal Receipt is a static correction renewal room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims.
+
 ## NiveshNadi Phase 1 v553 Support Repair Owner SLA Lane
 
 - Version: `0.553.0`

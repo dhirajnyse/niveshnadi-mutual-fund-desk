@@ -207,7 +207,7 @@ assert(app.includes("founderBetaReleaseEvidencePacket") && app.includes("data-co
 assert(app.includes("supportEscalationAnalyticsStrip") && app.includes("data-copy-support-escalation-analytics-strip"), "app.js is missing v518 Support Escalation Analytics Strip.");
 assert(app.includes("sourceIncidentReleaseNotes") && app.includes("data-copy-source-incident-release-notes"), "app.js is missing v519 Source Incident Release Notes.");
 assert(app.includes("paymentIncidentCommandMemo") && app.includes("data-copy-payment-incident-command-memo"), "app.js is missing v520 Payment Incident Command Memo.");
-assert(app.includes("supportRepairOwnerSlaLane") && app.includes("data-copy-support-repair-owner-sla-lane"), "app.js is missing v553 Support Repair Owner SLA Lane.");
+assert(app.includes("sourceCorrectionRenewalReceipt") && app.includes("data-copy-source-correction-renewal-receipt"), "app.js is missing v554 Source Correction Renewal Receipt.");
 assert(app.includes("visualRunnerResultArchive") && app.includes("productionLaunchProofCabinet"), "app.js is missing v484-v485 release doctor proof archives.");
 assert(app.includes("function visualRegressionRunnerEnvelopeRows") && !app.includes("resultRows: visualRegressionRunnerContract.runEnvelope"), "app.js has an unsafe visual runner sibling-object reference.");
 assert(app.includes("function renderBuildPhasesRoom") && app.includes("function makeBuildPhasesBrief") && app.includes("buildPhaseGridMarkup"), "app.js is missing Nadi Build Phases Room behavior.");

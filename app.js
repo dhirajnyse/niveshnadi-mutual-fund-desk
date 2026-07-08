@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v553-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v553 Support Repair Owner SLA Lane";
+const DATA_VERSION = "20260709-v554-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v554 Source Correction Renewal Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Support repair owner SLA lane",
+    label: "Source correction renewal receipt",
     status: "Shipping now",
-    route: "#paid-beta-support-ledger",
-    detail: "Give every aged support repair a named owner, refresh SLA, fallback owner, and release hold."
+    route: "#correction-ledger",
+    detail: "Convert expired correction proof into reviewer-approved renewal receipts before corrected surfaces widen."
   },
   {
     label: "Mobile calm audit",
@@ -17879,6 +17879,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Repair Owner SLA Lane is a static support repair owner room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
+      },
+      {
+        key: "sourceCorrectionRenewalReceipt",
+        label: "Source correction renewal receipt",
+        verdict: "Expired correction proof needs renewal",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "RENEWAL", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-renewal-receipt",
+        copyLabel: "Copy renewal receipt",
+        score: 83,
+        rule: "Expired correction proof should become a reviewer-approved renewal receipt with replacement source, support handoff, cache refresh, founder review, and release hold before corrected surfaces widen.",
+        lanes: [
+          {
+            label: "Expired proof intake",
+            owner: "Correction desk",
+            method: "INTAKE",
+            route: "source.correction.renewal.expired-proof",
+            proof: "Record expired correction ID, affected surface, expiry reason, and renewal owner.",
+            readyWhen: "Ready when expired proof enters renewal instead of staying trusted.",
+            hold: "Hold if expired correction ID or affected surface is missing.",
+            score: 82
+          },
+          {
+            label: "Reviewer renewal",
+            owner: "Reviewer workbench",
+            method: "REVIEW",
+            route: "source.correction.renewal.reviewer",
+            proof: "Record reviewer scope, renewed value, excluded surfaces, review date, and renewal verdict.",
+            readyWhen: "Ready when reviewer scope explicitly renews or rejects the correction proof.",
+            hold: "Hold if reviewer scope or renewal verdict is absent.",
+            score: 83
+          },
+          {
+            label: "Replacement source",
+            owner: "Source desk",
+            method: "SOURCE",
+            route: "source.correction.renewal.replacement-source",
+            proof: "Track replacement source family, source date, citation path, freshness state, and rollback note.",
+            readyWhen: "Ready when renewed proof points to a current replacement source.",
+            hold: "Hold if source date or citation path is missing.",
+            score: 83
+          },
+          {
+            label: "Support handoff renewal",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "source.correction.renewal.support-handoff",
+            proof: "Renew support-safe handoff copy, no-advice boundary, owner, and review window.",
+            readyWhen: "Ready when support copy reflects the renewed correction proof.",
+            hold: "Hold if support-safe handoff or no-advice boundary is missing.",
+            score: 82
+          },
+          {
+            label: "Cache renewal",
+            owner: "Release engineering",
+            method: "CACHE",
+            route: "source.correction.renewal.cache",
+            proof: "Record cache key, refreshed page state, stale-cache check, and release note update.",
+            readyWhen: "Ready when the renewed correction is visible in the surfaced page state.",
+            hold: "Hold if cache key or stale-cache check is absent.",
+            score: 82
+          },
+          {
+            label: "Founder renewal signoff",
+            owner: "Founder release desk",
+            method: "SIGNOFF",
+            route: "source.correction.renewal.founder-signoff",
+            proof: "Record founder signoff, renewal receipt ID, unresolved residue, and corrected-surface release hold.",
+            readyWhen: "Ready when founder can see whether expired correction proof is renewed, held, or rejected.",
+            hold: "Hold if founder signoff or renewal receipt ID is missing.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "Source correction renewal receipt renews expired correction proof only; it does not fetch live data or publish notices.",
+          "Every renewal receipt needs expired proof intake, reviewer renewal, replacement source, support handoff renewal, cache renewal, and founder signoff.",
+          "Expired correction proof remains held until reviewer scope and replacement source are renewed.",
+          "Renewal receipts must be public-safe and exclude raw source files, private notes, account payloads, and identifiers.",
+          "No source correction renewal row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No expired correction proof may widen corrected surfaces without renewal receipt.",
+          "No support handoff may use renewed correction proof until support-safe copy is refreshed.",
+          "No cache or release note may cite a renewal before reviewer scope is visible.",
+          "No source correction renewal row may expose raw private data, credentials, identifiers, or payment data."
+        ],
+        receiptFields: [
+          "source_correction_renewal_receipt_id",
+          "release_key",
+          "expired_correction_id",
+          "reviewer_renewal_state",
+          "replacement_source_state",
+          "support_handoff_state",
+          "cache_refresh_state",
+          "founder_review_state",
+          "renewal_receipt_id",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Source Correction Renewal Receipt is a static correction renewal room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims."
       }
     ],
     executiveCalmCompression: {
@@ -18051,14 +18150,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support repair aging now has owner SLA proof; next releases should lock source correction renewal receipt, payment replay acceptance receipt, account retention dry-run receipt vault, beta command renewal receipt, and support repair renewal receipt.",
+      rule: "Source correction proof now has renewal receipt proof; next releases should lock payment replay acceptance receipt, account retention dry-run receipt vault, beta command renewal receipt, support repair renewal receipt, and source correction renewal aging guard.",
       lanes: [
-        {
-          version: "v554",
-          label: "Source correction renewal receipt",
-          route: "#correction-ledger",
-          detail: "Convert expired correction proof into reviewer-approved renewal receipts before corrected surfaces widen."
-        },
         {
           version: "v555",
           label: "Payment replay acceptance receipt",
@@ -18082,14 +18175,27 @@ function buildTrackerConfig() {
           label: "Support repair renewal receipt",
           route: "#paid-beta-support-ledger",
           detail: "Turn refreshed support repair rows into renewed support-safe receipts with owner signoff."
+        },
+        {
+          version: "v559",
+          label: "Source correction renewal aging guard",
+          route: "#correction-ledger",
+          detail: "Warn when renewed correction receipts age past source, reviewer, support, or cache windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Support repair owner SLA proof visible",
+      verdict: "Source correction renewal proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v553",
+          key: "20260709-v553-01",
+          commit: "f13d609",
+          receiptId: "NN-SHARE-RECEIPT-20260709V55301",
+          proof: "Support Repair Owner SLA Lane added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v552",
           key: "20260709-v552-01",
@@ -18117,13 +18223,6 @@ function buildTrackerConfig() {
           commit: "8ccd9ca",
           receiptId: "NN-SHARE-RECEIPT-20260709V54901",
           proof: "Source Correction Expiry Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v548",
-          key: "20260709-v548-01",
-          commit: "4548689",
-          receiptId: "NN-SHARE-RECEIPT-20260709V54801",
-          proof: "Support Repair Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -18161,13 +18260,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v553",
-        detail: "Support Repair Owner SLA Lane is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v554",
+        detail: "Source Correction Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v553 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v554 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -18176,25 +18275,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v553 held until live stamp",
-        detail: "Do not share v553 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v554 held until live stamp",
+        detail: "Do not share v554 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v553 support owner SLA",
-        detail: "Support Repair Owner SLA Lane gives aged support repairs primary owner, fallback owner, refresh SLA, escalation window, release hold, and founder support signoff."
+        value: "v554 correction renewal",
+        detail: "Source Correction Renewal Receipt converts expired correction proof into reviewer, replacement source, support handoff, cache, and founder renewal proof."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v553 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v554 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v553 held until live stamp",
-        detail: "The release is share-ready only after v553 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v554 held until live stamp",
+        detail: "The release is share-ready only after v554 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

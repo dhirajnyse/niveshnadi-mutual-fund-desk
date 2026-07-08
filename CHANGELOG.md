@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v553 Support Repair Owner SLA Lane
+
+- Version: `0.553.0`
+- Data version: `20260709-v553-01`
+- Changes made: Added Support Repair Owner SLA Lane to the Build Tracker Release Doctor with primary owner, fallback owner, refresh SLA, escalation window, release hold, founder support signoff, support repair owner SLA receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v552 commit, next-batch planner roll-forward to v554-v558, and release markers rolled forward to v553.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v553 marker scan.
+- Known risks: Support Repair Owner SLA Lane is a static support repair owner room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+
 ## NiveshNadi Phase 1 v552 Beta Command Archive Aging Guard
 
 - Version: `0.552.0`

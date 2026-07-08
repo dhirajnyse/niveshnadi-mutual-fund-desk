@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v552-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v552 Beta Command Archive Aging Guard";
+const DATA_VERSION = "20260709-v553-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v553 Support Repair Owner SLA Lane";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command archive aging guard",
+    label: "Support repair owner SLA lane",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Warn when compacted command archives age past replacement, review, or founder memory windows."
+    route: "#paid-beta-support-ledger",
+    detail: "Give every aged support repair a named owner, refresh SLA, fallback owner, and release hold."
   },
   {
     label: "Mobile calm audit",
@@ -17780,6 +17780,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Archive Aging Guard is a static command archive aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion."
+      },
+      {
+        key: "supportRepairOwnerSlaLane",
+        label: "Support repair owner SLA lane",
+        verdict: "Aged repairs need named owners",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "OWNER", "SLA", "LANE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-owner-sla-lane",
+        copyLabel: "Copy owner SLA lane",
+        score: 82,
+        rule: "Aged support repair rows should have primary owner, fallback owner, refresh SLA, escalation window, support-safe state, and founder review before support copy widens.",
+        lanes: [
+          {
+            label: "Primary owner",
+            owner: "Support captain",
+            method: "OWNER",
+            route: "support.repair.owner-sla.primary",
+            proof: "Name primary owner, accepted repair receipt, owner review date, and support-safe responsibility.",
+            readyWhen: "Ready when every aged repair has one accountable owner.",
+            hold: "Hold if primary owner or accepted receipt is missing.",
+            score: 82
+          },
+          {
+            label: "Fallback owner",
+            owner: "Support operations",
+            method: "FALLBACK",
+            route: "support.repair.owner-sla.fallback",
+            proof: "Record fallback owner, handoff rule, stale-owner trigger, and escalation route.",
+            readyWhen: "Ready when stale ownership has a named fallback before support copy is reused.",
+            hold: "Hold if fallback owner or stale-owner trigger is missing.",
+            score: 82
+          },
+          {
+            label: "Refresh SLA",
+            owner: "Support QA",
+            method: "SLA",
+            route: "support.repair.owner-sla.refresh",
+            proof: "Track refresh deadline, source review state, privacy review state, and support-safe copy version.",
+            readyWhen: "Ready when aged support repair copy has a refresh deadline and status.",
+            hold: "Hold if refresh deadline or copy version is absent.",
+            score: 82
+          },
+          {
+            label: "Escalation window",
+            owner: "Escalation desk",
+            method: "ESCALATE",
+            route: "support.repair.owner-sla.escalation",
+            proof: "Record escalation window, escalation owner, support load trigger, and no-widening state.",
+            readyWhen: "Ready when missed refresh SLA routes to escalation instead of quiet drift.",
+            hold: "Hold if escalation window or owner is missing.",
+            score: 81
+          },
+          {
+            label: "Release hold",
+            owner: "Release captain",
+            method: "HOLD",
+            route: "support.repair.owner-sla.release-hold",
+            proof: "Track release hold, impacted support surfaces, copied release note, and renewal need.",
+            readyWhen: "Ready when aged support repair rows block release copy until refreshed.",
+            hold: "Hold if impacted surfaces or release hold are missing.",
+            score: 82
+          },
+          {
+            label: "Founder support signoff",
+            owner: "Founder support desk",
+            method: "SIGNOFF",
+            route: "support.repair.owner-sla.founder-signoff",
+            proof: "Record founder review, support-safe status, missed-SLA residue, and final support widening decision.",
+            readyWhen: "Ready when founder can see which aged repairs are refreshed, escalated, or held.",
+            hold: "Hold if founder review or support widening decision is absent.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Support repair owner SLA lane assigns ownership and timing only; it does not send support replies or reopen cases.",
+          "Every aged repair row needs primary owner, fallback owner, refresh SLA, escalation window, release hold, and founder support signoff.",
+          "Missed support repair SLAs move to release hold until support-safe copy is refreshed.",
+          "Owner SLA rows must not retain raw support tickets, private support notes, contact data, account payloads, or identifiers.",
+          "No support repair owner SLA row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No aged support repair may stay approved without a primary owner and refresh SLA.",
+          "No missed support SLA may widen support copy without escalation and founder review.",
+          "No stale support repair may appear in release notes as current proof.",
+          "No support repair owner SLA row may expose raw tickets, private notes, identifiers, account payloads, or payment data."
+        ],
+        receiptFields: [
+          "support_repair_owner_sla_lane_id",
+          "release_key",
+          "repair_receipt_id",
+          "primary_owner",
+          "fallback_owner",
+          "refresh_sla",
+          "escalation_window",
+          "support_safe_state",
+          "founder_review_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Support Repair Owner SLA Lane is a static support repair owner room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
       }
     ],
     executiveCalmCompression: {
@@ -17952,14 +18051,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta command archives now have aging guardrails; next releases should lock support repair owner SLA lane, source correction renewal receipt, payment replay acceptance receipt, account retention dry-run receipt vault, and beta command renewal receipt.",
+      rule: "Support repair aging now has owner SLA proof; next releases should lock source correction renewal receipt, payment replay acceptance receipt, account retention dry-run receipt vault, beta command renewal receipt, and support repair renewal receipt.",
       lanes: [
-        {
-          version: "v553",
-          label: "Support repair owner SLA lane",
-          route: "#paid-beta-support-ledger",
-          detail: "Give every aged support repair a named owner, refresh SLA, fallback owner, and release hold."
-        },
         {
           version: "v554",
           label: "Source correction renewal receipt",
@@ -17983,14 +18076,27 @@ function buildTrackerConfig() {
           label: "Beta command renewal receipt",
           route: "#founder-beta-operating-room",
           detail: "Convert aged command archive rows into renewed founder receipts with replacement and release-copy proof."
+        },
+        {
+          version: "v558",
+          label: "Support repair renewal receipt",
+          route: "#paid-beta-support-ledger",
+          detail: "Turn refreshed support repair rows into renewed support-safe receipts with owner signoff."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Beta command archive aging proof visible",
+      verdict: "Support repair owner SLA proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v552",
+          key: "20260709-v552-01",
+          commit: "ec8c9b5",
+          receiptId: "NN-SHARE-RECEIPT-20260709V55201",
+          proof: "Beta Command Archive Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v551",
           key: "20260709-v551-01",
@@ -18018,13 +18124,6 @@ function buildTrackerConfig() {
           commit: "4548689",
           receiptId: "NN-SHARE-RECEIPT-20260709V54801",
           proof: "Support Repair Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v547",
-          key: "20260709-v547-01",
-          commit: "7ae0146",
-          receiptId: "NN-SHARE-RECEIPT-20260709V54701",
-          proof: "Beta Command Archive Compactor added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -18062,13 +18161,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v552",
-        detail: "Beta Command Archive Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v553",
+        detail: "Support Repair Owner SLA Lane is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v552 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v553 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -18077,25 +18176,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v552 held until live stamp",
-        detail: "Do not share v552 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v553 held until live stamp",
+        detail: "Do not share v553 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v552 command archive aging",
-        detail: "Beta Command Archive Aging Guard gives compact command archives replacement, review, founder memory, conflict residue, archive receipt, and release-copy aging windows."
+        value: "v553 support owner SLA",
+        detail: "Support Repair Owner SLA Lane gives aged support repairs primary owner, fallback owner, refresh SLA, escalation window, release hold, and founder support signoff."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v552 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v553 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v552 held until live stamp",
-        detail: "The release is share-ready only after v552 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v553 held until live stamp",
+        detail: "The release is share-ready only after v553 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

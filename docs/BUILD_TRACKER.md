@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V553 Support Repair Owner SLA Lane
+
+V553 adds Support Repair Owner SLA Lane to the Build Tracker Release Doctor. It gives aged support repairs primary owner, fallback owner, refresh SLA, escalation window, release hold, and founder support signoff.
+
+- Release label: `NiveshNadi Phase 1 v553 Support Repair Owner SLA Lane`
+- Data/version key: `20260709-v553-01`
+- Product surface: Build Tracker > Release Doctor > Support repair owner SLA lane
+- Risk boundary: Static support repair owner room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+- Verification status: Pending batch checks.
+
 ## V552 Beta Command Archive Aging Guard
 
 V552 adds Beta Command Archive Aging Guard to the Build Tracker Release Doctor. It gives compact command archives replacement, review, founder memory, conflict residue, archive receipt, and release-copy aging windows.

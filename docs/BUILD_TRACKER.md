@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V524 Source Correction Archive
+
+V524 adds Source Correction Archive to the Build Tracker Release Doctor. It retains incident IDs, affected surfaces, correction wording, reviewer signoff, rollback proof, supersede state, and retirement rules without private data.
+
+- Release label: `NiveshNadi Phase 1 v524 Source Correction Archive`
+- Data/version key: `20260708-v524-01`
+- Product surface: Build Tracker > Release Doctor > Source correction archive
+- Risk boundary: Static archive contract only; it does not fetch live data, publish notices, alter saved records, contact users, approve corrected claims, or replace reviewer release.
+- Verification status: Pending batch checks.
+
 ## V523 Support Reply Quality Audit
 
 V523 adds Support Reply Quality Audit to the Build Tracker Release Doctor. It checks research-only boundary, no-advice phrasing, refund clarity, source correction, private-data restraint, and escalation closeout before founder beta support widens.

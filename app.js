@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v523-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v523 Support Reply Quality Audit";
+const DATA_VERSION = "20260708-v524-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v524 Source Correction Archive";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v522 passed release checks on commit 2d36ec2. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v523 passed release checks on commit aa079c5. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v522 local checks passed",
+      outcome: "Previous outcome: v523 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52201",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52301",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -14872,6 +14872,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Reply Quality Audit is a static support-copy contract only; it does not send replies, resolve tickets, process refunds, collect private data, approve recommendations, or approve beta support widening."
+      },
+      {
+        key: "sourceCorrectionArchive",
+        label: "Source correction archive",
+        verdict: "Corrections need durable proof memory",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "ARCHIVE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-archive",
+        copyLabel: "Copy correction archive",
+        score: 80,
+        rule: "No corrected claim should be trusted until incident ID, affected surface, correction wording, reviewer signoff, rollback proof, supersede state, and retirement rule are archived without private data.",
+        lanes: [
+          {
+            label: "Incident ID retention",
+            owner: "Source desk",
+            method: "REGISTER",
+            route: "source.correction.incident-id",
+            proof: "Assign one correction incident ID, source family, old claim, new claim, trigger, and owner.",
+            readyWhen: "Ready when every correction can be found by one stable incident ID.",
+            hold: "Hold if correction proof lives only in chat, screenshots, or memory.",
+            score: 82
+          },
+          {
+            label: "Affected surface index",
+            owner: "Release desk",
+            method: "MAP",
+            route: "source.correction.surface-index",
+            proof: "List fund card, compare, dossier, pack, memo, launch, or support surfaces touched by the corrected claim.",
+            readyWhen: "Ready when every visible surface has a corrected, held, or retired state.",
+            hold: "Hold if affected surfaces are unknown or correction status differs across rooms.",
+            score: 79
+          },
+          {
+            label: "Correction wording vault",
+            owner: "Compliance research",
+            method: "COPY",
+            route: "source.correction.wording-vault",
+            proof: "Store old wording, corrected wording, source date, citation path, no-advice line, and user-safe explanation.",
+            readyWhen: "Ready when wording explains the correction without blame, hype, or advice.",
+            hold: "Hold if wording hides the old value, sounds defensive, or promises final source certainty.",
+            score: 80
+          },
+          {
+            label: "Reviewer signoff receipt",
+            owner: "Reviewer desk",
+            method: "SIGN",
+            route: "source.correction.reviewer-signoff",
+            proof: "Attach reviewer, evidence state, accepted scope, rejected scope, source date, and release note state.",
+            readyWhen: "Ready when reviewer scope says exactly what is accepted and what remains held.",
+            hold: "Hold if correction ships without reviewer scope or source date.",
+            score: 81
+          },
+          {
+            label: "Rollback proof retention",
+            owner: "Backend custody",
+            method: "RETAIN",
+            route: "source.correction.rollback-proof",
+            proof: "Keep rollback command, prior value, restored value, affected surface list, and dead-letter state.",
+            readyWhen: "Ready when a bad correction can be reversed without guessing.",
+            hold: "Hold if rollback proof, prior value, or affected surface list is missing.",
+            score: 78
+          },
+          {
+            label: "Archive retirement rule",
+            owner: "Founder release desk",
+            method: "RETIRE",
+            route: "source.correction.retirement-rule",
+            proof: "Define when the correction stays active, becomes superseded, or retires into release-proof memory.",
+            readyWhen: "Ready when archived corrections cannot be mistaken for current live source proof.",
+            hold: "Hold if archived status, supersede status, or retention boundary is unclear.",
+            score: 80
+          }
+        ],
+        operatingRules: [
+          "A source correction starts with one incident ID and ends with one accepted, held, superseded, or retired state.",
+          "Every correction names affected surfaces before copy is treated as fixed.",
+          "Reviewer signoff decides correction scope; support and release copy repeat that scope without widening it.",
+          "Rollback proof must survive even after the corrected wording is accepted.",
+          "No correction archive may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No corrected claim may ship without source date, citation path, reviewer scope, affected surfaces, and rollback proof.",
+          "No correction archive may imply personalized advice, suitability approval, execution, guaranteed returns, or live source certainty.",
+          "No correction may hide the old value, corrected value, or remaining hold state.",
+          "No archive row may retain private identifiers, raw payment payloads, credentials, private support notes, or distributor-client records."
+        ],
+        receiptFields: [
+          "source_correction_archive_id",
+          "release_key",
+          "incident_id",
+          "source_family",
+          "old_value",
+          "corrected_value",
+          "source_date",
+          "citation_path",
+          "affected_surface_list",
+          "reviewer_signoff_id",
+          "rollback_receipt_id",
+          "archive_state",
+          "created_at"
+        ],
+        boundary: "Source Correction Archive is a static archive contract only; it does not fetch live data, publish notices, alter saved records, contact users, approve corrected claims, or replace reviewer release."
       }
     ],
     executiveCalmCompression: {
@@ -15044,14 +15145,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support reply quality is now auditable; next releases should lock source correction archive, payment reconciliation drill, account custody export drill, beta readiness command scoring, and support knowledge handoff.",
+      rule: "Source correction proof is now archived; next releases should lock payment reconciliation drill, account custody export drill, beta readiness command scoring, support knowledge handoff, and source correction public changelog.",
       lanes: [
-        {
-          version: "v524",
-          label: "Source correction archive",
-          route: "#source-receipts",
-          detail: "Retain source incident IDs, affected surfaces, correction wording, reviewer signoff, and rollback proof without private data."
-        },
         {
           version: "v525",
           label: "Payment reconciliation drill",
@@ -15075,6 +15170,12 @@ function buildTrackerConfig() {
           label: "Support knowledge handoff",
           route: "#paid-beta-support-ledger",
           detail: "Turn approved support replies, escalation routes, refund boundaries, and private-data exclusions into a compact handoff pack."
+        },
+        {
+          version: "v529",
+          label: "Source correction public changelog",
+          route: "#correction-ledger",
+          detail: "Translate accepted correction archive rows into calm public changelog wording with affected-surface and reviewer-scope boundaries."
         }
       ]
     },
@@ -15083,6 +15184,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v523",
+          key: "20260708-v523-01",
+          commit: "aa079c5",
+          receiptId: "NN-SHARE-RECEIPT-20260708V52301",
+          proof: "Support Reply Quality Audit added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v522",
           key: "20260708-v522-01",
@@ -15110,13 +15218,6 @@ function buildTrackerConfig() {
           commit: "6f99845",
           receiptId: "NN-SHARE-RECEIPT-20260708V51901",
           proof: "Source Incident Release Notes added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v518",
-          key: "20260708-v518-01",
-          commit: "7f247df",
-          receiptId: "NN-SHARE-RECEIPT-20260708V51801",
-          proof: "Support Escalation Analytics Strip added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -15154,13 +15255,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v523",
-        detail: "Support Reply Quality Audit is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v524",
+        detail: "Source Correction Archive is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v523 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v524 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -15169,25 +15270,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v523 held until live stamp",
-        detail: "Do not share v523 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v524 held until live stamp",
+        detail: "Do not share v524 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v523 support reply audit",
-        detail: "Support Reply Quality Audit keeps research-only, no-advice, refund, source correction, privacy, and escalation copy visible before support widens."
+        value: "v524 correction archive",
+        detail: "Source Correction Archive keeps incident ID, affected surface, correction wording, reviewer signoff, rollback proof, and retirement rule visible."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v523 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v524 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v523 held until live stamp",
-        detail: "The release is share-ready only after v523 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v524 held until live stamp",
+        detail: "The release is share-ready only after v524 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

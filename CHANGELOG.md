@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v524 Source Correction Archive
+
+- Version: `0.524.0`
+- Data version: `20260708-v524-01`
+- Changes made: Added Source Correction Archive to the Build Tracker Release Doctor with incident ID retention, affected surface index, correction wording vault, reviewer signoff receipt, rollback proof retention, archive retirement rule, source correction receipt fields, proof archive roll-forward with v523 commit, next-batch planner roll-forward to v525-v529, and release markers rolled forward to v524.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v524 marker scan.
+- Known risks: Source Correction Archive is a static archive contract only; it does not fetch live data, publish notices, alter saved records, contact users, approve corrected claims, or replace reviewer release.
+
 ## NiveshNadi Phase 1 v523 Support Reply Quality Audit
 
 - Version: `0.523.0`

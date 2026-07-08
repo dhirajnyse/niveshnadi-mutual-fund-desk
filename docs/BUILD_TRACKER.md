@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V539 Source Correction Retirement Monitor
+
+V539 adds Source Correction Retirement Monitor to the Build Tracker Release Doctor. It watches retired correction wording, replacement proof, stale support copy, cache refresh, archive owner, and public notice expiry.
+
+- Release label: `NiveshNadi Phase 1 v539 Source Correction Retirement Monitor`
+- Data/version key: `20260708-v539-01`
+- Product surface: Build Tracker > Release Doctor > Source correction retirement monitor
+- Risk boundary: Static correction-retirement monitor only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims.
+- Verification status: Pending batch checks.
+
 ## V538 Support Drift Repair Queue
 
 V538 adds Support Drift Repair Queue to the Build Tracker Release Doctor. It turns support drift findings into owner-led repair tickets with copy fix, reviewer decision, escalation, support-safe closeout, and founder signoff.

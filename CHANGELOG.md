@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v539 Source Correction Retirement Monitor
+
+- Version: `0.539.0`
+- Data version: `20260708-v539-01`
+- Changes made: Added Source Correction Retirement Monitor to the Build Tracker Release Doctor with retired wording age, replacement row proof, support copy stale, cache refresh proof, archive owner, public notice expiry, source correction retirement receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v538 commit, next-batch planner roll-forward to v540-v544, and release markers rolled forward to v539.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v539 marker scan.
+- Known risks: Source Correction Retirement Monitor is a static correction-retirement monitor only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims.
+
 ## NiveshNadi Phase 1 v538 Support Drift Repair Queue
 
 - Version: `0.538.0`

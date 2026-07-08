@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v538-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v538 Support Drift Repair Queue";
+const DATA_VERSION = "20260708-v539-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v539 Source Correction Retirement Monitor";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Support drift repair queue",
+    label: "Source correction retirement monitor",
     status: "Shipping now",
-    route: "#paid-beta-support-ledger",
-    detail: "Convert support drift findings into owner-led repair tickets with copy fix, review state, and closeout proof."
+    route: "#correction-ledger",
+    detail: "Watch retired correction wording, stale support copy, replacement rows, and cache refresh proof."
   },
   {
     label: "Mobile calm audit",
@@ -16385,6 +16385,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Drift Repair Queue is a static support repair queue only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
+      },
+      {
+        key: "sourceCorrectionRetirementMonitor",
+        label: "Source correction retirement monitor",
+        verdict: "Retired wording needs proof",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "RETIREMENT", "MONITOR", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-retirement-monitor",
+        copyLabel: "Copy retirement monitor",
+        score: 81,
+        rule: "No retired correction wording should remain trusted unless replacement row, support copy, cache refresh, archive owner, and public notice expiry are visible before the next release.",
+        lanes: [
+          {
+            label: "Retired wording age",
+            owner: "Correction ledger desk",
+            method: "RETIRE",
+            route: "source.correction.retired-wording-age",
+            proof: "Flag retired wording, affected surface, retirement date, stale age, and replacement dependency.",
+            readyWhen: "Ready when old correction wording cannot keep appearing as current.",
+            hold: "Hold if retired wording age or affected surface is missing.",
+            score: 81
+          },
+          {
+            label: "Replacement row proof",
+            owner: "Source reviewer",
+            method: "REPLACE",
+            route: "source.correction.replacement-proof",
+            proof: "Attach replacement row ID, corrected wording, source date, reviewer scope, and acceptance state.",
+            readyWhen: "Ready when every retired row points to a replacement or a no-replacement reason.",
+            hold: "Hold if replacement proof is missing or unreviewed.",
+            score: 82
+          },
+          {
+            label: "Support copy stale",
+            owner: "Support copy desk",
+            method: "SUPPORT",
+            route: "source.correction.support-copy-stale",
+            proof: "Flag support copy that still references retired wording, with repair owner and closeout state.",
+            readyWhen: "Ready when support copy cannot repeat retired corrections.",
+            hold: "Hold if support wording still carries retired facts or advice-like claims.",
+            score: 81
+          },
+          {
+            label: "Cache refresh proof",
+            owner: "Publishing desk",
+            method: "CACHE",
+            route: "source.correction.cache-refresh-proof",
+            proof: "Record cache key, affected static surface, fresh stamp, and reviewer retest note.",
+            readyWhen: "Ready when retired wording is absent from fresh page and copied proof.",
+            hold: "Hold if cache refresh proof or retest note is missing.",
+            score: 80
+          },
+          {
+            label: "Archive owner",
+            owner: "Release archive desk",
+            method: "ARCHIVE",
+            route: "source.correction.archive-owner",
+            proof: "Name archive owner, retention reason, retirement rule, and no-private-data boundary.",
+            readyWhen: "Ready when retired correction rows are kept only as release proof.",
+            hold: "Hold if archive owner or retention rule is missing.",
+            score: 81
+          },
+          {
+            label: "Public notice expiry",
+            owner: "Founder release desk",
+            method: "NOTICE",
+            route: "source.correction.public-notice-expiry",
+            proof: "Record notice wording, expiry date, replacement route, and support handoff state.",
+            readyWhen: "Ready when public correction notices expire or refresh on purpose.",
+            hold: "Hold if public notice expiry is blank or stale.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Source correction retirement tracks correction metadata and public wording only.",
+          "Every retired correction has one replacement row, no-replacement reason, support-copy state, cache refresh proof, and archive owner.",
+          "Support copy that repeats retired wording becomes a repair item before support widens.",
+          "Public notices need expiry dates so old correction banners do not become permanent confusion.",
+          "No retirement monitor row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No retired wording may remain active without replacement proof or a no-replacement reason.",
+          "No support copy may repeat retired correction facts after retirement.",
+          "No public correction notice may stay live without expiry or refresh review.",
+          "No retirement monitor row may expose private identifiers, credentials, payment payloads, or raw support notes."
+        ],
+        receiptFields: [
+          "source_correction_retirement_monitor_id",
+          "release_key",
+          "retired_wording_id",
+          "affected_surface",
+          "replacement_row_id",
+          "support_copy_state",
+          "cache_refresh_proof",
+          "archive_owner",
+          "public_notice_expiry",
+          "reviewer_scope",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Source Correction Retirement Monitor is a static correction-retirement monitor only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims."
       }
     ],
     executiveCalmCompression: {
@@ -16557,14 +16657,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support drift repairs now have owner-led tickets; next releases should lock source correction retirement monitor, payment repair closeout audit, account custody expiry rehearsal, beta command expiry closeout, and support repair closeout receipt.",
+      rule: "Source correction retirement now has stale-wording proof; next releases should lock payment repair closeout audit, account custody expiry rehearsal, beta command expiry closeout, support repair closeout receipt, and source correction archive compactor.",
       lanes: [
-        {
-          version: "v539",
-          label: "Source correction retirement monitor",
-          route: "#correction-ledger",
-          detail: "Watch retired correction wording, stale support copy, replacement rows, and cache refresh proof."
-        },
         {
           version: "v540",
           label: "Payment repair closeout audit",
@@ -16588,14 +16682,27 @@ function buildTrackerConfig() {
           label: "Support repair closeout receipt",
           route: "#paid-beta-support-ledger",
           detail: "Turn accepted support repairs into release receipts with support-safe copy, owner signoff, and residual-risk notes."
+        },
+        {
+          version: "v544",
+          label: "Source correction archive compactor",
+          route: "#correction-ledger",
+          detail: "Compact retired correction proof into short archive receipts with replacement row, expiry, and cache proof."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Repair proof visible",
+      verdict: "Retirement proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v538",
+          key: "20260708-v538-01",
+          commit: "44aa266",
+          receiptId: "NN-SHARE-RECEIPT-20260708V53801",
+          proof: "Support Drift Repair Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v537",
           key: "20260708-v537-01",
@@ -16623,13 +16730,6 @@ function buildTrackerConfig() {
           commit: "ce9bb71",
           receiptId: "NN-SHARE-RECEIPT-20260708V53401",
           proof: "Source Correction Supersede Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v533",
-          key: "20260708-v533-01",
-          commit: "a5b22ef",
-          receiptId: "NN-SHARE-RECEIPT-20260708V53301",
-          proof: "Support Handoff Drift Audit added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -16667,13 +16767,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v538",
-        detail: "Support Drift Repair Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v539",
+        detail: "Source Correction Retirement Monitor is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v538 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v539 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -16682,25 +16782,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v538 held until live stamp",
-        detail: "Do not share v538 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v539 held until live stamp",
+        detail: "Do not share v539 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v538 support repair queue",
-        detail: "Support Drift Repair Queue turns drift findings into owner-led repair tickets with copy fix, reviewer decision, support-safe closeout, escalation, and founder signoff."
+        value: "v539 source retirement monitor",
+        detail: "Source Correction Retirement Monitor watches retired wording age, replacement proof, stale support copy, cache refresh, archive owner, and public notice expiry."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v538 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v539 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v538 held until live stamp",
-        detail: "The release is share-ready only after v538 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v539 held until live stamp",
+        detail: "The release is share-ready only after v539 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

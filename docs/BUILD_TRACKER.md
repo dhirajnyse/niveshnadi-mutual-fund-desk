@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V508 Founder Beta Cohort Ledger
+
+V508 adds Founder Beta Cohort Ledger to the Build Tracker Release Doctor. It controls cohort cap, invite copy version, receipt family, invite state, support load, refund stop, payment confusion, source correction, privacy cases, expansion decision, and founder closeout before any pilot wave widens.
+
 ## V507 Pilot Support Dry Run Board
 
 V507 adds Pilot Support Dry Run Board to the Build Tracker Release Doctor. It rehearses approved support replies, escalation owners, refund and payment stops, account hold copy, source correction routing, cohort pause triggers, support closeout receipts, and no-go support language before founder invites widen.

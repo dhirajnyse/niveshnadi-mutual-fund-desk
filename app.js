@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v507-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v507 Pilot Support Dry Run Board";
+const DATA_VERSION = "20260708-v508-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v508 Founder Beta Cohort Ledger";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -13235,6 +13235,106 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    founderBetaCohortLedger: {
+      label: "Founder beta cohort ledger",
+      verdict: "Cohort widening held by receipt capacity",
+      receiptId: ["NN", "FOUNDER", "BETA", "COHORT", "LEDGER", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 74,
+      rule: "No founder beta cohort should widen until every named wave has cohort cap, invite copy version, receipt family, support capacity, refund stop, source correction route, entitlement state, and expansion no-go proof.",
+      lanes: [
+        {
+          label: "Cohort cap register",
+          owner: "Founder",
+          method: "LEDGER",
+          route: "cohort.cap-register",
+          proof: "Record wave name, max users, invite source, copy version, support ceiling, payment ask state, and freeze reason.",
+          readyWhen: "Ready when every cohort wave is capped, named, manually reviewed, and tied to approved invite copy.",
+          hold: "Hold if a cohort can grow from public links, ads, automation, or forwarded copy without founder review.",
+          score: 76
+        },
+        {
+          label: "Receipt family map",
+          owner: "Founder ops",
+          method: "LEDGER",
+          route: "cohort.receipt-family",
+          proof: "Bind invite, payment ask, payment receipt, entitlement state, support closeout, refund stop, and expansion decision receipts.",
+          readyWhen: "Ready when a single participant can be traced by receipt family without storing private identifiers in front-end memory.",
+          hold: "Hold if receipt families require PAN, folio, CAS, bank, card, UPI, contact, credential, or private notes.",
+          score: 74
+        },
+        {
+          label: "Invite state tracker",
+          owner: "Launch desk",
+          method: "LEDGER",
+          route: "cohort.invite-state",
+          proof: "Track drafted, founder-approved, sent, replied, paid-intent, blocked, refunded, paused, and closed states.",
+          readyWhen: "Ready when support and founder can see whether a wave is open, paused, or closed from receipt state.",
+          hold: "Hold if invite state lives only in chat memory, spreadsheet notes, or payment provider screens.",
+          score: 73
+        },
+        {
+          label: "Support load ceiling",
+          owner: "Support desk",
+          method: "LEDGER",
+          route: "cohort.support-load",
+          proof: "Count open support cases, refund requests, source corrections, privacy concerns, and advice-confusion cases per wave.",
+          readyWhen: "Ready when support load automatically blocks new invites above the founder-reviewed ceiling.",
+          hold: "Hold if support can exceed capacity while invites continue to widen.",
+          score: 72
+        },
+        {
+          label: "Refund and expansion stop",
+          owner: "Finance control",
+          method: "LEDGER",
+          route: "cohort.refund-expansion-stop",
+          proof: "Tie refund request count, payment confusion, entitlement mismatch, and rollback state to expansion hold.",
+          readyWhen: "Ready when refund or payment confusion pauses expansion until founder and finance close the receipt.",
+          hold: "Hold if expansion can continue with unresolved refund, duplicate payment, entitlement mismatch, or payment-support tickets.",
+          score: 73
+        },
+        {
+          label: "Founder closeout memo",
+          owner: "Founder review",
+          method: "LEDGER",
+          route: "cohort.founder-closeout",
+          proof: "Close each cohort wave with learning, blockers, support load, refund state, source issues, expansion decision, and next cap.",
+          readyWhen: "Ready when the founder can decide repeat, hold, repair, or widen from one no-private-data memo.",
+          hold: "Hold if the next wave starts before the current wave has closeout, support capacity, and expansion no-go proof.",
+          score: 76
+        }
+      ],
+      operatingRules: [
+        "Every cohort wave needs a cap, owner, invite version, receipt family, support ceiling, and freeze reason.",
+        "Cohort proof stores receipt metadata only; private identifiers stay outside the front-end prototype.",
+        "Support load, refunds, source corrections, privacy concerns, and advice confusion can pause the next wave.",
+        "Expansion is a founder decision after closeout, not an automatic consequence of paid intent.",
+        "A cohort ledger is useful only if repeat, hold, repair, and widen decisions are written before the next invite."
+      ],
+      noGoLines: [
+        "No cohort may widen from public checkout, ads, referral forwarding, or automation before founder approval.",
+        "No cohort ledger may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, distributor-client records, or raw payment payloads.",
+        "No wave may repeat while support load, refunds, payment confusion, source correction, privacy fear, or advice expectation remains unresolved.",
+        "No expansion decision may be inferred from revenue alone; proof, support capacity, refund state, and boundary copy must agree."
+      ],
+      receiptFields: [
+        "founder_beta_cohort_ledger_id",
+        "release_key",
+        "cohort_wave_id",
+        "cohort_cap",
+        "invite_copy_version",
+        "receipt_family_id",
+        "invite_state",
+        "support_load_count",
+        "refund_stop_state",
+        "payment_confusion_state",
+        "source_correction_state",
+        "privacy_case_state",
+        "expansion_decision",
+        "founder_closeout_memo_id",
+        "release_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -13405,14 +13505,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Pilot support rehearsal closes the first invite-readiness bridge; next releases should lock cohort control, source connector, payment sandbox, account auth, and support SLA evidence before widening.",
+      rule: "Founder beta cohort control closes the second invite-readiness bridge; next releases should lock source connector, payment sandbox, account auth, support SLA evidence, and beta entitlement replay before widening.",
       lanes: [
-        {
-          version: "v508",
-          label: "Founder beta cohort ledger",
-          route: "#founder-cohort-control-room",
-          detail: "Track named cohort cap, receipt family, invite state, support capacity, refund stop, and expansion no-go before pilot widening."
-        },
         {
           version: "v509",
           label: "Live source connector spike plan",
@@ -13436,6 +13530,12 @@ function buildTrackerConfig() {
           label: "Pilot support SLA evidence binder",
           route: "#paid-beta-support-ledger",
           detail: "Attach response windows, owner receipts, open-case ceilings, escalation proof, and founder closeout before support claims widen."
+        },
+        {
+          version: "v513",
+          label: "Beta entitlement replay board",
+          route: "#entitlement-bridge",
+          detail: "Replay paid, refunded, paused, expired, and support-held entitlement states before any account access widens."
         }
       ]
     },
@@ -13444,6 +13544,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v507",
+          key: "20260708-v507-01",
+          commit: "d52a9fd",
+          receiptId: "NN-SHARE-RECEIPT-20260708V50701",
+          proof: "Pilot Support Dry Run Board added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v506",
           key: "20260708-v506-01",
@@ -13471,13 +13578,6 @@ function buildTrackerConfig() {
           commit: "577ebc1",
           receiptId: "NN-SHARE-RECEIPT-20260708V50301",
           proof: "Backend CI Proof Harness added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v502",
-          key: "20260708-v502-01",
-          commit: "4f866e1",
-          receiptId: "NN-SHARE-RECEIPT-20260708V50201",
-          proof: "Backend Repository Handoff Pack added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -13515,8 +13615,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v507",
-        detail: "Pilot Support Dry Run Board is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v508",
+        detail: "Founder Beta Cohort Ledger is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -14268,6 +14368,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.dataRetentionExecutionChecklist, "Data retention execution checklist")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.pilotInviteCopyApprovalRoom, "Pilot invite copy approval room")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.pilotSupportDryRunBoard, "Pilot support dry run board")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.founderBetaCohortLedger, "Founder beta cohort ledger")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -14441,6 +14542,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-data-retention-execution-checklist>Copy retention checklist</button>
         <button class="text-button" type="button" data-copy-pilot-invite-copy-approval-room>Copy invite approval</button>
         <button class="text-button" type="button" data-copy-pilot-support-dry-run-board>Copy support dry run</button>
+        <button class="text-button" type="button" data-copy-founder-beta-cohort-ledger>Copy cohort ledger</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -14749,6 +14851,11 @@ function makeBuildTrackerBrief() {
     `Pilot support dry run score: ${tracker.releaseDoctor.pilotSupportDryRunBoard.score}/100`,
     `Pilot support dry run rule: ${tracker.releaseDoctor.pilotSupportDryRunBoard.rule}`,
     ...tracker.releaseDoctor.pilotSupportDryRunBoard.lanes.map((lane) => `- Pilot support ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Founder beta cohort ledger: ${tracker.releaseDoctor.founderBetaCohortLedger.verdict}`,
+    `Founder beta cohort ledger receipt: ${tracker.releaseDoctor.founderBetaCohortLedger.receiptId}`,
+    `Founder beta cohort ledger score: ${tracker.releaseDoctor.founderBetaCohortLedger.score}/100`,
+    `Founder beta cohort ledger rule: ${tracker.releaseDoctor.founderBetaCohortLedger.rule}`,
+    ...tracker.releaseDoctor.founderBetaCohortLedger.lanes.map((lane) => `- Founder cohort ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -15144,6 +15251,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.pilotSupportDryRunBoard.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.pilotSupportDryRunBoard.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.pilotSupportDryRunBoard.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Founder Beta Cohort Ledger",
+    `- Receipt ID: ${tracker.releaseDoctor.founderBetaCohortLedger.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.founderBetaCohortLedger.verdict}`,
+    `- Score: ${tracker.releaseDoctor.founderBetaCohortLedger.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.founderBetaCohortLedger.rule}`,
+    ...tracker.releaseDoctor.founderBetaCohortLedger.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.founderBetaCohortLedger.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.founderBetaCohortLedger.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.founderBetaCohortLedger.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -16036,6 +16153,14 @@ function makePilotSupportDryRunBoardBrief() {
     "Pilot Support Dry Run Board",
     buildTrackerConfig().releaseDoctor.pilotSupportDryRunBoard,
     "Pilot Support Dry Run Board is a static support rehearsal contract only. It does not provide live support, process refunds, verify payments, store account data, correct sources, or approve cohort widening."
+  );
+}
+
+function makeFounderBetaCohortLedgerBrief() {
+  return makeOperationalProofBrief(
+    "Founder Beta Cohort Ledger",
+    buildTrackerConfig().releaseDoctor.founderBetaCohortLedger,
+    "Founder Beta Cohort Ledger is a static cohort-control contract only. It does not identify users, send invites, collect payments, grant entitlements, store account data, or approve expansion."
   );
 }
 
@@ -70338,6 +70463,13 @@ function bindEvents() {
     if (!copyPilotSupportDryRunBoard) return;
     event.preventDefault();
     copyText(makePilotSupportDryRunBoardBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyFounderBetaCohortLedger = event.target.closest("[data-copy-founder-beta-cohort-ledger]");
+    if (!copyFounderBetaCohortLedger) return;
+    event.preventDefault();
+    copyText(makeFounderBetaCohortLedgerBrief());
   });
 
   document.addEventListener("click", (event) => {

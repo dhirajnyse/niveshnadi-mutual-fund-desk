@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v508 Founder Beta Cohort Ledger
+
+- Version: `0.508.0`
+- Data version: `20260708-v508-01`
+- Changes made: Added Founder Beta Cohort Ledger to the Build Tracker Release Doctor with cohort cap register, receipt family map, invite state tracker, support load ceiling, refund and expansion stop, founder closeout memo, operating rules, no-go lines, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward with v507 commit, next-batch planner roll-forward to v509-v513, and release markers rolled forward to v508.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v508 marker scan.
+- Known risks: Founder Beta Cohort Ledger is a static cohort-control contract only; it does not identify users, send invites, collect payments, grant entitlements, store account data, or approve expansion.
+
 ## NiveshNadi Phase 1 v507 Pilot Support Dry Run Board
 
 - Version: `0.507.0`

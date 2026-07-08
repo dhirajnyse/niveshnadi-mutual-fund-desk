@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v506-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v506 Pilot Invite Copy Approval Room";
+const DATA_VERSION = "20260708-v507-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v507 Pilot Support Dry Run Board";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -13136,6 +13136,105 @@ function buildTrackerConfig() {
         "created_at"
       ]
     },
+    pilotSupportDryRunBoard: {
+      label: "Pilot support dry run board",
+      verdict: "Support rehearsal held before invite widening",
+      receiptId: ["NN", "PILOT", "SUPPORT", "DRY", "RUN", "BOARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+      score: 73,
+      rule: "No pilot invite wave should widen until support can replay refund, source correction, account hold, privacy fear, payment confusion, and cohort pause cases from approved copy without exposing private data or drifting into advice.",
+      lanes: [
+        {
+          label: "Approved reply script",
+          owner: "Support desk",
+          method: "DRILL",
+          route: "support.reply-script",
+          proof: "Write short replies for advice confusion, source-date doubt, refund request, payment receipt mismatch, privacy concern, and cohort pause.",
+          readyWhen: "Ready when every reply is research-only, private-data safe, and routes to one owner.",
+          hold: "Hold if support copy promises fund choice, transaction help, guaranteed outcome, or asks for private identifiers.",
+          score: 74
+        },
+        {
+          label: "Escalation owner map",
+          owner: "Founder ops",
+          method: "DRILL",
+          route: "support.escalation-owner-map",
+          proof: "Name owner, response window, freeze command, handoff note, support-safe status, and closeout receipt for each pilot support case.",
+          readyWhen: "Ready when support knows who owns refund, source correction, payment confusion, privacy fear, and account hold cases.",
+          hold: "Hold if cases can bounce between founder, support, finance, privacy, source, or account owners without a visible closeout.",
+          score: 72
+        },
+        {
+          label: "Refund and payment stop",
+          owner: "Finance control",
+          method: "DRILL",
+          route: "support.refund-payment-stop",
+          proof: "Rehearse refund request, duplicate payment, missing receipt, failed entitlement, charge confusion, and rollback wording.",
+          readyWhen: "Ready when refund and payment confusion automatically pause entitlement expansion until founder review.",
+          hold: "Hold if payment support can continue access, widen cohort, or store raw provider payloads before review.",
+          score: 71
+        },
+        {
+          label: "Account hold rehearsal",
+          owner: "Account platform",
+          method: "DRILL",
+          route: "support.account-hold",
+          proof: "Practice account lock, export request, deletion request, saved-memory confusion, and support-safe public state.",
+          readyWhen: "Ready when support can explain account state without collecting PAN, folio, CAS, bank, card, contact, credential, or private notes.",
+          hold: "Hold if any support path requires private identifiers, raw account payloads, or manual memory outside the receipt.",
+          score: 72
+        },
+        {
+          label: "Source correction route",
+          owner: "Evidence desk",
+          method: "DRILL",
+          route: "support.source-correction",
+          proof: "Rehearse stale source date, wrong TER, missing benchmark, holdings mismatch, riskometer conflict, and correction notice path.",
+          readyWhen: "Ready when source concerns freeze the affected claim and route to reviewer release before support replies widen.",
+          hold: "Hold if support answers source disputes from memory or treats demo data as live proof.",
+          score: 73
+        },
+        {
+          label: "Cohort pause trigger",
+          owner: "Founder review",
+          method: "DRILL",
+          route: "support.cohort-pause",
+          proof: "Set pause thresholds for open cases, refunds, source corrections, privacy fear, payment confusion, and advice expectation.",
+          readyWhen: "Ready when one threshold breach pauses new invites, records the reason, and schedules founder review.",
+          hold: "Hold if invites can continue while support load, refund requests, source corrections, or advice confusion exceed capacity.",
+          score: 76
+        }
+      ],
+      operatingRules: [
+        "Support rehearsals must use approved copy and route every case to one owner.",
+        "Refund, payment, privacy, source, and advice-confusion cases pause expansion until founder review.",
+        "Support-safe status can name the state and next step; it must not expose private data or raw provider payloads.",
+        "Source disputes freeze affected claims until reviewer release or correction notice proof exists.",
+        "A support dry run is complete only when closeout receipt fields and cohort pause thresholds are visible."
+      ],
+      noGoLines: [
+        "No support reply may give personalized advice, buy/sell/switch/redeem instruction, suitability approval, guaranteed return, tax advice, legal advice, or distributor service.",
+        "No support case may ask for PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, distributor-client records, or raw payment payloads.",
+        "No invite wave may widen while refund, payment confusion, source correction, privacy fear, or advice-expectation cases exceed the support ceiling.",
+        "No support closeout may rely on founder memory without a receipt ID, owner, response window, and next action."
+      ],
+      receiptFields: [
+        "pilot_support_dry_run_board_id",
+        "release_key",
+        "reply_script_version",
+        "support_case_family",
+        "escalation_owner_map_id",
+        "refund_stop_state",
+        "payment_confusion_state",
+        "account_hold_state",
+        "source_correction_state",
+        "privacy_fear_state",
+        "cohort_pause_threshold",
+        "support_closeout_receipt_id",
+        "founder_review_state",
+        "release_hold",
+        "created_at"
+      ]
+    },
     executiveCalmCompression: {
       label: "Calm executive workspace compression",
       verdict: "One-read release desk",
@@ -13306,14 +13405,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Pilot invite copy approval closes this backend-to-beta bridge; next releases should rehearse support, cohort control, source connector, payment sandbox, and account auth decisions.",
+      rule: "Pilot support rehearsal closes the first invite-readiness bridge; next releases should lock cohort control, source connector, payment sandbox, account auth, and support SLA evidence before widening.",
       lanes: [
-        {
-          version: "v507",
-          label: "Pilot support dry run board",
-          route: "#paid-beta-support-ledger",
-          detail: "Rehearse support replies, escalation owners, refund stop, account hold, source correction, and cohort pause before founder invites widen."
-        },
         {
           version: "v508",
           label: "Founder beta cohort ledger",
@@ -13337,6 +13430,12 @@ function buildTrackerConfig() {
           label: "Account auth provider decision room",
           route: "#founder-auth-decision-board",
           detail: "Choose auth provider posture, session policy, account recovery, deletion, export, consent, support-safe status, and launch no-go proof."
+        },
+        {
+          version: "v512",
+          label: "Pilot support SLA evidence binder",
+          route: "#paid-beta-support-ledger",
+          detail: "Attach response windows, owner receipts, open-case ceilings, escalation proof, and founder closeout before support claims widen."
         }
       ]
     },
@@ -13345,6 +13444,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v506",
+          key: "20260708-v506-01",
+          commit: "ee19d28",
+          receiptId: "NN-SHARE-RECEIPT-20260708V50601",
+          proof: "Pilot Invite Copy Approval Room added, visually checked, pushed to main, and live stamp verified."
+        },
         {
           version: "v505",
           key: "20260708-v505-01",
@@ -13372,13 +13478,6 @@ function buildTrackerConfig() {
           commit: "4f866e1",
           receiptId: "NN-SHARE-RECEIPT-20260708V50201",
           proof: "Backend Repository Handoff Pack added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v501",
-          key: "20260708-v501-01",
-          commit: "5b7e732",
-          receiptId: "NN-SHARE-RECEIPT-20260708V50101",
-          proof: "Live Beta Pilot Audit added, pushed to main, visually checked, and live stamp verified."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -13416,8 +13515,8 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v506",
-        detail: "Pilot Invite Copy Approval Room is wired with matching release label, data key, stamp, docs, and changelog."
+        value: "v507",
+        detail: "Pilot Support Dry Run Board is wired with matching release label, data key, stamp, docs, and changelog."
       },
       {
         label: "02 Checked",
@@ -14168,6 +14267,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.deploymentEnvironmentReadinessMap, "Deployment environment readiness map")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.dataRetentionExecutionChecklist, "Data retention execution checklist")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.pilotInviteCopyApprovalRoom, "Pilot invite copy approval room")}
+      ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.pilotSupportDryRunBoard, "Pilot support dry run board")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>
@@ -14340,6 +14440,7 @@ function releaseDoctorMarkup(tracker) {
         <button class="text-button" type="button" data-copy-deployment-environment-readiness-map>Copy environment map</button>
         <button class="text-button" type="button" data-copy-data-retention-execution-checklist>Copy retention checklist</button>
         <button class="text-button" type="button" data-copy-pilot-invite-copy-approval-room>Copy invite approval</button>
+        <button class="text-button" type="button" data-copy-pilot-support-dry-run-board>Copy support dry run</button>
         <button class="text-button" type="button" data-copy-retention-health-summary>Copy retention health</button>
         <button class="text-button" type="button" data-copy-retention-action-router>Copy action router</button>
         <button class="text-button" type="button" data-copy-next-batch-plan>Copy next batch</button>
@@ -14643,6 +14744,11 @@ function makeBuildTrackerBrief() {
     `Pilot invite copy approval score: ${tracker.releaseDoctor.pilotInviteCopyApprovalRoom.score}/100`,
     `Pilot invite copy approval rule: ${tracker.releaseDoctor.pilotInviteCopyApprovalRoom.rule}`,
     ...tracker.releaseDoctor.pilotInviteCopyApprovalRoom.lanes.map((lane) => `- Pilot invite copy ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    `Pilot support dry run board: ${tracker.releaseDoctor.pilotSupportDryRunBoard.verdict}`,
+    `Pilot support dry run receipt: ${tracker.releaseDoctor.pilotSupportDryRunBoard.receiptId}`,
+    `Pilot support dry run score: ${tracker.releaseDoctor.pilotSupportDryRunBoard.score}/100`,
+    `Pilot support dry run rule: ${tracker.releaseDoctor.pilotSupportDryRunBoard.rule}`,
+    ...tracker.releaseDoctor.pilotSupportDryRunBoard.lanes.map((lane) => `- Pilot support ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
     `Retention health summary: ${tracker.releaseDoctor.retentionHealthSummary.verdict}`,
     `Retention health receipt: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
     `Retention health score: ${tracker.releaseDoctor.retentionHealthSummary.score}/100`,
@@ -15028,6 +15134,16 @@ function makeReleaseDoctorBrief() {
     ...tracker.releaseDoctor.pilotInviteCopyApprovalRoom.operatingRules.map((rule) => `- Operating rule: ${rule}`),
     ...tracker.releaseDoctor.pilotInviteCopyApprovalRoom.noGoLines.map((line) => `- No-go: ${line}`),
     ...tracker.releaseDoctor.pilotInviteCopyApprovalRoom.receiptFields.map((field) => `- Receipt field: ${field}`),
+    "",
+    "## Pilot Support Dry Run Board",
+    `- Receipt ID: ${tracker.releaseDoctor.pilotSupportDryRunBoard.receiptId}`,
+    `- Verdict: ${tracker.releaseDoctor.pilotSupportDryRunBoard.verdict}`,
+    `- Score: ${tracker.releaseDoctor.pilotSupportDryRunBoard.score}/100`,
+    `- Rule: ${tracker.releaseDoctor.pilotSupportDryRunBoard.rule}`,
+    ...tracker.releaseDoctor.pilotSupportDryRunBoard.lanes.map((lane) => `- ${lane.label}: ${lane.method} ${lane.route} | ${lane.owner} | Proof ${lane.proof} | Ready ${lane.readyWhen} | Hold ${lane.hold}`),
+    ...tracker.releaseDoctor.pilotSupportDryRunBoard.operatingRules.map((rule) => `- Operating rule: ${rule}`),
+    ...tracker.releaseDoctor.pilotSupportDryRunBoard.noGoLines.map((line) => `- No-go: ${line}`),
+    ...tracker.releaseDoctor.pilotSupportDryRunBoard.receiptFields.map((field) => `- Receipt field: ${field}`),
     "",
     "## Retention Health Summary",
     `- Receipt ID: ${tracker.releaseDoctor.retentionHealthSummary.receiptId}`,
@@ -15912,6 +16028,14 @@ function makePilotInviteCopyApprovalRoomBrief() {
     "Pilot Invite Copy Approval Room",
     buildTrackerConfig().releaseDoctor.pilotInviteCopyApprovalRoom,
     "Pilot Invite Copy Approval Room is a static copy-approval contract only. It does not send invites, collect payment, onboard users, provide advice, approve legal/compliance readiness, or open a paid cohort."
+  );
+}
+
+function makePilotSupportDryRunBoardBrief() {
+  return makeOperationalProofBrief(
+    "Pilot Support Dry Run Board",
+    buildTrackerConfig().releaseDoctor.pilotSupportDryRunBoard,
+    "Pilot Support Dry Run Board is a static support rehearsal contract only. It does not provide live support, process refunds, verify payments, store account data, correct sources, or approve cohort widening."
   );
 }
 
@@ -70207,6 +70331,13 @@ function bindEvents() {
     if (!copyPilotInviteCopyApprovalRoom) return;
     event.preventDefault();
     copyText(makePilotInviteCopyApprovalRoomBrief());
+  });
+
+  document.addEventListener("click", (event) => {
+    const copyPilotSupportDryRunBoard = event.target.closest("[data-copy-pilot-support-dry-run-board]");
+    if (!copyPilotSupportDryRunBoard) return;
+    event.preventDefault();
+    copyText(makePilotSupportDryRunBoardBrief());
   });
 
   document.addEventListener("click", (event) => {

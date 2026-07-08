@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v507 Pilot Support Dry Run Board
+
+- Version: `0.507.0`
+- Data version: `20260708-v507-01`
+- Changes made: Added Pilot Support Dry Run Board to the Build Tracker Release Doctor with approved reply scripts, escalation owner map, refund and payment stop rehearsal, account hold rehearsal, source correction route, cohort pause triggers, operating rules, no-go lines, receipt fields, dedicated copy action, Build Tracker and Release Doctor brief coverage, proof archive roll-forward with v506 commit, next-batch planner roll-forward to v508-v512, and release markers rolled forward to v507.
+- Files changed: `CHANGELOG.md`, `README.md`, `app.js`, `docs/BUILD_TRACKER.md`, `index.html`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v507 marker scan.
+- Known risks: Pilot Support Dry Run Board is a static support rehearsal contract only; it does not provide live support, process refunds, verify payments, store account data, correct sources, or approve cohort widening.
+
 ## NiveshNadi Phase 1 v506 Pilot Invite Copy Approval Room
 
 - Version: `0.506.0`

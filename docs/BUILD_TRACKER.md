@@ -1,5 +1,9 @@
 # Nadi Build Tracker
 
+## V507 Pilot Support Dry Run Board
+
+V507 adds Pilot Support Dry Run Board to the Build Tracker Release Doctor. It rehearses approved support replies, escalation owners, refund and payment stops, account hold copy, source correction routing, cohort pause triggers, support closeout receipts, and no-go support language before founder invites widen.
+
 ## V506 Pilot Invite Copy Approval Room
 
 V506 adds Pilot Invite Copy Approval Room to the Build Tracker Release Doctor. It gathers primary invite promise, research-only boundary, data boundary, payment and refund copy, support limits, pause triggers, cohort cap, support ceiling, next review date, and founder approval before any named paid beta cohort opens.

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V548 Support Repair Aging Guard
+
+V548 adds Support Repair Aging Guard to the Build Tracker Release Doctor. It warns when accepted support repairs age past source context, refund wording, privacy boundary, founder review, regression, or closeout windows.
+
+- Release label: `NiveshNadi Phase 1 v548 Support Repair Aging Guard`
+- Data/version key: `20260709-v548-01`
+- Product surface: Build Tracker > Release Doctor > Support repair aging guard
+- Risk boundary: Static support repair aging room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+- Verification status: Pending batch checks.
+
 ## V547 Beta Command Archive Compactor
 
 V547 adds Beta Command Archive Compactor to the Build Tracker Release Doctor. It turns expired founder command closeouts into compact archive receipts with replacement proof, conflict cleanup, retirement reason, release-safe memory, and founder signoff.

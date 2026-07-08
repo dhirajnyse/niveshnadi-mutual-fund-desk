@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v547-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v547 Beta Command Archive Compactor";
+const DATA_VERSION = "20260709-v548-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v548 Support Repair Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command archive compactor",
+    label: "Support repair aging guard",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Compact expired command closeouts into short archive receipts with replacement, conflict, and founder signoff proof."
+    route: "#paid-beta-support-ledger",
+    detail: "Warn when accepted support repair receipts age past source, refund, privacy, or founder review windows."
   },
   {
     label: "Mobile calm audit",
@@ -17285,6 +17285,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Archive Compactor is a static command archive-compaction room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion."
+      },
+      {
+        key: "supportRepairAgingGuard",
+        label: "Support repair aging guard",
+        verdict: "Accepted repairs need aging windows",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-aging-guard",
+        copyLabel: "Copy repair aging guard",
+        score: 82,
+        rule: "Accepted support repairs should warn when source context, refund wording, privacy boundary, founder review, regression state, or support closeout ages past the owner window.",
+        lanes: [
+          {
+            label: "Source aging",
+            owner: "Source support desk",
+            method: "SOURCE",
+            route: "support.repair.source-aging",
+            proof: "Record source date, correction link, review window, and stale-source hold for each accepted repair.",
+            readyWhen: "Ready when a support repair cannot outlive its source context silently.",
+            hold: "Hold if source date or stale-source review window is missing.",
+            score: 82
+          },
+          {
+            label: "Refund wording aging",
+            owner: "Support captain",
+            method: "REFUND",
+            route: "support.repair.refund-aging",
+            proof: "Track refund wording version, last review, payment-stop boundary, and owner refresh requirement.",
+            readyWhen: "Ready when refund language cannot drift into a promise after its review window.",
+            hold: "Hold if refund wording version or owner refresh is absent.",
+            score: 81
+          },
+          {
+            label: "Privacy aging",
+            owner: "Privacy review desk",
+            method: "PRIVACY",
+            route: "support.repair.privacy-aging",
+            proof: "Record excluded private fields, redaction check, support-safe copy, and next privacy review.",
+            readyWhen: "Ready when aged repair copy still excludes private notes and identifiers.",
+            hold: "Hold if redaction check or privacy review date is missing.",
+            score: 82
+          },
+          {
+            label: "Founder review aging",
+            owner: "Founder support desk",
+            method: "FOUNDER",
+            route: "support.repair.founder-aging",
+            proof: "Track founder review owner, decision date, stale-owner fallback, and release hold.",
+            readyWhen: "Ready when old accepted repairs cannot remain approved under stale founder memory.",
+            hold: "Hold if founder review date or fallback owner is missing.",
+            score: 82
+          },
+          {
+            label: "Regression aging",
+            owner: "Support QA",
+            method: "REGRESSION",
+            route: "support.repair.regression-aging",
+            proof: "Record regression trigger, retest window, reopened issue link, and no-widening state.",
+            readyWhen: "Ready when a repaired support issue has an age-triggered retest route.",
+            hold: "Hold if regression trigger or retest window is absent.",
+            score: 82
+          },
+          {
+            label: "Support closeout aging",
+            owner: "Support operations",
+            method: "CLOSEOUT",
+            route: "support.repair.closeout-aging",
+            proof: "Record closeout receipt, last accepted copy, owner refresh, and support-safe status.",
+            readyWhen: "Ready when support can tell whether an accepted repair is still safe to use.",
+            hold: "Hold if closeout receipt or support-safe status is missing.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Support repair aging guard tracks accepted support repair freshness only; it does not send replies or reopen cases.",
+          "Every accepted support repair needs source, refund wording, privacy, founder review, regression, and closeout aging windows.",
+          "Aged support repair copy must move to hold until owner refresh restores support-safe status.",
+          "Support repair aging records must stay short and exclude raw tickets, private support notes, and private identifiers.",
+          "No support repair aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No aged support repair may remain approved without owner refresh.",
+          "No support copy may widen after source, refund, privacy, or founder review windows expire.",
+          "No regression-triggered repair may be treated as closed until retested.",
+          "No support repair aging row may expose raw tickets, private notes, identifiers, or payment data."
+        ],
+        receiptFields: [
+          "support_repair_aging_guard_id",
+          "release_key",
+          "repair_receipt_id",
+          "aging_window",
+          "source_review_state",
+          "refund_wording_state",
+          "privacy_review_state",
+          "founder_review_state",
+          "regression_trigger",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Support Repair Aging Guard is a static support repair aging room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
       }
     ],
     executiveCalmCompression: {
@@ -17457,14 +17556,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta command archives now have compact receipt proof; next releases should lock support repair aging guard, source correction expiry guard, payment closeout SLA guard, account retention job acceptance harness, and beta command archive aging guard.",
+      rule: "Support repair receipts now have aging guard proof; next releases should lock source correction expiry guard, payment closeout SLA guard, account retention job acceptance harness, beta command archive aging guard, and support repair owner SLA lane.",
       lanes: [
-        {
-          version: "v548",
-          label: "Support repair aging guard",
-          route: "#paid-beta-support-ledger",
-          detail: "Warn when accepted support repair receipts age past source, refund, privacy, or founder review windows."
-        },
         {
           version: "v549",
           label: "Source correction expiry guard",
@@ -17488,14 +17581,27 @@ function buildTrackerConfig() {
           label: "Beta command archive aging guard",
           route: "#founder-beta-operating-room",
           detail: "Warn when compacted command archives age past replacement, review, or founder memory windows."
+        },
+        {
+          version: "v553",
+          label: "Support repair owner SLA lane",
+          route: "#paid-beta-support-ledger",
+          detail: "Give every aged support repair a named owner, refresh SLA, fallback owner, and release hold."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Beta command archive proof visible",
+      verdict: "Support repair aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v547",
+          key: "20260709-v547-01",
+          commit: "7ae0146",
+          receiptId: "NN-SHARE-RECEIPT-20260709V54701",
+          proof: "Beta Command Archive Compactor added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v546",
           key: "20260709-v546-01",
@@ -17523,13 +17629,6 @@ function buildTrackerConfig() {
           commit: "274e10c",
           receiptId: "NN-SHARE-RECEIPT-20260709V54301",
           proof: "Support Repair Closeout Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v542",
-          key: "20260709-v542-01",
-          commit: "4feb465",
-          receiptId: "NN-SHARE-RECEIPT-20260709V54201",
-          proof: "Beta Command Expiry Closeout added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -17567,13 +17666,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v547",
-        detail: "Beta Command Archive Compactor is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v548",
+        detail: "Support Repair Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v547 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v548 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -17582,25 +17681,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v547 held until live stamp",
-        detail: "Do not share v547 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v548 held until live stamp",
+        detail: "Do not share v548 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v547 beta command archive",
-        detail: "Beta Command Archive Compactor converts expired founder command closeouts into compact archive receipts with replacement, conflict, retirement, memory, and founder signoff."
+        value: "v548 support repair aging",
+        detail: "Support Repair Aging Guard warns when accepted support repairs age past source, refund, privacy, founder review, regression, or closeout windows."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v547 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v548 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v547 held until live stamp",
-        detail: "The release is share-ready only after v547 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v548 held until live stamp",
+        detail: "The release is share-ready only after v548 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

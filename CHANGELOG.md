@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v548 Support Repair Aging Guard
+
+- Version: `0.548.0`
+- Data version: `20260709-v548-01`
+- Changes made: Added Support Repair Aging Guard to the Build Tracker Release Doctor with source aging, refund wording aging, privacy aging, founder review aging, regression aging, support closeout aging, support repair aging receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v547 commit, next-batch planner roll-forward to v549-v553, and release markers rolled forward to v548.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v548 marker scan.
+- Known risks: Support Repair Aging Guard is a static support repair aging room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+
 ## NiveshNadi Phase 1 v547 Beta Command Archive Compactor
 
 - Version: `0.547.0`

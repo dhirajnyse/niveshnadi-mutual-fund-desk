@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V552 Beta Command Archive Aging Guard
+
+V552 adds Beta Command Archive Aging Guard to the Build Tracker Release Doctor. It gives compact command archives replacement, review, founder memory, conflict residue, archive receipt, and release-copy aging windows.
+
+- Release label: `NiveshNadi Phase 1 v552 Beta Command Archive Aging Guard`
+- Data/version key: `20260709-v552-01`
+- Product surface: Build Tracker > Release Doctor > Beta command archive aging guard
+- Risk boundary: Static command archive aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V551 Account Retention Job Acceptance Harness
 
 V551 adds Account Retention Job Acceptance Harness to the Build Tracker Release Doctor. It turns retention job blueprints into dry-run, owner, failure, support evidence, redaction, and founder signoff proof.

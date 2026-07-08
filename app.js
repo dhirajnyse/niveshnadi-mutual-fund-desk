@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v551-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v551 Account Retention Job Acceptance Harness";
+const DATA_VERSION = "20260709-v552-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v552 Beta Command Archive Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account retention job acceptance harness",
+    label: "Beta command archive aging guard",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Turn retention job blueprint rows into dry-run acceptance checks with owner, failure, and support-safe proof."
+    route: "#founder-beta-operating-room",
+    detail: "Warn when compacted command archives age past replacement, review, or founder memory windows."
   },
   {
     label: "Mobile calm audit",
@@ -17681,6 +17681,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Retention Job Acceptance Harness is a static job acceptance harness only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandArchiveAgingGuard",
+        label: "Beta command archive aging guard",
+        verdict: "Archived commands need aging windows",
+        receiptId: ["NN", "BETA", "COMMAND", "ARCHIVE", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-archive-aging-guard",
+        copyLabel: "Copy archive aging",
+        score: 82,
+        rule: "Compacted beta command archives should warn when replacement proof, review window, founder memory, conflict residue, archive receipt, or release copy ages past the founder-safe window.",
+        lanes: [
+          {
+            label: "Replacement aging",
+            owner: "Founder operating desk",
+            method: "REPLACE",
+            route: "beta.command.archive.replacement-aging",
+            proof: "Track replacement command, replacement proof date, owner, and stale replacement hold.",
+            readyWhen: "Ready when an archived command cannot point to an old replacement without review.",
+            hold: "Hold if replacement proof date or owner is missing.",
+            score: 82
+          },
+          {
+            label: "Review aging",
+            owner: "Release captain",
+            method: "REVIEW",
+            route: "beta.command.archive.review-aging",
+            proof: "Record next review date, reviewer owner, expiry window, and release hold.",
+            readyWhen: "Ready when each compact archive receipt has a visible review window.",
+            hold: "Hold if review date or reviewer owner is absent.",
+            score: 82
+          },
+          {
+            label: "Founder memory aging",
+            owner: "Founder memory desk",
+            method: "MEMORY",
+            route: "beta.command.archive.memory-aging",
+            proof: "Track release-safe memory, last founder review, stale-memory trigger, and replacement prompt.",
+            readyWhen: "Ready when old founder memory is refreshed before it guides a new beta command.",
+            hold: "Hold if founder review or stale-memory trigger is missing.",
+            score: 82
+          },
+          {
+            label: "Conflict residue aging",
+            owner: "Command cleanup desk",
+            method: "CONFLICT",
+            route: "beta.command.archive.conflict-aging",
+            proof: "Record unresolved residue, cleanup owner, age band, and no-widening state.",
+            readyWhen: "Ready when conflict residue cannot age quietly inside an archived command.",
+            hold: "Hold if residue owner or age band is missing.",
+            score: 81
+          },
+          {
+            label: "Archive receipt aging",
+            owner: "Release archive desk",
+            method: "ARCHIVE",
+            route: "beta.command.archive.receipt-aging",
+            proof: "Track archive receipt ID, retained fields, expiry date, and retirement policy.",
+            readyWhen: "Ready when the archive receipt itself has a renewal or retirement window.",
+            hold: "Hold if expiry date or retained-field policy is missing.",
+            score: 82
+          },
+          {
+            label: "Release copy aging",
+            owner: "Founder release desk",
+            method: "COPY",
+            route: "beta.command.archive.release-copy-aging",
+            proof: "Record copied release note, last reviewed copy, unsafe drift trigger, and founder approval state.",
+            readyWhen: "Ready when copied archive language cannot stay in release notes after it ages out.",
+            hold: "Hold if release copy or founder approval state is absent.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Beta command archive aging guard tracks compact archive freshness only; it does not reopen beta commands.",
+          "Every compact archive receipt needs replacement, review, founder memory, conflict residue, archive receipt, and release copy aging windows.",
+          "Aged command archives move to hold until replacement proof or founder review is refreshed.",
+          "Archive aging records must stay short and exclude raw command threads, private notes, account payloads, support notes, and identifiers.",
+          "No beta command archive aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No compact command archive may guide a new beta move after its review window expires.",
+          "No aged replacement, conflict residue, or release copy may remain trusted without owner refresh.",
+          "No release note may cite an aged command archive as current proof.",
+          "No beta command archive aging row may expose private identifiers, raw support content, account payloads, or payment data."
+        ],
+        receiptFields: [
+          "beta_command_archive_aging_guard_id",
+          "release_key",
+          "archive_receipt_id",
+          "aging_window",
+          "replacement_review_state",
+          "founder_memory_state",
+          "conflict_residue_state",
+          "archive_receipt_state",
+          "release_copy_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Beta Command Archive Aging Guard is a static command archive aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -17853,14 +17952,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account retention jobs now have acceptance harness proof; next releases should lock beta command archive aging guard, support repair owner SLA lane, source correction renewal receipt, payment replay acceptance receipt, and account retention dry-run receipt vault.",
+      rule: "Beta command archives now have aging guardrails; next releases should lock support repair owner SLA lane, source correction renewal receipt, payment replay acceptance receipt, account retention dry-run receipt vault, and beta command renewal receipt.",
       lanes: [
-        {
-          version: "v552",
-          label: "Beta command archive aging guard",
-          route: "#founder-beta-operating-room",
-          detail: "Warn when compacted command archives age past replacement, review, or founder memory windows."
-        },
         {
           version: "v553",
           label: "Support repair owner SLA lane",
@@ -17884,14 +17977,27 @@ function buildTrackerConfig() {
           label: "Account retention dry-run receipt vault",
           route: "#account-readiness",
           detail: "Collect accepted retention dry-run receipts with object family, owner, redaction, and support-safe proof."
+        },
+        {
+          version: "v557",
+          label: "Beta command renewal receipt",
+          route: "#founder-beta-operating-room",
+          detail: "Convert aged command archive rows into renewed founder receipts with replacement and release-copy proof."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account retention acceptance proof visible",
+      verdict: "Beta command archive aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v551",
+          key: "20260709-v551-01",
+          commit: "b5fe281",
+          receiptId: "NN-SHARE-RECEIPT-20260709V55101",
+          proof: "Account Retention Job Acceptance Harness added, header release marker fixed, and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
+        },
         {
           version: "v550",
           key: "20260709-v550-01",
@@ -17919,13 +18025,6 @@ function buildTrackerConfig() {
           commit: "7ae0146",
           receiptId: "NN-SHARE-RECEIPT-20260709V54701",
           proof: "Beta Command Archive Compactor added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v546",
-          key: "20260709-v546-01",
-          commit: "5e58ca8",
-          receiptId: "NN-SHARE-RECEIPT-20260709V54601",
-          proof: "Account Retention Job Blueprint added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -17963,13 +18062,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v551",
-        detail: "Account Retention Job Acceptance Harness is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v552",
+        detail: "Beta Command Archive Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v551 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v552 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -17978,25 +18077,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v551 held until live stamp",
-        detail: "Do not share v551 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v552 held until live stamp",
+        detail: "Do not share v552 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v551 retention acceptance",
-        detail: "Account Retention Job Acceptance Harness turns retention job blueprints into dry-run, owner, failure, support evidence, redaction, and founder signoff proof."
+        value: "v552 command archive aging",
+        detail: "Beta Command Archive Aging Guard gives compact command archives replacement, review, founder memory, conflict residue, archive receipt, and release-copy aging windows."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v551 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v552 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v551 held until live stamp",
-        detail: "The release is share-ready only after v551 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v552 held until live stamp",
+        detail: "The release is share-ready only after v552 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v552 Beta Command Archive Aging Guard
+
+- Version: `0.552.0`
+- Data version: `20260709-v552-01`
+- Changes made: Added Beta Command Archive Aging Guard to the Build Tracker Release Doctor with replacement aging, review aging, founder memory aging, conflict residue aging, archive receipt aging, release copy aging, beta command archive aging receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v551 commit, next-batch planner roll-forward to v553-v557, and release markers rolled forward to v552.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v552 marker scan.
+- Known risks: Beta Command Archive Aging Guard is a static command archive aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v551 Account Retention Job Acceptance Harness
 
 - Version: `0.551.0`

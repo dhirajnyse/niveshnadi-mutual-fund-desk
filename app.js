@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v546-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v546 Account Retention Job Blueprint";
+const DATA_VERSION = "20260709-v547-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v547 Beta Command Archive Compactor";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account retention job blueprint",
+    label: "Beta command archive compactor",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Translate expiry rehearsal into scheduled retention job contracts, owner reviews, and support-safe evidence."
+    route: "#founder-beta-operating-room",
+    detail: "Compact expired command closeouts into short archive receipts with replacement, conflict, and founder signoff proof."
   },
   {
     label: "Mobile calm audit",
@@ -17185,6 +17185,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Retention Job Blueprint is a static job blueprint only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandArchiveCompactor",
+        label: "Beta command archive compactor",
+        verdict: "Expired command proof needs compact receipts",
+        receiptId: ["NN", "BETA", "COMMAND", "ARCHIVE", "COMPACTOR", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-archive-compactor",
+        copyLabel: "Copy command archive",
+        score: 82,
+        rule: "Expired founder command closeouts should compact into short archive receipts with replacement proof, conflict cleanup, retirement reason, release-safe memory, and founder signoff.",
+        lanes: [
+          {
+            label: "Archive receipt",
+            owner: "Founder beta desk",
+            method: "ARCHIVE",
+            route: "beta.command.archive-receipt",
+            proof: "Compress expired command ID, command family, prior state, closeout state, and archive receipt.",
+            readyWhen: "Ready when the expired command can be understood without reopening the full command thread.",
+            hold: "Hold if expired command ID or closeout state is missing.",
+            score: 82
+          },
+          {
+            label: "Replacement digest",
+            owner: "Founder operating desk",
+            method: "REPLACE",
+            route: "beta.command.replacement-digest",
+            proof: "Name the replacement command, replacement route, owner, and proof needed before it can supersede the expired row.",
+            readyWhen: "Ready when a replacement path is visible or the archive says no replacement is needed.",
+            hold: "Hold if replacement state is ambiguous.",
+            score: 82
+          },
+          {
+            label: "Conflict digest",
+            owner: "Release captain",
+            method: "CONFLICT",
+            route: "beta.command.conflict-digest",
+            proof: "Record stale, duplicate, contradictory, or unsafe command residue with cleanup status.",
+            readyWhen: "Ready when conflicting commands no longer compete with the current founder memory.",
+            hold: "Hold if conflict cleanup is not named.",
+            score: 81
+          },
+          {
+            label: "Retirement digest",
+            owner: "Memory desk",
+            method: "RETIRE",
+            route: "beta.command.retirement-digest",
+            proof: "Record retirement reason, release-safe summary, retained fields, and fields excluded from memory.",
+            readyWhen: "Ready when the retired command leaves only a compact, safe memory receipt.",
+            hold: "Hold if retirement reason or excluded-field rule is absent.",
+            score: 82
+          },
+          {
+            label: "Memory digest",
+            owner: "Review vault",
+            method: "MEMORY",
+            route: "beta.command.memory-digest",
+            proof: "Keep command family, owner, receipt ID, replacement state, and release boundary without private data.",
+            readyWhen: "Ready when future review can trust the compact receipt without seeing private context.",
+            hold: "Hold if memory includes private notes, identifiers, or raw support content.",
+            score: 82
+          },
+          {
+            label: "Founder archive signoff",
+            owner: "Founder release desk",
+            method: "SIGNOFF",
+            route: "beta.command.founder-archive-signoff",
+            proof: "Record founder signoff, unresolved residue, release hold, and whether the archive can be copied into release notes.",
+            readyWhen: "Ready when founder sees which expired commands are safely archived and which still block widening.",
+            hold: "Hold if founder signoff or residual hold is missing.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Beta command archive compactor stores compact archive receipts only; it does not reopen command decisions.",
+          "Every expired command archive must name replacement state, conflict cleanup, retirement reason, memory boundary, and founder signoff.",
+          "Archive receipts should be short enough for release review while preserving the proof needed for future reconstruction.",
+          "Release-safe memory must never include private notes, contact data, payment data, account payloads, raw support messages, or identifiers.",
+          "No beta command archive row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No expired beta command may be trusted from memory alone after archive compaction.",
+          "No replacement command may supersede an expired row without replacement proof and conflict cleanup.",
+          "No archive receipt may hide unresolved residue or founder release holds.",
+          "No beta command archive row may expose private identifiers, account payloads, support notes, or payment data."
+        ],
+        receiptFields: [
+          "beta_command_archive_compactor_id",
+          "release_key",
+          "archive_receipt_id",
+          "expired_command_id",
+          "replacement_digest",
+          "conflict_digest",
+          "retirement_digest",
+          "release_safe_memory",
+          "founder_signoff",
+          "compact_summary",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Beta Command Archive Compactor is a static command archive-compaction room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -17357,14 +17457,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account retention jobs now have blueprint proof; next releases should lock beta command archive compactor, support repair aging guard, source correction expiry guard, payment closeout SLA guard, and account retention job acceptance harness.",
+      rule: "Beta command archives now have compact receipt proof; next releases should lock support repair aging guard, source correction expiry guard, payment closeout SLA guard, account retention job acceptance harness, and beta command archive aging guard.",
       lanes: [
-        {
-          version: "v547",
-          label: "Beta command archive compactor",
-          route: "#founder-beta-operating-room",
-          detail: "Compact expired command closeouts into short archive receipts with replacement, conflict, and founder signoff proof."
-        },
         {
           version: "v548",
           label: "Support repair aging guard",
@@ -17388,14 +17482,27 @@ function buildTrackerConfig() {
           label: "Account retention job acceptance harness",
           route: "#account-readiness",
           detail: "Turn retention job blueprint rows into dry-run acceptance checks with owner, failure, and support-safe proof."
+        },
+        {
+          version: "v552",
+          label: "Beta command archive aging guard",
+          route: "#founder-beta-operating-room",
+          detail: "Warn when compacted command archives age past replacement, review, or founder memory windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Retention job proof visible",
+      verdict: "Beta command archive proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v546",
+          key: "20260709-v546-01",
+          commit: "5e58ca8",
+          receiptId: "NN-SHARE-RECEIPT-20260709V54601",
+          proof: "Account Retention Job Blueprint added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
+        },
         {
           version: "v545",
           key: "20260709-v545-01",
@@ -17423,13 +17530,6 @@ function buildTrackerConfig() {
           commit: "4feb465",
           receiptId: "NN-SHARE-RECEIPT-20260709V54201",
           proof: "Beta Command Expiry Closeout added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v541",
-          key: "20260708-v541-01",
-          commit: "b440457",
-          receiptId: "NN-SHARE-RECEIPT-20260708V54101",
-          proof: "Account Custody Expiry Rehearsal added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -17467,13 +17567,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v546",
-        detail: "Account Retention Job Blueprint is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v547",
+        detail: "Beta Command Archive Compactor is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v546 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v547 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -17482,25 +17582,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v546 held until live stamp",
-        detail: "Do not share v546 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v547 held until live stamp",
+        detail: "Do not share v547 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v546 retention job blueprint",
-        detail: "Account Retention Job Blueprint defines job contract, schedule cadence, owner review, support-safe evidence, failure replay, and founder signoff."
+        value: "v547 beta command archive",
+        detail: "Beta Command Archive Compactor converts expired founder command closeouts into compact archive receipts with replacement, conflict, retirement, memory, and founder signoff."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v546 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v547 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v546 held until live stamp",
-        detail: "The release is share-ready only after v546 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v547 held until live stamp",
+        detail: "The release is share-ready only after v547 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

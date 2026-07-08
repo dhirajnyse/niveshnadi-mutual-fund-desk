@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V547 Beta Command Archive Compactor
+
+V547 adds Beta Command Archive Compactor to the Build Tracker Release Doctor. It turns expired founder command closeouts into compact archive receipts with replacement proof, conflict cleanup, retirement reason, release-safe memory, and founder signoff.
+
+- Release label: `NiveshNadi Phase 1 v547 Beta Command Archive Compactor`
+- Data/version key: `20260709-v547-01`
+- Product surface: Build Tracker > Release Doctor > Beta command archive compactor
+- Risk boundary: Static command archive-compaction room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V546 Account Retention Job Blueprint
 
 V546 adds Account Retention Job Blueprint to the Build Tracker Release Doctor. It defines job contract, schedule cadence, owner review, support-safe evidence, failure replay, and founder signoff.

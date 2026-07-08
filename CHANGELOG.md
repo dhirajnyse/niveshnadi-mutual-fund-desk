@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v547 Beta Command Archive Compactor
+
+- Version: `0.547.0`
+- Data version: `20260709-v547-01`
+- Changes made: Added Beta Command Archive Compactor to the Build Tracker Release Doctor with archive receipt, replacement digest, conflict digest, retirement digest, release-safe memory digest, founder archive signoff, beta command archive receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v546 commit, next-batch planner roll-forward to v548-v552, and release markers rolled forward to v547.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v547 marker scan.
+- Known risks: Beta Command Archive Compactor is a static command archive-compaction room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v546 Account Retention Job Blueprint
 
 - Version: `0.546.0`

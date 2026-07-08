@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V559 Source Correction Renewal Aging Guard
+
+V559 adds Source Correction Renewal Aging Guard to the Build Tracker Release Doctor. It warns when renewed correction proof ages past reviewer, replacement source, support handoff, cache, public notice, or founder review windows.
+
+- Release label: `NiveshNadi Phase 1 v559 Source Correction Renewal Aging Guard`
+- Data/version key: `20260709-v559-01`
+- Product surface: Build Tracker > Release Doctor > Source correction renewal aging guard
+- Risk boundary: Static correction-aging room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims.
+- Verification status: Pending batch checks.
+
 ## V558 Support Repair Renewal Receipt
 
 V558 adds Support Repair Renewal Receipt to the Build Tracker Release Doctor. It renews refreshed support rows with accepted repair, support copy, owner signoff, regression, escalation, and founder review proof.

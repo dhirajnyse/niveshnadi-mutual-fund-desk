@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v558-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v558 Support Repair Renewal Receipt";
+const DATA_VERSION = "20260709-v559-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v559 Source Correction Renewal Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Support repair renewal receipt",
+    label: "Source correction renewal aging guard",
     status: "Shipping now",
-    route: "#paid-beta-support-ledger",
-    detail: "Turn refreshed support repair rows into renewed support-safe receipts with owner signoff."
+    route: "#correction-ledger",
+    detail: "Warn when renewed correction receipts age past source, reviewer, support, or cache windows."
   },
   {
     label: "Mobile calm audit",
@@ -18374,6 +18374,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Repair Renewal Receipt is a static support renewal room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
+      },
+      {
+        key: "sourceCorrectionRenewalAgingGuard",
+        label: "Source correction renewal aging guard",
+        verdict: "Renewed correction proof can age",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "RENEWAL", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-renewal-aging-guard",
+        copyLabel: "Copy correction aging",
+        score: 81,
+        rule: "Renewed correction receipts should warn when reviewer renewal, replacement source, support handoff, cache refresh, public notice, or founder review ages past the safe reuse window.",
+        lanes: [
+          {
+            label: "Reviewer aging",
+            owner: "Reviewer desk",
+            method: "REVIEW",
+            route: "source.correction.renewal_aging.reviewer",
+            proof: "Track reviewer renewal date, scope, next review window, and reviewer-expired hold.",
+            readyWhen: "Ready when reviewer renewal is fresh or visibly held.",
+            hold: "Hold if reviewer scope is stale or next review date is missing.",
+            score: 81
+          },
+          {
+            label: "Replacement source aging",
+            owner: "Source desk",
+            method: "SOURCE",
+            route: "source.correction.renewal_aging.replacement",
+            proof: "Track replacement source date, citation path, freshness window, and stale-source freeze.",
+            readyWhen: "Ready when replacement source date and citation path are still within window.",
+            hold: "Hold if replacement source date, citation path, or freshness state is stale.",
+            score: 82
+          },
+          {
+            label: "Support handoff aging",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "source.correction.renewal_aging.support",
+            proof: "Track support-safe handoff date, affected reply family, escalation owner, and expired-copy hold.",
+            readyWhen: "Ready when support handoff copy still matches renewed correction proof.",
+            hold: "Hold if support handoff copy predates the renewal or affected reply family changed.",
+            score: 81
+          },
+          {
+            label: "Cache refresh aging",
+            owner: "Release engineering",
+            method: "CACHE",
+            route: "source.correction.renewal_aging.cache",
+            proof: "Track cache refresh date, surfaces refreshed, stale cache route, and rollback proof.",
+            readyWhen: "Ready when corrected surfaces are refreshed or the stale surface is held.",
+            hold: "Hold if cache refresh proof or rollback route is stale.",
+            score: 81
+          },
+          {
+            label: "Public notice aging",
+            owner: "Trust desk",
+            method: "NOTICE",
+            route: "source.correction.renewal_aging.notice",
+            proof: "Track correction notice wording, affected surfaces, public-safe caveat, and notice review window.",
+            readyWhen: "Ready when notice wording is still current and public-safe.",
+            hold: "Hold if public wording no longer matches correction scope.",
+            score: 80
+          },
+          {
+            label: "Founder review aging",
+            owner: "Founder desk",
+            method: "SIGNOFF",
+            route: "source.correction.renewal_aging.founder",
+            proof: "Track founder review date, release hold, renewal residue, and next correction closeout route.",
+            readyWhen: "Ready when founder review can still defend the renewed correction proof.",
+            hold: "Hold if founder review expired or renewal residue is unresolved.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Source correction renewal aging guard warns about stale renewal proof only; it does not fetch live data, verify facts, publish notices, or change source records.",
+          "Every renewed correction row needs reviewer, replacement source, support handoff, cache, public notice, and founder review aging states.",
+          "Aging warnings hold corrected surfaces until renewed proof is refreshed, superseded, or closed out.",
+          "Correction aging rows must exclude raw source files, account payloads, payment payloads, private notes, and identifiers.",
+          "No source correction renewal aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No renewed correction proof may stay trusted after reviewer, source, support, or cache windows expire.",
+          "No public notice may stay visible if it no longer matches correction scope.",
+          "No corrected surface may widen while replacement source or reviewer renewal is stale.",
+          "No source correction renewal aging guard may approve facts, publish notices, or fetch live data."
+        ],
+        receiptFields: [
+          "source_correction_renewal_aging_guard_id",
+          "release_key",
+          "renewal_receipt_id",
+          "reviewer_age_state",
+          "replacement_source_age_state",
+          "support_handoff_age_state",
+          "cache_refresh_age_state",
+          "public_notice_age_state",
+          "founder_review_age_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Source Correction Renewal Aging Guard is a static correction-aging room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims."
       }
     ],
     executiveCalmCompression: {
@@ -18546,14 +18645,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support repair rows now have renewal receipts; next releases should lock source correction renewal aging guard, payment acceptance aging guard, account retention dry-run aging guard, beta command renewal aging guard, and support repair renewal aging guard.",
+      rule: "Source correction renewals now have aging guards; next releases should lock payment acceptance aging guard, account retention dry-run aging guard, beta command renewal aging guard, support repair renewal aging guard, and source correction renewal closeout receipt.",
       lanes: [
-        {
-          version: "v559",
-          label: "Source correction renewal aging guard",
-          route: "#correction-ledger",
-          detail: "Warn when renewed correction receipts age past source, reviewer, support, or cache windows."
-        },
         {
           version: "v560",
           label: "Payment acceptance aging guard",
@@ -18577,14 +18670,27 @@ function buildTrackerConfig() {
           label: "Support repair renewal aging guard",
           route: "#paid-beta-support-ledger",
           detail: "Warn when renewed support repairs age past copy review, owner signoff, regression, or escalation windows."
+        },
+        {
+          version: "v564",
+          label: "Source correction renewal closeout receipt",
+          route: "#correction-ledger",
+          detail: "Close stale renewal aging rows with supersede, refresh, public notice, support handoff, and founder signoff proof."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Support repair renewal proof visible",
+      verdict: "Source correction renewal aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v558",
+          key: "20260709-v558-01",
+          commit: "f73e903",
+          receiptId: "NN-SHARE-RECEIPT-20260709V55801",
+          proof: "Support Repair Renewal Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v557",
           key: "20260709-v557-01",
@@ -18612,13 +18718,6 @@ function buildTrackerConfig() {
           commit: "16ba5cc",
           receiptId: "NN-SHARE-RECEIPT-20260709V55401",
           proof: "Source Correction Renewal Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v553",
-          key: "20260709-v553-01",
-          commit: "f13d609",
-          receiptId: "NN-SHARE-RECEIPT-20260709V55301",
-          proof: "Support Repair Owner SLA Lane added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -18656,13 +18755,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v558",
-        detail: "Support Repair Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v559",
+        detail: "Source Correction Renewal Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v558 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v559 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -18671,25 +18770,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v558 held until live stamp",
-        detail: "Do not share v558 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v559 held until live stamp",
+        detail: "Do not share v559 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v558 support renewal",
-        detail: "Support Repair Renewal Receipt renews refreshed support rows with accepted repair, support copy, owner signoff, regression, escalation, and founder review proof."
+        value: "v559 correction aging",
+        detail: "Source Correction Renewal Aging Guard warns when renewed correction proof ages past reviewer, replacement source, support handoff, cache, public notice, or founder review windows."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v558 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v559 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v558 held until live stamp",
-        detail: "The release is share-ready only after v558 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v559 held until live stamp",
+        detail: "The release is share-ready only after v559 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

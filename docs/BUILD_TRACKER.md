@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V555 Payment Replay Acceptance Receipt
+
+V555 adds Payment Replay Acceptance Receipt to the Build Tracker Release Doctor. It turns accepted replay rows into entitlement, refund, rollback, support copy, owner signoff, and founder finance proof.
+
+- Release label: `NiveshNadi Phase 1 v555 Payment Replay Acceptance Receipt`
+- Data/version key: `20260709-v555-01`
+- Product surface: Build Tracker > Release Doctor > Payment replay acceptance receipt
+- Risk boundary: Static payment replay acceptance room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V554 Source Correction Renewal Receipt
 
 V554 adds Source Correction Renewal Receipt to the Build Tracker Release Doctor. It converts expired correction proof into reviewer, replacement source, support handoff, cache, and founder renewal proof.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v554-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v554 Source Correction Renewal Receipt";
+const DATA_VERSION = "20260709-v555-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v555 Payment Replay Acceptance Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction renewal receipt",
+    label: "Payment replay acceptance receipt",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Convert expired correction proof into reviewer-approved renewal receipts before corrected surfaces widen."
+    route: "#payment-wiring",
+    detail: "Turn accepted payment replay rows into owner-signed receipts with refund, rollback, and support-safe proof."
   },
   {
     label: "Mobile calm audit",
@@ -17978,6 +17978,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Renewal Receipt is a static correction renewal room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims."
+      },
+      {
+        key: "paymentReplayAcceptanceReceipt",
+        label: "Payment replay acceptance receipt",
+        verdict: "Payment replay needs owner acceptance",
+        receiptId: ["NN", "PAYMENT", "REPLAY", "ACCEPTANCE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-replay-acceptance-receipt",
+        copyLabel: "Copy replay receipt",
+        score: 82,
+        rule: "Accepted payment replay rows should produce an owner-signed receipt covering replay intake, entitlement acceptance, refund acceptance, rollback acceptance, support copy acceptance, and founder finance review.",
+        lanes: [
+          {
+            label: "Replay intake",
+            owner: "Payment QA",
+            method: "INTAKE",
+            route: "payment.replay.acceptance.intake",
+            proof: "Record replay batch ID, incident family, expected state, actual state, and accepted variance.",
+            readyWhen: "Ready when the replay row explains what was tested and accepted.",
+            hold: "Hold if replay batch ID or accepted variance is missing.",
+            score: 82
+          },
+          {
+            label: "Entitlement acceptance",
+            owner: "Entitlement desk",
+            method: "ENTITLEMENT",
+            route: "payment.replay.acceptance.entitlement",
+            proof: "Accept entitlement effect, access hold, grant state, rollback need, and no-token boundary.",
+            readyWhen: "Ready when entitlement effects match replay expectations without payment payloads.",
+            hold: "Hold if entitlement effect or access hold is unclear.",
+            score: 82
+          },
+          {
+            label: "Refund acceptance",
+            owner: "Refund review desk",
+            method: "REFUND",
+            route: "payment.replay.acceptance.refund",
+            proof: "Accept refund wording, refund review state, owner signoff, and payment-stop boundary.",
+            readyWhen: "Ready when refund language survives replay without promises or ambiguity.",
+            hold: "Hold if refund wording or review owner is absent.",
+            score: 81
+          },
+          {
+            label: "Rollback acceptance",
+            owner: "Release engineering",
+            method: "ROLLBACK",
+            route: "payment.replay.acceptance.rollback",
+            proof: "Accept rollback result, retry state, mismatch residue, and incident replay link.",
+            readyWhen: "Ready when rollback proof is accepted or the row stays blocked.",
+            hold: "Hold if rollback result or mismatch residue is unclear.",
+            score: 82
+          },
+          {
+            label: "Support copy acceptance",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "payment.replay.acceptance.support-copy",
+            proof: "Accept support-safe copy, escalation owner, refund boundary, access boundary, and no-private-note state.",
+            readyWhen: "Ready when support copy matches the accepted replay state.",
+            hold: "Hold if support copy or escalation owner is missing.",
+            score: 82
+          },
+          {
+            label: "Founder finance acceptance",
+            owner: "Founder finance desk",
+            method: "SIGNOFF",
+            route: "payment.replay.acceptance.founder",
+            proof: "Record founder signoff, accepted replay residue, release hold, and payment launch language decision.",
+            readyWhen: "Ready when founder can see which replay rows are accepted, held, or blocked.",
+            hold: "Hold if founder signoff or launch-language decision is missing.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Payment replay acceptance receipt records replay acceptance only; it does not process payments, refunds, or entitlements.",
+          "Every accepted payment replay row needs intake, entitlement, refund, rollback, support copy, and founder finance acceptance.",
+          "Payment replay acceptance does not equal production payment readiness; launch language stays blocked until payment proof gates close.",
+          "Replay acceptance rows must not retain gateway payloads, payment tokens, card data, bank data, raw support notes, or identifiers.",
+          "No payment replay acceptance row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No payment replay row may be accepted without entitlement, refund, rollback, and support copy states.",
+          "No accepted replay may widen payment launch language without founder finance signoff.",
+          "No refund or access wording may promise an action that was only replayed.",
+          "No payment replay acceptance row may expose gateway payloads, tokens, card data, identifiers, or private notes."
+        ],
+        receiptFields: [
+          "payment_replay_acceptance_receipt_id",
+          "release_key",
+          "replay_batch_id",
+          "entitlement_acceptance",
+          "refund_acceptance",
+          "rollback_acceptance",
+          "support_copy_acceptance",
+          "owner_signoff",
+          "founder_review_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Payment Replay Acceptance Receipt is a static payment replay acceptance room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -18150,14 +18249,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source correction proof now has renewal receipt proof; next releases should lock payment replay acceptance receipt, account retention dry-run receipt vault, beta command renewal receipt, support repair renewal receipt, and source correction renewal aging guard.",
+      rule: "Payment replay rows now have acceptance receipts; next releases should lock account retention dry-run receipt vault, beta command renewal receipt, support repair renewal receipt, source correction renewal aging guard, and payment acceptance aging guard.",
       lanes: [
-        {
-          version: "v555",
-          label: "Payment replay acceptance receipt",
-          route: "#payment-wiring",
-          detail: "Turn accepted payment replay rows into owner-signed receipts with refund, rollback, and support-safe proof."
-        },
         {
           version: "v556",
           label: "Account retention dry-run receipt vault",
@@ -18181,14 +18274,27 @@ function buildTrackerConfig() {
           label: "Source correction renewal aging guard",
           route: "#correction-ledger",
           detail: "Warn when renewed correction receipts age past source, reviewer, support, or cache windows."
+        },
+        {
+          version: "v560",
+          label: "Payment acceptance aging guard",
+          route: "#payment-wiring",
+          detail: "Warn when accepted payment replay receipts age past entitlement, refund, rollback, or support windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Source correction renewal proof visible",
+      verdict: "Payment replay acceptance proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v554",
+          key: "20260709-v554-01",
+          commit: "16ba5cc",
+          receiptId: "NN-SHARE-RECEIPT-20260709V55401",
+          proof: "Source Correction Renewal Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v553",
           key: "20260709-v553-01",
@@ -18216,13 +18322,6 @@ function buildTrackerConfig() {
           commit: "7e0474f",
           receiptId: "NN-SHARE-RECEIPT-20260709V55001",
           proof: "Payment Closeout SLA Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v549",
-          key: "20260709-v549-01",
-          commit: "8ccd9ca",
-          receiptId: "NN-SHARE-RECEIPT-20260709V54901",
-          proof: "Source Correction Expiry Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -18260,13 +18359,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v554",
-        detail: "Source Correction Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v555",
+        detail: "Payment Replay Acceptance Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v554 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v555 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -18275,25 +18374,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v554 held until live stamp",
-        detail: "Do not share v554 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v555 held until live stamp",
+        detail: "Do not share v555 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v554 correction renewal",
-        detail: "Source Correction Renewal Receipt converts expired correction proof into reviewer, replacement source, support handoff, cache, and founder renewal proof."
+        value: "v555 payment acceptance",
+        detail: "Payment Replay Acceptance Receipt turns accepted replay rows into entitlement, refund, rollback, support copy, owner signoff, and founder finance proof."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v554 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v555 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v554 held until live stamp",
-        detail: "The release is share-ready only after v554 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v555 held until live stamp",
+        detail: "The release is share-ready only after v555 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

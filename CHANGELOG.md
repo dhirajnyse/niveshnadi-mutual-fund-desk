@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v555 Payment Replay Acceptance Receipt
+
+- Version: `0.555.0`
+- Data version: `20260709-v555-01`
+- Changes made: Added Payment Replay Acceptance Receipt to the Build Tracker Release Doctor with replay intake, entitlement acceptance, refund acceptance, rollback acceptance, support copy acceptance, founder finance acceptance, payment replay acceptance receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v554 commit, next-batch planner roll-forward to v556-v560, and release markers rolled forward to v555.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v555 marker scan.
+- Known risks: Payment Replay Acceptance Receipt is a static payment replay acceptance room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v554 Source Correction Renewal Receipt
 
 - Version: `0.554.0`

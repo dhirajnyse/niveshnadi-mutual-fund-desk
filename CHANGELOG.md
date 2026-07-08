@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v538 Support Drift Repair Queue
+
+- Version: `0.538.0`
+- Data version: `20260708-v538-01`
+- Changes made: Added Support Drift Repair Queue to the Build Tracker Release Doctor with repair ticket, copy fix, reviewer decision, support-safe closeout, escalation repair, founder repair signoff, support drift repair receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v537 commit, next-batch planner roll-forward to v539-v543, and release markers rolled forward to v538.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v538 marker scan.
+- Known risks: Support Drift Repair Queue is a static support repair queue only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+
 ## NiveshNadi Phase 1 v537 Beta Command Aging Monitor
 
 - Version: `0.537.0`

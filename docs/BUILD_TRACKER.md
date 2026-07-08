@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V538 Support Drift Repair Queue
+
+V538 adds Support Drift Repair Queue to the Build Tracker Release Doctor. It turns support drift findings into owner-led repair tickets with copy fix, reviewer decision, escalation, support-safe closeout, and founder signoff.
+
+- Release label: `NiveshNadi Phase 1 v538 Support Drift Repair Queue`
+- Data/version key: `20260708-v538-01`
+- Product surface: Build Tracker > Release Doctor > Support drift repair queue
+- Risk boundary: Static support repair queue only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+- Verification status: Pending batch checks.
+
 ## V537 Beta Command Aging Monitor
 
 V537 adds Beta Command Aging Monitor to the Build Tracker Release Doctor. It flags stale go, hold, freeze, repair, review-miss, and supersede commands before founder memory trusts them.

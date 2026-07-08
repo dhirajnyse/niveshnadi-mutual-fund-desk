@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v537-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v537 Beta Command Aging Monitor";
+const DATA_VERSION = "20260708-v538-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v538 Support Drift Repair Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command aging monitor",
+    label: "Support drift repair queue",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Flag stale go, hold, freeze, and repair commands before founder memory becomes outdated."
+    route: "#paid-beta-support-ledger",
+    detail: "Convert support drift findings into owner-led repair tickets with copy fix, review state, and closeout proof."
   },
   {
     label: "Mobile calm audit",
@@ -16285,6 +16285,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Aging Monitor is a static command freshness monitor only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion."
+      },
+      {
+        key: "supportDriftRepairQueue",
+        label: "Support drift repair queue",
+        verdict: "Drift needs repair tickets",
+        receiptId: ["NN", "SUPPORT", "DRIFT", "REPAIR", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-drift-repair-queue",
+        copyLabel: "Copy drift repair queue",
+        score: 82,
+        rule: "Every support drift finding should become one repair ticket with owner, approved copy fix, reviewer decision, escalation route, support-safe closeout, and founder signoff before the next beta support widening.",
+        lanes: [
+          {
+            label: "Repair ticket",
+            owner: "Support captain",
+            method: "TICKET",
+            route: "support.drift.repair-ticket",
+            proof: "Create repair ticket with drift family, affected reply, owner, due date, and blocker state.",
+            readyWhen: "Ready when every drift finding has one owner-led ticket.",
+            hold: "Hold if drift has no ticket, owner, or due date.",
+            score: 82
+          },
+          {
+            label: "Copy fix",
+            owner: "Support copy desk",
+            method: "COPY",
+            route: "support.drift.copy-fix",
+            proof: "Attach old wording, repaired wording, no-advice check, refund boundary, and source correction state.",
+            readyWhen: "Ready when repaired copy removes the drift without widening support promises.",
+            hold: "Hold if repaired copy still creates advice, refund confusion, or private-data risk.",
+            score: 83
+          },
+          {
+            label: "Reviewer decision",
+            owner: "Reviewer desk",
+            method: "REVIEW",
+            route: "support.drift.reviewer-decision",
+            proof: "Record reviewer verdict, accepted wording, held reason, and retest trigger.",
+            readyWhen: "Ready when each repair is accepted, held, or sent back with a reason.",
+            hold: "Hold if reviewer decision is missing or ambiguous.",
+            score: 82
+          },
+          {
+            label: "Support-safe closeout",
+            owner: "Support operations",
+            method: "CLOSE",
+            route: "support.drift.safe-closeout",
+            proof: "Record closeout state, visible support note, private-data exclusion, and next review date.",
+            readyWhen: "Ready when support can use the repaired wording without private content.",
+            hold: "Hold if closeout note is unsafe or private-data exclusion is unclear.",
+            score: 82
+          },
+          {
+            label: "Escalation repair",
+            owner: "Escalation owner",
+            method: "ESCALATE",
+            route: "support.drift.escalation-repair",
+            proof: "Name escalation owner, unresolved drift, escalation route, and support pause condition.",
+            readyWhen: "Ready when unresolved drift has an escalation owner before the next reply template ships.",
+            hold: "Hold if escalation owner or pause condition is missing.",
+            score: 81
+          },
+          {
+            label: "Founder repair signoff",
+            owner: "Founder release desk",
+            method: "SIGNOFF",
+            route: "support.drift.founder-signoff",
+            proof: "Record founder signoff, repair batch ID, residual risk, and release hold state.",
+            readyWhen: "Ready when founder sees what changed and what remains held.",
+            hold: "Hold if founder signoff or residual-risk copy is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Support drift repair queue tracks approved support copy metadata only.",
+          "Every repair ticket has one owner, one copy fix, one reviewer decision, one closeout state, and one release hold rule.",
+          "Repair copy must preserve research-only boundaries, refund clarity, source correction scope, and private-data exclusions.",
+          "Escalation rows block support widening until owner and pause condition are visible.",
+          "No support drift repair row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No drift finding may close without ticket, owner, copy fix, reviewer decision, and support-safe closeout.",
+          "No repaired support copy may introduce advice, guaranteed-return, refund, or payment confusion.",
+          "No unresolved escalation may be hidden before the next support beta wave.",
+          "No repair queue row may expose private identifiers, credentials, payment payloads, or raw support notes."
+        ],
+        receiptFields: [
+          "support_drift_repair_queue_id",
+          "release_key",
+          "drift_family",
+          "repair_ticket_id",
+          "owner",
+          "copy_fix_state",
+          "reviewer_decision",
+          "support_safe_closeout",
+          "escalation_route",
+          "founder_signoff",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Support Drift Repair Queue is a static support repair queue only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
       }
     ],
     executiveCalmCompression: {
@@ -16457,14 +16557,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta command aging now has freshness alerts; next releases should lock support drift repair queue, source correction retirement monitor, payment repair closeout audit, account custody expiry rehearsal, and beta command expiry closeout.",
+      rule: "Support drift repairs now have owner-led tickets; next releases should lock source correction retirement monitor, payment repair closeout audit, account custody expiry rehearsal, beta command expiry closeout, and support repair closeout receipt.",
       lanes: [
-        {
-          version: "v538",
-          label: "Support drift repair queue",
-          route: "#paid-beta-support-ledger",
-          detail: "Turn drift findings into repair tickets with owner, copy fix, review state, and support-safe closeout."
-        },
         {
           version: "v539",
           label: "Source correction retirement monitor",
@@ -16488,14 +16582,27 @@ function buildTrackerConfig() {
           label: "Beta command expiry closeout",
           route: "#founder-beta-operating-room",
           detail: "Close expired founder commands with replacement proof, retirement reason, and release-safe memory."
+        },
+        {
+          version: "v543",
+          label: "Support repair closeout receipt",
+          route: "#paid-beta-support-ledger",
+          detail: "Turn accepted support repairs into release receipts with support-safe copy, owner signoff, and residual-risk notes."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Aging proof visible",
+      verdict: "Repair proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v537",
+          key: "20260708-v537-01",
+          commit: "01fd81f",
+          receiptId: "NN-SHARE-RECEIPT-20260708V53701",
+          proof: "Beta Command Aging Monitor added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v536",
           key: "20260708-v536-01",
@@ -16523,13 +16630,6 @@ function buildTrackerConfig() {
           commit: "a5b22ef",
           receiptId: "NN-SHARE-RECEIPT-20260708V53301",
           proof: "Support Handoff Drift Audit added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v532",
-          key: "20260708-v532-01",
-          commit: "a415c79",
-          receiptId: "NN-SHARE-RECEIPT-20260708V53201",
-          proof: "Beta Command Decision Ledger added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -16567,13 +16667,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v537",
-        detail: "Beta Command Aging Monitor is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v538",
+        detail: "Support Drift Repair Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v537 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v538 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -16582,25 +16682,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v537 held until live stamp",
-        detail: "Do not share v537 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v538 held until live stamp",
+        detail: "Do not share v538 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v537 beta aging monitor",
-        detail: "Beta Command Aging Monitor flags stale go, hold, freeze, repair, review-miss, and supersede commands before founder memory trusts them."
+        value: "v538 support repair queue",
+        detail: "Support Drift Repair Queue turns drift findings into owner-led repair tickets with copy fix, reviewer decision, support-safe closeout, escalation, and founder signoff."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v537 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v538 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v537 held until live stamp",
-        detail: "The release is share-ready only after v537 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v538 held until live stamp",
+        detail: "The release is share-ready only after v538 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

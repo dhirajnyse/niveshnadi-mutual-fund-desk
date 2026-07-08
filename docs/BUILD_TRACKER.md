@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V549 Source Correction Expiry Guard
+
+V549 adds Source Correction Expiry Guard to the Build Tracker Release Doctor. It makes correction notice, archive receipt, support handoff, cache proof, reviewer scope, and founder review expiry visible.
+
+- Release label: `NiveshNadi Phase 1 v549 Source Correction Expiry Guard`
+- Data/version key: `20260709-v549-01`
+- Product surface: Build Tracker > Release Doctor > Source correction expiry guard
+- Risk boundary: Static correction expiry room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims.
+- Verification status: Pending batch checks.
+
 ## V548 Support Repair Aging Guard
 
 V548 adds Support Repair Aging Guard to the Build Tracker Release Doctor. It warns when accepted support repairs age past source context, refund wording, privacy boundary, founder review, regression, or closeout windows.

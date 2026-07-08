@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v549 Source Correction Expiry Guard
+
+- Version: `0.549.0`
+- Data version: `20260709-v549-01`
+- Changes made: Added Source Correction Expiry Guard to the Build Tracker Release Doctor with notice expiry, archive receipt expiry, support handoff expiry, cache proof expiry, reviewer scope expiry, founder correction review, source correction expiry receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v548 commit, next-batch planner roll-forward to v550-v554, and release markers rolled forward to v549.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v549 marker scan.
+- Known risks: Source Correction Expiry Guard is a static correction expiry room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims.
+
 ## NiveshNadi Phase 1 v548 Support Repair Aging Guard
 
 - Version: `0.548.0`

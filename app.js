@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v548-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v548 Support Repair Aging Guard";
+const DATA_VERSION = "20260709-v549-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v549 Source Correction Expiry Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Support repair aging guard",
+    label: "Source correction expiry guard",
     status: "Shipping now",
-    route: "#paid-beta-support-ledger",
-    detail: "Warn when accepted support repair receipts age past source, refund, privacy, or founder review windows."
+    route: "#correction-ledger",
+    detail: "Warn when correction notices, archive receipts, or support handoffs pass expiry without review."
   },
   {
     label: "Mobile calm audit",
@@ -17384,6 +17384,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Repair Aging Guard is a static support repair aging room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
+      },
+      {
+        key: "sourceCorrectionExpiryGuard",
+        label: "Source correction expiry guard",
+        verdict: "Correction proof needs expiry review",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "EXPIRY", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-expiry-guard",
+        copyLabel: "Copy correction expiry",
+        score: 82,
+        rule: "Correction notices, archive receipts, support handoffs, cache proof, reviewer scope, and founder correction review should expire visibly before corrected surfaces are trusted again.",
+        lanes: [
+          {
+            label: "Notice expiry",
+            owner: "Correction desk",
+            method: "NOTICE",
+            route: "source.correction.notice-expiry",
+            proof: "Record correction notice ID, affected surface, expiry date, and public-safe review state.",
+            readyWhen: "Ready when every correction notice says when it must be reviewed again.",
+            hold: "Hold if expiry date or affected surface is absent.",
+            score: 82
+          },
+          {
+            label: "Archive receipt expiry",
+            owner: "Source archive desk",
+            method: "ARCHIVE",
+            route: "source.correction.archive-expiry",
+            proof: "Track archive receipt, superseded row, replacement row, and expiry review owner.",
+            readyWhen: "Ready when retired correction proof cannot remain trusted without review.",
+            hold: "Hold if archive receipt or replacement row is missing.",
+            score: 82
+          },
+          {
+            label: "Support handoff expiry",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "source.correction.support-handoff-expiry",
+            proof: "Record support handoff copy, owner, review window, and no-advice boundary.",
+            readyWhen: "Ready when support copy expires with the correction proof it depends on.",
+            hold: "Hold if support handoff owner or review window is missing.",
+            score: 81
+          },
+          {
+            label: "Cache proof expiry",
+            owner: "Release engineering",
+            method: "CACHE",
+            route: "source.correction.cache-expiry",
+            proof: "Record cache key, refreshed page state, rollback proof, and stale-cache hold.",
+            readyWhen: "Ready when correction proof names the cache state that users will actually see.",
+            hold: "Hold if cache key or stale-cache hold is missing.",
+            score: 82
+          },
+          {
+            label: "Reviewer scope expiry",
+            owner: "Reviewer workbench",
+            method: "SCOPE",
+            route: "source.correction.reviewer-scope-expiry",
+            proof: "Record reviewer scope, included surfaces, excluded surfaces, and next scope review.",
+            readyWhen: "Ready when old reviewer scope cannot silently certify new surfaces.",
+            hold: "Hold if included and excluded surfaces are not visible.",
+            score: 82
+          },
+          {
+            label: "Founder correction review",
+            owner: "Founder release desk",
+            method: "FOUNDER",
+            route: "source.correction.founder-expiry-review",
+            proof: "Record founder review, unresolved correction residue, release hold, and renewal need.",
+            readyWhen: "Ready when founder can see which correction proof must be renewed before launch claims widen.",
+            hold: "Hold if founder review or renewal need is missing.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Source correction expiry guard tracks expiry and review state only; it does not verify or change facts.",
+          "Every correction proof row needs notice expiry, archive expiry, support handoff expiry, cache proof expiry, reviewer scope expiry, and founder review.",
+          "Expired correction proof moves to hold until reviewer scope and support handoff are refreshed.",
+          "Correction expiry records should stay public-safe and exclude raw source files, private notes, and identifiers.",
+          "No correction expiry row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No correction notice may remain trusted past expiry without reviewer refresh.",
+          "No support handoff may use expired correction proof.",
+          "No stale cache proof may be treated as corrected public output.",
+          "No source correction expiry row may expose raw private data, credentials, identifiers, or payment data."
+        ],
+        receiptFields: [
+          "source_correction_expiry_guard_id",
+          "release_key",
+          "correction_notice_id",
+          "archive_receipt_id",
+          "expiry_window",
+          "support_handoff_state",
+          "cache_proof_state",
+          "reviewer_scope_state",
+          "founder_review_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Source Correction Expiry Guard is a static correction expiry room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims."
       }
     ],
     executiveCalmCompression: {
@@ -17556,14 +17655,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support repair receipts now have aging guard proof; next releases should lock source correction expiry guard, payment closeout SLA guard, account retention job acceptance harness, beta command archive aging guard, and support repair owner SLA lane.",
+      rule: "Source correction proof now has expiry guardrails; next releases should lock payment closeout SLA guard, account retention job acceptance harness, beta command archive aging guard, support repair owner SLA lane, and source correction renewal receipt.",
       lanes: [
-        {
-          version: "v549",
-          label: "Source correction expiry guard",
-          route: "#correction-ledger",
-          detail: "Warn when correction notices, archive receipts, or support handoffs pass expiry without review."
-        },
         {
           version: "v550",
           label: "Payment closeout SLA guard",
@@ -17587,14 +17680,27 @@ function buildTrackerConfig() {
           label: "Support repair owner SLA lane",
           route: "#paid-beta-support-ledger",
           detail: "Give every aged support repair a named owner, refresh SLA, fallback owner, and release hold."
+        },
+        {
+          version: "v554",
+          label: "Source correction renewal receipt",
+          route: "#correction-ledger",
+          detail: "Convert expired correction proof into reviewer-approved renewal receipts before corrected surfaces widen."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Support repair aging proof visible",
+      verdict: "Source correction expiry proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v548",
+          key: "20260709-v548-01",
+          commit: "4548689",
+          receiptId: "NN-SHARE-RECEIPT-20260709V54801",
+          proof: "Support Repair Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v547",
           key: "20260709-v547-01",
@@ -17622,13 +17728,6 @@ function buildTrackerConfig() {
           commit: "c833dc3",
           receiptId: "NN-SHARE-RECEIPT-20260709V54401",
           proof: "Source Correction Archive Compactor added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v543",
-          key: "20260709-v543-01",
-          commit: "274e10c",
-          receiptId: "NN-SHARE-RECEIPT-20260709V54301",
-          proof: "Support Repair Closeout Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -17666,13 +17765,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v548",
-        detail: "Support Repair Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v549",
+        detail: "Source Correction Expiry Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v548 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v549 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -17681,25 +17780,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v548 held until live stamp",
-        detail: "Do not share v548 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v549 held until live stamp",
+        detail: "Do not share v549 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v548 support repair aging",
-        detail: "Support Repair Aging Guard warns when accepted support repairs age past source, refund, privacy, founder review, regression, or closeout windows."
+        value: "v549 source correction expiry",
+        detail: "Source Correction Expiry Guard makes correction notice, archive receipt, support handoff, cache proof, reviewer scope, and founder review expiry visible."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v548 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v549 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v548 held until live stamp",
-        detail: "The release is share-ready only after v548 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v549 held until live stamp",
+        detail: "The release is share-ready only after v549 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

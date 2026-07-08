@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V522 Beta Founder Closeout Scorecard
+
+V522 adds Beta Founder Closeout Scorecard to the Build Tracker Release Doctor. It converts support readiness, source trust, payment confidence, account custody, evidence packet, and founder command states into one go, hold, or freeze decision before the next beta wave widens.
+
+- Release label: `NiveshNadi Phase 1 v522 Beta Founder Closeout Scorecard`
+- Data/version key: `20260708-v522-01`
+- Product surface: Build Tracker > Release Doctor > Beta founder closeout scorecard
+- Risk boundary: Static founder-decision summary only; it does not invite users, process payments, grant access, verify live data, recover accounts, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V521 Account Recovery Policy Copy Room
 
 V521 adds Account Recovery Policy Copy Room to the Build Tracker Release Doctor. It writes lost access, session freeze, export, deletion, restore, denial, and support-boundary copy before account custody widens.

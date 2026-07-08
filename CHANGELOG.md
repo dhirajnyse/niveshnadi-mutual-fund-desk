@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v522 Beta Founder Closeout Scorecard
+
+- Version: `0.522.0`
+- Data version: `20260708-v522-01`
+- Changes made: Added Beta Founder Closeout Scorecard to the Build Tracker Release Doctor with founder decision score, support readiness score, source trust score, payment confidence score, account custody score, evidence packet score, beta closeout receipt fields, proof archive roll-forward with v521 commit, next-batch planner roll-forward to v523-v527, and release markers rolled forward to v522.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v522 marker scan.
+- Known risks: Beta Founder Closeout Scorecard is a static founder-decision summary only; it does not invite users, process payments, grant access, verify live data, recover accounts, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v521 Account Recovery Policy Copy Room
 
 - Version: `0.521.0`

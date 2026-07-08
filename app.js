@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v521-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v521 Account Recovery Policy Copy Room";
+const DATA_VERSION = "20260708-v522-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v522 Beta Founder Closeout Scorecard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v520 passed release checks on commit c9f56de. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v521 passed release checks on commit df8c141. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v520 local checks passed",
+      outcome: "Previous outcome: v521 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52001",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52101",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -14672,6 +14672,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Recovery Policy Copy Room is a static copy contract only; it does not authenticate users, recover accounts, export or delete data, collect identifiers, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaFounderCloseoutScorecard",
+        label: "Beta founder closeout scorecard",
+        verdict: "Founder closeout needs score before next wave",
+        receiptId: ["NN", "BETA", "FOUNDER", "CLOSEOUT", "SCORECARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-founder-closeout-scorecard",
+        copyLabel: "Copy founder closeout",
+        score: 82,
+        rule: "No next beta wave should widen until the founder closeout score names go, hold, or freeze across support, source, payment, account, evidence packet, risk, and user-safe copy states.",
+        lanes: [
+          {
+            label: "Founder decision score",
+            owner: "Founder release desk",
+            method: "SCORE",
+            route: "founder.closeout.decision-score",
+            proof: "Score go, hold, freeze, and next-wave decision against current proof, top blocker, and known risk.",
+            readyWhen: "Ready when the scorecard gives one founder command and one next proof owner.",
+            hold: "Hold if closeout language invites another wave before blocker ownership is clear.",
+            score: 83
+          },
+          {
+            label: "Support readiness score",
+            owner: "Support captain",
+            method: "AUDIT",
+            route: "founder.closeout.support-score",
+            proof: "Review open cases, reply quality, escalation owner, refund confusion, and private-data fear.",
+            readyWhen: "Ready when support can absorb the next wave without advice, refund, or privacy confusion.",
+            hold: "Hold if support ceiling, stale cases, or support-safe copy is unclear.",
+            score: 80
+          },
+          {
+            label: "Source trust score",
+            owner: "Source desk",
+            method: "CHECK",
+            route: "founder.closeout.source-score",
+            proof: "Confirm source correction state, stale claim state, citation path, reviewer release, and rollback note.",
+            readyWhen: "Ready when corrected and stale source states are visible before any wider claim.",
+            hold: "Hold if source correction, reviewer release, or stale claim ownership is missing.",
+            score: 81
+          },
+          {
+            label: "Payment confidence score",
+            owner: "Billing boundary",
+            method: "DRILL",
+            route: "founder.closeout.payment-score",
+            proof: "Check payment ask, invoice, webhook, entitlement, refund route, and support notice rehearsal.",
+            readyWhen: "Ready when beta payment states can be replayed without touching live gateway data.",
+            hold: "Hold if reconciliation, refund stop, or support notice is not replayable.",
+            score: 79
+          },
+          {
+            label: "Account custody score",
+            owner: "Account platform",
+            method: "REHEARSE",
+            route: "founder.closeout.account-score",
+            proof: "Check export, deletion, session freeze, restore denial, support-safe account state, and no-private-data line.",
+            readyWhen: "Ready when account custody copy and fixture proof stay aligned.",
+            hold: "Hold if account copy promises recovery, export, deletion, or live custody before backend proof.",
+            score: 82
+          },
+          {
+            label: "Evidence packet score",
+            owner: "Founder release desk",
+            method: "PACK",
+            route: "founder.closeout.evidence-packet-score",
+            proof: "Bundle cohort cap, invite copy, receipt family, source/payment/account/support states, and founder signoff.",
+            readyWhen: "Ready when the founder can explain why the next wave is go, hold, or freeze.",
+            hold: "Hold if score is spread across separate rooms without one closeout line.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "Founder closeout should produce one calm command: go, hold, or freeze.",
+          "Every score must name its proof owner, next evidence, and hold condition.",
+          "The scorecard does not replace source, payment, account, support, or evidence packet rooms; it summarizes them for a beta wave decision.",
+          "Beta widening pauses when support, source, payment, account, or evidence score is unresolved.",
+          "No scorecard may retain PAN, folio, CAS, bank, contact, credential, payment payload, private-note, or distributor-client data."
+        ],
+        noGoLines: [
+          "No next beta wave may open without one founder go/hold/freeze command.",
+          "No founder closeout score may promise personalized advice, suitability approval, execution, guaranteed returns, payment success, account recovery, or live data certainty.",
+          "No scorecard may hide support overload, source correction, payment reconciliation, account custody, or evidence packet blockers.",
+          "No private identifiers, payment payloads, credentials, support-note bodies, raw source artifacts, or distributor-client records may enter closeout proof."
+        ],
+        receiptFields: [
+          "beta_founder_closeout_scorecard_id",
+          "release_key",
+          "founder_command",
+          "support_score",
+          "source_score",
+          "payment_score",
+          "account_score",
+          "evidence_packet_score",
+          "top_blocker",
+          "next_wave_decision",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Beta Founder Closeout Scorecard is a static founder-decision summary only; it does not invite users, process payments, grant access, verify live data, recover accounts, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -14844,14 +14944,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account recovery copy is now plain-language ready; next releases should lock beta founder closeout scoring, support reply quality audit, source correction archive, payment reconciliation drill, and account custody export drill.",
+      rule: "Beta founder closeout now has a go/hold/freeze scorecard; next releases should lock support reply quality audit, source correction archive, payment reconciliation drill, account custody export drill, and beta readiness command scoring.",
       lanes: [
-        {
-          version: "v522",
-          label: "Beta founder closeout scorecard",
-          route: "#founder-beta-operating-room",
-          detail: "Score founder go, hold, freeze, support, source, payment, account, and evidence states before another beta wave opens."
-        },
         {
           version: "v523",
           label: "Support reply quality audit",
@@ -14875,6 +14969,12 @@ function buildTrackerConfig() {
           label: "Account custody export drill",
           route: "#account-readiness",
           detail: "Rehearse export scope, expiry, delete request, retained receipt, support-safe status, and no-private-data proof before account custody."
+        },
+        {
+          version: "v527",
+          label: "Beta readiness command score",
+          route: "#founder-beta-operating-room",
+          detail: "Convert founder closeout, support, source, payment, account, and evidence states into one beta readiness command."
         }
       ]
     },
@@ -14883,6 +14983,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v521",
+          key: "20260708-v521-01",
+          commit: "df8c141",
+          receiptId: "NN-SHARE-RECEIPT-20260708V52101",
+          proof: "Account Recovery Policy Copy Room added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v520",
           key: "20260708-v520-01",
@@ -14910,13 +15017,6 @@ function buildTrackerConfig() {
           commit: "2c6a7d2",
           receiptId: "NN-SHARE-RECEIPT-20260708V51701",
           proof: "Founder Beta Release Evidence Packet added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v516",
-          key: "20260708-v516-01",
-          commit: "1ff9426",
-          receiptId: "NN-SHARE-RECEIPT-20260708V51601",
-          proof: "Account Recovery Smoke Proof Board added, visually checked, pushed to main, and live stamp verified."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -14954,13 +15054,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v521",
-        detail: "Account Recovery Policy Copy Room is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v522",
+        detail: "Beta Founder Closeout Scorecard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v521 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v522 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -14969,25 +15069,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v521 held until live stamp",
-        detail: "Do not share v521 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v522 held until live stamp",
+        detail: "Do not share v522 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v521 account recovery copy",
-        detail: "Account Recovery Policy Copy Room writes lost access, freeze, export, deletion, restore, denial, and support boundary copy before account custody widens."
+        value: "v522 founder closeout score",
+        detail: "Beta Founder Closeout Scorecard writes one go, hold, or freeze command before the next founder beta wave widens."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v521 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v522 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v521 held until live stamp",
-        detail: "The release is share-ready only after v521 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v522 held until live stamp",
+        detail: "The release is share-ready only after v522 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

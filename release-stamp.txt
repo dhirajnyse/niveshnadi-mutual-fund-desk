@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v541 Account Custody Expiry Rehearsal
-20260708-v541-01
+NiveshNadi Phase 1 v542 Beta Command Expiry Closeout
+20260709-v542-01

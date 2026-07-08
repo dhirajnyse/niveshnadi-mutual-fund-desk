@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V542 Beta Command Expiry Closeout
+
+V542 adds Beta Command Expiry Closeout to the Build Tracker Release Doctor. It closes expired founder commands with replacement proof, retirement reason, conflict cleanup, release-safe memory, and founder closeout.
+
+- Release label: `NiveshNadi Phase 1 v542 Beta Command Expiry Closeout`
+- Data/version key: `20260709-v542-01`
+- Product surface: Build Tracker > Release Doctor > Beta command expiry closeout
+- Risk boundary: Static command closeout room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V541 Account Custody Expiry Rehearsal
 
 V541 adds Account Custody Expiry Rehearsal to the Build Tracker Release Doctor. It checks expiry calendar, replacement owners, receipt retirement, export/delete copy, support-safe closeout, and founder expiry signoff.

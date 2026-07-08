@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v542 Beta Command Expiry Closeout
+
+- Version: `0.542.0`
+- Data version: `20260709-v542-01`
+- Changes made: Added Beta Command Expiry Closeout to the Build Tracker Release Doctor with expired command inventory, replacement proof, retirement reason, release-safe memory, conflict cleanup, founder expiry closeout, beta command expiry receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v541 commit, next-batch planner roll-forward to v543-v547, and release markers rolled forward to v542.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v542 marker scan.
+- Known risks: Beta Command Expiry Closeout is a static command closeout room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v541 Account Custody Expiry Rehearsal
 
 - Version: `0.541.0`

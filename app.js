@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v541-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v541 Account Custody Expiry Rehearsal";
+const DATA_VERSION = "20260709-v542-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v542 Beta Command Expiry Closeout";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account custody expiry rehearsal",
+    label: "Beta command expiry closeout",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Rehearse expiring retained receipts, replacement owners, export/delete copy, and support-safe closeout."
+    route: "#founder-beta-operating-room",
+    detail: "Close expired founder commands with replacement proof, retirement reason, and release-safe memory."
   },
   {
     label: "Mobile calm audit",
@@ -16685,6 +16685,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Custody Expiry Rehearsal is a static expiry rehearsal only; it does not authenticate users, export data, delete data, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandExpiryCloseout",
+        label: "Beta command expiry closeout",
+        verdict: "Expired commands need retirement proof",
+        receiptId: ["NN", "BETA", "COMMAND", "EXPIRY", "CLOSEOUT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-expiry-closeout",
+        copyLabel: "Copy expiry closeout",
+        score: 82,
+        rule: "No expired founder command should remain active unless replacement proof, retirement reason, conflict cleanup, release-safe memory, and founder closeout are visible before the next beta action.",
+        lanes: [
+          {
+            label: "Expired command inventory",
+            owner: "Founder command desk",
+            method: "INVENTORY",
+            route: "beta.command.expiry-inventory",
+            proof: "List expired go, hold, freeze, and repair commands with owner, age, expiry date, and affected release surface.",
+            readyWhen: "Ready when every expired command is visible before a new command is trusted.",
+            hold: "Hold if expired commands are unnamed, ownerless, or missing expiry dates.",
+            score: 82
+          },
+          {
+            label: "Replacement proof",
+            owner: "Founder release desk",
+            method: "REPLACE",
+            route: "beta.command.expiry-replacement-proof",
+            proof: "Attach replacement command, source proof, reviewer note, and release-safe wording.",
+            readyWhen: "Ready when each expired command has a replacement or explicit no-replacement reason.",
+            hold: "Hold if replacement command or no-replacement reason is missing.",
+            score: 83
+          },
+          {
+            label: "Retirement reason",
+            owner: "Decision memory desk",
+            method: "RETIRE",
+            route: "beta.command.expiry-retirement-reason",
+            proof: "Record why the command retired, what changed, residual risk, and what cannot be reused.",
+            readyWhen: "Ready when command retirement is clear enough for future founder review.",
+            hold: "Hold if retirement reason or residual-risk note is missing.",
+            score: 82
+          },
+          {
+            label: "Release-safe memory",
+            owner: "Release memory desk",
+            method: "MEMORY",
+            route: "beta.command.expiry-safe-memory",
+            proof: "Convert expired command into short release-safe memory with no private data or stale action instruction.",
+            readyWhen: "Ready when old command memory cannot accidentally trigger action.",
+            hold: "Hold if release memory still reads like an active command.",
+            score: 82
+          },
+          {
+            label: "Conflict cleanup",
+            owner: "Beta control desk",
+            method: "CONFLICT",
+            route: "beta.command.expiry-conflict-cleanup",
+            proof: "Flag command conflicts, replacement priority, old route cleanup, and release hold.",
+            readyWhen: "Ready when expired commands cannot conflict with current founder direction.",
+            hold: "Hold if old and replacement commands still disagree.",
+            score: 81
+          },
+          {
+            label: "Founder expiry closeout",
+            owner: "Founder release desk",
+            method: "SIGNOFF",
+            route: "beta.command.expiry-founder-closeout",
+            proof: "Record founder closeout, retired command batch, replacement summary, and final release hold state.",
+            readyWhen: "Ready when founder sees what expired, what replaced it, and what remains held.",
+            hold: "Hold if founder closeout or final hold state is missing.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Beta command expiry closeout tracks founder command metadata only.",
+          "Every expired command has one owner, one replacement or no-replacement reason, one retirement reason, one conflict state, and one founder closeout.",
+          "Expired commands must be rewritten as release-safe memory before they remain in the product archive.",
+          "Conflicting commands are held until the replacement priority is visible.",
+          "No expiry closeout row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No expired founder command may stay active without replacement proof and retirement reason.",
+          "No current beta command may conflict with an expired command still visible in release memory.",
+          "No expired command memory may read like a live instruction.",
+          "No expiry closeout row may expose private identifiers, credentials, auth tokens, payment payloads, or raw support notes."
+        ],
+        receiptFields: [
+          "beta_command_expiry_closeout_id",
+          "release_key",
+          "expired_command_id",
+          "command_state",
+          "replacement_command_id",
+          "retirement_reason",
+          "conflict_state",
+          "release_safe_memory",
+          "founder_closeout",
+          "residual_risk",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Beta Command Expiry Closeout is a static command closeout room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -16857,14 +16957,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account custody expiry now has rehearsal proof; next releases should lock beta command expiry closeout, support repair closeout receipt, source correction archive compactor, payment incident replay rehearsal, and account retention job blueprint.",
+      rule: "Beta command expiry now has closeout proof; next releases should lock support repair closeout receipt, source correction archive compactor, payment incident replay rehearsal, account retention job blueprint, and beta command archive compactor.",
       lanes: [
-        {
-          version: "v542",
-          label: "Beta command expiry closeout",
-          route: "#founder-beta-operating-room",
-          detail: "Close expired founder commands with replacement proof, retirement reason, and release-safe memory."
-        },
         {
           version: "v543",
           label: "Support repair closeout receipt",
@@ -16888,14 +16982,27 @@ function buildTrackerConfig() {
           label: "Account retention job blueprint",
           route: "#account-readiness",
           detail: "Translate expiry rehearsal into scheduled retention job contracts, owner reviews, and support-safe evidence."
+        },
+        {
+          version: "v547",
+          label: "Beta command archive compactor",
+          route: "#founder-beta-operating-room",
+          detail: "Compact expired command closeouts into short archive receipts with replacement, conflict, and founder signoff proof."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Expiry proof visible",
+      verdict: "Command closeout proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v541",
+          key: "20260708-v541-01",
+          commit: "b440457",
+          receiptId: "NN-SHARE-RECEIPT-20260708V54101",
+          proof: "Account Custody Expiry Rehearsal added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
+        },
         {
           version: "v540",
           key: "20260708-v540-01",
@@ -16923,13 +17030,6 @@ function buildTrackerConfig() {
           commit: "01fd81f",
           receiptId: "NN-SHARE-RECEIPT-20260708V53701",
           proof: "Beta Command Aging Monitor added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v536",
-          key: "20260708-v536-01",
-          commit: "29cb5ef",
-          receiptId: "NN-SHARE-RECEIPT-20260708V53601",
-          proof: "Account Retention Stale-State Monitor added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -16967,13 +17067,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v541",
-        detail: "Account Custody Expiry Rehearsal is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v542",
+        detail: "Beta Command Expiry Closeout is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v541 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v542 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -16982,25 +17082,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v541 held until live stamp",
-        detail: "Do not share v541 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v542 held until live stamp",
+        detail: "Do not share v542 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v541 account expiry rehearsal",
-        detail: "Account Custody Expiry Rehearsal checks expiry calendar, replacement owners, receipt retirement, export/delete copy, support-safe closeout, and founder expiry signoff."
+        value: "v542 command expiry closeout",
+        detail: "Beta Command Expiry Closeout closes expired founder commands with replacement proof, retirement reason, conflict cleanup, release-safe memory, and founder closeout."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v541 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v542 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v541 held until live stamp",
-        detail: "The release is share-ready only after v541 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v542 held until live stamp",
+        detail: "The release is share-ready only after v542 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V550 Payment Closeout SLA Guard
+
+V550 adds Payment Closeout SLA Guard to the Build Tracker Release Doctor. It gives repaired, held, refund-review, rollback, support-held, and founder finance rows explicit owner timing before launch language widens.
+
+- Release label: `NiveshNadi Phase 1 v550 Payment Closeout SLA Guard`
+- Data/version key: `20260709-v550-01`
+- Product surface: Build Tracker > Release Doctor > Payment closeout SLA guard
+- Risk boundary: Static payment SLA room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V549 Source Correction Expiry Guard
 
 V549 adds Source Correction Expiry Guard to the Build Tracker Release Doctor. It makes correction notice, archive receipt, support handoff, cache proof, reviewer scope, and founder review expiry visible.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v549-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v549 Source Correction Expiry Guard";
+const DATA_VERSION = "20260709-v550-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v550 Payment Closeout SLA Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction expiry guard",
+    label: "Payment closeout SLA guard",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Warn when correction notices, archive receipts, or support handoffs pass expiry without review."
+    route: "#payment-wiring",
+    detail: "Warn when payment closeout, refund review, rollback, or support-held rows age past owner SLA."
   },
   {
     label: "Mobile calm audit",
@@ -17483,6 +17483,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Expiry Guard is a static correction expiry room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, or approve public claims."
+      },
+      {
+        key: "paymentCloseoutSlaGuard",
+        label: "Payment closeout SLA guard",
+        verdict: "Payment closeouts need owner timing",
+        receiptId: ["NN", "PAYMENT", "CLOSEOUT", "SLA", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-closeout-sla-guard",
+        copyLabel: "Copy SLA guard",
+        score: 81,
+        rule: "Payment closeout rows should warn when repaired, held, refund-review, rollback, support-held, or founder finance states age past owner SLA before launch claims widen.",
+        lanes: [
+          {
+            label: "Repaired SLA",
+            owner: "Payment repair desk",
+            method: "REPAIRED",
+            route: "payment.closeout.repaired-sla",
+            proof: "Track repaired row, repair owner, accepted proof, expiry window, and next review date.",
+            readyWhen: "Ready when repaired payment rows cannot remain accepted beyond their owner window.",
+            hold: "Hold if repair owner or accepted proof is absent.",
+            score: 82
+          },
+          {
+            label: "Held SLA",
+            owner: "Finance review desk",
+            method: "HELD",
+            route: "payment.closeout.held-sla",
+            proof: "Record held reason, owner, review deadline, support wording, and no-widening state.",
+            readyWhen: "Ready when held payment rows have a visible deadline and next owner.",
+            hold: "Hold if held reason or review deadline is missing.",
+            score: 81
+          },
+          {
+            label: "Refund review SLA",
+            owner: "Refund review desk",
+            method: "REFUND",
+            route: "payment.closeout.refund-review-sla",
+            proof: "Track refund review state, copy version, owner refresh, and payment-stop boundary.",
+            readyWhen: "Ready when refund review cannot age into unclear payment promises.",
+            hold: "Hold if refund review state or payment-stop boundary is absent.",
+            score: 81
+          },
+          {
+            label: "Rollback SLA",
+            owner: "Release engineering",
+            method: "ROLLBACK",
+            route: "payment.closeout.rollback-sla",
+            proof: "Record rollback row, replay result, owner deadline, and incident link without gateway payloads.",
+            readyWhen: "Ready when rollback proof has an owner and cannot go stale.",
+            hold: "Hold if rollback result or owner deadline is missing.",
+            score: 81
+          },
+          {
+            label: "Support-held SLA",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "payment.closeout.support-held-sla",
+            proof: "Track support-held reason, approved support copy, escalation owner, and expiry window.",
+            readyWhen: "Ready when support-held payment rows cannot keep old support copy forever.",
+            hold: "Hold if support copy or escalation owner is missing.",
+            score: 81
+          },
+          {
+            label: "Founder finance SLA",
+            owner: "Founder finance desk",
+            method: "FOUNDER",
+            route: "payment.closeout.founder-finance-sla",
+            proof: "Record founder review, stale rows, release hold, and whether payment launch language stays blocked.",
+            readyWhen: "Ready when founder can see which aged closeout rows still block payment launch.",
+            hold: "Hold if founder review or launch-language decision is absent.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Payment closeout SLA guard tracks timing and owner state only; it does not process payment actions.",
+          "Every payment closeout row needs repaired, held, refund-review, rollback, support-held, or founder finance SLA state.",
+          "Aged payment closeout rows keep launch language blocked until owner review refreshes the receipt.",
+          "Payment closeout SLA rows must not retain gateway payloads, payment tokens, bank data, card data, or raw support notes.",
+          "No payment closeout SLA row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No payment closeout row may age past SLA without release hold.",
+          "No refund, rollback, or support-held row may widen launch language without owner refresh.",
+          "No stale payment repair may be treated as production proof.",
+          "No payment closeout SLA row may expose gateway payloads, tokens, card data, identifiers, or private notes."
+        ],
+        receiptFields: [
+          "payment_closeout_sla_guard_id",
+          "release_key",
+          "closeout_row_id",
+          "sla_window",
+          "repair_state",
+          "refund_review_state",
+          "rollback_state",
+          "support_held_state",
+          "owner_review_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Payment Closeout SLA Guard is a static payment SLA room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -17655,14 +17754,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source correction proof now has expiry guardrails; next releases should lock payment closeout SLA guard, account retention job acceptance harness, beta command archive aging guard, support repair owner SLA lane, and source correction renewal receipt.",
+      rule: "Payment closeout rows now have SLA guardrails; next releases should lock account retention job acceptance harness, beta command archive aging guard, support repair owner SLA lane, source correction renewal receipt, and payment replay acceptance receipt.",
       lanes: [
-        {
-          version: "v550",
-          label: "Payment closeout SLA guard",
-          route: "#payment-wiring",
-          detail: "Warn when payment closeout, refund review, rollback, or support-held rows age past owner SLA."
-        },
         {
           version: "v551",
           label: "Account retention job acceptance harness",
@@ -17686,14 +17779,27 @@ function buildTrackerConfig() {
           label: "Source correction renewal receipt",
           route: "#correction-ledger",
           detail: "Convert expired correction proof into reviewer-approved renewal receipts before corrected surfaces widen."
+        },
+        {
+          version: "v555",
+          label: "Payment replay acceptance receipt",
+          route: "#payment-wiring",
+          detail: "Turn accepted payment replay rows into owner-signed receipts with refund, rollback, and support-safe proof."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Source correction expiry proof visible",
+      verdict: "Payment closeout SLA proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v549",
+          key: "20260709-v549-01",
+          commit: "8ccd9ca",
+          receiptId: "NN-SHARE-RECEIPT-20260709V54901",
+          proof: "Source Correction Expiry Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v548",
           key: "20260709-v548-01",
@@ -17721,13 +17827,6 @@ function buildTrackerConfig() {
           commit: "63c3b0f",
           receiptId: "NN-SHARE-RECEIPT-20260709V54501",
           proof: "Payment Incident Replay Rehearsal added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v544",
-          key: "20260709-v544-01",
-          commit: "c833dc3",
-          receiptId: "NN-SHARE-RECEIPT-20260709V54401",
-          proof: "Source Correction Archive Compactor added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -17765,13 +17864,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v549",
-        detail: "Source Correction Expiry Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v550",
+        detail: "Payment Closeout SLA Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v549 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v550 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -17780,25 +17879,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v549 held until live stamp",
-        detail: "Do not share v549 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v550 held until live stamp",
+        detail: "Do not share v550 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v549 source correction expiry",
-        detail: "Source Correction Expiry Guard makes correction notice, archive receipt, support handoff, cache proof, reviewer scope, and founder review expiry visible."
+        value: "v550 payment SLA guard",
+        detail: "Payment Closeout SLA Guard gives repaired, held, refund-review, rollback, support-held, and founder finance rows explicit owner timing."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v549 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v550 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v549 held until live stamp",
-        detail: "The release is share-ready only after v549 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v550 held until live stamp",
+        detail: "The release is share-ready only after v550 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

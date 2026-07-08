@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v550 Payment Closeout SLA Guard
+
+- Version: `0.550.0`
+- Data version: `20260709-v550-01`
+- Changes made: Added Payment Closeout SLA Guard to the Build Tracker Release Doctor with repaired SLA, held SLA, refund review SLA, rollback SLA, support-held SLA, founder finance SLA, payment closeout SLA receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v549 commit, next-batch planner roll-forward to v551-v555, and release markers rolled forward to v550.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v550 marker scan.
+- Known risks: Payment Closeout SLA Guard is a static payment SLA room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v549 Source Correction Expiry Guard
 
 - Version: `0.549.0`

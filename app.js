@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v531-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v531 Account Custody Retention Register";
+const DATA_VERSION = "20260708-v532-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v532 Beta Command Decision Ledger";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account custody retention register",
+    label: "Beta command decision ledger",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Register export, deletion, retained receipt, redaction, support-safe status, and owner review states."
+    route: "#founder-beta-operating-room",
+    detail: "Retain go, hold, freeze, and repair commands with owner, proof state, review date, and boundary."
   },
   {
     label: "Mobile calm audit",
@@ -15680,6 +15680,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Custody Retention Register is a static retention register only; it does not authenticate users, export data, delete data, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandDecisionLedger",
+        label: "Beta command decision ledger",
+        verdict: "Command memory needs one accountable owner",
+        receiptId: ["NN", "BETA", "COMMAND", "DECISION", "LEDGER", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-decision-ledger",
+        copyLabel: "Copy command ledger",
+        score: 84,
+        rule: "No founder beta command should widen until every go, hold, freeze, or repair decision names the owner, proof state, next review date, expiry rule, and no-private-data boundary.",
+        lanes: [
+          {
+            label: "Command row",
+            owner: "Founder release desk",
+            method: "LEDGER",
+            route: "beta.command.row",
+            proof: "Record go, hold, freeze, or repair command with release key, lane, owner, proof source, and review date.",
+            readyWhen: "Ready when the command can be replayed without relying on memory.",
+            hold: "Hold if command state, lane owner, proof source, or next review date is missing.",
+            score: 86
+          },
+          {
+            label: "Proof state",
+            owner: "Release captain",
+            method: "LOCK",
+            route: "beta.command.proof-state",
+            proof: "Attach accepted, pending, rejected, stale, superseded, or blocked proof state to each command.",
+            readyWhen: "Ready when beta widening can see which proof actually supports the decision.",
+            hold: "Hold if proof state is mixed with personal notes or unreviewed screenshots.",
+            score: 84
+          },
+          {
+            label: "Review timer",
+            owner: "Founder operations",
+            method: "TIMER",
+            route: "beta.command.review-timer",
+            proof: "Set next review date, expiry window, reminder owner, and stale-command behavior.",
+            readyWhen: "Ready when no beta command can stay alive without re-review.",
+            hold: "Hold if a command can remain open without expiry or owner review.",
+            score: 83
+          },
+          {
+            label: "Decision boundary",
+            owner: "Compliance posture desk",
+            method: "BOUNDARY",
+            route: "beta.command.boundary",
+            proof: "Name research-only, no-advice, no-return-guarantee, no-payment-promise, and no-private-data boundaries for the command.",
+            readyWhen: "Ready when support, payment, source, account, and founder teams read the same boundary.",
+            hold: "Hold if command wording implies advice, guaranteed outcome, payment success, or live-data certainty.",
+            score: 85
+          },
+          {
+            label: "Repair link",
+            owner: "Incident desk",
+            method: "ROUTE",
+            route: "beta.command.repair-link",
+            proof: "Route repair commands to support, payment, source, account, evidence, or launch repair rooms.",
+            readyWhen: "Ready when every repair command has one next room and one closeout proof.",
+            hold: "Hold if repair route or closeout proof is ambiguous.",
+            score: 83
+          },
+          {
+            label: "Founder closeout",
+            owner: "Founder",
+            method: "SIGNOFF",
+            route: "beta.command.founder-closeout",
+            proof: "Record founder signoff, held reason, supersede reason, or freeze reason before command can leave the desk.",
+            readyWhen: "Ready when a command is either signed, held, superseded, or frozen in plain language.",
+            hold: "Hold if founder decision is not written or share boundary is unclear.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "Beta command memory stores decision state and proof metadata, not user identity or private payloads.",
+          "Every go, hold, freeze, or repair command has one owner, one proof state, one next review date, and one closeout route.",
+          "A repair command cannot be treated as a go command until the repair room records accepted proof.",
+          "Commands expire unless the founder release desk re-reviews them.",
+          "No command row may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No beta command may open a wider cohort without owner, proof state, review date, boundary, and closeout route.",
+          "No support, payment, account, source, or evidence repair command may be closed by optimism alone.",
+          "No command wording may promise a fund outcome, live-data certainty, payment success, refund success, or account recovery.",
+          "No beta command ledger row may store private identifiers, credentials, payment payloads, or raw support notes."
+        ],
+        receiptFields: [
+          "beta_command_decision_ledger_id",
+          "release_key",
+          "command_state",
+          "command_lane",
+          "owner",
+          "proof_state",
+          "proof_source",
+          "next_review_at",
+          "expiry_rule",
+          "repair_route",
+          "founder_closeout_state",
+          "share_boundary",
+          "created_at"
+        ],
+        boundary: "Beta Command Decision Ledger is a static founder-command ledger only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -15852,14 +15953,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account custody retention now has named owners; next releases should lock beta command decision ledger, support handoff drift audit, source correction supersede queue, payment repair scoreboard, and account retention stale-state monitor.",
+      rule: "Beta command decisions now have owner-led ledger memory; next releases should lock support handoff drift audit, source correction supersede queue, payment repair scoreboard, account retention stale-state monitor, and beta command aging monitor.",
       lanes: [
-        {
-          version: "v532",
-          label: "Beta command decision ledger",
-          route: "#founder-beta-operating-room",
-          detail: "Retain each go, hold, freeze, or repair command with owner, proof state, next review date, and no-private-data boundary."
-        },
         {
           version: "v533",
           label: "Support handoff drift audit",
@@ -15883,6 +15978,12 @@ function buildTrackerConfig() {
           label: "Account retention stale-state monitor",
           route: "#account-readiness",
           detail: "Watch retained receipt owners, review cadence, redaction scan age, support-safe status, and retirement rules for stale custody states."
+        },
+        {
+          version: "v537",
+          label: "Beta command aging monitor",
+          route: "#founder-beta-operating-room",
+          detail: "Flag stale go, hold, freeze, and repair commands before founder memory becomes outdated."
         }
       ]
     },
@@ -15891,6 +15992,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v531",
+          key: "20260708-v531-01",
+          commit: "69191ab",
+          receiptId: "NN-SHARE-RECEIPT-20260708V53101",
+          proof: "Account Custody Retention Register added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
+        },
         {
           version: "v530",
           key: "20260708-v530-01",
@@ -15918,13 +16026,6 @@ function buildTrackerConfig() {
           commit: "dea6e52",
           receiptId: "NN-SHARE-RECEIPT-20260708V52701",
           proof: "Beta Readiness Command Score added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v526",
-          key: "20260708-v526-01",
-          commit: "29e5c41",
-          receiptId: "NN-SHARE-RECEIPT-20260708V52601",
-          proof: "Account Custody Export Drill added and verified by syntax, static, security, diff hygiene, visual QA, push, and live stamp checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -15962,13 +16063,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v531",
-        detail: "Account Custody Retention Register is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v532",
+        detail: "Beta Command Decision Ledger is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v531 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v532 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -15977,25 +16078,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v531 held until live stamp",
-        detail: "Do not share v531 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v532 held until live stamp",
+        detail: "Do not share v532 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v531 custody retention register",
-        detail: "Account Custody Retention Register names object family, owner, purpose, support-safe status, redaction scan, review cadence, and retirement rule."
+        value: "v532 beta command ledger",
+        detail: "Beta Command Decision Ledger names command state, owner, proof source, review date, expiry rule, repair route, founder closeout, and share boundary."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v531 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v532 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v531 held until live stamp",
-        detail: "The release is share-ready only after v531 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v532 held until live stamp",
+        detail: "The release is share-ready only after v532 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

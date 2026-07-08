@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V532 Beta Command Decision Ledger
+
+V532 adds Beta Command Decision Ledger to the Build Tracker Release Doctor. It retains go, hold, freeze, and repair commands with owner, proof state, next review date, expiry rule, repair route, founder closeout, and no-private-data boundary.
+
+- Release label: `NiveshNadi Phase 1 v532 Beta Command Decision Ledger`
+- Data/version key: `20260708-v532-01`
+- Product surface: Build Tracker > Release Doctor > Beta command decision ledger
+- Risk boundary: Static founder-command ledger only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V531 Account Custody Retention Register
 
 V531 adds Account Custody Retention Register to the Build Tracker Release Doctor. It names retained object families, owners, purposes, support-safe statuses, redaction scans, review cadence, and retirement rules before account custody widens.

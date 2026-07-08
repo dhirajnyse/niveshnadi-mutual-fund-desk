@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V551 Account Retention Job Acceptance Harness
+
+V551 adds Account Retention Job Acceptance Harness to the Build Tracker Release Doctor. It turns retention job blueprints into dry-run, owner, failure, support evidence, redaction, and founder signoff proof.
+
+- Release label: `NiveshNadi Phase 1 v551 Account Retention Job Acceptance Harness`
+- Data/version key: `20260709-v551-01`
+- Product surface: Build Tracker > Release Doctor > Account retention job acceptance harness
+- Risk boundary: Static job acceptance harness only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Pending batch checks.
+
 ## V550 Payment Closeout SLA Guard
 
 V550 adds Payment Closeout SLA Guard to the Build Tracker Release Doctor. It gives repaired, held, refund-review, rollback, support-held, and founder finance rows explicit owner timing before launch language widens.

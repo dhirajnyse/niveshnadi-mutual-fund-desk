@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v550-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v550 Payment Closeout SLA Guard";
+const DATA_VERSION = "20260709-v551-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v551 Account Retention Job Acceptance Harness";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment closeout SLA guard",
+    label: "Account retention job acceptance harness",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Warn when payment closeout, refund review, rollback, or support-held rows age past owner SLA."
+    route: "#account-readiness",
+    detail: "Turn retention job blueprint rows into dry-run acceptance checks with owner, failure, and support-safe proof."
   },
   {
     label: "Mobile calm audit",
@@ -17582,6 +17582,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Closeout SLA Guard is a static payment SLA room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountRetentionJobAcceptanceHarness",
+        label: "Account retention job acceptance harness",
+        verdict: "Retention jobs need dry-run acceptance",
+        receiptId: ["NN", "ACCOUNT", "RETENTION", "JOB", "ACCEPTANCE", "HARNESS", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-retention-job-acceptance-harness",
+        copyLabel: "Copy job harness",
+        score: 83,
+        rule: "Retention job blueprints should not approach production until dry-run acceptance, owner acceptance, failure replay acceptance, support evidence acceptance, redaction acceptance, and founder signoff are visible.",
+        lanes: [
+          {
+            label: "Dry-run acceptance",
+            owner: "Backend custody",
+            method: "DRYRUN",
+            route: "account.retention.dry-run-acceptance",
+            proof: "Record dry-run result, object family, affected count placeholder, no-private-payload boundary, and release hold.",
+            readyWhen: "Ready when the job can prove a dry run before any schedule widens.",
+            hold: "Hold if dry-run result or object family is missing.",
+            score: 83
+          },
+          {
+            label: "Owner acceptance",
+            owner: "Data custody desk",
+            method: "OWNER",
+            route: "account.retention.owner-acceptance",
+            proof: "Record accepting owner, fallback owner, stale-owner test, review date, and escalation route.",
+            readyWhen: "Ready when ownership cannot silently go stale before execution.",
+            hold: "Hold if accepting owner or fallback owner is absent.",
+            score: 83
+          },
+          {
+            label: "Failure acceptance",
+            owner: "Reliability desk",
+            method: "FAILURE",
+            route: "account.retention.failure-acceptance",
+            proof: "Accept missed schedule, stale owner, redaction failure, delete conflict, export conflict, and rollback-safe results.",
+            readyWhen: "Ready when the job's failure modes are accepted before production.",
+            hold: "Hold if failure replay acceptance or rollback-safe result is missing.",
+            score: 82
+          },
+          {
+            label: "Support evidence acceptance",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "account.retention.support-evidence-acceptance",
+            proof: "Accept public-safe support wording, excluded private fields, support status, and receipt ID.",
+            readyWhen: "Ready when support can explain the job without touching private saved content.",
+            hold: "Hold if support-safe wording or receipt ID is absent.",
+            score: 82
+          },
+          {
+            label: "Redaction acceptance",
+            owner: "Privacy review desk",
+            method: "REDACTION",
+            route: "account.retention.redaction-acceptance",
+            proof: "Accept blocked fields, redaction scan state, retained fields, and deletion/export conflict rules.",
+            readyWhen: "Ready when retention acceptance proves private fields stay out.",
+            hold: "Hold if redaction scan or blocked-field list is missing.",
+            score: 83
+          },
+          {
+            label: "Founder harness signoff",
+            owner: "Founder release desk",
+            method: "SIGNOFF",
+            route: "account.retention.founder-harness-signoff",
+            proof: "Record founder signoff, unresolved blockers, dry-run acceptance summary, and production hold.",
+            readyWhen: "Ready when founder sees whether the harness is accepted, held, or blocked.",
+            hold: "Hold if founder signoff or production hold is missing.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "Account retention job acceptance harness records dry-run acceptance only; it does not schedule, execute, export, delete, or authenticate accounts.",
+          "Every accepted job harness needs dry-run, owner, failure replay, support evidence, redaction, and founder signoff proof.",
+          "A retained object family must have explicit accepted fields and blocked private fields before production work widens.",
+          "Support evidence must be public-safe and must not include private saved research, account payloads, or identifiers.",
+          "No retention job acceptance row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No retention job may move from blueprint to production without dry-run acceptance.",
+          "No stale owner, redaction failure, delete conflict, or export conflict may remain unresolved.",
+          "No support evidence may expose private saved research or identifiers.",
+          "No account retention acceptance row may expose private identifiers, account payloads, credentials, auth tokens, or payment data."
+        ],
+        receiptFields: [
+          "account_retention_job_acceptance_harness_id",
+          "release_key",
+          "job_contract_id",
+          "dry_run_acceptance",
+          "owner_acceptance",
+          "failure_replay_acceptance",
+          "support_evidence_acceptance",
+          "redaction_acceptance",
+          "founder_signoff",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Account Retention Job Acceptance Harness is a static job acceptance harness only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -17754,14 +17853,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment closeout rows now have SLA guardrails; next releases should lock account retention job acceptance harness, beta command archive aging guard, support repair owner SLA lane, source correction renewal receipt, and payment replay acceptance receipt.",
+      rule: "Account retention jobs now have acceptance harness proof; next releases should lock beta command archive aging guard, support repair owner SLA lane, source correction renewal receipt, payment replay acceptance receipt, and account retention dry-run receipt vault.",
       lanes: [
-        {
-          version: "v551",
-          label: "Account retention job acceptance harness",
-          route: "#account-readiness",
-          detail: "Turn retention job blueprint rows into dry-run acceptance checks with owner, failure, and support-safe proof."
-        },
         {
           version: "v552",
           label: "Beta command archive aging guard",
@@ -17785,14 +17878,27 @@ function buildTrackerConfig() {
           label: "Payment replay acceptance receipt",
           route: "#payment-wiring",
           detail: "Turn accepted payment replay rows into owner-signed receipts with refund, rollback, and support-safe proof."
+        },
+        {
+          version: "v556",
+          label: "Account retention dry-run receipt vault",
+          route: "#account-readiness",
+          detail: "Collect accepted retention dry-run receipts with object family, owner, redaction, and support-safe proof."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Payment closeout SLA proof visible",
+      verdict: "Account retention acceptance proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v550",
+          key: "20260709-v550-01",
+          commit: "7e0474f",
+          receiptId: "NN-SHARE-RECEIPT-20260709V55001",
+          proof: "Payment Closeout SLA Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v549",
           key: "20260709-v549-01",
@@ -17820,13 +17926,6 @@ function buildTrackerConfig() {
           commit: "5e58ca8",
           receiptId: "NN-SHARE-RECEIPT-20260709V54601",
           proof: "Account Retention Job Blueprint added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
-        },
-        {
-          version: "v545",
-          key: "20260709-v545-01",
-          commit: "63c3b0f",
-          receiptId: "NN-SHARE-RECEIPT-20260709V54501",
-          proof: "Payment Incident Replay Rehearsal added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -17864,13 +17963,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v550",
-        detail: "Payment Closeout SLA Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v551",
+        detail: "Account Retention Job Acceptance Harness is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v550 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v551 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -17879,25 +17978,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v550 held until live stamp",
-        detail: "Do not share v550 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v551 held until live stamp",
+        detail: "Do not share v551 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v550 payment SLA guard",
-        detail: "Payment Closeout SLA Guard gives repaired, held, refund-review, rollback, support-held, and founder finance rows explicit owner timing."
+        value: "v551 retention acceptance",
+        detail: "Account Retention Job Acceptance Harness turns retention job blueprints into dry-run, owner, failure, support evidence, redaction, and founder signoff proof."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v550 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v551 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v550 held until live stamp",
-        detail: "The release is share-ready only after v550 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v551 held until live stamp",
+        detail: "The release is share-ready only after v551 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

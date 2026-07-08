@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v551 Account Retention Job Acceptance Harness
+
+- Version: `0.551.0`
+- Data version: `20260709-v551-01`
+- Changes made: Added Account Retention Job Acceptance Harness to the Build Tracker Release Doctor with dry-run acceptance, owner acceptance, failure acceptance, support evidence acceptance, redaction acceptance, founder harness signoff, account retention job acceptance receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v550 commit, next-batch planner roll-forward to v552-v556, and release markers rolled forward to v551.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v551 marker scan.
+- Known risks: Account Retention Job Acceptance Harness is a static job acceptance harness only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v550 Payment Closeout SLA Guard
 
 - Version: `0.550.0`

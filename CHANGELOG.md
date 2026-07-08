@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v515 Payment Observability Receipt Board
+
+- Version: `0.515.0`
+- Data version: `20260708-v515-01`
+- Changes made: Added Payment Observability Receipt Board to the Build Tracker Release Doctor with webhook log envelope, alert threshold register, dead-letter monitor, reconciliation proof, support notice route, incident replay closeout, payment observability receipt fields, proof archive roll-forward with v514 commit, next-batch planner roll-forward to v516-v520, and release markers rolled forward to v515.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v515 marker scan.
+- Known risks: Payment Observability Receipt Board is a static observability contract only; it does not process payments, fetch gateway events, store payment data, reconcile production ledgers, issue refunds, or approve live payment mode.
+
 ## NiveshNadi Phase 1 v514 Source Connector Failure Replay Board
 
 - Version: `0.514.0`

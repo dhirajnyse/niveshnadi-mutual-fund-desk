@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V515 Payment Observability Receipt Board
+
+V515 adds Payment Observability Receipt Board to the Build Tracker Release Doctor. It names webhook log envelopes, alert threshold registers, dead-letter monitors, reconciliation proof, support notice routes, and incident replay closeout before live payment mode can widen.
+
+- Release label: `NiveshNadi Phase 1 v515 Payment Observability Receipt Board`
+- Data/version key: `20260708-v515-01`
+- Product surface: Build Tracker > Release Doctor > Payment observability receipt board
+- Risk boundary: Static observability contract only; it does not process payments, fetch gateway events, store payment data, reconcile production ledgers, issue refunds, or approve live payment mode.
+- Verification status: Pending batch checks.
+
 ## V514 Source Connector Failure Replay Board
 
 V514 adds Source Connector Failure Replay Board to the Build Tracker Release Doctor. It replays timeout and retry, stale source freeze, parser rejection quarantine, reviewer block, rollback and correction notice, and dead-letter closeout before live source connector widening.

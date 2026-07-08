@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v514-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v514 Source Connector Failure Replay Board";
+const DATA_VERSION = "20260708-v515-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v515 Payment Observability Receipt Board";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v513 passed release checks on commit 21e6811. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v514 passed release checks on commit b54a68e. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v513 local checks passed",
+      outcome: "Previous outcome: v514 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51301",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V51401",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -13946,6 +13946,110 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Connector Failure Replay Board is a static failure-replay contract only; it does not fetch live sources, run parsers, correct production data, publish notices, or approve connector widening."
+      },
+      {
+        key: "paymentObservabilityReceiptBoard",
+        label: "Payment observability receipt board",
+        verdict: "Billing signals need receipts before live mode",
+        receiptId: ["NN", "PAYMENT", "OBSERVABILITY", "RECEIPT", "BOARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-observability-receipt-board",
+        copyLabel: "Copy payment observability",
+        score: 77,
+        rule: "No payment path should widen until webhook logs, alert thresholds, dead-letter events, reconciliation proof, support notices, and incident replay close with receipt IDs and no-payment-data retention boundaries.",
+        lanes: [
+          {
+            label: "Webhook log envelope",
+            owner: "Payment owner",
+            method: "RECEIPT",
+            route: "payment.observability.webhook-envelope",
+            proof: "Name event family, event ID, idempotency key, received time, signature check, masked account reference, and replay state.",
+            readyWhen: "Ready when every payment event can be matched to a receipt without storing card, UPI, bank, or gateway secret data.",
+            hold: "Hold if checkout success, failure, refund, or entitlement state can appear without a webhook receipt.",
+            score: 78
+          },
+          {
+            label: "Alert threshold register",
+            owner: "Founder support desk",
+            method: "RECEIPT",
+            route: "payment.observability.alert-threshold",
+            proof: "Name alert family, threshold, owner, response window, escalation route, pause trigger, and closeout memo.",
+            readyWhen: "Ready when failed, delayed, duplicate, refund, and reconciliation alerts have owner-visible thresholds.",
+            hold: "Hold if alert rules are memory-based, hidden in code, or missing support-owner response windows.",
+            score: 77
+          },
+          {
+            label: "Dead-letter monitor",
+            owner: "Backend owner",
+            method: "REPLAY",
+            route: "payment.observability.dead-letter-monitor",
+            proof: "Replay undelivered event, retry count, discard rule, owner, support impact, and manual repair decision.",
+            readyWhen: "Ready when dead-letter events cannot silently block entitlement, refund, invoice, or support status.",
+            hold: "Hold if dead-letter events lack owner, retry ceiling, discard rule, or user-safe status copy.",
+            score: 76
+          },
+          {
+            label: "Reconciliation proof",
+            owner: "Finance desk",
+            method: "MATCH",
+            route: "payment.observability.reconciliation-proof",
+            proof: "Match payment event, entitlement state, invoice receipt, refund state, support notice, and daily reconciliation result.",
+            readyWhen: "Ready when payment, entitlement, and invoice rows can disagree only inside a visible repair queue.",
+            hold: "Hold if reconciliation cannot explain duplicate, delayed, refunded, failed, or support-held states.",
+            score: 78
+          },
+          {
+            label: "Support notice route",
+            owner: "Support captain",
+            method: "COPY",
+            route: "payment.observability.support-notice",
+            proof: "Write user-safe pending, failed, refunded, duplicate, support-held, and resolved status copy with owner route.",
+            readyWhen: "Ready when support can answer payment status without exposing gateway payloads or promising advice.",
+            hold: "Hold if payment copy pressures purchase, hides refund route, or mentions private gateway details.",
+            score: 77
+          },
+          {
+            label: "Incident replay closeout",
+            owner: "Founder release desk",
+            method: "CLOSEOUT",
+            route: "payment.observability.incident-replay",
+            proof: "Replay incident start, affected events, freeze decision, repair action, customer-safe notice, and founder signoff.",
+            readyWhen: "Ready when payment incidents can freeze widening, repair state, and leave an audit-ready closeout.",
+            hold: "Hold if incidents are only discussed in chat or cannot produce a receipt trail.",
+            score: 76
+          }
+        ],
+        operatingRules: [
+          "Observability is required before live mode; successful checkout UI is not enough.",
+          "Every payment event names event family, idempotency key, masked account route, owner, and repair state.",
+          "Alerts, dead letters, reconciliation misses, support notices, and incidents must be visible before paid cohort widening.",
+          "Support copy must explain status without storing or revealing gateway payloads.",
+          "No receipt may retain card, UPI, bank, PAN, folio, CAS, contact data, credentials, private notes, or distributor-client records."
+        ],
+        noGoLines: [
+          "No live payment path may widen while webhook logs, alert thresholds, dead-letter repair, reconciliation proof, or support notices are invisible.",
+          "No payment observability receipt may store raw payment payloads, card, UPI, bank, gateway secret, PAN, folio, CAS, contact data, credentials, or private notes.",
+          "No entitlement, refund, invoice, or support state may be treated as settled until reconciliation proof matches.",
+          "No payment incident may close without affected event IDs, repair action, user-safe notice, and founder signoff."
+        ],
+        receiptFields: [
+          "payment_observability_receipt_board_id",
+          "release_key",
+          "payment_event_family",
+          "provider_event_id",
+          "idempotency_key",
+          "webhook_signature_state",
+          "alert_family",
+          "dead_letter_state",
+          "reconciliation_result",
+          "invoice_receipt_id",
+          "refund_state",
+          "support_notice_id",
+          "incident_replay_id",
+          "founder_closeout_memo_id",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Payment Observability Receipt Board is a static observability contract only; it does not process payments, fetch gateway events, store payment data, reconcile production ledgers, issue refunds, or approve live payment mode."
       }
     ],
     executiveCalmCompression: {
@@ -14118,14 +14222,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Connector failure replay closes the first source-failure bridge; next releases should lock billing observability, account recovery smoke proof, founder beta release evidence, support escalation analytics, and source incident release notes.",
+      rule: "Payment observability receipts close the billing incident bridge; next releases should lock account recovery smoke proof, founder beta release evidence, support escalation analytics, source incident release notes, and payment incident command memos.",
       lanes: [
-        {
-          version: "v515",
-          label: "Payment observability receipt board",
-          route: "#payment-wiring",
-          detail: "Name payment logs, alert thresholds, support notices, retry owners, and reconciliation proof before sandbox moves toward live mode."
-        },
         {
           version: "v516",
           label: "Account recovery smoke proof board",
@@ -14149,6 +14247,12 @@ function buildTrackerConfig() {
           label: "Source incident release notes",
           route: "#correction-notice",
           detail: "Turn rollback, correction, affected surfaces, reviewer signoff, and user-safe wording into source incident notes."
+        },
+        {
+          version: "v520",
+          label: "Payment incident command memo",
+          route: "#payment-wiring",
+          detail: "Convert payment alerts, dead letters, reconciliation misses, support notices, and founder decisions into one incident command memo."
         }
       ]
     },
@@ -14157,6 +14261,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v514",
+          key: "20260708-v514-01",
+          commit: "b54a68e",
+          receiptId: "NN-SHARE-RECEIPT-20260708V51401",
+          proof: "Source Connector Failure Replay Board added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v513",
           key: "20260708-v513-01",
@@ -14184,13 +14295,6 @@ function buildTrackerConfig() {
           commit: "1827367",
           receiptId: "NN-SHARE-RECEIPT-20260708V51001",
           proof: "Payment Provider Sandbox Integration Plan added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v509",
-          key: "20260708-v509-01",
-          commit: "a451e52",
-          receiptId: "NN-SHARE-RECEIPT-20260708V50901",
-          proof: "Live Source Connector Spike Plan added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -14228,13 +14332,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v514",
-        detail: "Source Connector Failure Replay Board is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v515",
+        detail: "Payment Observability Receipt Board is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v514 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v515 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -14243,25 +14347,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v514 held until live stamp",
-        detail: "Do not share v514 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v515 held until live stamp",
+        detail: "Do not share v515 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v514 source failure replay",
-        detail: "Source Connector Failure Replay Board gathers timeout, stale source, parser rejection, reviewer block, rollback, correction notice, and dead-letter closeout before connector widening."
+        value: "v515 payment observability",
+        detail: "Payment Observability Receipt Board gathers webhook logs, alert thresholds, dead letters, reconciliation proof, support notices, and incident closeout before live payment widening."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v514 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v515 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v514 held until live stamp",
-        detail: "The release is share-ready only after v514 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v515 held until live stamp",
+        detail: "The release is share-ready only after v515 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

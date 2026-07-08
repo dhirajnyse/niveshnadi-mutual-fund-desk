@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v528 Support Knowledge Handoff
+
+- Version: `0.528.0`
+- Data version: `20260708-v528-01`
+- Changes made: Added Support Knowledge Handoff to the Build Tracker Release Doctor with approved reply scripts, escalation route map, refund boundary, source correction wording, private-data exclusions, founder support signoff, support handoff receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v527 commit, next-batch planner roll-forward to v529-v533, and release markers rolled forward to v528.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v528 marker scan.
+- Known risks: Support Knowledge Handoff is a static support-memory packet only; it does not send replies, resolve tickets, process refunds, collect private data, approve recommendations, or approve beta support widening.
+
 ## NiveshNadi Phase 1 v527 Beta Readiness Command Score
 
 - Version: `0.527.0`

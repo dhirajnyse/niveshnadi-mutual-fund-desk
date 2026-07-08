@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V528 Support Knowledge Handoff
+
+V528 adds Support Knowledge Handoff to the Build Tracker Release Doctor. It turns approved replies, escalation routes, refund boundaries, source correction wording, private-data exclusions, and founder signoff into one support-safe packet.
+
+- Release label: `NiveshNadi Phase 1 v528 Support Knowledge Handoff`
+- Data/version key: `20260708-v528-01`
+- Product surface: Build Tracker > Release Doctor > Support knowledge handoff
+- Risk boundary: Static support-memory packet only; it does not send replies, resolve tickets, process refunds, collect private data, approve recommendations, or approve beta support widening.
+- Verification status: Pending batch checks.
+
 ## V527 Beta Readiness Command Score
 
 V527 adds Beta Readiness Command Score to the Build Tracker Release Doctor. It collapses founder, support, source, payment, account, and evidence states into one go, hold, freeze, or repair command before the next beta wave opens.

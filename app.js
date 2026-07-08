@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v527-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v527 Beta Readiness Command Score";
+const DATA_VERSION = "20260708-v528-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v528 Support Knowledge Handoff";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta readiness command score",
+    label: "Support knowledge handoff",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Convert founder, support, source, payment, account, and evidence states into one go, hold, or freeze command."
+    route: "#paid-beta-support-ledger",
+    detail: "Turn approved replies, escalation routes, refund boundaries, and privacy exclusions into one support handoff."
   },
   {
     label: "Mobile calm audit",
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v526 passed release checks on commit 29e5c41. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v527 passed release checks on commit dea6e52. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v526 local checks passed",
+      outcome: "Previous outcome: v527 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52601",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52701",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -15277,6 +15277,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Readiness Command Score is a static founder command summary only; it does not invite users, process payments, grant access, verify live data, recover accounts, approve advice, or approve beta expansion."
+      },
+      {
+        key: "supportKnowledgeHandoff",
+        label: "Support knowledge handoff",
+        verdict: "Support memory needs one safe packet",
+        receiptId: ["NN", "SUPPORT", "KNOWLEDGE", "HANDOFF", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-knowledge-handoff",
+        copyLabel: "Copy support handoff",
+        score: 82,
+        rule: "No founder beta support lane should widen until approved reply scripts, escalation routes, refund boundaries, source correction wording, private-data exclusions, and founder signoff live in one support-safe handoff packet.",
+        lanes: [
+          {
+            label: "Approved reply scripts",
+            owner: "Support captain",
+            method: "SCRIPT",
+            route: "support.handoff.approved-replies",
+            proof: "List approved replies for research-only boundary, source doubt, refund doubt, account state, and escalation.",
+            readyWhen: "Ready when support can answer common cases without rewriting policy live.",
+            hold: "Hold if scripts drift into advice, urgency, payment promise, or data collection.",
+            score: 83
+          },
+          {
+            label: "Escalation route map",
+            owner: "Support captain",
+            method: "ROUTE",
+            route: "support.handoff.escalation-routes",
+            proof: "Map source, payment, account, privacy, refund, and founder command escalations to one owner each.",
+            readyWhen: "Ready when every support reply has a next owner if it cannot close.",
+            hold: "Hold if escalation owner, review window, or closeout receipt is missing.",
+            score: 82
+          },
+          {
+            label: "Refund boundary",
+            owner: "Billing boundary",
+            method: "BOUNDARY",
+            route: "support.handoff.refund-boundary",
+            proof: "Write refund visible state, refund review owner, no-promise copy, and payment reconciliation route.",
+            readyWhen: "Ready when refund replies are clear without promising refund outcome.",
+            hold: "Hold if refund copy promises approval, timing, or gateway action.",
+            score: 80
+          },
+          {
+            label: "Source correction wording",
+            owner: "Source desk",
+            method: "COPY",
+            route: "support.handoff.source-correction",
+            proof: "Carry accepted correction wording, reviewer scope, affected surfaces, stale claim caveat, and recheck path.",
+            readyWhen: "Ready when source doubts receive calm correction context.",
+            hold: "Hold if wording exceeds reviewer scope or hides old/corrected state.",
+            score: 82
+          },
+          {
+            label: "Private-data exclusions",
+            owner: "Privacy desk",
+            method: "EXCLUDE",
+            route: "support.handoff.private-data",
+            proof: "Repeat blocked PAN, folio, CAS, bank, card, UPI, contact, credential, private-note, and payment-payload requests.",
+            readyWhen: "Ready when support can refuse private data politely and consistently.",
+            hold: "Hold if handoff asks for identifiers or unsupported uploads.",
+            score: 85
+          },
+          {
+            label: "Founder support signoff",
+            owner: "Founder release desk",
+            method: "SIGN",
+            route: "support.handoff.founder-signoff",
+            proof: "Founder signs support ceiling, reply pack, escalation map, refund boundary, privacy exclusion, and next review date.",
+            readyWhen: "Ready when the handoff can be used by support without live founder interpretation.",
+            hold: "Hold if signoff omits support ceiling, next review, or release hold state.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Support knowledge stays compact, approved, and user-safe.",
+          "Every support path shows what can be answered, what must escalate, and what data must not be requested.",
+          "Support replies inherit reviewer, billing, account, and founder scope without widening it.",
+          "Handoff copy should calm the user and protect the product from advice, refund, payment, account, and privacy overclaims.",
+          "No support handoff may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No support handoff may authorize personalized advice, suitability approval, execution, guaranteed returns, payment success, refund success, or account recovery.",
+          "No support script may ask for PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records.",
+          "No escalation may close without owner, review window, support-safe status, and closeout receipt.",
+          "No founder beta support lane may widen if reply scripts, refund boundaries, or private-data exclusions are missing."
+        ],
+        receiptFields: [
+          "support_knowledge_handoff_id",
+          "release_key",
+          "reply_pack_version",
+          "escalation_route_map",
+          "refund_boundary_state",
+          "source_correction_scope",
+          "private_data_exclusion",
+          "support_ceiling",
+          "founder_signoff_id",
+          "next_review_date",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Support Knowledge Handoff is a static support-memory packet only; it does not send replies, resolve tickets, process refunds, collect private data, approve recommendations, or approve beta support widening."
       }
     ],
     executiveCalmCompression: {
@@ -15449,14 +15549,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta readiness now has one command score; next releases should lock support knowledge handoff, source correction public changelog, payment incident archive, account custody retention register, and beta command decision ledger.",
+      rule: "Support knowledge now has a safe handoff; next releases should lock source correction public changelog, payment incident archive, account custody retention register, beta command decision ledger, and support handoff drift audit.",
       lanes: [
-        {
-          version: "v528",
-          label: "Support knowledge handoff",
-          route: "#paid-beta-support-ledger",
-          detail: "Turn approved support replies, escalation routes, refund boundaries, and private-data exclusions into a compact handoff pack."
-        },
         {
           version: "v529",
           label: "Source correction public changelog",
@@ -15480,6 +15574,12 @@ function buildTrackerConfig() {
           label: "Beta command decision ledger",
           route: "#founder-beta-operating-room",
           detail: "Retain each go, hold, freeze, or repair command with owner, proof state, next review date, and no-private-data boundary."
+        },
+        {
+          version: "v533",
+          label: "Support handoff drift audit",
+          route: "#paid-beta-support-ledger",
+          detail: "Detect when support scripts, refund wording, source correction scope, or privacy exclusions drift from the approved handoff."
         }
       ]
     },
@@ -15488,6 +15588,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v527",
+          key: "20260708-v527-01",
+          commit: "dea6e52",
+          receiptId: "NN-SHARE-RECEIPT-20260708V52701",
+          proof: "Beta Readiness Command Score added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v526",
           key: "20260708-v526-01",
@@ -15515,13 +15622,6 @@ function buildTrackerConfig() {
           commit: "aa079c5",
           receiptId: "NN-SHARE-RECEIPT-20260708V52301",
           proof: "Support Reply Quality Audit added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v522",
-          key: "20260708-v522-01",
-          commit: "2d36ec2",
-          receiptId: "NN-SHARE-RECEIPT-20260708V52201",
-          proof: "Beta Founder Closeout Scorecard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -15559,13 +15659,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v527",
-        detail: "Beta Readiness Command Score is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v528",
+        detail: "Support Knowledge Handoff is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v527 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v528 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -15574,25 +15674,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v527 held until live stamp",
-        detail: "Do not share v527 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v528 held until live stamp",
+        detail: "Do not share v528 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v527 beta command score",
-        detail: "Beta Readiness Command Score converts founder, support, source, payment, account, and evidence states into one go, hold, freeze, or repair command."
+        value: "v528 support handoff",
+        detail: "Support Knowledge Handoff turns approved replies, escalation routes, refund boundaries, source correction wording, and privacy exclusions into one safe packet."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v527 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v528 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v527 held until live stamp",
-        detail: "The release is share-ready only after v527 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v528 held until live stamp",
+        detail: "The release is share-ready only after v528 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

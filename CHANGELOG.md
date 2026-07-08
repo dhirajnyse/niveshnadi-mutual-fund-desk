@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v527 Beta Readiness Command Score
+
+- Version: `0.527.0`
+- Data version: `20260708-v527-01`
+- Changes made: Added Beta Readiness Command Score to the Build Tracker Release Doctor with founder command, support command, source command, payment command, account command, evidence command, beta command receipt fields, Build Tracker current-sprint copy alignment, proof archive roll-forward with v526 commit, next-batch planner roll-forward to v528-v532, and release markers rolled forward to v527.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v527 marker scan.
+- Known risks: Beta Readiness Command Score is a static founder command summary only; it does not invite users, process payments, grant access, verify live data, recover accounts, approve advice, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v526 Account Custody Export Drill
 
 - Version: `0.526.0`

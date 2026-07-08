@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260708-v526-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v526 Account Custody Export Drill";
+const DATA_VERSION = "20260708-v527-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v527 Beta Readiness Command Score";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Live-data readiness focus",
+    label: "Beta readiness command score",
     status: "Shipping now",
-    route: "#source-receipts",
-    detail: "Bring source-date, citation, TER, holdings, and riskometer gaps into one next action."
+    route: "#founder-beta-operating-room",
+    detail: "Convert founder, support, source, payment, account, and evidence states into one go, hold, or freeze command."
   },
   {
     label: "Mobile calm audit",
@@ -10419,11 +10419,11 @@ function buildTrackerConfig() {
     shareReceipt: {
       label: "Release share receipt",
       verdict: "Share after live stamp",
-      detail: `Last release v525 passed release checks on commit ddf3931. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
+      detail: `Last release v526 passed release checks on commit 29e5c41. Share this release only after release-stamp.txt returns ${DATA_VERSION}.`,
       proof: "Fresh URL plus stamp match",
-      outcome: "Previous outcome: v525 local checks passed",
+      outcome: "Previous outcome: v526 local checks passed",
       receiptId: ["NN", "SHARE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
-      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52501",
+      previousReceiptId: "NN-SHARE-RECEIPT-20260708V52601",
       validWhen: `Valid only when release-stamp.txt returns ${DATA_VERSION} and the fresh Build Tracker URL opens this build.`,
       recheckIf: "Recheck if the browser cache, Pages deploy, copied key, or release-stamp file shows a different build.",
       supersededWhen: `Superseded when release-stamp.txt returns any key other than ${DATA_VERSION} or a newer release note is shared.`,
@@ -15176,6 +15176,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Custody Export Drill is a static account-custody rehearsal only; it does not authenticate users, export data, delete data, collect identifiers, contact users, recover accounts, or approve account custody widening."
+      },
+      {
+        key: "betaReadinessCommandScore",
+        label: "Beta readiness command score",
+        verdict: "One beta command before the next wave",
+        receiptId: ["NN", "BETA", "READINESS", "COMMAND", "SCORE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-readiness-command-score",
+        copyLabel: "Copy beta command score",
+        score: 83,
+        rule: "No next founder beta wave should open until founder, support, source, payment, account, evidence, and user-safe copy states collapse into one go, hold, or freeze command with a named owner.",
+        lanes: [
+          {
+            label: "Founder command",
+            owner: "Founder release desk",
+            method: "DECIDE",
+            route: "beta.command.founder",
+            proof: "Write go, hold, freeze, or repair with current score, top blocker, next owner, and review date.",
+            readyWhen: "Ready when the founder command is one sentence and one owner.",
+            hold: "Hold if the command is split across rooms or sounds like production approval.",
+            score: 84
+          },
+          {
+            label: "Support command",
+            owner: "Support captain",
+            method: "CHECK",
+            route: "beta.command.support",
+            proof: "Score support reply quality, open-case load, escalation owner, refund confusion, and privacy fear.",
+            readyWhen: "Ready when support can absorb one more tiny wave without advice or privacy confusion.",
+            hold: "Hold if support ceiling, reply template, or escalation closeout is unclear.",
+            score: 82
+          },
+          {
+            label: "Source command",
+            owner: "Source desk",
+            method: "VERIFY",
+            route: "beta.command.source",
+            proof: "Score source freshness, correction archive, affected surfaces, reviewer state, and rollback route.",
+            readyWhen: "Ready when the next beta wave sees source caveats before claims.",
+            hold: "Hold if any high-visibility claim lacks source date, correction state, or reviewer scope.",
+            score: 81
+          },
+          {
+            label: "Payment command",
+            owner: "Billing boundary",
+            method: "RECONCILE",
+            route: "beta.command.payment",
+            proof: "Score checkout, invoice, webhook, entitlement, refund rollback, support notice, and mismatch repair.",
+            readyWhen: "Ready when paid access proof is replayable without live gateway data.",
+            hold: "Hold if reconciliation mismatch, refund route, or support notice is unresolved.",
+            score: 80
+          },
+          {
+            label: "Account command",
+            owner: "Account platform",
+            method: "CUSTODY",
+            route: "beta.command.account",
+            proof: "Score export scope, deletion rehearsal, retained receipt, support-safe status, and restore boundary.",
+            readyWhen: "Ready when account custody is described as rehearsed, held, or ready without overclaiming.",
+            hold: "Hold if export/delete copy is mistaken for live account backend proof.",
+            score: 83
+          },
+          {
+            label: "Evidence command",
+            owner: "Founder release desk",
+            method: "PACK",
+            route: "beta.command.evidence",
+            proof: "Score cohort cap, invite copy, receipt family, support ceiling, refund stop, and no-private-data proof.",
+            readyWhen: "Ready when the evidence packet supports one next-wave command.",
+            hold: "Hold if evidence is present but not connected to a beta decision.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "The beta command score summarizes proof rooms; it does not replace them.",
+          "Every command names go, hold, freeze, or repair and one next owner.",
+          "A green visual product is not enough; source, payment, account, support, and evidence states must agree.",
+          "Next-wave expansion remains tiny, founder-reviewed, and proof-first.",
+          "No command score may retain PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, or distributor-client records."
+        ],
+        noGoLines: [
+          "No next beta wave may open without a single founder command and a named proof owner.",
+          "No command score may imply personalized advice, suitability approval, execution, guaranteed returns, payment readiness, live data certainty, or production launch.",
+          "No support, payment, source, account, or evidence blocker may be hidden behind a high aggregate score.",
+          "No private identifiers, payment payloads, credentials, raw support notes, raw source artifacts, or distributor-client records may enter command proof."
+        ],
+        receiptFields: [
+          "beta_readiness_command_score_id",
+          "release_key",
+          "founder_command",
+          "support_command_state",
+          "source_command_state",
+          "payment_command_state",
+          "account_command_state",
+          "evidence_command_state",
+          "next_wave_state",
+          "owner",
+          "review_date",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Beta Readiness Command Score is a static founder command summary only; it does not invite users, process payments, grant access, verify live data, recover accounts, approve advice, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -15348,14 +15449,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account custody export and deletion promises now have a static drill; next releases should lock beta readiness command scoring, support knowledge handoff, source correction public changelog, payment incident archive, and account custody retention register.",
+      rule: "Beta readiness now has one command score; next releases should lock support knowledge handoff, source correction public changelog, payment incident archive, account custody retention register, and beta command decision ledger.",
       lanes: [
-        {
-          version: "v527",
-          label: "Beta readiness command score",
-          route: "#founder-beta-operating-room",
-          detail: "Convert founder closeout, support, source, payment, account, and evidence states into one beta readiness command."
-        },
         {
           version: "v528",
           label: "Support knowledge handoff",
@@ -15379,6 +15474,12 @@ function buildTrackerConfig() {
           label: "Account custody retention register",
           route: "#account-readiness",
           detail: "Register export, deletion, retained receipt, redaction scan, support-safe status, and owner review states for future account custody."
+        },
+        {
+          version: "v532",
+          label: "Beta command decision ledger",
+          route: "#founder-beta-operating-room",
+          detail: "Retain each go, hold, freeze, or repair command with owner, proof state, next review date, and no-private-data boundary."
         }
       ]
     },
@@ -15387,6 +15488,13 @@ function buildTrackerConfig() {
       verdict: "Retention rules visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v526",
+          key: "20260708-v526-01",
+          commit: "29e5c41",
+          receiptId: "NN-SHARE-RECEIPT-20260708V52601",
+          proof: "Account Custody Export Drill added and verified by syntax, static, security, diff hygiene, visual QA, push, and live stamp checks."
+        },
         {
           version: "v525",
           key: "20260708-v525-01",
@@ -15414,13 +15522,6 @@ function buildTrackerConfig() {
           commit: "2d36ec2",
           receiptId: "NN-SHARE-RECEIPT-20260708V52201",
           proof: "Beta Founder Closeout Scorecard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v521",
-          key: "20260708-v521-01",
-          commit: "df8c141",
-          receiptId: "NN-SHARE-RECEIPT-20260708V52101",
-          proof: "Account Recovery Policy Copy Room added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -15458,13 +15559,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v526",
-        detail: "Account Custody Export Drill is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v527",
+        detail: "Beta Readiness Command Score is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v526 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v527 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -15473,25 +15574,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v526 held until live stamp",
-        detail: "Do not share v526 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v527 held until live stamp",
+        detail: "Do not share v527 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v526 custody export drill",
-        detail: "Account Custody Export Drill rehearses export scope, expiry, deletion request, retained receipt, support-safe status, restore boundary, and founder closeout."
+        value: "v527 beta command score",
+        detail: "Beta Readiness Command Score converts founder, support, source, payment, account, and evidence states into one go, hold, freeze, or repair command."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v526 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v527 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v526 held until live stamp",
-        detail: "The release is share-ready only after v526 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v527 held until live stamp",
+        detail: "The release is share-ready only after v527 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

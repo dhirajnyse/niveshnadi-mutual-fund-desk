@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V527 Beta Readiness Command Score
+
+V527 adds Beta Readiness Command Score to the Build Tracker Release Doctor. It collapses founder, support, source, payment, account, and evidence states into one go, hold, freeze, or repair command before the next beta wave opens.
+
+- Release label: `NiveshNadi Phase 1 v527 Beta Readiness Command Score`
+- Data/version key: `20260708-v527-01`
+- Product surface: Build Tracker > Release Doctor > Beta readiness command score
+- Risk boundary: Static founder command summary only; it does not invite users, process payments, grant access, verify live data, recover accounts, approve advice, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V526 Account Custody Export Drill
 
 V526 adds Account Custody Export Drill to the Build Tracker Release Doctor. It rehearses export scope, expiry and download boundaries, delete request, retained receipt map, support-safe status, restore boundary, and founder closeout before account custody widens.

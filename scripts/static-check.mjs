@@ -211,6 +211,7 @@ assert(app.includes("sourceCorrectionRenewalReceipt") && app.includes("data-copy
 assert(app.includes("paymentReplayAcceptanceReceipt") && app.includes("data-copy-payment-replay-acceptance-receipt"), "app.js is missing v555 Payment Replay Acceptance Receipt.");
 assert(app.includes("accountRetentionDryRunReceiptVault") && app.includes("data-copy-account-retention-dry-run-receipt-vault"), "app.js is missing v556 Account Retention Dry-Run Receipt Vault.");
 assert(app.includes("betaCommandRenewalReceipt") && app.includes("data-copy-beta-command-renewal-receipt"), "app.js is missing v557 Beta Command Renewal Receipt.");
+assert(app.includes("supportRepairRenewalReceipt") && app.includes("data-copy-support-repair-renewal-receipt"), "app.js is missing v558 Support Repair Renewal Receipt.");
 assert(app.includes("visualRunnerResultArchive") && app.includes("productionLaunchProofCabinet"), "app.js is missing v484-v485 release doctor proof archives.");
 assert(app.includes("function visualRegressionRunnerEnvelopeRows") && !app.includes("resultRows: visualRegressionRunnerContract.runEnvelope"), "app.js has an unsafe visual runner sibling-object reference.");
 assert(app.includes("function renderBuildPhasesRoom") && app.includes("function makeBuildPhasesBrief") && app.includes("buildPhaseGridMarkup"), "app.js is missing Nadi Build Phases Room behavior.");

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v557-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v557 Beta Command Renewal Receipt";
+const DATA_VERSION = "20260709-v558-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v558 Support Repair Renewal Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command renewal receipt",
+    label: "Support repair renewal receipt",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Convert aged command archive rows into renewed founder receipts with replacement and release-copy proof."
+    route: "#paid-beta-support-ledger",
+    detail: "Turn refreshed support repair rows into renewed support-safe receipts with owner signoff."
   },
   {
     label: "Mobile calm audit",
@@ -18275,6 +18275,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Renewal Receipt is a static command renewal room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion."
+      },
+      {
+        key: "supportRepairRenewalReceipt",
+        label: "Support repair renewal receipt",
+        verdict: "Support repair needs renewal proof",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "RENEWAL", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-renewal-receipt",
+        copyLabel: "Copy support renewal",
+        score: 82,
+        rule: "Refreshed support repair rows should renew accepted repair, support-safe copy, owner signoff, regression check, escalation route, and founder support review before support memory widens.",
+        lanes: [
+          {
+            label: "Accepted repair renewal",
+            owner: "Support repair desk",
+            method: "REPAIR",
+            route: "support.repair.renewal.accepted_repair",
+            proof: "Renew accepted repair state, changed wording, affected reply family, and why the old repair can retire.",
+            readyWhen: "Ready when the refreshed repair is accepted or the row remains blocked.",
+            hold: "Hold if accepted repair state or retired wording is unclear.",
+            score: 82
+          },
+          {
+            label: "Support copy renewal",
+            owner: "Support captain",
+            method: "COPY",
+            route: "support.repair.renewal.support_copy",
+            proof: "Renew support-safe copy, research-only boundary, refund wording, source correction language, and escalation tone.",
+            readyWhen: "Ready when support copy can be reused without advice, refund promise, or private-data exposure.",
+            hold: "Hold if support copy implies advice, payment action, or personal-data handling.",
+            score: 83
+          },
+          {
+            label: "Owner signoff renewal",
+            owner: "Support owner",
+            method: "OWNER",
+            route: "support.repair.renewal.owner_signoff",
+            proof: "Record primary owner, fallback owner, signoff date, review cadence, and next support check.",
+            readyWhen: "Ready when owner accountability and review timing are visible.",
+            hold: "Hold if primary owner, fallback owner, or next review is absent.",
+            score: 82
+          },
+          {
+            label: "Regression check renewal",
+            owner: "QA desk",
+            method: "REGRESSION",
+            route: "support.repair.renewal.regression",
+            proof: "Rerun affected support scenarios, privacy wording, refund confusion, source correction, and entitlement mismatch checks.",
+            readyWhen: "Ready when repaired copy passes regression or names residual risk.",
+            hold: "Hold if a previous support failure can still replay.",
+            score: 82
+          },
+          {
+            label: "Escalation route renewal",
+            owner: "Escalation lead",
+            method: "ESCALATE",
+            route: "support.repair.renewal.escalation",
+            proof: "Refresh escalation owner, response window, freeze trigger, support ceiling, and cohort pause route.",
+            readyWhen: "Ready when support knows where the next unresolved case goes.",
+            hold: "Hold if escalation route or response window is unclear.",
+            score: 81
+          },
+          {
+            label: "Founder support renewal",
+            owner: "Founder desk",
+            method: "SIGNOFF",
+            route: "support.repair.renewal.founder",
+            proof: "Record founder review, support widening decision, unresolved residue, and release hold.",
+            readyWhen: "Ready when founder can accept, hold, or freeze the renewed support repair.",
+            hold: "Hold if founder review or support widening decision is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Support repair renewal receipt renews support-safe memory only; it does not send replies, issue refunds, process payments, or contact users.",
+          "Every renewed support repair needs accepted repair, support copy, owner signoff, regression check, escalation route, and founder support review.",
+          "Renewed support copy cannot widen launch language, payment language, refund language, account language, or source claims without the matching proof gates.",
+          "Support repair renewal receipts must exclude raw support notes, contact details, account payloads, payment payloads, and identifiers.",
+          "No support repair renewal row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No refreshed support repair may be renewed without accepted repair, owner signoff, and regression check.",
+          "No support copy may be reused if it implies advice, refund execution, payment processing, or account recovery.",
+          "No escalation route may stay hidden when unresolved residue remains.",
+          "No support repair renewal receipt may contact users or approve support widening by itself."
+        ],
+        receiptFields: [
+          "support_repair_renewal_receipt_id",
+          "release_key",
+          "refreshed_repair_id",
+          "accepted_repair_state",
+          "support_copy_state",
+          "owner_signoff_state",
+          "regression_check_state",
+          "escalation_route_state",
+          "founder_review_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Support Repair Renewal Receipt is a static support renewal room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
       }
     ],
     executiveCalmCompression: {
@@ -18447,14 +18546,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Aged beta command rows now have renewal receipts; next releases should lock support repair renewal receipt, source correction renewal aging guard, payment acceptance aging guard, account retention dry-run aging guard, and beta command renewal aging guard.",
+      rule: "Support repair rows now have renewal receipts; next releases should lock source correction renewal aging guard, payment acceptance aging guard, account retention dry-run aging guard, beta command renewal aging guard, and support repair renewal aging guard.",
       lanes: [
-        {
-          version: "v558",
-          label: "Support repair renewal receipt",
-          route: "#paid-beta-support-ledger",
-          detail: "Turn refreshed support repair rows into renewed support-safe receipts with owner signoff."
-        },
         {
           version: "v559",
           label: "Source correction renewal aging guard",
@@ -18478,14 +18571,27 @@ function buildTrackerConfig() {
           label: "Beta command renewal aging guard",
           route: "#founder-beta-operating-room",
           detail: "Warn when renewed beta commands age past owner review, conflict cleanup, release-copy, or expiry windows."
+        },
+        {
+          version: "v563",
+          label: "Support repair renewal aging guard",
+          route: "#paid-beta-support-ledger",
+          detail: "Warn when renewed support repairs age past copy review, owner signoff, regression, or escalation windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Beta command renewal proof visible",
+      verdict: "Support repair renewal proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v557",
+          key: "20260709-v557-01",
+          commit: "237a6bc",
+          receiptId: "NN-SHARE-RECEIPT-20260709V55701",
+          proof: "Beta Command Renewal Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v556",
           key: "20260709-v556-01",
@@ -18513,13 +18619,6 @@ function buildTrackerConfig() {
           commit: "f13d609",
           receiptId: "NN-SHARE-RECEIPT-20260709V55301",
           proof: "Support Repair Owner SLA Lane added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v552",
-          key: "20260709-v552-01",
-          commit: "ec8c9b5",
-          receiptId: "NN-SHARE-RECEIPT-20260709V55201",
-          proof: "Beta Command Archive Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -18557,13 +18656,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v557",
-        detail: "Beta Command Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v558",
+        detail: "Support Repair Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v557 runs syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v558 runs syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "03 Queued",
@@ -18572,25 +18671,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v557 held until live stamp",
-        detail: "Do not share v557 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v558 held until live stamp",
+        detail: "Do not share v558 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v557 beta command renewal",
-        detail: "Beta Command Renewal Receipt renews aged founder command rows with replacement, owner review, conflict cleanup, release-copy, founder memory, and next expiry proof."
+        value: "v558 support renewal",
+        detail: "Support Repair Renewal Receipt renews refreshed support rows with accepted repair, support copy, owner signoff, regression, escalation, and founder review proof."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v557 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v558 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v557 held until live stamp",
-        detail: "The release is share-ready only after v557 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v558 held until live stamp",
+        detail: "The release is share-ready only after v558 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

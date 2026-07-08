@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v558 Support Repair Renewal Receipt
+
+- Version: `0.558.0`
+- Data version: `20260709-v558-01`
+- Changes made: Added Support Repair Renewal Receipt to the Build Tracker Release Doctor with accepted repair renewal, support copy renewal, owner signoff renewal, regression check renewal, escalation route renewal, founder support renewal, support repair renewal receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v557 commit, next-batch planner roll-forward to v559-v563, and release markers rolled forward to v558.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; Git diff hygiene check; v558 marker scan.
+- Known risks: Support Repair Renewal Receipt is a static support renewal room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+
 ## NiveshNadi Phase 1 v557 Beta Command Renewal Receipt
 
 - Version: `0.557.0`

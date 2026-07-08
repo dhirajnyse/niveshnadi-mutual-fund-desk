@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V558 Support Repair Renewal Receipt
+
+V558 adds Support Repair Renewal Receipt to the Build Tracker Release Doctor. It renews refreshed support rows with accepted repair, support copy, owner signoff, regression, escalation, and founder review proof.
+
+- Release label: `NiveshNadi Phase 1 v558 Support Repair Renewal Receipt`
+- Data/version key: `20260709-v558-01`
+- Product surface: Build Tracker > Release Doctor > Support repair renewal receipt
+- Risk boundary: Static support renewal room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+- Verification status: Pending batch checks.
+
 ## V557 Beta Command Renewal Receipt
 
 V557 adds Beta Command Renewal Receipt to the Build Tracker Release Doctor. It renews aged founder command rows with replacement, owner review, conflict cleanup, release-copy, founder memory, and next expiry proof.

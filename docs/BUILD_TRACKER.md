@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V570 Payment Closeout Aging Guard
+
+V570 adds Payment Closeout Aging Guard to the Build Tracker Release Doctor. It warns when closed payment acceptance receipts age past entitlement, refund wording, rollback, support copy, owner signoff, or founder finance review windows.
+
+- Release label: `NiveshNadi Phase 1 v570 Payment Closeout Aging Guard`
+- Data/version key: `20260709-v570-01`
+- Product surface: Build Tracker > Release Doctor > Payment closeout aging guard
+- Risk boundary: Static payment-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V569 Source Correction Closeout Aging Guard
 
 V569 adds Source Correction Closeout Aging Guard to the Build Tracker Release Doctor. It warns when closed correction receipts age past replacement proof, public notice, cache refresh, support handoff, reviewer scope, or founder review windows.

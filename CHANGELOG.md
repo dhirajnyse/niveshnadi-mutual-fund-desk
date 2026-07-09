@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v570 Payment Closeout Aging Guard
+
+- Version: `0.570.0`
+- Data version: `20260709-v570-01`
+- Changes made: Added Payment Closeout Aging Guard to the Build Tracker Release Doctor with entitlement closeout aging, refund wording aging, rollback aging, support copy aging, owner review aging, founder finance aging, payment closeout aging receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v569 commit, next-batch planner roll-forward to v571-v575, and release markers rolled forward to v570.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v570 marker scan; Git diff hygiene check.
+- Known risks: Payment Closeout Aging Guard is a static payment-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v569 Source Correction Closeout Aging Guard
 
 - Version: `0.569.0`

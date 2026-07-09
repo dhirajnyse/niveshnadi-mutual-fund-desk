@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v569-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v569 Source Correction Closeout Aging Guard";
+const DATA_VERSION = "20260709-v570-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v570 Payment Closeout Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction closeout aging guard",
+    label: "Payment closeout aging guard",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Warn when closed correction receipts age past replacement proof, public notice, cache refresh, support handoff, or founder review windows."
+    route: "#payment-wiring",
+    detail: "Warn when closed payment acceptance receipts age past entitlement, refund, rollback, support, owner, or founder finance review windows."
   },
   {
     label: "Mobile calm audit",
@@ -19463,6 +19463,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Closeout Aging Guard is a static correction-aging room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, contact users, or approve public claims."
+      },
+      {
+        key: "paymentCloseoutAgingGuard",
+        label: "Payment closeout aging guard",
+        verdict: "Closed payment receipts can age",
+        receiptId: ["NN", "PAYMENT", "CLOSEOUT", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-closeout-aging-guard",
+        copyLabel: "Copy payment closeout aging",
+        score: 81,
+        rule: "Closed payment acceptance receipts should warn when entitlement, refund wording, rollback, support copy, owner signoff, or founder finance review ages past the safe payment window.",
+        lanes: [
+          {
+            label: "Entitlement closeout aging",
+            owner: "Entitlement desk",
+            method: "ENTITLEMENT",
+            route: "payment.closeout_aging.entitlement",
+            proof: "Track accepted entitlement state, access effect, review date, and stale-entitlement warning.",
+            readyWhen: "Ready when entitlement closeout still matches the closed payment receipt.",
+            hold: "Hold if entitlement effect, access boundary, or review date has aged out.",
+            score: 81
+          },
+          {
+            label: "Refund wording aging",
+            owner: "Refund review desk",
+            method: "REFUND",
+            route: "payment.closeout_aging.refund",
+            proof: "Track refund wording, no-execution caveat, owner review, and stale-copy warning.",
+            readyWhen: "Ready when refund wording remains current, plain, and non-promissory.",
+            hold: "Hold if refund wording or owner review is stale.",
+            score: 81
+          },
+          {
+            label: "Rollback aging",
+            owner: "Release engineering",
+            method: "ROLLBACK",
+            route: "payment.closeout_aging.rollback",
+            proof: "Track rollback proof, mismatch residue, retry route, and rollback-expired hold.",
+            readyWhen: "Ready when rollback proof still matches the closed payment acceptance receipt.",
+            hold: "Hold if rollback state, mismatch residue, or retry route has aged past review.",
+            score: 80
+          },
+          {
+            label: "Support copy aging",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "payment.closeout_aging.support",
+            proof: "Track support copy date, escalation owner, refund boundary, account boundary, and expired support wording.",
+            readyWhen: "Ready when support can still explain the closed payment receipt safely.",
+            hold: "Hold if support copy predates closeout or escalation route changed.",
+            score: 81
+          },
+          {
+            label: "Owner review aging",
+            owner: "Payment owner",
+            method: "OWNER",
+            route: "payment.closeout_aging.owner",
+            proof: "Track owner signoff date, fallback owner, next review, and payment wording hold.",
+            readyWhen: "Ready when owner signoff and fallback owner are still current.",
+            hold: "Hold if owner signoff, fallback owner, or next review is stale.",
+            score: 81
+          },
+          {
+            label: "Founder finance aging",
+            owner: "Founder finance desk",
+            method: "SIGNOFF",
+            route: "payment.closeout_aging.founder",
+            proof: "Track founder finance review date, residual payment risk, reopen rule, and next queue route.",
+            readyWhen: "Ready when founder finance review can still defend the closed payment receipt.",
+            hold: "Hold if founder finance review expired or payment residue is unresolved.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Payment Closeout Aging Guard warns about stale closed payment receipts only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.",
+          "Every closed payment receipt needs entitlement, refund wording, rollback, support copy, owner signoff, and founder finance aging states.",
+          "Aging warnings hold payment confidence until the receipt is refreshed, reopened, superseded, or reclosed.",
+          "Payment closeout aging rows must exclude gateway payloads, payment tokens, card data, bank data, raw support notes, identifiers, credentials, and private notes.",
+          "No payment aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No closed payment receipt may stay trusted after entitlement, refund, rollback, support, owner, or founder finance windows expire.",
+          "No payment launch wording may survive if refund, access, support, or rollback proof is stale.",
+          "No support or refund copy may imply a real action from an aged payment closeout receipt.",
+          "No payment closeout aging guard may process payments, grant access, issue refunds, contact users, or approve payment launch."
+        ],
+        receiptFields: [
+          "payment_closeout_aging_guard_id",
+          "release_key",
+          "payment_acceptance_closeout_receipt_id",
+          "entitlement_closeout_age_state",
+          "refund_wording_age_state",
+          "rollback_age_state",
+          "support_copy_age_state",
+          "owner_review_age_state",
+          "founder_finance_age_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Payment Closeout Aging Guard is a static payment-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -19635,14 +19734,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source correction closeouts now have aging guards; next releases should lock payment closeout aging guard, account dry-run closeout aging guard, beta command closeout aging guard, support repair closeout aging guard, and source correction reopening queue.",
+      rule: "Payment closeouts now have aging guards; next releases should lock account dry-run closeout aging guard, beta command closeout aging guard, support repair closeout aging guard, source correction reopening queue, and payment closeout reopening queue.",
       lanes: [
-        {
-          version: "v570",
-          label: "Payment closeout aging guard",
-          route: "#payment-wiring",
-          detail: "Warn when closed payment acceptance receipts age past entitlement, refund, rollback, support, owner, or founder finance review windows."
-        },
         {
           version: "v571",
           label: "Account dry-run closeout aging guard",
@@ -19666,14 +19759,27 @@ function buildTrackerConfig() {
           label: "Source correction reopening queue",
           route: "#correction-ledger",
           detail: "Reopen closed correction receipts when replacement proof, public notice, cache, support handoff, reviewer scope, or founder review drifts."
+        },
+        {
+          version: "v575",
+          label: "Payment closeout reopening queue",
+          route: "#payment-wiring",
+          detail: "Reopen closed payment receipts when entitlement, refund, rollback, support, owner, or founder finance proof drifts."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Source correction closeout aging proof visible",
+      verdict: "Payment closeout aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v569",
+          key: "20260709-v569-01",
+          commit: "bfc9006",
+          receiptId: "NN-SHARE-RECEIPT-20260709V56901",
+          proof: "Source Correction Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v568",
           key: "20260709-v568-01",
@@ -19702,13 +19808,7 @@ function buildTrackerConfig() {
           receiptId: "NN-SHARE-RECEIPT-20260709V56501",
           proof: "Payment Acceptance Closeout Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
-        {
-          version: "v564",
-          key: "20260709-v564-01",
-          commit: "53e3ce8",
-          receiptId: "NN-SHARE-RECEIPT-20260709V56401",
-          proof: "Source Correction Renewal Closeout Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
+
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
       retentionReview: {
@@ -19745,13 +19845,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v569",
-        detail: "Source Correction Closeout Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v570",
+        detail: "Payment Closeout Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v569 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v570 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -19760,25 +19860,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v569 held until live stamp",
-        detail: "Do not share v569 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v570 held until live stamp",
+        detail: "Do not share v570 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v569 source correction aging",
-        detail: "Source Correction Closeout Aging Guard warns when closed correction receipts age past replacement proof, public notice, cache refresh, support handoff, reviewer scope, or founder review windows."
+        value: "v570 payment closeout aging",
+        detail: "Payment Closeout Aging Guard warns when closed payment acceptance receipts age past entitlement, refund wording, rollback, support copy, owner signoff, or founder finance review windows."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v569 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v570 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v567 held until live stamp",
-        detail: "The release is share-ready only after v569 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v570 held until live stamp",
+        detail: "The release is share-ready only after v570 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V580 Payment Reclose Receipt
+
+V580 adds Payment Reclose Receipt to the Build Tracker Release Doctor. It closes reopened payment rows only after entitlement, refund wording, rollback proof, support copy, owner review, and founder finance drift is resolved with fresh proof.
+
+- Release label: `NiveshNadi Phase 1 v580 Payment Reclose Receipt`
+- Data/version key: `20260710-v580-01`
+- Product surface: Build Tracker > Release Doctor > Payment reclose receipt
+- Risk boundary: Static payment reclose room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V579 Source Correction Reclose Receipt
 
 V579 adds Source Correction Reclose Receipt to the Build Tracker Release Doctor. It closes reopened correction rows only after replacement proof, public notice, cache refresh, support handoff, reviewer scope, and founder review drift is resolved with fresh proof.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260710-v579-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v579 Source Correction Reclose Receipt";
+const DATA_VERSION = "20260710-v580-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v580 Payment Reclose Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction reclose receipt",
+    label: "Payment reclose receipt",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Reclose reopened correction receipts only after replacement proof, notice, cache, support, reviewer, and founder drift is resolved."
+    route: "#payment-wiring",
+    detail: "Reclose reopened payment receipts only after entitlement, refund, rollback, support, owner, and founder finance drift is resolved."
   },
   {
     label: "Mobile calm audit",
@@ -20454,6 +20454,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Reclose Receipt is a static correction reclose room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
+      },
+      {
+        key: "paymentRecloseReceipt",
+        label: "Payment reclose receipt",
+        verdict: "Reopened payment rows can close again",
+        receiptId: ["NN", "PAYMENT", "RECLOSE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-reclose-receipt",
+        copyLabel: "Copy payment reclose receipt",
+        score: 81,
+        rule: "A reopened payment receipt may close again only after entitlement, refund wording, rollback proof, support copy, owner review, and founder finance drift is resolved with fresh proof.",
+        lanes: [
+          {
+            label: "Entitlement resolved",
+            owner: "Payment entitlement desk",
+            method: "ENTITLEMENT",
+            route: "payment.reclose.entitlement",
+            proof: "Bind current plan scope, entitlement state, access boundary, and resolved drift reason.",
+            readyWhen: "Ready when entitlement proof matches the payment receipt being reclosed.",
+            hold: "Hold if plan scope, access state, or entitlement ownership remains ambiguous.",
+            score: 81
+          },
+          {
+            label: "Refund wording resolved",
+            owner: "Refund review desk",
+            method: "REFUND",
+            route: "payment.reclose.refund",
+            proof: "Bind current refund copy, no-execution caveat, support route, and review date.",
+            readyWhen: "Ready when refund wording is current, non-promissory, and support-safe.",
+            hold: "Hold if refund wording is stale, widened, missing, or implies approval.",
+            score: 81
+          },
+          {
+            label: "Rollback resolved",
+            owner: "Finance rollback desk",
+            method: "ROLLBACK",
+            route: "payment.reclose.rollback",
+            proof: "Bind rollback scenario, affected entitlement, reversal boundary, owner, and fresh review date.",
+            readyWhen: "Ready when rollback proof covers the reopened payment path end to end.",
+            hold: "Hold if rollback ownership, reversal boundary, or affected entitlement remains unclear.",
+            score: 80
+          },
+          {
+            label: "Support copy resolved",
+            owner: "Support desk",
+            method: "SUPPORT",
+            route: "payment.reclose.support",
+            proof: "Bind support-safe payment copy, owner, response ceiling, and current escalation route.",
+            readyWhen: "Ready when support can explain payment status without execution promises.",
+            hold: "Hold if support copy, owner, or response ceiling remains stale.",
+            score: 81
+          },
+          {
+            label: "Owner reclose review",
+            owner: "Payment owner",
+            method: "OWNER",
+            route: "payment.reclose.owner",
+            proof: "Bind owner reclose decision, fallback owner, affected surface, and next review date.",
+            readyWhen: "Ready when one accountable owner can defend the reclosed payment receipt.",
+            hold: "Hold if owner review, fallback ownership, or next review date is missing.",
+            score: 81
+          },
+          {
+            label: "Founder finance reclose",
+            owner: "Founder finance desk",
+            method: "SIGNOFF",
+            route: "payment.reclose.founder",
+            proof: "Bind founder finance decision, remaining residue, next review date, and reopen trigger.",
+            readyWhen: "Ready when founder finance review confirms zero unresolved payment drift.",
+            hold: "Hold if payment residue remains or a reopen trigger is unmapped.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Payment Reclose Receipt closes reopened payment rows only after all six drift states are resolved with fresh proof.",
+          "Every payment reclose receipt binds the reopening queue row, fresh proof dates, owners, hold reasons, next review date, and explicit reopen trigger.",
+          "Reclose restores workflow confidence only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile ledgers, or approve launch.",
+          "Payment reclose rows must exclude gateway payloads, raw support notes, card data, UPI handles, bank details, credentials, identifiers, and private payment notes.",
+          "No payment reclose receipt may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No reopened payment row may reclose while entitlement, refund, rollback, support, owner, or founder finance drift remains unresolved.",
+          "No reclose receipt may be treated as payment execution, refund approval, access grant, reconciliation proof, or financial advice.",
+          "No payment row may reclose without one explicit next review date and reopen trigger.",
+          "No payment reclose receipt may process payments, issue refunds, grant access, fetch gateway logs, contact users, or approve payment launch."
+        ],
+        receiptFields: [
+          "payment_reclose_receipt_id",
+          "release_key",
+          "payment_closeout_reopening_queue_id",
+          "entitlement_resolved_at",
+          "refund_wording_resolved_at",
+          "rollback_resolved_at",
+          "support_copy_resolved_at",
+          "owner_reclose_reviewed_at",
+          "founder_finance_reclosed_at",
+          "next_review_at",
+          "reopen_trigger",
+          "created_at"
+        ],
+        boundary: "Payment Reclose Receipt is a static payment reclose room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -20626,14 +20726,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source correction reclose proof is visible; next releases should lock payment reclose receipt, account reclose receipt, beta command reclose receipt, support repair reclose receipt, and source correction reclose aging guard.",
+      rule: "Payment reclose proof is visible; next releases should lock account reclose receipt, beta command reclose receipt, support repair reclose receipt, source correction reclose aging guard, and payment reclose aging guard.",
       lanes: [
-        {
-          version: "v580",
-          label: "Payment reclose receipt",
-          route: "#payment-wiring",
-          detail: "Reclose reopened payment receipts only after entitlement, refund, rollback, support, owner, and founder finance drift is resolved."
-        },
         {
           version: "v581",
           label: "Account reclose receipt",
@@ -20657,14 +20751,27 @@ function buildTrackerConfig() {
           label: "Source correction reclose aging guard",
           route: "#correction-ledger",
           detail: "Warn when reclosed correction proof ages past replacement, notice, cache, support, reviewer, or founder review windows."
+        },
+        {
+          version: "v585",
+          label: "Payment reclose aging guard",
+          route: "#payment-wiring",
+          detail: "Warn when reclosed payment proof ages past entitlement, refund, rollback, support, owner, or founder finance review windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Source correction reclose proof visible",
+      verdict: "Payment reclose proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v579",
+          key: "20260710-v579-01",
+          commit: "ac8d092",
+          receiptId: "NN-SHARE-RECEIPT-20260710V57901",
+          proof: "Source Correction Reclose Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v578",
           key: "20260710-v578-01",
@@ -20692,13 +20799,6 @@ function buildTrackerConfig() {
           commit: "bedc465",
           receiptId: "NN-SHARE-RECEIPT-20260710V57501",
           proof: "Payment Closeout Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v574",
-          key: "20260710-v574-01",
-          commit: "f0f2b17",
-          receiptId: "NN-SHARE-RECEIPT-20260710V57401",
-          proof: "Source Correction Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -20736,13 +20836,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v579",
-        detail: "Source Correction Reclose Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v580",
+        detail: "Payment Reclose Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v579 runs syntax, static, security, diff hygiene, and marker scans before the batch continues."
+        detail: "v580 runs syntax, static, security, diff hygiene, and marker scans before the batch continues."
       },
       {
         label: "03 Queued",
@@ -20751,20 +20851,20 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v579 held until batch finish",
-        detail: "Do not share v579 as the final live batch while v580-v581 are still being built and checked."
+        value: "v580 held until batch finish",
+        detail: "Do not share v580 as the final live batch while v581 is still being built and checked."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v579 source correction reclose",
-        detail: "Source Correction Reclose Receipt closes reopened correction rows only after replacement proof, notice, cache, support, reviewer, and founder drift is resolved."
+        value: "v580 payment reclose",
+        detail: "Payment Reclose Receipt closes reopened payment rows only after entitlement, refund, rollback, support, owner, and founder finance drift is resolved."
       },
       {
         label: "Release checks",
         value: "Per-version checks active",
-        detail: "v579 runs syntax, static, security, diff hygiene, and marker scans before the next version starts."
+        detail: "v580 runs syntax, static, security, diff hygiene, and marker scans before the next version starts."
       },
       {
         label: "Share outcome",

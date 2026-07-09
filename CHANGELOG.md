@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v580 Payment Reclose Receipt
+
+- Version: `0.580.0`
+- Data version: `20260710-v580-01`
+- Changes made: Added Payment Reclose Receipt to the Build Tracker Release Doctor with entitlement resolution, refund wording resolution, rollback resolution, support copy resolution, owner reclose review, founder finance reclose, payment reclose receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v579 commit, next-batch planner roll-forward to v581-v585, and release markers rolled forward to v580.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v580 marker scan; Git diff hygiene check.
+- Known risks: Payment Reclose Receipt is a static payment reclose room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v579 Source Correction Reclose Receipt
 
 - Version: `0.579.0`

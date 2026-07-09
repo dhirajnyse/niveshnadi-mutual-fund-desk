@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V571 Account Dry-Run Closeout Aging Guard
+
+V571 adds Account Dry-Run Closeout Aging Guard to the Build Tracker Release Doctor. It warns when closed dry-run vault receipts age past delete/export behavior, redaction proof, support-safe copy, object-family scope, founder custody, or reopen triggers.
+
+- Release label: `NiveshNadi Phase 1 v571 Account Dry-Run Closeout Aging Guard`
+- Data/version key: `20260709-v571-01`
+- Product surface: Build Tracker > Release Doctor > Account dry-run closeout aging guard
+- Risk boundary: Static dry-run closeout aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Syntax, static/security, marker, diff hygiene, and local desktop/mobile browser QA passed.
+
 ## V570 Payment Closeout Aging Guard
 
 V570 adds Payment Closeout Aging Guard to the Build Tracker Release Doctor. It warns when closed payment acceptance receipts age past entitlement, refund wording, rollback, support copy, owner signoff, or founder finance review windows.

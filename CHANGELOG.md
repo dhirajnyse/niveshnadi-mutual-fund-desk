@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v571 Account Dry-Run Closeout Aging Guard
+
+- Version: `0.571.0`
+- Data version: `20260709-v571-01`
+- Changes made: Added Account Dry-Run Closeout Aging Guard to the Build Tracker Release Doctor with delete/export behavior aging, redaction aging, support-safe aging, object-family aging, founder custody aging, reopen trigger aging, account dry-run closeout aging receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v570 commit, next-batch planner roll-forward to v572-v576, and release markers rolled forward to v571.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v571 marker scan; Git diff hygiene check; local browser visual QA on desktop and mobile.
+- Known risks: Account Dry-Run Closeout Aging Guard is a static dry-run closeout aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v570 Payment Closeout Aging Guard
 
 - Version: `0.570.0`

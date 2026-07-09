@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v570-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v570 Payment Closeout Aging Guard";
+const DATA_VERSION = "20260709-v571-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v571 Account Dry-Run Closeout Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment closeout aging guard",
+    label: "Account dry-run closeout aging guard",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Warn when closed payment acceptance receipts age past entitlement, refund, rollback, support, owner, or founder finance review windows."
+    route: "#account-readiness",
+    detail: "Warn when closed dry-run vault receipts age past delete/export behavior, redaction, support-safe, object-family, or founder custody windows."
   },
   {
     label: "Mobile calm audit",
@@ -19562,6 +19562,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Closeout Aging Guard is a static payment-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountDryRunCloseoutAgingGuard",
+        label: "Account dry-run closeout aging guard",
+        verdict: "Closed dry-run vault receipts can age",
+        receiptId: ["NN", "ACCOUNT", "DRY", "RUN", "CLOSEOUT", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-dry-run-closeout-aging-guard",
+        copyLabel: "Copy dry-run closeout aging",
+        score: 83,
+        rule: "Closed account dry-run vault receipts should warn when delete/export behavior, redaction proof, support-safe copy, object-family scope, founder custody, or reopen triggers age past the safe account-readiness window.",
+        lanes: [
+          {
+            label: "Delete/export behavior aging",
+            owner: "Account custody desk",
+            method: "EXPORT",
+            route: "account.dry_run.closeout_aging.export_delete",
+            proof: "Track dry-run export/delete behavior, expected result, review date, and stale behavior warning.",
+            readyWhen: "Ready when export/delete behavior still matches the closed dry-run receipt.",
+            hold: "Hold if behavior proof, delete route, or export route has aged out.",
+            score: 83
+          },
+          {
+            label: "Redaction aging",
+            owner: "Privacy reviewer",
+            method: "REDACTION",
+            route: "account.dry_run.closeout_aging.redaction",
+            proof: "Track redaction proof, excluded field classes, scan window, and stale-redaction warning.",
+            readyWhen: "Ready when redaction still covers every closed dry-run field family.",
+            hold: "Hold if a private field class changed or redaction proof is stale.",
+            score: 84
+          },
+          {
+            label: "Support-safe aging",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "account.dry_run.closeout_aging.support_safe",
+            proof: "Track support-safe wording, escalation owner, no-recovery caveat, and review window.",
+            readyWhen: "Ready when support can still explain the dry-run closeout without account recovery promises.",
+            hold: "Hold if support copy or escalation owner is stale.",
+            score: 82
+          },
+          {
+            label: "Object-family aging",
+            owner: "Data custody owner",
+            method: "OBJECT",
+            route: "account.dry_run.closeout_aging.object_family",
+            proof: "Track object family, retention scope, storage boundary, and unsupported-object warning.",
+            readyWhen: "Ready when object-family scope still matches the closed dry-run receipt.",
+            hold: "Hold if a new object family appears outside the closeout scope.",
+            score: 83
+          },
+          {
+            label: "Founder custody aging",
+            owner: "Founder custody desk",
+            method: "SIGNOFF",
+            route: "account.dry_run.closeout_aging.founder",
+            proof: "Track founder custody review, residual account risk, hold reason, and next queue route.",
+            readyWhen: "Ready when founder custody review can still defend the closed dry-run receipt.",
+            hold: "Hold if founder custody review expired or residual account risk is unresolved.",
+            score: 83
+          },
+          {
+            label: "Reopen trigger aging",
+            owner: "Release owner",
+            method: "REOPEN",
+            route: "account.dry_run.closeout_aging.reopen_trigger",
+            proof: "Track reopen trigger, trigger owner, stale-proof reason, and next account closeout queue.",
+            readyWhen: "Ready when reopen rules are current and visible before any account launch claim.",
+            hold: "Hold if reopen trigger, owner, or next queue route is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Account Dry-Run Closeout Aging Guard warns about stale closed dry-run vault receipts only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.",
+          "Every closed dry-run receipt needs delete/export behavior, redaction, support-safe copy, object-family scope, founder custody, and reopen-trigger aging states.",
+          "Aging warnings hold account-readiness confidence until the receipt is refreshed, reopened, superseded, or reclosed.",
+          "Dry-run closeout aging rows must exclude account payloads, auth payloads, raw support notes, private notes, identifiers, credentials, and payment payloads.",
+          "No account dry-run aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No closed dry-run receipt may stay trusted after delete/export, redaction, support-safe, object-family, founder custody, or reopen-trigger windows expire.",
+          "No account-readiness claim may survive if delete/export behavior or redaction proof is stale.",
+          "No support copy may imply account recovery, data deletion, export execution, or authentication from an aged dry-run closeout.",
+          "No account dry-run closeout aging guard may authenticate users, export data, delete data, schedule jobs, recover accounts, contact users, or approve account custody widening."
+        ],
+        receiptFields: [
+          "account_dry_run_closeout_aging_guard_id",
+          "release_key",
+          "account_retention_dry_run_closeout_receipt_id",
+          "delete_export_behavior_age_state",
+          "redaction_age_state",
+          "support_safe_age_state",
+          "object_family_age_state",
+          "founder_custody_age_state",
+          "reopen_trigger_age_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Account Dry-Run Closeout Aging Guard is a static dry-run closeout aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -19734,14 +19833,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment closeouts now have aging guards; next releases should lock account dry-run closeout aging guard, beta command closeout aging guard, support repair closeout aging guard, source correction reopening queue, and payment closeout reopening queue.",
+      rule: "Account dry-run closeouts now have aging guards; next releases should lock beta command closeout aging guard, support repair closeout aging guard, source correction reopening queue, payment closeout reopening queue, and account closeout reopening queue.",
       lanes: [
-        {
-          version: "v571",
-          label: "Account dry-run closeout aging guard",
-          route: "#account-readiness",
-          detail: "Warn when closed dry-run vault receipts age past delete/export behavior, redaction, support-safe, object-family, or founder custody windows."
-        },
         {
           version: "v572",
           label: "Beta command closeout aging guard",
@@ -19765,14 +19858,27 @@ function buildTrackerConfig() {
           label: "Payment closeout reopening queue",
           route: "#payment-wiring",
           detail: "Reopen closed payment receipts when entitlement, refund, rollback, support, owner, or founder finance proof drifts."
+        },
+        {
+          version: "v576",
+          label: "Account closeout reopening queue",
+          route: "#account-readiness",
+          detail: "Reopen closed dry-run vault receipts when delete/export, redaction, support-safe, object-family, founder custody, or reopen-trigger proof drifts."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Payment closeout aging proof visible",
+      verdict: "Account dry-run closeout aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v570",
+          key: "20260709-v570-01",
+          commit: "1b4fe44",
+          receiptId: "NN-SHARE-RECEIPT-20260709V57001",
+          proof: "Payment Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v569",
           key: "20260709-v569-01",
@@ -19801,13 +19907,7 @@ function buildTrackerConfig() {
           receiptId: "NN-SHARE-RECEIPT-20260709V56601",
           proof: "Account Retention Dry-Run Closeout Receipt added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
         },
-        {
-          version: "v565",
-          key: "20260709-v565-01",
-          commit: "33a9c00",
-          receiptId: "NN-SHARE-RECEIPT-20260709V56501",
-          proof: "Payment Acceptance Closeout Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
+
 
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -19845,13 +19945,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v570",
-        detail: "Payment Closeout Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v571",
+        detail: "Account Dry-Run Closeout Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v570 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v571 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -19860,25 +19960,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v570 held until live stamp",
-        detail: "Do not share v570 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v571 held until live stamp",
+        detail: "Do not share v571 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v570 payment closeout aging",
-        detail: "Payment Closeout Aging Guard warns when closed payment acceptance receipts age past entitlement, refund wording, rollback, support copy, owner signoff, or founder finance review windows."
+        value: "v571 account dry-run closeout aging",
+        detail: "Account Dry-Run Closeout Aging Guard warns when closed dry-run vault receipts age past delete/export behavior, redaction, support-safe copy, object-family scope, founder custody, or reopen-trigger windows."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v570 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v571 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v570 held until live stamp",
-        detail: "The release is share-ready only after v570 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v571 held until live stamp",
+        detail: "The release is share-ready only after v571 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

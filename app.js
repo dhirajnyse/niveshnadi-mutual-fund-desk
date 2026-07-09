@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260710-v576-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v576 Account Closeout Reopening Queue";
+const DATA_VERSION = "20260710-v577-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v577 Beta Command Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account closeout reopening queue",
+    label: "Beta command reopening queue",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Reopen closed dry-run vault receipts when delete/export, redaction, support-safe, object-family, founder custody, or reopen-trigger proof drifts."
+    route: "#founder-beta-operating-room",
+    detail: "Reopen closed founder command receipts when replacement proof, conflict cleanup, release-safe memory, expiry, owner, or founder review drifts."
   },
   {
     label: "Mobile calm audit",
@@ -20156,6 +20156,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Closeout Reopening Queue is a static account reopening room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandReopeningQueue",
+        label: "Beta command reopening queue",
+        verdict: "Founder commands can reopen",
+        receiptId: ["NN", "BETA", "COMMAND", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-reopening-queue",
+        copyLabel: "Copy command reopening queue",
+        score: 82,
+        rule: "Closed founder beta command receipts should reopen when replacement proof, conflict cleanup, release-safe memory, expiry, owner review, or founder review drifts away from the accepted closeout.",
+        lanes: [
+          {
+            label: "Replacement proof drift",
+            owner: "Founder evidence desk",
+            method: "PROOF",
+            route: "beta.command.reopening.proof",
+            proof: "Track replacement artifact, accepted command, proof age, and drift reason before reopening.",
+            readyWhen: "Ready when replacement proof still supports the closed founder command.",
+            hold: "Hold if replacement proof is stale, missing, or no longer matches the command scope.",
+            score: 82
+          },
+          {
+            label: "Conflict cleanup drift",
+            owner: "Release conflict desk",
+            method: "CONFLICT",
+            route: "beta.command.reopening.conflict",
+            proof: "Track conflict residue, affected lane, cleanup owner, and reopen trigger.",
+            readyWhen: "Ready when no unresolved command conflict remains after closeout.",
+            hold: "Hold if command ownership, scope, or dependency conflicts reappear.",
+            score: 81
+          },
+          {
+            label: "Release-safe memory drift",
+            owner: "Release memory desk",
+            method: "MEMORY",
+            route: "beta.command.reopening.memory",
+            proof: "Track release-safe memory, excluded private data, supersede rule, and stale-memory warning.",
+            readyWhen: "Ready when saved command memory remains compact, current, and safe to share.",
+            hold: "Hold if memory is stale, widened, or contains private operational detail.",
+            score: 82
+          },
+          {
+            label: "Expiry drift",
+            owner: "Release captain",
+            method: "EXPIRY",
+            route: "beta.command.reopening.expiry",
+            proof: "Track closeout date, next review date, expiry state, and reopen reason.",
+            readyWhen: "Ready when the command remains inside its accepted review window.",
+            hold: "Hold if the command expired without fresh replacement proof.",
+            score: 81
+          },
+          {
+            label: "Owner review drift",
+            owner: "Command owner",
+            method: "OWNER",
+            route: "beta.command.reopening.owner",
+            proof: "Track owner review date, fallback owner, affected command, and owner drift warning.",
+            readyWhen: "Ready when one accountable owner can still defend the closed command.",
+            hold: "Hold if owner review or fallback ownership expired.",
+            score: 82
+          },
+          {
+            label: "Founder review drift",
+            owner: "Founder release desk",
+            method: "SIGNOFF",
+            route: "beta.command.reopening.founder",
+            proof: "Track founder review date, command residue, reopen decision, and next reclose route.",
+            readyWhen: "Ready when founder review can still defend keeping the command closed.",
+            hold: "Hold if founder review expired or command residue reappeared.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Beta Command Reopening Queue reopens stale founder command closeouts only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send replies, contact users, or approve beta expansion.",
+          "Every reopened founder command needs replacement proof, conflict cleanup, release-safe memory, expiry, owner review, and founder review drift states.",
+          "Reopening rows hold command confidence until drift is resolved, superseded, or reclosed with fresh proof.",
+          "Command reopening rows must exclude user lists, contact details, credentials, identifiers, private support notes, account payloads, and payment payloads.",
+          "No command reopening row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No closed founder command may stay trusted after replacement proof, conflict cleanup, release-safe memory, expiry, owner, or founder review drifts.",
+          "No founder command may imply invitations, access grants, payment execution, account recovery, or production approval without live proof.",
+          "No expired command may remain closed when ownership or conflict residue is unclear.",
+          "No beta command reopening queue may invite users, process payments, grant access, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "beta_command_reopening_queue_id",
+          "release_key",
+          "beta_command_closeout_aging_guard_id",
+          "replacement_proof_drift_state",
+          "conflict_cleanup_drift_state",
+          "release_safe_memory_drift_state",
+          "expiry_drift_state",
+          "owner_review_drift_state",
+          "founder_review_drift_state",
+          "reopen_owner",
+          "created_at"
+        ],
+        boundary: "Beta Command Reopening Queue is a static command reopening room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -20328,14 +20427,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account closeout reopen queues are visible; next releases should lock beta command reopening queue, support repair reopening queue, source correction reclose receipt, payment reclose receipt, and account reclose receipt.",
+      rule: "Beta command reopen queues are visible; next releases should lock support repair reopening queue, source correction reclose receipt, payment reclose receipt, account reclose receipt, and beta command reclose receipt.",
       lanes: [
-        {
-          version: "v577",
-          label: "Beta command reopening queue",
-          route: "#founder-beta-operating-room",
-          detail: "Reopen closed beta command receipts when replacement proof, conflict cleanup, release-safe memory, expiry, owner, or founder review drifts."
-        },
         {
           version: "v578",
           label: "Support repair reopening queue",
@@ -20359,14 +20452,27 @@ function buildTrackerConfig() {
           label: "Account reclose receipt",
           route: "#account-readiness",
           detail: "Reclose reopened account dry-run receipts only after delete/export, redaction, support-safe, object-family, founder custody, and trigger drift is resolved."
+        },
+        {
+          version: "v582",
+          label: "Beta command reclose receipt",
+          route: "#founder-beta-operating-room",
+          detail: "Reclose reopened founder commands only after replacement proof, conflict cleanup, release-safe memory, expiry, owner, and founder drift is resolved."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account closeout reopening proof visible",
+      verdict: "Beta command reopening proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v576",
+          key: "20260710-v576-01",
+          commit: "324aa25",
+          receiptId: "NN-SHARE-RECEIPT-20260710V57601",
+          proof: "Account Closeout Reopening Queue added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, and live stamp checks."
+        },
         {
           version: "v575",
           key: "20260710-v575-01",
@@ -20394,13 +20500,6 @@ function buildTrackerConfig() {
           commit: "ae14c29",
           receiptId: "NN-SHARE-RECEIPT-20260710V57201",
           proof: "Beta Command Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v571",
-          key: "20260709-v571-01",
-          commit: "07310c4",
-          receiptId: "NN-SHARE-RECEIPT-20260709V57101",
-          proof: "Account Dry-Run Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -20438,13 +20537,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v576",
-        detail: "Account Closeout Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v577",
+        detail: "Beta Command Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v576 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v577 runs syntax, static, security, diff hygiene, and marker scans before the batch continues."
       },
       {
         label: "03 Queued",
@@ -20453,25 +20552,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v576 held until live stamp",
-        detail: "Do not share v576 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v577 held until batch finish",
+        detail: "Do not share v577 as the final live batch while v578-v581 are still being built and checked."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v576 account closeout reopening",
-        detail: "Account Closeout Reopening Queue reopens closed dry-run vault receipts when delete/export, redaction, support-safe, object-family, founder custody, or reopen-trigger proof drifts."
+        value: "v577 beta command reopening",
+        detail: "Beta Command Reopening Queue reopens closed founder commands when replacement proof, conflict cleanup, release-safe memory, expiry, owner, or founder review drifts."
       },
       {
         label: "Release checks",
-        value: "Pending visual and live",
-        detail: "v576 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        value: "Per-version checks active",
+        detail: "v577 runs syntax, static, security, diff hygiene, and marker scans before the next version starts."
       },
       {
         label: "Share outcome",
-        value: "v576 held until live stamp",
-        detail: "The release is share-ready only after v576 visual QA passes and GitHub Pages serves the current stamp."
+        value: "Batch held until v581",
+        detail: "The release is share-ready only after all five versions pass checks and v581 completes visual and live verification."
       }
     ],
     actions: [

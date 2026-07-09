@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v577 Beta Command Reopening Queue
+
+- Version: `0.577.0`
+- Data version: `20260710-v577-01`
+- Changes made: Added Beta Command Reopening Queue to the Build Tracker Release Doctor with replacement proof drift, conflict cleanup drift, release-safe memory drift, expiry drift, owner review drift, founder review drift, beta command reopening receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v576 commit, next-batch planner roll-forward to v578-v582, and release markers rolled forward to v577.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v577 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Reopening Queue is a static command reopening room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v576 Account Closeout Reopening Queue
 
 - Version: `0.576.0`

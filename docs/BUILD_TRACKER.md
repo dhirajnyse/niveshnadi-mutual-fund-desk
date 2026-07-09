@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V577 Beta Command Reopening Queue
+
+V577 adds Beta Command Reopening Queue to the Build Tracker Release Doctor. It reopens closed founder beta command receipts when replacement proof, conflict cleanup, release-safe memory, expiry, owner review, or founder review drifts away from the accepted closeout.
+
+- Release label: `NiveshNadi Phase 1 v577 Beta Command Reopening Queue`
+- Data/version key: `20260710-v577-01`
+- Product surface: Build Tracker > Release Doctor > Beta command reopening queue
+- Risk boundary: Static command reopening room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V576 Account Closeout Reopening Queue
 
 V576 adds Account Closeout Reopening Queue to the Build Tracker Release Doctor. It reopens closed account dry-run vault receipts when delete/export, redaction, support-safe copy, object-family scope, founder custody, or reopen-trigger proof drifts away from the accepted closeout.

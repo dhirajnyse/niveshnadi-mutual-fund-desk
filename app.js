@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260710-v577-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v577 Beta Command Reopening Queue";
+const DATA_VERSION = "20260710-v578-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v578 Support Repair Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command reopening queue",
+    label: "Support repair reopening queue",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Reopen closed founder command receipts when replacement proof, conflict cleanup, release-safe memory, expiry, owner, or founder review drifts."
+    route: "#paid-beta-support-ledger",
+    detail: "Reopen closed support repairs when copy, owner, regression, escalation, refund wording, or founder support proof drifts."
   },
   {
     label: "Mobile calm audit",
@@ -20255,6 +20255,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Reopening Queue is a static command reopening room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
+      },
+      {
+        key: "supportRepairReopeningQueue",
+        label: "Support repair reopening queue",
+        verdict: "Support repairs can reopen",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-reopening-queue",
+        copyLabel: "Copy support reopening queue",
+        score: 81,
+        rule: "Closed support repair receipts should reopen when support-safe copy, owner review, regression proof, escalation route, refund wording, or founder support proof drifts away from the accepted closeout.",
+        lanes: [
+          {
+            label: "Support copy drift",
+            owner: "Support quality desk",
+            method: "COPY",
+            route: "support.repair.reopening.copy",
+            proof: "Track support-safe copy, affected case class, response ceiling, and drift reason before reopening.",
+            readyWhen: "Ready when repair copy remains current, non-advisory, and safe to reuse.",
+            hold: "Hold if support copy is stale, widened, or implies execution.",
+            score: 81
+          },
+          {
+            label: "Owner review drift",
+            owner: "Support owner desk",
+            method: "OWNER",
+            route: "support.repair.reopening.owner",
+            proof: "Track owner review date, fallback owner, repair scope, and owner drift warning.",
+            readyWhen: "Ready when one accountable owner can still defend the closed repair.",
+            hold: "Hold if owner review or fallback ownership expired.",
+            score: 81
+          },
+          {
+            label: "Regression proof drift",
+            owner: "Support QA desk",
+            method: "REGRESSION",
+            route: "support.repair.reopening.regression",
+            proof: "Track regression scenario, expected response, observed residue, and reopen trigger.",
+            readyWhen: "Ready when the repaired response still passes the accepted regression case.",
+            hold: "Hold if the original failure or a related response defect reappears.",
+            score: 80
+          },
+          {
+            label: "Escalation route drift",
+            owner: "Support escalation desk",
+            method: "ESCALATION",
+            route: "support.repair.reopening.escalation",
+            proof: "Track escalation trigger, owner, response window, and stale-route warning.",
+            readyWhen: "Ready when escalation ownership and response windows remain explicit.",
+            hold: "Hold if escalation owner, route, or response window changed after closeout.",
+            score: 81
+          },
+          {
+            label: "Refund wording drift",
+            owner: "Refund copy desk",
+            method: "REFUND",
+            route: "support.repair.reopening.refund",
+            proof: "Track refund wording, no-execution caveat, payment boundary, and stale-copy reason.",
+            readyWhen: "Ready when refund wording remains current and does not promise execution.",
+            hold: "Hold if refund wording is stale, missing, or implies approval before proof.",
+            score: 80
+          },
+          {
+            label: "Founder support drift",
+            owner: "Founder support desk",
+            method: "SIGNOFF",
+            route: "support.repair.reopening.founder",
+            proof: "Track founder support review, repair residue, reopen decision, and next reclose route.",
+            readyWhen: "Ready when founder support review can still defend keeping the repair closed.",
+            hold: "Hold if founder support review expired or repair residue reappeared.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Support Repair Reopening Queue reopens stale support repair closeouts only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.",
+          "Every reopened support repair needs support copy, owner review, regression proof, escalation route, refund wording, and founder support drift states.",
+          "Reopening rows hold support repair confidence until drift is resolved, superseded, or reclosed with fresh proof.",
+          "Support reopening rows must exclude raw support notes, conversation transcripts, contact details, credentials, identifiers, account payloads, and payment payloads.",
+          "No support reopening row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No closed support repair may stay trusted after copy, owner, regression, escalation, refund wording, or founder support proof drifts.",
+          "No support copy may imply reply execution, refund execution, payment processing, account recovery, or widened support promises.",
+          "No repair may remain closed when regression residue or escalation ambiguity reappears.",
+          "No support repair reopening queue may send replies, issue refunds, process payments, contact users, or approve support widening."
+        ],
+        receiptFields: [
+          "support_repair_reopening_queue_id",
+          "release_key",
+          "support_repair_closeout_aging_guard_id",
+          "support_copy_drift_state",
+          "owner_review_drift_state",
+          "regression_proof_drift_state",
+          "escalation_route_drift_state",
+          "refund_wording_drift_state",
+          "founder_support_drift_state",
+          "reopen_owner",
+          "created_at"
+        ],
+        boundary: "Support Repair Reopening Queue is a static support reopening room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
       }
     ],
     executiveCalmCompression: {
@@ -20427,14 +20526,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta command reopen queues are visible; next releases should lock support repair reopening queue, source correction reclose receipt, payment reclose receipt, account reclose receipt, and beta command reclose receipt.",
+      rule: "Support repair reopen queues are visible; next releases should lock source correction reclose receipt, payment reclose receipt, account reclose receipt, beta command reclose receipt, and support repair reclose receipt.",
       lanes: [
-        {
-          version: "v578",
-          label: "Support repair reopening queue",
-          route: "#paid-beta-support-ledger",
-          detail: "Reopen closed support repairs when copy, owner, regression, escalation, refund wording, or founder support proof drifts."
-        },
         {
           version: "v579",
           label: "Source correction reclose receipt",
@@ -20458,14 +20551,27 @@ function buildTrackerConfig() {
           label: "Beta command reclose receipt",
           route: "#founder-beta-operating-room",
           detail: "Reclose reopened founder commands only after replacement proof, conflict cleanup, release-safe memory, expiry, owner, and founder drift is resolved."
+        },
+        {
+          version: "v583",
+          label: "Support repair reclose receipt",
+          route: "#paid-beta-support-ledger",
+          detail: "Reclose reopened support repairs only after copy, owner, regression, escalation, refund wording, and founder support drift is resolved."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Beta command reopening proof visible",
+      verdict: "Support repair reopening proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v577",
+          key: "20260710-v577-01",
+          commit: "6b7411f",
+          receiptId: "NN-SHARE-RECEIPT-20260710V57701",
+          proof: "Beta Command Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v576",
           key: "20260710-v576-01",
@@ -20493,13 +20599,6 @@ function buildTrackerConfig() {
           commit: "4b18f17",
           receiptId: "NN-SHARE-RECEIPT-20260710V57301",
           proof: "Support Repair Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v572",
-          key: "20260710-v572-01",
-          commit: "ae14c29",
-          receiptId: "NN-SHARE-RECEIPT-20260710V57201",
-          proof: "Beta Command Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -20537,13 +20636,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v577",
-        detail: "Beta Command Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v578",
+        detail: "Support Repair Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v577 runs syntax, static, security, diff hygiene, and marker scans before the batch continues."
+        detail: "v578 runs syntax, static, security, diff hygiene, and marker scans before the batch continues."
       },
       {
         label: "03 Queued",
@@ -20552,20 +20651,20 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v577 held until batch finish",
-        detail: "Do not share v577 as the final live batch while v578-v581 are still being built and checked."
+        value: "v578 held until batch finish",
+        detail: "Do not share v578 as the final live batch while v579-v581 are still being built and checked."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v577 beta command reopening",
-        detail: "Beta Command Reopening Queue reopens closed founder commands when replacement proof, conflict cleanup, release-safe memory, expiry, owner, or founder review drifts."
+        value: "v578 support repair reopening",
+        detail: "Support Repair Reopening Queue reopens closed support repairs when copy, owner, regression, escalation, refund wording, or founder support proof drifts."
       },
       {
         label: "Release checks",
         value: "Per-version checks active",
-        detail: "v577 runs syntax, static, security, diff hygiene, and marker scans before the next version starts."
+        detail: "v578 runs syntax, static, security, diff hygiene, and marker scans before the next version starts."
       },
       {
         label: "Share outcome",

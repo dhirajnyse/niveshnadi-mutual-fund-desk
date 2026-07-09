@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V578 Support Repair Reopening Queue
+
+V578 adds Support Repair Reopening Queue to the Build Tracker Release Doctor. It reopens closed support repair receipts when support-safe copy, owner review, regression proof, escalation route, refund wording, or founder support proof drifts away from the accepted closeout.
+
+- Release label: `NiveshNadi Phase 1 v578 Support Repair Reopening Queue`
+- Data/version key: `20260710-v578-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reopening queue
+- Risk boundary: Static support reopening room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+- Verification status: Pending batch checks.
+
 ## V577 Beta Command Reopening Queue
 
 V577 adds Beta Command Reopening Queue to the Build Tracker Release Doctor. It reopens closed founder beta command receipts when replacement proof, conflict cleanup, release-safe memory, expiry, owner review, or founder review drifts away from the accepted closeout.

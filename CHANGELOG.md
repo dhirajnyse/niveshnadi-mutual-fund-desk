@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v578 Support Repair Reopening Queue
+
+- Version: `0.578.0`
+- Data version: `20260710-v578-01`
+- Changes made: Added Support Repair Reopening Queue to the Build Tracker Release Doctor with support copy drift, owner review drift, regression proof drift, escalation route drift, refund wording drift, founder support drift, support repair reopening receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v577 commit, next-batch planner roll-forward to v579-v583, and release markers rolled forward to v578.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v578 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Reopening Queue is a static support reopening room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+
 ## NiveshNadi Phase 1 v577 Beta Command Reopening Queue
 
 - Version: `0.577.0`

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v567-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v567 Beta Command Renewal Closeout Receipt";
+const DATA_VERSION = "20260709-v568-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v568 Support Repair Renewal Closeout Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command renewal closeout receipt",
+    label: "Support repair renewal closeout receipt",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Close aged beta command rows with replacement proof, conflict cleanup, release-safe memory, expiry, and founder signoff."
+    route: "#paid-beta-support-ledger",
+    detail: "Close aged support repair rows with support-safe copy, owner signoff, regression, escalation, refund wording, and founder support proof."
   },
   {
     label: "Mobile calm audit",
@@ -19265,6 +19265,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Renewal Closeout Receipt is a static command-closeout room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
+      },
+      {
+        key: "supportRepairRenewalCloseoutReceipt",
+        label: "Support repair renewal closeout receipt",
+        verdict: "Support repair closed with proof",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "RENEWAL", "CLOSEOUT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-renewal-closeout-receipt",
+        copyLabel: "Copy repair closeout",
+        score: 82,
+        rule: "Aged support repair renewal rows should close only when support-safe copy, owner signoff, regression, escalation, refund wording, and founder support proof agree.",
+        lanes: [
+          {
+            label: "Support-safe copy closeout",
+            owner: "Support captain",
+            method: "COPY",
+            route: "support.repair.renewal_closeout.support_safe_copy",
+            proof: "Track approved copy, private-data exclusions, customer-safe wording, and retired stale copy.",
+            readyWhen: "Ready when support can replay the repaired answer without private data or stale wording.",
+            hold: "Hold if support copy exposes private data or still references the old repair state.",
+            score: 83
+          },
+          {
+            label: "Owner signoff closeout",
+            owner: "Repair owner",
+            method: "OWNER",
+            route: "support.repair.renewal_closeout.owner",
+            proof: "Track repair owner, fallback owner, signoff date, and accountability closeout.",
+            readyWhen: "Ready when a current owner signs off the support repair closeout.",
+            hold: "Hold if owner, fallback owner, or signoff date is missing.",
+            score: 82
+          },
+          {
+            label: "Regression closeout",
+            owner: "QA reviewer",
+            method: "REGRESSION",
+            route: "support.repair.renewal_closeout.regression",
+            proof: "Track affected surface, retest result, regression trigger, and accepted residual risk.",
+            readyWhen: "Ready when the support fix still passes the named regression path.",
+            hold: "Hold if retest result or affected surface is missing.",
+            score: 82
+          },
+          {
+            label: "Escalation closeout",
+            owner: "Support operations",
+            method: "ESCALATION",
+            route: "support.repair.renewal_closeout.escalation",
+            proof: "Track escalation owner, fallback route, handoff copy, and closeout date.",
+            readyWhen: "Ready when escalation route and fallback owner can be replayed from the receipt.",
+            hold: "Hold if escalation owner or fallback route is unclear.",
+            score: 81
+          },
+          {
+            label: "Refund wording closeout",
+            owner: "Finance support",
+            method: "REFUND",
+            route: "support.repair.renewal_closeout.refund_wording",
+            proof: "Track refund wording, payment boundary, entitlement effect, and no-action caveat.",
+            readyWhen: "Ready when refund wording is support-safe and does not imply a real payment action.",
+            hold: "Hold if refund wording implies a refund, payment, or entitlement action was executed.",
+            score: 82
+          },
+          {
+            label: "Founder support closeout",
+            owner: "Founder support desk",
+            method: "SIGNOFF",
+            route: "support.repair.renewal_closeout.founder",
+            proof: "Track founder support decision, residual risk, release hold, and next aging guard route.",
+            readyWhen: "Ready when founder review can explain why the repair is closed.",
+            hold: "Hold if residual support risk or next aging route is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Support Repair Renewal Closeout Receipt closes aged support repair rows only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.",
+          "Every support repair closeout needs support-safe copy, owner signoff, regression, escalation, refund wording, and founder support proof.",
+          "Closed support repair receipts must keep the approved copy, owner, regression, escalation route, refund boundary, and no-action caveat visible without storing private data.",
+          "A closed support repair row can still be reopened if support copy, refund wording, regression, escalation, owner, or founder proof drifts.",
+          "No support repair closeout row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No support repair row may close without support-safe copy, owner, regression, escalation, refund wording, and founder support proof.",
+          "No closeout row may imply a reply was sent, refund issued, payment processed, or support widening approved by this prototype.",
+          "No support-safe copy may preserve raw notes, identifiers, credentials, payment payloads, or private context.",
+          "No support repair renewal closeout receipt may send replies, issue refunds, process payments, contact users, or approve support widening."
+        ],
+        receiptFields: [
+          "support_repair_renewal_closeout_receipt_id",
+          "release_key",
+          "support_repair_renewal_aging_guard_id",
+          "support_safe_copy_state",
+          "owner_signoff_state",
+          "regression_closeout_state",
+          "escalation_closeout_state",
+          "refund_wording_closeout_state",
+          "founder_support_closeout_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Support Repair Renewal Closeout Receipt is a static support-closeout room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
       }
     ],
     executiveCalmCompression: {
@@ -19437,14 +19536,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta command renewals now have closeout receipts; next releases should lock support repair renewal closeout receipt, source correction closeout aging guard, payment closeout aging guard, account dry-run closeout aging guard, and beta command closeout aging guard.",
+      rule: "Support repair renewals now have closeout receipts; next releases should lock source correction closeout aging guard, payment closeout aging guard, account dry-run closeout aging guard, beta command closeout aging guard, and support repair closeout aging guard.",
       lanes: [
-        {
-          version: "v568",
-          label: "Support repair renewal closeout receipt",
-          route: "#paid-beta-support-ledger",
-          detail: "Close aged support repair rows with support-safe copy, owner signoff, regression, escalation, refund wording, and founder support proof."
-        },
         {
           version: "v569",
           label: "Source correction closeout aging guard",
@@ -19468,14 +19561,27 @@ function buildTrackerConfig() {
           label: "Beta command closeout aging guard",
           route: "#founder-beta-operating-room",
           detail: "Warn when closed beta command receipts age past replacement proof, conflict cleanup, release-safe memory, expiry, owner, or founder review windows."
+        },
+        {
+          version: "v573",
+          label: "Support repair closeout aging guard",
+          route: "#paid-beta-support-ledger",
+          detail: "Warn when closed support repair receipts age past copy, owner, regression, escalation, refund wording, or founder support review windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Beta command closeout proof visible",
+      verdict: "Support repair closeout proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v567",
+          key: "20260709-v567-01",
+          commit: "eecdffd",
+          receiptId: "NN-SHARE-RECEIPT-20260709V56701",
+          proof: "Beta Command Renewal Closeout Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v566",
           key: "20260709-v566-01",
@@ -19503,13 +19609,6 @@ function buildTrackerConfig() {
           commit: "b8a34ec",
           receiptId: "NN-SHARE-RECEIPT-20260709V56301",
           proof: "Support Repair Renewal Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v562",
-          key: "20260709-v562-01",
-          commit: "111cc2a",
-          receiptId: "NN-SHARE-RECEIPT-20260709V56201",
-          proof: "Beta Command Renewal Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -19547,13 +19646,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v567",
-        detail: "Beta Command Renewal Closeout Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v568",
+        detail: "Support Repair Renewal Closeout Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v567 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v568 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -19562,25 +19661,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v567 held until live stamp",
-        detail: "Do not share v567 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v568 held until live stamp",
+        detail: "Do not share v568 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v567 beta command closeout",
-        detail: "Beta Command Renewal Closeout Receipt closes aged founder beta commands with replacement proof, conflict cleanup, release-safe memory, expiry, owner, and founder signoff."
+        value: "v568 support repair closeout",
+        detail: "Support Repair Renewal Closeout Receipt closes aged support repair rows with support-safe copy, owner signoff, regression, escalation, refund wording, and founder support proof."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v567 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v568 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
         value: "v567 held until live stamp",
-        detail: "The release is share-ready only after v567 visual QA passes and GitHub Pages serves the current stamp."
+        detail: "The release is share-ready only after v568 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

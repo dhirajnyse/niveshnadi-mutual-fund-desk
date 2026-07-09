@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V568 Support Repair Renewal Closeout Receipt
+
+V568 adds Support Repair Renewal Closeout Receipt to the Build Tracker Release Doctor. It closes aged support repair rows with support-safe copy, owner signoff, regression, escalation, refund wording, and founder support proof.
+
+- Release label: `NiveshNadi Phase 1 v568 Support Repair Renewal Closeout Receipt`
+- Data/version key: `20260709-v568-01`
+- Product surface: Build Tracker > Release Doctor > Support repair renewal closeout receipt
+- Risk boundary: Static support-closeout room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+- Verification status: Pending batch checks.
+
 ## V567 Beta Command Renewal Closeout Receipt
 
 V567 adds Beta Command Renewal Closeout Receipt to the Build Tracker Release Doctor. It closes aged founder beta commands with replacement proof, conflict cleanup, release-safe memory, expiry, owner, and founder signoff.

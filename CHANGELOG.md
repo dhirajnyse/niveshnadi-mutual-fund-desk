@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v568 Support Repair Renewal Closeout Receipt
+
+- Version: `0.568.0`
+- Data version: `20260709-v568-01`
+- Changes made: Added Support Repair Renewal Closeout Receipt to the Build Tracker Release Doctor with support-safe copy closeout, owner signoff closeout, regression closeout, escalation closeout, refund wording closeout, founder support closeout, support repair closeout receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v567 commit, next-batch planner roll-forward to v569-v573, and release markers rolled forward to v568.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v568 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Renewal Closeout Receipt is a static support-closeout room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+
 ## NiveshNadi Phase 1 v567 Beta Command Renewal Closeout Receipt
 
 - Version: `0.567.0`

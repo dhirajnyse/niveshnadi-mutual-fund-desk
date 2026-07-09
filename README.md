@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v567 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v568 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Support Repair Renewal Closeout Receipt in the Build Tracker Release Doctor that closes aged support repair rows with support-safe copy, owner signoff, regression, escalation, refund wording, and founder support proof.
 - Beta Command Renewal Closeout Receipt in the Build Tracker Release Doctor that closes aged founder beta commands with replacement proof, conflict cleanup, release-safe memory, expiry, owner, and founder signoff.
 - Account Retention Dry-Run Closeout Receipt in the Build Tracker Release Doctor that closes stale dry-run vault rows with refresh, delete/export behavior, redaction, support-safe copy, object-family, and founder custody proof.
 - Payment Acceptance Closeout Receipt in the Build Tracker Release Doctor that closes stale payment acceptance rows with replay refresh, entitlement, refund and rollback, support copy, owner, and founder finance proof.

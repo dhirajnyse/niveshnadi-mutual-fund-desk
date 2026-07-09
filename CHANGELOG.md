@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v573 Support Repair Closeout Aging Guard
+
+- Version: `0.573.0`
+- Data version: `20260710-v573-01`
+- Changes made: Added Support Repair Closeout Aging Guard to the Build Tracker Release Doctor with copy aging, owner review aging, regression aging, escalation aging, refund wording aging, founder support aging, support repair closeout aging receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v572 commit, next-batch planner roll-forward to v574-v578, and release markers rolled forward to v573.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v573 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Closeout Aging Guard is a static support-aging room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+
 ## NiveshNadi Phase 1 v572 Beta Command Closeout Aging Guard
 
 - Version: `0.572.0`

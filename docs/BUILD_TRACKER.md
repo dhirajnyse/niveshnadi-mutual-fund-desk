@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V573 Support Repair Closeout Aging Guard
+
+V573 adds Support Repair Closeout Aging Guard to the Build Tracker Release Doctor. It warns when closed support repair receipts age past support copy, owner review, regression proof, escalation route, refund wording, or founder support review windows.
+
+- Release label: `NiveshNadi Phase 1 v573 Support Repair Closeout Aging Guard`
+- Data/version key: `20260710-v573-01`
+- Product surface: Build Tracker > Release Doctor > Support repair closeout aging guard
+- Risk boundary: Static support-aging room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+- Verification status: Pending batch checks.
+
 ## V572 Beta Command Closeout Aging Guard
 
 V572 adds Beta Command Closeout Aging Guard to the Build Tracker Release Doctor. It warns when closed founder beta command receipts age past replacement proof, conflict cleanup, release-safe memory, expiry, owner review, or founder review windows.

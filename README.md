@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v571 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v572 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Beta Command Closeout Aging Guard in the Build Tracker Release Doctor that warns when closed founder beta commands age past replacement proof, conflict cleanup, release-safe memory, expiry, owner review, or founder review windows.
 - Account Dry-Run Closeout Aging Guard in the Build Tracker Release Doctor that warns when closed dry-run vault receipts age past delete/export behavior, redaction, support-safe copy, object-family scope, founder custody, or reopen-trigger windows.
 - Payment Closeout Aging Guard in the Build Tracker Release Doctor that warns when closed payment receipts age past entitlement, refund wording, rollback, support copy, owner signoff, or founder finance review windows.
 - Source Correction Closeout Aging Guard in the Build Tracker Release Doctor that warns when closed correction receipts age past replacement proof, public notice, cache refresh, support handoff, reviewer scope, or founder review windows.

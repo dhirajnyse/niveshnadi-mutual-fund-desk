@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v572 Beta Command Closeout Aging Guard
+
+- Version: `0.572.0`
+- Data version: `20260710-v572-01`
+- Changes made: Added Beta Command Closeout Aging Guard to the Build Tracker Release Doctor with replacement proof aging, conflict cleanup aging, release-safe memory aging, expiry aging, owner review aging, founder review aging, beta command closeout aging receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v571 commit, next-batch planner roll-forward to v573-v577, and release markers rolled forward to v572.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v572 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Closeout Aging Guard is a static command-aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v571 Account Dry-Run Closeout Aging Guard
 
 - Version: `0.571.0`

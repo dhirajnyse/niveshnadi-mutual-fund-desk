@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V572 Beta Command Closeout Aging Guard
+
+V572 adds Beta Command Closeout Aging Guard to the Build Tracker Release Doctor. It warns when closed founder beta command receipts age past replacement proof, conflict cleanup, release-safe memory, expiry, owner review, or founder review windows.
+
+- Release label: `NiveshNadi Phase 1 v572 Beta Command Closeout Aging Guard`
+- Data/version key: `20260710-v572-01`
+- Product surface: Build Tracker > Release Doctor > Beta command closeout aging guard
+- Risk boundary: Static command-aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V571 Account Dry-Run Closeout Aging Guard
 
 V571 adds Account Dry-Run Closeout Aging Guard to the Build Tracker Release Doctor. It warns when closed dry-run vault receipts age past delete/export behavior, redaction proof, support-safe copy, object-family scope, founder custody, or reopen triggers.

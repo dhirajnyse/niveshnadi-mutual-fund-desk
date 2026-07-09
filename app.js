@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v571-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v571 Account Dry-Run Closeout Aging Guard";
+const DATA_VERSION = "20260710-v572-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v572 Beta Command Closeout Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account dry-run closeout aging guard",
+    label: "Beta command closeout aging guard",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Warn when closed dry-run vault receipts age past delete/export behavior, redaction, support-safe, object-family, or founder custody windows."
+    route: "#founder-beta-operating-room",
+    detail: "Warn when closed beta command receipts age past replacement proof, conflict cleanup, release-safe memory, expiry, owner, or founder review windows."
   },
   {
     label: "Mobile calm audit",
@@ -19661,6 +19661,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Dry-Run Closeout Aging Guard is a static dry-run closeout aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandCloseoutAgingGuard",
+        label: "Beta command closeout aging guard",
+        verdict: "Closed beta commands can age",
+        receiptId: ["NN", "BETA", "COMMAND", "CLOSEOUT", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-closeout-aging-guard",
+        copyLabel: "Copy beta command aging",
+        score: 82,
+        rule: "Closed beta command receipts should warn when replacement proof, conflict cleanup, release-safe memory, expiry, owner review, or founder review ages past the safe founder-command window.",
+        lanes: [
+          {
+            label: "Replacement proof aging",
+            owner: "Founder proof desk",
+            method: "REPLACEMENT",
+            route: "beta.command.closeout_aging.replacement",
+            proof: "Track replacement proof row, accepted source, review date, and stale replacement warning.",
+            readyWhen: "Ready when replacement proof still supports the closed command receipt.",
+            hold: "Hold if replacement proof or accepted source has aged out.",
+            score: 83
+          },
+          {
+            label: "Conflict cleanup aging",
+            owner: "Trust desk",
+            method: "CONFLICT",
+            route: "beta.command.closeout_aging.conflict",
+            proof: "Track conflict cleanup state, affected command, residue, and review expiry.",
+            readyWhen: "Ready when conflict cleanup still covers the closed command scope.",
+            hold: "Hold if conflict residue reappears or cleanup review is stale.",
+            score: 82
+          },
+          {
+            label: "Release-safe memory aging",
+            owner: "Release memory desk",
+            method: "MEMORY",
+            route: "beta.command.closeout_aging.memory",
+            proof: "Track release-safe memory text, excluded private fields, reuse window, and stale-memory warning.",
+            readyWhen: "Ready when release-safe memory still matches the closed beta command.",
+            hold: "Hold if memory copy widened, private context leaked, or reuse window expired.",
+            score: 82
+          },
+          {
+            label: "Expiry aging",
+            owner: "Release captain",
+            method: "EXPIRY",
+            route: "beta.command.closeout_aging.expiry",
+            proof: "Track command expiry date, extension reason, freeze reason, and stale-expiry hold.",
+            readyWhen: "Ready when command expiry is current or the command is visibly frozen.",
+            hold: "Hold if expiry, extension, or freeze reason is missing.",
+            score: 81
+          },
+          {
+            label: "Owner review aging",
+            owner: "Command owner",
+            method: "OWNER",
+            route: "beta.command.closeout_aging.owner",
+            proof: "Track owner review date, fallback owner, active surface, and owner-expired warning.",
+            readyWhen: "Ready when owner accountability can still defend the closed command.",
+            hold: "Hold if owner review or fallback owner is stale.",
+            score: 82
+          },
+          {
+            label: "Founder review aging",
+            owner: "Founder desk",
+            method: "SIGNOFF",
+            route: "beta.command.closeout_aging.founder",
+            proof: "Track founder review date, command residue, reopen rule, and next queue route.",
+            readyWhen: "Ready when founder review can still defend the closed beta command.",
+            hold: "Hold if founder review expired or command residue is unresolved.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Beta Command Closeout Aging Guard warns about stale closed founder beta commands only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.",
+          "Every closed beta command needs replacement proof, conflict cleanup, release-safe memory, expiry, owner review, and founder review aging states.",
+          "Aging warnings hold beta-command confidence until the command is refreshed, reopened, superseded, or reclosed.",
+          "Beta command aging rows must exclude private founder notes, raw support notes, account payloads, payment payloads, credentials, identifiers, and distributor-client records.",
+          "No beta command aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No closed beta command may stay trusted after replacement proof, conflict cleanup, release-safe memory, expiry, owner, or founder windows expire.",
+          "No founder command may widen a cohort, payment ask, support promise, or account claim while closeout proof is stale.",
+          "No release-safe memory may be reused if it hides command residue or private context.",
+          "No beta command closeout aging guard may invite users, process payments, grant access, recover accounts, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "beta_command_closeout_aging_guard_id",
+          "release_key",
+          "beta_command_renewal_closeout_receipt_id",
+          "replacement_proof_age_state",
+          "conflict_cleanup_age_state",
+          "release_safe_memory_age_state",
+          "expiry_age_state",
+          "owner_review_age_state",
+          "founder_review_age_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Beta Command Closeout Aging Guard is a static command-aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -19833,14 +19932,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account dry-run closeouts now have aging guards; next releases should lock beta command closeout aging guard, support repair closeout aging guard, source correction reopening queue, payment closeout reopening queue, and account closeout reopening queue.",
+      rule: "Beta command closeouts now have aging guards; next releases should lock support repair closeout aging guard, source correction reopening queue, payment closeout reopening queue, account closeout reopening queue, and beta command reopening queue.",
       lanes: [
-        {
-          version: "v572",
-          label: "Beta command closeout aging guard",
-          route: "#founder-beta-operating-room",
-          detail: "Warn when closed beta command receipts age past replacement proof, conflict cleanup, release-safe memory, expiry, owner, or founder review windows."
-        },
         {
           version: "v573",
           label: "Support repair closeout aging guard",
@@ -19864,14 +19957,27 @@ function buildTrackerConfig() {
           label: "Account closeout reopening queue",
           route: "#account-readiness",
           detail: "Reopen closed dry-run vault receipts when delete/export, redaction, support-safe, object-family, founder custody, or reopen-trigger proof drifts."
+        },
+        {
+          version: "v577",
+          label: "Beta command reopening queue",
+          route: "#founder-beta-operating-room",
+          detail: "Reopen closed beta command receipts when replacement proof, conflict cleanup, release-safe memory, expiry, owner, or founder review drifts."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account dry-run closeout aging proof visible",
+      verdict: "Beta command closeout aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v571",
+          key: "20260709-v571-01",
+          commit: "07310c4",
+          receiptId: "NN-SHARE-RECEIPT-20260709V57101",
+          proof: "Account Dry-Run Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
+        },
         {
           version: "v570",
           key: "20260709-v570-01",
@@ -19900,15 +20006,6 @@ function buildTrackerConfig() {
           receiptId: "NN-SHARE-RECEIPT-20260709V56701",
           proof: "Beta Command Renewal Closeout Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
-        {
-          version: "v566",
-          key: "20260709-v566-01",
-          commit: "60ff9a3",
-          receiptId: "NN-SHARE-RECEIPT-20260709V56601",
-          proof: "Account Retention Dry-Run Closeout Receipt added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
-        },
-
-
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
       retentionReview: {
@@ -19945,13 +20042,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v571",
-        detail: "Account Dry-Run Closeout Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v572",
+        detail: "Beta Command Closeout Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v571 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v572 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -19960,25 +20057,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v571 held until live stamp",
-        detail: "Do not share v571 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v572 held until live stamp",
+        detail: "Do not share v572 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v571 account dry-run closeout aging",
-        detail: "Account Dry-Run Closeout Aging Guard warns when closed dry-run vault receipts age past delete/export behavior, redaction, support-safe copy, object-family scope, founder custody, or reopen-trigger windows."
+        value: "v572 beta command closeout aging",
+        detail: "Beta Command Closeout Aging Guard warns when closed beta command receipts age past replacement proof, conflict cleanup, release-safe memory, expiry, owner, or founder review windows."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v571 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v572 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v571 held until live stamp",
-        detail: "The release is share-ready only after v571 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v572 held until live stamp",
+        detail: "The release is share-ready only after v572 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

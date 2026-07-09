@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V575 Payment Closeout Reopening Queue
+
+V575 adds Payment Closeout Reopening Queue to the Build Tracker Release Doctor. It reopens closed payment receipts when entitlement, refund wording, rollback, support copy, owner review, or founder finance proof drifts away from the accepted closeout.
+
+- Release label: `NiveshNadi Phase 1 v575 Payment Closeout Reopening Queue`
+- Data/version key: `20260710-v575-01`
+- Product surface: Build Tracker > Release Doctor > Payment closeout reopening queue
+- Risk boundary: Static payment reopening room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V574 Source Correction Reopening Queue
 
 V574 adds Source Correction Reopening Queue to the Build Tracker Release Doctor. It reopens closed correction receipts when replacement proof, public notice, cache refresh, support handoff, reviewer scope, or founder review drifts away from the accepted closeout.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260710-v574-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v574 Source Correction Reopening Queue";
+const DATA_VERSION = "20260710-v575-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v575 Payment Closeout Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction reopening queue",
+    label: "Payment closeout reopening queue",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Reopen closed correction receipts when replacement proof, public notice, cache, support handoff, reviewer scope, or founder review drifts."
+    route: "#payment-wiring",
+    detail: "Reopen closed payment receipts when entitlement, refund, rollback, support, owner, or founder finance proof drifts."
   },
   {
     label: "Mobile calm audit",
@@ -19958,6 +19958,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Reopening Queue is a static correction reopening room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
+      },
+      {
+        key: "paymentCloseoutReopeningQueue",
+        label: "Payment closeout reopening queue",
+        verdict: "Payment closeouts can reopen",
+        receiptId: ["NN", "PAYMENT", "CLOSEOUT", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-closeout-reopening-queue",
+        copyLabel: "Copy payment reopening queue",
+        score: 80,
+        rule: "Closed payment receipts should reopen when entitlement, refund wording, rollback proof, support copy, owner review, or founder finance proof drifts away from the accepted closeout.",
+        lanes: [
+          {
+            label: "Entitlement drift",
+            owner: "Payment entitlement desk",
+            method: "ENTITLEMENT",
+            route: "payment.closeout.reopening.entitlement",
+            proof: "Track entitlement state, plan scope, access boundary, and drift reason before reopening.",
+            readyWhen: "Ready when entitlement proof still matches the closed payment receipt.",
+            hold: "Hold if entitlement scope, plan status, or access boundary drifted after closeout.",
+            score: 80
+          },
+          {
+            label: "Refund wording drift",
+            owner: "Refund review desk",
+            method: "REFUND",
+            route: "payment.closeout.reopening.refund",
+            proof: "Track refund copy, no-execution caveat, support route, and stale-refund reason.",
+            readyWhen: "Ready when refund wording remains current, non-promissory, and support-safe.",
+            hold: "Hold if refund copy is stale, widened, missing, or implies execution before proof.",
+            score: 80
+          },
+          {
+            label: "Rollback drift",
+            owner: "Finance rollback desk",
+            method: "ROLLBACK",
+            route: "payment.closeout.reopening.rollback",
+            proof: "Track rollback scenario, affected entitlement, reversal route, and stale-rollback warning.",
+            readyWhen: "Ready when rollback proof still covers the closed payment path.",
+            hold: "Hold if rollback path, reversal boundary, or owner changed after closeout.",
+            score: 79
+          },
+          {
+            label: "Support copy drift",
+            owner: "Support desk",
+            method: "SUPPORT",
+            route: "payment.closeout.reopening.support",
+            proof: "Track support-safe payment copy, owner, response ceiling, and payment-support drift.",
+            readyWhen: "Ready when support copy can explain the payment state without execution promises.",
+            hold: "Hold if support copy, owner, or response ceiling is stale.",
+            score: 80
+          },
+          {
+            label: "Owner review drift",
+            owner: "Payment owner",
+            method: "OWNER",
+            route: "payment.closeout.reopening.owner",
+            proof: "Track owner review date, fallback owner, affected surface, and owner drift warning.",
+            readyWhen: "Ready when owner accountability can still defend the closed payment receipt.",
+            hold: "Hold if owner review or fallback owner expired.",
+            score: 80
+          },
+          {
+            label: "Founder finance drift",
+            owner: "Founder finance desk",
+            method: "SIGNOFF",
+            route: "payment.closeout.reopening.founder",
+            proof: "Track founder finance review, payment residue, reopen decision, and next reclose route.",
+            readyWhen: "Ready when founder finance review can still defend keeping the payment receipt closed.",
+            hold: "Hold if founder finance review expired or payment residue reappeared.",
+            score: 80
+          }
+        ],
+        operatingRules: [
+          "Payment Closeout Reopening Queue reopens stale payment closeouts only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile ledgers, contact users, or approve payment launch.",
+          "Every reopened payment closeout needs entitlement, refund wording, rollback, support copy, owner review, and founder finance drift states.",
+          "Reopening rows hold payment confidence until drift is resolved, superseded, or reclosed with fresh proof.",
+          "Payment reopening rows must exclude gateway payloads, raw support notes, card data, UPI handles, bank details, credentials, identifiers, and private payment notes.",
+          "No payment reopening row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No closed payment receipt may stay trusted after entitlement, refund wording, rollback, support, owner, or founder finance proof drifts.",
+          "No refund or entitlement copy may imply payment execution, access grant, refund approval, or reconciliation without live proof.",
+          "No payment closeout may remain closed if rollback or support residue reappears.",
+          "No payment closeout reopening queue may process payments, issue refunds, grant access, fetch gateway logs, contact users, or approve payment launch."
+        ],
+        receiptFields: [
+          "payment_closeout_reopening_queue_id",
+          "release_key",
+          "payment_closeout_aging_guard_id",
+          "entitlement_drift_state",
+          "refund_wording_drift_state",
+          "rollback_drift_state",
+          "support_copy_drift_state",
+          "owner_review_drift_state",
+          "founder_finance_drift_state",
+          "reopen_owner",
+          "created_at"
+        ],
+        boundary: "Payment Closeout Reopening Queue is a static payment reopening room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -20130,14 +20229,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source correction reopen queues are visible; next releases should lock payment closeout reopening queue, account closeout reopening queue, beta command reopening queue, support repair reopening queue, and source correction reclose receipt.",
+      rule: "Payment closeout reopen queues are visible; next releases should lock account closeout reopening queue, beta command reopening queue, support repair reopening queue, source correction reclose receipt, and payment reclose receipt.",
       lanes: [
-        {
-          version: "v575",
-          label: "Payment closeout reopening queue",
-          route: "#payment-wiring",
-          detail: "Reopen closed payment receipts when entitlement, refund, rollback, support, owner, or founder finance proof drifts."
-        },
         {
           version: "v576",
           label: "Account closeout reopening queue",
@@ -20161,14 +20254,27 @@ function buildTrackerConfig() {
           label: "Source correction reclose receipt",
           route: "#correction-ledger",
           detail: "Reclose reopened correction receipts only after replacement proof, notice, cache, support, reviewer, and founder drift is resolved."
+        },
+        {
+          version: "v580",
+          label: "Payment reclose receipt",
+          route: "#payment-wiring",
+          detail: "Reclose reopened payment receipts only after entitlement, refund, rollback, support, owner, and founder finance drift is resolved."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Source correction reopening proof visible",
+      verdict: "Payment closeout reopening proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v574",
+          key: "20260710-v574-01",
+          commit: "f0f2b17",
+          receiptId: "NN-SHARE-RECEIPT-20260710V57401",
+          proof: "Source Correction Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v573",
           key: "20260710-v573-01",
@@ -20196,13 +20302,6 @@ function buildTrackerConfig() {
           commit: "1b4fe44",
           receiptId: "NN-SHARE-RECEIPT-20260709V57001",
           proof: "Payment Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v569",
-          key: "20260709-v569-01",
-          commit: "bfc9006",
-          receiptId: "NN-SHARE-RECEIPT-20260709V56901",
-          proof: "Source Correction Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -20240,13 +20339,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v574",
-        detail: "Source Correction Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v575",
+        detail: "Payment Closeout Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v574 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v575 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -20255,25 +20354,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v574 held until live stamp",
-        detail: "Do not share v574 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v575 held until live stamp",
+        detail: "Do not share v575 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v574 source correction reopening",
-        detail: "Source Correction Reopening Queue reopens closed correction receipts when replacement proof, public notice, cache, support handoff, reviewer scope, or founder review drifts."
+        value: "v575 payment closeout reopening",
+        detail: "Payment Closeout Reopening Queue reopens closed payment receipts when entitlement, refund, rollback, support, owner, or founder finance proof drifts."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v574 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v575 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v574 held until live stamp",
-        detail: "The release is share-ready only after v574 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v575 held until live stamp",
+        detail: "The release is share-ready only after v575 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

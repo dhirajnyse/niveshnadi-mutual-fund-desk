@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v575 Payment Closeout Reopening Queue
+
+- Version: `0.575.0`
+- Data version: `20260710-v575-01`
+- Changes made: Added Payment Closeout Reopening Queue to the Build Tracker Release Doctor with entitlement drift, refund wording drift, rollback drift, support copy drift, owner review drift, founder finance drift, payment closeout reopening receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v574 commit, next-batch planner roll-forward to v576-v580, and release markers rolled forward to v575.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v575 marker scan; Git diff hygiene check.
+- Known risks: Payment Closeout Reopening Queue is a static payment reopening room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v574 Source Correction Reopening Queue
 
 - Version: `0.574.0`

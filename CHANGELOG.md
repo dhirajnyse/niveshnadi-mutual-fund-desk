@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v579 Source Correction Reclose Receipt
+
+- Version: `0.579.0`
+- Data version: `20260710-v579-01`
+- Changes made: Added Source Correction Reclose Receipt to the Build Tracker Release Doctor with replacement proof resolution, public notice resolution, cache refresh resolution, support handoff resolution, reviewer scope resolution, founder reclose review, source correction reclose receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v578 commit, next-batch planner roll-forward to v580-v584, and release markers rolled forward to v579.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v579 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Reclose Receipt is a static correction reclose room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v578 Support Repair Reopening Queue
 
 - Version: `0.578.0`

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260710-v578-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v578 Support Repair Reopening Queue";
+const DATA_VERSION = "20260710-v579-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v579 Source Correction Reclose Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Support repair reopening queue",
+    label: "Source correction reclose receipt",
     status: "Shipping now",
-    route: "#paid-beta-support-ledger",
-    detail: "Reopen closed support repairs when copy, owner, regression, escalation, refund wording, or founder support proof drifts."
+    route: "#correction-ledger",
+    detail: "Reclose reopened correction receipts only after replacement proof, notice, cache, support, reviewer, and founder drift is resolved."
   },
   {
     label: "Mobile calm audit",
@@ -20354,6 +20354,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Repair Reopening Queue is a static support reopening room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
+      },
+      {
+        key: "sourceCorrectionRecloseReceipt",
+        label: "Source correction reclose receipt",
+        verdict: "Reopened corrections can close again",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "RECLOSE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-reclose-receipt",
+        copyLabel: "Copy correction reclose receipt",
+        score: 83,
+        rule: "A reopened source correction receipt may close again only after replacement proof, public notice, cache refresh, support handoff, reviewer scope, and founder review drift is resolved with fresh proof.",
+        lanes: [
+          {
+            label: "Replacement proof resolved",
+            owner: "Source evidence desk",
+            method: "PROOF",
+            route: "source.correction.reclose.proof",
+            proof: "Bind the current replacement artifact, accepted source, review date, and resolved drift reason.",
+            readyWhen: "Ready when fresh replacement proof supports the corrected source state.",
+            hold: "Hold if replacement proof is stale, missing, or conflicts with the corrected claim.",
+            score: 83
+          },
+          {
+            label: "Public notice resolved",
+            owner: "Founder release desk",
+            method: "NOTICE",
+            route: "source.correction.reclose.notice",
+            proof: "Bind current notice copy, affected claim, visible date, and notice supersede rule.",
+            readyWhen: "Ready when the visible correction notice matches the resolved source scope.",
+            hold: "Hold if notice copy is stale, widened, hidden, or detached from the claim.",
+            score: 83
+          },
+          {
+            label: "Cache refresh resolved",
+            owner: "Release cache desk",
+            method: "CACHE",
+            route: "source.correction.reclose.cache",
+            proof: "Bind the current release key, refreshed route, visible source state, and stale-cache check.",
+            readyWhen: "Ready when a fresh page no longer exposes the superseded claim or source state.",
+            hold: "Hold if any supported route can still serve the stale correction state.",
+            score: 82
+          },
+          {
+            label: "Support handoff resolved",
+            owner: "Support desk",
+            method: "SUPPORT",
+            route: "source.correction.reclose.support",
+            proof: "Bind support-safe explanation, owner, response ceiling, and current correction route.",
+            readyWhen: "Ready when support can explain the correction without advice or execution promises.",
+            hold: "Hold if support copy, owner, or response ceiling remains stale.",
+            score: 82
+          },
+          {
+            label: "Reviewer scope resolved",
+            owner: "Reviewer desk",
+            method: "SCOPE",
+            route: "source.correction.reclose.scope",
+            proof: "Bind reviewer scope, accepted fields, excluded fields, and current review date.",
+            readyWhen: "Ready when reviewer scope covers the resolved correction without widening claims.",
+            hold: "Hold if scope, exclusions, or review ownership remains ambiguous.",
+            score: 83
+          },
+          {
+            label: "Founder reclose review",
+            owner: "Founder desk",
+            method: "SIGNOFF",
+            route: "source.correction.reclose.founder",
+            proof: "Bind founder reclose decision, remaining residue, next review date, and reopen trigger.",
+            readyWhen: "Ready when founder review confirms zero unresolved correction drift.",
+            hold: "Hold if any correction residue remains or a reopen trigger is unmapped.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Source Correction Reclose Receipt closes reopened correction rows only after all six drift states are resolved with fresh proof.",
+          "Every reclose receipt binds the reopening queue row, fresh proof dates, owners, hold reasons, next review date, and explicit reopen trigger.",
+          "Reclose restores workflow confidence only; it does not verify live facts, publish notices, modify source records, contact users, or approve public claims.",
+          "Source correction reclose rows must exclude raw source files, private notes, contact details, account payloads, payment payloads, credentials, and identifiers.",
+          "No correction reclose receipt may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No reopened correction may reclose while replacement proof, notice, cache, support, reviewer, or founder drift remains unresolved.",
+          "No reclose receipt may be treated as live-data verification, publishing proof, legal approval, or investment advice.",
+          "No correction may reclose without one explicit next review date and reopen trigger.",
+          "No source correction reclose receipt may fetch live data, verify facts, publish notices, contact users, or approve public claims."
+        ],
+        receiptFields: [
+          "source_correction_reclose_receipt_id",
+          "release_key",
+          "source_correction_reopening_queue_id",
+          "replacement_proof_resolved_at",
+          "public_notice_resolved_at",
+          "cache_refresh_resolved_at",
+          "support_handoff_resolved_at",
+          "reviewer_scope_resolved_at",
+          "founder_reclose_reviewed_at",
+          "next_review_at",
+          "reopen_trigger",
+          "created_at"
+        ],
+        boundary: "Source Correction Reclose Receipt is a static correction reclose room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
       }
     ],
     executiveCalmCompression: {
@@ -20526,14 +20626,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support repair reopen queues are visible; next releases should lock source correction reclose receipt, payment reclose receipt, account reclose receipt, beta command reclose receipt, and support repair reclose receipt.",
+      rule: "Source correction reclose proof is visible; next releases should lock payment reclose receipt, account reclose receipt, beta command reclose receipt, support repair reclose receipt, and source correction reclose aging guard.",
       lanes: [
-        {
-          version: "v579",
-          label: "Source correction reclose receipt",
-          route: "#correction-ledger",
-          detail: "Reclose reopened correction receipts only after replacement proof, notice, cache, support, reviewer, and founder drift is resolved."
-        },
         {
           version: "v580",
           label: "Payment reclose receipt",
@@ -20557,14 +20651,27 @@ function buildTrackerConfig() {
           label: "Support repair reclose receipt",
           route: "#paid-beta-support-ledger",
           detail: "Reclose reopened support repairs only after copy, owner, regression, escalation, refund wording, and founder support drift is resolved."
+        },
+        {
+          version: "v584",
+          label: "Source correction reclose aging guard",
+          route: "#correction-ledger",
+          detail: "Warn when reclosed correction proof ages past replacement, notice, cache, support, reviewer, or founder review windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Support repair reopening proof visible",
+      verdict: "Source correction reclose proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v578",
+          key: "20260710-v578-01",
+          commit: "ba67693",
+          receiptId: "NN-SHARE-RECEIPT-20260710V57801",
+          proof: "Support Repair Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v577",
           key: "20260710-v577-01",
@@ -20592,13 +20699,6 @@ function buildTrackerConfig() {
           commit: "f0f2b17",
           receiptId: "NN-SHARE-RECEIPT-20260710V57401",
           proof: "Source Correction Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v573",
-          key: "20260710-v573-01",
-          commit: "4b18f17",
-          receiptId: "NN-SHARE-RECEIPT-20260710V57301",
-          proof: "Support Repair Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -20636,13 +20736,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v578",
-        detail: "Support Repair Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v579",
+        detail: "Source Correction Reclose Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v578 runs syntax, static, security, diff hygiene, and marker scans before the batch continues."
+        detail: "v579 runs syntax, static, security, diff hygiene, and marker scans before the batch continues."
       },
       {
         label: "03 Queued",
@@ -20651,20 +20751,20 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v578 held until batch finish",
-        detail: "Do not share v578 as the final live batch while v579-v581 are still being built and checked."
+        value: "v579 held until batch finish",
+        detail: "Do not share v579 as the final live batch while v580-v581 are still being built and checked."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v578 support repair reopening",
-        detail: "Support Repair Reopening Queue reopens closed support repairs when copy, owner, regression, escalation, refund wording, or founder support proof drifts."
+        value: "v579 source correction reclose",
+        detail: "Source Correction Reclose Receipt closes reopened correction rows only after replacement proof, notice, cache, support, reviewer, and founder drift is resolved."
       },
       {
         label: "Release checks",
         value: "Per-version checks active",
-        detail: "v578 runs syntax, static, security, diff hygiene, and marker scans before the next version starts."
+        detail: "v579 runs syntax, static, security, diff hygiene, and marker scans before the next version starts."
       },
       {
         label: "Share outcome",

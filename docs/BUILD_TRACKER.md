@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V579 Source Correction Reclose Receipt
+
+V579 adds Source Correction Reclose Receipt to the Build Tracker Release Doctor. It closes reopened correction rows only after replacement proof, public notice, cache refresh, support handoff, reviewer scope, and founder review drift is resolved with fresh proof.
+
+- Release label: `NiveshNadi Phase 1 v579 Source Correction Reclose Receipt`
+- Data/version key: `20260710-v579-01`
+- Product surface: Build Tracker > Release Doctor > Source correction reclose receipt
+- Risk boundary: Static correction reclose room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+- Verification status: Pending batch checks.
+
 ## V578 Support Repair Reopening Queue
 
 V578 adds Support Repair Reopening Queue to the Build Tracker Release Doctor. It reopens closed support repair receipts when support-safe copy, owner review, regression proof, escalation route, refund wording, or founder support proof drifts away from the accepted closeout.

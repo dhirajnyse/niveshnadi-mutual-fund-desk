@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v565-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v565 Payment Acceptance Closeout Receipt";
+const DATA_VERSION = "20260709-v566-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v566 Account Retention Dry-Run Closeout Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment acceptance closeout receipt",
+    label: "Account retention dry-run closeout receipt",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Close stale payment acceptance rows with replay refresh, entitlement, refund and rollback, support copy, owner, and founder finance proof."
+    route: "#account-readiness",
+    detail: "Close stale account retention dry-run vault rows with refresh, delete/export behavior, redaction, support-safe copy, object-family, and founder custody proof."
   },
   {
     label: "Mobile calm audit",
@@ -19067,6 +19067,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Acceptance Closeout Receipt is a static payment-closeout room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountRetentionDryRunCloseoutReceipt",
+        label: "Account retention dry-run closeout receipt",
+        verdict: "Dry-run vault closed with proof",
+        receiptId: ["NN", "ACCOUNT", "RETENTION", "DRY", "RUN", "CLOSEOUT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-retention-dry-run-closeout-receipt",
+        copyLabel: "Copy dry-run closeout",
+        score: 83,
+        rule: "Stale account retention dry-run aging rows should close only when dry-run refresh, delete/export behavior, redaction, support-safe copy, object-family, and founder custody proof agree.",
+        lanes: [
+          {
+            label: "Dry-run refresh closeout",
+            owner: "Account platform",
+            method: "REFRESH",
+            route: "account.retention.dry_run_closeout.refresh",
+            proof: "Track dry-run receipt, refresh date, failed replay residue, and closeout status.",
+            readyWhen: "Ready when the dry-run vault is refreshed or visibly held with a reason.",
+            hold: "Hold if dry-run proof is stale or failed replay residue remains unresolved.",
+            score: 83
+          },
+          {
+            label: "Delete/export behavior closeout",
+            owner: "Data custody desk",
+            method: "DELETE_EXPORT",
+            route: "account.retention.dry_run_closeout.delete_export",
+            proof: "Track export-before-delete behavior, delete wording, retained exception, and rollback note.",
+            readyWhen: "Ready when delete and export behavior are described without performing a real action.",
+            hold: "Hold if delete, export, or retained exception behavior is unclear.",
+            score: 84
+          },
+          {
+            label: "Redaction closeout",
+            owner: "Privacy reviewer",
+            method: "REDACTION",
+            route: "account.retention.dry_run_closeout.redaction",
+            proof: "Track redaction scan, blocked field classes, rejection count, and reviewer signoff.",
+            readyWhen: "Ready when redaction proof covers every dry-run output family.",
+            hold: "Hold if a private field class is unscanned or newly introduced.",
+            score: 84
+          },
+          {
+            label: "Support-safe closeout",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "account.retention.dry_run_closeout.support_safe",
+            proof: "Track support-visible status, hidden-field policy, escalation route, and support-safe wording.",
+            readyWhen: "Ready when support can explain account custody state without seeing private data.",
+            hold: "Hold if support-visible state exposes identifiers or stale custody wording.",
+            score: 82
+          },
+          {
+            label: "Object family closeout",
+            owner: "Schema desk",
+            method: "OBJECT",
+            route: "account.retention.dry_run_closeout.object_family",
+            proof: "Track object family purpose, retention owner, schema version, and closeout decision.",
+            readyWhen: "Ready when every retained object family has purpose, owner, and closeout state.",
+            hold: "Hold if object purpose, owner, schema, or retention state is missing.",
+            score: 83
+          },
+          {
+            label: "Founder custody closeout",
+            owner: "Founder desk",
+            method: "SIGNOFF",
+            route: "account.retention.dry_run_closeout.founder",
+            proof: "Track founder custody decision, residual risk, release hold, and next aging guard route.",
+            readyWhen: "Ready when founder review can explain why the dry-run vault row is closed.",
+            hold: "Hold if residual custody risk or next aging route is missing.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Account Retention Dry-Run Closeout Receipt closes stale dry-run vault rows only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.",
+          "Every dry-run closeout needs refresh, delete/export behavior, redaction, support-safe copy, object-family, and founder custody proof.",
+          "Closeout receipts must describe custody behavior without storing identifiers, credentials, contact data, payment payloads, raw support notes, or distributor-client records.",
+          "A closed dry-run vault row can still be reopened if deletion behavior, redaction proof, support-safe copy, object purpose, or founder signoff drifts.",
+          "No account dry-run closeout row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No dry-run vault row may close without delete/export behavior, redaction, support-safe copy, object family, and founder custody proof.",
+          "No closeout row may imply an account was authenticated, exported, deleted, recovered, or changed by this prototype.",
+          "No support-safe state may expose identifiers, credentials, payment payloads, or private support notes.",
+          "No account retention dry-run closeout receipt may authenticate users, export data, delete data, run jobs, contact users, or approve account custody widening."
+        ],
+        receiptFields: [
+          "account_retention_dry_run_closeout_receipt_id",
+          "release_key",
+          "account_retention_dry_run_aging_guard_id",
+          "dry_run_refresh_state",
+          "delete_export_behavior_state",
+          "redaction_closeout_state",
+          "support_safe_closeout_state",
+          "object_family_closeout_state",
+          "founder_custody_closeout_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Account Retention Dry-Run Closeout Receipt is a static dry-run closeout room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -19239,14 +19338,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment acceptance rows now have closeout receipts; next releases should lock account retention dry-run closeout receipt, beta command renewal closeout receipt, support repair renewal closeout receipt, source correction closeout aging guard, and payment closeout aging guard.",
+      rule: "Account retention dry-run rows now have closeout receipts; next releases should lock beta command renewal closeout receipt, support repair renewal closeout receipt, source correction closeout aging guard, payment closeout aging guard, and account dry-run closeout aging guard.",
       lanes: [
-        {
-          version: "v566",
-          label: "Account retention dry-run closeout receipt",
-          route: "#account-readiness",
-          detail: "Close stale dry-run vault rows with refresh, delete/export behavior, support-safe copy, and founder signoff proof."
-        },
         {
           version: "v567",
           label: "Beta command renewal closeout receipt",
@@ -19270,14 +19363,27 @@ function buildTrackerConfig() {
           label: "Payment closeout aging guard",
           route: "#payment-wiring",
           detail: "Warn when closed payment acceptance receipts age past entitlement, refund, rollback, support, owner, or founder finance review windows."
+        },
+        {
+          version: "v571",
+          label: "Account dry-run closeout aging guard",
+          route: "#account-readiness",
+          detail: "Warn when closed dry-run vault receipts age past delete/export behavior, redaction, support-safe, object-family, or founder custody windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Payment closeout proof visible",
+      verdict: "Account dry-run closeout proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v565",
+          key: "20260709-v565-01",
+          commit: "33a9c00",
+          receiptId: "NN-SHARE-RECEIPT-20260709V56501",
+          proof: "Payment Acceptance Closeout Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v564",
           key: "20260709-v564-01",
@@ -19305,13 +19411,6 @@ function buildTrackerConfig() {
           commit: "ad64e5c",
           receiptId: "NN-SHARE-RECEIPT-20260709V56101",
           proof: "Account Retention Dry-Run Aging Guard added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
-        },
-        {
-          version: "v560",
-          key: "20260709-v560-01",
-          commit: "84f8f1a",
-          receiptId: "NN-SHARE-RECEIPT-20260709V56001",
-          proof: "Payment Acceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -19349,13 +19448,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v565",
-        detail: "Payment Acceptance Closeout Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v566",
+        detail: "Account Retention Dry-Run Closeout Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v565 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v566 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -19364,25 +19463,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v565 held until live stamp",
-        detail: "Do not share v565 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v566 held until live stamp",
+        detail: "Do not share v566 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v565 payment closeout",
-        detail: "Payment Acceptance Closeout Receipt closes stale payment acceptance rows with replay refresh, entitlement, refund and rollback, support copy, owner, and founder finance proof."
+        value: "v566 account dry-run closeout",
+        detail: "Account Retention Dry-Run Closeout Receipt closes stale dry-run vault rows with refresh, delete/export behavior, redaction, support-safe copy, object-family, and founder custody proof."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v565 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v566 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
         value: "v562 held until live stamp",
-        detail: "The release is share-ready only after v565 visual QA passes and GitHub Pages serves the current stamp."
+        detail: "The release is share-ready only after v566 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V566 Account Retention Dry-Run Closeout Receipt
+
+V566 adds Account Retention Dry-Run Closeout Receipt to the Build Tracker Release Doctor. It closes stale dry-run vault rows with refresh, delete/export behavior, redaction, support-safe copy, object-family, and founder custody proof.
+
+- Release label: `NiveshNadi Phase 1 v566 Account Retention Dry-Run Closeout Receipt`
+- Data/version key: `20260709-v566-01`
+- Product surface: Build Tracker > Release Doctor > Account retention dry-run closeout receipt
+- Risk boundary: Static dry-run closeout room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Pending batch checks.
+
 ## V565 Payment Acceptance Closeout Receipt
 
 V565 adds Payment Acceptance Closeout Receipt to the Build Tracker Release Doctor. It closes stale payment acceptance rows with replay refresh, entitlement, refund and rollback, support copy, owner, and founder finance proof.

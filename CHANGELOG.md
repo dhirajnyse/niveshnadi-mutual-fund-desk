@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v566 Account Retention Dry-Run Closeout Receipt
+
+- Version: `0.566.0`
+- Data version: `20260709-v566-01`
+- Changes made: Added Account Retention Dry-Run Closeout Receipt to the Build Tracker Release Doctor with dry-run refresh closeout, delete/export behavior closeout, redaction closeout, support-safe closeout, object family closeout, founder custody closeout, account dry-run closeout receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v565 commit, next-batch planner roll-forward to v567-v571, and release markers rolled forward to v566.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v566 marker scan; Git diff hygiene check; local browser visual QA on desktop and mobile.
+- Known risks: Account Retention Dry-Run Closeout Receipt is a static dry-run closeout room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v565 Payment Acceptance Closeout Receipt
 
 - Version: `0.565.0`

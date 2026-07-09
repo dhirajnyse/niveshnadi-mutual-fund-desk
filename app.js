@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v566-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v566 Account Retention Dry-Run Closeout Receipt";
+const DATA_VERSION = "20260709-v567-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v567 Beta Command Renewal Closeout Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account retention dry-run closeout receipt",
+    label: "Beta command renewal closeout receipt",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Close stale account retention dry-run vault rows with refresh, delete/export behavior, redaction, support-safe copy, object-family, and founder custody proof."
+    route: "#founder-beta-operating-room",
+    detail: "Close aged beta command rows with replacement proof, conflict cleanup, release-safe memory, expiry, and founder signoff."
   },
   {
     label: "Mobile calm audit",
@@ -19166,6 +19166,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Retention Dry-Run Closeout Receipt is a static dry-run closeout room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandRenewalCloseoutReceipt",
+        label: "Beta command renewal closeout receipt",
+        verdict: "Beta command closed with proof",
+        receiptId: ["NN", "BETA", "COMMAND", "RENEWAL", "CLOSEOUT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-renewal-closeout-receipt",
+        copyLabel: "Copy command closeout",
+        score: 83,
+        rule: "Aged beta command renewal rows should close only when replacement proof, conflict cleanup, release-safe memory, expiry, owner, and founder signoff proof agree.",
+        lanes: [
+          {
+            label: "Replacement proof closeout",
+            owner: "Founder beta owner",
+            method: "REPLACEMENT",
+            route: "beta.command.renewal_closeout.replacement",
+            proof: "Track replacement command receipt, old command id, replacement reason, and accepted command state.",
+            readyWhen: "Ready when the old command can no longer be mistaken for the active founder instruction.",
+            hold: "Hold if replacement proof or old command id is missing.",
+            score: 84
+          },
+          {
+            label: "Conflict cleanup closeout",
+            owner: "Command cleanup desk",
+            method: "CONFLICT",
+            route: "beta.command.renewal_closeout.conflict_cleanup",
+            proof: "Track conflicting commands, retired wording, cleanup date, and residue state.",
+            readyWhen: "Ready when duplicate or conflicting command wording is retired.",
+            hold: "Hold if conflict residue remains visible in release copy or founder memory.",
+            score: 83
+          },
+          {
+            label: "Release-safe memory closeout",
+            owner: "Release copy owner",
+            method: "MEMORY",
+            route: "beta.command.renewal_closeout.release_memory",
+            proof: "Track release-safe command summary, share boundary, no-action wording, and memory receipt.",
+            readyWhen: "Ready when the closeout can be shared without implying user invite, access, or payment action.",
+            hold: "Hold if release memory implies beta expansion or private cohort action.",
+            score: 82
+          },
+          {
+            label: "Expiry closeout",
+            owner: "Release calendar",
+            method: "EXPIRY",
+            route: "beta.command.renewal_closeout.expiry",
+            proof: "Track expiry date, renewal window, closeout decision, and next review route.",
+            readyWhen: "Ready when expired command state is closed or explicitly replaced.",
+            hold: "Hold if expiry passed without closeout, replacement, or next review.",
+            score: 83
+          },
+          {
+            label: "Owner closeout",
+            owner: "Founder beta owner",
+            method: "OWNER",
+            route: "beta.command.renewal_closeout.owner",
+            proof: "Track owner signoff, fallback owner, active command state, and release hold.",
+            readyWhen: "Ready when an accountable owner signs off the command closeout.",
+            hold: "Hold if owner or fallback owner is missing.",
+            score: 83
+          },
+          {
+            label: "Founder signoff closeout",
+            owner: "Founder desk",
+            method: "SIGNOFF",
+            route: "beta.command.renewal_closeout.founder",
+            proof: "Track founder decision, residual risk, expansion hold, and next aging guard route.",
+            readyWhen: "Ready when founder review can explain why the beta command is closed.",
+            hold: "Hold if residual command risk or next aging route is missing.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Beta Command Renewal Closeout Receipt closes aged founder command rows only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.",
+          "Every beta command closeout needs replacement proof, conflict cleanup, release-safe memory, expiry, owner, and founder signoff proof.",
+          "Closed command receipts must keep the old command, replacement command, owner, expiry, and no-action boundary visible without storing private data.",
+          "A closed beta command row can still be reopened if release copy, founder memory, conflict cleanup, owner, or expiry proof drifts.",
+          "No beta command closeout row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No beta command row may close without replacement proof, conflict cleanup, release-safe memory, expiry, owner, and founder signoff.",
+          "No closeout row may imply users were invited, paid access was granted, or beta expansion was approved by this prototype.",
+          "No release-safe memory may preserve private cohort, contact, payment, account, or support details.",
+          "No beta command renewal closeout receipt may invite users, process payments, grant access, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "beta_command_renewal_closeout_receipt_id",
+          "release_key",
+          "beta_command_renewal_aging_guard_id",
+          "replacement_command_receipt_id",
+          "conflict_cleanup_state",
+          "release_safe_memory_state",
+          "expiry_closeout_state",
+          "owner_closeout_state",
+          "founder_signoff_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Beta Command Renewal Closeout Receipt is a static command-closeout room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -19338,14 +19437,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account retention dry-run rows now have closeout receipts; next releases should lock beta command renewal closeout receipt, support repair renewal closeout receipt, source correction closeout aging guard, payment closeout aging guard, and account dry-run closeout aging guard.",
+      rule: "Beta command renewals now have closeout receipts; next releases should lock support repair renewal closeout receipt, source correction closeout aging guard, payment closeout aging guard, account dry-run closeout aging guard, and beta command closeout aging guard.",
       lanes: [
-        {
-          version: "v567",
-          label: "Beta command renewal closeout receipt",
-          route: "#founder-beta-operating-room",
-          detail: "Close aged beta command rows with replacement proof, conflict cleanup, release-safe memory, expiry, and founder signoff."
-        },
         {
           version: "v568",
           label: "Support repair renewal closeout receipt",
@@ -19369,14 +19462,27 @@ function buildTrackerConfig() {
           label: "Account dry-run closeout aging guard",
           route: "#account-readiness",
           detail: "Warn when closed dry-run vault receipts age past delete/export behavior, redaction, support-safe, object-family, or founder custody windows."
+        },
+        {
+          version: "v572",
+          label: "Beta command closeout aging guard",
+          route: "#founder-beta-operating-room",
+          detail: "Warn when closed beta command receipts age past replacement proof, conflict cleanup, release-safe memory, expiry, owner, or founder review windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account dry-run closeout proof visible",
+      verdict: "Beta command closeout proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v566",
+          key: "20260709-v566-01",
+          commit: "60ff9a3",
+          receiptId: "NN-SHARE-RECEIPT-20260709V56601",
+          proof: "Account Retention Dry-Run Closeout Receipt added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
+        },
         {
           version: "v565",
           key: "20260709-v565-01",
@@ -19404,13 +19510,6 @@ function buildTrackerConfig() {
           commit: "111cc2a",
           receiptId: "NN-SHARE-RECEIPT-20260709V56201",
           proof: "Beta Command Renewal Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v561",
-          key: "20260709-v561-01",
-          commit: "ad64e5c",
-          receiptId: "NN-SHARE-RECEIPT-20260709V56101",
-          proof: "Account Retention Dry-Run Aging Guard added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -19448,13 +19547,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v566",
-        detail: "Account Retention Dry-Run Closeout Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v567",
+        detail: "Beta Command Renewal Closeout Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v566 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v567 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -19463,25 +19562,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v566 held until live stamp",
-        detail: "Do not share v566 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v567 held until live stamp",
+        detail: "Do not share v567 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v566 account dry-run closeout",
-        detail: "Account Retention Dry-Run Closeout Receipt closes stale dry-run vault rows with refresh, delete/export behavior, redaction, support-safe copy, object-family, and founder custody proof."
+        value: "v567 beta command closeout",
+        detail: "Beta Command Renewal Closeout Receipt closes aged founder beta commands with replacement proof, conflict cleanup, release-safe memory, expiry, owner, and founder signoff."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v566 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v567 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v562 held until live stamp",
-        detail: "The release is share-ready only after v566 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v567 held until live stamp",
+        detail: "The release is share-ready only after v567 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

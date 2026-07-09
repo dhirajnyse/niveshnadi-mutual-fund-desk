@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v567 Beta Command Renewal Closeout Receipt
+
+- Version: `0.567.0`
+- Data version: `20260709-v567-01`
+- Changes made: Added Beta Command Renewal Closeout Receipt to the Build Tracker Release Doctor with replacement proof closeout, conflict cleanup closeout, release-safe memory closeout, expiry closeout, owner closeout, founder signoff closeout, beta command closeout receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v566 commit, next-batch planner roll-forward to v568-v572, and release markers rolled forward to v567.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v567 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Renewal Closeout Receipt is a static command-closeout room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v566 Account Retention Dry-Run Closeout Receipt
 
 - Version: `0.566.0`

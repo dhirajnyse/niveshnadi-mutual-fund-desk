@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V567 Beta Command Renewal Closeout Receipt
+
+V567 adds Beta Command Renewal Closeout Receipt to the Build Tracker Release Doctor. It closes aged founder beta commands with replacement proof, conflict cleanup, release-safe memory, expiry, owner, and founder signoff.
+
+- Release label: `NiveshNadi Phase 1 v567 Beta Command Renewal Closeout Receipt`
+- Data/version key: `20260709-v567-01`
+- Product surface: Build Tracker > Release Doctor > Beta command renewal closeout receipt
+- Risk boundary: Static command-closeout room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V566 Account Retention Dry-Run Closeout Receipt
 
 V566 adds Account Retention Dry-Run Closeout Receipt to the Build Tracker Release Doctor. It closes stale dry-run vault rows with refresh, delete/export behavior, redaction, support-safe copy, object-family, and founder custody proof.

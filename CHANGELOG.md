@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v562 Beta Command Renewal Aging Guard
+
+- Version: `0.562.0`
+- Data version: `20260709-v562-01`
+- Changes made: Added Beta Command Renewal Aging Guard to the Build Tracker Release Doctor with owner review aging, conflict cleanup aging, release-copy aging, founder memory aging, expiry window aging, replacement proof aging, beta command renewal aging receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v561 commit, next-batch planner roll-forward to v563-v567, and release markers rolled forward to v562.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v562 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Renewal Aging Guard is a static command-aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v561 Account Retention Dry-Run Aging Guard
 
 - Version: `0.561.0`

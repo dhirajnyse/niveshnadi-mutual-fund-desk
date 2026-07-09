@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v561-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v561 Account Retention Dry-Run Aging Guard";
+const DATA_VERSION = "20260709-v562-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v562 Beta Command Renewal Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account retention dry-run aging guard",
+    label: "Beta command renewal aging guard",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Warn when vaulted dry-run receipts age past owner, redaction, support-safe, or deletion-review windows."
+    route: "#founder-beta-operating-room",
+    detail: "Warn when renewed beta commands age past owner review, conflict cleanup, release-copy, founder memory, or expiry windows."
   },
   {
     label: "Mobile calm audit",
@@ -18671,6 +18671,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Retention Dry-Run Aging Guard is a static dry-run aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandRenewalAgingGuard",
+        label: "Beta command renewal aging guard",
+        verdict: "Renewed commands can age",
+        receiptId: ["NN", "BETA", "COMMAND", "RENEWAL", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-renewal-aging-guard",
+        copyLabel: "Copy command aging",
+        score: 82,
+        rule: "Renewed founder beta commands should warn when owner review, conflict cleanup, release-copy, founder memory, expiry window, or replacement proof ages past the safe command window.",
+        lanes: [
+          {
+            label: "Owner review aging",
+            owner: "Founder beta owner",
+            method: "OWNER",
+            route: "beta.command.renewal_aging.owner_review",
+            proof: "Track owner review date, fallback owner, accepted command state, and owner-expired hold.",
+            readyWhen: "Ready when every renewed command still has a current accountable owner.",
+            hold: "Hold if owner review or fallback owner has aged past the renewal window.",
+            score: 82
+          },
+          {
+            label: "Conflict cleanup aging",
+            owner: "Command cleanup desk",
+            method: "CONFLICT",
+            route: "beta.command.renewal_aging.conflict_cleanup",
+            proof: "Track conflict cleanup date, retired command references, duplicate command residue, and stale-conflict warning.",
+            readyWhen: "Ready when retired or conflicting commands cannot be mistaken for current founder direction.",
+            hold: "Hold if a conflicting command remains visible or cleanup proof has aged.",
+            score: 83
+          },
+          {
+            label: "Release-copy aging",
+            owner: "Release copy owner",
+            method: "COPY",
+            route: "beta.command.renewal_aging.release_copy",
+            proof: "Track current release-copy date, command phrase, share boundary, and stale release wording state.",
+            readyWhen: "Ready when release copy still matches the renewed command and its boundary.",
+            hold: "Hold if release copy predates the current command state.",
+            score: 82
+          },
+          {
+            label: "Founder memory aging",
+            owner: "Founder desk",
+            method: "MEMORY",
+            route: "beta.command.renewal_aging.founder_memory",
+            proof: "Track founder memory receipt, command reason, next review, and memory-expired warning.",
+            readyWhen: "Ready when founder memory can still explain why the command remains active.",
+            hold: "Hold if the command reason or founder memory receipt has aged out.",
+            score: 82
+          },
+          {
+            label: "Expiry window aging",
+            owner: "Release calendar",
+            method: "EXPIRY",
+            route: "beta.command.renewal_aging.expiry",
+            proof: "Track command expiry date, renewal window, closeout route, and expired-command hold.",
+            readyWhen: "Ready when every renewed command has a visible expiry or closeout route.",
+            hold: "Hold if expiry passed without renewal, replacement, or closeout.",
+            score: 82
+          },
+          {
+            label: "Replacement proof aging",
+            owner: "Proof captain",
+            method: "PROOF",
+            route: "beta.command.renewal_aging.replacement_proof",
+            proof: "Track replacement command receipt, superseded command ID, proof source, and stale replacement warning.",
+            readyWhen: "Ready when replacement proof still defends the active command.",
+            hold: "Hold if replacement proof is stale or the superseded command remains trusted.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Beta Command Renewal Aging Guard warns about stale renewed founder commands only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, or approve beta expansion.",
+          "Every renewed command needs owner review, conflict cleanup, release-copy, founder memory, expiry window, and replacement proof aging states.",
+          "Aging warnings hold founder command language until the command is refreshed, superseded, or closed out.",
+          "Command aging rows must exclude user identifiers, payment payloads, private support notes, credentials, contact data, and distributor-client records.",
+          "No beta command aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No renewed beta command may stay trusted after owner, conflict, release-copy, founder memory, expiry, or replacement windows expire.",
+          "No founder instruction may widen while older conflicting commands are still visible.",
+          "No release copy may cite a renewed command without a current owner and expiry rule.",
+          "No beta command renewal aging guard may invite users, grant access, process payments, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "beta_command_renewal_aging_guard_id",
+          "release_key",
+          "beta_command_renewal_receipt_id",
+          "owner_review_age_state",
+          "conflict_cleanup_age_state",
+          "release_copy_age_state",
+          "founder_memory_age_state",
+          "expiry_window_age_state",
+          "replacement_proof_age_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Beta Command Renewal Aging Guard is a static command-aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -18843,14 +18942,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account dry-run vaults now have aging guards; next releases should lock beta command renewal aging guard, support repair renewal aging guard, source correction renewal closeout receipt, payment acceptance closeout receipt, and account retention dry-run closeout receipt.",
+      rule: "Beta command renewals now have aging guards; next releases should lock support repair renewal aging guard, source correction renewal closeout receipt, payment acceptance closeout receipt, account retention dry-run closeout receipt, and beta command renewal closeout receipt.",
       lanes: [
-        {
-          version: "v562",
-          label: "Beta command renewal aging guard",
-          route: "#founder-beta-operating-room",
-          detail: "Warn when renewed beta commands age past owner review, conflict cleanup, release-copy, or expiry windows."
-        },
         {
           version: "v563",
           label: "Support repair renewal aging guard",
@@ -18874,14 +18967,27 @@ function buildTrackerConfig() {
           label: "Account retention dry-run closeout receipt",
           route: "#account-readiness",
           detail: "Close stale dry-run vault rows with refresh, delete/export behavior, support-safe copy, and founder signoff proof."
+        },
+        {
+          version: "v567",
+          label: "Beta command renewal closeout receipt",
+          route: "#founder-beta-operating-room",
+          detail: "Close aged beta command rows with replacement proof, conflict cleanup, release-safe memory, expiry, and founder signoff."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account dry-run aging proof visible",
+      verdict: "Beta command aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v561",
+          key: "20260709-v561-01",
+          commit: "ad64e5c",
+          receiptId: "NN-SHARE-RECEIPT-20260709V56101",
+          proof: "Account Retention Dry-Run Aging Guard added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
+        },
         {
           version: "v560",
           key: "20260709-v560-01",
@@ -18909,13 +19015,6 @@ function buildTrackerConfig() {
           commit: "237a6bc",
           receiptId: "NN-SHARE-RECEIPT-20260709V55701",
           proof: "Beta Command Renewal Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v556",
-          key: "20260709-v556-01",
-          commit: "66a6488",
-          receiptId: "NN-SHARE-RECEIPT-20260709V55601",
-          proof: "Account Retention Dry-Run Receipt Vault added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -18953,13 +19052,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v561",
-        detail: "Account Retention Dry-Run Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v562",
+        detail: "Beta Command Renewal Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v561 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v562 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -18968,25 +19067,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v561 held until live stamp",
-        detail: "Do not share v561 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v562 held until live stamp",
+        detail: "Do not share v562 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v561 account dry-run aging",
-        detail: "Account Retention Dry-Run Aging Guard warns when vaulted dry-run proof ages past owner, redaction, support-safe, deletion review, object family, or founder vault windows."
+        value: "v562 beta command aging",
+        detail: "Beta Command Renewal Aging Guard warns when renewed founder beta commands age past owner review, conflict cleanup, release-copy, founder memory, expiry, or replacement proof windows."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v561 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v562 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v561 held until live stamp",
-        detail: "The release is share-ready only after v561 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v562 held until live stamp",
+        detail: "The release is share-ready only after v562 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

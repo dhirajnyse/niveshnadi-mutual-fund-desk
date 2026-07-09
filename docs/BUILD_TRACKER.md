@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V562 Beta Command Renewal Aging Guard
+
+V562 adds Beta Command Renewal Aging Guard to the Build Tracker Release Doctor. It warns when renewed founder beta commands age past owner review, conflict cleanup, release-copy, founder memory, expiry, or replacement proof windows.
+
+- Release label: `NiveshNadi Phase 1 v562 Beta Command Renewal Aging Guard`
+- Data/version key: `20260709-v562-01`
+- Product surface: Build Tracker > Release Doctor > Beta command renewal aging guard
+- Risk boundary: Static command-aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V561 Account Retention Dry-Run Aging Guard
 
 V561 adds Account Retention Dry-Run Aging Guard to the Build Tracker Release Doctor. It warns when vaulted dry-run proof ages past owner, redaction, support-safe, deletion review, object family, or founder vault windows.

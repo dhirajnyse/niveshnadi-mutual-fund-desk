@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v569 Source Correction Closeout Aging Guard
+
+- Version: `0.569.0`
+- Data version: `20260709-v569-01`
+- Changes made: Added Source Correction Closeout Aging Guard to the Build Tracker Release Doctor with replacement proof aging, public notice aging, cache refresh aging, support handoff aging, reviewer scope aging, founder review aging, source correction closeout aging receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v568 commit, next-batch planner roll-forward to v570-v574, and release markers rolled forward to v569.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v569 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Closeout Aging Guard is a static correction-aging room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v568 Support Repair Renewal Closeout Receipt
 
 - Version: `0.568.0`

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260710-v580-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v580 Payment Reclose Receipt";
+const DATA_VERSION = "20260710-v581-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v581 Account Reclose Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment reclose receipt",
+    label: "Account reclose receipt",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Reclose reopened payment receipts only after entitlement, refund, rollback, support, owner, and founder finance drift is resolved."
+    route: "#account-readiness",
+    detail: "Reclose reopened account dry-run receipts only after delete/export, redaction, support-safe, object-family, founder custody, and trigger drift is resolved."
   },
   {
     label: "Mobile calm audit",
@@ -20554,6 +20554,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Reclose Receipt is a static payment reclose room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountRecloseReceipt",
+        label: "Account reclose receipt",
+        verdict: "Reopened account rows can close again",
+        receiptId: ["NN", "ACCOUNT", "RECLOSE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-reclose-receipt",
+        copyLabel: "Copy account reclose receipt",
+        score: 82,
+        rule: "A reopened account dry-run receipt may close again only after delete/export behavior, redaction proof, support-safe copy, object-family scope, founder custody, and reopen-trigger drift is resolved with fresh proof.",
+        lanes: [
+          {
+            label: "Delete/export resolved",
+            owner: "Account custody desk",
+            method: "DELETE_EXPORT",
+            route: "account.reclose.delete_export",
+            proof: "Bind current delete/export behavior, dry-run receipt, affected object, and resolved drift reason.",
+            readyWhen: "Ready when delete/export proof matches the account row being reclosed.",
+            hold: "Hold if export, delete, or handoff behavior remains ambiguous.",
+            score: 82
+          },
+          {
+            label: "Redaction resolved",
+            owner: "Privacy desk",
+            method: "REDACTION",
+            route: "account.reclose.redaction",
+            proof: "Bind current redaction rule, excluded fields, sample-safe output, and review date.",
+            readyWhen: "Ready when redaction proof excludes private data from every reclosed account field.",
+            hold: "Hold if redaction scope, excluded fields, or sample-safe proof remains unclear.",
+            score: 82
+          },
+          {
+            label: "Support-safe resolved",
+            owner: "Support desk",
+            method: "SUPPORT",
+            route: "account.reclose.support",
+            proof: "Bind support-safe account copy, owner, response ceiling, and current escalation route.",
+            readyWhen: "Ready when support can explain account status without recovery or private-data promises.",
+            hold: "Hold if support copy, owner, or response ceiling remains stale.",
+            score: 81
+          },
+          {
+            label: "Object-family resolved",
+            owner: "Data model desk",
+            method: "OBJECTS",
+            route: "account.reclose.objects",
+            proof: "Bind affected object family, storage boundary, retention state, and fresh scope review.",
+            readyWhen: "Ready when object-family scope covers the reclosed account row without hidden storage widening.",
+            hold: "Hold if object family, storage boundary, or retention state remains unclear.",
+            score: 82
+          },
+          {
+            label: "Founder custody reclose",
+            owner: "Founder custody desk",
+            method: "SIGNOFF",
+            route: "account.reclose.founder",
+            proof: "Bind founder custody decision, remaining residue, next review date, and custody boundary.",
+            readyWhen: "Ready when founder custody review confirms zero unresolved account drift.",
+            hold: "Hold if account residue remains or custody scope widened after reopening.",
+            score: 82
+          },
+          {
+            label: "Reopen trigger resolved",
+            owner: "Release captain",
+            method: "TRIGGER",
+            route: "account.reclose.trigger",
+            proof: "Bind trigger source, affected receipt, next review date, and future reopen condition.",
+            readyWhen: "Ready when every future reopen trigger is explicit and mapped to one owner.",
+            hold: "Hold if trigger proof, ownership, or next review date is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Account Reclose Receipt closes reopened account dry-run rows only after all six drift states are resolved with fresh proof.",
+          "Every account reclose receipt binds the reopening queue row, fresh proof dates, owners, hold reasons, next review date, and explicit reopen trigger.",
+          "Reclose restores workflow confidence only; it does not authenticate users, export data, delete data, run jobs, recover accounts, or approve custody widening.",
+          "Account reclose rows must exclude account payloads, contact details, credentials, identifiers, raw support notes, private notes, and payment payloads.",
+          "No account reclose receipt may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No reopened account row may reclose while delete/export, redaction, support-safe, object-family, founder custody, or trigger drift remains unresolved.",
+          "No reclose receipt may be treated as authentication, recovery, export, deletion, job execution, or custody approval.",
+          "No account row may reclose without one explicit next review date and reopen trigger.",
+          "No account reclose receipt may authenticate users, export data, delete data, recover accounts, contact users, or approve custody widening."
+        ],
+        receiptFields: [
+          "account_reclose_receipt_id",
+          "release_key",
+          "account_closeout_reopening_queue_id",
+          "delete_export_resolved_at",
+          "redaction_resolved_at",
+          "support_safe_resolved_at",
+          "object_family_resolved_at",
+          "founder_custody_reclosed_at",
+          "reopen_trigger_resolved_at",
+          "next_review_at",
+          "reopen_trigger",
+          "created_at"
+        ],
+        boundary: "Account Reclose Receipt is a static account reclose room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -20726,14 +20826,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment reclose proof is visible; next releases should lock account reclose receipt, beta command reclose receipt, support repair reclose receipt, source correction reclose aging guard, and payment reclose aging guard.",
+      rule: "Account reclose proof is visible; next releases should lock beta command reclose receipt, support repair reclose receipt, source correction reclose aging guard, payment reclose aging guard, and account reclose aging guard.",
       lanes: [
-        {
-          version: "v581",
-          label: "Account reclose receipt",
-          route: "#account-readiness",
-          detail: "Reclose reopened account dry-run receipts only after delete/export, redaction, support-safe, object-family, founder custody, and trigger drift is resolved."
-        },
         {
           version: "v582",
           label: "Beta command reclose receipt",
@@ -20757,14 +20851,27 @@ function buildTrackerConfig() {
           label: "Payment reclose aging guard",
           route: "#payment-wiring",
           detail: "Warn when reclosed payment proof ages past entitlement, refund, rollback, support, owner, or founder finance review windows."
+        },
+        {
+          version: "v586",
+          label: "Account reclose aging guard",
+          route: "#account-readiness",
+          detail: "Warn when reclosed account proof ages past delete/export, redaction, support-safe, object-family, founder custody, or trigger review windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Payment reclose proof visible",
+      verdict: "Account reclose proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v580",
+          key: "20260710-v580-01",
+          commit: "e0708e1",
+          receiptId: "NN-SHARE-RECEIPT-20260710V58001",
+          proof: "Payment Reclose Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v579",
           key: "20260710-v579-01",
@@ -20792,13 +20899,6 @@ function buildTrackerConfig() {
           commit: "324aa25",
           receiptId: "NN-SHARE-RECEIPT-20260710V57601",
           proof: "Account Closeout Reopening Queue added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, and live stamp checks."
-        },
-        {
-          version: "v575",
-          key: "20260710-v575-01",
-          commit: "bedc465",
-          receiptId: "NN-SHARE-RECEIPT-20260710V57501",
-          proof: "Payment Closeout Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -20836,40 +20936,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v580",
-        detail: "Payment Reclose Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v581",
+        detail: "Account Reclose Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v580 runs syntax, static, security, diff hygiene, and marker scans before the batch continues."
+        detail: "v581 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
-        label: "03 Queued",
-        value: "Visual QA next",
-        detail: "The batch proof pipeline is ready for local browser QA, push, and live-stamp verification."
+        label: "03 Viewed",
+        value: "Desktop + mobile pass",
+        detail: "The v581 Build Tracker passed in-app browser desktop and mobile viewport visual QA with no browser warnings or runtime errors."
       },
       {
         label: "04 Share",
-        value: "v580 held until batch finish",
-        detail: "Do not share v580 as the final live batch while v581 is still being built and checked."
+        value: "v581 held until live stamp",
+        detail: "Do not share v581 as live until visual QA passes and release-stamp.txt returns this data key."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v580 payment reclose",
-        detail: "Payment Reclose Receipt closes reopened payment rows only after entitlement, refund, rollback, support, owner, and founder finance drift is resolved."
+        value: "v581 account reclose",
+        detail: "Account Reclose Receipt closes reopened account rows only after delete/export, redaction, support-safe, object-family, founder custody, and trigger drift is resolved."
       },
       {
         label: "Release checks",
-        value: "Per-version checks active",
-        detail: "v580 runs syntax, static, security, diff hygiene, and marker scans before the next version starts."
+        value: "Visual passed; live pending",
+        detail: "v581 passed syntax, static, security, diff hygiene, marker scans, and desktop/mobile visual QA; push and live stamp verification remain."
       },
       {
         label: "Share outcome",
-        value: "Batch held until v581",
-        detail: "The release is share-ready only after all five versions pass checks and v581 completes visual and live verification."
+        value: "v581 held until live stamp",
+        detail: "The release is share-ready only after v581 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

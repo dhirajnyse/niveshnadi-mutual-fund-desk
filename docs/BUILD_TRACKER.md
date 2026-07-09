@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V581 Account Reclose Receipt
+
+V581 adds Account Reclose Receipt to the Build Tracker Release Doctor. It closes reopened account dry-run rows only after delete/export behavior, redaction proof, support-safe copy, object-family scope, founder custody, and reopen-trigger drift is resolved with fresh proof.
+
+- Release label: `NiveshNadi Phase 1 v581 Account Reclose Receipt`
+- Data/version key: `20260710-v581-01`
+- Product surface: Build Tracker > Release Doctor > Account reclose receipt
+- Risk boundary: Static account reclose room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Syntax, static/security, marker, diff hygiene, and in-app browser desktop/mobile viewport visual QA passed; live stamp pending.
+
 ## V580 Payment Reclose Receipt
 
 V580 adds Payment Reclose Receipt to the Build Tracker Release Doctor. It closes reopened payment rows only after entitlement, refund wording, rollback proof, support copy, owner review, and founder finance drift is resolved with fresh proof.

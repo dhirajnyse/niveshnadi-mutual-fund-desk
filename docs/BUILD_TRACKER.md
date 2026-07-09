@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V563 Support Repair Renewal Aging Guard
+
+V563 adds Support Repair Renewal Aging Guard to the Build Tracker Release Doctor. It warns when renewed support repairs age past copy, owner, regression, escalation, refund wording, or founder support windows.
+
+- Release label: `NiveshNadi Phase 1 v563 Support Repair Renewal Aging Guard`
+- Data/version key: `20260709-v563-01`
+- Product surface: Build Tracker > Release Doctor > Support repair renewal aging guard
+- Risk boundary: Static support-aging room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+- Verification status: Pending batch checks.
+
 ## V562 Beta Command Renewal Aging Guard
 
 V562 adds Beta Command Renewal Aging Guard to the Build Tracker Release Doctor. It warns when renewed founder beta commands age past owner review, conflict cleanup, release-copy, founder memory, expiry, or replacement proof windows.

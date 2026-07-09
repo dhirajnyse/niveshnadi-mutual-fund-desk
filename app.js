@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v562-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v562 Beta Command Renewal Aging Guard";
+const DATA_VERSION = "20260709-v563-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v563 Support Repair Renewal Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command renewal aging guard",
+    label: "Support repair renewal aging guard",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Warn when renewed beta commands age past owner review, conflict cleanup, release-copy, founder memory, or expiry windows."
+    route: "#paid-beta-support-ledger",
+    detail: "Warn when renewed support repairs age past copy review, owner signoff, regression check, escalation route, refund wording, or founder support windows."
   },
   {
     label: "Mobile calm audit",
@@ -18770,6 +18770,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Renewal Aging Guard is a static command-aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
+      },
+      {
+        key: "supportRepairRenewalAgingGuard",
+        label: "Support repair renewal aging guard",
+        verdict: "Renewed repairs can age",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "RENEWAL", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-renewal-aging-guard",
+        copyLabel: "Copy support aging",
+        score: 81,
+        rule: "Renewed support repairs should warn when approved copy, owner signoff, regression check, escalation route, refund wording, or founder support review ages past the safe support window.",
+        lanes: [
+          {
+            label: "Support copy aging",
+            owner: "Support captain",
+            method: "COPY",
+            route: "support.repair.renewal_aging.copy",
+            proof: "Track approved support copy date, customer-safe wording, private-data exclusions, and stale-copy warning.",
+            readyWhen: "Ready when support copy still matches the renewed repair state.",
+            hold: "Hold if support copy predates the current repair or refund boundary.",
+            score: 82
+          },
+          {
+            label: "Owner signoff aging",
+            owner: "Repair owner",
+            method: "OWNER",
+            route: "support.repair.renewal_aging.owner",
+            proof: "Track owner signoff date, fallback owner, repair accountability, and owner-expired hold.",
+            readyWhen: "Ready when every renewed repair still has a current owner.",
+            hold: "Hold if owner signoff or fallback owner has aged past review.",
+            score: 81
+          },
+          {
+            label: "Regression aging",
+            owner: "QA reviewer",
+            method: "REGRESSION",
+            route: "support.repair.renewal_aging.regression",
+            proof: "Track regression check date, affected surfaces, retest trigger, and stale regression warning.",
+            readyWhen: "Ready when the renewed support fix still passes the named regression check.",
+            hold: "Hold if regression proof is stale or the affected surface changed.",
+            score: 82
+          },
+          {
+            label: "Escalation route aging",
+            owner: "Support operations",
+            method: "ESCALATION",
+            route: "support.repair.renewal_aging.escalation",
+            proof: "Track escalation owner, route date, fallback path, and stale escalation warning.",
+            readyWhen: "Ready when escalation route and fallback owner remain current.",
+            hold: "Hold if escalation owner or fallback route has changed without renewal.",
+            score: 81
+          },
+          {
+            label: "Refund wording aging",
+            owner: "Finance support",
+            method: "REFUND",
+            route: "support.repair.renewal_aging.refund_wording",
+            proof: "Track refund wording date, payment boundary, entitlement effect, and refund-copy stale warning.",
+            readyWhen: "Ready when refund wording still matches the payment and entitlement state.",
+            hold: "Hold if refund wording predates the current payment boundary.",
+            score: 80
+          },
+          {
+            label: "Founder support aging",
+            owner: "Founder support desk",
+            method: "SIGNOFF",
+            route: "support.repair.renewal_aging.founder",
+            proof: "Track founder support review date, residual risk, release hold, and next closeout route.",
+            readyWhen: "Ready when founder support review can still defend the renewed repair.",
+            hold: "Hold if founder review expired or residual risk remains unresolved.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Support Repair Renewal Aging Guard warns about stale support repair renewals only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.",
+          "Every renewed repair needs support copy, owner signoff, regression, escalation route, refund wording, and founder support aging states.",
+          "Aging warnings hold support and launch language until repair proof is refreshed, superseded, or closed out.",
+          "Support repair aging rows must exclude identifiers, raw support notes, payment payloads, credentials, contact data, and distributor-client records.",
+          "No support repair aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No renewed support repair may stay trusted after copy, owner, regression, escalation, refund wording, or founder windows expire.",
+          "No support reply may cite a renewed repair while refund or privacy wording is stale.",
+          "No escalation path may be treated as current without a fresh owner or fallback route.",
+          "No support repair renewal aging guard may send replies, issue refunds, process payments, contact users, or approve support widening."
+        ],
+        receiptFields: [
+          "support_repair_renewal_aging_guard_id",
+          "release_key",
+          "support_repair_renewal_receipt_id",
+          "support_copy_age_state",
+          "owner_signoff_age_state",
+          "regression_age_state",
+          "escalation_route_age_state",
+          "refund_wording_age_state",
+          "founder_support_age_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Support Repair Renewal Aging Guard is a static support-aging room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
       }
     ],
     executiveCalmCompression: {
@@ -18942,14 +19041,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta command renewals now have aging guards; next releases should lock support repair renewal aging guard, source correction renewal closeout receipt, payment acceptance closeout receipt, account retention dry-run closeout receipt, and beta command renewal closeout receipt.",
+      rule: "Support repair renewals now have aging guards; next releases should lock source correction renewal closeout receipt, payment acceptance closeout receipt, account retention dry-run closeout receipt, beta command renewal closeout receipt, and support repair renewal closeout receipt.",
       lanes: [
-        {
-          version: "v563",
-          label: "Support repair renewal aging guard",
-          route: "#paid-beta-support-ledger",
-          detail: "Warn when renewed support repairs age past copy review, owner signoff, regression, or escalation windows."
-        },
         {
           version: "v564",
           label: "Source correction renewal closeout receipt",
@@ -18973,14 +19066,27 @@ function buildTrackerConfig() {
           label: "Beta command renewal closeout receipt",
           route: "#founder-beta-operating-room",
           detail: "Close aged beta command rows with replacement proof, conflict cleanup, release-safe memory, expiry, and founder signoff."
+        },
+        {
+          version: "v568",
+          label: "Support repair renewal closeout receipt",
+          route: "#paid-beta-support-ledger",
+          detail: "Close aged support repair rows with support-safe copy, owner signoff, regression, escalation, refund wording, and founder support proof."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Beta command aging proof visible",
+      verdict: "Support repair aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v562",
+          key: "20260709-v562-01",
+          commit: "111cc2a",
+          receiptId: "NN-SHARE-RECEIPT-20260709V56201",
+          proof: "Beta Command Renewal Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v561",
           key: "20260709-v561-01",
@@ -19008,13 +19114,6 @@ function buildTrackerConfig() {
           commit: "f73e903",
           receiptId: "NN-SHARE-RECEIPT-20260709V55801",
           proof: "Support Repair Renewal Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v557",
-          key: "20260709-v557-01",
-          commit: "237a6bc",
-          receiptId: "NN-SHARE-RECEIPT-20260709V55701",
-          proof: "Beta Command Renewal Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -19052,13 +19151,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v562",
-        detail: "Beta Command Renewal Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v563",
+        detail: "Support Repair Renewal Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v562 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v563 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -19067,25 +19166,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v562 held until live stamp",
-        detail: "Do not share v562 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v563 held until live stamp",
+        detail: "Do not share v563 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v562 beta command aging",
-        detail: "Beta Command Renewal Aging Guard warns when renewed founder beta commands age past owner review, conflict cleanup, release-copy, founder memory, expiry, or replacement proof windows."
+        value: "v563 support repair aging",
+        detail: "Support Repair Renewal Aging Guard warns when renewed support repairs age past copy, owner, regression, escalation, refund wording, or founder support windows."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v562 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v563 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
         value: "v562 held until live stamp",
-        detail: "The release is share-ready only after v562 visual QA passes and GitHub Pages serves the current stamp."
+        detail: "The release is share-ready only after v563 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

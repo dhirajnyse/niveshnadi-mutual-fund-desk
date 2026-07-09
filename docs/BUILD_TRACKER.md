@@ -8,7 +8,7 @@ V581 adds Account Reclose Receipt to the Build Tracker Release Doctor. It closes
 - Data/version key: `20260710-v581-01`
 - Product surface: Build Tracker > Release Doctor > Account reclose receipt
 - Risk boundary: Static account reclose room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
-- Verification status: Syntax, static/security, marker, diff hygiene, and in-app browser desktop/mobile viewport visual QA passed; live stamp pending.
+- Verification status: Syntax, static/security, marker, diff hygiene, in-app browser desktop/mobile viewport visual QA, push, live stamp, and live app marker checks passed.
 
 ## V580 Payment Reclose Receipt
 

@@ -6,7 +6,7 @@
 - Data version: `20260710-v581-01`
 - Changes made: Added Account Reclose Receipt to the Build Tracker Release Doctor with delete/export resolution, redaction resolution, support-safe resolution, object-family resolution, founder custody reclose, reopen-trigger resolution, account reclose receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v580 commit, next-batch planner roll-forward to v582-v586, and release markers rolled forward to v581.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v581 marker scan; Git diff hygiene check; in-app browser desktop and mobile viewport visual QA.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v581 marker scan; Git diff hygiene check; in-app browser desktop and mobile viewport visual QA; push; GitHub Pages release-stamp, cache-key, and live app marker verification.
 - Known risks: Account Reclose Receipt is a static account reclose room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
 
 ## NiveshNadi Phase 1 v580 Payment Reclose Receipt

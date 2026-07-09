@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v574 Source Correction Reopening Queue
+
+- Version: `0.574.0`
+- Data version: `20260710-v574-01`
+- Changes made: Added Source Correction Reopening Queue to the Build Tracker Release Doctor with replacement proof drift, public notice drift, cache refresh drift, support handoff drift, reviewer scope drift, founder review drift, source correction reopening receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v573 commit, next-batch planner roll-forward to v575-v579, and release markers rolled forward to v574.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v574 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Reopening Queue is a static correction reopening room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v573 Support Repair Closeout Aging Guard
 
 - Version: `0.573.0`

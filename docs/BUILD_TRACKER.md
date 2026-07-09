@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V574 Source Correction Reopening Queue
+
+V574 adds Source Correction Reopening Queue to the Build Tracker Release Doctor. It reopens closed correction receipts when replacement proof, public notice, cache refresh, support handoff, reviewer scope, or founder review drifts away from the accepted closeout.
+
+- Release label: `NiveshNadi Phase 1 v574 Source Correction Reopening Queue`
+- Data/version key: `20260710-v574-01`
+- Product surface: Build Tracker > Release Doctor > Source correction reopening queue
+- Risk boundary: Static correction reopening room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+- Verification status: Pending batch checks.
+
 ## V573 Support Repair Closeout Aging Guard
 
 V573 adds Support Repair Closeout Aging Guard to the Build Tracker Release Doctor. It warns when closed support repair receipts age past support copy, owner review, regression proof, escalation route, refund wording, or founder support review windows.

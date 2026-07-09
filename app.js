@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260710-v573-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v573 Support Repair Closeout Aging Guard";
+const DATA_VERSION = "20260710-v574-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v574 Source Correction Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Support repair closeout aging guard",
+    label: "Source correction reopening queue",
     status: "Shipping now",
-    route: "#paid-beta-support-ledger",
-    detail: "Warn when closed support repair receipts age past copy, owner, regression, escalation, refund wording, or founder support review windows."
+    route: "#correction-ledger",
+    detail: "Reopen closed correction receipts when replacement proof, public notice, cache, support handoff, reviewer scope, or founder review drifts."
   },
   {
     label: "Mobile calm audit",
@@ -19859,6 +19859,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Repair Closeout Aging Guard is a static support-aging room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
+      },
+      {
+        key: "sourceCorrectionReopeningQueue",
+        label: "Source correction reopening queue",
+        verdict: "Correction closeouts can reopen",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-reopening-queue",
+        copyLabel: "Copy correction reopening queue",
+        score: 82,
+        rule: "Closed source correction receipts should reopen when replacement proof, public notice, cache refresh, support handoff, reviewer scope, or founder review drifts away from the accepted closeout.",
+        lanes: [
+          {
+            label: "Replacement proof drift",
+            owner: "Source evidence desk",
+            method: "PROOF",
+            route: "source.correction.reopening.proof",
+            proof: "Track replacement artifact, accepted source, proof age, and drift reason before reopening.",
+            readyWhen: "Ready when replacement proof still supports the closed correction receipt.",
+            hold: "Hold if the replacement proof has aged out or no longer matches the public correction.",
+            score: 82
+          },
+          {
+            label: "Public notice drift",
+            owner: "Founder release desk",
+            method: "NOTICE",
+            route: "source.correction.reopening.notice",
+            proof: "Track public notice copy, affected claim, notice date, and stale-notice reason.",
+            readyWhen: "Ready when public notice still matches the closed correction scope.",
+            hold: "Hold if notice copy is stale, widened, missing, or no longer tied to the corrected claim.",
+            score: 81
+          },
+          {
+            label: "Cache refresh drift",
+            owner: "Release cache desk",
+            method: "CACHE",
+            route: "source.correction.reopening.cache",
+            proof: "Track cache refresh key, stale route, visible release key, and refresh proof.",
+            readyWhen: "Ready when the visible page and release cache still show the corrected source state.",
+            hold: "Hold if a stale cache can show the older claim or source state.",
+            score: 82
+          },
+          {
+            label: "Support handoff drift",
+            owner: "Support desk",
+            method: "SUPPORT",
+            route: "source.correction.reopening.support",
+            proof: "Track support-safe handoff copy, owner, response ceiling, and stale-handoff warning.",
+            readyWhen: "Ready when support can explain the correction without advice or private-data exposure.",
+            hold: "Hold if support copy, owner, or response ceiling is stale.",
+            score: 81
+          },
+          {
+            label: "Reviewer scope drift",
+            owner: "Reviewer desk",
+            method: "SCOPE",
+            route: "source.correction.reopening.scope",
+            proof: "Track reviewer scope, accepted field list, excluded fields, and reopen trigger.",
+            readyWhen: "Ready when reviewer scope still covers the closed correction without widening claims.",
+            hold: "Hold if reviewer scope or excluded fields changed after closeout.",
+            score: 82
+          },
+          {
+            label: "Founder review drift",
+            owner: "Founder desk",
+            method: "SIGNOFF",
+            route: "source.correction.reopening.founder",
+            proof: "Track founder review date, correction residue, reopen decision, and next reclose route.",
+            readyWhen: "Ready when founder review can still defend keeping the correction closed.",
+            hold: "Hold if founder review expired or correction residue reappeared.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Source Correction Reopening Queue reopens stale correction closeouts only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.",
+          "Every reopened correction needs replacement proof, public notice, cache refresh, support handoff, reviewer scope, and founder review drift states.",
+          "Reopening rows hold the correction confidence until drift is resolved, superseded, or reclosed with fresh proof.",
+          "Correction reopening rows must exclude raw source files, private notes, contact details, account payloads, payment payloads, credentials, and identifiers.",
+          "No correction reopening row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No closed correction may stay trusted after replacement proof, public notice, cache, support handoff, reviewer scope, or founder review drifts.",
+          "No public correction note may widen into investment advice, live-data certainty, execution promise, or source guarantee.",
+          "No stale cache may be treated as a corrected production surface.",
+          "No source correction reopening queue may fetch live data, verify facts, publish notices, contact users, or approve public claims."
+        ],
+        receiptFields: [
+          "source_correction_reopening_queue_id",
+          "release_key",
+          "source_correction_closeout_aging_guard_id",
+          "replacement_proof_drift_state",
+          "public_notice_drift_state",
+          "cache_refresh_drift_state",
+          "support_handoff_drift_state",
+          "reviewer_scope_drift_state",
+          "founder_review_drift_state",
+          "reopen_owner",
+          "created_at"
+        ],
+        boundary: "Source Correction Reopening Queue is a static correction reopening room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
       }
     ],
     executiveCalmCompression: {
@@ -20031,14 +20130,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support repair closeouts now have aging guards; next releases should lock source correction reopening queue, payment closeout reopening queue, account closeout reopening queue, beta command reopening queue, and support repair reopening queue.",
+      rule: "Source correction reopen queues are visible; next releases should lock payment closeout reopening queue, account closeout reopening queue, beta command reopening queue, support repair reopening queue, and source correction reclose receipt.",
       lanes: [
-        {
-          version: "v574",
-          label: "Source correction reopening queue",
-          route: "#correction-ledger",
-          detail: "Reopen closed correction receipts when replacement proof, public notice, cache, support handoff, reviewer scope, or founder review drifts."
-        },
         {
           version: "v575",
           label: "Payment closeout reopening queue",
@@ -20062,14 +20155,27 @@ function buildTrackerConfig() {
           label: "Support repair reopening queue",
           route: "#paid-beta-support-ledger",
           detail: "Reopen closed support repairs when copy, owner, regression, escalation, refund wording, or founder support proof drifts."
+        },
+        {
+          version: "v579",
+          label: "Source correction reclose receipt",
+          route: "#correction-ledger",
+          detail: "Reclose reopened correction receipts only after replacement proof, notice, cache, support, reviewer, and founder drift is resolved."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Support repair closeout aging proof visible",
+      verdict: "Source correction reopening proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v573",
+          key: "20260710-v573-01",
+          commit: "4b18f17",
+          receiptId: "NN-SHARE-RECEIPT-20260710V57301",
+          proof: "Support Repair Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v572",
           key: "20260710-v572-01",
@@ -20098,14 +20204,6 @@ function buildTrackerConfig() {
           receiptId: "NN-SHARE-RECEIPT-20260709V56901",
           proof: "Source Correction Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
-        {
-          version: "v568",
-          key: "20260709-v568-01",
-          commit: "abe72fb",
-          receiptId: "NN-SHARE-RECEIPT-20260709V56801",
-          proof: "Support Repair Renewal Closeout Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
       retentionReview: {
@@ -20142,13 +20240,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v573",
-        detail: "Support Repair Closeout Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v574",
+        detail: "Source Correction Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v573 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v574 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -20157,25 +20255,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v573 held until live stamp",
-        detail: "Do not share v573 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v574 held until live stamp",
+        detail: "Do not share v574 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v573 support repair closeout aging",
-        detail: "Support Repair Closeout Aging Guard warns when closed support repair receipts age past copy, owner, regression, escalation, refund wording, or founder support review windows."
+        value: "v574 source correction reopening",
+        detail: "Source Correction Reopening Queue reopens closed correction receipts when replacement proof, public notice, cache, support handoff, reviewer scope, or founder review drifts."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v573 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v574 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v573 held until live stamp",
-        detail: "The release is share-ready only after v573 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v574 held until live stamp",
+        detail: "The release is share-ready only after v574 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

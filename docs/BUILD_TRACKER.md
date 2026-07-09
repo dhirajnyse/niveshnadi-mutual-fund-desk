@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V564 Source Correction Renewal Closeout Receipt
+
+V564 adds Source Correction Renewal Closeout Receipt to the Build Tracker Release Doctor. It closes stale correction aging rows with supersede, refresh, public notice, support handoff, cache, and founder correction proof.
+
+- Release label: `NiveshNadi Phase 1 v564 Source Correction Renewal Closeout Receipt`
+- Data/version key: `20260709-v564-01`
+- Product surface: Build Tracker > Release Doctor > Source correction renewal closeout receipt
+- Risk boundary: Static correction-closeout room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, contact users, or approve public claims.
+- Verification status: Pending batch checks.
+
 ## V563 Support Repair Renewal Aging Guard
 
 V563 adds Support Repair Renewal Aging Guard to the Build Tracker Release Doctor. It warns when renewed support repairs age past copy, owner, regression, escalation, refund wording, or founder support windows.

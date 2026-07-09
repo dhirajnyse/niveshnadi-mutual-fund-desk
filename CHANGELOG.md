@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v564 Source Correction Renewal Closeout Receipt
+
+- Version: `0.564.0`
+- Data version: `20260709-v564-01`
+- Changes made: Added Source Correction Renewal Closeout Receipt to the Build Tracker Release Doctor with supersede closeout, refresh closeout, public notice closeout, support handoff closeout, cache closeout, founder correction closeout, source correction closeout receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v563 commit, next-batch planner roll-forward to v565-v569, and release markers rolled forward to v564.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v564 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Renewal Closeout Receipt is a static correction-closeout room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v563 Support Repair Renewal Aging Guard
 
 - Version: `0.563.0`

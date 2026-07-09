@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v565 Payment Acceptance Closeout Receipt
+
+- Version: `0.565.0`
+- Data version: `20260709-v565-01`
+- Changes made: Added Payment Acceptance Closeout Receipt to the Build Tracker Release Doctor with acceptance refresh closeout, entitlement closeout, refund/rollback closeout, support copy closeout, owner closeout, founder finance closeout, payment acceptance closeout receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v564 commit, next-batch planner roll-forward to v566-v570, and release markers rolled forward to v565.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v565 marker scan; Git diff hygiene check.
+- Known risks: Payment Acceptance Closeout Receipt is a static payment-closeout room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v564 Source Correction Renewal Closeout Receipt
 
 - Version: `0.564.0`

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V565 Payment Acceptance Closeout Receipt
+
+V565 adds Payment Acceptance Closeout Receipt to the Build Tracker Release Doctor. It closes stale payment acceptance rows with replay refresh, entitlement, refund and rollback, support copy, owner, and founder finance proof.
+
+- Release label: `NiveshNadi Phase 1 v565 Payment Acceptance Closeout Receipt`
+- Data/version key: `20260709-v565-01`
+- Product surface: Build Tracker > Release Doctor > Payment acceptance closeout receipt
+- Risk boundary: Static payment-closeout room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V564 Source Correction Renewal Closeout Receipt
 
 V564 adds Source Correction Renewal Closeout Receipt to the Build Tracker Release Doctor. It closes stale correction aging rows with supersede, refresh, public notice, support handoff, cache, and founder correction proof.

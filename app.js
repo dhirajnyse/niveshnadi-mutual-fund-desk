@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260709-v564-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v564 Source Correction Renewal Closeout Receipt";
+const DATA_VERSION = "20260709-v565-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v565 Payment Acceptance Closeout Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction renewal closeout receipt",
+    label: "Payment acceptance closeout receipt",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Close stale source correction aging rows with supersede proof, refresh proof, public notice, support handoff, cache closeout, and founder signoff."
+    route: "#payment-wiring",
+    detail: "Close stale payment acceptance rows with replay refresh, entitlement, refund and rollback, support copy, owner, and founder finance proof."
   },
   {
     label: "Mobile calm audit",
@@ -18968,6 +18968,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Renewal Closeout Receipt is a static correction-closeout room only; it does not fetch live data, verify facts, publish notices, send support replies, change source records, contact users, or approve public claims."
+      },
+      {
+        key: "paymentAcceptanceCloseoutReceipt",
+        label: "Payment acceptance closeout receipt",
+        verdict: "Payment acceptance closed with proof",
+        receiptId: ["NN", "PAYMENT", "ACCEPTANCE", "CLOSEOUT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-acceptance-closeout-receipt",
+        copyLabel: "Copy payment closeout",
+        score: 82,
+        rule: "Stale payment acceptance aging rows should close only when replay refresh, entitlement, refund or rollback, support copy, owner, and founder finance proof agree.",
+        lanes: [
+          {
+            label: "Acceptance refresh closeout",
+            owner: "Payment operations",
+            method: "REFRESH",
+            route: "payment.acceptance.closeout.refresh",
+            proof: "Track accepted replay receipt, refreshed replay state, mismatch class, and refresh date.",
+            readyWhen: "Ready when accepted replay proof has a current refresh or a visible hold.",
+            hold: "Hold if accepted replay state is stale or mismatch class is unresolved.",
+            score: 82
+          },
+          {
+            label: "Entitlement closeout",
+            owner: "Account access owner",
+            method: "ENTITLEMENT",
+            route: "payment.acceptance.closeout.entitlement",
+            proof: "Track entitlement state, access boundary, no-grant wording, and closeout decision.",
+            readyWhen: "Ready when entitlement copy matches the payment acceptance state without granting access.",
+            hold: "Hold if entitlement effect or no-grant wording is unclear.",
+            score: 83
+          },
+          {
+            label: "Refund/rollback closeout",
+            owner: "Finance support",
+            method: "ROLLBACK",
+            route: "payment.acceptance.closeout.refund_rollback",
+            proof: "Track refund wording, rollback state, support-safe route, and unresolved payment effect.",
+            readyWhen: "Ready when refund and rollback copy can be replayed without executing an action.",
+            hold: "Hold if refund or rollback state is missing or implies a real action happened.",
+            score: 82
+          },
+          {
+            label: "Support copy closeout",
+            owner: "Support captain",
+            method: "SUPPORT",
+            route: "payment.acceptance.closeout.support_copy",
+            proof: "Track support-safe explanation, escalation owner, payment boundary, and stale copy retirement.",
+            readyWhen: "Ready when support can explain payment acceptance without seeing private payment data.",
+            hold: "Hold if support copy uses stale acceptance or refund wording.",
+            score: 81
+          },
+          {
+            label: "Owner closeout",
+            owner: "Payment owner",
+            method: "OWNER",
+            route: "payment.acceptance.closeout.owner",
+            proof: "Track owner signoff, fallback owner, launch-language hold, and next review.",
+            readyWhen: "Ready when payment closeout has an accountable owner and review date.",
+            hold: "Hold if owner signoff, fallback owner, or next review is missing.",
+            score: 82
+          },
+          {
+            label: "Founder finance closeout",
+            owner: "Founder finance desk",
+            method: "SIGNOFF",
+            route: "payment.acceptance.closeout.founder_finance",
+            proof: "Track founder finance decision, residual risk, release hold, and next aging guard route.",
+            readyWhen: "Ready when founder finance review can defend why the payment acceptance row is closed.",
+            hold: "Hold if residual payment risk or next aging route is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Payment Acceptance Closeout Receipt closes stale payment acceptance rows only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.",
+          "Every payment closeout needs refresh, entitlement, refund or rollback, support copy, owner, and founder finance proof.",
+          "Closeout receipts must describe payment state without storing gateway payloads, tokens, bank data, card data, contact data, or private support notes.",
+          "A closed payment acceptance row can still be reopened if entitlement, refund wording, rollback, support copy, or owner signoff drifts.",
+          "No payment closeout row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No payment acceptance row may close without entitlement, refund or rollback, support copy, owner, and founder finance proof.",
+          "No closeout row may imply money was moved, refunded, reconciled, or access was granted by this prototype.",
+          "No support copy may expose gateway payloads, tokens, identifiers, or private support notes.",
+          "No payment acceptance closeout receipt may process payments, issue refunds, grant access, reconcile ledgers, or approve payment launch."
+        ],
+        receiptFields: [
+          "payment_acceptance_closeout_receipt_id",
+          "release_key",
+          "payment_acceptance_aging_guard_id",
+          "accepted_replay_receipt_id",
+          "entitlement_closeout_state",
+          "refund_rollback_closeout_state",
+          "support_copy_closeout_state",
+          "owner_closeout_state",
+          "founder_finance_closeout_state",
+          "release_hold",
+          "created_at"
+        ],
+        boundary: "Payment Acceptance Closeout Receipt is a static payment-closeout room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -19140,14 +19239,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source correction renewals now have closeout receipts; next releases should lock payment acceptance closeout receipt, account retention dry-run closeout receipt, beta command renewal closeout receipt, support repair renewal closeout receipt, and source correction closeout aging guard.",
+      rule: "Payment acceptance rows now have closeout receipts; next releases should lock account retention dry-run closeout receipt, beta command renewal closeout receipt, support repair renewal closeout receipt, source correction closeout aging guard, and payment closeout aging guard.",
       lanes: [
-        {
-          version: "v565",
-          label: "Payment acceptance closeout receipt",
-          route: "#payment-wiring",
-          detail: "Close stale payment acceptance rows with refresh, rollback, support copy, owner, and founder finance proof."
-        },
         {
           version: "v566",
           label: "Account retention dry-run closeout receipt",
@@ -19171,14 +19264,27 @@ function buildTrackerConfig() {
           label: "Source correction closeout aging guard",
           route: "#correction-ledger",
           detail: "Warn when closed correction receipts age past replacement proof, public notice, cache refresh, support handoff, or founder review windows."
+        },
+        {
+          version: "v570",
+          label: "Payment closeout aging guard",
+          route: "#payment-wiring",
+          detail: "Warn when closed payment acceptance receipts age past entitlement, refund, rollback, support, owner, or founder finance review windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Source correction closeout proof visible",
+      verdict: "Payment closeout proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v564",
+          key: "20260709-v564-01",
+          commit: "53e3ce8",
+          receiptId: "NN-SHARE-RECEIPT-20260709V56401",
+          proof: "Source Correction Renewal Closeout Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v563",
           key: "20260709-v563-01",
@@ -19206,13 +19312,6 @@ function buildTrackerConfig() {
           commit: "84f8f1a",
           receiptId: "NN-SHARE-RECEIPT-20260709V56001",
           proof: "Payment Acceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v559",
-          key: "20260709-v559-01",
-          commit: "9dc7cec",
-          receiptId: "NN-SHARE-RECEIPT-20260709V55901",
-          proof: "Source Correction Renewal Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -19250,13 +19349,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v564",
-        detail: "Source Correction Renewal Closeout Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v565",
+        detail: "Payment Acceptance Closeout Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v564 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v565 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -19265,25 +19364,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v564 held until live stamp",
-        detail: "Do not share v564 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v565 held until live stamp",
+        detail: "Do not share v565 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v564 source correction closeout",
-        detail: "Source Correction Renewal Closeout Receipt closes stale correction aging rows with supersede, refresh, public notice, support handoff, cache, and founder correction proof."
+        value: "v565 payment closeout",
+        detail: "Payment Acceptance Closeout Receipt closes stale payment acceptance rows with replay refresh, entitlement, refund and rollback, support copy, owner, and founder finance proof."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v564 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v565 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
         value: "v562 held until live stamp",
-        detail: "The release is share-ready only after v564 visual QA passes and GitHub Pages serves the current stamp."
+        detail: "The release is share-ready only after v565 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

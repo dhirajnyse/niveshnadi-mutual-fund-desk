@@ -229,6 +229,7 @@ assert(app.includes("betaCommandCloseoutAgingGuard") && app.includes("data-copy-
 assert(app.includes("supportRepairCloseoutAgingGuard") && app.includes("data-copy-support-repair-closeout-aging-guard"), "app.js is missing v573 Support Repair Closeout Aging Guard.");
 assert(app.includes("sourceCorrectionReopeningQueue") && app.includes("data-copy-source-correction-reopening-queue"), "app.js is missing v574 Source Correction Reopening Queue.");
 assert(app.includes("paymentCloseoutReopeningQueue") && app.includes("data-copy-payment-closeout-reopening-queue"), "app.js is missing v575 Payment Closeout Reopening Queue.");
+assert(app.includes("accountCloseoutReopeningQueue") && app.includes("data-copy-account-closeout-reopening-queue"), "app.js is missing v576 Account Closeout Reopening Queue.");
 assert(app.includes("visualRunnerResultArchive") && app.includes("productionLaunchProofCabinet"), "app.js is missing v484-v485 release doctor proof archives.");
 assert(app.includes("function visualRegressionRunnerEnvelopeRows") && !app.includes("resultRows: visualRegressionRunnerContract.runEnvelope"), "app.js has an unsafe visual runner sibling-object reference.");
 assert(app.includes("function renderBuildPhasesRoom") && app.includes("function makeBuildPhasesBrief") && app.includes("buildPhaseGridMarkup"), "app.js is missing Nadi Build Phases Room behavior.");

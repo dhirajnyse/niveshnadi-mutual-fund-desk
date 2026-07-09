@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260710-v575-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v575 Payment Closeout Reopening Queue";
+const DATA_VERSION = "20260710-v576-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v576 Account Closeout Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment closeout reopening queue",
+    label: "Account closeout reopening queue",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Reopen closed payment receipts when entitlement, refund, rollback, support, owner, or founder finance proof drifts."
+    route: "#account-readiness",
+    detail: "Reopen closed dry-run vault receipts when delete/export, redaction, support-safe, object-family, founder custody, or reopen-trigger proof drifts."
   },
   {
     label: "Mobile calm audit",
@@ -20057,6 +20057,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Closeout Reopening Queue is a static payment reopening room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountCloseoutReopeningQueue",
+        label: "Account closeout reopening queue",
+        verdict: "Account closeouts can reopen",
+        receiptId: ["NN", "ACCOUNT", "CLOSEOUT", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-closeout-reopening-queue",
+        copyLabel: "Copy account reopening queue",
+        score: 81,
+        rule: "Closed account dry-run vault receipts should reopen when delete/export behavior, redaction proof, support-safe copy, object-family scope, founder custody, or reopen-trigger proof drifts away from the accepted closeout.",
+        lanes: [
+          {
+            label: "Delete/export drift",
+            owner: "Account custody desk",
+            method: "DELETE_EXPORT",
+            route: "account.closeout.reopening.delete_export",
+            proof: "Track delete/export behavior, dry-run receipt, affected object, and drift reason before reopening.",
+            readyWhen: "Ready when delete/export behavior still matches the closed dry-run vault receipt.",
+            hold: "Hold if export, delete, or handoff behavior drifted after closeout.",
+            score: 81
+          },
+          {
+            label: "Redaction drift",
+            owner: "Privacy desk",
+            method: "REDACTION",
+            route: "account.closeout.reopening.redaction",
+            proof: "Track redaction rule, excluded fields, sample-safe output, and stale-redaction warning.",
+            readyWhen: "Ready when redaction proof still excludes private data from the closed account row.",
+            hold: "Hold if redaction scope, excluded fields, or sample-safe proof changed.",
+            score: 81
+          },
+          {
+            label: "Support-safe drift",
+            owner: "Support desk",
+            method: "SUPPORT",
+            route: "account.closeout.reopening.support",
+            proof: "Track support-safe account copy, owner, response ceiling, and account-support drift.",
+            readyWhen: "Ready when support can explain account status without recovery or private-data promises.",
+            hold: "Hold if support copy, owner, or response ceiling is stale.",
+            score: 80
+          },
+          {
+            label: "Object-family drift",
+            owner: "Data model desk",
+            method: "OBJECTS",
+            route: "account.closeout.reopening.objects",
+            proof: "Track affected object family, storage boundary, retention state, and stale-object warning.",
+            readyWhen: "Ready when object-family scope still covers the closed dry-run vault row.",
+            hold: "Hold if object family, storage boundary, or retention state changed after closeout.",
+            score: 81
+          },
+          {
+            label: "Founder custody drift",
+            owner: "Founder custody desk",
+            method: "SIGNOFF",
+            route: "account.closeout.reopening.founder",
+            proof: "Track founder custody review, account residue, reopen decision, and next reclose route.",
+            readyWhen: "Ready when founder custody review can still defend keeping the account closeout closed.",
+            hold: "Hold if founder custody review expired or account residue reappeared.",
+            score: 81
+          },
+          {
+            label: "Reopen trigger drift",
+            owner: "Release captain",
+            method: "TRIGGER",
+            route: "account.closeout.reopening.trigger",
+            proof: "Track trigger source, affected vault receipt, reopen condition, and stale-trigger warning.",
+            readyWhen: "Ready when reopen triggers remain explicit and mapped to one owner.",
+            hold: "Hold if trigger proof is missing, stale, or no longer mapped to an owner.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Account Closeout Reopening Queue reopens stale account dry-run closeouts only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.",
+          "Every reopened account closeout needs delete/export, redaction, support-safe, object-family, founder custody, and reopen-trigger drift states.",
+          "Reopening rows hold account confidence until drift is resolved, superseded, or reclosed with fresh proof.",
+          "Account reopening rows must exclude account payloads, contact details, credentials, identifiers, raw support notes, private notes, and payment payloads.",
+          "No account reopening row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No closed account dry-run receipt may stay trusted after delete/export, redaction, support-safe, object-family, founder custody, or trigger proof drifts.",
+          "No account copy may imply authentication, recovery, export, deletion, or support execution without backend proof.",
+          "No vault closeout may remain closed if private-data exclusion, object-family scope, or trigger ownership is unclear.",
+          "No account closeout reopening queue may authenticate users, export data, delete data, recover accounts, contact users, or approve custody widening."
+        ],
+        receiptFields: [
+          "account_closeout_reopening_queue_id",
+          "release_key",
+          "account_dry_run_closeout_aging_guard_id",
+          "delete_export_drift_state",
+          "redaction_drift_state",
+          "support_safe_drift_state",
+          "object_family_drift_state",
+          "founder_custody_drift_state",
+          "reopen_trigger_drift_state",
+          "reopen_owner",
+          "created_at"
+        ],
+        boundary: "Account Closeout Reopening Queue is a static account reopening room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -20229,14 +20328,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment closeout reopen queues are visible; next releases should lock account closeout reopening queue, beta command reopening queue, support repair reopening queue, source correction reclose receipt, and payment reclose receipt.",
+      rule: "Account closeout reopen queues are visible; next releases should lock beta command reopening queue, support repair reopening queue, source correction reclose receipt, payment reclose receipt, and account reclose receipt.",
       lanes: [
-        {
-          version: "v576",
-          label: "Account closeout reopening queue",
-          route: "#account-readiness",
-          detail: "Reopen closed dry-run vault receipts when delete/export, redaction, support-safe, object-family, founder custody, or reopen-trigger proof drifts."
-        },
         {
           version: "v577",
           label: "Beta command reopening queue",
@@ -20260,14 +20353,27 @@ function buildTrackerConfig() {
           label: "Payment reclose receipt",
           route: "#payment-wiring",
           detail: "Reclose reopened payment receipts only after entitlement, refund, rollback, support, owner, and founder finance drift is resolved."
+        },
+        {
+          version: "v581",
+          label: "Account reclose receipt",
+          route: "#account-readiness",
+          detail: "Reclose reopened account dry-run receipts only after delete/export, redaction, support-safe, object-family, founder custody, and trigger drift is resolved."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Payment closeout reopening proof visible",
+      verdict: "Account closeout reopening proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v575",
+          key: "20260710-v575-01",
+          commit: "bedc465",
+          receiptId: "NN-SHARE-RECEIPT-20260710V57501",
+          proof: "Payment Closeout Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v574",
           key: "20260710-v574-01",
@@ -20295,13 +20401,6 @@ function buildTrackerConfig() {
           commit: "07310c4",
           receiptId: "NN-SHARE-RECEIPT-20260709V57101",
           proof: "Account Dry-Run Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, marker, visual, push, and live stamp checks."
-        },
-        {
-          version: "v570",
-          key: "20260709-v570-01",
-          commit: "1b4fe44",
-          receiptId: "NN-SHARE-RECEIPT-20260709V57001",
-          proof: "Payment Closeout Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -20339,13 +20438,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v575",
-        detail: "Payment Closeout Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v576",
+        detail: "Account Closeout Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v575 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v576 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
       },
       {
         label: "03 Queued",
@@ -20354,25 +20453,25 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v575 held until live stamp",
-        detail: "Do not share v575 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
+        value: "v576 held until live stamp",
+        detail: "Do not share v576 as live until release-stamp.txt returns this data key and the fresh page loads the same release."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v575 payment closeout reopening",
-        detail: "Payment Closeout Reopening Queue reopens closed payment receipts when entitlement, refund, rollback, support, owner, or founder finance proof drifts."
+        value: "v576 account closeout reopening",
+        detail: "Account Closeout Reopening Queue reopens closed dry-run vault receipts when delete/export, redaction, support-safe, object-family, founder custody, or reopen-trigger proof drifts."
       },
       {
         label: "Release checks",
         value: "Pending visual and live",
-        detail: "v575 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
+        detail: "v576 runs syntax, static, security, diff hygiene, marker scans, visual QA, push, and live stamp verification before final sharing."
       },
       {
         label: "Share outcome",
-        value: "v575 held until live stamp",
-        detail: "The release is share-ready only after v575 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v576 held until live stamp",
+        detail: "The release is share-ready only after v576 visual QA passes and GitHub Pages serves the current stamp."
       }
     ],
     actions: [

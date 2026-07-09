@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v576 Account Closeout Reopening Queue
+
+- Version: `0.576.0`
+- Data version: `20260710-v576-01`
+- Changes made: Added Account Closeout Reopening Queue to the Build Tracker Release Doctor with delete/export drift, redaction drift, support-safe drift, object-family drift, founder custody drift, reopen trigger drift, account closeout reopening receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v575 commit, next-batch planner roll-forward to v577-v581, and release markers rolled forward to v576.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v576 marker scan; Git diff hygiene check; local browser desktop DOM/layout QA; Chrome mobile CDP layout QA.
+- Known risks: Account Closeout Reopening Queue is a static account reopening room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v575 Payment Closeout Reopening Queue
 
 - Version: `0.575.0`

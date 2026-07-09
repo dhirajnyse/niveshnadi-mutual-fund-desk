@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V576 Account Closeout Reopening Queue
+
+V576 adds Account Closeout Reopening Queue to the Build Tracker Release Doctor. It reopens closed account dry-run vault receipts when delete/export, redaction, support-safe copy, object-family scope, founder custody, or reopen-trigger proof drifts away from the accepted closeout.
+
+- Release label: `NiveshNadi Phase 1 v576 Account Closeout Reopening Queue`
+- Data/version key: `20260710-v576-01`
+- Product surface: Build Tracker > Release Doctor > Account closeout reopening queue
+- Risk boundary: Static account reopening room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Syntax, static/security, marker, diff hygiene, local browser desktop DOM/layout, and Chrome mobile CDP layout QA passed.
+
 ## V575 Payment Closeout Reopening Queue
 
 V575 adds Payment Closeout Reopening Queue to the Build Tracker Release Doctor. It reopens closed payment receipts when entitlement, refund wording, rollback, support copy, owner review, or founder finance proof drifts away from the accepted closeout.

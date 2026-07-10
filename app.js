@@ -21451,8 +21451,8 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v586 held until live stamp",
-        detail: "Do not share v586 as live until visual QA passes and release-stamp.txt returns this data key."
+        value: "v586 live verified",
+        detail: "GitHub Pages returns the v586 release stamp, matching cache keys, and the Account Reclose Aging Guard controls."
       }
     ],
     memory: [
@@ -21463,13 +21463,13 @@ function buildTrackerConfig() {
       },
       {
         label: "Release checks",
-        value: "Visual passed; live pending",
-        detail: "v586 passed syntax, static, security, diff hygiene, marker scans, and desktop/mobile visual QA; push and live stamp verification remain."
+        value: "All checks passed",
+        detail: "v586 passed syntax, static, security, diff hygiene, marker scans, desktop/mobile visual QA, push, live stamp, and live app marker verification."
       },
       {
         label: "Share outcome",
-        value: "v586 held until live stamp",
-        detail: "The release is share-ready only after v586 visual QA passes and GitHub Pages serves the current stamp."
+        value: "v586 live verified",
+        detail: "The release is share-ready because GitHub Pages serves the v586 stamp, cache keys, and Account Reclose Aging Guard controls."
       }
     ],
     actions: [

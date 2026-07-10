@@ -6,7 +6,7 @@
 - Data version: `20260710-v586-01`
 - Changes made: Added Account Reclose Aging Guard to the Build Tracker Release Doctor with independent delete/export, redaction, support-safe, object-family, founder custody, and trigger age states, review-by and reopen conditions, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v585 commit, next-batch planner roll-forward to v587-v591, and release markers rolled forward to v586.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v586 marker scan; Git diff hygiene check; in-app browser desktop and mobile viewport visual QA.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v586 marker scan; Git diff hygiene check; in-app browser desktop and mobile viewport visual QA; push; GitHub Pages release-stamp, cache-key, and live app marker verification.
 - Known risks: Account Reclose Aging Guard is a static account-aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
 
 ## NiveshNadi Phase 1 v585 Payment Reclose Aging Guard

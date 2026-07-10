@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v582 Beta Command Reclose Receipt
+
+- Version: `0.582.0`
+- Data version: `20260710-v582-01`
+- Changes made: Added Beta Command Reclose Receipt to the Build Tracker Release Doctor with replacement proof resolution, conflict cleanup resolution, release-safe memory resolution, expiry renewal, owner reclose review, founder command reclose, beta command reclose receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v581 state, next-batch planner roll-forward to v583-v587, and release markers rolled forward to v582.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v582 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Reclose Receipt is a static command reclose room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v581 Account Reclose Receipt
 
 - Version: `0.581.0`

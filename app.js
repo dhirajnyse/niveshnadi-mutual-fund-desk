@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260710-v581-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v581 Account Reclose Receipt";
+const DATA_VERSION = "20260710-v582-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v582 Beta Command Reclose Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account reclose receipt",
+    label: "Beta command reclose receipt",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Reclose reopened account dry-run receipts only after delete/export, redaction, support-safe, object-family, founder custody, and trigger drift is resolved."
+    route: "#founder-beta-operating-room",
+    detail: "Reclose reopened founder commands only after replacement proof, conflict cleanup, release-safe memory, expiry, owner, and founder drift is resolved."
   },
   {
     label: "Mobile calm audit",
@@ -20654,6 +20654,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Reclose Receipt is a static account reclose room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandRecloseReceipt",
+        label: "Beta command reclose receipt",
+        verdict: "Reopened founder commands can close again",
+        receiptId: ["NN", "BETA", "COMMAND", "RECLOSE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-reclose-receipt",
+        copyLabel: "Copy command reclose receipt",
+        score: 83,
+        rule: "A reopened founder beta command may close again only after replacement proof, conflict cleanup, release-safe memory, expiry, owner review, and founder review drift is resolved with fresh proof.",
+        lanes: [
+          {
+            label: "Replacement proof resolved",
+            owner: "Founder evidence desk",
+            method: "PROOF",
+            route: "beta.command.reclose.proof",
+            proof: "Bind the current replacement artifact, accepted command, proof date, and resolved drift reason.",
+            readyWhen: "Ready when fresh replacement proof supports the command being reclosed.",
+            hold: "Hold if replacement proof is stale, missing, or no longer matches command scope.",
+            score: 83
+          },
+          {
+            label: "Conflict cleanup resolved",
+            owner: "Release conflict desk",
+            method: "CONFLICT",
+            route: "beta.command.reclose.conflict",
+            proof: "Bind resolved conflict residue, affected lane, cleanup owner, and verification date.",
+            readyWhen: "Ready when command ownership, scope, and dependencies have no unresolved conflict.",
+            hold: "Hold if any command conflict or dependency ambiguity remains.",
+            score: 82
+          },
+          {
+            label: "Release-safe memory resolved",
+            owner: "Release memory desk",
+            method: "MEMORY",
+            route: "beta.command.reclose.memory",
+            proof: "Bind current release-safe memory, excluded fields, supersede rule, and review date.",
+            readyWhen: "Ready when saved command memory is compact, current, and safe to share.",
+            hold: "Hold if memory remains stale, widened, or contains private operational detail.",
+            score: 83
+          },
+          {
+            label: "Expiry renewed",
+            owner: "Release captain",
+            method: "EXPIRY",
+            route: "beta.command.reclose.expiry",
+            proof: "Bind the reclose date, next review date, expiry owner, and future reopen condition.",
+            readyWhen: "Ready when a fresh review window and accountable expiry owner are explicit.",
+            hold: "Hold if the next review date, expiry owner, or future reopen condition is missing.",
+            score: 82
+          },
+          {
+            label: "Owner reclose review",
+            owner: "Command owner",
+            method: "OWNER",
+            route: "beta.command.reclose.owner",
+            proof: "Bind owner reclose decision, fallback owner, affected command, and next review date.",
+            readyWhen: "Ready when one accountable owner can defend the reclosed command.",
+            hold: "Hold if owner review, fallback ownership, or next review date remains unclear.",
+            score: 83
+          },
+          {
+            label: "Founder command reclose",
+            owner: "Founder release desk",
+            method: "SIGNOFF",
+            route: "beta.command.reclose.founder",
+            proof: "Bind founder reclose decision, remaining residue, next review date, and reopen trigger.",
+            readyWhen: "Ready when founder review confirms zero unresolved command drift.",
+            hold: "Hold if command residue remains or a reopen trigger is unmapped.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Beta Command Reclose Receipt closes reopened founder command rows only after all six drift states are resolved with fresh proof.",
+          "Every command reclose receipt binds the reopening queue row, fresh proof dates, owners, hold reasons, next review date, and explicit reopen trigger.",
+          "Reclose restores workflow confidence only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send replies, or approve expansion.",
+          "Command reclose rows must exclude user lists, contact details, credentials, identifiers, private support notes, account payloads, and payment payloads.",
+          "No command reclose receipt may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No reopened founder command may reclose while replacement, conflict, memory, expiry, owner, or founder drift remains unresolved.",
+          "No reclose receipt may be treated as an invitation, access grant, payment execution, account recovery, or production approval.",
+          "No founder command may reclose without one explicit next review date and reopen trigger.",
+          "No beta command reclose receipt may invite users, process payments, grant access, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "beta_command_reclose_receipt_id",
+          "release_key",
+          "beta_command_reopening_queue_id",
+          "replacement_proof_resolved_at",
+          "conflict_cleanup_resolved_at",
+          "release_safe_memory_resolved_at",
+          "expiry_renewed_at",
+          "owner_reclose_reviewed_at",
+          "founder_command_reclosed_at",
+          "next_review_at",
+          "reopen_trigger",
+          "created_at"
+        ],
+        boundary: "Beta Command Reclose Receipt is a static command reclose room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -20826,14 +20926,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account reclose proof is visible; next releases should lock beta command reclose receipt, support repair reclose receipt, source correction reclose aging guard, payment reclose aging guard, and account reclose aging guard.",
+      rule: "Beta command reclose proof is visible; next releases should lock support repair reclose receipt, source correction reclose aging guard, payment reclose aging guard, account reclose aging guard, and beta command reclose aging guard.",
       lanes: [
-        {
-          version: "v582",
-          label: "Beta command reclose receipt",
-          route: "#founder-beta-operating-room",
-          detail: "Reclose reopened founder commands only after replacement proof, conflict cleanup, release-safe memory, expiry, owner, and founder drift is resolved."
-        },
         {
           version: "v583",
           label: "Support repair reclose receipt",
@@ -20857,14 +20951,27 @@ function buildTrackerConfig() {
           label: "Account reclose aging guard",
           route: "#account-readiness",
           detail: "Warn when reclosed account proof ages past delete/export, redaction, support-safe, object-family, founder custody, or trigger review windows."
+        },
+        {
+          version: "v587",
+          label: "Beta command reclose aging guard",
+          route: "#founder-beta-operating-room",
+          detail: "Warn when reclosed founder command proof ages past replacement, conflict, memory, expiry, owner, or founder review windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account reclose proof visible",
+      verdict: "Beta command reclose proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v581",
+          key: "20260710-v581-01",
+          commit: "35b1c22",
+          receiptId: "NN-SHARE-RECEIPT-20260710V58101",
+          proof: "Account Reclose Receipt added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, live stamp, and live app marker checks."
+        },
         {
           version: "v580",
           key: "20260710-v580-01",
@@ -20892,13 +20999,6 @@ function buildTrackerConfig() {
           commit: "6b7411f",
           receiptId: "NN-SHARE-RECEIPT-20260710V57701",
           proof: "Beta Command Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v576",
-          key: "20260710-v576-01",
-          commit: "324aa25",
-          receiptId: "NN-SHARE-RECEIPT-20260710V57601",
-          proof: "Account Closeout Reopening Queue added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, and live stamp checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -20936,40 +21036,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v581",
-        detail: "Account Reclose Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v582",
+        detail: "Beta Command Reclose Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v581 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v582 runs syntax, static, security, diff hygiene, and marker scans before the batch continues."
       },
       {
-        label: "03 Viewed",
-        value: "Desktop + mobile pass",
-        detail: "The v581 Build Tracker passed in-app browser desktop and mobile viewport visual QA with no browser warnings or runtime errors."
+        label: "03 Queued",
+        value: "Visual QA at v586",
+        detail: "The batch proof pipeline is ready for final desktop and mobile browser QA after all five releases are complete."
       },
       {
         label: "04 Share",
-        value: "v581 live verified",
-        detail: "GitHub Pages returns the v581 release stamp, matching cache keys, and the Account Reclose Receipt controls."
+        value: "v582 held until batch finish",
+        detail: "Do not share v582 as the final live batch while v583-v586 are still being built and checked."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v581 account reclose",
-        detail: "Account Reclose Receipt closes reopened account rows only after delete/export, redaction, support-safe, object-family, founder custody, and trigger drift is resolved."
+        value: "v582 beta command reclose",
+        detail: "Beta Command Reclose Receipt closes reopened founder commands only after replacement, conflict, memory, expiry, owner, and founder drift is resolved."
       },
       {
         label: "Release checks",
-        value: "All checks passed",
-        detail: "v581 passed syntax, static, security, diff hygiene, marker scans, desktop/mobile visual QA, push, live stamp, and live app marker verification."
+        value: "Per-version checks active",
+        detail: "v582 runs syntax, static, security, diff hygiene, and marker scans before the next version starts."
       },
       {
         label: "Share outcome",
-        value: "v581 live verified",
-        detail: "The release is share-ready because GitHub Pages serves the v581 stamp, cache keys, and Account Reclose Receipt controls."
+        value: "Batch held until v586",
+        detail: "The release is share-ready only after all five versions pass checks and v586 completes visual and live verification."
       }
     ],
     actions: [

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V582 Beta Command Reclose Receipt
+
+V582 adds Beta Command Reclose Receipt to the Build Tracker Release Doctor. It closes reopened founder beta commands only after replacement proof, conflict cleanup, release-safe memory, expiry, owner review, and founder review drift is resolved with fresh proof.
+
+- Release label: `NiveshNadi Phase 1 v582 Beta Command Reclose Receipt`
+- Data/version key: `20260710-v582-01`
+- Product surface: Build Tracker > Release Doctor > Beta command reclose receipt
+- Risk boundary: Static command reclose room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+- Verification status: Pending batch checks.
+
 ## V581 Account Reclose Receipt
 
 V581 adds Account Reclose Receipt to the Build Tracker Release Doctor. It closes reopened account dry-run rows only after delete/export behavior, redaction proof, support-safe copy, object-family scope, founder custody, and reopen-trigger drift is resolved with fresh proof.

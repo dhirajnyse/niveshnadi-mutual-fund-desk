@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v584 Source Correction Reclose Aging Guard
+
+- Version: `0.584.0`
+- Data version: `20260710-v584-01`
+- Changes made: Added Source Correction Reclose Aging Guard to the Build Tracker Release Doctor with independent replacement proof, public notice, cache refresh, support handoff, reviewer scope, and founder reclose age states, review-by and reopen conditions, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v583 commit, next-batch planner roll-forward to v585-v589, and release markers rolled forward to v584.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v584 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Reclose Aging Guard is a static correction-aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v583 Support Repair Reclose Receipt
 
 - Version: `0.583.0`

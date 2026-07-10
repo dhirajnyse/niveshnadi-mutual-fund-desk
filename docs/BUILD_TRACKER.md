@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V584 Source Correction Reclose Aging Guard
+
+V584 adds Source Correction Reclose Aging Guard to the Build Tracker Release Doctor. It tracks replacement proof, public notice, cache refresh, support handoff, reviewer scope, and founder review freshness independently after a correction is reclosed.
+
+- Release label: `NiveshNadi Phase 1 v584 Source Correction Reclose Aging Guard`
+- Data/version key: `20260710-v584-01`
+- Product surface: Build Tracker > Release Doctor > Source correction reclose aging guard
+- Risk boundary: Static correction-aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+- Verification status: Pending batch checks.
+
 ## V583 Support Repair Reclose Receipt
 
 V583 adds Support Repair Reclose Receipt to the Build Tracker Release Doctor. It closes reopened support repairs only after support-safe copy, owner review, regression proof, escalation route, refund wording, and founder support drift is resolved with fresh proof.

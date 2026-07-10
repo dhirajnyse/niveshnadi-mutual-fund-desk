@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v583 Support Repair Reclose Receipt
+
+- Version: `0.583.0`
+- Data version: `20260710-v583-01`
+- Changes made: Added Support Repair Reclose Receipt to the Build Tracker Release Doctor with support copy resolution, owner reclose review, regression resolution, escalation resolution, refund wording resolution, founder support reclose, support repair reclose receipt fields, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v582 commit, next-batch planner roll-forward to v584-v588, and release markers rolled forward to v583.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v583 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Reclose Receipt is a static support reclose room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+
 ## NiveshNadi Phase 1 v582 Beta Command Reclose Receipt
 
 - Version: `0.582.0`

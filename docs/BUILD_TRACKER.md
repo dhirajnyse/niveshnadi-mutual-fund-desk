@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V583 Support Repair Reclose Receipt
+
+V583 adds Support Repair Reclose Receipt to the Build Tracker Release Doctor. It closes reopened support repairs only after support-safe copy, owner review, regression proof, escalation route, refund wording, and founder support drift is resolved with fresh proof.
+
+- Release label: `NiveshNadi Phase 1 v583 Support Repair Reclose Receipt`
+- Data/version key: `20260710-v583-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose receipt
+- Risk boundary: Static support reclose room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+- Verification status: Pending batch checks.
+
 ## V582 Beta Command Reclose Receipt
 
 V582 adds Beta Command Reclose Receipt to the Build Tracker Release Doctor. It closes reopened founder beta commands only after replacement proof, conflict cleanup, release-safe memory, expiry, owner review, and founder review drift is resolved with fresh proof.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260710-v582-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v582 Beta Command Reclose Receipt";
+const DATA_VERSION = "20260710-v583-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v583 Support Repair Reclose Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command reclose receipt",
+    label: "Support repair reclose receipt",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Reclose reopened founder commands only after replacement proof, conflict cleanup, release-safe memory, expiry, owner, and founder drift is resolved."
+    route: "#paid-beta-support-ledger",
+    detail: "Reclose reopened support repairs only after copy, owner, regression, escalation, refund wording, and founder support drift is resolved."
   },
   {
     label: "Mobile calm audit",
@@ -20754,6 +20754,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Reclose Receipt is a static command reclose room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
+      },
+      {
+        key: "supportRepairRecloseReceipt",
+        label: "Support repair reclose receipt",
+        verdict: "Reopened support repairs can close again",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "RECLOSE", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-reclose-receipt",
+        copyLabel: "Copy support reclose receipt",
+        score: 82,
+        rule: "A reopened support repair may close again only after support-safe copy, owner review, regression proof, escalation route, refund wording, and founder support drift is resolved with fresh proof.",
+        lanes: [
+          {
+            label: "Support copy resolved",
+            owner: "Support quality desk",
+            method: "COPY",
+            route: "support.repair.reclose.copy",
+            proof: "Bind current support-safe copy, affected case class, response ceiling, and resolved drift reason.",
+            readyWhen: "Ready when repair copy is current, non-advisory, and safe to reuse.",
+            hold: "Hold if support copy remains stale, widened, or implies execution.",
+            score: 82
+          },
+          {
+            label: "Owner reclose review",
+            owner: "Support owner desk",
+            method: "OWNER",
+            route: "support.repair.reclose.owner",
+            proof: "Bind owner reclose decision, fallback owner, repair scope, and next review date.",
+            readyWhen: "Ready when one accountable owner can defend the reclosed repair.",
+            hold: "Hold if owner review, fallback ownership, or next review date is missing.",
+            score: 82
+          },
+          {
+            label: "Regression resolved",
+            owner: "Support QA desk",
+            method: "REGRESSION",
+            route: "support.repair.reclose.regression",
+            proof: "Bind regression scenario, expected response, observed result, and verification date.",
+            readyWhen: "Ready when the repaired response passes the original and adjacent regression cases.",
+            hold: "Hold if the original failure or a related response defect remains reproducible.",
+            score: 82
+          },
+          {
+            label: "Escalation resolved",
+            owner: "Support escalation desk",
+            method: "ESCALATION",
+            route: "support.repair.reclose.escalation",
+            proof: "Bind escalation trigger, owner, response window, fallback route, and fresh review date.",
+            readyWhen: "Ready when escalation ownership and response windows are current and explicit.",
+            hold: "Hold if escalation owner, route, fallback, or response window remains unclear.",
+            score: 81
+          },
+          {
+            label: "Refund wording resolved",
+            owner: "Refund copy desk",
+            method: "REFUND",
+            route: "support.repair.reclose.refund",
+            proof: "Bind current refund wording, no-execution caveat, payment boundary, and support route.",
+            readyWhen: "Ready when refund wording is current and does not promise approval or execution.",
+            hold: "Hold if refund wording remains stale, missing, or implies payment action.",
+            score: 81
+          },
+          {
+            label: "Founder support reclose",
+            owner: "Founder support desk",
+            method: "SIGNOFF",
+            route: "support.repair.reclose.founder",
+            proof: "Bind founder support decision, remaining residue, next review date, and reopen trigger.",
+            readyWhen: "Ready when founder support review confirms zero unresolved repair drift.",
+            hold: "Hold if repair residue remains or a reopen trigger is unmapped.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Support Repair Reclose Receipt closes reopened support repair rows only after all six drift states are resolved with fresh proof.",
+          "Every support reclose receipt binds the reopening queue row, fresh proof dates, owners, hold reasons, next review date, and explicit reopen trigger.",
+          "Reclose restores workflow confidence only; it does not send replies, issue refunds, process payments, fetch live data, contact users, or approve widening.",
+          "Support reclose rows must exclude raw support notes, conversation transcripts, contact details, credentials, identifiers, account payloads, and payment payloads.",
+          "No support reclose receipt may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No reopened support repair may reclose while copy, owner, regression, escalation, refund wording, or founder support drift remains unresolved.",
+          "No reclose receipt may be treated as a sent reply, refund approval, payment action, account recovery, or support expansion.",
+          "No support repair may reclose without one explicit next review date and reopen trigger.",
+          "No support repair reclose receipt may send replies, issue refunds, process payments, contact users, or approve support widening."
+        ],
+        receiptFields: [
+          "support_repair_reclose_receipt_id",
+          "release_key",
+          "support_repair_reopening_queue_id",
+          "support_copy_resolved_at",
+          "owner_reclose_reviewed_at",
+          "regression_resolved_at",
+          "escalation_resolved_at",
+          "refund_wording_resolved_at",
+          "founder_support_reclosed_at",
+          "next_review_at",
+          "reopen_trigger",
+          "created_at"
+        ],
+        boundary: "Support Repair Reclose Receipt is a static support reclose room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
       }
     ],
     executiveCalmCompression: {
@@ -20926,14 +21026,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta command reclose proof is visible; next releases should lock support repair reclose receipt, source correction reclose aging guard, payment reclose aging guard, account reclose aging guard, and beta command reclose aging guard.",
+      rule: "Support repair reclose proof is visible; next releases should lock source correction reclose aging guard, payment reclose aging guard, account reclose aging guard, beta command reclose aging guard, and support repair reclose aging guard.",
       lanes: [
-        {
-          version: "v583",
-          label: "Support repair reclose receipt",
-          route: "#paid-beta-support-ledger",
-          detail: "Reclose reopened support repairs only after copy, owner, regression, escalation, refund wording, and founder support drift is resolved."
-        },
         {
           version: "v584",
           label: "Source correction reclose aging guard",
@@ -20957,14 +21051,27 @@ function buildTrackerConfig() {
           label: "Beta command reclose aging guard",
           route: "#founder-beta-operating-room",
           detail: "Warn when reclosed founder command proof ages past replacement, conflict, memory, expiry, owner, or founder review windows."
+        },
+        {
+          version: "v588",
+          label: "Support repair reclose aging guard",
+          route: "#paid-beta-support-ledger",
+          detail: "Warn when reclosed support proof ages past copy, owner, regression, escalation, refund wording, or founder support review windows."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Beta command reclose proof visible",
+      verdict: "Support repair reclose proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v582",
+          key: "20260710-v582-01",
+          commit: "fb3f6e4",
+          receiptId: "NN-SHARE-RECEIPT-20260710V58201",
+          proof: "Beta Command Reclose Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v581",
           key: "20260710-v581-01",
@@ -20992,13 +21099,6 @@ function buildTrackerConfig() {
           commit: "ba67693",
           receiptId: "NN-SHARE-RECEIPT-20260710V57801",
           proof: "Support Repair Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v577",
-          key: "20260710-v577-01",
-          commit: "6b7411f",
-          receiptId: "NN-SHARE-RECEIPT-20260710V57701",
-          proof: "Beta Command Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -21036,13 +21136,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v582",
-        detail: "Beta Command Reclose Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v583",
+        detail: "Support Repair Reclose Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v582 runs syntax, static, security, diff hygiene, and marker scans before the batch continues."
+        detail: "v583 runs syntax, static, security, diff hygiene, and marker scans before the batch continues."
       },
       {
         label: "03 Queued",
@@ -21051,20 +21151,20 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v582 held until batch finish",
-        detail: "Do not share v582 as the final live batch while v583-v586 are still being built and checked."
+        value: "v583 held until batch finish",
+        detail: "Do not share v583 as the final live batch while v584-v586 are still being built and checked."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v582 beta command reclose",
-        detail: "Beta Command Reclose Receipt closes reopened founder commands only after replacement, conflict, memory, expiry, owner, and founder drift is resolved."
+        value: "v583 support repair reclose",
+        detail: "Support Repair Reclose Receipt closes reopened support repairs only after copy, owner, regression, escalation, refund wording, and founder support drift is resolved."
       },
       {
         label: "Release checks",
         value: "Per-version checks active",
-        detail: "v582 runs syntax, static, security, diff hygiene, and marker scans before the next version starts."
+        detail: "v583 runs syntax, static, security, diff hygiene, and marker scans before the next version starts."
       },
       {
         label: "Share outcome",

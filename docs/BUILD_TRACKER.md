@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V586 Account Reclose Aging Guard
+
+V586 adds Account Reclose Aging Guard to the Build Tracker Release Doctor. It tracks delete/export behavior, redaction, support-safe copy, object-family scope, founder custody, and trigger freshness independently after an account receipt is reclosed.
+
+- Release label: `NiveshNadi Phase 1 v586 Account Reclose Aging Guard`
+- Data/version key: `20260710-v586-01`
+- Product surface: Build Tracker > Release Doctor > Account reclose aging guard
+- Risk boundary: Static account-aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Syntax, static/security, marker, diff hygiene, and in-app browser desktop/mobile viewport visual QA passed; live stamp pending.
+
 ## V585 Payment Reclose Aging Guard
 
 V585 adds Payment Reclose Aging Guard to the Build Tracker Release Doctor. It tracks entitlement, refund wording, rollback, support copy, owner review, and founder finance freshness independently after a payment receipt is reclosed.

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V585 Payment Reclose Aging Guard
+
+V585 adds Payment Reclose Aging Guard to the Build Tracker Release Doctor. It tracks entitlement, refund wording, rollback, support copy, owner review, and founder finance freshness independently after a payment receipt is reclosed.
+
+- Release label: `NiveshNadi Phase 1 v585 Payment Reclose Aging Guard`
+- Data/version key: `20260710-v585-01`
+- Product surface: Build Tracker > Release Doctor > Payment reclose aging guard
+- Risk boundary: Static payment-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Pending batch checks.
+
 ## V584 Source Correction Reclose Aging Guard
 
 V584 adds Source Correction Reclose Aging Guard to the Build Tracker Release Doctor. It tracks replacement proof, public notice, cache refresh, support handoff, reviewer scope, and founder review freshness independently after a correction is reclosed.

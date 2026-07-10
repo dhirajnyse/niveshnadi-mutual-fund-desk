@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260710-v584-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v584 Source Correction Reclose Aging Guard";
+const DATA_VERSION = "20260710-v585-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v585 Payment Reclose Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction reclose aging guard",
+    label: "Payment reclose aging guard",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Warn when reclosed correction proof ages past replacement, notice, cache, support, reviewer, or founder review windows."
+    route: "#payment-wiring",
+    detail: "Warn when reclosed payment proof ages past entitlement, refund, rollback, support, owner, or founder finance review windows."
   },
   {
     label: "Mobile calm audit",
@@ -20954,6 +20954,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Reclose Aging Guard is a static correction-aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
+      },
+      {
+        key: "paymentRecloseAgingGuard",
+        label: "Payment reclose aging guard",
+        verdict: "Reclosed payment proof has review windows",
+        receiptId: ["NN", "PAYMENT", "RECLOSE", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-reclose-aging-guard",
+        copyLabel: "Copy payment aging guard",
+        score: 79,
+        rule: "Reclosed payment proof must age independently across entitlement, refund wording, rollback, support copy, owner review, and founder finance windows so stale evidence reopens only the affected lane.",
+        lanes: [
+          {
+            label: "Entitlement age",
+            owner: "Payment entitlement desk",
+            method: "ENTITLEMENT_AGE",
+            route: "payment.reclose.aging.entitlement",
+            proof: "Track plan scope, entitlement state, proof date, review-by date, and current age state.",
+            readyWhen: "Ready when entitlement proof remains inside its accepted review window.",
+            hold: "Hold payment confidence if plan scope, access boundary, or entitlement proof expires.",
+            score: 79
+          },
+          {
+            label: "Refund wording age",
+            owner: "Refund review desk",
+            method: "REFUND_AGE",
+            route: "payment.reclose.aging.refund",
+            proof: "Track refund copy version, no-execution caveat, review date, and next wording review.",
+            readyWhen: "Ready when refund wording remains current, non-promissory, and support-safe.",
+            hold: "Hold if refund wording expires, widens, or implies approval before proof.",
+            score: 79
+          },
+          {
+            label: "Rollback age",
+            owner: "Finance rollback desk",
+            method: "ROLLBACK_AGE",
+            route: "payment.reclose.aging.rollback",
+            proof: "Track rollback scenario, affected entitlement, owner, verification date, and next drill.",
+            readyWhen: "Ready when rollback proof remains current for the reclosed payment path.",
+            hold: "Hold if rollback ownership, reversal boundary, or rehearsal proof expires.",
+            score: 78
+          },
+          {
+            label: "Support copy age",
+            owner: "Support desk",
+            method: "SUPPORT_AGE",
+            route: "payment.reclose.aging.support",
+            proof: "Track support-safe payment copy, owner, response ceiling, review date, and next refresh.",
+            readyWhen: "Ready when support copy remains current and avoids execution promises.",
+            hold: "Hold if support copy, owner, escalation, or response ceiling ages past review.",
+            score: 79
+          },
+          {
+            label: "Owner review age",
+            owner: "Payment owner",
+            method: "OWNER_AGE",
+            route: "payment.reclose.aging.owner",
+            proof: "Track owner review date, fallback owner, affected surface, and next owner review.",
+            readyWhen: "Ready when one accountable payment owner remains current.",
+            hold: "Hold if owner review or fallback ownership expires.",
+            score: 79
+          },
+          {
+            label: "Founder finance age",
+            owner: "Founder finance desk",
+            method: "SIGNOFF_AGE",
+            route: "payment.reclose.aging.founder",
+            proof: "Track founder finance reclose date, next review date, payment residue, and reopen condition.",
+            readyWhen: "Ready when founder finance proof remains current with no new residue.",
+            hold: "Hold if founder finance review expires or payment residue reappears.",
+            score: 79
+          }
+        ],
+        operatingRules: [
+          "Payment Reclose Aging Guard measures freshness per proof lane; one stale lane holds only the affected payment confidence until review.",
+          "Every aging row binds the payment reclose receipt, proof date, review-by date, owner, age state, and reopen condition.",
+          "Aging warnings do not process payments, issue refunds, grant access, fetch gateway logs, reconcile ledgers, contact users, or approve launch.",
+          "Payment aging rows must exclude gateway payloads, raw support notes, card data, UPI handles, bank details, credentials, identifiers, and private payment notes.",
+          "No payment aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No reclosed payment row may remain trusted after entitlement, refund, rollback, support, owner, or founder finance proof ages past review.",
+          "No age score may be treated as payment execution, refund approval, access grant, reconciliation proof, or financial advice.",
+          "No expired lane may be silently renewed without fresh proof and an accountable owner.",
+          "No payment reclose aging guard may process payments, issue refunds, grant access, fetch gateway logs, contact users, or approve payment launch."
+        ],
+        receiptFields: [
+          "payment_reclose_aging_guard_id",
+          "release_key",
+          "payment_reclose_receipt_id",
+          "entitlement_age_state",
+          "refund_wording_age_state",
+          "rollback_age_state",
+          "support_copy_age_state",
+          "owner_review_age_state",
+          "founder_finance_age_state",
+          "next_review_at",
+          "reopen_condition",
+          "created_at"
+        ],
+        boundary: "Payment Reclose Aging Guard is a static payment-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -21126,14 +21226,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source correction reclose aging proof is visible; next releases should lock payment reclose aging guard, account reclose aging guard, beta command reclose aging guard, support repair reclose aging guard, and source correction reclose reopening queue.",
+      rule: "Payment reclose aging proof is visible; next releases should lock account reclose aging guard, beta command reclose aging guard, support repair reclose aging guard, source correction reclose reopening queue, and payment reclose reopening queue.",
       lanes: [
-        {
-          version: "v585",
-          label: "Payment reclose aging guard",
-          route: "#payment-wiring",
-          detail: "Warn when reclosed payment proof ages past entitlement, refund, rollback, support, owner, or founder finance review windows."
-        },
         {
           version: "v586",
           label: "Account reclose aging guard",
@@ -21157,14 +21251,27 @@ function buildTrackerConfig() {
           label: "Source correction reclose reopening queue",
           route: "#correction-ledger",
           detail: "Reopen reclosed correction proof when replacement, notice, cache, support, reviewer, or founder age states expire."
+        },
+        {
+          version: "v590",
+          label: "Payment reclose reopening queue",
+          route: "#payment-wiring",
+          detail: "Reopen reclosed payment proof when entitlement, refund, rollback, support, owner, or founder finance age states expire."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Source correction reclose aging proof visible",
+      verdict: "Payment reclose aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v584",
+          key: "20260710-v584-01",
+          commit: "a99721d",
+          receiptId: "NN-SHARE-RECEIPT-20260710V58401",
+          proof: "Source Correction Reclose Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v583",
           key: "20260710-v583-01",
@@ -21192,13 +21299,6 @@ function buildTrackerConfig() {
           commit: "e0708e1",
           receiptId: "NN-SHARE-RECEIPT-20260710V58001",
           proof: "Payment Reclose Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v579",
-          key: "20260710-v579-01",
-          commit: "ac8d092",
-          receiptId: "NN-SHARE-RECEIPT-20260710V57901",
-          proof: "Source Correction Reclose Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -21236,13 +21336,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v584",
-        detail: "Source Correction Reclose Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v585",
+        detail: "Payment Reclose Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v584 runs syntax, static, security, diff hygiene, and marker scans before the batch continues."
+        detail: "v585 runs syntax, static, security, diff hygiene, and marker scans before the batch continues."
       },
       {
         label: "03 Queued",
@@ -21251,20 +21351,20 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "v584 held until batch finish",
-        detail: "Do not share v584 as the final live batch while v585-v586 are still being built and checked."
+        value: "v585 held until batch finish",
+        detail: "Do not share v585 as the final live batch while v586 is still being built and checked."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v584 source reclose aging",
-        detail: "Source Correction Reclose Aging Guard tracks replacement, notice, cache, support, reviewer, and founder proof freshness independently."
+        value: "v585 payment reclose aging",
+        detail: "Payment Reclose Aging Guard tracks entitlement, refund, rollback, support, owner, and founder finance proof freshness independently."
       },
       {
         label: "Release checks",
         value: "Per-version checks active",
-        detail: "v584 runs syntax, static, security, diff hygiene, and marker scans before the next version starts."
+        detail: "v585 runs syntax, static, security, diff hygiene, and marker scans before the next version starts."
       },
       {
         label: "Share outcome",

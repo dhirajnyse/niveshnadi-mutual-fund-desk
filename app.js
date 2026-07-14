@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260710-v586-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v586 Account Reclose Aging Guard";
+const DATA_VERSION = "20260715-v587-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v587 Beta Command Reclose Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account reclose aging guard",
+    label: "Beta command reclose aging guard",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Warn when reclosed account proof ages past delete/export, redaction, support-safe, object-family, founder custody, or trigger review windows."
+    route: "#founder-beta-operating-room",
+    detail: "Warn when reclosed founder command proof ages past replacement, conflict, memory, expiry, owner, or founder review windows."
   },
   {
     label: "Mobile calm audit",
@@ -21154,6 +21154,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Reclose Aging Guard is a static account-aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandRecloseAgingGuard",
+        label: "Beta command reclose aging guard",
+        verdict: "Reclosed founder commands have review windows",
+        receiptId: ["NN", "BETA", "COMMAND", "RECLOSE", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-reclose-aging-guard",
+        copyLabel: "Copy command aging guard",
+        score: 81,
+        rule: "Reclosed founder command proof must age independently across replacement, conflict, release-safe memory, expiry, owner, and founder review windows so stale evidence holds only the affected lane.",
+        lanes: [
+          {
+            label: "Replacement proof age",
+            owner: "Founder evidence desk",
+            method: "REPLACEMENT_AGE",
+            route: "beta.command.reclose.aging.replacement",
+            proof: "Track replacement artifact, accepted command scope, proof date, review-by date, and age state.",
+            readyWhen: "Ready when replacement proof remains current for the reclosed command.",
+            hold: "Hold command confidence if replacement proof expires or no longer matches the command scope.",
+            score: 81
+          },
+          {
+            label: "Conflict cleanup age",
+            owner: "Trust desk",
+            method: "CONFLICT_AGE",
+            route: "beta.command.reclose.aging.conflict",
+            proof: "Track conflict cleanup state, command residue, review date, and next conflict review.",
+            readyWhen: "Ready when conflict cleanup remains current with no unresolved residue.",
+            hold: "Hold if conflict residue returns or cleanup proof ages past review.",
+            score: 81
+          },
+          {
+            label: "Release-safe memory age",
+            owner: "Release memory desk",
+            method: "MEMORY_AGE",
+            route: "beta.command.reclose.aging.memory",
+            proof: "Track release-safe memory text, excluded fields, approved reuse window, and next review.",
+            readyWhen: "Ready when founder memory remains current, scoped, and free of private context.",
+            hold: "Hold if memory copy widens, hides residue, or ages past its reuse window.",
+            score: 81
+          },
+          {
+            label: "Expiry age",
+            owner: "Release captain",
+            method: "EXPIRY_AGE",
+            route: "beta.command.reclose.aging.expiry",
+            proof: "Track command expiry, extension reason, freeze state, review date, and next expiry decision.",
+            readyWhen: "Ready when command expiry remains current or the command is visibly frozen.",
+            hold: "Hold if expiry, extension, or freeze proof is stale or missing.",
+            score: 80
+          },
+          {
+            label: "Owner review age",
+            owner: "Command owner",
+            method: "OWNER_AGE",
+            route: "beta.command.reclose.aging.owner",
+            proof: "Track owner review date, fallback owner, affected surface, and next owner review.",
+            readyWhen: "Ready when one accountable command owner remains current.",
+            hold: "Hold if owner review or fallback ownership expires.",
+            score: 81
+          },
+          {
+            label: "Founder review age",
+            owner: "Founder desk",
+            method: "SIGNOFF_AGE",
+            route: "beta.command.reclose.aging.founder",
+            proof: "Track founder reclose date, next review, command residue, and reopen condition.",
+            readyWhen: "Ready when founder review remains current with no new command residue.",
+            hold: "Hold if founder review expires or command residue reappears.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Beta Command Reclose Aging Guard measures freshness per proof lane; one stale lane holds only the affected command confidence until review.",
+          "Every aging row binds the beta command reclose receipt, proof date, review-by date, owner, age state, and reopen condition.",
+          "Aging warnings do not invite users, process payments, grant access, fetch live data, recover accounts, contact users, or approve beta expansion.",
+          "Command aging rows must exclude private founder notes, raw support notes, account or payment payloads, credentials, identifiers, and contact details.",
+          "No command aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No reclosed founder command may remain trusted after replacement, conflict, memory, expiry, owner, or founder proof ages past review.",
+          "No age score may be treated as a cohort invitation, payment approval, access grant, account recovery, or launch approval.",
+          "No expired lane may be silently renewed without fresh proof and an accountable owner.",
+          "No beta command reclose aging guard may invite users, process payments, grant access, recover accounts, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "beta_command_reclose_aging_guard_id",
+          "release_key",
+          "beta_command_reclose_receipt_id",
+          "replacement_proof_age_state",
+          "conflict_cleanup_age_state",
+          "release_safe_memory_age_state",
+          "expiry_age_state",
+          "owner_review_age_state",
+          "founder_review_age_state",
+          "next_review_at",
+          "reopen_condition",
+          "created_at"
+        ],
+        boundary: "Beta Command Reclose Aging Guard is a static command-aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -21326,14 +21426,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account reclose aging proof is visible; next releases should lock beta command reclose aging guard, support repair reclose aging guard, source correction reclose reopening queue, payment reclose reopening queue, and account reclose reopening queue.",
+      rule: "Beta command reclose aging proof is visible; next releases should lock support repair reclose aging guard, source correction reclose reopening queue, payment reclose reopening queue, account reclose reopening queue, and beta command reclose reopening queue.",
       lanes: [
-        {
-          version: "v587",
-          label: "Beta command reclose aging guard",
-          route: "#founder-beta-operating-room",
-          detail: "Warn when reclosed founder command proof ages past replacement, conflict, memory, expiry, owner, or founder review windows."
-        },
         {
           version: "v588",
           label: "Support repair reclose aging guard",
@@ -21357,6 +21451,12 @@ function buildTrackerConfig() {
           label: "Account reclose reopening queue",
           route: "#account-readiness",
           detail: "Reopen reclosed account proof when delete/export, redaction, support-safe, object-family, founder custody, or trigger age states expire."
+        },
+        {
+          version: "v592",
+          label: "Beta command reclose reopening queue",
+          route: "#founder-beta-operating-room",
+          detail: "Reopen reclosed founder commands when replacement, conflict, memory, expiry, owner, or founder age states expire."
         }
       ]
     },
@@ -21365,6 +21465,13 @@ function buildTrackerConfig() {
       verdict: "Account reclose aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v586",
+          key: "20260710-v586-01",
+          commit: "9dfcb79",
+          receiptId: "NN-SHARE-RECEIPT-20260710V58601",
+          proof: "Account Reclose Aging Guard added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, live stamp, and live app marker checks."
+        },
         {
           version: "v585",
           key: "20260710-v585-01",
@@ -21392,13 +21499,6 @@ function buildTrackerConfig() {
           commit: "fb3f6e4",
           receiptId: "NN-SHARE-RECEIPT-20260710V58201",
           proof: "Beta Command Reclose Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v581",
-          key: "20260710-v581-01",
-          commit: "35b1c22",
-          receiptId: "NN-SHARE-RECEIPT-20260710V58101",
-          proof: "Account Reclose Receipt added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, live stamp, and live app marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -21436,40 +21536,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v586",
-        detail: "Account Reclose Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v587",
+        detail: "Beta Command Reclose Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v586 runs syntax, static, security, diff hygiene, marker scans, and visual QA before final sharing."
+        detail: "v587 runs syntax, static, security, diff hygiene, and marker scans before the batch moves forward."
       },
       {
         label: "03 Viewed",
-        value: "Desktop + mobile pass",
-        detail: "The v586 Build Tracker passed in-app browser desktop and mobile viewport visual QA with no browser warnings or runtime errors."
+        value: "Batch QA pending",
+        detail: "Full desktop and mobile viewport proof will run on the final v591 batch state."
       },
       {
         label: "04 Share",
-        value: "v586 live verified",
-        detail: "GitHub Pages returns the v586 release stamp, matching cache keys, and the Account Reclose Aging Guard controls."
+        value: "Hold until v591",
+        detail: "Share only after final batch visual QA, push, live stamp, and live app marker checks pass."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v586 account reclose aging",
-        detail: "Account Reclose Aging Guard tracks delete/export, redaction, support-safe, object-family, founder custody, and trigger proof freshness independently."
+        value: "v587 command reclose aging",
+        detail: "Beta Command Reclose Aging Guard tracks replacement, conflict, release-safe memory, expiry, owner, and founder proof freshness independently."
       },
       {
         label: "Release checks",
-        value: "All checks passed",
-        detail: "v586 passed syntax, static, security, diff hygiene, marker scans, desktop/mobile visual QA, push, live stamp, and live app marker verification."
+        value: "Batch checks active",
+        detail: "v587 passed release-level checks; full visual and live verification remain reserved for the final v591 state."
       },
       {
         label: "Share outcome",
-        value: "v586 live verified",
-        detail: "The release is share-ready because GitHub Pages serves the v586 stamp, cache keys, and Account Reclose Aging Guard controls."
+        value: "Not shared yet",
+        detail: "The batch remains local until v591 passes desktop/mobile visual QA and live deployment verification."
       }
     ],
     actions: [

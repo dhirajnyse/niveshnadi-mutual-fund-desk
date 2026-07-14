@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V587 Beta Command Reclose Aging Guard
+
+V587 adds Beta Command Reclose Aging Guard to the Build Tracker Release Doctor. It tracks replacement proof, conflict cleanup, release-safe memory, expiry, owner review, and founder review freshness independently after a founder command is reclosed.
+
+- Release label: `NiveshNadi Phase 1 v587 Beta Command Reclose Aging Guard`
+- Data/version key: `20260715-v587-01`
+- Product surface: Build Tracker > Release Doctor > Beta command reclose aging guard
+- Risk boundary: Static command-aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed.
+
 ## V586 Account Reclose Aging Guard
 
 V586 adds Account Reclose Aging Guard to the Build Tracker Release Doctor. It tracks delete/export behavior, redaction, support-safe copy, object-family scope, founder custody, and trigger freshness independently after an account receipt is reclosed.

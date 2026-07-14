@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v586 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v587 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Beta Command Reclose Aging Guard in the Build Tracker Release Doctor that ages replacement, conflict, release-safe memory, expiry, owner, and founder review proof independently after reclose.
 - Account Reclose Aging Guard in the Build Tracker Release Doctor that ages delete/export, redaction, support-safe, object-family, founder custody, and trigger proof independently after reclose.
 - Payment Reclose Aging Guard in the Build Tracker Release Doctor that ages entitlement, refund, rollback, support, owner, and founder finance proof independently after reclose.
 - Source Correction Reclose Aging Guard in the Build Tracker Release Doctor that ages replacement, notice, cache, support, reviewer, and founder proof independently after reclose.

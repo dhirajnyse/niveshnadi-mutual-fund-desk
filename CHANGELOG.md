@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v588 Support Repair Reclose Aging Guard
+
+- Version: `0.588.0`
+- Data version: `20260715-v588-01`
+- Changes made: Added Support Repair Reclose Aging Guard to the Build Tracker Release Doctor with independent support copy, owner, regression, escalation, refund wording, and founder support age states, review-by and reopen conditions, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v587 commit, next-batch planner roll-forward to v589-v593, and release markers rolled forward to v588.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v588 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Reclose Aging Guard is a static support-aging room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+
 ## NiveshNadi Phase 1 v587 Beta Command Reclose Aging Guard
 
 - Version: `0.587.0`

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V588 Support Repair Reclose Aging Guard
+
+V588 adds Support Repair Reclose Aging Guard to the Build Tracker Release Doctor. It tracks support-safe copy, owner review, regression proof, escalation route, refund wording, and founder support freshness independently after a support repair is reclosed.
+
+- Release label: `NiveshNadi Phase 1 v588 Support Repair Reclose Aging Guard`
+- Data/version key: `20260715-v588-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose aging guard
+- Risk boundary: Static support-aging room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed.
+
 ## V587 Beta Command Reclose Aging Guard
 
 V587 adds Beta Command Reclose Aging Guard to the Build Tracker Release Doctor. It tracks replacement proof, conflict cleanup, release-safe memory, expiry, owner review, and founder review freshness independently after a founder command is reclosed.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v587-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v587 Beta Command Reclose Aging Guard";
+const DATA_VERSION = "20260715-v588-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v588 Support Repair Reclose Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command reclose aging guard",
+    label: "Support repair reclose aging guard",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Warn when reclosed founder command proof ages past replacement, conflict, memory, expiry, owner, or founder review windows."
+    route: "#paid-beta-support-ledger",
+    detail: "Warn when reclosed support proof ages past copy, owner, regression, escalation, refund wording, or founder support review windows."
   },
   {
     label: "Mobile calm audit",
@@ -21254,6 +21254,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Reclose Aging Guard is a static command-aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
+      },
+      {
+        key: "supportRepairRecloseAgingGuard",
+        label: "Support repair reclose aging guard",
+        verdict: "Reclosed support proof has review windows",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "RECLOSE", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-reclose-aging-guard",
+        copyLabel: "Copy support aging guard",
+        score: 81,
+        rule: "Reclosed support proof must age independently across copy, owner, regression, escalation, refund wording, and founder support windows so stale evidence holds only the affected lane.",
+        lanes: [
+          {
+            label: "Support copy age",
+            owner: "Support captain",
+            method: "COPY_AGE",
+            route: "support.repair.reclose.aging.copy",
+            proof: "Track support-safe copy, approved wording, proof date, review-by date, and age state.",
+            readyWhen: "Ready when support copy remains current for the reclosed repair.",
+            hold: "Hold support confidence if copy expires, widens, or no longer matches the repaired issue.",
+            score: 81
+          },
+          {
+            label: "Owner review age",
+            owner: "Support owner",
+            method: "OWNER_AGE",
+            route: "support.repair.reclose.aging.owner",
+            proof: "Track owner review date, fallback owner, affected reply family, and next owner review.",
+            readyWhen: "Ready when one accountable support owner remains current.",
+            hold: "Hold if owner review or fallback ownership expires.",
+            score: 81
+          },
+          {
+            label: "Regression proof age",
+            owner: "QA desk",
+            method: "REGRESSION_AGE",
+            route: "support.repair.reclose.aging.regression",
+            proof: "Track regression check, affected surface, retest date, review-by date, and age state.",
+            readyWhen: "Ready when regression proof remains current for every repaired surface.",
+            hold: "Hold if a surface changes or regression proof ages past retest.",
+            score: 80
+          },
+          {
+            label: "Escalation route age",
+            owner: "Support escalation desk",
+            method: "ESCALATION_AGE",
+            route: "support.repair.reclose.aging.escalation",
+            proof: "Track escalation route, owner, response ceiling, review date, and next refresh.",
+            readyWhen: "Ready when escalation ownership and response boundaries remain current.",
+            hold: "Hold if escalation owner, route, or response ceiling ages past review.",
+            score: 81
+          },
+          {
+            label: "Refund wording age",
+            owner: "Refund review desk",
+            method: "REFUND_AGE",
+            route: "support.repair.reclose.aging.refund",
+            proof: "Track refund wording, no-execution caveat, review owner, proof date, and next review.",
+            readyWhen: "Ready when refund wording remains current, clear, and non-promissory.",
+            hold: "Hold if wording, owner, or no-execution caveat expires or widens.",
+            score: 81
+          },
+          {
+            label: "Founder support age",
+            owner: "Founder support desk",
+            method: "SIGNOFF_AGE",
+            route: "support.repair.reclose.aging.founder",
+            proof: "Track founder support reclose date, next review, repair residue, and reopen condition.",
+            readyWhen: "Ready when founder support review remains current with no new repair residue.",
+            hold: "Hold if founder support review expires or repair residue reappears.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Support Repair Reclose Aging Guard measures freshness per proof lane; one stale lane holds only the affected support confidence until review.",
+          "Every aging row binds the support repair reclose receipt, proof date, review-by date, owner, age state, and reopen condition.",
+          "Aging warnings do not send replies, issue refunds, process payments, fetch live data, store private notes, contact users, or approve support widening.",
+          "Support aging rows must exclude raw support notes, private context, contact details, account or payment payloads, credentials, and identifiers.",
+          "No support aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No reclosed support repair may remain trusted after copy, owner, regression, escalation, refund wording, or founder proof ages past review.",
+          "No age score may be treated as a sent reply, refund approval, payment processing, account recovery, or support promise.",
+          "No expired lane may be silently renewed without fresh proof and an accountable owner.",
+          "No support repair reclose aging guard may send replies, issue refunds, process payments, contact users, or approve support widening."
+        ],
+        receiptFields: [
+          "support_repair_reclose_aging_guard_id",
+          "release_key",
+          "support_repair_reclose_receipt_id",
+          "support_copy_age_state",
+          "owner_review_age_state",
+          "regression_proof_age_state",
+          "escalation_route_age_state",
+          "refund_wording_age_state",
+          "founder_support_age_state",
+          "next_review_at",
+          "reopen_condition",
+          "created_at"
+        ],
+        boundary: "Support Repair Reclose Aging Guard is a static support-aging room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
       }
     ],
     executiveCalmCompression: {
@@ -21426,14 +21526,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta command reclose aging proof is visible; next releases should lock support repair reclose aging guard, source correction reclose reopening queue, payment reclose reopening queue, account reclose reopening queue, and beta command reclose reopening queue.",
+      rule: "Support repair reclose aging proof is visible; next releases should lock source correction reclose reopening queue, payment reclose reopening queue, account reclose reopening queue, beta command reclose reopening queue, and support repair reclose reopening queue.",
       lanes: [
-        {
-          version: "v588",
-          label: "Support repair reclose aging guard",
-          route: "#paid-beta-support-ledger",
-          detail: "Warn when reclosed support proof ages past copy, owner, regression, escalation, refund wording, or founder support review windows."
-        },
         {
           version: "v589",
           label: "Source correction reclose reopening queue",
@@ -21457,6 +21551,12 @@ function buildTrackerConfig() {
           label: "Beta command reclose reopening queue",
           route: "#founder-beta-operating-room",
           detail: "Reopen reclosed founder commands when replacement, conflict, memory, expiry, owner, or founder age states expire."
+        },
+        {
+          version: "v593",
+          label: "Support repair reclose reopening queue",
+          route: "#paid-beta-support-ledger",
+          detail: "Reopen reclosed support repairs when copy, owner, regression, escalation, refund wording, or founder age states expire."
         }
       ]
     },
@@ -21465,6 +21565,13 @@ function buildTrackerConfig() {
       verdict: "Account reclose aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v587",
+          key: "20260715-v587-01",
+          commit: "53535e8",
+          receiptId: "NN-SHARE-RECEIPT-20260715V58701",
+          proof: "Beta Command Reclose Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v586",
           key: "20260710-v586-01",
@@ -21492,13 +21599,6 @@ function buildTrackerConfig() {
           commit: "1da6678",
           receiptId: "NN-SHARE-RECEIPT-20260710V58301",
           proof: "Support Repair Reclose Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v582",
-          key: "20260710-v582-01",
-          commit: "fb3f6e4",
-          receiptId: "NN-SHARE-RECEIPT-20260710V58201",
-          proof: "Beta Command Reclose Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -21536,13 +21636,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v587",
-        detail: "Beta Command Reclose Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v588",
+        detail: "Support Repair Reclose Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v587 runs syntax, static, security, diff hygiene, and marker scans before the batch moves forward."
+        detail: "v588 runs syntax, static, security, diff hygiene, and marker scans before the batch moves forward."
       },
       {
         label: "03 Viewed",
@@ -21558,13 +21658,13 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v587 command reclose aging",
-        detail: "Beta Command Reclose Aging Guard tracks replacement, conflict, release-safe memory, expiry, owner, and founder proof freshness independently."
+        value: "v588 support reclose aging",
+        detail: "Support Repair Reclose Aging Guard tracks copy, owner, regression, escalation, refund wording, and founder support proof freshness independently."
       },
       {
         label: "Release checks",
         value: "Batch checks active",
-        detail: "v587 passed release-level checks; full visual and live verification remain reserved for the final v591 state."
+        detail: "v588 passed release-level checks; full visual and live verification remain reserved for the final v591 state."
       },
       {
         label: "Share outcome",

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V589 Source Correction Reclose Reopening Queue
+
+V589 adds Source Correction Reclose Reopening Queue to the Build Tracker Release Doctor. It reopens only the expired replacement, public notice, cache refresh, support handoff, reviewer scope, or founder review lane and preserves current sibling proof.
+
+- Release label: `NiveshNadi Phase 1 v589 Source Correction Reclose Reopening Queue`
+- Data/version key: `20260715-v589-01`
+- Product surface: Build Tracker > Release Doctor > Source correction reclose reopening queue
+- Risk boundary: Static correction reopening room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed.
+
 ## V588 Support Repair Reclose Aging Guard
 
 V588 adds Support Repair Reclose Aging Guard to the Build Tracker Release Doctor. It tracks support-safe copy, owner review, regression proof, escalation route, refund wording, and founder support freshness independently after a support repair is reclosed.

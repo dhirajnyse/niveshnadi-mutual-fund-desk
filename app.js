@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v588-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v588 Support Repair Reclose Aging Guard";
+const DATA_VERSION = "20260715-v589-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v589 Source Correction Reclose Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Support repair reclose aging guard",
+    label: "Source correction reclose reopening queue",
     status: "Shipping now",
-    route: "#paid-beta-support-ledger",
-    detail: "Warn when reclosed support proof ages past copy, owner, regression, escalation, refund wording, or founder support review windows."
+    route: "#correction-ledger",
+    detail: "Reopen only expired replacement, notice, cache, support, reviewer, or founder correction lanes with a named owner and fresh-proof condition."
   },
   {
     label: "Mobile calm audit",
@@ -21354,6 +21354,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Repair Reclose Aging Guard is a static support-aging room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
+      },
+      {
+        key: "sourceCorrectionRecloseReopeningQueue",
+        label: "Source correction reclose reopening queue",
+        verdict: "Expired correction lanes reopen selectively",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "RECLOSE", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-reclose-reopening-queue",
+        copyLabel: "Copy correction reclose queue",
+        score: 80,
+        rule: "Reclosed source correction proof should reopen only the replacement, notice, cache, support, reviewer, or founder lane whose accepted age state expired or drifted.",
+        lanes: [
+          {
+            label: "Replacement proof reopen",
+            owner: "Source evidence desk",
+            method: "REOPEN_REPLACEMENT",
+            route: "source.correction.reclose.reopening.replacement",
+            proof: "Bind expired replacement age state, accepted artifact, drift reason, owner, and fresh-proof request.",
+            readyWhen: "Ready when current replacement proof again supports the reclosed correction scope.",
+            hold: "Hold only replacement confidence while the artifact is stale, missing, or mismatched.",
+            score: 80
+          },
+          {
+            label: "Public notice reopen",
+            owner: "Founder release desk",
+            method: "REOPEN_NOTICE",
+            route: "source.correction.reclose.reopening.notice",
+            proof: "Bind expired notice age state, affected claim, approved copy, owner, and fresh-notice review.",
+            readyWhen: "Ready when notice copy is current and still matches the corrected claim.",
+            hold: "Hold only notice confidence if wording is stale, widened, missing, or detached from the claim.",
+            score: 79
+          },
+          {
+            label: "Cache refresh reopen",
+            owner: "Release cache desk",
+            method: "REOPEN_CACHE",
+            route: "source.correction.reclose.reopening.cache",
+            proof: "Bind expired cache age state, stale route, expected release key, owner, and refresh evidence.",
+            readyWhen: "Ready when visible routes and release cache show the current corrected state.",
+            hold: "Hold only cache confidence while an older claim can still appear.",
+            score: 80
+          },
+          {
+            label: "Support handoff reopen",
+            owner: "Support desk",
+            method: "REOPEN_SUPPORT",
+            route: "source.correction.reclose.reopening.support",
+            proof: "Bind expired handoff age state, support-safe copy, owner, response ceiling, and refresh request.",
+            readyWhen: "Ready when support can explain the correction with current, no-advice wording.",
+            hold: "Hold only support confidence if copy, owner, or response ceiling is stale.",
+            score: 79
+          },
+          {
+            label: "Reviewer scope reopen",
+            owner: "Reviewer desk",
+            method: "REOPEN_SCOPE",
+            route: "source.correction.reclose.reopening.scope",
+            proof: "Bind expired reviewer age state, accepted fields, exclusions, owner, and fresh scope review.",
+            readyWhen: "Ready when reviewer scope again covers the correction without widening claims.",
+            hold: "Hold only reviewer confidence while scope or exclusions are stale.",
+            score: 80
+          },
+          {
+            label: "Founder review reopen",
+            owner: "Founder desk",
+            method: "REOPEN_SIGNOFF",
+            route: "source.correction.reclose.reopening.founder",
+            proof: "Bind expired founder age state, correction residue, reopen reason, owner, and next reclose route.",
+            readyWhen: "Ready when fresh founder review can defend reclosure with no unresolved residue.",
+            hold: "Hold only founder confidence while review is expired or residue remains.",
+            score: 80
+          }
+        ],
+        operatingRules: [
+          "Source Correction Reclose Reopening Queue opens only expired or drifted lanes; current sibling lanes retain their accepted state.",
+          "Every row binds the reclose aging guard, affected lane, previous age state, reopen reason, owner, fresh-proof request, and reclose condition.",
+          "Reopening rows do not fetch live data, verify facts, publish notices, send replies, change records, contact users, or approve public claims.",
+          "Correction reopening rows must exclude raw source files, private notes, contact details, account or payment payloads, credentials, and identifiers.",
+          "No correction reopening row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No expired correction lane may stay silently trusted after its reclose age state fails.",
+          "No current sibling lane should be reopened merely because another lane expired.",
+          "No public correction wording may widen into investment advice, live-data certainty, execution promise, or source guarantee.",
+          "No source correction reclose reopening queue may fetch live data, verify facts, publish notices, contact users, or approve public claims."
+        ],
+        receiptFields: [
+          "source_correction_reclose_reopening_queue_id",
+          "release_key",
+          "source_correction_reclose_aging_guard_id",
+          "affected_lane",
+          "previous_age_state",
+          "reopen_reason",
+          "reopen_owner",
+          "fresh_proof_request",
+          "reclose_condition",
+          "replacement_notice_cache_support_scope_founder_states",
+          "created_at"
+        ],
+        boundary: "Source Correction Reclose Reopening Queue is a static correction reopening room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
       }
     ],
     executiveCalmCompression: {
@@ -21526,14 +21625,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support repair reclose aging proof is visible; next releases should lock source correction reclose reopening queue, payment reclose reopening queue, account reclose reopening queue, beta command reclose reopening queue, and support repair reclose reopening queue.",
+      rule: "Source correction reclose reopening is visible; next releases should lock payment reclose reopening queue, account reclose reopening queue, beta command reclose reopening queue, support repair reclose reopening queue, and source correction reclose renewal receipt.",
       lanes: [
-        {
-          version: "v589",
-          label: "Source correction reclose reopening queue",
-          route: "#correction-ledger",
-          detail: "Reopen reclosed correction proof when replacement, notice, cache, support, reviewer, or founder age states expire."
-        },
         {
           version: "v590",
           label: "Payment reclose reopening queue",
@@ -21557,6 +21650,12 @@ function buildTrackerConfig() {
           label: "Support repair reclose reopening queue",
           route: "#paid-beta-support-ledger",
           detail: "Reopen reclosed support repairs when copy, owner, regression, escalation, refund wording, or founder age states expire."
+        },
+        {
+          version: "v594",
+          label: "Source correction reclose renewal receipt",
+          route: "#correction-ledger",
+          detail: "Renew reopened correction lanes only after fresh replacement, notice, cache, support, reviewer, or founder proof is accepted."
         }
       ]
     },
@@ -21565,6 +21664,13 @@ function buildTrackerConfig() {
       verdict: "Account reclose aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v588",
+          key: "20260715-v588-01",
+          commit: "df92b4a",
+          receiptId: "NN-SHARE-RECEIPT-20260715V58801",
+          proof: "Support Repair Reclose Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v587",
           key: "20260715-v587-01",
@@ -21592,13 +21698,6 @@ function buildTrackerConfig() {
           commit: "a99721d",
           receiptId: "NN-SHARE-RECEIPT-20260710V58401",
           proof: "Source Correction Reclose Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v583",
-          key: "20260710-v583-01",
-          commit: "1da6678",
-          receiptId: "NN-SHARE-RECEIPT-20260710V58301",
-          proof: "Support Repair Reclose Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -21636,13 +21735,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v588",
-        detail: "Support Repair Reclose Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v589",
+        detail: "Source Correction Reclose Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v588 runs syntax, static, security, diff hygiene, and marker scans before the batch moves forward."
+        detail: "v589 runs syntax, static, security, diff hygiene, and marker scans before the batch moves forward."
       },
       {
         label: "03 Viewed",
@@ -21658,13 +21757,13 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v588 support reclose aging",
-        detail: "Support Repair Reclose Aging Guard tracks copy, owner, regression, escalation, refund wording, and founder support proof freshness independently."
+        value: "v589 correction selective reopen",
+        detail: "Source Correction Reclose Reopening Queue reopens only the expired replacement, notice, cache, support, reviewer, or founder lane."
       },
       {
         label: "Release checks",
         value: "Batch checks active",
-        detail: "v588 passed release-level checks; full visual and live verification remain reserved for the final v591 state."
+        detail: "v589 passed release-level checks; full visual and live verification remain reserved for the final v591 state."
       },
       {
         label: "Share outcome",

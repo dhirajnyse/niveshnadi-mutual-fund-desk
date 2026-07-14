@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v589 Source Correction Reclose Reopening Queue
+
+- Version: `0.589.0`
+- Data version: `20260715-v589-01`
+- Changes made: Added Source Correction Reclose Reopening Queue to the Build Tracker Release Doctor with selective replacement, notice, cache, support, reviewer, and founder lane reopening, previous-age-state and fresh-proof fields, sibling-proof preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v588 commit, next-batch planner roll-forward to v590-v594, and release markers rolled forward to v589.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v589 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Reclose Reopening Queue is a static correction reopening room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v588 Support Repair Reclose Aging Guard
 
 - Version: `0.588.0`

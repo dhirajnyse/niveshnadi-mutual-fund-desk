@@ -8,7 +8,7 @@ V591 adds Account Reclose Reopening Queue to the Build Tracker Release Doctor. I
 - Data/version key: `20260715-v591-01`
 - Product surface: Build Tracker > Release Doctor > Account reclose reopening queue
 - Risk boundary: Static account reopening room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
-- Verification status: Syntax, static/security, marker, diff hygiene, 1440x900 desktop, 390x844 mobile, proof-card fit, and browser log checks passed; live verification follows after publish.
+- Verification status: Syntax, static/security, marker, diff hygiene, 1440x900 desktop, 390x844 mobile, proof-card fit, browser logs, push, live stamp, and live app marker checks passed.
 
 ## V590 Payment Reclose Reopening Queue
 

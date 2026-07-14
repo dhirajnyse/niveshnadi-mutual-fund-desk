@@ -21948,8 +21948,8 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "Publish next",
-        detail: "Local release proof is complete; push, live stamp, and live app marker checks remain before sharing."
+        value: "v591 live verified",
+        detail: "GitHub Pages returns the v591 release stamp, matching data key, Account Reclose Reopening Queue key, and copy marker."
       }
     ],
     memory: [
@@ -21960,13 +21960,13 @@ function buildTrackerConfig() {
       },
       {
         label: "Release checks",
-        value: "All local checks passed",
-        detail: "v591 passed syntax, static, security, diff hygiene, marker scans, desktop/mobile visual QA, proof-card fit checks, and browser log review."
+        value: "All checks passed",
+        detail: "v591 passed syntax, static, security, diff hygiene, marker scans, desktop/mobile visual QA, proof-card fit, browser logs, push, live stamp, and live app marker verification."
       },
       {
         label: "Share outcome",
-        value: "Publish next",
-        detail: "The batch is locally release-ready; GitHub Pages stamp and live app marker verification remain."
+        value: "v591 live verified",
+        detail: "The release is share-ready because GitHub Pages serves the v591 stamp, data key, Account Reclose Reopening Queue key, and copy marker."
       }
     ],
     actions: [

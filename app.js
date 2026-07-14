@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v590-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v590 Payment Reclose Reopening Queue";
+const DATA_VERSION = "20260715-v591-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v591 Account Reclose Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment reclose reopening queue",
+    label: "Account reclose reopening queue",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Reopen only expired entitlement, refund, rollback, support, owner, or founder finance lanes with a named owner and fresh-proof condition."
+    route: "#account-readiness",
+    detail: "Reopen only expired delete/export, redaction, support-safe, object-family, founder custody, or trigger lanes with a named owner and fresh-proof condition."
   },
   {
     label: "Mobile calm audit",
@@ -21552,6 +21552,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Reclose Reopening Queue is a static payment reopening room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountRecloseReopeningQueue",
+        label: "Account reclose reopening queue",
+        verdict: "Expired account lanes reopen selectively",
+        receiptId: ["NN", "ACCOUNT", "RECLOSE", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-reclose-reopening-queue",
+        copyLabel: "Copy account reclose queue",
+        score: 81,
+        rule: "Reclosed account proof should reopen only the delete/export, redaction, support-safe, object-family, founder custody, or trigger lane whose accepted age state expired or drifted.",
+        lanes: [
+          {
+            label: "Delete/export reopen",
+            owner: "Account custody desk",
+            method: "REOPEN_DELETE_EXPORT",
+            route: "account.reclose.reopening.delete_export",
+            proof: "Bind expired delete/export age state, affected object, behavior boundary, owner, and fresh-proof request.",
+            readyWhen: "Ready when current delete/export proof again supports the reclosed account scope.",
+            hold: "Hold only delete/export confidence while behavior or handoff proof is stale.",
+            score: 81
+          },
+          {
+            label: "Redaction reopen",
+            owner: "Privacy desk",
+            method: "REOPEN_REDACTION",
+            route: "account.reclose.reopening.redaction",
+            proof: "Bind expired redaction age state, excluded fields, sample-safe output, owner, and fresh review request.",
+            readyWhen: "Ready when redaction proof again covers every reclosed account field.",
+            hold: "Hold only redaction confidence while scope, exclusions, or sample-safe proof is stale.",
+            score: 81
+          },
+          {
+            label: "Support-safe reopen",
+            owner: "Support desk",
+            method: "REOPEN_SUPPORT",
+            route: "account.reclose.reopening.support",
+            proof: "Bind expired support age state, support-safe copy, response ceiling, owner, and refresh request.",
+            readyWhen: "Ready when support copy is current without recovery or private-data promises.",
+            hold: "Hold only support confidence while copy, owner, escalation, or response ceiling is stale.",
+            score: 80
+          },
+          {
+            label: "Object-family reopen",
+            owner: "Data model desk",
+            method: "REOPEN_OBJECTS",
+            route: "account.reclose.reopening.objects",
+            proof: "Bind expired object age state, storage boundary, retention scope, owner, and fresh scope review.",
+            readyWhen: "Ready when object-family and retention scope again cover the reclosed row.",
+            hold: "Hold only object confidence while storage boundary or retention scope is stale.",
+            score: 81
+          },
+          {
+            label: "Founder custody reopen",
+            owner: "Founder custody desk",
+            method: "REOPEN_SIGNOFF",
+            route: "account.reclose.reopening.founder",
+            proof: "Bind expired founder custody age state, account residue, reopen reason, owner, and next reclose route.",
+            readyWhen: "Ready when fresh founder custody review can defend reclosure with no unresolved residue.",
+            hold: "Hold only founder custody confidence while review is expired or residue remains.",
+            score: 81
+          },
+          {
+            label: "Trigger review reopen",
+            owner: "Release captain",
+            method: "REOPEN_TRIGGER",
+            route: "account.reclose.reopening.trigger",
+            proof: "Bind expired trigger age state, affected receipt, trigger source, owner, and fresh mapping request.",
+            readyWhen: "Ready when future reopen triggers are current and mapped to one accountable owner.",
+            hold: "Hold only trigger confidence while source, ownership, or next review is stale.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Account Reclose Reopening Queue opens only expired or drifted lanes; current sibling lanes retain their accepted state.",
+          "Every row binds the account reclose aging guard, affected lane, previous age state, reopen reason, owner, fresh-proof request, and reclose condition.",
+          "Reopening rows do not authenticate users, export data, delete data, run jobs, recover accounts, contact users, or approve custody widening.",
+          "Account reopening rows must exclude account payloads, contact details, credentials, identifiers, raw support notes, private notes, and payment payloads.",
+          "No account reopening row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No expired account lane may stay silently trusted after its reclose age state fails.",
+          "No current sibling lane should be reopened merely because another lane expired.",
+          "No queue state may be treated as authentication, recovery, export, deletion, job execution, or custody approval.",
+          "No account reclose reopening queue may authenticate users, export data, delete data, recover accounts, contact users, or approve custody widening."
+        ],
+        receiptFields: [
+          "account_reclose_reopening_queue_id",
+          "release_key",
+          "account_reclose_aging_guard_id",
+          "affected_lane",
+          "previous_age_state",
+          "reopen_reason",
+          "reopen_owner",
+          "fresh_proof_request",
+          "reclose_condition",
+          "delete_redaction_support_object_founder_trigger_states",
+          "created_at"
+        ],
+        boundary: "Account Reclose Reopening Queue is a static account reopening room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -21724,14 +21823,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment reclose reopening is visible; next releases should lock account reclose reopening queue, beta command reclose reopening queue, support repair reclose reopening queue, source correction reclose renewal receipt, and payment reclose renewal receipt.",
+      rule: "Account reclose reopening is visible; next releases should lock beta command reclose reopening queue, support repair reclose reopening queue, source correction reclose renewal receipt, payment reclose renewal receipt, and account reclose renewal receipt.",
       lanes: [
-        {
-          version: "v591",
-          label: "Account reclose reopening queue",
-          route: "#account-readiness",
-          detail: "Reopen reclosed account proof when delete/export, redaction, support-safe, object-family, founder custody, or trigger age states expire."
-        },
         {
           version: "v592",
           label: "Beta command reclose reopening queue",
@@ -21755,6 +21848,12 @@ function buildTrackerConfig() {
           label: "Payment reclose renewal receipt",
           route: "#payment-wiring",
           detail: "Renew reopened payment lanes only after fresh entitlement, refund, rollback, support, owner, or founder finance proof is accepted."
+        },
+        {
+          version: "v596",
+          label: "Account reclose renewal receipt",
+          route: "#account-readiness",
+          detail: "Renew reopened account lanes only after fresh delete/export, redaction, support-safe, object-family, founder custody, or trigger proof is accepted."
         }
       ]
     },
@@ -21763,6 +21862,13 @@ function buildTrackerConfig() {
       verdict: "Account reclose aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v590",
+          key: "20260715-v590-01",
+          commit: "9d7c0bc",
+          receiptId: "NN-SHARE-RECEIPT-20260715V59001",
+          proof: "Payment Reclose Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v589",
           key: "20260715-v589-01",
@@ -21790,13 +21896,6 @@ function buildTrackerConfig() {
           commit: "9dfcb79",
           receiptId: "NN-SHARE-RECEIPT-20260710V58601",
           proof: "Account Reclose Aging Guard added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, live stamp, and live app marker checks."
-        },
-        {
-          version: "v585",
-          key: "20260710-v585-01",
-          commit: "9522951",
-          receiptId: "NN-SHARE-RECEIPT-20260710V58501",
-          proof: "Payment Reclose Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -21834,40 +21933,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v590",
-        detail: "Payment Reclose Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v591",
+        detail: "Account Reclose Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v590 runs syntax, static, security, diff hygiene, and marker scans before the batch moves forward."
+        detail: "v591 runs syntax, static, security, diff hygiene, marker scans, and final visual QA before sharing."
       },
       {
         label: "03 Viewed",
-        value: "Batch QA pending",
-        detail: "Full desktop and mobile viewport proof will run on the final v591 batch state."
+        value: "Desktop + mobile pass",
+        detail: "The v591 Build Tracker passed 1440x900 and 390x844 visual QA with no horizontal overflow, clipped proof cards, browser warnings, or runtime errors."
       },
       {
         label: "04 Share",
-        value: "Hold until v591",
-        detail: "Share only after final batch visual QA, push, live stamp, and live app marker checks pass."
+        value: "Publish next",
+        detail: "Local release proof is complete; push, live stamp, and live app marker checks remain before sharing."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v590 payment selective reopen",
-        detail: "Payment Reclose Reopening Queue reopens only the expired entitlement, refund, rollback, support, owner, or founder finance lane."
+        value: "v591 account selective reopen",
+        detail: "Account Reclose Reopening Queue reopens only the expired delete/export, redaction, support-safe, object-family, founder custody, or trigger lane."
       },
       {
         label: "Release checks",
-        value: "Batch checks active",
-        detail: "v590 passed release-level checks; full visual and live verification remain reserved for the final v591 state."
+        value: "All local checks passed",
+        detail: "v591 passed syntax, static, security, diff hygiene, marker scans, desktop/mobile visual QA, proof-card fit checks, and browser log review."
       },
       {
         label: "Share outcome",
-        value: "Not shared yet",
-        detail: "The batch remains local until v591 passes desktop/mobile visual QA and live deployment verification."
+        value: "Publish next",
+        detail: "The batch is locally release-ready; GitHub Pages stamp and live app marker verification remain."
       }
     ],
     actions: [

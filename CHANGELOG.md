@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v591 Account Reclose Reopening Queue
+
+- Version: `0.591.0`
+- Data version: `20260715-v591-01`
+- Changes made: Added Account Reclose Reopening Queue to the Build Tracker Release Doctor with selective delete/export, redaction, support-safe, object-family, founder custody, and trigger lane reopening, previous-age-state and fresh-proof fields, sibling-proof preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v590 commit, next-batch planner roll-forward to v592-v596, and release markers rolled forward to v591.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v591 marker scan; Git diff hygiene check; final in-app browser desktop and mobile viewport visual QA.
+- Known risks: Account Reclose Reopening Queue is a static account reopening room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v590 Payment Reclose Reopening Queue
 
 - Version: `0.590.0`

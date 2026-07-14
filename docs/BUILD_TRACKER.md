@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V591 Account Reclose Reopening Queue
+
+V591 adds Account Reclose Reopening Queue to the Build Tracker Release Doctor. It reopens only the expired delete/export, redaction, support-safe, object-family, founder custody, or trigger lane and preserves current sibling proof.
+
+- Release label: `NiveshNadi Phase 1 v591 Account Reclose Reopening Queue`
+- Data/version key: `20260715-v591-01`
+- Product surface: Build Tracker > Release Doctor > Account reclose reopening queue
+- Risk boundary: Static account reopening room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Syntax, static/security, marker, diff hygiene, 1440x900 desktop, 390x844 mobile, proof-card fit, and browser log checks passed; live verification follows after publish.
+
 ## V590 Payment Reclose Reopening Queue
 
 V590 adds Payment Reclose Reopening Queue to the Build Tracker Release Doctor. It reopens only the expired entitlement, refund wording, rollback, support copy, owner review, or founder finance lane and preserves current sibling proof.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v589-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v589 Source Correction Reclose Reopening Queue";
+const DATA_VERSION = "20260715-v590-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v590 Payment Reclose Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction reclose reopening queue",
+    label: "Payment reclose reopening queue",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Reopen only expired replacement, notice, cache, support, reviewer, or founder correction lanes with a named owner and fresh-proof condition."
+    route: "#payment-wiring",
+    detail: "Reopen only expired entitlement, refund, rollback, support, owner, or founder finance lanes with a named owner and fresh-proof condition."
   },
   {
     label: "Mobile calm audit",
@@ -21453,6 +21453,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Reclose Reopening Queue is a static correction reopening room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
+      },
+      {
+        key: "paymentRecloseReopeningQueue",
+        label: "Payment reclose reopening queue",
+        verdict: "Expired payment lanes reopen selectively",
+        receiptId: ["NN", "PAYMENT", "RECLOSE", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-reclose-reopening-queue",
+        copyLabel: "Copy payment reclose queue",
+        score: 80,
+        rule: "Reclosed payment proof should reopen only the entitlement, refund, rollback, support, owner, or founder finance lane whose accepted age state expired or drifted.",
+        lanes: [
+          {
+            label: "Entitlement reopen",
+            owner: "Payment entitlement desk",
+            method: "REOPEN_ENTITLEMENT",
+            route: "payment.reclose.reopening.entitlement",
+            proof: "Bind expired entitlement age state, plan scope, access boundary, owner, and fresh-proof request.",
+            readyWhen: "Ready when current entitlement proof again supports the reclosed payment scope.",
+            hold: "Hold only entitlement confidence while plan scope, access boundary, or proof is stale.",
+            score: 80
+          },
+          {
+            label: "Refund wording reopen",
+            owner: "Refund review desk",
+            method: "REOPEN_REFUND",
+            route: "payment.reclose.reopening.refund",
+            proof: "Bind expired refund age state, approved wording, no-execution caveat, owner, and fresh-copy review.",
+            readyWhen: "Ready when refund wording is current, clear, and non-promissory.",
+            hold: "Hold only refund-copy confidence while wording, owner, or caveat is stale.",
+            score: 79
+          },
+          {
+            label: "Rollback reopen",
+            owner: "Finance rollback desk",
+            method: "REOPEN_ROLLBACK",
+            route: "payment.reclose.reopening.rollback",
+            proof: "Bind expired rollback age state, affected entitlement, scenario owner, and fresh rehearsal request.",
+            readyWhen: "Ready when rollback proof again covers the reclosed payment path.",
+            hold: "Hold only rollback confidence while ownership, reversal boundary, or rehearsal proof is stale.",
+            score: 80
+          },
+          {
+            label: "Support copy reopen",
+            owner: "Support desk",
+            method: "REOPEN_SUPPORT",
+            route: "payment.reclose.reopening.support",
+            proof: "Bind expired support age state, support-safe copy, response ceiling, owner, and refresh request.",
+            readyWhen: "Ready when support copy is current and avoids payment or refund execution promises.",
+            hold: "Hold only support confidence while copy, owner, escalation, or response ceiling is stale.",
+            score: 79
+          },
+          {
+            label: "Owner review reopen",
+            owner: "Payment owner",
+            method: "REOPEN_OWNER",
+            route: "payment.reclose.reopening.owner",
+            proof: "Bind expired owner age state, affected surface, fallback owner, and fresh owner review request.",
+            readyWhen: "Ready when one accountable payment owner again covers the lane.",
+            hold: "Hold only owner confidence while review or fallback ownership is stale.",
+            score: 80
+          },
+          {
+            label: "Founder finance reopen",
+            owner: "Founder finance desk",
+            method: "REOPEN_SIGNOFF",
+            route: "payment.reclose.reopening.founder",
+            proof: "Bind expired founder finance age state, payment residue, reopen reason, owner, and next reclose route.",
+            readyWhen: "Ready when fresh founder finance review can defend reclosure with no unresolved residue.",
+            hold: "Hold only founder finance confidence while review is expired or residue remains.",
+            score: 80
+          }
+        ],
+        operatingRules: [
+          "Payment Reclose Reopening Queue opens only expired or drifted lanes; current sibling lanes retain their accepted state.",
+          "Every row binds the payment reclose aging guard, affected lane, previous age state, reopen reason, owner, fresh-proof request, and reclose condition.",
+          "Reopening rows do not process payments, issue refunds, grant access, fetch gateway logs, reconcile ledgers, contact users, or approve launch.",
+          "Payment reopening rows must exclude gateway payloads, raw support notes, card or bank data, payment tokens, credentials, identifiers, and private notes.",
+          "No payment reopening row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No expired payment lane may stay silently trusted after its reclose age state fails.",
+          "No current sibling lane should be reopened merely because another lane expired.",
+          "No queue state may be treated as payment execution, refund approval, access grant, reconciliation proof, or financial advice.",
+          "No payment reclose reopening queue may process payments, issue refunds, grant access, fetch gateway logs, contact users, or approve payment launch."
+        ],
+        receiptFields: [
+          "payment_reclose_reopening_queue_id",
+          "release_key",
+          "payment_reclose_aging_guard_id",
+          "affected_lane",
+          "previous_age_state",
+          "reopen_reason",
+          "reopen_owner",
+          "fresh_proof_request",
+          "reclose_condition",
+          "entitlement_refund_rollback_support_owner_founder_states",
+          "created_at"
+        ],
+        boundary: "Payment Reclose Reopening Queue is a static payment reopening room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -21625,14 +21724,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source correction reclose reopening is visible; next releases should lock payment reclose reopening queue, account reclose reopening queue, beta command reclose reopening queue, support repair reclose reopening queue, and source correction reclose renewal receipt.",
+      rule: "Payment reclose reopening is visible; next releases should lock account reclose reopening queue, beta command reclose reopening queue, support repair reclose reopening queue, source correction reclose renewal receipt, and payment reclose renewal receipt.",
       lanes: [
-        {
-          version: "v590",
-          label: "Payment reclose reopening queue",
-          route: "#payment-wiring",
-          detail: "Reopen reclosed payment proof when entitlement, refund, rollback, support, owner, or founder finance age states expire."
-        },
         {
           version: "v591",
           label: "Account reclose reopening queue",
@@ -21656,6 +21749,12 @@ function buildTrackerConfig() {
           label: "Source correction reclose renewal receipt",
           route: "#correction-ledger",
           detail: "Renew reopened correction lanes only after fresh replacement, notice, cache, support, reviewer, or founder proof is accepted."
+        },
+        {
+          version: "v595",
+          label: "Payment reclose renewal receipt",
+          route: "#payment-wiring",
+          detail: "Renew reopened payment lanes only after fresh entitlement, refund, rollback, support, owner, or founder finance proof is accepted."
         }
       ]
     },
@@ -21664,6 +21763,13 @@ function buildTrackerConfig() {
       verdict: "Account reclose aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v589",
+          key: "20260715-v589-01",
+          commit: "f13e2dc",
+          receiptId: "NN-SHARE-RECEIPT-20260715V58901",
+          proof: "Source Correction Reclose Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v588",
           key: "20260715-v588-01",
@@ -21691,13 +21797,6 @@ function buildTrackerConfig() {
           commit: "9522951",
           receiptId: "NN-SHARE-RECEIPT-20260710V58501",
           proof: "Payment Reclose Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v584",
-          key: "20260710-v584-01",
-          commit: "a99721d",
-          receiptId: "NN-SHARE-RECEIPT-20260710V58401",
-          proof: "Source Correction Reclose Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -21735,13 +21834,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v589",
-        detail: "Source Correction Reclose Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v590",
+        detail: "Payment Reclose Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v589 runs syntax, static, security, diff hygiene, and marker scans before the batch moves forward."
+        detail: "v590 runs syntax, static, security, diff hygiene, and marker scans before the batch moves forward."
       },
       {
         label: "03 Viewed",
@@ -21757,13 +21856,13 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v589 correction selective reopen",
-        detail: "Source Correction Reclose Reopening Queue reopens only the expired replacement, notice, cache, support, reviewer, or founder lane."
+        value: "v590 payment selective reopen",
+        detail: "Payment Reclose Reopening Queue reopens only the expired entitlement, refund, rollback, support, owner, or founder finance lane."
       },
       {
         label: "Release checks",
         value: "Batch checks active",
-        detail: "v589 passed release-level checks; full visual and live verification remain reserved for the final v591 state."
+        detail: "v590 passed release-level checks; full visual and live verification remain reserved for the final v591 state."
       },
       {
         label: "Share outcome",

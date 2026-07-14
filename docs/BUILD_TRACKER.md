@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V590 Payment Reclose Reopening Queue
+
+V590 adds Payment Reclose Reopening Queue to the Build Tracker Release Doctor. It reopens only the expired entitlement, refund wording, rollback, support copy, owner review, or founder finance lane and preserves current sibling proof.
+
+- Release label: `NiveshNadi Phase 1 v590 Payment Reclose Reopening Queue`
+- Data/version key: `20260715-v590-01`
+- Product surface: Build Tracker > Release Doctor > Payment reclose reopening queue
+- Risk boundary: Static payment reopening room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed.
+
 ## V589 Source Correction Reclose Reopening Queue
 
 V589 adds Source Correction Reclose Reopening Queue to the Build Tracker Release Doctor. It reopens only the expired replacement, public notice, cache refresh, support handoff, reviewer scope, or founder review lane and preserves current sibling proof.

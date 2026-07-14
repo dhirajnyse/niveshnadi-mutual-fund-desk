@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v590 Payment Reclose Reopening Queue
+
+- Version: `0.590.0`
+- Data version: `20260715-v590-01`
+- Changes made: Added Payment Reclose Reopening Queue to the Build Tracker Release Doctor with selective entitlement, refund, rollback, support, owner, and founder finance lane reopening, previous-age-state and fresh-proof fields, sibling-proof preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v589 commit, next-batch planner roll-forward to v591-v595, and release markers rolled forward to v590.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v590 marker scan; Git diff hygiene check.
+- Known risks: Payment Reclose Reopening Queue is a static payment reopening room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v589 Source Correction Reclose Reopening Queue
 
 - Version: `0.589.0`

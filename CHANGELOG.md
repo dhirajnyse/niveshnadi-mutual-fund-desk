@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v609 Source Correction Reclose Renewal Refresh Receipt
+
+- Version: `0.609.0`
+- Data version: `20260715-v609-01`
+- Changes made: Added Source Correction Reclose Renewal Refresh Receipt to the Build Tracker Release Doctor with selective replacement-proof, public-notice, cache-refresh, support-handoff, reviewer-scope, and founder-review refresh lanes, accepted-fresh-proof, reviewer, acceptance-time, proof-date, review-by, age-state, reopen-condition, supersession, and sibling-state fields, queue-history preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v608 state, next-batch planner roll-forward to v610-v614, and release markers rolled forward to v609.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v609 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Reclose Renewal Refresh Receipt is a static correction refresh room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v608 Support Repair Reclose Renewal Reopening Queue
 
 - Version: `0.608.0`

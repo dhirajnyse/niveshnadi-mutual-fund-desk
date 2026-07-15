@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v608-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v608 Support Repair Reclose Renewal Reopening Queue";
+const DATA_VERSION = "20260715-v609-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v609 Source Correction Reclose Renewal Refresh Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Support repair reclose renewal reopening queue",
+    label: "Source correction reclose renewal refresh receipt",
     status: "Shipping now",
-    route: "#paid-beta-support-ledger",
-    detail: "Reopen only the renewed support-repair lane whose aging trigger requires fresh evidence while preserving current sibling proof."
+    route: "#correction-ledger",
+    detail: "Return only the queued source-correction lane to current status after fresh proof and a new review window are accepted."
   },
   {
     label: "Mobile calm audit",
@@ -23349,6 +23349,110 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Repair Reclose Renewal Reopening Queue is a static support queue only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, or widen support access."
+      },
+      {
+        key: "sourceCorrectionRecloseRenewalRefreshReceipt",
+        label: "Source correction reclose renewal refresh receipt",
+        verdict: "Fresh correction proof restores only the queued lane",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "RECLOSE", "RENEWAL", "REFRESH", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-reclose-renewal-refresh-receipt",
+        copyLabel: "Copy correction renewal refresh receipt",
+        score: 82,
+        rule: "A selectively reopened source-correction lane returns to current status only after fresh proof is accepted, a reviewer is named, and a new proof date, review-by date, age state, and reopen condition are recorded.",
+        lanes: [
+          {
+            label: "Replacement proof refreshed",
+            owner: "Source correction desk",
+            method: "REFRESH_REPLACEMENT",
+            route: "source.correction.reclose.renewal.refresh.replacement",
+            proof: "Bind queue row, accepted replacement artifact, source date, citation, reviewer, acceptance time, and next review window.",
+            readyWhen: "Ready when fresh replacement proof is accepted and only the queued replacement lane returns to current status.",
+            hold: "Hold when queue row, artifact, source date, citation, reviewer, acceptance time, or review-by date is missing.",
+            score: 83
+          },
+          {
+            label: "Public notice refreshed",
+            owner: "Public correction desk",
+            method: "REFRESH_NOTICE",
+            route: "source.correction.reclose.renewal.refresh.notice",
+            proof: "Bind queue row, accepted public wording, audience boundary, reviewer, acceptance time, publication proof, and next review window.",
+            readyWhen: "Ready when fresh notice proof is accepted and only the queued public-notice lane returns to current status.",
+            hold: "Hold when wording, audience, publication proof, reviewer, acceptance time, or review-by date is missing.",
+            score: 82
+          },
+          {
+            label: "Cache refresh refreshed",
+            owner: "Release operations",
+            method: "REFRESH_CACHE",
+            route: "source.correction.reclose.renewal.refresh.cache",
+            proof: "Bind queue row, accepted cache key, purge receipt, visible correction check, reviewer, acceptance time, and next review window.",
+            readyWhen: "Ready when fresh cache proof is accepted and only the queued cache-refresh lane returns to current status.",
+            hold: "Hold when cache key, purge receipt, visible check, reviewer, acceptance time, or review-by date is missing.",
+            score: 82
+          },
+          {
+            label: "Support handoff refreshed",
+            owner: "Support captain",
+            method: "REFRESH_SUPPORT",
+            route: "source.correction.reclose.renewal.refresh.support",
+            proof: "Bind queue row, accepted support wording, escalation route, correction reference, reviewer, acceptance time, and next review window.",
+            readyWhen: "Ready when fresh handoff proof is accepted and only the queued support lane returns to current status.",
+            hold: "Hold when wording, escalation route, correction reference, reviewer, acceptance time, or review-by date is missing.",
+            score: 82
+          },
+          {
+            label: "Reviewer scope refreshed",
+            owner: "Trust review desk",
+            method: "REFRESH_REVIEWER",
+            route: "source.correction.reclose.renewal.refresh.reviewer",
+            proof: "Bind queue row, accepted reviewer scope, independence check, conflict note, decision receipt, acceptance time, and next review window.",
+            readyWhen: "Ready when fresh reviewer proof is accepted and only the queued reviewer-scope lane returns to current status.",
+            hold: "Hold when scope, independence check, conflict note, decision receipt, acceptance time, or review-by date is missing.",
+            score: 82
+          },
+          {
+            label: "Founder review refreshed",
+            owner: "Founder desk",
+            method: "REFRESH_FOUNDER",
+            route: "source.correction.reclose.renewal.refresh.founder",
+            proof: "Bind queue row, accepted founder review, release decision, zero-residue proof, acceptance time, and next review window.",
+            readyWhen: "Ready when fresh founder proof is accepted and only the queued founder-review lane returns to current status.",
+            hold: "Hold when founder review, release decision, residue proof, acceptance time, or review-by date is missing.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Source Correction Reclose Renewal Refresh Receipt closes one renewal reopening queue row at a time and refreshes only its affected lane.",
+          "Every refresh receipt binds the queue row, prior aging guard, accepted fresh proof, reviewer, acceptance time, proof date, review-by date, age state, reopen condition, and sibling-state snapshot.",
+          "Current sibling correction proof remains unchanged and is copied into the refresh receipt for auditability.",
+          "The closed queue row and superseded aging state remain in history; refresh never deletes the prior trigger or proof chain.",
+          "Correction refresh receipts must exclude private notes, credentials, identifiers, contact details, account or payment payloads, and raw support conversations."
+        ],
+        noGoLines: [
+          "No correction lane may return to current status without its reopening queue row, accepted fresh proof, named reviewer, and new review window.",
+          "No refresh receipt may overwrite or re-accept sibling lanes that did not enter the queue.",
+          "No receipt may be treated as live source verification, publication execution, support reply approval, or launch approval.",
+          "No source correction renewal refresh receipt may fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
+        ],
+        receiptFields: [
+          "source_correction_reclose_renewal_refresh_receipt_id",
+          "release_key",
+          "source_correction_reclose_renewal_reopening_queue_id",
+          "source_correction_reclose_renewal_aging_guard_id",
+          "source_correction_reclose_renewal_receipt_id",
+          "affected_lane",
+          "accepted_fresh_proof",
+          "reviewer",
+          "accepted_at",
+          "proof_date",
+          "review_by",
+          "age_state",
+          "reopen_condition",
+          "sibling_state_snapshot",
+          "supersedes_queue_row_id",
+          "created_at"
+        ],
+        boundary: "Source Correction Reclose Renewal Refresh Receipt is a static correction refresh room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
       }
     ],
     executiveCalmCompression: {
@@ -23521,14 +23625,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support repair renewal reopening is visible; next releases should lock source correction, payment, account, and beta command renewal refresh receipts, then add the support repair renewal refresh receipt.",
+      rule: "Source correction renewal refresh is visible; next releases should lock payment, account, beta command, and support repair renewal refresh receipts, then add the source correction renewal refresh aging guard.",
       lanes: [
-        {
-          version: "v609",
-          label: "Source correction reclose renewal refresh receipt",
-          route: "#correction-ledger",
-          detail: "Return a selectively reopened correction lane to current status only after fresh proof is accepted and the next review window is recorded."
-        },
         {
           version: "v610",
           label: "Payment reclose renewal refresh receipt",
@@ -23552,14 +23650,27 @@ function buildTrackerConfig() {
           label: "Support repair reclose renewal refresh receipt",
           route: "#paid-beta-support-ledger",
           detail: "Return a selectively reopened support-repair lane to current status only after fresh proof is accepted and the next review window is recorded."
+        },
+        {
+          version: "v614",
+          label: "Source correction reclose renewal refresh aging guard",
+          route: "#correction-ledger",
+          detail: "Age refreshed source-correction proof independently so the new review window cannot outlive current evidence."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Support renewal reopening proof visible",
+      verdict: "Correction renewal refresh proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v608",
+          key: "20260715-v608-01",
+          commit: "6f0399d",
+          receiptId: "NN-SHARE-RECEIPT-20260715V60801",
+          proof: "Support Repair Reclose Renewal Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v607",
           key: "20260715-v607-01",
@@ -23587,13 +23698,6 @@ function buildTrackerConfig() {
           commit: "931e123",
           receiptId: "NN-SHARE-RECEIPT-20260715V60401",
           proof: "Source Correction Reclose Renewal Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v603",
-          key: "20260715-v603-01",
-          commit: "2cb4d5f",
-          receiptId: "NN-SHARE-RECEIPT-20260715V60301",
-          proof: "Support Repair Reclose Renewal Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -23631,13 +23735,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v608",
-        detail: "Support Repair Reclose Renewal Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v609",
+        detail: "Source Correction Reclose Renewal Refresh Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v608 passed syntax, static, security, diff hygiene, and marker scans before the batch advances."
+        detail: "v609 passed syntax, static, security, diff hygiene, and marker scans before the batch advances."
       },
       {
         label: "03 Viewed",
@@ -23653,13 +23757,13 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v608 support renewal reopening",
-        detail: "Support Repair Reclose Renewal Reopening Queue isolates stale renewed support proof and preserves current sibling lanes."
+        value: "v609 correction renewal refresh",
+        detail: "Source Correction Reclose Renewal Refresh Receipt restores only the queued correction lane after fresh proof and a new review window are accepted."
       },
       {
         label: "Release checks",
         value: "Local checks passed",
-        detail: "v608 passed syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v609 passed syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "Share outcome",

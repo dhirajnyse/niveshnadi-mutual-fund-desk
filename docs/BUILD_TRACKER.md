@@ -8,7 +8,7 @@ V626 adds Account Reclose Renewal Refresh Reacceptance Receipt to the Build Trac
 - Data/version key: `20260715-v626-01`
 - Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh reacceptance receipt
 - Risk boundary: Static account receipt only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, or approve account custody widening.
-- Verification status: Syntax, static/security, marker, diff hygiene, desktop 1440x900, mobile 390x844, five-room presence, seven-card room fit, card/text overflow, page overflow, sticky-header/rail clearance, mobile rail collapse, version badge, and browser-console checks passed; live verification completes this release.
+- Verification status: Syntax, static/security, marker, diff hygiene, desktop 1440x900, mobile 390x844, five-room presence, seven-card room fit, card/text overflow, page overflow, sticky-header/rail clearance, mobile rail collapse, version badge, browser-console, push, live stamp, HTML title/cache keys/version badge, data key, five room markers, account copy marker, v627-v631 planner, and responsive-pass checks passed.
 
 ## V625 Payment Reclose Renewal Refresh Reacceptance Receipt
 

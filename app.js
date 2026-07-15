@@ -25478,8 +25478,8 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "Pending batch close",
-        detail: "Push and live GitHub Pages verification remain intentionally held until v626 closes the five-version batch."
+        value: "Live verified",
+        detail: "The v622-v626 batch is pushed through visual commit 93a3753; GitHub Pages serves the v626 stamp, HTML cache key and badge, data key, five room markers, account copy marker, v627-v631 planner, and responsive-pass record."
       }
     ],
     memory: [
@@ -25495,8 +25495,8 @@ function buildTrackerConfig() {
       },
       {
         label: "Share outcome",
-        value: "Pending batch close",
-        detail: "The release stays local until the five-version batch completes visual QA, push, and live stamp verification at v626."
+        value: "Live verified",
+        detail: "The v622-v626 batch is on origin/main and GitHub Pages matches the v626 release stamp, cache key, version badge, five room markers, account copy marker, next planner, and responsive proof."
       }
     ],
     actions: [

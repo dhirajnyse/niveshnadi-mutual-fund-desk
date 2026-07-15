@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v617-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v617 Beta Command Reclose Renewal Refresh Aging Guard";
+const DATA_VERSION = "20260715-v618-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v618 Support Repair Reclose Renewal Refresh Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command reclose renewal refresh aging guard",
+    label: "Support repair reclose renewal refresh aging guard",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Age refreshed founder-command proof independently so each new review window remains bounded by current command evidence."
+    route: "#paid-beta-support-ledger",
+    detail: "Age refreshed support-repair proof independently so each new review window remains bounded by current support evidence."
   },
   {
     label: "Mobile calm audit",
@@ -24269,6 +24269,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Reclose Renewal Refresh Aging Guard is a static founder-command refresh-aging room only; it does not send invites, process payments, grant access, fetch live data, recover accounts, reply to users, collect contact data, or approve beta expansion."
+      },
+      {
+        key: "supportRepairRecloseRenewalRefreshAgingGuard",
+        label: "Support repair reclose renewal refresh aging guard",
+        verdict: "Refreshed support-repair proof has a new expiry clock",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "RECLOSE", "RENEWAL", "REFRESH", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-reclose-renewal-refresh-aging-guard",
+        copyLabel: "Copy support refresh aging guard",
+        score: 84,
+        rule: "Every refreshed support-repair lane must expose its new proof date, review-by date, age state, owner, and reopen condition so renewed support confidence cannot outlive current service evidence.",
+        lanes: [
+          {
+            label: "Support-copy refresh aging",
+            owner: "Support content desk",
+            method: "AGE_REFRESHED_SUPPORT_COPY",
+            route: "support.repair.reclose.renewal.refresh.aging.copy",
+            proof: "Track refreshed support-copy date, review-by date, age state, accepted wording, and wording-drift reopen condition.",
+            readyWhen: "Ready while support copy matches current product behavior and research-only boundaries.",
+            hold: "Reopen when wording, product behavior, or the review-by date changes.",
+            score: 85
+          },
+          {
+            label: "Owner-review refresh aging",
+            owner: "Support captain",
+            method: "AGE_REFRESHED_OWNER_REVIEW",
+            route: "support.repair.reclose.renewal.refresh.aging.owner",
+            proof: "Track refreshed owner-review date, review-by date, age state, acknowledgement, and ownership-change trigger.",
+            readyWhen: "Ready while the accountable support owner and acknowledgement remain current.",
+            hold: "Reopen when ownership changes, acknowledgement is withdrawn, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Regression-proof refresh aging",
+            owner: "Support QA",
+            method: "AGE_REFRESHED_REGRESSION_PROOF",
+            route: "support.repair.reclose.renewal.refresh.aging.regression",
+            proof: "Track refreshed regression proof date, review-by date, age state, covered scenario set, and failure recurrence trigger.",
+            readyWhen: "Ready while the accepted scenario set remains green for current support behavior.",
+            hold: "Reopen when a covered scenario fails, scope changes, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Escalation-route refresh aging",
+            owner: "Support operations",
+            method: "AGE_REFRESHED_ESCALATION_ROUTE",
+            route: "support.repair.reclose.renewal.refresh.aging.escalation",
+            proof: "Track refreshed escalation-route date, review-by date, age state, owner path, and routing-change trigger.",
+            readyWhen: "Ready while escalation ownership and response path remain current and rehearsed.",
+            hold: "Reopen when the owner path, response window, or escalation boundary changes.",
+            score: 83
+          },
+          {
+            label: "Refund-wording refresh aging",
+            owner: "Trust and finance desk",
+            method: "AGE_REFRESHED_REFUND_WORDING",
+            route: "support.repair.reclose.renewal.refresh.aging.refund",
+            proof: "Track refreshed refund-wording date, review-by date, age state, policy reference, and policy-drift trigger.",
+            readyWhen: "Ready while support wording matches the current refund policy and escalation route.",
+            hold: "Reopen when refund policy, wording, owner, or review-by date changes.",
+            score: 84
+          },
+          {
+            label: "Founder-support refresh aging",
+            owner: "Founder support desk",
+            method: "AGE_REFRESHED_FOUNDER_SUPPORT",
+            route: "support.repair.reclose.renewal.refresh.aging.founder",
+            proof: "Track refreshed founder-support date, review-by date, age state, release posture, and founder-review trigger.",
+            readyWhen: "Ready while founder review can defend the refreshed support posture without an unresolved service gap.",
+            hold: "Reopen when founder posture changes, a service gap returns, or review-by passes.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "Support Repair Reclose Renewal Refresh Aging Guard ages each refreshed support lane independently; one stale lane does not silently invalidate current sibling proof.",
+          "Every aging row binds the refresh receipt, proof date, review-by date, age state, accountable owner, explicit reopen condition, and sibling-state snapshot.",
+          "Expired refreshed proof reopens only the affected support lane and routes it back to fresh-proof acceptance before confidence can return.",
+          "The refresh receipt remains in history after expiry; the aging guard changes current state without deleting accepted proof lineage.",
+          "Support refresh-aging rows must exclude contacts, identifiers, credentials, payment data, private notes, raw conversations, and account payloads."
+        ],
+        noGoLines: [
+          "No refreshed support lane may remain trusted after its review-by date or reopen condition is reached.",
+          "No sibling lane may be reopened merely because a different refreshed support lane ages.",
+          "No refresh aging guard may be treated as a support reply, refund, payment, access, recovery, account action, launch approval, or beta expansion decision.",
+          "No support renewal refresh aging guard may contact users, issue refunds, process payments, grant access, or expose private support history."
+        ],
+        receiptFields: [
+          "support_repair_reclose_renewal_refresh_aging_guard_id",
+          "release_key",
+          "support_repair_reclose_renewal_refresh_receipt_id",
+          "support_repair_reclose_renewal_reopening_queue_id",
+          "affected_lane",
+          "proof_date",
+          "review_by",
+          "age_state",
+          "reopen_condition",
+          "aging_owner",
+          "sibling_state_snapshot",
+          "created_at"
+        ],
+        boundary: "Support Repair Reclose Renewal Refresh Aging Guard is a static support refresh-aging room only; it does not reply to users, issue refunds, process payments, grant access, fetch private support history, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -24441,14 +24541,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Founder-command renewal refresh aging is visible; next releases should add support-repair refresh aging, then route expired refreshed source, payment, account, and founder-command proof into selective reopening queues.",
+      rule: "Support-repair renewal refresh aging is visible; next releases should route expired refreshed source, payment, account, founder-command, and support proof into selective reopening queues.",
       lanes: [
-        {
-          version: "v618",
-          label: "Support repair reclose renewal refresh aging guard",
-          route: "#paid-beta-support-ledger",
-          detail: "Age refreshed support-repair proof independently so the new review window cannot outlive current support evidence."
-        },
         {
           version: "v619",
           label: "Source correction reclose renewal refresh reopening queue",
@@ -24472,14 +24566,27 @@ function buildTrackerConfig() {
           label: "Beta command reclose renewal refresh reopening queue",
           route: "#founder-beta-operating-room",
           detail: "Route only expired refreshed founder-command lanes back to fresh proof while preserving current sibling state."
+        },
+        {
+          version: "v623",
+          label: "Support repair reclose renewal refresh reopening queue",
+          route: "#paid-beta-support-ledger",
+          detail: "Route only expired refreshed support-repair lanes back to fresh proof while preserving current sibling state."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Founder-command refresh aging proof visible",
+      verdict: "Support refresh aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v617",
+          key: "20260715-v617-01",
+          commit: "4d26ae8",
+          receiptId: "NN-SHARE-RECEIPT-20260715V61701",
+          proof: "Beta Command Reclose Renewal Refresh Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v616",
           key: "20260715-v616-01",
@@ -24507,13 +24614,6 @@ function buildTrackerConfig() {
           commit: "d087e41",
           receiptId: "NN-SHARE-RECEIPT-20260715V61301",
           proof: "Support Repair Reclose Renewal Refresh Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v612",
-          key: "20260715-v612-01",
-          commit: "d39e388",
-          receiptId: "NN-SHARE-RECEIPT-20260715V61201",
-          proof: "Beta Command Reclose Renewal Refresh Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -24551,13 +24651,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v617",
-        detail: "Beta Command Reclose Renewal Refresh Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v618",
+        detail: "Support Repair Reclose Renewal Refresh Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v617 passed syntax, static, security, diff hygiene, and marker scans; batch visual verification remains scheduled for v621."
+        detail: "v618 passed syntax, static, security, diff hygiene, and marker scans; batch visual verification remains scheduled for v621."
       },
       {
         label: "03 Viewed",
@@ -24573,13 +24673,13 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v617 command refresh aging",
-        detail: "Beta Command Reclose Renewal Refresh Aging Guard gives each refreshed founder-command lane an independent expiry clock and reopen condition."
+        value: "v618 support refresh aging",
+        detail: "Support Repair Reclose Renewal Refresh Aging Guard gives each refreshed support-repair lane an independent expiry clock and reopen condition."
       },
       {
         label: "Release checks",
         value: "Local checks passed",
-        detail: "v617 passed syntax, static, security, diff hygiene, and marker checks; full visual QA remains scheduled for v621."
+        detail: "v618 passed syntax, static, security, diff hygiene, and marker checks; full visual QA remains scheduled for v621."
       },
       {
         label: "Share outcome",

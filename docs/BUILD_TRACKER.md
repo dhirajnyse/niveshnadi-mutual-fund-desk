@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V618 Support Repair Reclose Renewal Refresh Aging Guard
+
+V618 adds Support Repair Reclose Renewal Refresh Aging Guard to the Build Tracker Release Doctor. It ages refreshed support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support proof independently with explicit proof-date, review-by, age-state, owner, and selective reopen fields.
+
+- Release label: `NiveshNadi Phase 1 v618 Support Repair Reclose Renewal Refresh Aging Guard`
+- Data/version key: `20260715-v618-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose renewal refresh aging guard
+- Risk boundary: Static support refresh-aging room only; it does not reply to users, issue refunds, process payments, grant access, fetch private support history, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v621.
+
 ## V617 Beta Command Reclose Renewal Refresh Aging Guard
 
 V617 adds Beta Command Reclose Renewal Refresh Aging Guard to the Build Tracker Release Doctor. It ages refreshed replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review proof independently with explicit proof-date, review-by, age-state, owner, and selective reopen fields.

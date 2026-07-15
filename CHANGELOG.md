@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v619 Source Correction Reclose Renewal Refresh Reopening Queue
+
+- Version: `0.619.0`
+- Data version: `20260715-v619-01`
+- Changes made: Added Source Correction Reclose Renewal Refresh Reopening Queue to the Build Tracker Release Doctor with selective replacement, notice, cache, support, reviewer, and founder refresh-reopen lanes, explicit prior-age-state, trigger, fresh-proof, owner, sibling-state, and lineage fields, refresh-aging and refresh-receipt bindings, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v618 state, next-batch planner roll-forward to v620-v624, and release markers rolled forward to v619.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v619 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Reclose Renewal Refresh Reopening Queue is a static correction refresh queue only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v618 Support Repair Reclose Renewal Refresh Aging Guard
 
 - Version: `0.618.0`

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V619 Source Correction Reclose Renewal Refresh Reopening Queue
+
+V619 adds Source Correction Reclose Renewal Refresh Reopening Queue to the Build Tracker Release Doctor. It routes only expired replacement, notice, cache, support, reviewer, and founder refresh lanes back to fresh proof while preserving accepted sibling state and refresh lineage.
+
+- Release label: `NiveshNadi Phase 1 v619 Source Correction Reclose Renewal Refresh Reopening Queue`
+- Data/version key: `20260715-v619-01`
+- Product surface: Build Tracker > Release Doctor > Source correction reclose renewal refresh reopening queue
+- Risk boundary: Static correction refresh queue only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v621.
+
 ## V618 Support Repair Reclose Renewal Refresh Aging Guard
 
 V618 adds Support Repair Reclose Renewal Refresh Aging Guard to the Build Tracker Release Doctor. It ages refreshed support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support proof independently with explicit proof-date, review-by, age-state, owner, and selective reopen fields.

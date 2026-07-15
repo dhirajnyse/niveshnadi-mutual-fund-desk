@@ -25468,13 +25468,13 @@ function buildTrackerConfig() {
       },
       {
         label: "02 Checked",
-        value: "Static pass",
-        detail: "v626 passed syntax, static, security, diff hygiene, and marker scans; full batch visual verification is the next release gate."
+        value: "Static + visual pass",
+        detail: "v626 passed syntax, static, security, diff hygiene, marker, desktop, mobile, room-card, overflow, rail-clearance, and browser-console checks."
       },
       {
         label: "03 Viewed",
-        value: "QA next",
-        detail: "All five rooms are present; desktop and mobile batch QA now checks the complete release surface together."
+        value: "Responsive pass",
+        detail: "In-app browser QA at 1440x900 and 390x844 confirmed all five rooms, seven cards per room, clean wrapping, no horizontal overflow, desktop rail clearance, mobile rail collapse, and a quiet console."
       },
       {
         label: "04 Share",
@@ -25490,8 +25490,8 @@ function buildTrackerConfig() {
       },
       {
         label: "Release checks",
-        value: "Local checks passed",
-        detail: "v626 passed syntax, static, security, diff hygiene, and marker checks; full batch visual QA is next."
+        value: "Local + visual checks passed",
+        detail: "v626 passed syntax, static, security, diff hygiene, marker, desktop, mobile, room-card, overflow, rail-clearance, and browser-console checks."
       },
       {
         label: "Share outcome",

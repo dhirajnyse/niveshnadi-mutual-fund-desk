@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v613 Support Repair Reclose Renewal Refresh Receipt
+
+- Version: `0.613.0`
+- Data version: `20260715-v613-01`
+- Changes made: Added Support Repair Reclose Renewal Refresh Receipt to the Build Tracker Release Doctor with selective support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support refresh lanes, accepted-fresh-proof, reviewer, acceptance-time, proof-date, review-by, age-state, reopen-condition, supersession, and sibling-state fields, queue-history preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v612 state, next-batch planner roll-forward to v614-v618, and release markers rolled forward to v613.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v613 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Reclose Renewal Refresh Receipt is a static support refresh room only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, or widen support access.
+
 ## NiveshNadi Phase 1 v612 Beta Command Reclose Renewal Refresh Receipt
 
 - Version: `0.612.0`

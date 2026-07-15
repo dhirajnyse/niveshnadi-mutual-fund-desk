@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v611 Account Reclose Renewal Refresh Receipt
+
+- Version: `0.611.0`
+- Data version: `20260715-v611-01`
+- Changes made: Added Account Reclose Renewal Refresh Receipt to the Build Tracker Release Doctor with selective delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review refresh lanes, accepted-fresh-proof, reviewer, acceptance-time, proof-date, review-by, age-state, reopen-condition, supersession, and sibling-state fields, queue-history preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v610 state, next-batch planner roll-forward to v612-v616, and release markers rolled forward to v611.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v611 marker scan; Git diff hygiene check; browser QA at 1440x900 and 390x844 covering all five rooms, seven cards per room, horizontal overflow, sticky-header/rail clearance, mobile rail collapse, control overlap, and console errors.
+- Known risks: Account Reclose Renewal Refresh Receipt is a static account refresh room only; it does not authenticate users, export or delete data, schedule or run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v610 Payment Reclose Renewal Refresh Receipt
 
 - Version: `0.610.0`

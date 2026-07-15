@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V611 Account Reclose Renewal Refresh Receipt
+
+V611 adds Account Reclose Renewal Refresh Receipt to the Build Tracker Release Doctor. It restores only the queued delete/export, redaction, support-safe, object-family, founder-custody, or trigger-review lane after fresh proof, reviewer acceptance, supersession lineage, and a new review window are recorded.
+
+- Release label: `NiveshNadi Phase 1 v611 Account Reclose Renewal Refresh Receipt`
+- Data/version key: `20260715-v611-01`
+- Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh receipt
+- Risk boundary: Static account refresh room only; it does not authenticate users, export or delete data, schedule or run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Syntax, static/security, marker, diff hygiene, desktop 1440x900, mobile 390x844, responsive overflow, rail/header clearance, and browser console checks passed; live verification follows the v611 commit.
+
 ## V610 Payment Reclose Renewal Refresh Receipt
 
 V610 adds Payment Reclose Renewal Refresh Receipt to the Build Tracker Release Doctor. It restores only the queued entitlement, refund-wording, rollback, support-copy, owner-review, or founder-finance lane after fresh proof, reviewer acceptance, supersession lineage, and a new review window are recorded.

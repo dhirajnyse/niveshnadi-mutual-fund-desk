@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V614 Source Correction Reclose Renewal Refresh Aging Guard
+
+V614 adds Source Correction Reclose Renewal Refresh Aging Guard to the Build Tracker Release Doctor. It ages refreshed replacement, notice, cache, support, reviewer, and founder proof independently with explicit proof-date, review-by, age-state, owner, and selective reopen fields.
+
+- Release label: `NiveshNadi Phase 1 v614 Source Correction Reclose Renewal Refresh Aging Guard`
+- Data/version key: `20260715-v614-01`
+- Product surface: Build Tracker > Release Doctor > Source correction reclose renewal refresh aging guard
+- Risk boundary: Static correction refresh-aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v616.
+
 ## V613 Support Repair Reclose Renewal Refresh Receipt
 
 V613 adds Support Repair Reclose Renewal Refresh Receipt to the Build Tracker Release Doctor. It restores only the queued support-copy, owner-review, regression-proof, escalation-route, refund-wording, or founder-support lane after fresh proof, reviewer acceptance, supersession lineage, and a new review window are recorded.

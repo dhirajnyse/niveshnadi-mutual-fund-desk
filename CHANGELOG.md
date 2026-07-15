@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v614 Source Correction Reclose Renewal Refresh Aging Guard
+
+- Version: `0.614.0`
+- Data version: `20260715-v614-01`
+- Changes made: Added Source Correction Reclose Renewal Refresh Aging Guard to the Build Tracker Release Doctor with independent replacement, notice, cache, support, reviewer, and founder refresh-aging lanes, explicit proof-date, review-by, age-state, owner, reopen-condition, and sibling-state fields, refresh-receipt history preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v613 state, next-batch planner roll-forward to v615-v619, and release markers rolled forward to v614.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v614 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Reclose Renewal Refresh Aging Guard is a static correction refresh-aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v613 Support Repair Reclose Renewal Refresh Receipt
 
 - Version: `0.613.0`

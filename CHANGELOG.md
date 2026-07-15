@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v616 Account Reclose Renewal Refresh Aging Guard
+
+- Version: `0.616.0`
+- Data version: `20260715-v616-01`
+- Changes made: Added Account Reclose Renewal Refresh Aging Guard to the Build Tracker Release Doctor with independent delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review refresh-aging lanes, explicit proof-date, review-by, age-state, owner, reopen-condition, and sibling-state fields, refresh-receipt history preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v615 state, next-batch planner roll-forward to v617-v621, and release markers rolled forward to v616.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v616 marker scan; Git diff hygiene check; in-app browser QA at 1440x900 and 390x844 covering all five rooms, seven cards per room, horizontal overflow, sticky-header/rail clearance, mobile rail collapse, command-control overlap, current-sprint copy, and console errors.
+- Known risks: Account Reclose Renewal Refresh Aging Guard is a static account refresh-aging room only; it does not authenticate users, export or delete data, schedule or run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v615 Payment Reclose Renewal Refresh Aging Guard
 
 - Version: `0.615.0`

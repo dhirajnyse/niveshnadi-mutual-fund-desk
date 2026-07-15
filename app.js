@@ -24966,8 +24966,8 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "Pending batch close",
-        detail: "Push and live GitHub Pages verification remain intentionally held until v621 closes the five-version batch."
+        value: "GitHub Pages verified",
+        detail: "The v621 live stamp, HTML cache keys, version badge, data key, five batch room markers, account copy marker, and current-sprint text match the published release."
       }
     ],
     memory: [
@@ -24983,8 +24983,8 @@ function buildTrackerConfig() {
       },
       {
         label: "Share outcome",
-        value: "Pending batch close",
-        detail: "The release stays local until the five-version batch completes visual QA, push, and live stamp verification at v621."
+        value: "Live verified",
+        detail: "The five-release batch is published with matching v621 stamp, HTML cache keys, version badge, data key, five batch room markers, account copy marker, and current-sprint text."
       }
     ],
     actions: [

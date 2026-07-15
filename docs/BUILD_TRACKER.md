@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V606 Account Reclose Renewal Reopening Queue
+
+V606 adds Account Reclose Renewal Reopening Queue to the Build Tracker Release Doctor. It routes only stale renewed delete/export, redaction, support-safe, object-family, founder-custody, or trigger-review proof back to fresh evidence while preserving current sibling lanes.
+
+- Release label: `NiveshNadi Phase 1 v606 Account Reclose Renewal Reopening Queue`
+- Data/version key: `20260715-v606-01`
+- Product surface: Build Tracker > Release Doctor > Account reclose renewal reopening queue
+- Risk boundary: Static account queue only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Syntax, static/security, marker, diff hygiene, 1440x900 desktop, 390x844 mobile, five-room fit, interaction-marker, and browser-log checks passed; live verification follows the v606 release commit.
+
 ## V605 Payment Reclose Renewal Reopening Queue
 
 V605 adds Payment Reclose Renewal Reopening Queue to the Build Tracker Release Doctor. It routes only stale renewed entitlement, refund-wording, rollback, support-copy, owner-review, or founder-finance proof back to fresh evidence while preserving current sibling lanes.

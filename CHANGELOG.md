@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v606 Account Reclose Renewal Reopening Queue
+
+- Version: `0.606.0`
+- Data version: `20260715-v606-01`
+- Changes made: Added Account Reclose Renewal Reopening Queue to the Build Tracker Release Doctor with selective delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review queue lanes, prior-age-state, reopen-trigger, fresh-proof requirement, queue-owner, and sibling-state fields, current-sibling preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v605 state, next-batch planner roll-forward to v607-v611, and release markers rolled forward to v606.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v606 marker scan; Git diff hygiene check; in-app browser 1440x900 desktop and 390x844 mobile visual QA; five-room card-fit, interaction-marker, and browser-log checks.
+- Known risks: Account Reclose Renewal Reopening Queue is a static account queue only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v605 Payment Reclose Renewal Reopening Queue
 
 - Version: `0.605.0`

@@ -1,2 +1,2 @@
-NiveshNadi Phase 1 v605 Payment Reclose Renewal Reopening Queue
-20260715-v605-01
+NiveshNadi Phase 1 v606 Account Reclose Renewal Reopening Queue
+20260715-v606-01

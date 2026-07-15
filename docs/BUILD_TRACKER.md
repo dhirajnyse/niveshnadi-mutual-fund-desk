@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V626 Account Reclose Renewal Refresh Reacceptance Receipt
+
+V626 adds Account Reclose Renewal Refresh Reacceptance Receipt to the Build Tracker Release Doctor. It closes exactly one refreshed custody queue row after accepted fresh proof and a new review window are recorded, while retaining the superseded queue row, trigger, prior age state, accepted sibling snapshot, and a strict no-account-action boundary.
+
+- Release label: `NiveshNadi Phase 1 v626 Account Reclose Renewal Refresh Reacceptance Receipt`
+- Data/version key: `20260715-v626-01`
+- Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh reacceptance receipt
+- Risk boundary: Static account receipt only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, or approve account custody widening.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; desktop/mobile batch QA and live verification complete this release.
+
 ## V625 Payment Reclose Renewal Refresh Reacceptance Receipt
 
 V625 adds Payment Reclose Renewal Refresh Reacceptance Receipt to the Build Tracker Release Doctor. It closes exactly one refreshed payment queue row after accepted fresh proof and a new review window are recorded, while retaining the superseded queue row, trigger, prior age state, accepted sibling snapshot, and a strict no-transaction boundary.

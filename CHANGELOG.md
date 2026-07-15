@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v603 Support Repair Reclose Renewal Aging Guard
+
+- Version: `0.603.0`
+- Data version: `20260715-v603-01`
+- Changes made: Added Support Repair Reclose Renewal Aging Guard to the Build Tracker Release Doctor with independent support-copy, owner-review, regression, escalation, refund-wording, and founder-support aging lanes, explicit proof-date, review-by, age-state, and reopen-condition fields, sibling-state preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v602 state, next-batch planner roll-forward to v604-v608, and release markers rolled forward to v603.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v603 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Reclose Renewal Aging Guard is a static support-aging room only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, or widen support access.
+
 ## NiveshNadi Phase 1 v602 Beta Command Reclose Renewal Aging Guard
 
 - Version: `0.602.0`

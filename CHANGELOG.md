@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v592 Beta Command Reclose Reopening Queue
+
+- Version: `0.592.0`
+- Data version: `20260715-v592-01`
+- Changes made: Added Beta Command Reclose Reopening Queue to the Build Tracker Release Doctor with selective replacement, conflict, release-safe memory, expiry, owner, and founder lane reopening, previous-age-state and fresh-proof fields, sibling-proof preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v591 state, next-batch planner roll-forward to v593-v597, and release markers rolled forward to v592.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v592 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Reclose Reopening Queue is a static command reopening room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v591 Account Reclose Reopening Queue
 
 - Version: `0.591.0`

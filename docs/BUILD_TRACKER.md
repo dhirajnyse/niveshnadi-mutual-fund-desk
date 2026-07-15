@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V592 Beta Command Reclose Reopening Queue
+
+V592 adds Beta Command Reclose Reopening Queue to the Build Tracker Release Doctor. It reopens only the expired replacement, conflict cleanup, release-safe memory, expiry, owner review, or founder review lane and preserves current sibling proof.
+
+- Release label: `NiveshNadi Phase 1 v592 Beta Command Reclose Reopening Queue`
+- Data/version key: `20260715-v592-01`
+- Product surface: Build Tracker > Release Doctor > Beta command reclose reopening queue
+- Risk boundary: Static command reopening room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed.
+
 ## V591 Account Reclose Reopening Queue
 
 V591 adds Account Reclose Reopening Queue to the Build Tracker Release Doctor. It reopens only the expired delete/export, redaction, support-safe, object-family, founder custody, or trigger lane and preserves current sibling proof.

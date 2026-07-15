@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v591-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v591 Account Reclose Reopening Queue";
+const DATA_VERSION = "20260715-v592-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v592 Beta Command Reclose Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account reclose reopening queue",
+    label: "Beta command reclose reopening queue",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Reopen only expired delete/export, redaction, support-safe, object-family, founder custody, or trigger lanes with a named owner and fresh-proof condition."
+    route: "#founder-beta-operating-room",
+    detail: "Reopen only expired replacement, conflict, release-safe memory, expiry, owner, or founder lanes with a named owner and fresh-proof condition."
   },
   {
     label: "Mobile calm audit",
@@ -21651,6 +21651,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Reclose Reopening Queue is a static account reopening room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandRecloseReopeningQueue",
+        label: "Beta command reclose reopening queue",
+        verdict: "Expired founder command lanes reopen selectively",
+        receiptId: ["NN", "BETA", "COMMAND", "RECLOSE", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-reclose-reopening-queue",
+        copyLabel: "Copy command reclose queue",
+        score: 81,
+        rule: "Reclosed founder command proof should reopen only the replacement, conflict, release-safe memory, expiry, owner, or founder lane whose accepted age state expired or drifted.",
+        lanes: [
+          {
+            label: "Replacement proof reopen",
+            owner: "Founder evidence desk",
+            method: "REOPEN_REPLACEMENT",
+            route: "beta.command.reclose.reopening.replacement",
+            proof: "Bind expired replacement age state, accepted command scope, affected artifact, owner, and fresh-proof request.",
+            readyWhen: "Ready when current replacement proof again supports the reclosed founder command scope.",
+            hold: "Hold only replacement confidence while artifact or command-scope proof is stale.",
+            score: 81
+          },
+          {
+            label: "Conflict cleanup reopen",
+            owner: "Trust desk",
+            method: "REOPEN_CONFLICT",
+            route: "beta.command.reclose.reopening.conflict",
+            proof: "Bind expired conflict age state, returned residue, affected command, owner, and cleanup request.",
+            readyWhen: "Ready when fresh cleanup proof shows no unresolved command residue.",
+            hold: "Hold only conflict confidence while residue or cleanup proof remains stale.",
+            score: 81
+          },
+          {
+            label: "Release-safe memory reopen",
+            owner: "Release memory desk",
+            method: "REOPEN_MEMORY",
+            route: "beta.command.reclose.reopening.memory",
+            proof: "Bind expired memory age state, approved reuse scope, excluded fields, owner, and fresh review request.",
+            readyWhen: "Ready when founder memory is current, scoped, and free of private context.",
+            hold: "Hold only memory confidence while reuse scope, exclusions, or copy is stale.",
+            score: 81
+          },
+          {
+            label: "Expiry reopen",
+            owner: "Release captain",
+            method: "REOPEN_EXPIRY",
+            route: "beta.command.reclose.reopening.expiry",
+            proof: "Bind expired command age state, extension or freeze reason, owner, and fresh expiry decision.",
+            readyWhen: "Ready when expiry, extension, or freeze proof is current and explicit.",
+            hold: "Hold only expiry confidence while the command window or freeze evidence is stale.",
+            score: 80
+          },
+          {
+            label: "Owner review reopen",
+            owner: "Command owner",
+            method: "REOPEN_OWNER",
+            route: "beta.command.reclose.reopening.owner",
+            proof: "Bind expired owner age state, affected surface, fallback owner, and fresh ownership review.",
+            readyWhen: "Ready when one accountable command owner and fallback are current.",
+            hold: "Hold only owner confidence while ownership or fallback review is stale.",
+            score: 81
+          },
+          {
+            label: "Founder review reopen",
+            owner: "Founder desk",
+            method: "REOPEN_SIGNOFF",
+            route: "beta.command.reclose.reopening.founder",
+            proof: "Bind expired founder age state, command residue, reopen reason, owner, and next reclose route.",
+            readyWhen: "Ready when fresh founder review can defend reclosure with no unresolved residue.",
+            hold: "Hold only founder confidence while review is expired or command residue remains.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Beta Command Reclose Reopening Queue opens only expired or drifted lanes; current sibling lanes retain their accepted state.",
+          "Every row binds the beta command reclose aging guard, affected lane, previous age state, reopen reason, owner, fresh-proof request, and reclose condition.",
+          "Reopening rows do not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.",
+          "Command reopening rows must exclude private founder notes, raw support notes, account or payment payloads, credentials, identifiers, and contact details.",
+          "No command reopening row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No expired founder command lane may stay silently trusted after its reclose age state fails.",
+          "No current sibling lane should be reopened merely because another command lane expired.",
+          "No queue state may be treated as a cohort invitation, payment approval, access grant, account recovery, or launch approval.",
+          "No beta command reclose reopening queue may invite users, process payments, grant access, recover accounts, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "beta_command_reclose_reopening_queue_id",
+          "release_key",
+          "beta_command_reclose_aging_guard_id",
+          "affected_lane",
+          "previous_age_state",
+          "reopen_reason",
+          "reopen_owner",
+          "fresh_proof_request",
+          "reclose_condition",
+          "replacement_conflict_memory_expiry_owner_founder_states",
+          "created_at"
+        ],
+        boundary: "Beta Command Reclose Reopening Queue is a static command reopening room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -21823,14 +21922,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account reclose reopening is visible; next releases should lock beta command reclose reopening queue, support repair reclose reopening queue, source correction reclose renewal receipt, payment reclose renewal receipt, and account reclose renewal receipt.",
+      rule: "Beta command reclose reopening is visible; next releases should lock support repair reclose reopening queue, source correction reclose renewal receipt, payment reclose renewal receipt, account reclose renewal receipt, and beta command reclose renewal receipt.",
       lanes: [
-        {
-          version: "v592",
-          label: "Beta command reclose reopening queue",
-          route: "#founder-beta-operating-room",
-          detail: "Reopen reclosed founder commands when replacement, conflict, memory, expiry, owner, or founder age states expire."
-        },
         {
           version: "v593",
           label: "Support repair reclose reopening queue",
@@ -21854,14 +21947,27 @@ function buildTrackerConfig() {
           label: "Account reclose renewal receipt",
           route: "#account-readiness",
           detail: "Renew reopened account lanes only after fresh delete/export, redaction, support-safe, object-family, founder custody, or trigger proof is accepted."
+        },
+        {
+          version: "v597",
+          label: "Beta command reclose renewal receipt",
+          route: "#founder-beta-operating-room",
+          detail: "Renew reopened founder command lanes only after fresh replacement, conflict, memory, expiry, owner, or founder proof is accepted."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account reclose aging proof visible",
+      verdict: "Beta command reopening proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v591",
+          key: "20260715-v591-01",
+          commit: "044c110",
+          receiptId: "NN-SHARE-RECEIPT-20260715V59101",
+          proof: "Account Reclose Reopening Queue added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, live stamp, and live app marker checks."
+        },
         {
           version: "v590",
           key: "20260715-v590-01",
@@ -21889,13 +21995,6 @@ function buildTrackerConfig() {
           commit: "53535e8",
           receiptId: "NN-SHARE-RECEIPT-20260715V58701",
           proof: "Beta Command Reclose Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v586",
-          key: "20260710-v586-01",
-          commit: "9dfcb79",
-          receiptId: "NN-SHARE-RECEIPT-20260710V58601",
-          proof: "Account Reclose Aging Guard added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, live stamp, and live app marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -21933,40 +22032,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v591",
-        detail: "Account Reclose Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v592",
+        detail: "Beta Command Reclose Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v591 runs syntax, static, security, diff hygiene, marker scans, and final visual QA before sharing."
+        detail: "v592 runs syntax, static, security, diff hygiene, and marker scans before the batch advances."
       },
       {
         label: "03 Viewed",
-        value: "Desktop + mobile pass",
-        detail: "The v591 Build Tracker passed 1440x900 and 390x844 visual QA with no horizontal overflow, clipped proof cards, browser warnings, or runtime errors."
+        value: "Batch visual QA pending",
+        detail: "Full desktop and mobile visual QA runs on v596 after all five proof rooms are present."
       },
       {
         label: "04 Share",
-        value: "v591 live verified",
-        detail: "GitHub Pages returns the v591 release stamp, matching data key, Account Reclose Reopening Queue key, and copy marker."
+        value: "Batch share pending",
+        detail: "GitHub Pages sharing waits for the v596 batch closeout and live marker verification."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v591 account selective reopen",
-        detail: "Account Reclose Reopening Queue reopens only the expired delete/export, redaction, support-safe, object-family, founder custody, or trigger lane."
+        value: "v592 command selective reopen",
+        detail: "Beta Command Reclose Reopening Queue reopens only the expired replacement, conflict, release-safe memory, expiry, owner, or founder lane."
       },
       {
         label: "Release checks",
-        value: "All checks passed",
-        detail: "v591 passed syntax, static, security, diff hygiene, marker scans, desktop/mobile visual QA, proof-card fit, browser logs, push, live stamp, and live app marker verification."
+        value: "Local checks passed",
+        detail: "v592 passed syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "Share outcome",
-        value: "v591 live verified",
-        detail: "The release is share-ready because GitHub Pages serves the v591 stamp, data key, Account Reclose Reopening Queue key, and copy marker."
+        value: "Batch share pending",
+        detail: "The five-release batch remains local until v596 completes visual QA and GitHub Pages verification."
       }
     ],
     actions: [

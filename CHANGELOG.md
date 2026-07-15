@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v593 Support Repair Reclose Reopening Queue
+
+- Version: `0.593.0`
+- Data version: `20260715-v593-01`
+- Changes made: Added Support Repair Reclose Reopening Queue to the Build Tracker Release Doctor with selective copy, owner, regression, escalation, refund wording, and founder support lane reopening, previous-age-state and fresh-proof fields, sibling-proof preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v592 commit, next-batch planner roll-forward to v594-v598, and release markers rolled forward to v593.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v593 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Reclose Reopening Queue is a static support reopening room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+
 ## NiveshNadi Phase 1 v592 Beta Command Reclose Reopening Queue
 
 - Version: `0.592.0`

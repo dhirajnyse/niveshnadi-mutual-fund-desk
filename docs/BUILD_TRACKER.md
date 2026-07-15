@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V593 Support Repair Reclose Reopening Queue
+
+V593 adds Support Repair Reclose Reopening Queue to the Build Tracker Release Doctor. It reopens only the expired support copy, owner review, regression proof, escalation route, refund wording, or founder support lane and preserves current sibling proof.
+
+- Release label: `NiveshNadi Phase 1 v593 Support Repair Reclose Reopening Queue`
+- Data/version key: `20260715-v593-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose reopening queue
+- Risk boundary: Static support reopening room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed.
+
 ## V592 Beta Command Reclose Reopening Queue
 
 V592 adds Beta Command Reclose Reopening Queue to the Build Tracker Release Doctor. It reopens only the expired replacement, conflict cleanup, release-safe memory, expiry, owner review, or founder review lane and preserves current sibling proof.

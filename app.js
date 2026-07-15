@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v609-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v609 Source Correction Reclose Renewal Refresh Receipt";
+const DATA_VERSION = "20260715-v610-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v610 Payment Reclose Renewal Refresh Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction reclose renewal refresh receipt",
+    label: "Payment reclose renewal refresh receipt",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Return only the queued source-correction lane to current status after fresh proof and a new review window are accepted."
+    route: "#payment-wiring",
+    detail: "Return only the queued payment lane to current status after fresh proof and a new review window are accepted."
   },
   {
     label: "Mobile calm audit",
@@ -23453,6 +23453,110 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Reclose Renewal Refresh Receipt is a static correction refresh room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
+      },
+      {
+        key: "paymentRecloseRenewalRefreshReceipt",
+        label: "Payment reclose renewal refresh receipt",
+        verdict: "Fresh payment proof restores only the queued lane",
+        receiptId: ["NN", "PAYMENT", "RECLOSE", "RENEWAL", "REFRESH", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-reclose-renewal-refresh-receipt",
+        copyLabel: "Copy payment renewal refresh receipt",
+        score: 82,
+        rule: "A selectively reopened payment lane returns to current status only after fresh proof is accepted, a reviewer is named, and a new proof date, review-by date, age state, and reopen condition are recorded.",
+        lanes: [
+          {
+            label: "Entitlement refreshed",
+            owner: "Entitlement desk",
+            method: "REFRESH_ENTITLEMENT",
+            route: "payment.reclose.renewal.refresh.entitlement",
+            proof: "Bind queue row, accepted entitlement state, plan boundary, access transition, reviewer, acceptance time, and next review window.",
+            readyWhen: "Ready when fresh entitlement proof is accepted and only the queued entitlement lane returns to current status.",
+            hold: "Hold when queue row, state, plan boundary, access transition, reviewer, acceptance time, or review-by date is missing.",
+            score: 83
+          },
+          {
+            label: "Refund wording refreshed",
+            owner: "Billing boundary desk",
+            method: "REFRESH_REFUND_WORDING",
+            route: "payment.reclose.renewal.refresh.refund",
+            proof: "Bind queue row, accepted refund wording, exclusions, policy boundary, support route, reviewer, acceptance time, and next review window.",
+            readyWhen: "Ready when fresh refund proof is accepted and only the queued refund-wording lane returns to current status.",
+            hold: "Hold when wording, exclusions, policy boundary, support route, reviewer, acceptance time, or review-by date is missing.",
+            score: 82
+          },
+          {
+            label: "Rollback proof refreshed",
+            owner: "Payment reliability desk",
+            method: "REFRESH_ROLLBACK",
+            route: "payment.reclose.renewal.refresh.rollback",
+            proof: "Bind queue row, accepted rollback scenario, replay receipt, failure path, reviewer, acceptance time, and next review window.",
+            readyWhen: "Ready when fresh rollback proof is accepted and only the queued rollback lane returns to current status.",
+            hold: "Hold when scenario, replay receipt, failure path, reviewer, acceptance time, or review-by date is missing.",
+            score: 82
+          },
+          {
+            label: "Support copy refreshed",
+            owner: "Support captain",
+            method: "REFRESH_SUPPORT_COPY",
+            route: "payment.reclose.renewal.refresh.support",
+            proof: "Bind queue row, accepted support copy, entitlement and refund references, escalation route, reviewer, acceptance time, and next review window.",
+            readyWhen: "Ready when fresh support proof is accepted and only the queued support-copy lane returns to current status.",
+            hold: "Hold when copy, payment references, escalation route, reviewer, acceptance time, or review-by date is missing.",
+            score: 82
+          },
+          {
+            label: "Owner review refreshed",
+            owner: "Payment owner",
+            method: "REFRESH_OWNER",
+            route: "payment.reclose.renewal.refresh.owner",
+            proof: "Bind queue row, accepted owner scope, fallback owner, decision receipt, reviewer, acceptance time, and next review window.",
+            readyWhen: "Ready when fresh owner proof is accepted and only the queued owner-review lane returns to current status.",
+            hold: "Hold when owner scope, fallback, decision receipt, reviewer, acceptance time, or review-by date is missing.",
+            score: 82
+          },
+          {
+            label: "Founder finance refreshed",
+            owner: "Founder finance desk",
+            method: "REFRESH_FOUNDER_FINANCE",
+            route: "payment.reclose.renewal.refresh.founder",
+            proof: "Bind queue row, accepted founder-finance review, release decision, zero-residue proof, acceptance time, and next review window.",
+            readyWhen: "Ready when fresh founder-finance proof is accepted and only the queued founder-finance lane returns to current status.",
+            hold: "Hold when founder review, release decision, residue proof, acceptance time, or review-by date is missing.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Payment Reclose Renewal Refresh Receipt closes one renewal reopening queue row at a time and refreshes only its affected lane.",
+          "Every refresh receipt binds the queue row, prior aging guard, accepted fresh proof, reviewer, acceptance time, proof date, review-by date, age state, reopen condition, and sibling-state snapshot.",
+          "Current sibling payment proof remains unchanged and is copied into the refresh receipt for auditability.",
+          "The closed queue row and superseded aging state remain in history; refresh never deletes the prior trigger or proof chain.",
+          "Payment refresh receipts must exclude gateway secrets, bank or card data, payment tokens, account payloads, private notes, credentials, identifiers, and contact details."
+        ],
+        noGoLines: [
+          "No payment lane may return to current status without its reopening queue row, accepted fresh proof, named reviewer, and new review window.",
+          "No refresh receipt may overwrite or re-accept sibling lanes that did not enter the queue.",
+          "No receipt may be treated as a payment, refund, entitlement grant, gateway reconciliation, or launch approval.",
+          "No payment renewal refresh receipt may process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+        ],
+        receiptFields: [
+          "payment_reclose_renewal_refresh_receipt_id",
+          "release_key",
+          "payment_reclose_renewal_reopening_queue_id",
+          "payment_reclose_renewal_aging_guard_id",
+          "payment_reclose_renewal_receipt_id",
+          "affected_lane",
+          "accepted_fresh_proof",
+          "reviewer",
+          "accepted_at",
+          "proof_date",
+          "review_by",
+          "age_state",
+          "reopen_condition",
+          "sibling_state_snapshot",
+          "supersedes_queue_row_id",
+          "created_at"
+        ],
+        boundary: "Payment Reclose Renewal Refresh Receipt is a static payment refresh room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -23625,14 +23729,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source correction renewal refresh is visible; next releases should lock payment, account, beta command, and support repair renewal refresh receipts, then add the source correction renewal refresh aging guard.",
+      rule: "Payment renewal refresh is visible; next releases should lock account, beta command, and support repair renewal refresh receipts, then add source correction and payment renewal refresh aging guards.",
       lanes: [
-        {
-          version: "v610",
-          label: "Payment reclose renewal refresh receipt",
-          route: "#payment-wiring",
-          detail: "Return a selectively reopened payment lane to current status only after fresh proof is accepted and the next review window is recorded."
-        },
         {
           version: "v611",
           label: "Account reclose renewal refresh receipt",
@@ -23656,14 +23754,27 @@ function buildTrackerConfig() {
           label: "Source correction reclose renewal refresh aging guard",
           route: "#correction-ledger",
           detail: "Age refreshed source-correction proof independently so the new review window cannot outlive current evidence."
+        },
+        {
+          version: "v615",
+          label: "Payment reclose renewal refresh aging guard",
+          route: "#payment-wiring",
+          detail: "Age refreshed payment proof independently so the new review window cannot outlive current evidence."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Correction renewal refresh proof visible",
+      verdict: "Payment renewal refresh proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v609",
+          key: "20260715-v609-01",
+          commit: "4193355",
+          receiptId: "NN-SHARE-RECEIPT-20260715V60901",
+          proof: "Source Correction Reclose Renewal Refresh Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v608",
           key: "20260715-v608-01",
@@ -23691,13 +23802,6 @@ function buildTrackerConfig() {
           commit: "22f15e0",
           receiptId: "NN-SHARE-RECEIPT-20260715V60501",
           proof: "Payment Reclose Renewal Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v604",
-          key: "20260715-v604-01",
-          commit: "931e123",
-          receiptId: "NN-SHARE-RECEIPT-20260715V60401",
-          proof: "Source Correction Reclose Renewal Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -23735,13 +23839,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v609",
-        detail: "Source Correction Reclose Renewal Refresh Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v610",
+        detail: "Payment Reclose Renewal Refresh Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v609 passed syntax, static, security, diff hygiene, and marker scans before the batch advances."
+        detail: "v610 passed syntax, static, security, diff hygiene, and marker scans before the batch advances."
       },
       {
         label: "03 Viewed",
@@ -23757,13 +23861,13 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v609 correction renewal refresh",
-        detail: "Source Correction Reclose Renewal Refresh Receipt restores only the queued correction lane after fresh proof and a new review window are accepted."
+        value: "v610 payment renewal refresh",
+        detail: "Payment Reclose Renewal Refresh Receipt restores only the queued payment lane after fresh proof and a new review window are accepted."
       },
       {
         label: "Release checks",
         value: "Local checks passed",
-        detail: "v609 passed syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v610 passed syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "Share outcome",

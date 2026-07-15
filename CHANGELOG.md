@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v600 Payment Reclose Renewal Aging Guard
+
+- Version: `0.600.0`
+- Data version: `20260715-v600-01`
+- Changes made: Added Payment Reclose Renewal Aging Guard to the Build Tracker Release Doctor with independent entitlement, refund wording, rollback proof, support copy, owner review, and founder-finance aging lanes, explicit proof-date, review-by, age-state, and reopen-condition fields, sibling-state preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v599 state, next-batch planner roll-forward to v601-v605, and release markers rolled forward to v600.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v600 marker scan; Git diff hygiene check.
+- Known risks: Payment Reclose Renewal Aging Guard is a static payment-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v599 Source Correction Reclose Renewal Aging Guard
 
 - Version: `0.599.0`

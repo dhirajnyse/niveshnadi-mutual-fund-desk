@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V600 Payment Reclose Renewal Aging Guard
+
+V600 adds Payment Reclose Renewal Aging Guard to the Build Tracker Release Doctor. It ages renewed entitlement, refund wording, rollback proof, support copy, owner review, and founder-finance proof independently with explicit proof-date, review-by, age-state, and reopen-condition fields.
+
+- Release label: `NiveshNadi Phase 1 v600 Payment Reclose Renewal Aging Guard`
+- Data/version key: `20260715-v600-01`
+- Product surface: Build Tracker > Release Doctor > Payment reclose renewal aging guard
+- Risk boundary: Static payment-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v601.
+
 ## V599 Source Correction Reclose Renewal Aging Guard
 
 V599 adds Source Correction Reclose Renewal Aging Guard to the Build Tracker Release Doctor. It ages renewed replacement, public notice, cache refresh, support handoff, reviewer scope, and founder review proof independently with explicit proof-date, review-by, age-state, and reopen-condition fields.

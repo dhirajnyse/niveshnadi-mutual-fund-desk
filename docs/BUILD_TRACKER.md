@@ -8,7 +8,7 @@ V606 adds Account Reclose Renewal Reopening Queue to the Build Tracker Release D
 - Data/version key: `20260715-v606-01`
 - Product surface: Build Tracker > Release Doctor > Account reclose renewal reopening queue
 - Risk boundary: Static account queue only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
-- Verification status: Syntax, static/security, marker, diff hygiene, 1440x900 desktop, 390x844 mobile, five-room fit, interaction-marker, and browser-log checks passed; live verification follows the v606 release commit.
+- Verification status: Syntax, static/security, marker, diff hygiene, 1440x900 desktop, 390x844 mobile, five-room fit, interaction-marker, browser-log, push, live stamp, HTML cache-key, version-badge, live room-key, and live copy-marker checks passed.
 
 ## V605 Payment Reclose Renewal Reopening Queue
 

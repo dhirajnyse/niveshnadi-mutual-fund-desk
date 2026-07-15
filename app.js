@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v596-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v596 Account Reclose Renewal Receipt";
+const DATA_VERSION = "20260715-v597-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v597 Beta Command Reclose Renewal Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account reclose renewal receipt",
+    label: "Beta command reclose renewal receipt",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Renew only the reopened delete/export, redaction, support-safe, object-family, founder custody, or trigger lane after fresh proof is accepted."
+    route: "#founder-beta-operating-room",
+    detail: "Renew only the reopened replacement, conflict, release-safe memory, expiry, owner, or founder lane after fresh proof is accepted."
   },
   {
     label: "Mobile calm audit",
@@ -22152,6 +22152,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Reclose Renewal Receipt is a static account renewal room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandRecloseRenewalReceipt",
+        label: "Beta command reclose renewal receipt",
+        verdict: "Accepted fresh proof renews one founder command lane",
+        receiptId: ["NN", "BETA", "COMMAND", "RECLOSE", "RENEWAL", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-reclose-renewal-receipt",
+        copyLabel: "Copy command renewal receipt",
+        score: 82,
+        rule: "A reopened founder command lane may regain reclosed confidence only after fresh replacement, conflict, release-safe memory, expiry, owner, or founder proof is accepted and bound to one renewal receipt.",
+        lanes: [
+          {
+            label: "Replacement proof renewed",
+            owner: "Founder evidence desk",
+            method: "RENEW_REPLACEMENT",
+            route: "beta.command.reclose.renewal.replacement",
+            proof: "Bind reopening row, accepted replacement artifact, command scope, reviewer, accepted date, and next review.",
+            readyWhen: "Ready when accepted fresh replacement proof again supports the affected founder command lane.",
+            hold: "Hold renewal if artifact, command scope, reviewer, or acceptance date is missing.",
+            score: 82
+          },
+          {
+            label: "Conflict cleanup renewed",
+            owner: "Trust desk",
+            method: "RENEW_CONFLICT",
+            route: "beta.command.reclose.renewal.conflict",
+            proof: "Bind reopening row, accepted cleanup proof, zero-residue state, reviewer, accepted date, and next review.",
+            readyWhen: "Ready when accepted cleanup proof shows no unresolved command conflict or residue.",
+            hold: "Hold renewal if cleanup proof, residue state, reviewer, or acceptance date is missing.",
+            score: 82
+          },
+          {
+            label: "Release-safe memory renewed",
+            owner: "Release memory desk",
+            method: "RENEW_MEMORY",
+            route: "beta.command.reclose.renewal.memory",
+            proof: "Bind reopening row, accepted memory text, excluded fields, reuse window, owner, and next review.",
+            readyWhen: "Ready when accepted founder memory is scoped, current, and free of private context.",
+            hold: "Hold renewal if memory text, exclusions, reuse window, or owner is missing.",
+            score: 82
+          },
+          {
+            label: "Expiry renewed",
+            owner: "Release captain",
+            method: "RENEW_EXPIRY",
+            route: "beta.command.reclose.renewal.expiry",
+            proof: "Bind reopening row, accepted expiry or freeze decision, reason, owner, accepted date, and next review.",
+            readyWhen: "Ready when accepted expiry, extension, or freeze proof is current and explicit.",
+            hold: "Hold renewal if decision, reason, owner, or next review is missing.",
+            score: 81
+          },
+          {
+            label: "Owner review renewed",
+            owner: "Command owner",
+            method: "RENEW_OWNER",
+            route: "beta.command.reclose.renewal.owner",
+            proof: "Bind reopening row, accepted owner scope, fallback owner, decision receipt, and next review.",
+            readyWhen: "Ready when one accountable command owner and fallback accept the affected lane.",
+            hold: "Hold renewal if owner, fallback, decision receipt, or next review is ambiguous.",
+            score: 82
+          },
+          {
+            label: "Founder review renewed",
+            owner: "Founder desk",
+            method: "RENEW_SIGNOFF",
+            route: "beta.command.reclose.renewal.founder",
+            proof: "Bind reopening row, founder renewal decision, zero-residue note, accepted proof IDs, and next reopen trigger.",
+            readyWhen: "Ready when founder review accepts fresh proof with no unresolved command residue.",
+            hold: "Hold renewal if founder decision, proof IDs, residue state, or reopen trigger is missing.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Beta Command Reclose Renewal Receipt renews only the reopened lane whose fresh proof is accepted; current sibling lanes retain their accepted state.",
+          "Every renewal binds the beta command reclose reopening queue row, prior age state, accepted proof ID, owner, accepted date, next review, and reopen trigger.",
+          "Renewal restores workflow confidence only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.",
+          "Command renewal rows must exclude private founder notes, raw support notes, account or payment payloads, credentials, identifiers, contact details, and private context.",
+          "No command renewal receipt may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No reopened founder command lane may be renewed without accepted fresh proof and one accountable owner.",
+          "No current sibling lane may lose its accepted state merely because another command lane renews.",
+          "No renewal receipt may be treated as a cohort invitation, payment approval, access grant, account recovery, or launch approval.",
+          "No beta command reclose renewal receipt may invite users, process payments, grant access, recover accounts, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "beta_command_reclose_renewal_receipt_id",
+          "release_key",
+          "beta_command_reclose_reopening_queue_id",
+          "beta_command_reclose_aging_guard_id",
+          "affected_lane",
+          "prior_age_state",
+          "accepted_proof_id",
+          "renewal_owner",
+          "accepted_at",
+          "next_review_at",
+          "reopen_trigger",
+          "sibling_state_snapshot",
+          "created_at"
+        ],
+        boundary: "Beta Command Reclose Renewal Receipt is a static command renewal room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -22324,14 +22425,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account reclose renewal is visible; next releases should lock beta command reclose renewal receipt, support repair reclose renewal receipt, source correction reclose renewal aging guard, payment reclose renewal aging guard, and account reclose renewal aging guard.",
+      rule: "Beta command reclose renewal is visible; next releases should lock support repair reclose renewal receipt, source correction reclose renewal aging guard, payment reclose renewal aging guard, account reclose renewal aging guard, and beta command reclose renewal aging guard.",
       lanes: [
-        {
-          version: "v597",
-          label: "Beta command reclose renewal receipt",
-          route: "#founder-beta-operating-room",
-          detail: "Renew reopened founder command lanes only after fresh replacement, conflict, memory, expiry, owner, or founder proof is accepted."
-        },
         {
           version: "v598",
           label: "Support repair reclose renewal receipt",
@@ -22355,14 +22450,27 @@ function buildTrackerConfig() {
           label: "Account reclose renewal aging guard",
           route: "#account-readiness",
           detail: "Age renewed account proof independently across delete/export, redaction, support-safe, object-family, founder custody, and trigger lanes."
+        },
+        {
+          version: "v602",
+          label: "Beta command reclose renewal aging guard",
+          route: "#founder-beta-operating-room",
+          detail: "Age renewed founder command proof independently across replacement, conflict, memory, expiry, owner, and founder lanes."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account renewal proof visible",
+      verdict: "Beta command renewal proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v596",
+          key: "20260715-v596-01",
+          commit: "aa4e02a",
+          receiptId: "NN-SHARE-RECEIPT-20260715V59601",
+          proof: "Account Reclose Renewal Receipt added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, live stamp, and live app marker checks."
+        },
         {
           version: "v595",
           key: "20260715-v595-01",
@@ -22390,13 +22498,6 @@ function buildTrackerConfig() {
           commit: "e1d8756",
           receiptId: "NN-SHARE-RECEIPT-20260715V59201",
           proof: "Beta Command Reclose Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v591",
-          key: "20260715-v591-01",
-          commit: "044c110",
-          receiptId: "NN-SHARE-RECEIPT-20260715V59101",
-          proof: "Account Reclose Reopening Queue added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, live stamp, and live app marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -22434,40 +22535,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v596",
-        detail: "Account Reclose Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v597",
+        detail: "Beta Command Reclose Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v596 runs syntax, static, security, diff hygiene, marker scans, and final visual QA before sharing."
+        detail: "v597 runs syntax, static, security, diff hygiene, and marker scans before the batch advances."
       },
       {
         label: "03 Viewed",
-        value: "Desktop + mobile pass",
-        detail: "The v596 Build Tracker passed 1440x900 and 390x844 visual QA with no horizontal overflow, clipped renewal cards, browser warnings, or runtime errors."
+        value: "Batch visual QA pending",
+        detail: "Full desktop and mobile visual QA runs on v601 after all five proof rooms are present."
       },
       {
         label: "04 Share",
-        value: "v596 live verified",
-        detail: "GitHub Pages returns the v596 release stamp, matching data key, Account Reclose Renewal Receipt key, and copy marker."
+        value: "Batch share pending",
+        detail: "GitHub Pages sharing waits for the v601 batch closeout and live marker verification."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v596 account selective renewal",
-        detail: "Account Reclose Renewal Receipt renews only the affected delete/export, redaction, support-safe, object-family, founder custody, or trigger lane after fresh proof is accepted."
+        value: "v597 command selective renewal",
+        detail: "Beta Command Reclose Renewal Receipt renews only the affected replacement, conflict, release-safe memory, expiry, owner, or founder lane after fresh proof is accepted."
       },
       {
         label: "Release checks",
-        value: "All checks passed",
-        detail: "v596 passed syntax, static, security, diff hygiene, marker scans, desktop/mobile visual QA, renewal-card fit, browser logs, push, live stamp, and live app marker verification."
+        value: "Local checks passed",
+        detail: "v597 passed syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "Share outcome",
-        value: "v596 live verified",
-        detail: "The release is share-ready because GitHub Pages serves the v596 stamp, data key, Account Reclose Renewal Receipt key, and copy marker."
+        value: "Batch share pending",
+        detail: "The five-release batch remains local until v601 completes visual QA and GitHub Pages verification."
       }
     ],
     actions: [

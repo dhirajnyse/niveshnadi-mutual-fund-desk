@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V597 Beta Command Reclose Renewal Receipt
+
+V597 adds Beta Command Reclose Renewal Receipt to the Build Tracker Release Doctor. It renews only the reopened replacement proof, conflict cleanup, release-safe memory, expiry, owner review, or founder review lane after fresh proof is accepted and preserves current sibling proof.
+
+- Release label: `NiveshNadi Phase 1 v597 Beta Command Reclose Renewal Receipt`
+- Data/version key: `20260715-v597-01`
+- Product surface: Build Tracker > Release Doctor > Beta command reclose renewal receipt
+- Risk boundary: Static command renewal room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v601.
+
 ## V596 Account Reclose Renewal Receipt
 
 V596 adds Account Reclose Renewal Receipt to the Build Tracker Release Doctor. It renews only the reopened delete/export, redaction, support-safe, object-family, founder custody, or trigger lane after fresh proof is accepted and preserves current sibling proof.

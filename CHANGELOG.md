@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v597 Beta Command Reclose Renewal Receipt
+
+- Version: `0.597.0`
+- Data version: `20260715-v597-01`
+- Changes made: Added Beta Command Reclose Renewal Receipt to the Build Tracker Release Doctor with selective replacement, conflict, release-safe memory, expiry, owner, and founder lane renewal, accepted-proof and sibling-state fields, explicit next-review and reopen-trigger controls, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v596 state, next-batch planner roll-forward to v598-v602, and release markers rolled forward to v597.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v597 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Reclose Renewal Receipt is a static command renewal room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v596 Account Reclose Renewal Receipt
 
 - Version: `0.596.0`

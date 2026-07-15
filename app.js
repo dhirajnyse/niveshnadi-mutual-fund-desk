@@ -22948,8 +22948,8 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "Batch share ready",
-        detail: "The batch is ready to push; sharing still waits for the v601 live stamp and app marker verification."
+        value: "Live verified",
+        detail: "GitHub Pages returns the v601 release stamp, HTML cache key, account-aging room key, and copy marker."
       }
     ],
     memory: [
@@ -22965,8 +22965,8 @@ function buildTrackerConfig() {
       },
       {
         label: "Share outcome",
-        value: "Ready to deploy",
-        detail: "The five-release batch passed local and visual QA; GitHub Pages verification remains before the live share receipt closes."
+        value: "GitHub Pages verified",
+        detail: "The five-release batch is live with matching v601 stamp, HTML cache key, account-aging room key, and copy marker."
       }
     ],
     actions: [

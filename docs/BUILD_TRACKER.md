@@ -8,7 +8,7 @@ V601 adds Account Reclose Renewal Aging Guard to the Build Tracker Release Docto
 - Data/version key: `20260715-v601-01`
 - Product surface: Build Tracker > Release Doctor > Account reclose renewal aging guard
 - Risk boundary: Static account-aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
-- Verification status: Syntax, static/security, marker, diff hygiene, 1440x900 desktop, 390x844 mobile, five-room fit, and browser-log checks passed; push and live verification remain pending.
+- Verification status: Syntax, static/security, marker, diff hygiene, 1440x900 desktop, 390x844 mobile, five-room fit, browser-log, push, live stamp, HTML cache-key, live room-key, and live copy-marker checks passed.
 
 ## V600 Payment Reclose Renewal Aging Guard
 

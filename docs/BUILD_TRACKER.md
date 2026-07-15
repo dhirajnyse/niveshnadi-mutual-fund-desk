@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V598 Support Repair Reclose Renewal Receipt
+
+V598 adds Support Repair Reclose Renewal Receipt to the Build Tracker Release Doctor. It renews only the reopened support copy, owner review, regression proof, escalation route, refund wording, or founder support lane after fresh proof is accepted and preserves current sibling proof.
+
+- Release label: `NiveshNadi Phase 1 v598 Support Repair Reclose Renewal Receipt`
+- Data/version key: `20260715-v598-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose renewal receipt
+- Risk boundary: Static support renewal room only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, or widen support access.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v601.
+
 ## V597 Beta Command Reclose Renewal Receipt
 
 V597 adds Beta Command Reclose Renewal Receipt to the Build Tracker Release Doctor. It renews only the reopened replacement proof, conflict cleanup, release-safe memory, expiry, owner review, or founder review lane after fresh proof is accepted and preserves current sibling proof.

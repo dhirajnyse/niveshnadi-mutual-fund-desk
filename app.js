@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v597-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v597 Beta Command Reclose Renewal Receipt";
+const DATA_VERSION = "20260715-v598-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v598 Support Repair Reclose Renewal Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command reclose renewal receipt",
+    label: "Support repair reclose renewal receipt",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Renew only the reopened replacement, conflict, release-safe memory, expiry, owner, or founder lane after fresh proof is accepted."
+    route: "#paid-beta-support-ledger",
+    detail: "Renew only the reopened copy, owner, regression, escalation, refund wording, or founder support lane after fresh proof is accepted."
   },
   {
     label: "Mobile calm audit",
@@ -22253,6 +22253,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Reclose Renewal Receipt is a static command renewal room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
+      },
+      {
+        key: "supportRepairRecloseRenewalReceipt",
+        label: "Support repair reclose renewal receipt",
+        verdict: "Accepted fresh proof renews one support repair lane",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "RECLOSE", "RENEWAL", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-reclose-renewal-receipt",
+        copyLabel: "Copy support renewal receipt",
+        score: 82,
+        rule: "A reopened support repair lane may regain reclosed confidence only after fresh copy, owner, regression, escalation, refund wording, or founder support proof is accepted and bound to one renewal receipt.",
+        lanes: [
+          {
+            label: "Support copy renewed",
+            owner: "Support content desk",
+            method: "RENEW_COPY",
+            route: "support.repair.reclose.renewal.copy",
+            proof: "Bind reopening row, accepted support copy, audience, no-advice boundary, reviewer, accepted date, and next review.",
+            readyWhen: "Ready when accepted fresh copy is accurate, calm, current, and safe for its named support audience.",
+            hold: "Hold renewal if copy, audience, boundary, reviewer, or acceptance date is missing.",
+            score: 82
+          },
+          {
+            label: "Owner review renewed",
+            owner: "Support operations",
+            method: "RENEW_OWNER",
+            route: "support.repair.reclose.renewal.owner",
+            proof: "Bind reopening row, accepted owner review, queue scope, fallback owner, decision receipt, and next review.",
+            readyWhen: "Ready when one accountable owner and fallback accept the affected support lane.",
+            hold: "Hold renewal if owner, queue scope, fallback, or decision receipt is ambiguous.",
+            score: 82
+          },
+          {
+            label: "Regression proof renewed",
+            owner: "Product QA desk",
+            method: "RENEW_REGRESSION",
+            route: "support.repair.reclose.renewal.regression",
+            proof: "Bind reopening row, accepted replay result, affected surface, failure count, reviewer, accepted date, and next review.",
+            readyWhen: "Ready when accepted replay proof shows the repaired support path remains stable.",
+            hold: "Hold renewal if replay result, affected surface, failure count, or reviewer is missing.",
+            score: 82
+          },
+          {
+            label: "Escalation route renewed",
+            owner: "Support operations",
+            method: "RENEW_ESCALATION",
+            route: "support.repair.reclose.renewal.escalation",
+            proof: "Bind reopening row, accepted escalation route, response window, accountable owner, fallback path, and next review.",
+            readyWhen: "Ready when the accepted escalation route and fallback remain current for the affected support issue.",
+            hold: "Hold renewal if route, response window, owner, or fallback path is missing.",
+            score: 81
+          },
+          {
+            label: "Refund wording renewed",
+            owner: "Finance and support desk",
+            method: "RENEW_REFUND_WORDING",
+            route: "support.repair.reclose.renewal.refund",
+            proof: "Bind reopening row, accepted refund wording, eligibility boundary, support route, reviewer, and next review.",
+            readyWhen: "Ready when accepted refund wording is plain, bounded, and consistent with the support route.",
+            hold: "Hold renewal if wording, eligibility boundary, support route, or reviewer is missing.",
+            score: 81
+          },
+          {
+            label: "Founder support renewed",
+            owner: "Founder desk",
+            method: "RENEW_FOUNDER_SUPPORT",
+            route: "support.repair.reclose.renewal.founder",
+            proof: "Bind reopening row, founder renewal decision, zero-residue note, accepted proof IDs, and next reopen trigger.",
+            readyWhen: "Ready when founder review accepts fresh support proof with no unresolved repair residue.",
+            hold: "Hold renewal if founder decision, proof IDs, residue state, or reopen trigger is missing.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Support Repair Reclose Renewal Receipt renews only the reopened lane whose fresh proof is accepted; current sibling lanes retain their accepted state.",
+          "Every renewal binds the support repair reclose reopening queue row, prior age state, accepted proof ID, owner, accepted date, next review, and reopen trigger.",
+          "Renewal restores workflow confidence only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, or widen support access.",
+          "Support renewal rows must exclude raw support conversations, account or payment payloads, credentials, identifiers, contact details, and private context.",
+          "No support renewal receipt may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No reopened support repair lane may be renewed without accepted fresh proof and one accountable owner.",
+          "No current sibling lane may lose its accepted state merely because another support lane renews.",
+          "No renewal receipt may be treated as a support reply, refund approval, payment action, account recovery, or contact permission.",
+          "No support repair reclose renewal receipt may send replies, issue refunds, process payments, fetch live data, contact users, store private notes, or widen support access."
+        ],
+        receiptFields: [
+          "support_repair_reclose_renewal_receipt_id",
+          "release_key",
+          "support_repair_reclose_reopening_queue_id",
+          "support_repair_reclose_aging_guard_id",
+          "affected_lane",
+          "prior_age_state",
+          "accepted_proof_id",
+          "renewal_owner",
+          "accepted_at",
+          "next_review_at",
+          "reopen_trigger",
+          "sibling_state_snapshot",
+          "created_at"
+        ],
+        boundary: "Support Repair Reclose Renewal Receipt is a static support renewal room only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, or widen support access."
       }
     ],
     executiveCalmCompression: {
@@ -22425,14 +22526,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta command reclose renewal is visible; next releases should lock support repair reclose renewal receipt, source correction reclose renewal aging guard, payment reclose renewal aging guard, account reclose renewal aging guard, and beta command reclose renewal aging guard.",
+      rule: "Support repair reclose renewal is visible; next releases should lock source correction reclose renewal aging guard, payment reclose renewal aging guard, account reclose renewal aging guard, beta command reclose renewal aging guard, and support repair reclose renewal aging guard.",
       lanes: [
-        {
-          version: "v598",
-          label: "Support repair reclose renewal receipt",
-          route: "#paid-beta-support-ledger",
-          detail: "Renew reopened support repair lanes only after fresh copy, owner, regression, escalation, refund wording, or founder support proof is accepted."
-        },
         {
           version: "v599",
           label: "Source correction reclose renewal aging guard",
@@ -22456,14 +22551,27 @@ function buildTrackerConfig() {
           label: "Beta command reclose renewal aging guard",
           route: "#founder-beta-operating-room",
           detail: "Age renewed founder command proof independently across replacement, conflict, memory, expiry, owner, and founder lanes."
+        },
+        {
+          version: "v603",
+          label: "Support repair reclose renewal aging guard",
+          route: "#paid-beta-support-ledger",
+          detail: "Age renewed support repair proof independently across copy, owner, regression, escalation, refund wording, and founder support lanes."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Beta command renewal proof visible",
+      verdict: "Support repair renewal proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v597",
+          key: "20260715-v597-01",
+          commit: "5d56ba2",
+          receiptId: "NN-SHARE-RECEIPT-20260715V59701",
+          proof: "Beta Command Reclose Renewal Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v596",
           key: "20260715-v596-01",
@@ -22491,13 +22599,6 @@ function buildTrackerConfig() {
           commit: "ced9f7b",
           receiptId: "NN-SHARE-RECEIPT-20260715V59301",
           proof: "Support Repair Reclose Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v592",
-          key: "20260715-v592-01",
-          commit: "e1d8756",
-          receiptId: "NN-SHARE-RECEIPT-20260715V59201",
-          proof: "Beta Command Reclose Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -22535,13 +22636,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v597",
-        detail: "Beta Command Reclose Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v598",
+        detail: "Support Repair Reclose Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v597 runs syntax, static, security, diff hygiene, and marker scans before the batch advances."
+        detail: "v598 runs syntax, static, security, diff hygiene, and marker scans before the batch advances."
       },
       {
         label: "03 Viewed",
@@ -22557,13 +22658,13 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v597 command selective renewal",
-        detail: "Beta Command Reclose Renewal Receipt renews only the affected replacement, conflict, release-safe memory, expiry, owner, or founder lane after fresh proof is accepted."
+        value: "v598 support selective renewal",
+        detail: "Support Repair Reclose Renewal Receipt renews only the affected copy, owner, regression, escalation, refund wording, or founder support lane after fresh proof is accepted."
       },
       {
         label: "Release checks",
         value: "Local checks passed",
-        detail: "v597 passed syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v598 passed syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "Share outcome",

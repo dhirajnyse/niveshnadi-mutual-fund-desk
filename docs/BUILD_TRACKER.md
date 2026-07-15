@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V608 Support Repair Reclose Renewal Reopening Queue
+
+V608 adds Support Repair Reclose Renewal Reopening Queue to the Build Tracker Release Doctor. It routes only stale renewed support-copy, owner-review, regression-proof, escalation-route, refund-wording, or founder-support proof back to fresh evidence while preserving current sibling lanes.
+
+- Release label: `NiveshNadi Phase 1 v608 Support Repair Reclose Renewal Reopening Queue`
+- Data/version key: `20260715-v608-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose renewal reopening queue
+- Risk boundary: Static support queue only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, or widen support access.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v611.
+
 ## V607 Beta Command Reclose Renewal Reopening Queue
 
 V607 adds Beta Command Reclose Renewal Reopening Queue to the Build Tracker Release Doctor. It routes only stale renewed replacement, conflict-cleanup, release-safe-memory, expiry, owner-review, or founder-review proof back to fresh evidence while preserving current sibling lanes.

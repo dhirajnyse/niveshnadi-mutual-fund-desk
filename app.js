@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v607-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v607 Beta Command Reclose Renewal Reopening Queue";
+const DATA_VERSION = "20260715-v608-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v608 Support Repair Reclose Renewal Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Beta command reclose renewal reopening queue",
+    label: "Support repair reclose renewal reopening queue",
     status: "Shipping now",
-    route: "#founder-beta-operating-room",
-    detail: "Reopen only the renewed founder-command lane whose aging trigger requires fresh evidence while preserving current sibling proof."
+    route: "#paid-beta-support-ledger",
+    detail: "Reopen only the renewed support-repair lane whose aging trigger requires fresh evidence while preserving current sibling proof."
   },
   {
     label: "Mobile calm audit",
@@ -23249,6 +23249,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Reclose Renewal Reopening Queue is a static command queue only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
+      },
+      {
+        key: "supportRepairRecloseRenewalReopeningQueue",
+        label: "Support repair reclose renewal reopening queue",
+        verdict: "Expired renewed support-repair proof reopens selectively",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "RECLOSE", "RENEWAL", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-reclose-renewal-reopening-queue",
+        copyLabel: "Copy support renewal reopening queue",
+        score: 81,
+        rule: "A renewed support-repair lane may reopen only when its review-by date or explicit reopen condition is reached; every queue row must preserve the state of unaffected sibling lanes.",
+        lanes: [
+          {
+            label: "Support copy reopen",
+            owner: "Support content desk",
+            method: "REOPEN_COPY",
+            route: "support.repair.reclose.renewal.reopening.copy",
+            proof: "Record prior age state, wording trigger, required audience-safe copy proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the stale copy lane is queued with fresh wording, audience, boundary, and accepted-behavior proof required.",
+            hold: "Hold when wording trigger, copy requirement, audience boundary, queue owner, or sibling snapshot is missing.",
+            score: 82
+          },
+          {
+            label: "Owner review reopen",
+            owner: "Support operations",
+            method: "REOPEN_OWNER",
+            route: "support.repair.reclose.renewal.reopening.owner",
+            proof: "Record prior age state, ownership trigger, required owner, fallback, and queue-scope proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the stale owner lane is queued with current accountable owner, fallback, scope, and decision proof required.",
+            hold: "Hold when ownership trigger, queue scope, fallback owner, queue owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Regression proof reopen",
+            owner: "Product QA desk",
+            method: "REOPEN_REGRESSION",
+            route: "support.repair.reclose.renewal.reopening.regression",
+            proof: "Record prior age state, regression trigger, required replay and failure-state proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the stale regression lane is queued with a fresh replay receipt, affected path, and coverage proof required.",
+            hold: "Hold when regression trigger, replay requirement, failure path, queue owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Escalation route reopen",
+            owner: "Support operations",
+            method: "REOPEN_ESCALATION",
+            route: "support.repair.reclose.renewal.reopening.escalation",
+            proof: "Record prior age state, routing trigger, required response-window and fallback proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the stale escalation lane is queued with current route, response window, fallback, and boundary proof required.",
+            hold: "Hold when routing trigger, response window, fallback route, queue owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Refund wording reopen",
+            owner: "Finance and support desk",
+            method: "REOPEN_REFUND_WORDING",
+            route: "support.repair.reclose.renewal.reopening.refund",
+            proof: "Record prior age state, refund trigger, required policy, eligibility, and support-route proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the stale refund-wording lane is queued with current policy, eligibility, exclusions, and support-route proof required.",
+            hold: "Hold when refund trigger, policy proof, eligibility boundary, queue owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Founder support reopen",
+            owner: "Founder desk",
+            method: "REOPEN_FOUNDER_SUPPORT",
+            route: "support.repair.reclose.renewal.reopening.founder",
+            proof: "Record prior age state, founder-support trigger, required release-hold and zero-residue proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the stale founder-support lane is queued with a fresh repair review and release decision required.",
+            hold: "Hold when founder trigger, decision requirement, residue boundary, queue owner, or sibling snapshot is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Support Repair Reclose Renewal Reopening Queue opens only the renewed lane whose age state or reopen condition requires fresh proof.",
+          "Every reopening row binds the prior aging guard, renewal receipt, affected lane, prior age state, trigger, fresh-proof requirement, queue owner, and sibling-state snapshot.",
+          "Current sibling support-repair proof remains reclosed unless its own review-by date or reopen condition is reached.",
+          "A reopened lane returns to the renewal acceptance path only after fresh proof is reviewed; queue entry alone never restores confidence.",
+          "Support reopening rows must exclude private notes, account or payment payloads, credentials, identifiers, contact details, raw conversations, and private context."
+        ],
+        noGoLines: [
+          "No renewed support-repair lane may reopen without a recorded age state or explicit reopen trigger.",
+          "No sibling lane may be reopened merely because one support-repair lane enters the queue.",
+          "No queue row may be treated as a support reply, refund approval, payment approval, contact permission, or launch approval.",
+          "No support repair renewal reopening queue may send replies, issue refunds, process payments, fetch live data, contact users, store private notes, or widen support access."
+        ],
+        receiptFields: [
+          "support_repair_reclose_renewal_reopening_queue_id",
+          "release_key",
+          "support_repair_reclose_renewal_aging_guard_id",
+          "support_repair_reclose_renewal_receipt_id",
+          "affected_lane",
+          "prior_age_state",
+          "reopen_trigger",
+          "fresh_proof_requirement",
+          "queue_owner",
+          "sibling_state_snapshot",
+          "opened_at",
+          "created_at"
+        ],
+        boundary: "Support Repair Reclose Renewal Reopening Queue is a static support queue only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, or widen support access."
       }
     ],
     executiveCalmCompression: {
@@ -23421,14 +23521,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta command renewal reopening is visible; next releases should lock support repair renewal reopening, source correction, payment, and account renewal refresh receipts, then add the beta command renewal refresh receipt.",
+      rule: "Support repair renewal reopening is visible; next releases should lock source correction, payment, account, and beta command renewal refresh receipts, then add the support repair renewal refresh receipt.",
       lanes: [
-        {
-          version: "v608",
-          label: "Support repair reclose renewal reopening queue",
-          route: "#paid-beta-support-ledger",
-          detail: "Reopen only the renewed support repair lane whose proof date, review-by, age state, or reopen condition requires fresh evidence."
-        },
         {
           version: "v609",
           label: "Source correction reclose renewal refresh receipt",
@@ -23452,14 +23546,27 @@ function buildTrackerConfig() {
           label: "Beta command reclose renewal refresh receipt",
           route: "#founder-beta-operating-room",
           detail: "Return a selectively reopened founder-command lane to current status only after fresh proof is accepted and the next review window is recorded."
+        },
+        {
+          version: "v613",
+          label: "Support repair reclose renewal refresh receipt",
+          route: "#paid-beta-support-ledger",
+          detail: "Return a selectively reopened support-repair lane to current status only after fresh proof is accepted and the next review window is recorded."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Command renewal reopening proof visible",
+      verdict: "Support renewal reopening proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v607",
+          key: "20260715-v607-01",
+          commit: "33fd790",
+          receiptId: "NN-SHARE-RECEIPT-20260715V60701",
+          proof: "Beta Command Reclose Renewal Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v606",
           key: "20260715-v606-01",
@@ -23487,13 +23594,6 @@ function buildTrackerConfig() {
           commit: "2cb4d5f",
           receiptId: "NN-SHARE-RECEIPT-20260715V60301",
           proof: "Support Repair Reclose Renewal Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v602",
-          key: "20260715-v602-01",
-          commit: "143ca80",
-          receiptId: "NN-SHARE-RECEIPT-20260715V60201",
-          proof: "Beta Command Reclose Renewal Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -23531,13 +23631,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v607",
-        detail: "Beta Command Reclose Renewal Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v608",
+        detail: "Support Repair Reclose Renewal Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v607 passed syntax, static, security, diff hygiene, and marker scans before the batch advances."
+        detail: "v608 passed syntax, static, security, diff hygiene, and marker scans before the batch advances."
       },
       {
         label: "03 Viewed",
@@ -23553,13 +23653,13 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v607 command renewal reopening",
-        detail: "Beta Command Reclose Renewal Reopening Queue isolates stale renewed founder-command proof and preserves current sibling lanes."
+        value: "v608 support renewal reopening",
+        detail: "Support Repair Reclose Renewal Reopening Queue isolates stale renewed support proof and preserves current sibling lanes."
       },
       {
         label: "Release checks",
         value: "Local checks passed",
-        detail: "v607 passed syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v608 passed syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "Share outcome",

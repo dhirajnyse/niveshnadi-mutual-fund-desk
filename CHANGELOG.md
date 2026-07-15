@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v608 Support Repair Reclose Renewal Reopening Queue
+
+- Version: `0.608.0`
+- Data version: `20260715-v608-01`
+- Changes made: Added Support Repair Reclose Renewal Reopening Queue to the Build Tracker Release Doctor with selective support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support queue lanes, prior-age-state, reopen-trigger, fresh-proof requirement, queue-owner, and sibling-state fields, current-sibling preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v607 state, next-batch planner roll-forward to v609-v613, and release markers rolled forward to v608.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v608 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Reclose Renewal Reopening Queue is a static support queue only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, or widen support access.
+
 ## NiveshNadi Phase 1 v607 Beta Command Reclose Renewal Reopening Queue
 
 - Version: `0.607.0`

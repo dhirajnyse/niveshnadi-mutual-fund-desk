@@ -270,6 +270,7 @@ assert(app.includes("supportRepairRecloseRenewalRefreshReceipt") && app.includes
 assert(app.includes("sourceCorrectionRecloseRenewalRefreshAgingGuard") && app.includes("data-copy-source-correction-reclose-renewal-refresh-aging-guard"), "app.js is missing v614 Source Correction Reclose Renewal Refresh Aging Guard.");
 assert(app.includes("paymentRecloseRenewalRefreshAgingGuard") && app.includes("data-copy-payment-reclose-renewal-refresh-aging-guard"), "app.js is missing v615 Payment Reclose Renewal Refresh Aging Guard.");
 assert(app.includes("betaCommandRecloseRenewalRefreshReopeningQueue") && app.includes("data-copy-beta-command-reclose-renewal-refresh-reopening-queue"), "app.js is missing v622 Beta Command Reclose Renewal Refresh Reopening Queue.");
+assert(app.includes("supportRepairRecloseRenewalRefreshReopeningQueue") && app.includes("data-copy-support-repair-reclose-renewal-refresh-reopening-queue"), "app.js is missing v623 Support Repair Reclose Renewal Refresh Reopening Queue.");
 assert(app.includes("visualRunnerResultArchive") && app.includes("productionLaunchProofCabinet"), "app.js is missing v484-v485 release doctor proof archives.");
 assert(app.includes("function visualRegressionRunnerEnvelopeRows") && !app.includes("resultRows: visualRegressionRunnerContract.runEnvelope"), "app.js has an unsafe visual runner sibling-object reference.");
 assert(app.includes("function renderBuildPhasesRoom") && app.includes("function makeBuildPhasesBrief") && app.includes("buildPhaseGridMarkup"), "app.js is missing Nadi Build Phases Room behavior.");

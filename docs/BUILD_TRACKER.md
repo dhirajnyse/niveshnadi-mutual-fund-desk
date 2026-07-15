@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V623 Support Repair Reclose Renewal Refresh Reopening Queue
+
+V623 adds Support Repair Reclose Renewal Refresh Reopening Queue to the Build Tracker Release Doctor. It routes only expired support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support refresh lanes back to fresh proof while preserving accepted sibling state and refresh lineage.
+
+- Release label: `NiveshNadi Phase 1 v623 Support Repair Reclose Renewal Refresh Reopening Queue`
+- Data/version key: `20260715-v623-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose renewal refresh reopening queue
+- Risk boundary: Static support refresh queue only; it does not send replies, issue refunds, process payments, grant access, fetch private data, contact users, expose support conversations, or approve launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v626.
+
 ## V622 Beta Command Reclose Renewal Refresh Reopening Queue
 
 V622 adds Beta Command Reclose Renewal Refresh Reopening Queue to the Build Tracker Release Doctor. It routes only expired replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review refresh lanes back to fresh proof while preserving accepted sibling state and refresh lineage.

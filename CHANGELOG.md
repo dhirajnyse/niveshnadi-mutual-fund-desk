@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v623 Support Repair Reclose Renewal Refresh Reopening Queue
+
+- Version: `0.623.0`
+- Data version: `20260715-v623-01`
+- Changes made: Added Support Repair Reclose Renewal Refresh Reopening Queue to the Build Tracker Release Doctor with selective support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support refresh-reopen lanes, explicit prior-age-state, trigger, fresh-proof, owner, sibling-state, and lineage fields, refresh-aging and refresh-receipt bindings, Build Tracker current-release copy roll-forward, proof archive roll-forward with verified v622 state, next-batch planner roll-forward to v624-v628, and release markers rolled forward to v623.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v623 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Reclose Renewal Refresh Reopening Queue is a static support refresh queue only; it does not send replies, issue refunds, process payments, grant access, fetch private data, contact users, expose support conversations, or approve launch.
+
 ## NiveshNadi Phase 1 v622 Beta Command Reclose Renewal Refresh Reopening Queue
 
 - Version: `0.622.0`

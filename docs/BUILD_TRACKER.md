@@ -8,7 +8,7 @@ V621 adds Account Reclose Renewal Refresh Reopening Queue to the Build Tracker R
 - Data/version key: `20260715-v621-01`
 - Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh reopening queue
 - Risk boundary: Static account refresh queue only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, or approve account custody widening.
-- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled before closeout.
+- Verification status: Syntax, static/security, marker, diff hygiene, desktop 1440x900, mobile 390x844, five-room card fit, responsive overflow, rail/header clearance, mobile rail collapse, command-control overlap, long-text wrapping, version-badge, and browser-console checks passed; push and live verification remain scheduled before closeout.
 
 ## V620 Payment Reclose Renewal Refresh Reopening Queue
 

@@ -6,7 +6,7 @@
 - Data version: `20260715-v621-01`
 - Changes made: Added Account Reclose Renewal Refresh Reopening Queue to the Build Tracker Release Doctor with selective delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review refresh-reopen lanes, explicit prior-age-state, trigger, fresh-proof, owner, sibling-state, and lineage fields, refresh-aging and refresh-receipt bindings, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v620 state, next-batch planner roll-forward to v622-v626, and release markers rolled forward to v621.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v621 marker scan; Git diff hygiene check; batch desktop and mobile visual QA scheduled before closeout.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v621 marker scan; Git diff hygiene check; in-app browser QA at 1440x900 and 390x844 covering all five rooms, seven cards per room, horizontal overflow, sticky-header/rail clearance, mobile rail collapse, command-control overlap, long-text wrapping, version badge, and console errors.
 - Known risks: Account Reclose Renewal Refresh Reopening Queue is a static account refresh queue only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, or approve account custody widening.
 
 ## NiveshNadi Phase 1 v620 Payment Reclose Renewal Refresh Reopening Queue

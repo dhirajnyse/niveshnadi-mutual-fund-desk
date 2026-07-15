@@ -24961,8 +24961,8 @@ function buildTrackerConfig() {
       },
       {
         label: "03 Viewed",
-        value: "Scheduled for v621",
-        detail: "Desktop and mobile batch QA will run after all five rooms are present so the full release surface is checked together."
+        value: "Desktop + mobile pass",
+        detail: "All five batch rooms render seven cards without horizontal overflow at 1440x900 and 390x844; header, rail, controls, card wrapping, and console checks are clean."
       },
       {
         label: "04 Share",
@@ -24978,8 +24978,8 @@ function buildTrackerConfig() {
       },
       {
         label: "Release checks",
-        value: "Local checks passed",
-        detail: "v621 passed syntax, static, security, diff hygiene, and marker checks; full visual QA is the final local gate."
+        value: "Local + visual passed",
+        detail: "v621 passed syntax, static, security, diff hygiene, marker, desktop, mobile, responsive overflow, header, rail, control-overlap, card-wrapping, and console checks."
       },
       {
         label: "Share outcome",

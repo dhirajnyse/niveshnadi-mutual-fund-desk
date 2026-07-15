@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v605 Payment Reclose Renewal Reopening Queue
+
+- Version: `0.605.0`
+- Data version: `20260715-v605-01`
+- Changes made: Added Payment Reclose Renewal Reopening Queue to the Build Tracker Release Doctor with selective entitlement, refund-wording, rollback-proof, support-copy, owner-review, and founder-finance queue lanes, prior-age-state, reopen-trigger, fresh-proof requirement, queue-owner, and sibling-state fields, current-sibling preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v604 state, next-batch planner roll-forward to v606-v610, and release markers rolled forward to v605.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v605 marker scan; Git diff hygiene check.
+- Known risks: Payment Reclose Renewal Reopening Queue is a static payment queue only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v604 Source Correction Reclose Renewal Reopening Queue
 
 - Version: `0.604.0`

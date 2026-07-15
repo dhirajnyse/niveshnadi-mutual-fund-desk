@@ -8,7 +8,7 @@ V611 adds Account Reclose Renewal Refresh Receipt to the Build Tracker Release D
 - Data/version key: `20260715-v611-01`
 - Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh receipt
 - Risk boundary: Static account refresh room only; it does not authenticate users, export or delete data, schedule or run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
-- Verification status: Syntax, static/security, marker, diff hygiene, desktop 1440x900, mobile 390x844, responsive overflow, rail/header clearance, and browser console checks passed; live verification follows the v611 commit.
+- Verification status: Syntax, static/security, marker, diff hygiene, desktop 1440x900, mobile 390x844, responsive overflow, rail/header clearance, browser console, push, live stamp, HTML cache-key/version-badge, live room-key, and live copy-marker checks passed.
 
 ## V610 Payment Reclose Renewal Refresh Receipt
 

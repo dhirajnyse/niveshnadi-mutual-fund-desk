@@ -23958,8 +23958,8 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "Batch share pending",
-        detail: "GitHub Pages sharing waits for the v611 batch closeout and live marker verification."
+        value: "GitHub Pages verified",
+        detail: "The v611 live stamp, HTML cache key, version badge, room key, and copy marker match the published release."
       }
     ],
     memory: [
@@ -23975,8 +23975,8 @@ function buildTrackerConfig() {
       },
       {
         label: "Share outcome",
-        value: "Batch share pending",
-        detail: "The five-release batch remains local until v611 completes visual QA and GitHub Pages verification."
+        value: "Live verified",
+        detail: "The five-release batch is published with matching v611 stamp, HTML cache key, version badge, account-refresh room key, and copy marker."
       }
     ],
     actions: [

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v600-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v600 Payment Reclose Renewal Aging Guard";
+const DATA_VERSION = "20260715-v601-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v601 Account Reclose Renewal Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment reclose renewal aging guard",
+    label: "Account reclose renewal aging guard",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Age renewed payment proof independently across entitlement, refund, rollback, support, owner, and founder finance lanes."
+    route: "#account-readiness",
+    detail: "Age renewed account proof independently across delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review lanes."
   },
   {
     label: "Mobile calm audit",
@@ -22552,6 +22552,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Reclose Renewal Aging Guard is a static payment-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountRecloseRenewalAgingGuard",
+        label: "Account reclose renewal aging guard",
+        verdict: "Renewed account proof has review windows",
+        receiptId: ["NN", "ACCOUNT", "RECLOSE", "RENEWAL", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-reclose-renewal-aging-guard",
+        copyLabel: "Copy account renewal aging",
+        score: 81,
+        rule: "Every renewed account lane must expose its proof date, review-by date, age state, and reopen condition so reclosed confidence cannot outlive current custody evidence.",
+        lanes: [
+          {
+            label: "Delete/export age",
+            owner: "Account operations",
+            method: "AGE_DELETE_EXPORT",
+            route: "account.reclose.renewal.aging.delete_export",
+            proof: "Track delete/export proof date, review-by date, age state, receipt scope, and custody-change reopen condition.",
+            readyWhen: "Ready when delete and export receipts still match the current account-custody contract.",
+            hold: "Reopen when receipt scope changes, custody behavior diverges, or review-by passes.",
+            score: 82
+          },
+          {
+            label: "Redaction age",
+            owner: "Privacy desk",
+            method: "AGE_REDACTION",
+            route: "account.reclose.renewal.aging.redaction",
+            proof: "Track redaction proof date, review-by date, age state, protected fields, and schema-change reopen condition.",
+            readyWhen: "Ready when protected fields and redaction proof remain current for the saved object scope.",
+            hold: "Reopen when schema, protected fields, export shape, or redaction behavior changes.",
+            score: 81
+          },
+          {
+            label: "Support-safe age",
+            owner: "Support captain",
+            method: "AGE_SUPPORT_SAFE",
+            route: "account.reclose.renewal.aging.support_safe",
+            proof: "Track support-safe proof date, review-by date, age state, reply family, and privacy-boundary reopen condition.",
+            readyWhen: "Ready when support handling still excludes private account payloads and follows current custody boundaries.",
+            hold: "Reopen when reply family, escalation route, privacy wording, or support access changes.",
+            score: 81
+          },
+          {
+            label: "Object-family age",
+            owner: "Data custody desk",
+            method: "AGE_OBJECT_FAMILY",
+            route: "account.reclose.renewal.aging.object_family",
+            proof: "Track object-family proof date, review-by date, age state, included records, and model-change reopen condition.",
+            readyWhen: "Ready when the accepted object family still covers every retained account-backed record.",
+            hold: "Reopen when a new object type appears, retention scope changes, or model proof passes review-by.",
+            score: 81
+          },
+          {
+            label: "Founder custody age",
+            owner: "Founder custody desk",
+            method: "AGE_FOUNDER_CUSTODY",
+            route: "account.reclose.renewal.aging.founder",
+            proof: "Track founder-custody proof date, review-by date, age state, release hold, residue state, and reopen condition.",
+            readyWhen: "Ready when founder review can still defend renewed custody proof with zero unresolved residue.",
+            hold: "Reopen when founder review expires, custody scope widens, or account residue returns.",
+            score: 82
+          },
+          {
+            label: "Trigger review age",
+            owner: "Account reliability",
+            method: "AGE_TRIGGER_REVIEW",
+            route: "account.reclose.renewal.aging.trigger",
+            proof: "Track trigger proof date, review-by date, age state, monitored event family, and trigger-change reopen condition.",
+            readyWhen: "Ready when reopen triggers still cover deletion, export, redaction, support, and object-family drift.",
+            hold: "Reopen when monitored events change, a trigger fails, coverage narrows, or review-by passes.",
+            score: 81
+          }
+        ],
+        operatingRules: [
+          "Account Reclose Renewal Aging Guard ages each renewed lane independently; one stale lane does not silently invalidate current sibling proof.",
+          "Every aging row binds the reclose renewal receipt, proof date, review-by date, age state, accountable owner, and explicit reopen condition.",
+          "Expired proof reopens only the affected account lane and routes it back to fresh-proof acceptance before confidence can renew again.",
+          "Account aging rows must exclude account payloads, credentials, identifiers, contact details, private notes, payment data, auth tokens, and raw support conversations.",
+          "No account renewal aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment tokens, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No renewed account lane may remain trusted after its review-by date or reopen condition is reached.",
+          "No sibling lane may be reopened merely because a different account lane ages.",
+          "No aging guard may be treated as authentication, export, deletion, job execution, recovery, or custody approval.",
+          "No account reclose renewal aging guard may authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve custody widening."
+        ],
+        receiptFields: [
+          "account_reclose_renewal_aging_guard_id",
+          "release_key",
+          "account_reclose_renewal_receipt_id",
+          "affected_lane",
+          "proof_date",
+          "review_by",
+          "age_state",
+          "reopen_condition",
+          "aging_owner",
+          "sibling_state_snapshot",
+          "created_at"
+        ],
+        boundary: "Account Reclose Renewal Aging Guard is a static account-aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -22724,14 +22823,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment reclose renewal aging is visible; next releases should lock account reclose renewal aging guard, beta command reclose renewal aging guard, support repair reclose renewal aging guard, source correction reclose renewal reopening queue, and payment reclose renewal reopening queue.",
+      rule: "Account reclose renewal aging is visible; next releases should lock beta command reclose renewal aging guard, support repair reclose renewal aging guard, source correction reclose renewal reopening queue, payment reclose renewal reopening queue, and account reclose renewal reopening queue.",
       lanes: [
-        {
-          version: "v601",
-          label: "Account reclose renewal aging guard",
-          route: "#account-readiness",
-          detail: "Age renewed account proof independently across delete/export, redaction, support-safe, object-family, founder custody, and trigger lanes."
-        },
         {
           version: "v602",
           label: "Beta command reclose renewal aging guard",
@@ -22755,14 +22848,27 @@ function buildTrackerConfig() {
           label: "Payment reclose renewal reopening queue",
           route: "#payment-wiring",
           detail: "Reopen only the renewed payment lane whose proof date, review-by, age state, or reopen condition requires fresh evidence."
+        },
+        {
+          version: "v606",
+          label: "Account reclose renewal reopening queue",
+          route: "#account-readiness",
+          detail: "Reopen only the renewed account lane whose proof date, review-by, age state, or reopen condition requires fresh evidence."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Payment renewal aging proof visible",
+      verdict: "Account renewal aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v600",
+          key: "20260715-v600-01",
+          commit: "7c81403",
+          receiptId: "NN-SHARE-RECEIPT-20260715V60001",
+          proof: "Payment Reclose Renewal Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v599",
           key: "20260715-v599-01",
@@ -22790,13 +22896,6 @@ function buildTrackerConfig() {
           commit: "aa4e02a",
           receiptId: "NN-SHARE-RECEIPT-20260715V59601",
           proof: "Account Reclose Renewal Receipt added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, live stamp, and live app marker checks."
-        },
-        {
-          version: "v595",
-          key: "20260715-v595-01",
-          commit: "291fd94",
-          receiptId: "NN-SHARE-RECEIPT-20260715V59501",
-          proof: "Payment Reclose Renewal Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -22834,40 +22933,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v600",
-        detail: "Payment Reclose Renewal Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v601",
+        detail: "Account Reclose Renewal Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v600 runs syntax, static, security, diff hygiene, and marker scans before the batch advances."
+        detail: "v601 runs syntax, static, security, diff hygiene, and marker scans before batch visual QA."
       },
       {
         label: "03 Viewed",
-        value: "Batch visual QA pending",
-        detail: "Full desktop and mobile visual QA runs on v601 after all five proof rooms are present."
+        value: "Desktop + mobile pass",
+        detail: "v601 passed 1440x900 desktop and 390x844 mobile checks with all five new proof rooms present, readable, and free of horizontal overflow."
       },
       {
         label: "04 Share",
-        value: "Batch share pending",
-        detail: "GitHub Pages sharing waits for the v601 batch closeout and live marker verification."
+        value: "Batch share ready",
+        detail: "The batch is ready to push; sharing still waits for the v601 live stamp and app marker verification."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v600 payment renewal aging",
-        detail: "Payment Reclose Renewal Aging Guard gives each renewed payment lane its own proof date, review-by date, age state, and reopen condition."
+        value: "v601 account renewal aging",
+        detail: "Account Reclose Renewal Aging Guard gives each renewed account lane its own proof date, review-by date, age state, and reopen condition."
       },
       {
         label: "Release checks",
-        value: "Local checks passed",
-        detail: "v600 passed syntax, static, security, diff hygiene, and marker scans before commit."
+        value: "Local + visual passed",
+        detail: "v601 passed syntax, static, security, diff hygiene, marker, 1440x900 desktop, 390x844 mobile, five-room fit, and browser-log checks."
       },
       {
         label: "Share outcome",
-        value: "Batch share pending",
-        detail: "The five-release batch remains local until v601 completes visual QA and GitHub Pages verification."
+        value: "Ready to deploy",
+        detail: "The five-release batch passed local and visual QA; GitHub Pages verification remains before the live share receipt closes."
       }
     ],
     actions: [

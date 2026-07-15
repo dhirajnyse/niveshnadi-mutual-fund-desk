@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v624 Source Correction Reclose Renewal Refresh Reacceptance Receipt
+
+- Version: `0.624.0`
+- Data version: `20260715-v624-01`
+- Changes made: Added Source Correction Reclose Renewal Refresh Reacceptance Receipt to the Build Tracker Release Doctor with replacement, notice, cache, support, reviewer, and founder reacceptance lanes, explicit reopened-queue, prior-refresh, aging-guard, accepted-proof, reviewer, acceptance-time, new-clock, superseded-row, and sibling-state bindings, Build Tracker current-release copy roll-forward, proof archive roll-forward with verified v623 state, next-batch planner roll-forward to v625-v629, and release markers rolled forward to v624.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v624 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Reclose Renewal Refresh Reacceptance Receipt is a static correction receipt only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v623 Support Repair Reclose Renewal Refresh Reopening Queue
 
 - Version: `0.623.0`

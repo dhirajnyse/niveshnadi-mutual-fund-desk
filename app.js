@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v593-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v593 Support Repair Reclose Reopening Queue";
+const DATA_VERSION = "20260715-v594-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v594 Source Correction Reclose Renewal Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Support repair reclose reopening queue",
+    label: "Source correction reclose renewal receipt",
     status: "Shipping now",
-    route: "#paid-beta-support-ledger",
-    detail: "Reopen only expired support copy, owner, regression, escalation, refund wording, or founder support lanes with a named owner and fresh-proof condition."
+    route: "#correction-ledger",
+    detail: "Renew only the reopened replacement, notice, cache, support, reviewer, or founder correction lane after fresh proof is accepted."
   },
   {
     label: "Mobile calm audit",
@@ -21849,6 +21849,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Repair Reclose Reopening Queue is a static support reopening room only; it does not send replies, issue refunds, process payments, fetch live data, store private support notes, contact users, or approve support widening."
+      },
+      {
+        key: "sourceCorrectionRecloseRenewalReceipt",
+        label: "Source correction reclose renewal receipt",
+        verdict: "Accepted fresh proof renews one correction lane",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "RECLOSE", "RENEWAL", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-reclose-renewal-receipt",
+        copyLabel: "Copy correction renewal receipt",
+        score: 83,
+        rule: "A reopened source correction lane may regain reclosed confidence only after fresh replacement, notice, cache, support, reviewer, or founder proof is accepted and bound to one renewal receipt.",
+        lanes: [
+          {
+            label: "Replacement proof renewed",
+            owner: "Source evidence desk",
+            method: "RENEW_REPLACEMENT",
+            route: "source.correction.reclose.renewal.replacement",
+            proof: "Bind reopening row, accepted replacement artifact, source scope, reviewer, accepted date, and next review.",
+            readyWhen: "Ready when accepted fresh replacement proof again supports the affected correction lane.",
+            hold: "Hold renewal if artifact, source scope, reviewer, or acceptance date is missing.",
+            score: 83
+          },
+          {
+            label: "Public notice renewed",
+            owner: "Founder release desk",
+            method: "RENEW_NOTICE",
+            route: "source.correction.reclose.renewal.notice",
+            proof: "Bind reopening row, accepted notice wording, affected claim, visible date, supersede rule, and next review.",
+            readyWhen: "Ready when accepted notice proof matches only the affected correction scope.",
+            hold: "Hold renewal if notice wording, affected claim, visible date, or supersede rule is missing.",
+            score: 83
+          },
+          {
+            label: "Cache refresh renewed",
+            owner: "Release cache desk",
+            method: "RENEW_CACHE",
+            route: "source.correction.reclose.renewal.cache",
+            proof: "Bind reopening row, accepted release key, refreshed route, stale-cache check, reviewer, and next review.",
+            readyWhen: "Ready when accepted cache proof shows no supported route serving the stale state.",
+            hold: "Hold renewal if release key, refreshed route, stale-cache check, or reviewer is missing.",
+            score: 82
+          },
+          {
+            label: "Support handoff renewed",
+            owner: "Support desk",
+            method: "RENEW_SUPPORT",
+            route: "source.correction.reclose.renewal.support",
+            proof: "Bind reopening row, accepted support-safe explanation, response ceiling, owner, and next review.",
+            readyWhen: "Ready when accepted support proof explains the correction without advice or execution promises.",
+            hold: "Hold renewal if support-safe copy, response ceiling, owner, or accepted date is missing.",
+            score: 82
+          },
+          {
+            label: "Reviewer scope renewed",
+            owner: "Reviewer desk",
+            method: "RENEW_SCOPE",
+            route: "source.correction.reclose.renewal.scope",
+            proof: "Bind reopening row, accepted fields, excluded fields, reviewer, decision receipt, and next review.",
+            readyWhen: "Ready when accepted reviewer scope covers the affected lane without widening claims.",
+            hold: "Hold renewal if accepted fields, exclusions, reviewer, or decision receipt is ambiguous.",
+            score: 83
+          },
+          {
+            label: "Founder review renewed",
+            owner: "Founder desk",
+            method: "RENEW_SIGNOFF",
+            route: "source.correction.reclose.renewal.founder",
+            proof: "Bind reopening row, founder renewal decision, zero-residue note, accepted proof IDs, and next reopen trigger.",
+            readyWhen: "Ready when founder review accepts fresh proof with no unresolved correction residue.",
+            hold: "Hold renewal if founder decision, proof IDs, residue state, or reopen trigger is missing.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "Source Correction Reclose Renewal Receipt renews only the reopened lane whose fresh proof is accepted; current sibling lanes retain their accepted state.",
+          "Every renewal binds the reclose reopening queue row, prior age state, accepted proof ID, owner, accepted date, next review, and reopen trigger.",
+          "Renewal restores workflow confidence only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve claims.",
+          "Correction renewal rows must exclude raw source files, private notes, contact details, account or payment payloads, credentials, identifiers, and unpublished claim content.",
+          "No correction renewal receipt may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No reopened correction lane may be renewed without accepted fresh proof and one accountable owner.",
+          "No current sibling lane may lose its accepted state merely because another correction lane renews.",
+          "No renewal receipt may be treated as live-data verification, publishing proof, legal approval, or investment advice.",
+          "No source correction reclose renewal receipt may fetch live data, verify facts, publish notices, contact users, or approve public claims."
+        ],
+        receiptFields: [
+          "source_correction_reclose_renewal_receipt_id",
+          "release_key",
+          "source_correction_reclose_reopening_queue_id",
+          "source_correction_reclose_aging_guard_id",
+          "affected_lane",
+          "prior_age_state",
+          "accepted_proof_id",
+          "renewal_owner",
+          "accepted_at",
+          "next_review_at",
+          "reopen_trigger",
+          "sibling_state_snapshot",
+          "created_at"
+        ],
+        boundary: "Source Correction Reclose Renewal Receipt is a static correction renewal room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
       }
     ],
     executiveCalmCompression: {
@@ -22021,14 +22122,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Support repair reclose reopening is visible; next releases should lock source correction reclose renewal receipt, payment reclose renewal receipt, account reclose renewal receipt, beta command reclose renewal receipt, and support repair reclose renewal receipt.",
+      rule: "Source correction reclose renewal is visible; next releases should lock payment reclose renewal receipt, account reclose renewal receipt, beta command reclose renewal receipt, support repair reclose renewal receipt, and source correction reclose renewal aging guard.",
       lanes: [
-        {
-          version: "v594",
-          label: "Source correction reclose renewal receipt",
-          route: "#correction-ledger",
-          detail: "Renew reopened correction lanes only after fresh replacement, notice, cache, support, reviewer, or founder proof is accepted."
-        },
         {
           version: "v595",
           label: "Payment reclose renewal receipt",
@@ -22052,14 +22147,27 @@ function buildTrackerConfig() {
           label: "Support repair reclose renewal receipt",
           route: "#paid-beta-support-ledger",
           detail: "Renew reopened support repair lanes only after fresh copy, owner, regression, escalation, refund wording, or founder support proof is accepted."
+        },
+        {
+          version: "v599",
+          label: "Source correction reclose renewal aging guard",
+          route: "#correction-ledger",
+          detail: "Age renewed correction proof independently across replacement, notice, cache, support, reviewer, and founder lanes."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Support repair reopening proof visible",
+      verdict: "Source correction renewal proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v593",
+          key: "20260715-v593-01",
+          commit: "ced9f7b",
+          receiptId: "NN-SHARE-RECEIPT-20260715V59301",
+          proof: "Support Repair Reclose Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v592",
           key: "20260715-v592-01",
@@ -22087,13 +22195,6 @@ function buildTrackerConfig() {
           commit: "f13e2dc",
           receiptId: "NN-SHARE-RECEIPT-20260715V58901",
           proof: "Source Correction Reclose Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v588",
-          key: "20260715-v588-01",
-          commit: "df92b4a",
-          receiptId: "NN-SHARE-RECEIPT-20260715V58801",
-          proof: "Support Repair Reclose Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -22131,13 +22232,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v593",
-        detail: "Support Repair Reclose Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v594",
+        detail: "Source Correction Reclose Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v593 runs syntax, static, security, diff hygiene, and marker scans before the batch advances."
+        detail: "v594 runs syntax, static, security, diff hygiene, and marker scans before the batch advances."
       },
       {
         label: "03 Viewed",
@@ -22153,13 +22254,13 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v593 support selective reopen",
-        detail: "Support Repair Reclose Reopening Queue reopens only the expired copy, owner, regression, escalation, refund wording, or founder support lane."
+        value: "v594 source selective renewal",
+        detail: "Source Correction Reclose Renewal Receipt renews only the affected replacement, notice, cache, support, reviewer, or founder lane after fresh proof is accepted."
       },
       {
         label: "Release checks",
         value: "Local checks passed",
-        detail: "v593 passed syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v594 passed syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "Share outcome",

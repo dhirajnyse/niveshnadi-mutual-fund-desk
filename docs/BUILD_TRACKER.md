@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V594 Source Correction Reclose Renewal Receipt
+
+V594 adds Source Correction Reclose Renewal Receipt to the Build Tracker Release Doctor. It renews only the reopened replacement proof, public notice, cache refresh, support handoff, reviewer scope, or founder review lane after fresh proof is accepted and preserves current sibling proof.
+
+- Release label: `NiveshNadi Phase 1 v594 Source Correction Reclose Renewal Receipt`
+- Data/version key: `20260715-v594-01`
+- Product surface: Build Tracker > Release Doctor > Source correction reclose renewal receipt
+- Risk boundary: Static correction renewal room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed.
+
 ## V593 Support Repair Reclose Reopening Queue
 
 V593 adds Support Repair Reclose Reopening Queue to the Build Tracker Release Doctor. It reopens only the expired support copy, owner review, regression proof, escalation route, refund wording, or founder support lane and preserves current sibling proof.

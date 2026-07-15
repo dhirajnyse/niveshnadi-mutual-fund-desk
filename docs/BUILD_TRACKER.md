@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V607 Beta Command Reclose Renewal Reopening Queue
+
+V607 adds Beta Command Reclose Renewal Reopening Queue to the Build Tracker Release Doctor. It routes only stale renewed replacement, conflict-cleanup, release-safe-memory, expiry, owner-review, or founder-review proof back to fresh evidence while preserving current sibling lanes.
+
+- Release label: `NiveshNadi Phase 1 v607 Beta Command Reclose Renewal Reopening Queue`
+- Data/version key: `20260715-v607-01`
+- Product surface: Build Tracker > Release Doctor > Beta command reclose renewal reopening queue
+- Risk boundary: Static command queue only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v611.
+
 ## V606 Account Reclose Renewal Reopening Queue
 
 V606 adds Account Reclose Renewal Reopening Queue to the Build Tracker Release Doctor. It routes only stale renewed delete/export, redaction, support-safe, object-family, founder-custody, or trigger-review proof back to fresh evidence while preserving current sibling lanes.

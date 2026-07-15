@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v607 Beta Command Reclose Renewal Reopening Queue
+
+- Version: `0.607.0`
+- Data version: `20260715-v607-01`
+- Changes made: Added Beta Command Reclose Renewal Reopening Queue to the Build Tracker Release Doctor with selective replacement-proof, conflict-cleanup, release-safe-memory, expiry, owner-review, and founder-review queue lanes, prior-age-state, reopen-trigger, fresh-proof requirement, queue-owner, and sibling-state fields, current-sibling preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v606 state, next-batch planner roll-forward to v608-v612, and release markers rolled forward to v607.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v607 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Reclose Renewal Reopening Queue is a static command queue only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v606 Account Reclose Renewal Reopening Queue
 
 - Version: `0.606.0`

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V596 Account Reclose Renewal Receipt
+
+V596 adds Account Reclose Renewal Receipt to the Build Tracker Release Doctor. It renews only the reopened delete/export, redaction, support-safe, object-family, founder custody, or trigger lane after fresh proof is accepted and preserves current sibling proof.
+
+- Release label: `NiveshNadi Phase 1 v596 Account Reclose Renewal Receipt`
+- Data/version key: `20260715-v596-01`
+- Product surface: Build Tracker > Release Doctor > Account reclose renewal receipt
+- Risk boundary: Static account renewal room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
+- Verification status: Syntax, static/security, marker, diff hygiene, 1440x900 desktop, 390x844 mobile, renewal-card fit, and browser log checks passed.
+
 ## V595 Payment Reclose Renewal Receipt
 
 V595 adds Payment Reclose Renewal Receipt to the Build Tracker Release Doctor. It renews only the reopened entitlement, refund wording, rollback proof, support copy, owner review, or founder finance lane after fresh proof is accepted and preserves current sibling proof.

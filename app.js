@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v595-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v595 Payment Reclose Renewal Receipt";
+const DATA_VERSION = "20260715-v596-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v596 Account Reclose Renewal Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Payment reclose renewal receipt",
+    label: "Account reclose renewal receipt",
     status: "Shipping now",
-    route: "#payment-wiring",
-    detail: "Renew only the reopened entitlement, refund wording, rollback, support, owner, or founder finance lane after fresh proof is accepted."
+    route: "#account-readiness",
+    detail: "Renew only the reopened delete/export, redaction, support-safe, object-family, founder custody, or trigger lane after fresh proof is accepted."
   },
   {
     label: "Mobile calm audit",
@@ -22051,6 +22051,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Reclose Renewal Receipt is a static payment renewal room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+      },
+      {
+        key: "accountRecloseRenewalReceipt",
+        label: "Account reclose renewal receipt",
+        verdict: "Accepted fresh proof renews one account lane",
+        receiptId: ["NN", "ACCOUNT", "RECLOSE", "RENEWAL", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-reclose-renewal-receipt",
+        copyLabel: "Copy account renewal receipt",
+        score: 82,
+        rule: "A reopened account lane may regain reclosed confidence only after fresh delete/export, redaction, support-safe, object-family, founder custody, or trigger proof is accepted and bound to one renewal receipt.",
+        lanes: [
+          {
+            label: "Delete/export renewed",
+            owner: "Account custody desk",
+            method: "RENEW_DELETE_EXPORT",
+            route: "account.reclose.renewal.delete_export",
+            proof: "Bind reopening row, accepted behavior boundary, affected object family, reviewer, accepted date, and next review.",
+            readyWhen: "Ready when accepted fresh delete/export proof again supports the affected account lane.",
+            hold: "Hold renewal if behavior boundary, object family, reviewer, or acceptance date is missing.",
+            score: 82
+          },
+          {
+            label: "Redaction renewed",
+            owner: "Privacy desk",
+            method: "RENEW_REDACTION",
+            route: "account.reclose.renewal.redaction",
+            proof: "Bind reopening row, accepted excluded fields, sample-safe proof, reviewer, accepted date, and next review.",
+            readyWhen: "Ready when accepted redaction proof covers every affected account field.",
+            hold: "Hold renewal if exclusions, sample-safe proof, reviewer, or acceptance date is missing.",
+            score: 82
+          },
+          {
+            label: "Support-safe renewed",
+            owner: "Support desk",
+            method: "RENEW_SUPPORT",
+            route: "account.reclose.renewal.support",
+            proof: "Bind reopening row, accepted support-safe copy, response ceiling, owner, and next review.",
+            readyWhen: "Ready when accepted support proof is current without recovery or private-data promises.",
+            hold: "Hold renewal if support-safe copy, response ceiling, owner, or accepted date is missing.",
+            score: 81
+          },
+          {
+            label: "Object-family renewed",
+            owner: "Data model desk",
+            method: "RENEW_OBJECTS",
+            route: "account.reclose.renewal.objects",
+            proof: "Bind reopening row, accepted storage boundary, retention scope, owner, decision receipt, and next review.",
+            readyWhen: "Ready when accepted object-family and retention scope cover only the affected lane.",
+            hold: "Hold renewal if storage boundary, retention scope, owner, or decision receipt is missing.",
+            score: 82
+          },
+          {
+            label: "Founder custody renewed",
+            owner: "Founder custody desk",
+            method: "RENEW_SIGNOFF",
+            route: "account.reclose.renewal.founder",
+            proof: "Bind reopening row, founder renewal decision, zero-residue note, accepted proof IDs, and next review.",
+            readyWhen: "Ready when founder custody review accepts fresh proof with no unresolved account residue.",
+            hold: "Hold renewal if founder decision, proof IDs, residue state, or next review is missing.",
+            score: 83
+          },
+          {
+            label: "Trigger mapping renewed",
+            owner: "Release captain",
+            method: "RENEW_TRIGGER",
+            route: "account.reclose.renewal.trigger",
+            proof: "Bind reopening row, accepted trigger source, affected receipt, accountable owner, and next reopen condition.",
+            readyWhen: "Ready when accepted trigger proof maps future reopening to one owner and explicit condition.",
+            hold: "Hold renewal if trigger source, affected receipt, owner, or reopen condition is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Account Reclose Renewal Receipt renews only the reopened lane whose fresh proof is accepted; current sibling lanes retain their accepted state.",
+          "Every renewal binds the account reclose reopening queue row, prior age state, accepted proof ID, owner, accepted date, next review, and reopen trigger.",
+          "Renewal restores workflow confidence only; it does not authenticate users, export data, delete data, run jobs, recover accounts, contact users, or approve custody widening.",
+          "Account renewal rows must exclude account payloads, contact details, credentials, identifiers, raw support notes, private notes, auth tokens, and payment payloads.",
+          "No account renewal receipt may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No reopened account lane may be renewed without accepted fresh proof and one accountable owner.",
+          "No current sibling lane may lose its accepted state merely because another account lane renews.",
+          "No renewal receipt may be treated as authentication, recovery, export, deletion, job execution, or custody approval.",
+          "No account reclose renewal receipt may authenticate users, export data, delete data, recover accounts, contact users, or approve custody widening."
+        ],
+        receiptFields: [
+          "account_reclose_renewal_receipt_id",
+          "release_key",
+          "account_reclose_reopening_queue_id",
+          "account_reclose_aging_guard_id",
+          "affected_lane",
+          "prior_age_state",
+          "accepted_proof_id",
+          "renewal_owner",
+          "accepted_at",
+          "next_review_at",
+          "reopen_trigger",
+          "sibling_state_snapshot",
+          "created_at"
+        ],
+        boundary: "Account Reclose Renewal Receipt is a static account renewal room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
       }
     ],
     executiveCalmCompression: {
@@ -22223,14 +22324,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Payment reclose renewal is visible; next releases should lock account reclose renewal receipt, beta command reclose renewal receipt, support repair reclose renewal receipt, source correction reclose renewal aging guard, and payment reclose renewal aging guard.",
+      rule: "Account reclose renewal is visible; next releases should lock beta command reclose renewal receipt, support repair reclose renewal receipt, source correction reclose renewal aging guard, payment reclose renewal aging guard, and account reclose renewal aging guard.",
       lanes: [
-        {
-          version: "v596",
-          label: "Account reclose renewal receipt",
-          route: "#account-readiness",
-          detail: "Renew reopened account lanes only after fresh delete/export, redaction, support-safe, object-family, founder custody, or trigger proof is accepted."
-        },
         {
           version: "v597",
           label: "Beta command reclose renewal receipt",
@@ -22254,14 +22349,27 @@ function buildTrackerConfig() {
           label: "Payment reclose renewal aging guard",
           route: "#payment-wiring",
           detail: "Age renewed payment proof independently across entitlement, refund, rollback, support, owner, and founder finance lanes."
+        },
+        {
+          version: "v601",
+          label: "Account reclose renewal aging guard",
+          route: "#account-readiness",
+          detail: "Age renewed account proof independently across delete/export, redaction, support-safe, object-family, founder custody, and trigger lanes."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Payment renewal proof visible",
+      verdict: "Account renewal proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v595",
+          key: "20260715-v595-01",
+          commit: "291fd94",
+          receiptId: "NN-SHARE-RECEIPT-20260715V59501",
+          proof: "Payment Reclose Renewal Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v594",
           key: "20260715-v594-01",
@@ -22289,13 +22397,6 @@ function buildTrackerConfig() {
           commit: "044c110",
           receiptId: "NN-SHARE-RECEIPT-20260715V59101",
           proof: "Account Reclose Reopening Queue added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, live stamp, and live app marker checks."
-        },
-        {
-          version: "v590",
-          key: "20260715-v590-01",
-          commit: "9d7c0bc",
-          receiptId: "NN-SHARE-RECEIPT-20260715V59001",
-          proof: "Payment Reclose Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -22333,18 +22434,18 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v595",
-        detail: "Payment Reclose Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v596",
+        detail: "Account Reclose Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v595 runs syntax, static, security, diff hygiene, and marker scans before the batch advances."
+        detail: "v596 runs syntax, static, security, diff hygiene, marker scans, and final visual QA before sharing."
       },
       {
         label: "03 Viewed",
-        value: "Batch visual QA pending",
-        detail: "Full desktop and mobile visual QA runs on v596 after all five proof rooms are present."
+        value: "Desktop + mobile pass",
+        detail: "The v596 Build Tracker passed 1440x900 and 390x844 visual QA with no horizontal overflow, clipped renewal cards, browser warnings, or runtime errors."
       },
       {
         label: "04 Share",
@@ -22355,13 +22456,13 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v595 payment selective renewal",
-        detail: "Payment Reclose Renewal Receipt renews only the affected entitlement, refund wording, rollback, support, owner, or founder finance lane after fresh proof is accepted."
+        value: "v596 account selective renewal",
+        detail: "Account Reclose Renewal Receipt renews only the affected delete/export, redaction, support-safe, object-family, founder custody, or trigger lane after fresh proof is accepted."
       },
       {
         label: "Release checks",
-        value: "Local checks passed",
-        detail: "v595 passed syntax, static, security, diff hygiene, and marker scans before commit."
+        value: "Local + visual checks passed",
+        detail: "v596 passed syntax, static, security, diff hygiene, marker scans, desktop/mobile visual QA, renewal-card fit, and browser log checks before commit."
       },
       {
         label: "Share outcome",

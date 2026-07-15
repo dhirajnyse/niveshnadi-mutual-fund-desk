@@ -22449,8 +22449,8 @@ function buildTrackerConfig() {
       },
       {
         label: "04 Share",
-        value: "Batch share pending",
-        detail: "GitHub Pages sharing waits for the v596 batch closeout and live marker verification."
+        value: "v596 live verified",
+        detail: "GitHub Pages returns the v596 release stamp, matching data key, Account Reclose Renewal Receipt key, and copy marker."
       }
     ],
     memory: [
@@ -22461,13 +22461,13 @@ function buildTrackerConfig() {
       },
       {
         label: "Release checks",
-        value: "Local + visual checks passed",
-        detail: "v596 passed syntax, static, security, diff hygiene, marker scans, desktop/mobile visual QA, renewal-card fit, and browser log checks before commit."
+        value: "All checks passed",
+        detail: "v596 passed syntax, static, security, diff hygiene, marker scans, desktop/mobile visual QA, renewal-card fit, browser logs, push, live stamp, and live app marker verification."
       },
       {
         label: "Share outcome",
-        value: "Batch share pending",
-        detail: "The five-release batch remains local until v596 completes visual QA and GitHub Pages verification."
+        value: "v596 live verified",
+        detail: "The release is share-ready because GitHub Pages serves the v596 stamp, data key, Account Reclose Renewal Receipt key, and copy marker."
       }
     ],
     actions: [

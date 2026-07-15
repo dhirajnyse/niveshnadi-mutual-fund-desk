@@ -8,7 +8,7 @@ V596 adds Account Reclose Renewal Receipt to the Build Tracker Release Doctor. I
 - Data/version key: `20260715-v596-01`
 - Product surface: Build Tracker > Release Doctor > Account reclose renewal receipt
 - Risk boundary: Static account renewal room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening.
-- Verification status: Syntax, static/security, marker, diff hygiene, 1440x900 desktop, 390x844 mobile, renewal-card fit, and browser log checks passed.
+- Verification status: Syntax, static/security, marker, diff hygiene, 1440x900 desktop, 390x844 mobile, renewal-card fit, browser logs, push, live stamp, and live app marker checks passed.
 
 ## V595 Payment Reclose Renewal Receipt
 

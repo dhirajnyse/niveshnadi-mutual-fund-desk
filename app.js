@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v619-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v619 Source Correction Reclose Renewal Refresh Reopening Queue";
+const DATA_VERSION = "20260715-v620-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v620 Payment Reclose Renewal Refresh Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction reclose renewal refresh reopening queue",
+    label: "Payment reclose renewal refresh reopening queue",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Route only expired refreshed source-correction lanes back to fresh proof while preserving current sibling state."
+    route: "#payment-wiring",
+    detail: "Route only expired refreshed payment lanes back to fresh proof while preserving current sibling state."
   },
   {
     label: "Mobile calm audit",
@@ -24469,6 +24469,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Reclose Renewal Refresh Reopening Queue is a static correction refresh queue only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
+      },
+      {
+        key: "paymentRecloseRenewalRefreshReopeningQueue",
+        label: "Payment reclose renewal refresh reopening queue",
+        verdict: "Expired refreshed payment proof reopens selectively",
+        receiptId: ["NN", "PAYMENT", "RECLOSE", "RENEWAL", "REFRESH", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-reclose-renewal-refresh-reopening-queue",
+        copyLabel: "Copy payment refresh reopening queue",
+        score: 81,
+        rule: "A refreshed payment lane may reopen only when its new review-by date or explicit reopen condition is reached; every queue row must preserve unaffected sibling state and accepted refresh lineage.",
+        lanes: [
+          {
+            label: "Entitlement refresh reopen",
+            owner: "Entitlement desk",
+            method: "REOPEN_REFRESHED_ENTITLEMENT",
+            route: "payment.reclose.renewal.refresh.reopening.entitlement",
+            proof: "Record prior refresh age state, entitlement trigger, required state and plan-boundary proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired entitlement refresh is queued with fresh state, plan boundary, and access-transition proof required.",
+            hold: "Hold when trigger, fresh entitlement proof, queue owner, or sibling snapshot is missing.",
+            score: 82
+          },
+          {
+            label: "Refund-wording refresh reopen",
+            owner: "Billing boundary desk",
+            method: "REOPEN_REFRESHED_REFUND_WORDING",
+            route: "payment.reclose.renewal.refresh.reopening.refund",
+            proof: "Record prior refresh age state, wording trigger, required policy and eligibility proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired refund refresh is queued with current wording, exclusions, policy boundary, and support route required.",
+            hold: "Hold when wording trigger, policy proof, support route, owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Rollback refresh reopen",
+            owner: "Payment reliability desk",
+            method: "REOPEN_REFRESHED_ROLLBACK",
+            route: "payment.reclose.renewal.refresh.reopening.rollback",
+            proof: "Record prior refresh age state, replay trigger, required rollback scenario and failure-path proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired rollback refresh is queued with a fresh replay receipt and affected transition required.",
+            hold: "Hold when replay trigger, rollback requirement, failure path, owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Support-copy refresh reopen",
+            owner: "Payment support desk",
+            method: "REOPEN_REFRESHED_SUPPORT_COPY",
+            route: "payment.reclose.renewal.refresh.reopening.support",
+            proof: "Record prior refresh age state, support trigger, required current copy and escalation proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired support-copy refresh is queued with current payment boundary and escalation proof required.",
+            hold: "Hold when copy trigger, escalation route, policy reference, owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Owner-review refresh reopen",
+            owner: "Finance owner",
+            method: "REOPEN_REFRESHED_OWNER_REVIEW",
+            route: "payment.reclose.renewal.refresh.reopening.owner",
+            proof: "Record prior refresh age state, owner trigger, required acknowledgement and scope proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired owner refresh is queued with a fresh accountable-owner review required.",
+            hold: "Hold when owner trigger, acknowledgement requirement, scope, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Founder-finance refresh reopen",
+            owner: "Founder finance desk",
+            method: "REOPEN_REFRESHED_FOUNDER_FINANCE",
+            route: "payment.reclose.renewal.refresh.reopening.founder",
+            proof: "Record prior refresh age state, founder trigger, required release-hold and zero-residue proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired founder-finance refresh is queued with a fresh payment review and release decision required.",
+            hold: "Hold when founder trigger, decision requirement, residue boundary, owner, or sibling snapshot is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Payment Reclose Renewal Refresh Reopening Queue opens only the refreshed lane whose new age state or reopen condition requires fresh proof.",
+          "Every queue row binds the refresh aging guard, refresh receipt, affected lane, prior age state, trigger, fresh-proof requirement, queue owner, and sibling-state snapshot.",
+          "Current sibling payment proof remains accepted unless its own refreshed review-by date or reopen condition is reached.",
+          "A reopened refresh returns to fresh-proof acceptance only after review; queue entry alone never restores confidence.",
+          "Payment refresh-reopening rows must exclude card, bank, UPI, token, credentials, contacts, account payloads, and raw gateway or support data."
+        ],
+        noGoLines: [
+          "No refreshed payment lane may reopen without a recorded refresh age state or explicit reopen trigger.",
+          "No sibling lane may be reopened merely because one refreshed payment lane enters the queue.",
+          "No queue row may be treated as payment processing, refund approval, entitlement approval, access grant, or launch approval.",
+          "No payment refresh reopening queue may process payments, issue refunds, grant access, fetch gateway logs, contact users, or reconcile production ledgers."
+        ],
+        receiptFields: [
+          "payment_reclose_renewal_refresh_reopening_queue_id",
+          "release_key",
+          "payment_reclose_renewal_refresh_aging_guard_id",
+          "payment_reclose_renewal_refresh_receipt_id",
+          "affected_lane",
+          "prior_age_state",
+          "reopen_trigger",
+          "fresh_proof_requirement",
+          "queue_owner",
+          "sibling_state_snapshot",
+          "opened_at",
+          "created_at"
+        ],
+        boundary: "Payment Reclose Renewal Refresh Reopening Queue is a static payment refresh queue only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -24641,14 +24741,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source refresh reopening is visible; next releases should add matching payment, account, founder-command, and support queues, then close refreshed source rows through explicit reacceptance receipts.",
+      rule: "Payment refresh reopening is visible; next releases should add matching account, founder-command, and support queues, then close refreshed source and payment rows through explicit reacceptance receipts.",
       lanes: [
-        {
-          version: "v620",
-          label: "Payment reclose renewal refresh reopening queue",
-          route: "#payment-wiring",
-          detail: "Route only expired refreshed payment lanes back to fresh proof while preserving current sibling state."
-        },
         {
           version: "v621",
           label: "Account reclose renewal refresh reopening queue",
@@ -24672,14 +24766,27 @@ function buildTrackerConfig() {
           label: "Source correction reclose renewal refresh reacceptance receipt",
           route: "#correction-ledger",
           detail: "Close one refreshed source queue row with reviewed fresh proof, a new review window, and preserved lineage."
+        },
+        {
+          version: "v625",
+          label: "Payment reclose renewal refresh reacceptance receipt",
+          route: "#payment-wiring",
+          detail: "Close one refreshed payment queue row with reviewed fresh proof, a new review window, and preserved lineage."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Source refresh reopening proof visible",
+      verdict: "Payment refresh reopening proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v619",
+          key: "20260715-v619-01",
+          commit: "1fa21a0",
+          receiptId: "NN-SHARE-RECEIPT-20260715V61901",
+          proof: "Source Correction Reclose Renewal Refresh Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v618",
           key: "20260715-v618-01",
@@ -24707,13 +24814,6 @@ function buildTrackerConfig() {
           commit: "9aaec72",
           receiptId: "NN-SHARE-RECEIPT-20260715V61501",
           proof: "Payment Reclose Renewal Refresh Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v614",
-          key: "20260715-v614-01",
-          commit: "943b0e5",
-          receiptId: "NN-SHARE-RECEIPT-20260715V61401",
-          proof: "Source Correction Reclose Renewal Refresh Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -24751,13 +24851,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v619",
-        detail: "Source Correction Reclose Renewal Refresh Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v620",
+        detail: "Payment Reclose Renewal Refresh Reopening Queue is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v619 passed syntax, static, security, diff hygiene, and marker scans; batch visual verification remains scheduled for v621."
+        detail: "v620 passed syntax, static, security, diff hygiene, and marker scans; batch visual verification remains scheduled for v621."
       },
       {
         label: "03 Viewed",
@@ -24773,13 +24873,13 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v619 source refresh reopening",
-        detail: "Source Correction Reclose Renewal Refresh Reopening Queue isolates expired refreshed source lanes and preserves accepted sibling state."
+        value: "v620 payment refresh reopening",
+        detail: "Payment Reclose Renewal Refresh Reopening Queue isolates expired refreshed payment lanes and preserves accepted sibling state."
       },
       {
         label: "Release checks",
         value: "Local checks passed",
-        detail: "v619 passed syntax, static, security, diff hygiene, and marker checks; full visual QA remains scheduled for v621."
+        detail: "v620 passed syntax, static, security, diff hygiene, and marker checks; full visual QA remains scheduled for v621."
       },
       {
         label: "Share outcome",

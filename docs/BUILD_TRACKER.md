@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V620 Payment Reclose Renewal Refresh Reopening Queue
+
+V620 adds Payment Reclose Renewal Refresh Reopening Queue to the Build Tracker Release Doctor. It routes only expired entitlement, refund-wording, rollback, support-copy, owner-review, and founder-finance refresh lanes back to fresh proof while preserving accepted sibling state and refresh lineage.
+
+- Release label: `NiveshNadi Phase 1 v620 Payment Reclose Renewal Refresh Reopening Queue`
+- Data/version key: `20260715-v620-01`
+- Product surface: Build Tracker > Release Doctor > Payment reclose renewal refresh reopening queue
+- Risk boundary: Static payment refresh queue only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, or approve payment launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v621.
+
 ## V619 Source Correction Reclose Renewal Refresh Reopening Queue
 
 V619 adds Source Correction Reclose Renewal Refresh Reopening Queue to the Build Tracker Release Doctor. It routes only expired replacement, notice, cache, support, reviewer, and founder refresh lanes back to fresh proof while preserving accepted sibling state and refresh lineage.

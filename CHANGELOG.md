@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v617 Beta Command Reclose Renewal Refresh Aging Guard
+
+- Version: `0.617.0`
+- Data version: `20260715-v617-01`
+- Changes made: Added Beta Command Reclose Renewal Refresh Aging Guard to the Build Tracker Release Doctor with independent replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review refresh-aging lanes, explicit proof-date, review-by, age-state, owner, reopen-condition, and sibling-state fields, refresh-receipt history preservation rules, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with verified v616 state, next-batch planner roll-forward to v618-v622, and release markers rolled forward to v617.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v617 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Reclose Renewal Refresh Aging Guard is a static founder-command refresh-aging room only; it does not send invites, process payments, grant access, fetch live data, recover accounts, reply to users, collect contact data, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v616 Account Reclose Renewal Refresh Aging Guard
 
 - Version: `0.616.0`

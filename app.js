@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v616-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v616 Account Reclose Renewal Refresh Aging Guard";
+const DATA_VERSION = "20260715-v617-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v617 Beta Command Reclose Renewal Refresh Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account reclose renewal refresh aging guard",
+    label: "Beta command reclose renewal refresh aging guard",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Age refreshed account proof independently so each new review window remains bounded by current custody evidence."
+    route: "#founder-beta-operating-room",
+    detail: "Age refreshed founder-command proof independently so each new review window remains bounded by current command evidence."
   },
   {
     label: "Mobile calm audit",
@@ -24169,6 +24169,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Reclose Renewal Refresh Aging Guard is a static account refresh-aging room only; it does not authenticate users, export or delete data, schedule or run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandRecloseRenewalRefreshAgingGuard",
+        label: "Beta command reclose renewal refresh aging guard",
+        verdict: "Refreshed founder-command proof has a new expiry clock",
+        receiptId: ["NN", "BETA", "COMMAND", "RECLOSE", "RENEWAL", "REFRESH", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-reclose-renewal-refresh-aging-guard",
+        copyLabel: "Copy command refresh aging guard",
+        score: 84,
+        rule: "Every refreshed founder-command lane must expose its new proof date, review-by date, age state, owner, and reopen condition so renewed command confidence cannot outlive current evidence.",
+        lanes: [
+          {
+            label: "Replacement refresh aging",
+            owner: "Founder evidence desk",
+            method: "AGE_REFRESHED_REPLACEMENT",
+            route: "beta.command.reclose.renewal.refresh.aging.replacement",
+            proof: "Track refreshed replacement proof date, review-by date, age state, accepted artifact, and evidence-drift reopen condition.",
+            readyWhen: "Ready while replacement proof remains current for the accepted founder command.",
+            hold: "Reopen when the artifact changes, evidence drifts, or the review-by date passes.",
+            score: 85
+          },
+          {
+            label: "Conflict-cleanup refresh aging",
+            owner: "Trust desk",
+            method: "AGE_REFRESHED_CONFLICT",
+            route: "beta.command.reclose.renewal.refresh.aging.conflict",
+            proof: "Track refreshed conflict-cleanup proof date, review-by date, age state, cleared conflict set, and recurrence trigger.",
+            readyWhen: "Ready while the cleared conflict set stays current and no command contradiction returns.",
+            hold: "Reopen when a conflict recurs, the command changes, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Release-safe-memory refresh aging",
+            owner: "Release memory desk",
+            method: "AGE_REFRESHED_MEMORY",
+            route: "beta.command.reclose.renewal.refresh.aging.memory",
+            proof: "Track refreshed release-safe-memory date, review-by date, age state, retained command scope, and memory-drift trigger.",
+            readyWhen: "Ready while retained release memory matches the accepted founder command and boundary.",
+            hold: "Reopen when retained memory drifts, scope widens, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Expiry-decision refresh aging",
+            owner: "Release captain",
+            method: "AGE_REFRESHED_EXPIRY",
+            route: "beta.command.reclose.renewal.refresh.aging.expiry",
+            proof: "Track refreshed expiry-decision date, review-by date, age state, release posture, and expiry trigger.",
+            readyWhen: "Ready while the expiry decision still matches current release posture and proof.",
+            hold: "Reopen when release posture changes, expiry evidence conflicts, or review-by passes.",
+            score: 83
+          },
+          {
+            label: "Owner-review refresh aging",
+            owner: "Command owner",
+            method: "AGE_REFRESHED_OWNER",
+            route: "beta.command.reclose.renewal.refresh.aging.owner",
+            proof: "Track refreshed owner-review date, review-by date, age state, owner acknowledgement, and ownership-change trigger.",
+            readyWhen: "Ready while the accountable owner and acknowledgement remain current.",
+            hold: "Reopen when ownership changes, acknowledgement is withdrawn, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Founder-review refresh aging",
+            owner: "Founder desk",
+            method: "AGE_REFRESHED_FOUNDER",
+            route: "beta.command.reclose.renewal.refresh.aging.founder",
+            proof: "Track refreshed founder-review date, review-by date, age state, final command posture, and founder-review trigger.",
+            readyWhen: "Ready while founder review can defend the refreshed command without unresolved conflict.",
+            hold: "Reopen when founder posture changes, a conflict returns, or review-by passes.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "Beta Command Reclose Renewal Refresh Aging Guard ages each refreshed founder-command lane independently; one stale lane does not silently invalidate current sibling proof.",
+          "Every aging row binds the refresh receipt, proof date, review-by date, age state, accountable owner, explicit reopen condition, and sibling-state snapshot.",
+          "Expired refreshed proof reopens only the affected founder-command lane and routes it back to fresh-proof acceptance before confidence can return.",
+          "The refresh receipt remains in history after expiry; the aging guard changes current state without deleting accepted proof lineage.",
+          "Founder-command refresh-aging rows must exclude contacts, identifiers, credentials, payment data, private notes, raw support conversations, and user payloads."
+        ],
+        noGoLines: [
+          "No refreshed founder-command lane may remain trusted after its review-by date or reopen condition is reached.",
+          "No sibling lane may be reopened merely because a different refreshed founder-command lane ages.",
+          "No refresh aging guard may be treated as an invite, payment, access, recovery, support reply, launch approval, or beta expansion decision.",
+          "No founder-command renewal refresh aging guard may contact users, process payments, grant access, recover accounts, or widen beta scope."
+        ],
+        receiptFields: [
+          "beta_command_reclose_renewal_refresh_aging_guard_id",
+          "release_key",
+          "beta_command_reclose_renewal_refresh_receipt_id",
+          "beta_command_reclose_renewal_reopening_queue_id",
+          "affected_lane",
+          "proof_date",
+          "review_by",
+          "age_state",
+          "reopen_condition",
+          "aging_owner",
+          "sibling_state_snapshot",
+          "created_at"
+        ],
+        boundary: "Beta Command Reclose Renewal Refresh Aging Guard is a static founder-command refresh-aging room only; it does not send invites, process payments, grant access, fetch live data, recover accounts, reply to users, collect contact data, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -24341,14 +24441,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account renewal refresh aging is visible; next releases should add founder-command and support-repair refresh aging guards, then route expired refreshed source, payment, and account proof into selective reopening queues.",
+      rule: "Founder-command renewal refresh aging is visible; next releases should add support-repair refresh aging, then route expired refreshed source, payment, account, and founder-command proof into selective reopening queues.",
       lanes: [
-        {
-          version: "v617",
-          label: "Beta command reclose renewal refresh aging guard",
-          route: "#founder-beta-operating-room",
-          detail: "Age refreshed founder-command proof independently so the new review window cannot outlive current command evidence."
-        },
         {
           version: "v618",
           label: "Support repair reclose renewal refresh aging guard",
@@ -24372,14 +24466,27 @@ function buildTrackerConfig() {
           label: "Account reclose renewal refresh reopening queue",
           route: "#account-readiness",
           detail: "Route only expired refreshed account lanes back to fresh proof while preserving current sibling state."
+        },
+        {
+          version: "v622",
+          label: "Beta command reclose renewal refresh reopening queue",
+          route: "#founder-beta-operating-room",
+          detail: "Route only expired refreshed founder-command lanes back to fresh proof while preserving current sibling state."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account refresh aging proof visible",
+      verdict: "Founder-command refresh aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v616",
+          key: "20260715-v616-01",
+          commit: "d6fd256",
+          receiptId: "NN-SHARE-RECEIPT-20260715V61601",
+          proof: "Account Reclose Renewal Refresh Aging Guard added and verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, live stamp, HTML cache-key, version-badge, live room-key, and live copy-marker checks."
+        },
         {
           version: "v615",
           key: "20260715-v615-01",
@@ -24407,13 +24514,6 @@ function buildTrackerConfig() {
           commit: "d39e388",
           receiptId: "NN-SHARE-RECEIPT-20260715V61201",
           proof: "Beta Command Reclose Renewal Refresh Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v611",
-          key: "20260715-v611-01",
-          commit: "412af28",
-          receiptId: "NN-SHARE-RECEIPT-20260715V61101",
-          proof: "Account Reclose Renewal Refresh Receipt added and verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, live stamp, HTML cache-key, version-badge, live room-key, and live copy-marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -24451,40 +24551,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v616",
-        detail: "Account Reclose Renewal Refresh Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v617",
+        detail: "Beta Command Reclose Renewal Refresh Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v616 passed syntax, static, security, diff hygiene, and marker scans before the batch closes."
+        detail: "v617 passed syntax, static, security, diff hygiene, and marker scans; batch visual verification remains scheduled for v621."
       },
       {
         label: "03 Viewed",
-        value: "Desktop + mobile pass",
-        detail: "All five batch rooms render seven cards without horizontal overflow at 1440x900 and 390x844; header, rail, controls, and console checks are clean."
+        value: "Scheduled for v621",
+        detail: "Desktop and mobile batch QA will run after all five rooms are present so the full release surface is checked together."
       },
       {
         label: "04 Share",
-        value: "GitHub Pages verified",
-        detail: "The v616 live stamp, HTML cache key, version badge, room key, copy marker, and current-sprint label match the published release."
+        value: "Pending batch close",
+        detail: "Push and live GitHub Pages verification remain intentionally held until v621 closes the five-version batch."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v616 account refresh aging",
-        detail: "Account Reclose Renewal Refresh Aging Guard gives each refreshed account lane an independent expiry clock and reopen condition."
+        value: "v617 command refresh aging",
+        detail: "Beta Command Reclose Renewal Refresh Aging Guard gives each refreshed founder-command lane an independent expiry clock and reopen condition."
       },
       {
         label: "Release checks",
-        value: "Local + visual passed",
-        detail: "v616 passed syntax, static, security, diff hygiene, marker, desktop, mobile, responsive overflow, header, rail, control-overlap, and console checks before commit."
+        value: "Local checks passed",
+        detail: "v617 passed syntax, static, security, diff hygiene, and marker checks; full visual QA remains scheduled for v621."
       },
       {
         label: "Share outcome",
-        value: "Live verified",
-        detail: "The five-release batch is published with matching v616 stamp, HTML cache key, version badge, account refresh-aging room key, copy marker, and current-sprint label."
+        value: "Pending batch close",
+        detail: "The release stays local until the five-version batch completes visual QA, push, and live stamp verification at v621."
       }
     ],
     actions: [

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v614-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v614 Source Correction Reclose Renewal Refresh Aging Guard";
+const DATA_VERSION = "20260715-v615-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v615 Payment Reclose Renewal Refresh Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -23969,6 +23969,106 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Reclose Renewal Refresh Aging Guard is a static correction refresh-aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
+      },
+      {
+        key: "paymentRecloseRenewalRefreshAgingGuard",
+        label: "Payment reclose renewal refresh aging guard",
+        verdict: "Refreshed payment proof has a new expiry clock",
+        receiptId: ["NN", "PAYMENT", "RECLOSE", "RENEWAL", "REFRESH", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-reclose-renewal-refresh-aging-guard",
+        copyLabel: "Copy payment refresh aging guard",
+        score: 84,
+        rule: "Every refreshed payment lane must expose its new proof date, review-by date, age state, owner, and reopen condition so refreshed confidence cannot outlive current payment evidence.",
+        lanes: [
+          {
+            label: "Entitlement refresh aging",
+            owner: "Entitlement desk",
+            method: "AGE_REFRESHED_ENTITLEMENT",
+            route: "payment.reclose.renewal.refresh.aging.entitlement",
+            proof: "Track refreshed entitlement proof date, review-by date, age state, access boundary, and mismatch reopen condition.",
+            readyWhen: "Ready while refreshed entitlement proof matches the accepted payment state.",
+            hold: "Reopen when review-by passes, access state diverges, or entitlement mapping changes.",
+            score: 85
+          },
+          {
+            label: "Refund wording refresh aging",
+            owner: "Finance policy desk",
+            method: "AGE_REFRESHED_REFUND_WORDING",
+            route: "payment.reclose.renewal.refresh.aging.refund",
+            proof: "Track refreshed refund wording date, review-by date, age state, eligibility boundary, and wording-change reopen condition.",
+            readyWhen: "Ready while refund wording remains current, bounded, and consistent with accepted policy proof.",
+            hold: "Reopen when policy, eligibility, support route, or public wording changes.",
+            score: 84
+          },
+          {
+            label: "Rollback refresh aging",
+            owner: "Payment reliability",
+            method: "AGE_REFRESHED_ROLLBACK",
+            route: "payment.reclose.renewal.refresh.aging.rollback",
+            proof: "Track refreshed rollback proof date, review-by date, age state, incident family, and replay-failure reopen condition.",
+            readyWhen: "Ready while rollback proof covers the current payment incident families.",
+            hold: "Reopen when replay fails, incident scope changes, or rollback evidence expires.",
+            score: 84
+          },
+          {
+            label: "Support copy refresh aging",
+            owner: "Payment support desk",
+            method: "AGE_REFRESHED_SUPPORT_COPY",
+            route: "payment.reclose.renewal.refresh.aging.support",
+            proof: "Track refreshed support-copy proof date, review-by date, age state, response family, and copy-drift reopen condition.",
+            readyWhen: "Ready while support-safe wording matches current payment and refund evidence.",
+            hold: "Reopen when response family, escalation route, refund wording, or payment state changes.",
+            score: 83
+          },
+          {
+            label: "Owner review refresh aging",
+            owner: "Payment owner",
+            method: "AGE_REFRESHED_OWNER_REVIEW",
+            route: "payment.reclose.renewal.refresh.aging.owner",
+            proof: "Track refreshed owner-review date, review-by date, age state, accepted scope, and owner-change reopen condition.",
+            readyWhen: "Ready while one accountable owner can defend the refreshed payment lane.",
+            hold: "Reopen when review-by passes, owner changes, or accepted scope no longer covers the lane.",
+            score: 84
+          },
+          {
+            label: "Founder finance refresh aging",
+            owner: "Founder finance desk",
+            method: "AGE_REFRESHED_FOUNDER_FINANCE",
+            route: "payment.reclose.renewal.refresh.aging.founder",
+            proof: "Track refreshed founder-finance date, review-by date, age state, release hold, residue state, and reopen condition.",
+            readyWhen: "Ready while founder-finance review can defend the refreshed payment lane with no unresolved residue.",
+            hold: "Reopen when founder review expires, release posture changes, or payment residue returns.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "Payment Reclose Renewal Refresh Aging Guard ages each refreshed lane independently; one stale lane does not silently invalidate current sibling proof.",
+          "Every aging row binds the refresh receipt, proof date, review-by date, age state, accountable owner, explicit reopen condition, and sibling-state snapshot.",
+          "Expired refreshed proof reopens only the affected payment lane and routes it back to fresh-proof acceptance before confidence can return.",
+          "The refresh receipt remains in history after expiry; the aging guard changes current state without deleting accepted proof lineage.",
+          "Payment refresh-aging rows must exclude provider secrets, payment payloads, bank or card data, identifiers, contacts, credentials, and private notes."
+        ],
+        noGoLines: [
+          "No refreshed payment lane may remain trusted after its review-by date or reopen condition is reached.",
+          "No sibling lane may be reopened merely because a different refreshed payment lane ages.",
+          "No refresh aging guard may be treated as a payment, refund, entitlement grant, gateway reconciliation, or launch approval.",
+          "No payment renewal refresh aging guard may process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
+        ],
+        receiptFields: [
+          "payment_reclose_renewal_refresh_aging_guard_id",
+          "release_key",
+          "payment_reclose_renewal_refresh_receipt_id",
+          "payment_reclose_renewal_reopening_queue_id",
+          "affected_lane",
+          "proof_date",
+          "review_by",
+          "age_state",
+          "reopen_condition",
+          "aging_owner",
+          "sibling_state_snapshot",
+          "created_at"
+        ],
+        boundary: "Payment Reclose Renewal Refresh Aging Guard is a static payment refresh-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -24141,14 +24241,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source-correction renewal refresh aging is visible; next releases should add payment, account, founder-command, and support-repair refresh aging guards, then route expired refreshed source proof into a selective reopening queue.",
+      rule: "Payment renewal refresh aging is visible; next releases should add account, founder-command, and support-repair refresh aging guards, then route expired refreshed source and payment proof into selective reopening queues.",
       lanes: [
-        {
-          version: "v615",
-          label: "Payment reclose renewal refresh aging guard",
-          route: "#payment-wiring",
-          detail: "Age refreshed payment proof independently so the new review window cannot outlive current evidence."
-        },
         {
           version: "v616",
           label: "Account reclose renewal refresh aging guard",
@@ -24172,14 +24266,27 @@ function buildTrackerConfig() {
           label: "Source correction reclose renewal refresh reopening queue",
           route: "#correction-ledger",
           detail: "Route only expired refreshed source-correction lanes back to fresh proof while preserving current sibling state."
+        },
+        {
+          version: "v620",
+          label: "Payment reclose renewal refresh reopening queue",
+          route: "#payment-wiring",
+          detail: "Route only expired refreshed payment lanes back to fresh proof while preserving current sibling state."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Source-correction refresh aging proof visible",
+      verdict: "Payment refresh aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v614",
+          key: "20260715-v614-01",
+          commit: "943b0e5",
+          receiptId: "NN-SHARE-RECEIPT-20260715V61401",
+          proof: "Source Correction Reclose Renewal Refresh Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v613",
           key: "20260715-v613-01",
@@ -24207,13 +24314,6 @@ function buildTrackerConfig() {
           commit: "9257a1b",
           receiptId: "NN-SHARE-RECEIPT-20260715V61001",
           proof: "Payment Reclose Renewal Refresh Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v609",
-          key: "20260715-v609-01",
-          commit: "4193355",
-          receiptId: "NN-SHARE-RECEIPT-20260715V60901",
-          proof: "Source Correction Reclose Renewal Refresh Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -24251,13 +24351,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v614",
-        detail: "Source Correction Reclose Renewal Refresh Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v615",
+        detail: "Payment Reclose Renewal Refresh Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v614 passed syntax, static, security, diff hygiene, and marker scans before the batch advances."
+        detail: "v615 passed syntax, static, security, diff hygiene, and marker scans before the batch advances."
       },
       {
         label: "03 Viewed",
@@ -24273,13 +24373,13 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v614 source-correction refresh aging",
-        detail: "Source Correction Reclose Renewal Refresh Aging Guard gives each refreshed correction lane an independent expiry clock and reopen condition."
+        value: "v615 payment refresh aging",
+        detail: "Payment Reclose Renewal Refresh Aging Guard gives each refreshed payment lane an independent expiry clock and reopen condition."
       },
       {
         label: "Release checks",
         value: "Local checks passed",
-        detail: "v614 passed syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v615 passed syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "Share outcome",

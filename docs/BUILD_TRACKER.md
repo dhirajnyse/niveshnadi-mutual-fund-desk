@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V615 Payment Reclose Renewal Refresh Aging Guard
+
+V615 adds Payment Reclose Renewal Refresh Aging Guard to the Build Tracker Release Doctor. It ages refreshed entitlement, refund-wording, rollback, support-copy, owner-review, and founder-finance proof independently with explicit proof-date, review-by, age-state, owner, and selective reopen fields.
+
+- Release label: `NiveshNadi Phase 1 v615 Payment Reclose Renewal Refresh Aging Guard`
+- Data/version key: `20260715-v615-01`
+- Product surface: Build Tracker > Release Doctor > Payment reclose renewal refresh aging guard
+- Risk boundary: Static payment refresh-aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v616.
+
 ## V614 Source Correction Reclose Renewal Refresh Aging Guard
 
 V614 adds Source Correction Reclose Renewal Refresh Aging Guard to the Build Tracker Release Doctor. It ages refreshed replacement, notice, cache, support, reviewer, and founder proof independently with explicit proof-date, review-by, age-state, owner, and selective reopen fields.

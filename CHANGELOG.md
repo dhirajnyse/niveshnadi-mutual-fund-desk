@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v595 Payment Reclose Renewal Receipt
+
+- Version: `0.595.0`
+- Data version: `20260715-v595-01`
+- Changes made: Added Payment Reclose Renewal Receipt to the Build Tracker Release Doctor with selective entitlement, refund wording, rollback, support, owner, and founder finance lane renewal, accepted-proof and sibling-state fields, explicit next-review and reopen-trigger controls, Build Tracker current-sprint copy roll-forward, proof archive roll-forward with v594 commit, next-batch planner roll-forward to v596-v600, and release markers rolled forward to v595.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v595 marker scan; Git diff hygiene check.
+- Known risks: Payment Reclose Renewal Receipt is a static payment renewal room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+
 ## NiveshNadi Phase 1 v594 Source Correction Reclose Renewal Receipt
 
 - Version: `0.594.0`

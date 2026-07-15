@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v594-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v594 Source Correction Reclose Renewal Receipt";
+const DATA_VERSION = "20260715-v595-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v595 Payment Reclose Renewal Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Source correction reclose renewal receipt",
+    label: "Payment reclose renewal receipt",
     status: "Shipping now",
-    route: "#correction-ledger",
-    detail: "Renew only the reopened replacement, notice, cache, support, reviewer, or founder correction lane after fresh proof is accepted."
+    route: "#payment-wiring",
+    detail: "Renew only the reopened entitlement, refund wording, rollback, support, owner, or founder finance lane after fresh proof is accepted."
   },
   {
     label: "Mobile calm audit",
@@ -21950,6 +21950,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Reclose Renewal Receipt is a static correction renewal room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
+      },
+      {
+        key: "paymentRecloseRenewalReceipt",
+        label: "Payment reclose renewal receipt",
+        verdict: "Accepted fresh proof renews one payment lane",
+        receiptId: ["NN", "PAYMENT", "RECLOSE", "RENEWAL", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-reclose-renewal-receipt",
+        copyLabel: "Copy payment renewal receipt",
+        score: 82,
+        rule: "A reopened payment lane may regain reclosed confidence only after fresh entitlement, refund wording, rollback, support, owner, or founder finance proof is accepted and bound to one renewal receipt.",
+        lanes: [
+          {
+            label: "Entitlement renewed",
+            owner: "Entitlement desk",
+            method: "RENEW_ENTITLEMENT",
+            route: "payment.reclose.renewal.entitlement",
+            proof: "Bind reopening row, accepted entitlement state, plan boundary, reviewer, accepted date, and next review.",
+            readyWhen: "Ready when accepted fresh entitlement proof again supports the affected payment lane.",
+            hold: "Hold renewal if state, plan boundary, reviewer, or acceptance date is missing.",
+            score: 82
+          },
+          {
+            label: "Refund wording renewed",
+            owner: "Billing boundary desk",
+            method: "RENEW_REFUND_WORDING",
+            route: "payment.reclose.renewal.refund",
+            proof: "Bind reopening row, accepted refund wording, excluded promises, reviewer, accepted date, and next review.",
+            readyWhen: "Ready when accepted wording is current without approval, execution, or guarantee language.",
+            hold: "Hold renewal if wording, excluded promises, reviewer, or acceptance date is missing.",
+            score: 82
+          },
+          {
+            label: "Rollback proof renewed",
+            owner: "Payment reliability desk",
+            method: "RENEW_ROLLBACK",
+            route: "payment.reclose.renewal.rollback",
+            proof: "Bind reopening row, accepted rollback scenario, replay receipt, owner, accepted date, and next review.",
+            readyWhen: "Ready when accepted rollback proof covers the affected state transition and failure path.",
+            hold: "Hold renewal if scenario, replay receipt, owner, or accepted date is missing.",
+            score: 82
+          },
+          {
+            label: "Support copy renewed",
+            owner: "Support desk",
+            method: "RENEW_SUPPORT",
+            route: "payment.reclose.renewal.support",
+            proof: "Bind reopening row, accepted support-safe copy, response ceiling, owner, and next review.",
+            readyWhen: "Ready when accepted support proof explains status without refund, access, or payment promises.",
+            hold: "Hold renewal if support-safe copy, response ceiling, owner, or accepted date is missing.",
+            score: 81
+          },
+          {
+            label: "Owner review renewed",
+            owner: "Payment owner",
+            method: "RENEW_OWNER",
+            route: "payment.reclose.renewal.owner",
+            proof: "Bind reopening row, accepted owner scope, fallback owner, decision receipt, and next review.",
+            readyWhen: "Ready when one accountable payment owner and fallback accept the affected lane.",
+            hold: "Hold renewal if owner, fallback, decision receipt, or next review is ambiguous.",
+            score: 82
+          },
+          {
+            label: "Founder finance renewed",
+            owner: "Founder finance desk",
+            method: "RENEW_SIGNOFF",
+            route: "payment.reclose.renewal.founder",
+            proof: "Bind reopening row, founder renewal decision, zero-residue note, accepted proof IDs, and next reopen trigger.",
+            readyWhen: "Ready when founder finance review accepts fresh proof with no unresolved payment residue.",
+            hold: "Hold renewal if founder decision, proof IDs, residue state, or reopen trigger is missing.",
+            score: 83
+          }
+        ],
+        operatingRules: [
+          "Payment Reclose Renewal Receipt renews only the reopened lane whose fresh proof is accepted; current sibling lanes retain their accepted state.",
+          "Every renewal binds the payment reclose reopening queue row, prior age state, accepted proof ID, owner, accepted date, next review, and reopen trigger.",
+          "Renewal restores workflow confidence only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile ledgers, contact users, or approve launch.",
+          "Payment renewal rows must exclude gateway payloads, raw support notes, card or bank data, payment tokens, credentials, identifiers, contact details, and private notes.",
+          "No payment renewal receipt may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No reopened payment lane may be renewed without accepted fresh proof and one accountable owner.",
+          "No current sibling lane may lose its accepted state merely because another payment lane renews.",
+          "No renewal receipt may be treated as payment execution, refund approval, access grant, reconciliation proof, or financial advice.",
+          "No payment reclose renewal receipt may process payments, issue refunds, grant access, fetch gateway logs, contact users, or approve payment launch."
+        ],
+        receiptFields: [
+          "payment_reclose_renewal_receipt_id",
+          "release_key",
+          "payment_reclose_reopening_queue_id",
+          "payment_reclose_aging_guard_id",
+          "affected_lane",
+          "prior_age_state",
+          "accepted_proof_id",
+          "renewal_owner",
+          "accepted_at",
+          "next_review_at",
+          "reopen_trigger",
+          "sibling_state_snapshot",
+          "created_at"
+        ],
+        boundary: "Payment Reclose Renewal Receipt is a static payment renewal room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -22122,14 +22223,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source correction reclose renewal is visible; next releases should lock payment reclose renewal receipt, account reclose renewal receipt, beta command reclose renewal receipt, support repair reclose renewal receipt, and source correction reclose renewal aging guard.",
+      rule: "Payment reclose renewal is visible; next releases should lock account reclose renewal receipt, beta command reclose renewal receipt, support repair reclose renewal receipt, source correction reclose renewal aging guard, and payment reclose renewal aging guard.",
       lanes: [
-        {
-          version: "v595",
-          label: "Payment reclose renewal receipt",
-          route: "#payment-wiring",
-          detail: "Renew reopened payment lanes only after fresh entitlement, refund, rollback, support, owner, or founder finance proof is accepted."
-        },
         {
           version: "v596",
           label: "Account reclose renewal receipt",
@@ -22153,14 +22248,27 @@ function buildTrackerConfig() {
           label: "Source correction reclose renewal aging guard",
           route: "#correction-ledger",
           detail: "Age renewed correction proof independently across replacement, notice, cache, support, reviewer, and founder lanes."
+        },
+        {
+          version: "v600",
+          label: "Payment reclose renewal aging guard",
+          route: "#payment-wiring",
+          detail: "Age renewed payment proof independently across entitlement, refund, rollback, support, owner, and founder finance lanes."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Source correction renewal proof visible",
+      verdict: "Payment renewal proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v594",
+          key: "20260715-v594-01",
+          commit: "8e5a267",
+          receiptId: "NN-SHARE-RECEIPT-20260715V59401",
+          proof: "Source Correction Reclose Renewal Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
+        },
         {
           version: "v593",
           key: "20260715-v593-01",
@@ -22188,13 +22296,6 @@ function buildTrackerConfig() {
           commit: "9d7c0bc",
           receiptId: "NN-SHARE-RECEIPT-20260715V59001",
           proof: "Payment Reclose Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v589",
-          key: "20260715-v589-01",
-          commit: "f13e2dc",
-          receiptId: "NN-SHARE-RECEIPT-20260715V58901",
-          proof: "Source Correction Reclose Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -22232,13 +22333,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v594",
-        detail: "Source Correction Reclose Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v595",
+        detail: "Payment Reclose Renewal Receipt is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v594 runs syntax, static, security, diff hygiene, and marker scans before the batch advances."
+        detail: "v595 runs syntax, static, security, diff hygiene, and marker scans before the batch advances."
       },
       {
         label: "03 Viewed",
@@ -22254,13 +22355,13 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v594 source selective renewal",
-        detail: "Source Correction Reclose Renewal Receipt renews only the affected replacement, notice, cache, support, reviewer, or founder lane after fresh proof is accepted."
+        value: "v595 payment selective renewal",
+        detail: "Payment Reclose Renewal Receipt renews only the affected entitlement, refund wording, rollback, support, owner, or founder finance lane after fresh proof is accepted."
       },
       {
         label: "Release checks",
         value: "Local checks passed",
-        detail: "v594 passed syntax, static, security, diff hygiene, and marker scans before commit."
+        detail: "v595 passed syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "Share outcome",

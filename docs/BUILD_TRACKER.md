@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V595 Payment Reclose Renewal Receipt
+
+V595 adds Payment Reclose Renewal Receipt to the Build Tracker Release Doctor. It renews only the reopened entitlement, refund wording, rollback proof, support copy, owner review, or founder finance lane after fresh proof is accepted and preserves current sibling proof.
+
+- Release label: `NiveshNadi Phase 1 v595 Payment Reclose Renewal Receipt`
+- Data/version key: `20260715-v595-01`
+- Product surface: Build Tracker > Release Doctor > Payment reclose renewal receipt
+- Risk boundary: Static payment renewal room only; it does not process payments, issue refunds, grant access, fetch gateway logs, reconcile production ledgers, contact users, or approve payment launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed.
+
 ## V594 Source Correction Reclose Renewal Receipt
 
 V594 adds Source Correction Reclose Renewal Receipt to the Build Tracker Release Doctor. It renews only the reopened replacement proof, public notice, cache refresh, support handoff, reviewer scope, or founder review lane after fresh proof is accepted and preserves current sibling proof.

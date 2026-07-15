@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V625 Payment Reclose Renewal Refresh Reacceptance Receipt
+
+V625 adds Payment Reclose Renewal Refresh Reacceptance Receipt to the Build Tracker Release Doctor. It closes exactly one refreshed payment queue row after accepted fresh proof and a new review window are recorded, while retaining the superseded queue row, trigger, prior age state, accepted sibling snapshot, and a strict no-transaction boundary.
+
+- Release label: `NiveshNadi Phase 1 v625 Payment Reclose Renewal Refresh Reacceptance Receipt`
+- Data/version key: `20260715-v625-01`
+- Product surface: Build Tracker > Release Doctor > Payment reclose renewal refresh reacceptance receipt
+- Risk boundary: Static payment receipt only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, or approve payment launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v626.
+
 ## V624 Source Correction Reclose Renewal Refresh Reacceptance Receipt
 
 V624 adds Source Correction Reclose Renewal Refresh Reacceptance Receipt to the Build Tracker Release Doctor. It closes exactly one refreshed source queue row after accepted fresh proof and a new review window are recorded, while retaining the superseded queue row, trigger, prior age state, and accepted sibling snapshot.

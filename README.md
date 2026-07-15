@@ -2,13 +2,14 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v624 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v625 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
 - 3D-style corporate SVG logo and brand system.
+- Payment Reclose Renewal Refresh Reacceptance Receipt in the Build Tracker Release Doctor that closes exactly one refreshed payment queue row after fresh proof, reviewer acceptance, and a new review window are recorded while preserving prior queue history and never executing a financial action.
 - Source Correction Reclose Renewal Refresh Reacceptance Receipt in the Build Tracker Release Doctor that closes exactly one refreshed source queue row after fresh proof, reviewer acceptance, and a new review window are recorded while preserving the prior queue row and sibling state.
 - Support Repair Reclose Renewal Refresh Reopening Queue in the Build Tracker Release Doctor that routes only expired support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support refresh lanes back to fresh proof while preserving accepted sibling state and refresh lineage.
 - Beta Command Reclose Renewal Refresh Reopening Queue in the Build Tracker Release Doctor that routes only expired replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review refresh lanes back to fresh proof while preserving accepted sibling state and refresh lineage.

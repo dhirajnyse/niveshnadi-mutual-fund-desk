@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v625 Payment Reclose Renewal Refresh Reacceptance Receipt
+
+- Version: `0.625.0`
+- Data version: `20260715-v625-01`
+- Changes made: Added Payment Reclose Renewal Refresh Reacceptance Receipt to the Build Tracker Release Doctor with entitlement, refund-wording, rollback, support-copy, owner-review, and founder-finance reacceptance lanes, explicit reopened-queue, prior-refresh, aging-guard, accepted-proof, reviewer, acceptance-time, new-clock, superseded-row, and sibling-state bindings, transaction-safe no-go boundaries, Build Tracker current-release copy roll-forward, proof archive roll-forward with verified v624 state, next-batch planner roll-forward to v626-v630, and release markers rolled forward to v625.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v625 marker scan; Git diff hygiene check.
+- Known risks: Payment Reclose Renewal Refresh Reacceptance Receipt is a static payment receipt only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, or approve payment launch.
+
 ## NiveshNadi Phase 1 v624 Source Correction Reclose Renewal Refresh Reacceptance Receipt
 
 - Version: `0.624.0`

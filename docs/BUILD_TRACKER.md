@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V602 Beta Command Reclose Renewal Aging Guard
+
+V602 adds Beta Command Reclose Renewal Aging Guard to the Build Tracker Release Doctor. It ages renewed replacement, conflict cleanup, release-safe memory, expiry, owner review, and founder review proof independently with explicit proof-date, review-by, age-state, and reopen-condition fields.
+
+- Release label: `NiveshNadi Phase 1 v602 Beta Command Reclose Renewal Aging Guard`
+- Data/version key: `20260715-v602-01`
+- Product surface: Build Tracker > Release Doctor > Beta command reclose renewal aging guard
+- Risk boundary: Static command-aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v606.
+
 ## V601 Account Reclose Renewal Aging Guard
 
 V601 adds Account Reclose Renewal Aging Guard to the Build Tracker Release Doctor. It ages renewed delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review proof independently with explicit proof-date, review-by, age-state, and reopen-condition fields.

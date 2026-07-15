@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260715-v601-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v601 Account Reclose Renewal Aging Guard";
+const DATA_VERSION = "20260715-v602-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v602 Beta Command Reclose Renewal Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -1297,10 +1297,10 @@ const BUILD_TRACKER_PHASES = [
 
 const BUILD_TRACKER_CURRENT_SPRINT = [
   {
-    label: "Account reclose renewal aging guard",
+    label: "Beta command reclose renewal aging guard",
     status: "Shipping now",
-    route: "#account-readiness",
-    detail: "Age renewed account proof independently across delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review lanes."
+    route: "#founder-beta-operating-room",
+    detail: "Age renewed founder command proof independently across replacement, conflict, release-safe memory, expiry, owner, and founder lanes."
   },
   {
     label: "Mobile calm audit",
@@ -22651,6 +22651,105 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Reclose Renewal Aging Guard is a static account-aging room only; it does not authenticate users, export data, delete data, schedule jobs, run jobs, collect identifiers, recover accounts, contact users, or approve account custody widening."
+      },
+      {
+        key: "betaCommandRecloseRenewalAgingGuard",
+        label: "Beta command reclose renewal aging guard",
+        verdict: "Renewed founder command proof has review windows",
+        receiptId: ["NN", "BETA", "COMMAND", "RECLOSE", "RENEWAL", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-reclose-renewal-aging-guard",
+        copyLabel: "Copy command renewal aging",
+        score: 81,
+        rule: "Every renewed founder command lane must expose its proof date, review-by date, age state, and reopen condition so reclosed confidence cannot outlive current command evidence.",
+        lanes: [
+          {
+            label: "Replacement proof age",
+            owner: "Founder evidence desk",
+            method: "AGE_REPLACEMENT",
+            route: "beta.command.reclose.renewal.aging.replacement",
+            proof: "Track replacement proof date, review-by date, age state, accepted command scope, and replacement-change reopen condition.",
+            readyWhen: "Ready when replacement proof still matches the renewed founder command scope.",
+            hold: "Reopen when proof passes review-by, command scope changes, or the replacement artifact is superseded.",
+            score: 82
+          },
+          {
+            label: "Conflict cleanup age",
+            owner: "Trust desk",
+            method: "AGE_CONFLICT",
+            route: "beta.command.reclose.renewal.aging.conflict",
+            proof: "Track cleanup proof date, review-by date, age state, residue state, and conflict-return reopen condition.",
+            readyWhen: "Ready when conflict cleanup remains current with no unresolved founder command residue.",
+            hold: "Reopen when residue returns, a conflicting command appears, or cleanup proof passes review-by.",
+            score: 81
+          },
+          {
+            label: "Release-safe memory age",
+            owner: "Release memory desk",
+            method: "AGE_MEMORY",
+            route: "beta.command.reclose.renewal.aging.memory",
+            proof: "Track memory proof date, review-by date, age state, excluded fields, reuse window, and memory-change reopen condition.",
+            readyWhen: "Ready when renewed founder memory remains current, scoped, and free of private context.",
+            hold: "Reopen when memory copy widens, reuse window expires, exclusions change, or private context appears.",
+            score: 81
+          },
+          {
+            label: "Expiry age",
+            owner: "Release captain",
+            method: "AGE_EXPIRY",
+            route: "beta.command.reclose.renewal.aging.expiry",
+            proof: "Track expiry proof date, review-by date, age state, freeze decision, and expiry-change reopen condition.",
+            readyWhen: "Ready when command expiry, extension, or freeze evidence remains current and explicit.",
+            hold: "Reopen when expiry passes, extension reason changes, freeze lifts, or review-by is reached.",
+            score: 80
+          },
+          {
+            label: "Owner review age",
+            owner: "Command owner",
+            method: "AGE_OWNER",
+            route: "beta.command.reclose.renewal.aging.owner",
+            proof: "Track owner proof date, review-by date, age state, fallback owner, and ownership-change reopen condition.",
+            readyWhen: "Ready when one accountable owner and fallback remain current for the renewed command lane.",
+            hold: "Reopen when owner changes, fallback disappears, scope widens, or review-by passes.",
+            score: 81
+          },
+          {
+            label: "Founder review age",
+            owner: "Founder desk",
+            method: "AGE_FOUNDER",
+            route: "beta.command.reclose.renewal.aging.founder",
+            proof: "Track founder proof date, review-by date, age state, release hold, residue state, and reopen condition.",
+            readyWhen: "Ready when founder review can still defend renewed command proof with zero unresolved residue.",
+            hold: "Reopen when founder review expires, release posture changes, or command residue returns.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Beta Command Reclose Renewal Aging Guard ages each renewed lane independently; one stale lane does not silently invalidate current sibling proof.",
+          "Every aging row binds the reclose renewal receipt, proof date, review-by date, age state, accountable owner, and explicit reopen condition.",
+          "Expired proof reopens only the affected founder command lane and routes it back to fresh-proof acceptance before confidence can renew again.",
+          "Command aging rows must exclude private founder notes, raw support notes, account or payment payloads, credentials, identifiers, contact details, and private context.",
+          "No command renewal aging row may store PAN, folio, CAS, bank, card, UPI, contact data, credentials, private notes, payment payloads, auth tokens, or distributor-client records."
+        ],
+        noGoLines: [
+          "No renewed founder command lane may remain trusted after its review-by date or reopen condition is reached.",
+          "No sibling lane may be reopened merely because a different command lane ages.",
+          "No aging guard may be treated as a cohort invitation, payment approval, access grant, account recovery, or launch approval.",
+          "No beta command reclose renewal aging guard may invite users, process payments, grant access, recover accounts, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "beta_command_reclose_renewal_aging_guard_id",
+          "release_key",
+          "beta_command_reclose_renewal_receipt_id",
+          "affected_lane",
+          "proof_date",
+          "review_by",
+          "age_state",
+          "reopen_condition",
+          "aging_owner",
+          "sibling_state_snapshot",
+          "created_at"
+        ],
+        boundary: "Beta Command Reclose Renewal Aging Guard is a static command-aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -22823,14 +22922,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account reclose renewal aging is visible; next releases should lock beta command reclose renewal aging guard, support repair reclose renewal aging guard, source correction reclose renewal reopening queue, payment reclose renewal reopening queue, and account reclose renewal reopening queue.",
+      rule: "Beta command reclose renewal aging is visible; next releases should lock support repair reclose renewal aging guard, source correction reclose renewal reopening queue, payment reclose renewal reopening queue, account reclose renewal reopening queue, and beta command reclose renewal reopening queue.",
       lanes: [
-        {
-          version: "v602",
-          label: "Beta command reclose renewal aging guard",
-          route: "#founder-beta-operating-room",
-          detail: "Age renewed founder command proof independently across replacement, conflict, memory, expiry, owner, and founder lanes."
-        },
         {
           version: "v603",
           label: "Support repair reclose renewal aging guard",
@@ -22854,14 +22947,27 @@ function buildTrackerConfig() {
           label: "Account reclose renewal reopening queue",
           route: "#account-readiness",
           detail: "Reopen only the renewed account lane whose proof date, review-by, age state, or reopen condition requires fresh evidence."
+        },
+        {
+          version: "v607",
+          label: "Beta command reclose renewal reopening queue",
+          route: "#founder-beta-operating-room",
+          detail: "Reopen only the renewed founder command lane whose proof date, review-by, age state, or reopen condition requires fresh evidence."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account renewal aging proof visible",
+      verdict: "Command renewal aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
+        {
+          version: "v601",
+          key: "20260715-v601-01",
+          commit: "40f550e",
+          receiptId: "NN-SHARE-RECEIPT-20260715V60101",
+          proof: "Account Reclose Renewal Aging Guard added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, live stamp, HTML cache-key, live room-key, and live copy-marker checks."
+        },
         {
           version: "v600",
           key: "20260715-v600-01",
@@ -22889,13 +22995,6 @@ function buildTrackerConfig() {
           commit: "5d56ba2",
           receiptId: "NN-SHARE-RECEIPT-20260715V59701",
           proof: "Beta Command Reclose Renewal Receipt added and verified by syntax, static, security, diff hygiene, and marker checks."
-        },
-        {
-          version: "v596",
-          key: "20260715-v596-01",
-          commit: "aa4e02a",
-          receiptId: "NN-SHARE-RECEIPT-20260715V59601",
-          proof: "Account Reclose Renewal Receipt added and verified by syntax, static, security, diff hygiene, desktop, mobile, push, live stamp, and live app marker checks."
         },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
@@ -22933,40 +23032,40 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v601",
-        detail: "Account Reclose Renewal Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
+        value: "v602",
+        detail: "Beta Command Reclose Renewal Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "v601 runs syntax, static, security, diff hygiene, and marker scans before batch visual QA."
+        detail: "v602 runs syntax, static, security, diff hygiene, and marker scans before the batch advances."
       },
       {
         label: "03 Viewed",
-        value: "Desktop + mobile pass",
-        detail: "v601 passed 1440x900 desktop and 390x844 mobile checks with all five new proof rooms present, readable, and free of horizontal overflow."
+        value: "Batch visual QA pending",
+        detail: "Full desktop and mobile visual QA runs on v606 after all five proof rooms are present."
       },
       {
         label: "04 Share",
-        value: "Live verified",
-        detail: "GitHub Pages returns the v601 release stamp, HTML cache key, account-aging room key, and copy marker."
+        value: "Batch share pending",
+        detail: "GitHub Pages sharing waits for the v606 batch closeout and live marker verification."
       }
     ],
     memory: [
       {
         label: "Product commit",
-        value: "v601 account renewal aging",
-        detail: "Account Reclose Renewal Aging Guard gives each renewed account lane its own proof date, review-by date, age state, and reopen condition."
+        value: "v602 command renewal aging",
+        detail: "Beta Command Reclose Renewal Aging Guard gives each renewed founder command lane its own proof date, review-by date, age state, and reopen condition."
       },
       {
         label: "Release checks",
-        value: "Local + visual passed",
-        detail: "v601 passed syntax, static, security, diff hygiene, marker, 1440x900 desktop, 390x844 mobile, five-room fit, and browser-log checks."
+        value: "Local checks passed",
+        detail: "v602 passed syntax, static, security, diff hygiene, and marker scans before commit."
       },
       {
         label: "Share outcome",
-        value: "GitHub Pages verified",
-        detail: "The five-release batch is live with matching v601 stamp, HTML cache key, account-aging room key, and copy marker."
+        value: "Batch share pending",
+        detail: "The five-release batch remains local until v606 completes visual QA and GitHub Pages verification."
       }
     ],
     actions: [

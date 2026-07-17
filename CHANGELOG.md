@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v627 Beta Command Reclose Renewal Refresh Reacceptance Receipt
+
+- Version: `0.627.0`
+- Data version: `20260717-v627-01`
+- Changes made: Added Beta Command Reclose Renewal Refresh Reacceptance Receipt to the Build Tracker Release Doctor with replacement-proof, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review reacceptance lanes, explicit refreshed-queue, prior-refresh, aging-guard, accepted-proof, reviewer, acceptance-time, new-clock, superseded-row, and sibling-state bindings, founder-command-safe no-go boundaries, Build Tracker current-release copy roll-forward, proof archive roll-forward with verified v626 state, next-batch planner roll-forward to v628-v632, and release markers rolled forward to v627.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v627 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Reclose Renewal Refresh Reacceptance Receipt is a static founder-command receipt only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v626 Account Reclose Renewal Refresh Reacceptance Receipt
 
 - Version: `0.626.0`

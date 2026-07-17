@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V627 Beta Command Reclose Renewal Refresh Reacceptance Receipt
+
+V627 adds Beta Command Reclose Renewal Refresh Reacceptance Receipt to the Build Tracker Release Doctor. It closes exactly one refreshed founder-command queue row after accepted fresh proof and a new review window are recorded, while retaining the superseded queue row, trigger, prior age state, accepted sibling snapshot, and a strict no-command-action boundary.
+
+- Release label: `NiveshNadi Phase 1 v627 Beta Command Reclose Renewal Refresh Reacceptance Receipt`
+- Data/version key: `20260717-v627-01`
+- Product surface: Build Tracker > Release Doctor > Beta command reclose renewal refresh reacceptance receipt
+- Risk boundary: Static founder-command receipt only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v631.
+
 ## V626 Account Reclose Renewal Refresh Reacceptance Receipt
 
 V626 adds Account Reclose Renewal Refresh Reacceptance Receipt to the Build Tracker Release Doctor. It closes exactly one refreshed custody queue row after accepted fresh proof and a new review window are recorded, while retaining the superseded queue row, trigger, prior age state, accepted sibling snapshot, and a strict no-account-action boundary.

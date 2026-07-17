@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V631 Account Reclose Renewal Refresh Reacceptance Aging Guard
+
+V631 adds Account Reclose Renewal Refresh Reacceptance Aging Guard to the Build Tracker Release Doctor. It starts a fresh independent clock for each reaccepted delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review lane, then routes only expired proof toward selective reopening while preserving healthy sibling state and receipt lineage.
+
+- Release label: `NiveshNadi Phase 1 v631 Account Reclose Renewal Refresh Reacceptance Aging Guard`
+- Data/version key: `20260717-v631-01`
+- Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh reacceptance aging guard
+- Risk boundary: Static account aging room only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, or approve account custody widening.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; desktop/mobile visual and live verification are scheduled after the product commit.
+
 ## V630 Payment Reclose Renewal Refresh Reacceptance Aging Guard
 
 V630 adds Payment Reclose Renewal Refresh Reacceptance Aging Guard to the Build Tracker Release Doctor. It starts a fresh independent clock for each reaccepted entitlement, refund-wording, rollback, support-copy, owner-review, and founder-finance lane, then routes only expired proof toward selective reopening while preserving healthy sibling state and receipt lineage.

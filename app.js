@@ -25897,15 +25897,15 @@ function buildTrackerConfig() {
       ]
     },
     outcomeTrail: [
-      { label: "01 Built", value: "v631", detail: "Account Reclose Renewal Refresh Reacceptance Aging Guard is wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering." },
-      { label: "02 Checked", value: "Static pass", detail: "v631 passed syntax, static, security, diff hygiene, and marker checks." },
-      { label: "03 Viewed", value: "Visual verification scheduled", detail: "Desktop and mobile verification for all five v627-v631 rooms runs after this product commit." },
-      { label: "04 Share", value: "Live verification scheduled", detail: "Push and GitHub Pages verification follow the visual proof commit." }
+      { label: "01 Built", value: "v631", detail: "Account Reclose Renewal Refresh Reacceptance Aging Guard and stable proof-room deep links are wired with matching release label, data key, stamp, docs, changelog, and batch-proof rendering." },
+      { label: "02 Checked", value: "Static + visual pass", detail: "v631 passed syntax, static, security, diff hygiene, marker, desktop, mobile, deep-link, room-card, overflow, rail-clearance, and browser-console checks." },
+      { label: "03 Viewed", value: "Responsive pass", detail: "In-app browser QA at 1440x900 and 390x844 confirmed all five room anchors, seven cards per room, clean wrapping, no horizontal overflow, desktop rail clearance, mobile rail collapse, and a quiet console." },
+      { label: "04 Share", value: "Live verification pending", detail: "The v627-v631 product commits and visual receipt are ready to push; GitHub Pages verification follows deployment." }
     ],
     memory: [
       { label: "Product commit", value: "v631 account reacceptance aging", detail: "Account Reclose Renewal Refresh Reacceptance Aging Guard ages six newly accepted custody lanes independently and selectively reopens only stale proof without executing an account action." },
-      { label: "Release checks", value: "Local checks passed", detail: "v631 passed syntax, static, security, diff hygiene, and marker checks." },
-      { label: "Share outcome", value: "Visual and live proof pending", detail: "Desktop, mobile, push, and GitHub Pages verification run after the v631 product commit." }
+      { label: "Release checks", value: "Local + visual checks passed", detail: "v631 passed syntax, static, security, diff hygiene, marker, desktop, mobile, deep-link, room-card, overflow, rail-clearance, and browser-console checks." },
+      { label: "Share outcome", value: "Push pending", detail: "The v627-v631 batch is visually verified and ready for push and GitHub Pages stamp validation." }
     ],
     actions: [
       {
@@ -26242,9 +26242,9 @@ function buildGuardrailMarkup(tracker) {
   `;
 }
 
-function releaseDoctorOperationalProofMarkup(proof, ariaLabel) {
+function releaseDoctorOperationalProofMarkup(proof, ariaLabel, anchorId = "") {
   return `
-    <div class="release-doctor-proof" aria-label="${escapeHtml(ariaLabel)}">
+    <div class="release-doctor-proof"${anchorId ? ` id="${escapeHtml(anchorId)}"` : ""} aria-label="${escapeHtml(ariaLabel)}">
       <article>
         <span>${escapeHtml(proof.label)}</span>
         <strong>${escapeHtml(proof.verdict)} | ${proof.score}/100</strong>
@@ -26628,7 +26628,7 @@ function releaseDoctorMarkup(tracker) {
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.liveSourceConnectorSpikePlan, "Live source connector spike plan")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.paymentProviderSandboxIntegrationPlan, "Payment provider sandbox integration plan")}
       ${releaseDoctorOperationalProofMarkup(tracker.releaseDoctor.accountAuthProviderDecisionRoom, "Account auth provider decision room")}
-      ${tracker.releaseDoctor.batchProofRooms.map((proof) => releaseDoctorOperationalProofMarkup(proof, proof.label)).join("")}
+      ${tracker.releaseDoctor.batchProofRooms.map((proof) => releaseDoctorOperationalProofMarkup(proof, proof.label, proof.key)).join("")}
       <div class="release-doctor-proof" aria-label="Retention health summary">
         <article>
           <span>${escapeHtml(tracker.releaseDoctor.retentionHealthSummary.label)}</span>

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v629 Source Correction Reclose Renewal Refresh Reacceptance Aging Guard
+
+- Version: `0.629.0`
+- Data version: `20260717-v629-01`
+- Changes made: Added Source Correction Reclose Renewal Refresh Reacceptance Aging Guard to the Build Tracker Release Doctor with independent replacement, notice, cache, support, reviewer, and founder post-reacceptance clocks, explicit accepted-proof-date, review-by, age-state, owner, selective-reopen, superseded-row, sibling-state, and reacceptance-receipt bindings, source-safe no-go boundaries, Build Tracker current-release copy roll-forward, proof archive roll-forward with verified v628 state, next-batch planner roll-forward to v630-v634, and release markers rolled forward to v629.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v629 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Reclose Renewal Refresh Reacceptance Aging Guard is a static correction aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v628 Support Repair Reclose Renewal Refresh Reacceptance Receipt
 
 - Version: `0.628.0`

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V629 Source Correction Reclose Renewal Refresh Reacceptance Aging Guard
+
+V629 adds Source Correction Reclose Renewal Refresh Reacceptance Aging Guard to the Build Tracker Release Doctor. It starts a fresh independent clock for each reaccepted replacement, notice, cache, support, reviewer, and founder lane, then routes only expired proof toward selective reopening while preserving healthy sibling state and receipt lineage.
+
+- Release label: `NiveshNadi Phase 1 v629 Source Correction Reclose Renewal Refresh Reacceptance Aging Guard`
+- Data/version key: `20260717-v629-01`
+- Product surface: Build Tracker > Release Doctor > Source correction reclose renewal refresh reacceptance aging guard
+- Risk boundary: Static correction aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v631.
+
 ## V628 Support Repair Reclose Renewal Refresh Reacceptance Receipt
 
 V628 adds Support Repair Reclose Renewal Refresh Reacceptance Receipt to the Build Tracker Release Doctor. It closes exactly one refreshed support-repair queue row after accepted fresh proof and a new review window are recorded, while retaining the superseded queue row, trigger, prior age state, accepted sibling snapshot, and a strict no-support-action boundary.

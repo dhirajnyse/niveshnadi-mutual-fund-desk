@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V628 Support Repair Reclose Renewal Refresh Reacceptance Receipt
+
+V628 adds Support Repair Reclose Renewal Refresh Reacceptance Receipt to the Build Tracker Release Doctor. It closes exactly one refreshed support-repair queue row after accepted fresh proof and a new review window are recorded, while retaining the superseded queue row, trigger, prior age state, accepted sibling snapshot, and a strict no-support-action boundary.
+
+- Release label: `NiveshNadi Phase 1 v628 Support Repair Reclose Renewal Refresh Reacceptance Receipt`
+- Data/version key: `20260717-v628-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose renewal refresh reacceptance receipt
+- Risk boundary: Static support receipt only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, expose support conversations, widen support access, or approve launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v631.
+
 ## V627 Beta Command Reclose Renewal Refresh Reacceptance Receipt
 
 V627 adds Beta Command Reclose Renewal Refresh Reacceptance Receipt to the Build Tracker Release Doctor. It closes exactly one refreshed founder-command queue row after accepted fresh proof and a new review window are recorded, while retaining the superseded queue row, trigger, prior age state, accepted sibling snapshot, and a strict no-command-action boundary.

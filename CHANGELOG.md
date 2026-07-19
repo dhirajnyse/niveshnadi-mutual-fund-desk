@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v640 Payment Reclose Renewal Refresh Revalidation Receipt
+
+- Version: `0.640.0`
+- Data version: `20260719-v640-01`
+- Changes made: Added six payment revalidation receipt lanes binding the active reopening row to fresh proof, reviewer role and decision, accepted scope, a new review window, superseded-row lineage, unchanged sibling state, and no-secret boundaries, with release markers and planner rolled forward to v640.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v640 marker scan; Git diff hygiene check.
+- Known risks: Payment Reclose Renewal Refresh Revalidation Receipt is a static workflow receipt only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, or approve payment launch.
+
 ## NiveshNadi Phase 1 v639 Source Correction Reclose Renewal Refresh Revalidation Receipt
 
 - Version: `0.639.0`

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V640 Payment Reclose Renewal Refresh Revalidation Receipt
+
+V640 adds Payment Reclose Renewal Refresh Revalidation Receipt to the Build Tracker Release Doctor. It revalidates one reopened entitlement, refund-wording, rollback, support-copy, owner-review, or founder-finance lane only after current proof, reviewer acceptance, a fresh review window, and no-secret boundaries are receipted.
+
+- Release label: `NiveshNadi Phase 1 v640 Payment Reclose Renewal Refresh Revalidation Receipt`
+- Data/version key: `20260719-v640-01`
+- Product surface: Build Tracker > Release Doctor > Payment reclose renewal refresh revalidation receipt
+- Risk boundary: Static payment workflow receipt only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, or approve payment launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v641.
+
 ## V639 Source Correction Reclose Renewal Refresh Revalidation Receipt
 
 V639 adds Source Correction Reclose Renewal Refresh Revalidation Receipt to the Build Tracker Release Doctor. It revalidates one reopened replacement, notice, cache, support, reviewer, or founder lane only after current proof, reviewer acceptance, and a fresh review window are receipted, while preserving the queue row and healthy sibling state.

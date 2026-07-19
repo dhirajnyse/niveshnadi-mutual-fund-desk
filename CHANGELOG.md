@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v641 Account Reclose Renewal Refresh Revalidation Receipt
+
+- Version: `0.641.0`
+- Data version: `20260719-v641-01`
+- Changes made: Added six account revalidation receipt lanes binding the active reopening row to fresh proof, reviewer role and decision, accepted scope, a new review window, superseded-row lineage, unchanged sibling state, and custody-safe boundaries, with release markers and planner rolled forward to v641.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v641 marker scan; Git diff hygiene check.
+- Known risks: Account Reclose Renewal Refresh Revalidation Receipt is a static workflow receipt only; it does not authenticate users, delete or export records, run background jobs, recover accounts, collect identifiers or contact data, widen custody scope, or approve account launch.
+
 ## NiveshNadi Phase 1 v640 Payment Reclose Renewal Refresh Revalidation Receipt
 
 - Version: `0.640.0`

@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V641 Account Reclose Renewal Refresh Revalidation Receipt
+
+V641 adds Account Reclose Renewal Refresh Revalidation Receipt to the Build Tracker Release Doctor. It revalidates one reopened delete/export, redaction, support-safe, object-family, founder-custody, or trigger-review lane only after current proof, reviewer acceptance, a fresh review window, and custody-safe boundaries are receipted.
+
+- Release label: `NiveshNadi Phase 1 v641 Account Reclose Renewal Refresh Revalidation Receipt`
+- Data/version key: `20260719-v641-01`
+- Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh revalidation receipt
+- Risk boundary: Static account workflow receipt only; it does not authenticate users, delete or export records, run background jobs, recover accounts, collect identifiers or contact data, widen custody scope, or approve account launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v641.
+
 ## V640 Payment Reclose Renewal Refresh Revalidation Receipt
 
 V640 adds Payment Reclose Renewal Refresh Revalidation Receipt to the Build Tracker Release Doctor. It revalidates one reopened entitlement, refund-wording, rollback, support-copy, owner-review, or founder-finance lane only after current proof, reviewer acceptance, a fresh review window, and no-secret boundaries are receipted.

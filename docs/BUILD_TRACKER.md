@@ -8,7 +8,7 @@ V646 adds Account Reclose Renewal Refresh Revalidation Aging Guard to the Build 
 - Data/version key: `20260719-v646-01`
 - Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh revalidation aging guard
 - Risk boundary: Static custody aging room only; it does not authenticate users, delete or export records, run background jobs, recover accounts, collect identifiers or contact data, widen custody scope, or approve account launch.
-- Verification status: Syntax, static/security, marker, diff hygiene, and v642-v646 desktop/mobile responsive QA passed; Git push and live verification remain pending.
+- Verification status: Syntax, static/security, marker, diff hygiene, v642-v646 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V645 Payment Reclose Renewal Refresh Revalidation Aging Guard
 
@@ -18,7 +18,7 @@ V645 adds Payment Reclose Renewal Refresh Revalidation Aging Guard to the Build 
 - Data/version key: `20260719-v645-01`
 - Product surface: Build Tracker > Release Doctor > Payment reclose renewal refresh revalidation aging guard
 - Risk boundary: Static payment aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch.
-- Verification status: Syntax, static/security, marker, diff hygiene, and v642-v646 desktop/mobile responsive QA passed; Git push and live verification remain pending.
+- Verification status: Syntax, static/security, marker, diff hygiene, v642-v646 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V644 Source Correction Reclose Renewal Refresh Revalidation Aging Guard
 
@@ -28,7 +28,7 @@ V644 adds Source Correction Reclose Renewal Refresh Revalidation Aging Guard to 
 - Data/version key: `20260719-v644-01`
 - Product surface: Build Tracker > Release Doctor > Source correction reclose renewal refresh revalidation aging guard
 - Risk boundary: Static correction aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
-- Verification status: Syntax, static/security, marker, diff hygiene, and v642-v646 desktop/mobile responsive QA passed; Git push and live verification remain pending.
+- Verification status: Syntax, static/security, marker, diff hygiene, v642-v646 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V643 Support Repair Reclose Renewal Refresh Revalidation Receipt
 
@@ -38,7 +38,7 @@ V643 adds Support Repair Reclose Renewal Refresh Revalidation Receipt to the Bui
 - Data/version key: `20260719-v643-01`
 - Product surface: Build Tracker > Release Doctor > Support repair reclose renewal refresh revalidation receipt
 - Risk boundary: Static support workflow receipt only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
-- Verification status: Syntax, static/security, marker, diff hygiene, and v642-v646 desktop/mobile responsive QA passed; Git push and live verification remain pending.
+- Verification status: Syntax, static/security, marker, diff hygiene, v642-v646 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V642 Beta Command Reclose Renewal Refresh Revalidation Receipt
 
@@ -48,7 +48,7 @@ V642 adds Beta Command Reclose Renewal Refresh Revalidation Receipt to the Build
 - Data/version key: `20260719-v642-01`
 - Product surface: Build Tracker > Release Doctor > Beta command reclose renewal refresh revalidation receipt
 - Risk boundary: Static founder workflow receipt only; it does not send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion.
-- Verification status: Syntax, static/security, marker, diff hygiene, and v642-v646 desktop/mobile responsive QA passed; Git push and live verification remain pending.
+- Verification status: Syntax, static/security, marker, diff hygiene, v642-v646 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V641 Account Reclose Renewal Refresh Revalidation Receipt
 

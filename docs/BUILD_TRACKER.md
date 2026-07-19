@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V657 Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt
+
+V657 adds Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt to the Build Tracker Release Doctor. Added six founder-command revalidation renewal lanes that close exactly one active reopening row only after named fresh proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and privacy-safe checks are recorded.
+
+- Release label: `NiveshNadi Phase 1 v657 Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt`
+- Data/version key: `20260719-v657-01`
+- Product surface: Build Tracker > Release Doctor > Beta command reclose renewal refresh revalidation renewal receipt
+- Risk boundary: Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt is a static founder-command workflow receipt only; it does not send commands or invites, change release state, process payments, fetch private support history, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene passed; shared v657-v661 responsive QA, push, and live GitHub Pages verification remain pending.
+
 ## V656 Account Reclose Renewal Refresh Revalidation Renewal Receipt
 
 V656 adds Account Reclose Renewal Refresh Revalidation Renewal Receipt to the Build Tracker Release Doctor. It closes exactly one active account revalidation reopening row only after current custody proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and privacy-safe checks are recorded.

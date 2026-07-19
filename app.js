@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260719-v656-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v656 Account Reclose Renewal Refresh Revalidation Renewal Receipt";
+const DATA_VERSION = "20260719-v657-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v657 Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -28253,6 +28253,110 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Reclose Renewal Refresh Revalidation Renewal Receipt is a static custody workflow receipt only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, widen custody, or approve account launch."
+      },
+      {
+        key: "betaCommandRecloseRenewalRefreshRevalidationRenewalReceipt",
+        label: "Beta command reclose renewal refresh revalidation renewal receipt",
+        verdict: "Fresh founder-command proof renews one revalidated reopening row",
+        receiptId: ["NN", "BETA", "COMMAND", "RECLOSE", "RENEWAL", "REFRESH", "REVALIDATION", "RENEWAL", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-reclose-renewal-refresh-revalidation-renewal-receipt",
+        copyLabel: "Copy beta-command revalidation renewal receipt",
+        score: 85,
+        rule: "One beta-command revalidation reopening row closes only after its named fresh founder proof, reviewer acceptance, accepted scope, new review window, superseded queue row, healthy sibling state, and privacy-safe checks are recorded in an immutable renewal receipt.",
+        lanes: [
+          {
+            label: "Replacement proof renewal",
+            owner: "Founder command desk",
+            method: "RENEW_REVALIDATED_BETA_REPLACEMENT",
+            route: "beta.command.reclose.renewal.refresh.revalidation.renewal.receipt.replacement",
+            proof: "Bind the active reopening row to current replacement proof, reviewer decision, accepted scope, sibling snapshot, and a new review-by date.",
+            readyWhen: "Ready when the replacement proof is current, independently accepted, and linked to the superseded queue row.",
+            hold: "Hold when replacement proof, reviewer acceptance, accepted scope, queue lineage, sibling state, or review-by date is missing.",
+            score: 86
+          },
+          {
+            label: "Conflict-cleanup renewal",
+            owner: "Release conflict desk",
+            method: "RENEW_REVALIDATED_BETA_CONFLICT",
+            route: "beta.command.reclose.renewal.refresh.revalidation.renewal.receipt.conflict",
+            proof: "Bind the active reopening row to current conflict cleanup, affected command family, reviewer decision, accepted scope, and a new review-by date.",
+            readyWhen: "Ready when the named conflict is absent from current founder-command proof and the cleanup scope is accepted.",
+            hold: "Hold when conflict proof, affected family, reviewer decision, queue lineage, or review-by date is missing.",
+            score: 85
+          },
+          {
+            label: "Release-safe-memory renewal",
+            owner: "Release memory desk",
+            method: "RENEW_REVALIDATED_BETA_MEMORY",
+            route: "beta.command.reclose.renewal.refresh.revalidation.renewal.receipt.memory",
+            proof: "Bind the active reopening row to current release-safe memory, exclusion checks, reviewer decision, accepted scope, and a new review-by date.",
+            readyWhen: "Ready when copied memory stays release-safe and excludes private support or user payloads.",
+            hold: "Hold when memory proof, exclusions, reviewer acceptance, queue lineage, or review-by date is missing.",
+            score: 85
+          },
+          {
+            label: "Expiry-decision renewal",
+            owner: "Beta review desk",
+            method: "RENEW_REVALIDATED_BETA_EXPIRY",
+            route: "beta.command.reclose.renewal.refresh.revalidation.renewal.receipt.expiry",
+            proof: "Bind the active reopening row to its current expiry decision, decision owner, trigger boundary, reviewer acceptance, and a new review-by date.",
+            readyWhen: "Ready when expiry posture and the next review trigger are explicit and current.",
+            hold: "Hold when expiry decision, owner, trigger, accepted scope, queue lineage, or review-by date is missing.",
+            score: 85
+          },
+          {
+            label: "Owner-review renewal",
+            owner: "Beta operations owner",
+            method: "RENEW_REVALIDATED_BETA_OWNER",
+            route: "beta.command.reclose.renewal.refresh.revalidation.renewal.receipt.owner",
+            proof: "Bind the active reopening row to current owner review, accepted proof scope, preserved siblings, and a new review-by date.",
+            readyWhen: "Ready when the accountable owner accepts the renewed proof and healthy sibling state remains unchanged.",
+            hold: "Hold when owner, decision, accepted scope, sibling snapshot, queue lineage, or review-by date is missing.",
+            score: 85
+          },
+          {
+            label: "Founder-review renewal",
+            owner: "Founder release desk",
+            method: "RENEW_REVALIDATED_BETA_FOUNDER",
+            route: "beta.command.reclose.renewal.refresh.revalidation.renewal.receipt.founder",
+            proof: "Bind the active reopening row to current founder review, beta hold posture, accepted scope, sibling snapshot, and a new review-by date.",
+            readyWhen: "Ready when founder review accepts the renewed boundary without widening commands, invites, or beta scope.",
+            hold: "Hold when founder decision, beta boundary, accepted scope, queue lineage, sibling snapshot, or review-by date is missing.",
+            score: 86
+          }
+        ],
+        operatingRules: [
+          "Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt consumes exactly one active beta-command revalidation reopening row after its named fresh-proof requirement is satisfied.",
+          "Every renewal receipt binds the revalidation receipt, aging guard, reopening row, fresh proof, reviewer role and decision, accepted scope, new review window, and sibling-state snapshot.",
+          "The renewed beta-command review window begins at renewal time; prior revalidation, aging, and reopening rows remain immutable history.",
+          "Healthy sibling beta-command lanes retain their current state and review windows when one reopened lane is renewed.",
+          "Beta-command renewal receipts must exclude contacts, identifiers, credentials, payment data, private notes, raw support conversations, and user payloads."
+        ],
+        noGoLines: [
+          "No reopened beta-command lane may be renewed without current proof, explicit reviewer acceptance, accepted scope, a new review-by date, and privacy-safe checks.",
+          "No beta-command revalidation reopening row may disappear when renewed; the receipt must name the superseded row and preserve lineage.",
+          "No renewal receipt may be treated as a command, invite, payment, access, recovery, launch, or expansion approval.",
+          "No beta-command renewal receipt may send commands or invites, change release state, process payments, fetch private support history, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "beta_command_reclose_renewal_refresh_revalidation_renewal_receipt_id",
+          "release_key",
+          "beta_command_reclose_renewal_refresh_revalidation_reopening_queue_id",
+          "beta_command_reclose_renewal_refresh_revalidation_aging_guard_id",
+          "beta_command_reclose_renewal_refresh_revalidation_receipt_id",
+          "affected_lane",
+          "renewed_proof_reference",
+          "reviewer_role",
+          "reviewer_decision",
+          "accepted_scope",
+          "review_window_start",
+          "review_by",
+          "superseded_revalidation_reopening_queue_row",
+          "sibling_state_snapshot",
+          "renewed_at",
+          "created_at"
+        ],
+        boundary: "Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt is a static founder-command workflow receipt only; it does not send commands or invites, change release state, process payments, fetch private support history, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -28425,18 +28529,43 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source, payment, and account revalidation renewal receipts are complete; next renew beta-command and support proof, then add source, payment, and account renewal aging guards.",
+      rule: "Beta-command renewal proof is complete; next renew support proof, then add source, payment, account, and beta-command renewal aging guards.",
       lanes: [
-        { version: "v657", label: "Beta command reclose renewal refresh revalidation renewal receipt", route: "#founder-beta-operating-room", detail: "Close one revalidated beta-command reopening row only after fresh founder-command proof, reviewer acceptance, and a new review window are recorded." },
-        { version: "v658", label: "Support repair reclose renewal refresh revalidation renewal receipt", route: "#paid-beta-support-ledger", detail: "Close one revalidated support reopening row only after fresh support proof, reviewer acceptance, a new review window, and private-data exclusions are recorded." },
-        { version: "v659", label: "Source correction reclose renewal refresh revalidation renewal aging guard", route: "#correction-ledger", detail: "Age each renewed source-correction lane independently and reopen only the proof that passes review-by or triggers drift." },
-        { version: "v660", label: "Payment reclose renewal refresh revalidation renewal aging guard", route: "#payment-wiring", detail: "Age each renewed payment lane independently and reopen only stale proof while preserving healthy siblings and no-secret boundaries." },
-        { version: "v661", label: "Account reclose renewal refresh revalidation renewal aging guard", route: "#account-readiness", detail: "Age each renewed account lane independently and reopen only stale custody proof while preserving healthy siblings and privacy boundaries." }
+        {
+          version: "v658",
+          label: "Support repair reclose renewal refresh revalidation renewal receipt",
+          route: "#paid-beta-support-ledger",
+          detail: "Close one revalidated support reopening row only after fresh support proof, reviewer acceptance, a new review window, and private-data exclusions are recorded."
+        },
+        {
+          version: "v659",
+          label: "Source correction reclose renewal refresh revalidation renewal aging guard",
+          route: "#correction-ledger",
+          detail: "Age each renewed source-correction lane independently and reopen only proof that passes review-by or triggers drift."
+        },
+        {
+          version: "v660",
+          label: "Payment reclose renewal refresh revalidation renewal aging guard",
+          route: "#payment-wiring",
+          detail: "Age each renewed payment lane independently while preserving healthy siblings and no-secret boundaries."
+        },
+        {
+          version: "v661",
+          label: "Account reclose renewal refresh revalidation renewal aging guard",
+          route: "#account-readiness",
+          detail: "Age each renewed account lane independently while preserving healthy siblings and privacy boundaries."
+        },
+        {
+          version: "v662",
+          label: "Beta command reclose renewal refresh revalidation renewal aging guard",
+          route: "#founder-beta-operating-room",
+          detail: "Age each renewed beta-command lane independently without sending commands, invites, or widening beta scope."
+        }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account revalidation renewal proof visible",
+      verdict: "Beta-command revalidation renewal proof built locally",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         { version: "v656", key: "20260719-v656-01", commit: "deaafda", receiptId: "NN-SHARE-RECEIPT-20260719V65601", proof: "Account Reclose Renewal Refresh Revalidation Renewal Receipt added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
@@ -28455,15 +28584,43 @@ function buildTrackerConfig() {
       ]
     },
     outcomeTrail: [
-      { label: "01 Built", value: "v656", detail: "Account Reclose Renewal Refresh Revalidation Renewal Receipt is wired with a matching release label, data key, stamp, docs, changelog, planner, and proof room." },
-      { label: "02 Checked", value: "Static pass", detail: "V656 is gated by syntax, static, security, diff hygiene, and marker checks." },
-      { label: "03 Viewed", value: "Responsive pass", detail: "The v652-v656 proof rooms passed shared 1440x900 and 390x844 responsive review with seven cards per room, left/right rail checks, mobile rail collapse, clean overflow, and an empty browser console." },
-      { label: "04 Share", value: "Live verified", detail: "The v652-v656 batch is on main and GitHub Pages serves the v656 stamp, cache keys, five proof rooms, planner, responsive layout, and clean browser console." }
+      {
+        label: "01 Built",
+        value: "v657",
+        detail: "Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt is wired with a matching release label, data key, stamp, docs, changelog, planner, and proof room."
+      },
+      {
+        label: "02 Checked",
+        value: "Static pass",
+        detail: "V657 is gated by syntax, static, security, diff hygiene, and marker checks."
+      },
+      {
+        label: "03 Viewed",
+        value: "Batch visual pending",
+        detail: "Shared v657-v661 desktop and mobile responsive verification runs after all five product releases are locally complete."
+      },
+      {
+        label: "04 Share",
+        value: "Batch push pending",
+        detail: "The batch remains local until all five proof rooms pass shared responsive QA and the release archive is rolled forward."
+      }
     ],
     memory: [
-      { label: "Product commit", value: "v656 account revalidation renewal receipt", detail: "One reopened account lane now renews only after fresh proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and privacy-safe checks." },
-      { label: "Release checks", value: "Local + visual passed", detail: "V656 carries syntax, static, security, diff hygiene, marker, desktop, mobile, rail, overflow, and browser-console gates before push." },
-      { label: "Share outcome", value: "Live verified", detail: "GitHub Pages serves v656 with the v652-v656 proof archive, responsive receipt, five room markers, account copy marker, and v657-v661 next-batch planner." }
+      {
+        label: "Product commit",
+        value: "v657 beta command reclose renewal refresh revalidation renewal receipt",
+        detail: "One reopened beta-command lane now renews only after fresh founder proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and privacy-safe checks."
+      },
+      {
+        label: "Release checks",
+        value: "Local checks passed",
+        detail: "V657 carries syntax, static, security, diff hygiene, and marker gates before shared visual verification."
+      },
+      {
+        label: "Share outcome",
+        value: "Batch verification pending",
+        detail: "Responsive, push, live stamp, archive, planner, copy-marker, overflow, and browser-console checks remain queued for the complete v657-v661 batch."
+      }
     ],
     actions: [
       {

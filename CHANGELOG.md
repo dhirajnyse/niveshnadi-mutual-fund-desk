@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v647 Beta Command Reclose Renewal Refresh Revalidation Aging Guard
+
+- Version: `0.647.0`
+- Data version: `20260719-v647-01`
+- Changes made: Added six beta-command revalidation aging lanes with independent fresh-proof dates, review windows, age states, owners, selective reopen conditions, receipt lineage, sibling-state preservation, and founder-command boundaries, with release markers and planner rolled forward to v647.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v647 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Reclose Renewal Refresh Revalidation Aging Guard is a static founder-command aging room only; it does not send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v646 Account Reclose Renewal Refresh Revalidation Aging Guard
 
 - Version: `0.646.0`

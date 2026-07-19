@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260719-v646-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v646 Account Reclose Renewal Refresh Revalidation Aging Guard";
+const DATA_VERSION = "20260719-v647-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v647 Beta Command Reclose Renewal Refresh Revalidation Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -27230,6 +27230,109 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Reclose Renewal Refresh Revalidation Aging Guard is a static custody aging room only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, widen custody, or approve account launch."
+      },
+      {
+        key: "betaCommandRecloseRenewalRefreshRevalidationAgingGuard",
+        label: "Beta command reclose renewal refresh revalidation aging guard",
+        verdict: "Revalidated beta-command proof has an independent expiry clock",
+        receiptId: ["NN", "BETA", "COMMAND", "RECLOSE", "RENEWAL", "REFRESH", "REVALIDATION", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-reclose-renewal-refresh-revalidation-aging-guard",
+        copyLabel: "Copy beta-command revalidation aging guard",
+        score: 84,
+        rule: "Every revalidated beta-command lane must expose its fresh proof date, review-by date, age state, owner, and selective reopen condition without executing a command or widening release authority.",
+        lanes: [
+          {
+            label: "Replacement revalidation aging",
+            owner: "Release captain",
+            method: "AGE_REVALIDATED_BETA_REPLACEMENT",
+            route: "founder.beta.command.reclose.renewal.refresh.revalidation.aging.replacement",
+            proof: "Track revalidated replacement-command proof date, review window, age state, rollback boundary, receipt lineage, and behavior-change reopen condition.",
+            readyWhen: "Ready while replacement behavior, rollback posture, accepted scope, and review window remain current.",
+            hold: "Reopen only this lane when review-by passes, replacement behavior changes, rollback proof fails, or accepted scope narrows.",
+            score: 85
+          },
+          {
+            label: "Conflict-cleanup revalidation aging",
+            owner: "Release operations",
+            method: "AGE_REVALIDATED_BETA_CONFLICT_CLEANUP",
+            route: "founder.beta.command.reclose.renewal.refresh.revalidation.aging.conflict_cleanup",
+            proof: "Track revalidated conflict inventory date, cleanup scope, age state, review window, receipt lineage, and recurrence reopen condition.",
+            readyWhen: "Ready while the accepted conflict inventory remains clear and cleanup proof covers current command behavior.",
+            hold: "Reopen only this lane when a conflict returns, cleanup scope changes, accepted proof diverges, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Release-safe-memory revalidation aging",
+            owner: "Decision memory desk",
+            method: "AGE_REVALIDATED_BETA_RELEASE_SAFE_MEMORY",
+            route: "founder.beta.command.reclose.renewal.refresh.revalidation.aging.memory",
+            proof: "Track revalidated sanitized-memory date, privacy boundary, age state, supersede status, receipt lineage, and memory-drift reopen condition.",
+            readyWhen: "Ready while release memory remains current, sanitized, superseded correctly, and inside its review window.",
+            hold: "Reopen only this lane when memory drifts, privacy scope changes, supersede state breaks, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Expiry-decision revalidation aging",
+            owner: "Release governance",
+            method: "AGE_REVALIDATED_BETA_EXPIRY_DECISION",
+            route: "founder.beta.command.reclose.renewal.refresh.revalidation.aging.expiry",
+            proof: "Track revalidated expiry-decision date, evidence window, age state, accepted scope, receipt lineage, and evidence-change reopen condition.",
+            readyWhen: "Ready while the expiry decision reflects current evidence and remains inside its explicit review window.",
+            hold: "Reopen only this lane when evidence changes, decision scope diverges, expiry reason no longer applies, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Owner-review revalidation aging",
+            owner: "Release owner",
+            method: "AGE_REVALIDATED_BETA_OWNER_REVIEW",
+            route: "founder.beta.command.reclose.renewal.refresh.revalidation.aging.owner",
+            proof: "Track revalidated owner-review date, accountability scope, conflict posture, age state, receipt lineage, and ownership-change reopen condition.",
+            readyWhen: "Ready while the named owner, accountability scope, conflict check, and independent review remain current.",
+            hold: "Reopen only this lane when owner or scope changes, a conflict returns, reviewer independence fails, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Founder-review revalidation aging",
+            owner: "Founder desk",
+            method: "AGE_REVALIDATED_BETA_FOUNDER_REVIEW",
+            route: "founder.beta.command.reclose.renewal.refresh.revalidation.aging.founder",
+            proof: "Track revalidated founder-review date, command boundary, residue state, age state, receipt lineage, and decision-change reopen condition.",
+            readyWhen: "Ready while founder review can defend the accepted go, hold, or freeze boundary with no unresolved residue.",
+            hold: "Reopen only this lane when founder review expires, command posture changes, residue returns, or accepted scope diverges.",
+            score: 85
+          }
+        ],
+        operatingRules: [
+          "Beta Command Reclose Renewal Refresh Revalidation Aging Guard starts from the revalidated-at time and review window recorded by the beta-command revalidation receipt.",
+          "Each replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review lane ages independently.",
+          "An expired beta-command lane routes to selective reopening without changing healthy sibling proof or deleting the revalidation receipt.",
+          "Every aging row binds the revalidation receipt, prior reopening row, age state, owner, reopen condition, and sibling-state snapshot.",
+          "Beta-command aging records must exclude credentials, identifiers, contacts, account or payment payloads, private notes, and raw support conversations."
+        ],
+        noGoLines: [
+          "No revalidated beta-command lane may remain current after its review-by date or selective reopen condition is triggered.",
+          "No expired beta-command lane may reopen or overwrite a healthy sibling lane.",
+          "No aging guard may be treated as command execution, cohort invitation, release-state change, payment approval, support action, or launch approval.",
+          "No beta-command revalidation aging guard may send commands, invite users, change release state, process payments, contact users, or approve expansion."
+        ],
+        receiptFields: [
+          "beta_command_reclose_renewal_refresh_revalidation_aging_guard_id",
+          "release_key",
+          "beta_command_reclose_renewal_refresh_revalidation_receipt_id",
+          "beta_command_reclose_renewal_refresh_reacceptance_reopening_queue_id",
+          "affected_lane",
+          "fresh_proof_date",
+          "review_window_start",
+          "review_by",
+          "age_state",
+          "aging_owner",
+          "reopen_condition",
+          "revalidation_receipt_state",
+          "sibling_state_snapshot",
+          "evaluated_at",
+          "created_at"
+        ],
+        boundary: "Beta Command Reclose Renewal Refresh Revalidation Aging Guard is a static founder-command aging room only; it does not send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -27402,18 +27505,18 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Account Reclose Renewal Refresh Revalidation Receipt is visible; the next releases should complete revalidation across command and support proof, then add independent review-window aging.",
+      rule: "Beta-command revalidation aging is visible; finish support aging, then route expired source, payment, account, and beta-command proof into selective reopening queues.",
       lanes: [
-        { version: "v647", label: "Beta command reclose renewal refresh revalidation aging guard", route: "#founder-beta-operating-room", detail: "Age each revalidated beta-command lane from its fresh review window and reopen only the lane that becomes stale." },
         { version: "v648", label: "Support repair reclose renewal refresh revalidation aging guard", route: "#paid-beta-support-ledger", detail: "Age each revalidated support-repair lane from its fresh review window and reopen only the lane that becomes stale." },
         { version: "v649", label: "Source correction reclose renewal refresh revalidation reopening queue", route: "#correction-ledger", detail: "Route only the expired revalidated source lane back to fresh proof while preserving its receipt and healthy siblings." },
         { version: "v650", label: "Payment reclose renewal refresh revalidation reopening queue", route: "#payment-wiring", detail: "Route only the expired revalidated payment lane back to fresh proof while preserving its receipt, siblings, and no-secret boundary." },
-        { version: "v651", label: "Account reclose renewal refresh revalidation reopening queue", route: "#account-readiness", detail: "Route only the expired revalidated account lane back to fresh proof while preserving its receipt, siblings, and custody boundary." }
+        { version: "v651", label: "Account reclose renewal refresh revalidation reopening queue", route: "#account-readiness", detail: "Route only the expired revalidated account lane back to fresh proof while preserving its receipt, siblings, and custody boundary." },
+        { version: "v652", label: "Beta command reclose renewal refresh revalidation reopening queue", route: "#founder-beta-operating-room", detail: "Route only the expired revalidated beta-command lane back to fresh proof without executing a command or changing healthy siblings." }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account revalidation aging proof visible",
+      verdict: "Beta-command revalidation aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         { version: "v646", key: "20260719-v646-01", commit: "09b18ff", receiptId: "NN-SHARE-RECEIPT-20260719V64601", proof: "Account Reclose Renewal Refresh Revalidation Aging Guard added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
@@ -27432,15 +27535,15 @@ function buildTrackerConfig() {
       ]
     },
     outcomeTrail: [
-      { label: "01 Built", value: "v646", detail: "Account Reclose Renewal Refresh Revalidation Aging Guard is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
-      { label: "02 Checked", value: "Static + visual pass", detail: "v646 passed syntax, static, security, diff hygiene, marker, and responsive proof-room checks." },
-      { label: "03 Viewed", value: "Responsive pass", detail: "The five v642-v646 proof rooms passed desktop and mobile deep-link, overflow, rail-clearance, and console review." },
-      { label: "04 Share", value: "Live verified", detail: "The v642-v646 batch is pushed and its GitHub Pages stamp, assets, proof rooms, responsive layout, and console are verified." }
+      { label: "01 Built", value: "v647", detail: "Beta Command Reclose Renewal Refresh Revalidation Aging Guard is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
+      { label: "02 Checked", value: "Static pass", detail: "v647 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "03 Viewed", value: "Batch visual pending", detail: "Desktop and mobile proof-room QA is scheduled with the v651 batch closeout." },
+      { label: "04 Share", value: "Push pending", detail: "The v647 product commit is ready for the v647-v651 batch push after final visual verification." }
     ],
     memory: [
-      { label: "Product commit", value: "v646 account revalidation aging guard", detail: "Every revalidated account-custody lane now carries an independent fresh-proof clock, custody boundary, and selective reopen condition." },
-      { label: "Release checks", value: "Local + visual passed", detail: "v646 passed local gates plus 1440x900 and 390x844 proof-room QA." },
-      { label: "Share outcome", value: "Live verified", detail: "GitHub Pages serves v646 with the expected release key, five proof rooms, cache keys, responsive clearances, and quiet console." }
+      { label: "Product commit", value: "v647 beta-command revalidation aging guard", detail: "Every revalidated founder-command lane now carries an independent fresh-proof clock, command boundary, and selective reopen condition." },
+      { label: "Release checks", value: "Local checks passed", detail: "v647 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "Share outcome", value: "Batch push pending", detail: "The v647-v651 batch will be pushed after the final desktop/mobile proof-room review." }
     ],
     actions: [
       {

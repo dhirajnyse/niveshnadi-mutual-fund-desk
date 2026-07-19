@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V647 Beta Command Reclose Renewal Refresh Revalidation Aging Guard
+
+V647 adds Beta Command Reclose Renewal Refresh Revalidation Aging Guard to the Build Tracker Release Doctor. It gives each revalidated replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review lane an independent fresh-proof clock and routes only the stale lane back to proof while preserving its receipt, healthy siblings, and founder-command boundary.
+
+- Release label: `NiveshNadi Phase 1 v647 Beta Command Reclose Renewal Refresh Revalidation Aging Guard`
+- Data/version key: `20260719-v647-01`
+- Product surface: Build Tracker > Release Doctor > Beta command reclose renewal refresh revalidation aging guard
+- Risk boundary: Static founder-command aging room only; it does not send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v651.
+
 ## V646 Account Reclose Renewal Refresh Revalidation Aging Guard
 
 V646 adds Account Reclose Renewal Refresh Revalidation Aging Guard to the Build Tracker Release Doctor. It gives each revalidated delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review lane an independent fresh-proof clock and routes only the stale lane back to proof while preserving its receipt, healthy siblings, and custody boundary.

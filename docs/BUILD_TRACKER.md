@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V654 Source Correction Reclose Renewal Refresh Revalidation Renewal Receipt
+
+V654 adds Source Correction Reclose Renewal Refresh Revalidation Renewal Receipt to the Build Tracker Release Doctor. It closes exactly one active source revalidation reopening row only after current proof, reviewer acceptance, accepted scope, a new review window, superseded-row lineage, and healthy sibling preservation are recorded.
+
+- Release label: `NiveshNadi Phase 1 v654 Source Correction Reclose Renewal Refresh Revalidation Renewal Receipt`
+- Data/version key: `20260719-v654-01`
+- Product surface: Build Tracker > Release Doctor > Source correction reclose renewal refresh revalidation renewal receipt
+- Risk boundary: Static source workflow receipt only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual, push, and live verification remain.
+
 ## V653 Support Repair Reclose Renewal Refresh Revalidation Reopening Queue
 
 V653 adds Support Repair Reclose Renewal Refresh Revalidation Reopening Queue to the Build Tracker Release Doctor. It routes only an expired revalidated support-copy, owner-review, regression-proof, escalation-route, refund-wording, or founder-support lane back to named fresh proof while preserving its revalidation receipt, healthy sibling state, and private-support boundary.

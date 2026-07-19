@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v654 Source Correction Reclose Renewal Refresh Revalidation Renewal Receipt
+
+- Version: `0.654.0`
+- Data version: `20260719-v654-01`
+- Changes made: Added six source-correction revalidation renewal lanes that close exactly one active reopening row only after named fresh proof, reviewer acceptance, accepted scope, a new review window, superseded-row lineage, and healthy sibling preservation are recorded, with release markers and planner rolled forward to v654.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v654 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Reclose Renewal Refresh Revalidation Renewal Receipt is a static source workflow receipt only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v653 Support Repair Reclose Renewal Refresh Revalidation Reopening Queue
 
 - Version: `0.653.0`

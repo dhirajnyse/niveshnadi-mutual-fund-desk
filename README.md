@@ -2,12 +2,13 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v653 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v654 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
+- Source Correction Reclose Renewal Refresh Revalidation Renewal Receipt in the Build Tracker Release Doctor closes exactly one revalidated source reopening row only after current correction proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, and unchanged sibling state are recorded.
 - Support Repair Reclose Renewal Refresh Revalidation Reopening Queue in the Build Tracker Release Doctor routes only an expired revalidated support-copy, owner-review, regression-proof, escalation-route, refund-wording, or founder-support lane back to named fresh proof while preserving its receipt, healthy siblings, and private-support boundary.
 - Beta Command Reclose Renewal Refresh Revalidation Reopening Queue in the Build Tracker Release Doctor routes only an expired revalidated replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, or founder-review lane back to named fresh proof while preserving its receipt, healthy siblings, and no-command boundary.
 - Account Reclose Renewal Refresh Revalidation Reopening Queue in the Build Tracker Release Doctor routes only an expired revalidated delete/export, redaction, support-safe, object-family, founder-custody, or trigger-review lane back to named fresh proof while preserving its revalidation receipt, healthy siblings, and custody boundary.

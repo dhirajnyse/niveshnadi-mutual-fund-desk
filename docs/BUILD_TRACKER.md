@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V660 Payment Reclose Renewal Refresh Revalidation Renewal Aging Guard
+
+V660 adds Payment Reclose Renewal Refresh Revalidation Renewal Aging Guard to the Build Tracker Release Doctor. Added six independent payment renewal-aging lanes that reopen only stale proof while preserving immutable renewal lineage, healthy siblings, accepted scope, and strict no-secret boundaries.
+
+- Release label: `NiveshNadi Phase 1 v660 Payment Reclose Renewal Refresh Revalidation Renewal Aging Guard`
+- Data/version key: `20260719-v660-01`
+- Product surface: Build Tracker > Release Doctor > payment reclose renewal refresh revalidation renewal aging guard
+- Risk boundary: Payment Reclose Renewal Refresh Revalidation Renewal Aging Guard is a static payment aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene passed; shared v657-v661 responsive QA, push, and live GitHub Pages verification remain pending.
+
 ## V659 Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard
 
 V659 adds Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard to the Build Tracker Release Doctor. Added six independent source-correction renewal-aging lanes that retain immutable renewal lineage and reopen only stale or drifted proof while preserving healthy siblings and privacy-safe boundaries.

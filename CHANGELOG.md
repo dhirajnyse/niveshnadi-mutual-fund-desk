@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v660 Payment Reclose Renewal Refresh Revalidation Renewal Aging Guard
+
+- Version: `0.660.0`
+- Data version: `20260719-v660-01`
+- Changes made: Added six independent payment renewal-aging lanes that reopen only stale proof while preserving immutable renewal lineage, healthy siblings, accepted scope, and strict no-secret boundaries. Release markers and the next-five planner now point to v660.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v660 marker scan; Git diff hygiene check. Shared v657-v661 responsive and live verification pending.
+- Known risks: Payment Reclose Renewal Refresh Revalidation Renewal Aging Guard is a static payment aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch.
+
 ## NiveshNadi Phase 1 v659 Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard
 
 - Version: `0.659.0`

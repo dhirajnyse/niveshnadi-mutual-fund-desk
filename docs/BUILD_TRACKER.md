@@ -8,7 +8,7 @@ V636 adds Account Reclose Renewal Refresh Reacceptance Reopening Queue to the Bu
 - Data/version key: `20260719-v636-01`
 - Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh reacceptance reopening queue
 - Risk boundary: Static account reacceptance queue only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, or approve account custody widening.
-- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v636.
+- Verification status: Syntax, static/security, marker, diff hygiene, and in-app desktop/mobile visual checks passed across all five batch proof rooms; push and live GitHub Pages verification remain pending.
 
 ## V635 Payment Reclose Renewal Refresh Reacceptance Reopening Queue
 

@@ -26407,14 +26407,14 @@ function buildTrackerConfig() {
     },
     outcomeTrail: [
       { label: "01 Built", value: "v636", detail: "Account Reclose Renewal Refresh Reacceptance Reopening Queue is wired with a matching release label, data key, stamp, docs, changelog, archive, planner, and batch-proof room." },
-      { label: "02 Checked", value: "Static pass", detail: "v636 passed syntax, static, security, diff hygiene, and marker checks." },
-      { label: "03 Viewed", value: "Batch visual pending", detail: "Desktop and mobile proof-room QA is scheduled with the v636 batch closeout." },
-      { label: "04 Share", value: "Push pending", detail: "The v636 product commit is ready for the v632-v636 batch push after final visual verification." }
+      { label: "02 Checked", value: "Static + visual pass", detail: "v636 passed syntax, static, security, diff hygiene, marker, desktop, and mobile checks." },
+      { label: "03 Viewed", value: "Responsive pass", detail: "Desktop 1440x900 and mobile 390x844 QA passed across all five batch proof rooms with seven cards per room, stable deep links, clear header and rail spacing, mobile rail collapse, no overflow, and a quiet console." },
+      { label: "04 Share", value: "Live verification pending", detail: "The v632-v636 batch is ready to push; GitHub Pages and release-stamp verification remain pending." }
     ],
     memory: [
       { label: "Product commit", value: "v636 account reacceptance queue", detail: "Expired account-custody reacceptance proof enters a selective fresh-proof queue while current sibling evidence and accepted lineage remain intact." },
-      { label: "Release checks", value: "Local checks passed", detail: "v636 passed syntax, static, security, diff hygiene, and marker checks." },
-      { label: "Share outcome", value: "Batch push pending", detail: "The v632-v636 batch will be pushed after the final desktop/mobile proof-room review." }
+      { label: "Release checks", value: "Local + visual passed", detail: "v636 passed syntax, static, security, diff hygiene, marker, desktop, mobile, overflow, deep-link, rail-clearance, and console checks." },
+      { label: "Share outcome", value: "Batch push pending", detail: "The v632-v636 batch passed local responsive QA and is ready for push and live verification." }
     ],
     actions: [
       {

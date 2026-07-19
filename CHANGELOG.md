@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v661 Account Reclose Renewal Refresh Revalidation Renewal Aging Guard
+
+- Version: `0.661.0`
+- Data version: `20260719-v661-01`
+- Changes made: Added six independent account-custody renewal-aging lanes that reopen only stale proof while preserving immutable renewal lineage, healthy siblings, accepted scope, and privacy-safe boundaries. Release markers and the next-five planner now point to v661.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v661 marker scan; Git diff hygiene check. Shared v657-v661 responsive and live verification pending.
+- Known risks: Account Reclose Renewal Refresh Revalidation Renewal Aging Guard is a static custody aging room only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, widen custody, or approve account launch.
+
 ## NiveshNadi Phase 1 v660 Payment Reclose Renewal Refresh Revalidation Renewal Aging Guard
 
 - Version: `0.660.0`

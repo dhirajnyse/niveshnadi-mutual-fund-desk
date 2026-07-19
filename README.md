@@ -2,12 +2,13 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v660 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v661 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
+- Account Reclose Renewal Refresh Revalidation Renewal Aging Guard in the Build Tracker Release Doctor added six independent account-custody renewal-aging lanes that reopen only stale proof while preserving immutable renewal lineage, healthy siblings, accepted scope, and privacy-safe boundaries.
 - Payment Reclose Renewal Refresh Revalidation Renewal Aging Guard in the Build Tracker Release Doctor added six independent payment renewal-aging lanes that reopen only stale proof while preserving immutable renewal lineage, healthy siblings, accepted scope, and strict no-secret boundaries.
 - Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard in the Build Tracker Release Doctor added six independent source-correction renewal-aging lanes that retain immutable renewal lineage and reopen only stale or drifted proof while preserving healthy siblings and privacy-safe boundaries.
 - Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt in the Build Tracker Release Doctor added six support revalidation renewal lanes that close exactly one active reopening row only after named fresh support proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and private-support exclusions are recorded.

@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260719-v634-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v634 Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue";
+const DATA_VERSION = "20260719-v635-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v635 Payment Reclose Renewal Refresh Reacceptance Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -26002,6 +26002,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue is a static correction reacceptance queue only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
+      },
+      {
+        key: "paymentRecloseRenewalRefreshReacceptanceReopeningQueue",
+        label: "Payment reclose renewal refresh reacceptance reopening queue",
+        verdict: "Expired reaccepted payment proof reopens selectively",
+        receiptId: ["NN", "PAYMENT", "RECLOSE", "RENEWAL", "REFRESH", "REACCEPTANCE", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-reclose-renewal-refresh-reacceptance-reopening-queue",
+        copyLabel: "Copy payment reacceptance reopening queue",
+        score: 81,
+        rule: "A reaccepted payment lane may reopen only when its new review-by date or explicit reopen condition is reached; every queue row must preserve unaffected sibling state and accepted reacceptance lineage.",
+        lanes: [
+          {
+            label: "Entitlement reacceptance reopen",
+            owner: "Entitlement desk",
+            method: "REOPEN_REACCEPTED_ENTITLEMENT",
+            route: "payment.reclose.renewal.refresh.reacceptance.reopening.entitlement",
+            proof: "Record prior reacceptance age state, entitlement trigger, required state and plan-boundary proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired entitlement reacceptance is queued with fresh state, plan boundary, and access-transition proof required.",
+            hold: "Hold when trigger, fresh entitlement proof, queue owner, or sibling snapshot is missing.",
+            score: 82
+          },
+          {
+            label: "Refund-wording reacceptance reopen",
+            owner: "Billing boundary desk",
+            method: "REOPEN_REACCEPTED_REFUND_WORDING",
+            route: "payment.reclose.renewal.refresh.reacceptance.reopening.refund",
+            proof: "Record prior reacceptance age state, wording trigger, required policy and eligibility proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired refund reacceptance is queued with current wording, exclusions, policy boundary, and support route required.",
+            hold: "Hold when wording trigger, policy proof, support route, owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Rollback reacceptance reopen",
+            owner: "Payment reliability desk",
+            method: "REOPEN_REACCEPTED_ROLLBACK",
+            route: "payment.reclose.renewal.refresh.reacceptance.reopening.rollback",
+            proof: "Record prior reacceptance age state, replay trigger, required rollback scenario and failure-path proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired rollback reacceptance is queued with a fresh replay receipt and affected transition required.",
+            hold: "Hold when replay trigger, rollback requirement, failure path, owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Support-copy reacceptance reopen",
+            owner: "Payment support desk",
+            method: "REOPEN_REACCEPTED_SUPPORT_COPY",
+            route: "payment.reclose.renewal.refresh.reacceptance.reopening.support",
+            proof: "Record prior reacceptance age state, support trigger, required current copy and escalation proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired support-copy reacceptance is queued with current payment boundary and escalation proof required.",
+            hold: "Hold when copy trigger, escalation route, policy reference, owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Owner-review reacceptance reopen",
+            owner: "Finance owner",
+            method: "REOPEN_REACCEPTED_OWNER_REVIEW",
+            route: "payment.reclose.renewal.refresh.reacceptance.reopening.owner",
+            proof: "Record prior reacceptance age state, owner trigger, required acknowledgement and scope proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired owner reacceptance is queued with a fresh accountable-owner review required.",
+            hold: "Hold when owner trigger, acknowledgement requirement, scope, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Founder-finance reacceptance reopen",
+            owner: "Founder finance desk",
+            method: "REOPEN_REACCEPTED_FOUNDER_FINANCE",
+            route: "payment.reclose.renewal.refresh.reacceptance.reopening.founder",
+            proof: "Record prior reacceptance age state, founder trigger, required release-hold and zero-residue proof, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired founder-finance reacceptance is queued with a fresh payment review and release decision required.",
+            hold: "Hold when founder trigger, decision requirement, residue boundary, owner, or sibling snapshot is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Payment Reclose Renewal Refresh Reacceptance Reopening Queue opens only the reaccepted lane whose new age state or reopen condition requires fresh proof.",
+          "Every queue row binds the reacceptance aging guard, reacceptance receipt, affected lane, prior age state, trigger, fresh-proof requirement, queue owner, and sibling-state snapshot.",
+          "Current sibling payment proof remains accepted unless its own reaccepted review-by date or reopen condition is reached.",
+          "A reopened reacceptance returns to fresh-proof acceptance only after review; queue entry alone never restores confidence.",
+          "Payment reacceptance-reopening rows must exclude card, bank, UPI, token, credentials, contacts, account payloads, and raw gateway or support data."
+        ],
+        noGoLines: [
+          "No reaccepted payment lane may reopen without a recorded reacceptance age state or explicit reopen trigger.",
+          "No sibling lane may be reopened merely because one reaccepted payment lane enters the queue.",
+          "No queue row may be treated as payment processing, refund approval, entitlement approval, access grant, or launch approval.",
+          "No payment reacceptance reopening queue may process payments, issue refunds, grant access, fetch gateway logs, contact users, or reconcile production ledgers."
+        ],
+        receiptFields: [
+          "payment_reclose_renewal_refresh_reacceptance_reopening_queue_id",
+          "release_key",
+          "payment_reclose_renewal_refresh_reacceptance_aging_guard_id",
+          "payment_reclose_renewal_refresh_reacceptance_receipt_id",
+          "affected_lane",
+          "prior_age_state",
+          "reopen_trigger",
+          "fresh_proof_requirement",
+          "queue_owner",
+          "superseded_refresh_queue_row",
+          "sibling_state_snapshot",
+          "opened_at",
+          "created_at"
+        ],
+        boundary: "Payment Reclose Renewal Refresh Reacceptance Reopening Queue is a static payment reacceptance queue only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -26174,25 +26275,25 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue is visible; the next releases should complete selective reopening across the remaining proof families, then begin current-proof revalidation.",
+      rule: "Payment Reclose Renewal Refresh Reacceptance Reopening Queue is visible; the next releases should complete selective reopening across the remaining proof families, then begin current-proof revalidation.",
       lanes: [
-        { version: "v635", label: "Payment reclose renewal refresh reacceptance reopening queue", route: "#payment-wiring", detail: "Route only expired payment reacceptance lanes back to fresh proof while preserving current sibling state and lineage." },
         { version: "v636", label: "Account reclose renewal refresh reacceptance reopening queue", route: "#account-readiness", detail: "Route only expired account reacceptance lanes back to fresh proof while preserving current sibling state and lineage." },
         { version: "v637", label: "Beta command reclose renewal refresh reacceptance reopening queue", route: "#founder-beta-operating-room", detail: "Route only expired founder-command reacceptance lanes back to fresh proof while preserving current sibling state and lineage." },
         { version: "v638", label: "Support repair reclose renewal refresh reacceptance reopening queue", route: "#paid-beta-support-ledger", detail: "Route only expired support-repair reacceptance lanes back to fresh proof while preserving current sibling state and lineage." },
-        { version: "v639", label: "Source correction reclose renewal refresh revalidation receipt", route: "#correction-ledger", detail: "Revalidate one reopened source lane after current proof, reviewer acceptance, and a fresh review window are recorded." }
+        { version: "v639", label: "Source correction reclose renewal refresh revalidation receipt", route: "#correction-ledger", detail: "Revalidate one reopened source lane after current proof, reviewer acceptance, and a fresh review window are recorded." },
+        { version: "v640", label: "Payment reclose renewal refresh revalidation receipt", route: "#payment-wiring", detail: "Revalidate one reopened payment lane after current proof, reviewer acceptance, and a fresh review window are recorded." }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Source reacceptance reopening proof visible",
+      verdict: "Payment reacceptance reopening proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
-        { version: "v633", key: "20260719-v633-01", commit: "de75739", receiptId: "NN-SHARE-RECEIPT-20260719V63301", proof: "Support Repair Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks." },
-        { version: "v632", key: "20260719-v632-01", commit: "47bcba4", receiptId: "NN-SHARE-RECEIPT-20260719V63201", proof: "Beta Command Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks." },,
-        { version: "v631", key: "20260717-v631-01", commit: "625355a", receiptId: "NN-SHARE-RECEIPT-20260717V63101", proof: "Account Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },,,
+        { version: "v634", key: "20260719-v634-01", commit: "4f74449", receiptId: "NN-SHARE-RECEIPT-20260719V63401", proof: "Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks." },
+        { version: "v633", key: "20260719-v633-01", commit: "de75739", receiptId: "NN-SHARE-RECEIPT-20260719V63301", proof: "Support Repair Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks." },,
+        { version: "v632", key: "20260719-v632-01", commit: "47bcba4", receiptId: "NN-SHARE-RECEIPT-20260719V63201", proof: "Beta Command Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks." },,,
+        { version: "v631", key: "20260717-v631-01", commit: "625355a", receiptId: "NN-SHARE-RECEIPT-20260717V63101", proof: "Account Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },,,,
         { version: "v630", key: "20260717-v630-01", commit: "4bcd0c6", receiptId: "NN-SHARE-RECEIPT-20260717V63001", proof: "Payment Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks." },,,,
-        { version: "v629", key: "20260717-v629-01", commit: "64f41e4", receiptId: "NN-SHARE-RECEIPT-20260717V62901", proof: "Source Correction Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks." },,,
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
       retentionReview: { label: "Proof archive retention", verdict: "Keep five, retire one", receiptId: ["NN", "ARCHIVE", "RETENTION", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(), cadence: "Review on every release before the share receipt is copied.", owner: "Founder release desk", boundary: "Store release key, commit, receipt ID, proof note, and risk boundary only; do not store private user data, screenshots with identifiers, credentials, PAN, folio, CAS, bank, contact, or payment data." },
@@ -26204,14 +26305,14 @@ function buildTrackerConfig() {
       ]
     },
     outcomeTrail: [
-      { label: "01 Built", value: "v634", detail: "Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue is wired with a matching release label, data key, stamp, docs, changelog, archive, planner, and batch-proof room." },
-      { label: "02 Checked", value: "Static pass", detail: "v634 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "01 Built", value: "v635", detail: "Payment Reclose Renewal Refresh Reacceptance Reopening Queue is wired with a matching release label, data key, stamp, docs, changelog, archive, planner, and batch-proof room." },
+      { label: "02 Checked", value: "Static pass", detail: "v635 passed syntax, static, security, diff hygiene, and marker checks." },
       { label: "03 Viewed", value: "Batch visual pending", detail: "Desktop and mobile proof-room QA is scheduled with the v636 batch closeout." },
-      { label: "04 Share", value: "Push pending", detail: "The v634 product commit is ready for the v632-v636 batch push after final visual verification." }
+      { label: "04 Share", value: "Push pending", detail: "The v635 product commit is ready for the v632-v636 batch push after final visual verification." }
     ],
     memory: [
-      { label: "Product commit", value: "v634 source reacceptance queue", detail: "Expired source-correction reacceptance proof enters a selective fresh-proof queue while current sibling evidence and accepted lineage remain intact." },
-      { label: "Release checks", value: "Local checks passed", detail: "v634 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "Product commit", value: "v635 payment reacceptance queue", detail: "Expired payment reacceptance proof enters a selective fresh-proof queue while current sibling evidence and accepted lineage remain intact." },
+      { label: "Release checks", value: "Local checks passed", detail: "v635 passed syntax, static, security, diff hygiene, and marker checks." },
       { label: "Share outcome", value: "Batch push pending", detail: "The v632-v636 batch will be pushed after the final desktop/mobile proof-room review." }
     ],
     actions: [

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v635 Payment Reclose Renewal Refresh Reacceptance Reopening Queue
+
+- Version: `0.635.0`
+- Data version: `20260719-v635-01`
+- Changes made: Added selective payment reacceptance reopening rows with prior-age-state, reopen-trigger, fresh-proof requirement, queue-owner, superseded-row, sibling-state, aging-guard, and reacceptance-receipt bindings, transaction-safe no-go boundaries, release archive and planner roll-forward, and release markers rolled forward to v635.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v635 marker scan; Git diff hygiene check.
+- Known risks: Payment Reclose Renewal Refresh Reacceptance Reopening Queue is a static payment reacceptance queue only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, or approve payment launch.
+
 ## NiveshNadi Phase 1 v634 Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue
 
 - Version: `0.634.0`

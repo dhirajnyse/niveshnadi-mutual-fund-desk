@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V635 Payment Reclose Renewal Refresh Reacceptance Reopening Queue
+
+V635 adds Payment Reclose Renewal Refresh Reacceptance Reopening Queue to the Build Tracker Release Doctor. It converts expired entitlement, refund-wording, rollback, support-copy, owner-review, and founder-finance reacceptance clocks into explicit fresh-proof queue rows while preserving healthy sibling proof, the accepted receipt, and the superseded refresh queue.
+
+- Release label: `NiveshNadi Phase 1 v635 Payment Reclose Renewal Refresh Reacceptance Reopening Queue`
+- Data/version key: `20260719-v635-01`
+- Product surface: Build Tracker > Release Doctor > Payment reclose renewal refresh reacceptance reopening queue
+- Risk boundary: Static payment reacceptance queue only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, or approve payment launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v636.
+
 ## V634 Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue
 
 V634 adds Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue to the Build Tracker Release Doctor. It converts expired replacement, notice, cache, support, reviewer, and founder reacceptance clocks into explicit fresh-proof queue rows while preserving healthy sibling proof, the accepted receipt, and the superseded refresh queue.

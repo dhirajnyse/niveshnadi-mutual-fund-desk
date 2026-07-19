@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V636 Account Reclose Renewal Refresh Reacceptance Reopening Queue
+
+V636 adds Account Reclose Renewal Refresh Reacceptance Reopening Queue to the Build Tracker Release Doctor. It converts expired delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review reacceptance clocks into explicit fresh-proof queue rows while preserving healthy sibling proof, the accepted receipt, and the superseded refresh queue.
+
+- Release label: `NiveshNadi Phase 1 v636 Account Reclose Renewal Refresh Reacceptance Reopening Queue`
+- Data/version key: `20260719-v636-01`
+- Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh reacceptance reopening queue
+- Risk boundary: Static account reacceptance queue only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, or approve account custody widening.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v636.
+
 ## V635 Payment Reclose Renewal Refresh Reacceptance Reopening Queue
 
 V635 adds Payment Reclose Renewal Refresh Reacceptance Reopening Queue to the Build Tracker Release Doctor. It converts expired entitlement, refund-wording, rollback, support-copy, owner-review, and founder-finance reacceptance clocks into explicit fresh-proof queue rows while preserving healthy sibling proof, the accepted receipt, and the superseded refresh queue.

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v636 Account Reclose Renewal Refresh Reacceptance Reopening Queue
+
+- Version: `0.636.0`
+- Data version: `20260719-v636-01`
+- Changes made: Added selective account reacceptance reopening rows with prior-age-state, reopen-trigger, fresh-proof requirement, queue-owner, superseded-row, sibling-state, aging-guard, and reacceptance-receipt bindings, custody-safe no-go boundaries, release archive and planner roll-forward, and release markers rolled forward to v636.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v636 marker scan; Git diff hygiene check.
+- Known risks: Account Reclose Renewal Refresh Reacceptance Reopening Queue is a static account reacceptance queue only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, or approve account custody widening.
+
 ## NiveshNadi Phase 1 v635 Payment Reclose Renewal Refresh Reacceptance Reopening Queue
 
 - Version: `0.635.0`

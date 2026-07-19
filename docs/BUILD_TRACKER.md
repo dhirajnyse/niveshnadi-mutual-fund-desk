@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V643 Support Repair Reclose Renewal Refresh Revalidation Receipt
+
+V643 adds Support Repair Reclose Renewal Refresh Revalidation Receipt to the Build Tracker Release Doctor. It revalidates one reopened support-copy, owner-review, regression-proof, escalation-route, refund-wording, or founder-support lane only after current proof, reviewer acceptance, a fresh review window, and private-support boundaries are receipted.
+
+- Release label: `NiveshNadi Phase 1 v643 Support Repair Reclose Renewal Refresh Revalidation Receipt`
+- Data/version key: `20260719-v643-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose renewal refresh revalidation receipt
+- Risk boundary: Static support workflow receipt only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v646.
+
 ## V642 Beta Command Reclose Renewal Refresh Revalidation Receipt
 
 V642 adds Beta Command Reclose Renewal Refresh Revalidation Receipt to the Build Tracker Release Doctor. It revalidates one reopened replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, or founder-review lane only after current proof, reviewer acceptance, a fresh review window, and founder-command boundaries are receipted.

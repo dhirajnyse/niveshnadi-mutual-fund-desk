@@ -2,12 +2,13 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v642 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v643 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
+- Support Repair Reclose Renewal Refresh Revalidation Receipt in the Build Tracker Release Doctor returns one reopened support-copy, owner-review, regression-proof, escalation-route, refund-wording, or founder-support lane to current status only after fresh proof, reviewer acceptance, a new review window, superseded-queue lineage, unchanged sibling state, and private-support boundaries are recorded.
 - Beta Command Reclose Renewal Refresh Revalidation Receipt in the Build Tracker Release Doctor returns one reopened replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, or founder-review lane to current status only after fresh proof, reviewer acceptance, a new review window, superseded-queue lineage, and unchanged sibling state are recorded.
 - Account Reclose Renewal Refresh Revalidation Receipt in the Build Tracker Release Doctor returns one reopened delete/export, redaction, support-safe, object-family, founder-custody, or trigger-review lane to current status only after fresh proof, reviewer acceptance, a new review window, superseded-queue lineage, unchanged sibling state, and custody-safe boundaries are recorded.
 - Payment Reclose Renewal Refresh Revalidation Receipt in the Build Tracker Release Doctor returns one reopened entitlement, refund-wording, rollback, support-copy, owner-review, or founder-finance lane to current status only after fresh proof, reviewer acceptance, a new review window, and no-secret boundaries are recorded.

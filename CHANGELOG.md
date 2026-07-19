@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v643 Support Repair Reclose Renewal Refresh Revalidation Receipt
+
+- Version: `0.643.0`
+- Data version: `20260719-v643-01`
+- Changes made: Added six support-repair revalidation receipt lanes binding the active reopening row to fresh proof, reviewer role and decision, accepted scope, a new review window, superseded-row lineage, unchanged sibling state, and private-support boundaries, with release markers and planner rolled forward to v643.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v643 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Reclose Renewal Refresh Revalidation Receipt is a static support workflow receipt only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v642 Beta Command Reclose Renewal Refresh Revalidation Receipt
 
 - Version: `0.642.0`

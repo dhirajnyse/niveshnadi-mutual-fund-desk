@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260719-v642-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v642 Beta Command Reclose Renewal Refresh Revalidation Receipt";
+const DATA_VERSION = "20260719-v643-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v643 Support Repair Reclose Renewal Refresh Revalidation Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -26818,6 +26818,109 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Reclose Renewal Refresh Revalidation Receipt is a static founder workflow receipt only; it does not send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion."
+      },
+      {
+        key: "supportRepairRecloseRenewalRefreshRevalidationReceipt",
+        label: "Support repair reclose renewal refresh revalidation receipt",
+        verdict: "Fresh support proof revalidates one reopened lane",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "RECLOSE", "RENEWAL", "REFRESH", "REVALIDATION", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-reclose-renewal-refresh-revalidation-receipt",
+        copyLabel: "Copy support revalidation receipt",
+        score: 84,
+        rule: "A reopened support-repair lane becomes current only after fresh proof, reviewer acceptance, and a new review window are recorded; the receipt preserves private-support boundaries and healthy sibling state.",
+        lanes: [
+          {
+            label: "Support-copy proof revalidation",
+            owner: "Support content desk",
+            method: "REVALIDATE_REOPENED_SUPPORT_COPY",
+            route: "support.repair.reclose.renewal.refresh.revalidation.receipt.copy",
+            proof: "Bind the reopening row to current support-safe wording, scenario coverage, reviewer decision, and new review-by date.",
+            readyWhen: "Ready when public-safe wording covers the current scenario family and is independently accepted.",
+            hold: "Hold when wording, scenario coverage, acceptance, or review-by date is missing.",
+            score: 85
+          },
+          {
+            label: "Owner-review proof revalidation",
+            owner: "Support operations",
+            method: "REVALIDATE_REOPENED_OWNER_REVIEW",
+            route: "support.repair.reclose.renewal.refresh.revalidation.receipt.owner",
+            proof: "Bind the reopening row to current owner accountability, capacity boundary, independent reviewer decision, and new review-by date.",
+            readyWhen: "Ready when the named owner accepts current scope and capacity with an independent review window.",
+            hold: "Hold when owner, capacity boundary, conflict check, reviewer decision, or review-by date is missing.",
+            score: 84
+          },
+          {
+            label: "Regression-proof revalidation",
+            owner: "Support quality desk",
+            method: "REVALIDATE_REOPENED_REGRESSION_PROOF",
+            route: "support.repair.reclose.renewal.refresh.revalidation.receipt.regression",
+            proof: "Bind the reopening row to current regression scenarios, expected outcomes, reviewer decision, accepted scope, and new review-by date.",
+            readyWhen: "Ready when the support repair passes current regression scenarios and accepted failure boundaries.",
+            hold: "Hold when scenarios, expected outcomes, failure boundary, acceptance, or review-by date is missing.",
+            score: 84
+          },
+          {
+            label: "Escalation-route proof revalidation",
+            owner: "Escalation desk",
+            method: "REVALIDATE_REOPENED_ESCALATION_ROUTE",
+            route: "support.repair.reclose.renewal.refresh.revalidation.receipt.escalation",
+            proof: "Bind the reopening row to current escalation owner, response boundary, handoff receipt, reviewer decision, and new review-by date.",
+            readyWhen: "Ready when the escalation route is current, bounded, independently accepted, and time-bounded for review.",
+            hold: "Hold when owner, response boundary, handoff receipt, decision, or review-by date is missing.",
+            score: 84
+          },
+          {
+            label: "Refund-wording proof revalidation",
+            owner: "Refund boundary desk",
+            method: "REVALIDATE_REOPENED_REFUND_WORDING",
+            route: "support.repair.reclose.renewal.refresh.revalidation.receipt.refund",
+            proof: "Bind the reopening row to current refund wording, policy boundary, no-promise check, reviewer decision, and new review-by date.",
+            readyWhen: "Ready when support wording matches current refund policy without promising or executing a refund.",
+            hold: "Hold when wording, policy boundary, no-promise check, acceptance, or review-by date is missing.",
+            score: 84
+          },
+          {
+            label: "Founder-support proof revalidation",
+            owner: "Founder support desk",
+            method: "REVALIDATE_REOPENED_FOUNDER_SUPPORT",
+            route: "support.repair.reclose.renewal.refresh.revalidation.receipt.founder",
+            proof: "Bind the reopening row to current support posture, residue check, founder decision, accepted scope, and new review-by date.",
+            readyWhen: "Ready when founder review accepts the current support boundary and records the next mandatory review window.",
+            hold: "Hold when support proof, residue check, founder decision, accepted scope, or review-by date is missing.",
+            score: 85
+          }
+        ],
+        operatingRules: [
+          "Support Repair Reclose Renewal Refresh Revalidation Receipt consumes one active reopening row only after its named fresh-proof requirement is satisfied.",
+          "Every receipt binds fresh proof references, reviewer role and decision, accepted scope, review-window start, review-by date, superseded queue row, and sibling-state snapshot.",
+          "The new support review window begins at revalidation time; prior acceptance and reopening rows remain immutable history.",
+          "Healthy sibling support lanes retain their current state and review windows when one reopened lane is revalidated.",
+          "Support revalidation receipts must exclude private conversations, contact details, identifiers, credentials, account or payment payloads, and free-form private notes."
+        ],
+        noGoLines: [
+          "No reopened support-repair lane may be revalidated without current proof, explicit reviewer acceptance, and a new review-by date.",
+          "No queue row may disappear when revalidated; the receipt must name the superseded row and preserve lineage.",
+          "No revalidation receipt may be treated as reply approval, refund execution, payment approval, account action, or launch approval.",
+          "No support revalidation receipt may send replies, issue refunds, process payments, fetch private support history, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "support_repair_reclose_renewal_refresh_revalidation_receipt_id",
+          "release_key",
+          "support_repair_reclose_renewal_refresh_reacceptance_reopening_queue_id",
+          "support_repair_reclose_renewal_refresh_reacceptance_receipt_id",
+          "affected_lane",
+          "fresh_proof_reference",
+          "reviewer_role",
+          "reviewer_decision",
+          "accepted_scope",
+          "review_window_start",
+          "review_by",
+          "superseded_reopening_queue_row",
+          "sibling_state_snapshot",
+          "revalidated_at",
+          "created_at"
+        ],
+        boundary: "Support Repair Reclose Renewal Refresh Revalidation Receipt is a static support workflow receipt only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -26992,16 +27095,16 @@ function buildTrackerConfig() {
       verdict: "Next batch ready",
       rule: "Account Reclose Renewal Refresh Revalidation Receipt is visible; the next releases should complete revalidation across command and support proof, then add independent review-window aging.",
       lanes: [
-        { version: "v643", label: "Support repair reclose renewal refresh revalidation receipt", route: "#paid-beta-support-ledger", detail: "Revalidate one reopened support-repair lane after current proof, reviewer acceptance, and a fresh review window are recorded." },
         { version: "v644", label: "Source correction reclose renewal refresh revalidation aging guard", route: "#correction-ledger", detail: "Age each revalidated source lane from its fresh review window and reopen only the lane that becomes stale." },
         { version: "v645", label: "Payment reclose renewal refresh revalidation aging guard", route: "#payment-wiring", detail: "Age each revalidated payment lane from its fresh review window and reopen only the lane that becomes stale." },
         { version: "v646", label: "Account reclose renewal refresh revalidation aging guard", route: "#account-readiness", detail: "Age each revalidated account lane from its fresh review window and reopen only the lane that becomes stale." },
-        { version: "v647", label: "Beta command reclose renewal refresh revalidation aging guard", route: "#founder-beta-operating-room", detail: "Age each revalidated beta-command lane from its fresh review window and reopen only the lane that becomes stale." }
+        { version: "v647", label: "Beta command reclose renewal refresh revalidation aging guard", route: "#founder-beta-operating-room", detail: "Age each revalidated beta-command lane from its fresh review window and reopen only the lane that becomes stale." },
+        { version: "v648", label: "Support repair reclose renewal refresh revalidation aging guard", route: "#paid-beta-support-ledger", detail: "Age each revalidated support-repair lane from its fresh review window and reopen only the lane that becomes stale." }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Beta-command revalidation proof visible",
+      verdict: "Support revalidation proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         { version: "v641", key: "20260719-v641-01", commit: "e8a4643", receiptId: "NN-SHARE-RECEIPT-20260719V64101", proof: "Account Reclose Renewal Refresh Revalidation Receipt added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
@@ -27020,14 +27123,14 @@ function buildTrackerConfig() {
       ]
     },
     outcomeTrail: [
-      { label: "01 Built", value: "v642", detail: "Beta Command Reclose Renewal Refresh Revalidation Receipt is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
-      { label: "02 Checked", value: "Static pass", detail: "v642 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "01 Built", value: "v643", detail: "Support Repair Reclose Renewal Refresh Revalidation Receipt is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
+      { label: "02 Checked", value: "Static pass", detail: "v643 passed syntax, static, security, diff hygiene, and marker checks." },
       { label: "03 Viewed", value: "Batch visual pending", detail: "Desktop and mobile proof-room QA is scheduled with the v646 batch closeout." },
-      { label: "04 Share", value: "Push pending", detail: "The v642 product commit is ready for the v642-v646 batch push after final visual verification." }
+      { label: "04 Share", value: "Push pending", detail: "The v643 product commit is ready for the v642-v646 batch push after final visual verification." }
     ],
     memory: [
-      { label: "Product commit", value: "v642 beta-command revalidation receipt", detail: "One reopened beta-command lane returns to current status only after fresh proof, reviewer acceptance, and a new review window are receipted." },
-      { label: "Release checks", value: "Local checks passed", detail: "v642 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "Product commit", value: "v643 support revalidation receipt", detail: "One reopened support-repair lane returns to current status only after fresh proof, reviewer acceptance, and a new review window are receipted." },
+      { label: "Release checks", value: "Local checks passed", detail: "v643 passed syntax, static, security, diff hygiene, and marker checks." },
       { label: "Share outcome", value: "Batch push pending", detail: "The v642-v646 batch will be pushed after the final desktop/mobile proof-room review." }
     ],
     actions: [

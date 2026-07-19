@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V645 Payment Reclose Renewal Refresh Revalidation Aging Guard
+
+V645 adds Payment Reclose Renewal Refresh Revalidation Aging Guard to the Build Tracker Release Doctor. It gives each revalidated entitlement, refund-wording, rollback, support-copy, owner-review, and founder-finance lane an independent fresh-proof clock and routes only the stale lane back to proof while preserving its receipt, healthy siblings, and no-secret boundary.
+
+- Release label: `NiveshNadi Phase 1 v645 Payment Reclose Renewal Refresh Revalidation Aging Guard`
+- Data/version key: `20260719-v645-01`
+- Product surface: Build Tracker > Release Doctor > Payment reclose renewal refresh revalidation aging guard
+- Risk boundary: Static payment aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v646.
+
 ## V644 Source Correction Reclose Renewal Refresh Revalidation Aging Guard
 
 V644 adds Source Correction Reclose Renewal Refresh Revalidation Aging Guard to the Build Tracker Release Doctor. It gives each revalidated replacement, notice, cache, support, reviewer, and founder lane an independent fresh-proof clock and routes only the stale lane back to proof while preserving its receipt and healthy siblings.

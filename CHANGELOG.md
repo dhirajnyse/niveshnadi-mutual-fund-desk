@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v651 Account Reclose Renewal Refresh Revalidation Reopening Queue
+
+- Version: `0.651.0`
+- Data version: `20260719-v651-01`
+- Changes made: Added six selective account-custody revalidation reopening lanes that preserve prior age state, reopen trigger, named fresh-proof requirement, queue owner, aging-guard and revalidation-receipt lineage, healthy sibling state, and the custody boundary, with release markers and planner rolled forward to v651.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v651 marker scan; Git diff hygiene check.
+- Known risks: Account Reclose Renewal Refresh Revalidation Reopening Queue is a static custody revalidation queue only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, widen custody, or approve account launch.
+
 ## NiveshNadi Phase 1 v650 Payment Reclose Renewal Refresh Revalidation Reopening Queue
 
 - Version: `0.650.0`

@@ -2,12 +2,13 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v643 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v644 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
+- Source Correction Reclose Renewal Refresh Revalidation Aging Guard in the Build Tracker Release Doctor gives each revalidated replacement, notice, cache, support, reviewer, and founder lane its own fresh-proof date, review-by date, age state, owner, and selective reopen condition while preserving the revalidation receipt and healthy siblings.
 - Support Repair Reclose Renewal Refresh Revalidation Receipt in the Build Tracker Release Doctor returns one reopened support-copy, owner-review, regression-proof, escalation-route, refund-wording, or founder-support lane to current status only after fresh proof, reviewer acceptance, a new review window, superseded-queue lineage, unchanged sibling state, and private-support boundaries are recorded.
 - Beta Command Reclose Renewal Refresh Revalidation Receipt in the Build Tracker Release Doctor returns one reopened replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, or founder-review lane to current status only after fresh proof, reviewer acceptance, a new review window, superseded-queue lineage, and unchanged sibling state are recorded.
 - Account Reclose Renewal Refresh Revalidation Receipt in the Build Tracker Release Doctor returns one reopened delete/export, redaction, support-safe, object-family, founder-custody, or trigger-review lane to current status only after fresh proof, reviewer acceptance, a new review window, superseded-queue lineage, unchanged sibling state, and custody-safe boundaries are recorded.

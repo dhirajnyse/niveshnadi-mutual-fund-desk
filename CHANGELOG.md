@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v644 Source Correction Reclose Renewal Refresh Revalidation Aging Guard
+
+- Version: `0.644.0`
+- Data version: `20260719-v644-01`
+- Changes made: Added six source-correction revalidation aging lanes with independent fresh-proof dates, review windows, age states, owners, selective reopen conditions, receipt lineage, and sibling-state preservation, with release markers and planner rolled forward to v644.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v644 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Reclose Renewal Refresh Revalidation Aging Guard is a static correction aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v643 Support Repair Reclose Renewal Refresh Revalidation Receipt
 
 - Version: `0.643.0`

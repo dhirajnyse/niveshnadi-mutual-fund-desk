@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V646 Account Reclose Renewal Refresh Revalidation Aging Guard
+
+V646 adds Account Reclose Renewal Refresh Revalidation Aging Guard to the Build Tracker Release Doctor. It gives each revalidated delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review lane an independent fresh-proof clock and routes only the stale lane back to proof while preserving its receipt, healthy siblings, and custody boundary.
+
+- Release label: `NiveshNadi Phase 1 v646 Account Reclose Renewal Refresh Revalidation Aging Guard`
+- Data/version key: `20260719-v646-01`
+- Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh revalidation aging guard
+- Risk boundary: Static custody aging room only; it does not authenticate users, delete or export records, run background jobs, recover accounts, collect identifiers or contact data, widen custody scope, or approve account launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v646.
+
 ## V645 Payment Reclose Renewal Refresh Revalidation Aging Guard
 
 V645 adds Payment Reclose Renewal Refresh Revalidation Aging Guard to the Build Tracker Release Doctor. It gives each revalidated entitlement, refund-wording, rollback, support-copy, owner-review, and founder-finance lane an independent fresh-proof clock and routes only the stale lane back to proof while preserving its receipt, healthy siblings, and no-secret boundary.

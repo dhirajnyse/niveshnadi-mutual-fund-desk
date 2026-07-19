@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260719-v645-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v645 Payment Reclose Renewal Refresh Revalidation Aging Guard";
+const DATA_VERSION = "20260719-v646-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v646 Account Reclose Renewal Refresh Revalidation Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -27127,6 +27127,109 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Reclose Renewal Refresh Revalidation Aging Guard is a static payment aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch."
+      },
+      {
+        key: "accountRecloseRenewalRefreshRevalidationAgingGuard",
+        label: "Account reclose renewal refresh revalidation aging guard",
+        verdict: "Revalidated account proof has an independent expiry clock",
+        receiptId: ["NN", "ACCOUNT", "RECLOSE", "RENEWAL", "REFRESH", "REVALIDATION", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-reclose-renewal-refresh-revalidation-aging-guard",
+        copyLabel: "Copy account revalidation aging guard",
+        score: 84,
+        rule: "Every revalidated account-custody lane must expose its fresh proof date, review-by date, age state, owner, and selective reopen condition without widening custody or retaining private account data.",
+        lanes: [
+          {
+            label: "Delete/export revalidation aging",
+            owner: "Account operations",
+            method: "AGE_REVALIDATED_DELETE_EXPORT",
+            route: "account.reclose.renewal.refresh.revalidation.aging.delete_export",
+            proof: "Track revalidated custody behavior date, review window, age state, contract scope, receipt lineage, and behavior-change reopen condition.",
+            readyWhen: "Ready while accepted delete and export behavior matches the current custody contract and review window.",
+            hold: "Reopen only this lane when review-by passes, custody contract changes, or delete/export behavior diverges.",
+            score: 85
+          },
+          {
+            label: "Redaction revalidation aging",
+            owner: "Privacy desk",
+            method: "AGE_REVALIDATED_REDACTION",
+            route: "account.reclose.renewal.refresh.revalidation.aging.redaction",
+            proof: "Track revalidated redaction proof date, review window, age state, exclusion scope, receipt lineage, and leakage-trigger reopen condition.",
+            readyWhen: "Ready while the exclusion set and leakage proof cover the accepted account scope.",
+            hold: "Reopen only this lane when exclusion scope changes, leakage appears, accepted scope narrows, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Support-safe revalidation aging",
+            owner: "Support captain",
+            method: "AGE_REVALIDATED_SUPPORT_SAFE",
+            route: "account.reclose.renewal.refresh.revalidation.aging.support",
+            proof: "Track revalidated custody wording date, review window, age state, escalation boundary, receipt lineage, and privacy-failure reopen condition.",
+            readyWhen: "Ready while support wording and escalation match current custody behavior without exposing private account data.",
+            hold: "Reopen only this lane when wording, escalation route, privacy posture, accepted scope, or review-by date changes.",
+            score: 84
+          },
+          {
+            label: "Object-family revalidation aging",
+            owner: "Data custody desk",
+            method: "AGE_REVALIDATED_OBJECT_FAMILY",
+            route: "account.reclose.renewal.refresh.revalidation.aging.object_family",
+            proof: "Track revalidated object inventory date, review window, age state, retention and deletion scope, receipt lineage, and inventory-change reopen condition.",
+            readyWhen: "Ready while every accepted object family retains current retention, deletion, and custody mapping.",
+            hold: "Reopen only this lane when inventory, retention mapping, deletion mapping, accepted scope, or review-by date changes.",
+            score: 84
+          },
+          {
+            label: "Founder-custody revalidation aging",
+            owner: "Founder custody desk",
+            method: "AGE_REVALIDATED_FOUNDER_CUSTODY",
+            route: "account.reclose.renewal.refresh.revalidation.aging.founder",
+            proof: "Track revalidated founder proof date, review window, age state, custody boundary, residue state, receipt lineage, and reopen condition.",
+            readyWhen: "Ready while founder review can defend the accepted custody boundary with no unresolved residue.",
+            hold: "Reopen only this lane when founder review expires, custody scope changes, or residue returns.",
+            score: 85
+          },
+          {
+            label: "Trigger-review revalidation aging",
+            owner: "Account reliability",
+            method: "AGE_REVALIDATED_TRIGGER_REVIEW",
+            route: "account.reclose.renewal.refresh.revalidation.aging.trigger",
+            proof: "Track revalidated trigger proof date, review window, age state, failure family, mitigation state, receipt lineage, and recurrence reopen condition.",
+            readyWhen: "Ready while the accepted recurrence trigger, failure family, and mitigation result remain current.",
+            hold: "Reopen only this lane when recurrence returns, failure family changes, mitigation fails, or review-by passes.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "Account Reclose Renewal Refresh Revalidation Aging Guard starts from the revalidated-at time and review window recorded by the account revalidation receipt.",
+          "Each delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review lane ages independently against its own fresh proof date and review-by date.",
+          "An expired account lane routes to selective reopening without changing current sibling proof or deleting the revalidation receipt.",
+          "Every aging row binds the revalidation receipt, prior reopening row, age state, owner, reopen condition, and sibling-state snapshot.",
+          "Account aging records must exclude credentials, identifiers, contacts, authentication data, account or payment payloads, private notes, and raw support conversations."
+        ],
+        noGoLines: [
+          "No revalidated account-custody lane may remain current after its review-by date or selective reopen condition is triggered.",
+          "No expired lane may reopen or overwrite a healthy sibling lane.",
+          "No aging guard may be treated as authentication, export or deletion execution, recovery approval, custody widening, or launch approval.",
+          "No account revalidation aging guard may authenticate users, export or delete data, schedule jobs, recover accounts, collect identifiers, contact users, or approve custody widening."
+        ],
+        receiptFields: [
+          "account_reclose_renewal_refresh_revalidation_aging_guard_id",
+          "release_key",
+          "account_reclose_renewal_refresh_revalidation_receipt_id",
+          "account_reclose_renewal_refresh_reacceptance_reopening_queue_id",
+          "affected_lane",
+          "fresh_proof_date",
+          "review_window_start",
+          "review_by",
+          "age_state",
+          "aging_owner",
+          "reopen_condition",
+          "revalidation_receipt_state",
+          "sibling_state_snapshot",
+          "evaluated_at",
+          "created_at"
+        ],
+        boundary: "Account Reclose Renewal Refresh Revalidation Aging Guard is a static custody aging room only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, widen custody, or approve account launch."
       }
     ],
     executiveCalmCompression: {
@@ -27301,16 +27404,16 @@ function buildTrackerConfig() {
       verdict: "Next batch ready",
       rule: "Account Reclose Renewal Refresh Revalidation Receipt is visible; the next releases should complete revalidation across command and support proof, then add independent review-window aging.",
       lanes: [
-        { version: "v646", label: "Account reclose renewal refresh revalidation aging guard", route: "#account-readiness", detail: "Age each revalidated account lane from its fresh review window and reopen only the lane that becomes stale." },
         { version: "v647", label: "Beta command reclose renewal refresh revalidation aging guard", route: "#founder-beta-operating-room", detail: "Age each revalidated beta-command lane from its fresh review window and reopen only the lane that becomes stale." },
         { version: "v648", label: "Support repair reclose renewal refresh revalidation aging guard", route: "#paid-beta-support-ledger", detail: "Age each revalidated support-repair lane from its fresh review window and reopen only the lane that becomes stale." },
         { version: "v649", label: "Source correction reclose renewal refresh revalidation reopening queue", route: "#correction-ledger", detail: "Route only the expired revalidated source lane back to fresh proof while preserving its receipt and healthy siblings." },
-        { version: "v650", label: "Payment reclose renewal refresh revalidation reopening queue", route: "#payment-wiring", detail: "Route only the expired revalidated payment lane back to fresh proof while preserving its receipt, siblings, and no-secret boundary." }
+        { version: "v650", label: "Payment reclose renewal refresh revalidation reopening queue", route: "#payment-wiring", detail: "Route only the expired revalidated payment lane back to fresh proof while preserving its receipt, siblings, and no-secret boundary." },
+        { version: "v651", label: "Account reclose renewal refresh revalidation reopening queue", route: "#account-readiness", detail: "Route only the expired revalidated account lane back to fresh proof while preserving its receipt, siblings, and custody boundary." }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Payment revalidation aging proof visible",
+      verdict: "Account revalidation aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         { version: "v641", key: "20260719-v641-01", commit: "e8a4643", receiptId: "NN-SHARE-RECEIPT-20260719V64101", proof: "Account Reclose Renewal Refresh Revalidation Receipt added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
@@ -27329,14 +27432,14 @@ function buildTrackerConfig() {
       ]
     },
     outcomeTrail: [
-      { label: "01 Built", value: "v645", detail: "Payment Reclose Renewal Refresh Revalidation Aging Guard is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
-      { label: "02 Checked", value: "Static pass", detail: "v645 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "01 Built", value: "v646", detail: "Account Reclose Renewal Refresh Revalidation Aging Guard is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
+      { label: "02 Checked", value: "Static pass", detail: "v646 passed syntax, static, security, diff hygiene, and marker checks." },
       { label: "03 Viewed", value: "Batch visual pending", detail: "Desktop and mobile proof-room QA is scheduled with the v646 batch closeout." },
-      { label: "04 Share", value: "Push pending", detail: "The v645 product commit is ready for the v642-v646 batch push after final visual verification." }
+      { label: "04 Share", value: "Push pending", detail: "The v646 product commit is ready for the v642-v646 batch push after final visual verification." }
     ],
     memory: [
-      { label: "Product commit", value: "v645 payment revalidation aging guard", detail: "Every revalidated payment lane now carries an independent fresh-proof clock, no-secret boundary, and selective reopen condition." },
-      { label: "Release checks", value: "Local checks passed", detail: "v645 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "Product commit", value: "v646 account revalidation aging guard", detail: "Every revalidated account-custody lane now carries an independent fresh-proof clock, custody boundary, and selective reopen condition." },
+      { label: "Release checks", value: "Local checks passed", detail: "v646 passed syntax, static, security, diff hygiene, and marker checks." },
       { label: "Share outcome", value: "Batch push pending", detail: "The v642-v646 batch will be pushed after the final desktop/mobile proof-room review." }
     ],
     actions: [

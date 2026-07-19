@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v658 Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt
+
+- Version: `0.658.0`
+- Data version: `20260719-v658-01`
+- Changes made: Added six support revalidation renewal lanes that close exactly one active reopening row only after named fresh support proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and private-support exclusions are recorded. Release markers and the next-five planner now point to v658.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v658 marker scan; Git diff hygiene check. Shared v657-v661 responsive and live verification pending.
+- Known risks: Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt is a static support workflow receipt only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v657 Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt
 
 - Version: `0.657.0`

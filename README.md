@@ -2,12 +2,13 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v657 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v658 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
+- Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt in the Build Tracker Release Doctor added six support revalidation renewal lanes that close exactly one active reopening row only after named fresh support proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and private-support exclusions are recorded.
 - Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt in the Build Tracker Release Doctor added six founder-command revalidation renewal lanes that close exactly one active reopening row only after named fresh proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and privacy-safe checks are recorded.
 - Account Reclose Renewal Refresh Revalidation Renewal Receipt in the Build Tracker Release Doctor closes exactly one account revalidation reopening row only after fresh custody proof, reviewer acceptance, accepted scope, a new review window, immutable lineage, healthy sibling preservation, and privacy-safe checks are recorded.
 - Payment Reclose Renewal Refresh Revalidation Renewal Receipt in the Build Tracker Release Doctor closes exactly one payment revalidation reopening row only after fresh proof, reviewer acceptance, accepted scope, a new review window, immutable lineage, healthy sibling preservation, and no-secret checks are recorded.

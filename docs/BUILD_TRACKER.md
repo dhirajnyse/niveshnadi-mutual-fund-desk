@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V658 Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt
+
+V658 adds Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt to the Build Tracker Release Doctor. Added six support revalidation renewal lanes that close exactly one active reopening row only after named fresh support proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and private-support exclusions are recorded.
+
+- Release label: `NiveshNadi Phase 1 v658 Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt`
+- Data/version key: `20260719-v658-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose renewal refresh revalidation renewal receipt
+- Risk boundary: Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt is a static support workflow receipt only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene passed; shared v657-v661 responsive QA, push, and live GitHub Pages verification remain pending.
+
 ## V657 Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt
 
 V657 adds Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt to the Build Tracker Release Doctor. Added six founder-command revalidation renewal lanes that close exactly one active reopening row only after named fresh proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and privacy-safe checks are recorded.

@@ -28978,7 +28978,7 @@ function buildTrackerConfig() {
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Account renewal aging proof built locally",
+      verdict: "v657-v661 responsive proof complete",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         { version: "v656", key: "20260719-v656-01", commit: "deaafda", receiptId: "NN-SHARE-RECEIPT-20260719V65601", proof: "Account Reclose Renewal Refresh Revalidation Renewal Receipt added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
@@ -29009,8 +29009,8 @@ function buildTrackerConfig() {
       },
       {
         label: "03 Viewed",
-        value: "Batch visual pending",
-        detail: "Shared v661-v661 desktop and mobile responsive verification runs after all five product releases are locally complete."
+        value: "Responsive pass",
+        detail: "The v657-v661 proof rooms passed shared 1440x900 and 390x844 responsive review with seven cards per room, left/right rail checks, mobile rail collapse, clean overflow, working copy feedback, and an empty browser console."
       },
       {
         label: "04 Share",
@@ -29026,13 +29026,13 @@ function buildTrackerConfig() {
       },
       {
         label: "Release checks",
-        value: "Local checks passed",
-        detail: "V661 carries syntax, static, security, diff hygiene, and marker gates before shared visual verification."
+        value: "Local + visual passed",
+        detail: "V661 carries syntax, static, security, diff hygiene, marker, desktop, mobile, rail, copy-feedback, overflow, and browser-console gates before push."
       },
       {
         label: "Share outcome",
-        value: "Batch verification pending",
-        detail: "Responsive, push, live stamp, archive, planner, copy-marker, overflow, and browser-console checks remain queued for the complete v661-v661 batch."
+        value: "Push + live pending",
+        detail: "The v657-v661 responsive receipt is complete; push, live stamp, archive rollover, planner, copy-marker, overflow, and live browser-console checks remain queued."
       }
     ],
     actions: [

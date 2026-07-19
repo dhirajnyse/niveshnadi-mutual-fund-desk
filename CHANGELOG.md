@@ -6,7 +6,7 @@
 - Data version: `20260719-v661-01`
 - Changes made: Added six independent account-custody renewal-aging lanes that reopen only stale proof while preserving immutable renewal lineage, healthy siblings, accepted scope, and privacy-safe boundaries. Release markers and the next-five planner now point to v661.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v661 marker scan; Git diff hygiene check. Shared v657-v661 responsive and live verification pending.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v661 marker scan; Git diff hygiene check. Shared v657-v661 in-app browser QA at 1440x900 and 390x844 covering five proof rooms, seven cards per room, left/right rail layouts, mobile rail collapse, header and floating-control clearance, card/text and page overflow, copy feedback, and browser console passed; push and live verification pending.
 - Known risks: Account Reclose Renewal Refresh Revalidation Renewal Aging Guard is a static custody aging room only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, widen custody, or approve account launch.
 
 ## NiveshNadi Phase 1 v660 Payment Reclose Renewal Refresh Revalidation Renewal Aging Guard
@@ -15,7 +15,7 @@
 - Data version: `20260719-v660-01`
 - Changes made: Added six independent payment renewal-aging lanes that reopen only stale proof while preserving immutable renewal lineage, healthy siblings, accepted scope, and strict no-secret boundaries. Release markers and the next-five planner now point to v660.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v660 marker scan; Git diff hygiene check. Shared v657-v661 responsive and live verification pending.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v660 marker scan; Git diff hygiene check. Shared v657-v661 in-app browser QA at 1440x900 and 390x844 covering five proof rooms, seven cards per room, left/right rail layouts, mobile rail collapse, header and floating-control clearance, card/text and page overflow, copy feedback, and browser console passed; push and live verification pending.
 - Known risks: Payment Reclose Renewal Refresh Revalidation Renewal Aging Guard is a static payment aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch.
 
 ## NiveshNadi Phase 1 v659 Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard
@@ -24,7 +24,7 @@
 - Data version: `20260719-v659-01`
 - Changes made: Added six independent source-correction renewal-aging lanes that retain immutable renewal lineage and reopen only stale or drifted proof while preserving healthy siblings and privacy-safe boundaries. Release markers and the next-five planner now point to v659.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v659 marker scan; Git diff hygiene check. Shared v657-v661 responsive and live verification pending.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v659 marker scan; Git diff hygiene check. Shared v657-v661 in-app browser QA at 1440x900 and 390x844 covering five proof rooms, seven cards per room, left/right rail layouts, mobile rail collapse, header and floating-control clearance, card/text and page overflow, copy feedback, and browser console passed; push and live verification pending.
 - Known risks: Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard is a static correction aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
 
 ## NiveshNadi Phase 1 v658 Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt
@@ -33,7 +33,7 @@
 - Data version: `20260719-v658-01`
 - Changes made: Added six support revalidation renewal lanes that close exactly one active reopening row only after named fresh support proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and private-support exclusions are recorded. Release markers and the next-five planner now point to v658.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v658 marker scan; Git diff hygiene check. Shared v657-v661 responsive and live verification pending.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v658 marker scan; Git diff hygiene check. Shared v657-v661 in-app browser QA at 1440x900 and 390x844 covering five proof rooms, seven cards per room, left/right rail layouts, mobile rail collapse, header and floating-control clearance, card/text and page overflow, copy feedback, and browser console passed; push and live verification pending.
 - Known risks: Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt is a static support workflow receipt only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
 
 ## NiveshNadi Phase 1 v657 Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt
@@ -42,7 +42,7 @@
 - Data version: `20260719-v657-01`
 - Changes made: Added six founder-command revalidation renewal lanes that close exactly one active reopening row only after named fresh proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and privacy-safe checks are recorded. Release markers and the next-five planner now point to v657.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v657 marker scan; Git diff hygiene check. Shared v657-v661 responsive and live verification pending.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v657 marker scan; Git diff hygiene check. Shared v657-v661 in-app browser QA at 1440x900 and 390x844 covering five proof rooms, seven cards per room, left/right rail layouts, mobile rail collapse, header and floating-control clearance, card/text and page overflow, copy feedback, and browser console passed; push and live verification pending.
 - Known risks: Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt is a static founder-command workflow receipt only; it does not send commands or invites, change release state, process payments, fetch private support history, contact users, or approve beta expansion.
 
 ## NiveshNadi Phase 1 v656 Account Reclose Renewal Refresh Revalidation Renewal Receipt

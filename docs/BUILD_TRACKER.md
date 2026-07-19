@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V633 Support Repair Reclose Renewal Refresh Reacceptance Aging Guard
+
+V633 adds Support Repair Reclose Renewal Refresh Reacceptance Aging Guard to the Build Tracker Release Doctor. It starts an independent post-reacceptance clock for each support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support lane, then isolates stale support proof without disturbing healthy sibling state or receipt lineage.
+
+- Release label: `NiveshNadi Phase 1 v633 Support Repair Reclose Renewal Refresh Reacceptance Aging Guard`
+- Data/version key: `20260719-v633-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose renewal refresh reacceptance aging guard
+- Risk boundary: Static support aging room only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, expose support conversations, widen support access, or approve launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v636.
+
 ## V632 Beta Command Reclose Renewal Refresh Reacceptance Aging Guard
 
 V632 adds Beta Command Reclose Renewal Refresh Reacceptance Aging Guard to the Build Tracker Release Doctor. It starts an independent post-reacceptance clock for each replacement-proof, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review lane, then isolates stale command proof without disturbing healthy sibling state or receipt lineage.

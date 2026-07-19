@@ -280,6 +280,7 @@ assert(app.includes("sourceCorrectionRecloseRenewalRefreshReacceptanceAgingGuard
 assert(app.includes("paymentRecloseRenewalRefreshReacceptanceAgingGuard") && app.includes("data-copy-payment-reclose-renewal-refresh-reacceptance-aging-guard"), "app.js is missing v630 Payment Reclose Renewal Refresh Reacceptance Aging Guard.");
 assert(app.includes("accountRecloseRenewalRefreshReacceptanceAgingGuard") && app.includes("data-copy-account-reclose-renewal-refresh-reacceptance-aging-guard"), "app.js is missing v631 Account Reclose Renewal Refresh Reacceptance Aging Guard.");
 assert(app.includes("betaCommandRecloseRenewalRefreshReacceptanceAgingGuard") && app.includes("data-copy-beta-command-reclose-renewal-refresh-reacceptance-aging-guard"), "app.js is missing v632 Beta Command Reclose Renewal Refresh Reacceptance Aging Guard.");
+assert(app.includes("supportRepairRecloseRenewalRefreshReacceptanceAgingGuard") && app.includes("data-copy-support-repair-reclose-renewal-refresh-reacceptance-aging-guard"), "app.js is missing v633 Support Repair Reclose Renewal Refresh Reacceptance Aging Guard.");
 assert(app.includes("releaseDoctorOperationalProofMarkup(proof, proof.label, proof.key)"), "app.js is missing stable batch proof room deep links.");
 assert(app.includes('{ version: "v631", key: "20260717-v631-01", commit: "625355a"'), "app.js is missing the verified v631 release archive.");
 assert(app.includes("visualRunnerResultArchive") && app.includes("productionLaunchProofCabinet"), "app.js is missing v484-v485 release doctor proof archives.");

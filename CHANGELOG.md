@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v633 Support Repair Reclose Renewal Refresh Reacceptance Aging Guard
+
+- Version: `0.633.0`
+- Data version: `20260719-v633-01`
+- Changes made: Added independent support-repair post-reacceptance clocks, accepted-proof-date, review-by, age-state, owner, selective-reopen, superseded-row, sibling-state, and reacceptance-receipt bindings, support-safe no-go boundaries, release archive and planner roll-forward, and release markers rolled forward to v633.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v633 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Reclose Renewal Refresh Reacceptance Aging Guard is a static support aging room only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, expose support conversations, widen support access, or approve launch.
+
 ## NiveshNadi Phase 1 v632 Beta Command Reclose Renewal Refresh Reacceptance Aging Guard
 
 - Version: `0.632.0`

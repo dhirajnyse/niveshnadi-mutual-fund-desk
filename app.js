@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260719-v632-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v632 Beta Command Reclose Renewal Refresh Reacceptance Aging Guard";
+const DATA_VERSION = "20260719-v633-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v633 Support Repair Reclose Renewal Refresh Reacceptance Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -25798,6 +25798,109 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Reclose Renewal Refresh Reacceptance Aging Guard is a static founder-command reacceptance-aging room only; it does not send invites, process payments, grant access, fetch live data, recover accounts, reply to users, collect contact data, or approve beta expansion."
+      },
+      {
+        key: "supportRepairRecloseRenewalRefreshReacceptanceAgingGuard",
+        label: "Support repair reclose renewal refresh reacceptance aging guard",
+        verdict: "Reaccepted support-repair proof has a new expiry clock",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "RECLOSE", "RENEWAL", "REFRESH", "REACCEPTANCE", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-reclose-renewal-refresh-reacceptance-aging-guard",
+        copyLabel: "Copy support reacceptance aging guard",
+        score: 84,
+        rule: "Every reaccepted support-repair lane must expose its accepted proof date, review-by date, age state, owner, and reopen condition so reaccepted support confidence cannot outlive current service evidence.",
+        lanes: [
+          {
+            label: "Support-copy reacceptance aging",
+            owner: "Support content desk",
+            method: "AGE_REACCEPTED_SUPPORT_COPY",
+            route: "support.repair.reclose.renewal.refresh.reacceptance.aging.copy",
+            proof: "Track reaccepted support-copy date, review-by date, age state, accepted wording, and wording-drift reopen condition.",
+            readyWhen: "Ready while support copy matches current product behavior and research-only boundaries.",
+            hold: "Reopen when wording, product behavior, or the review-by date changes.",
+            score: 85
+          },
+          {
+            label: "Owner-review reacceptance aging",
+            owner: "Support captain",
+            method: "AGE_REACCEPTED_OWNER_REVIEW",
+            route: "support.repair.reclose.renewal.refresh.reacceptance.aging.owner",
+            proof: "Track reaccepted owner-review date, review-by date, age state, acknowledgement, and ownership-change trigger.",
+            readyWhen: "Ready while the accountable support owner and acknowledgement remain current.",
+            hold: "Reopen when ownership changes, acknowledgement is withdrawn, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Regression-proof reacceptance aging",
+            owner: "Support QA",
+            method: "AGE_REACCEPTED_REGRESSION_PROOF",
+            route: "support.repair.reclose.renewal.refresh.reacceptance.aging.regression",
+            proof: "Track reaccepted regression proof date, review-by date, age state, covered scenario set, and failure recurrence trigger.",
+            readyWhen: "Ready while the accepted scenario set remains green for current support behavior.",
+            hold: "Reopen when a covered scenario fails, scope changes, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Escalation-route reacceptance aging",
+            owner: "Support operations",
+            method: "AGE_REACCEPTED_ESCALATION_ROUTE",
+            route: "support.repair.reclose.renewal.refresh.reacceptance.aging.escalation",
+            proof: "Track reaccepted escalation-route date, review-by date, age state, owner path, and routing-change trigger.",
+            readyWhen: "Ready while escalation ownership and response path remain current and rehearsed.",
+            hold: "Reopen when the owner path, response window, or escalation boundary changes.",
+            score: 83
+          },
+          {
+            label: "Refund-wording reacceptance aging",
+            owner: "Trust and finance desk",
+            method: "AGE_REACCEPTED_REFUND_WORDING",
+            route: "support.repair.reclose.renewal.refresh.reacceptance.aging.refund",
+            proof: "Track reaccepted refund-wording date, review-by date, age state, policy reference, and policy-drift trigger.",
+            readyWhen: "Ready while support wording matches the current refund policy and escalation route.",
+            hold: "Reopen when refund policy, wording, owner, or review-by date changes.",
+            score: 84
+          },
+          {
+            label: "Founder-support reacceptance aging",
+            owner: "Founder support desk",
+            method: "AGE_REACCEPTED_FOUNDER_SUPPORT",
+            route: "support.repair.reclose.renewal.refresh.reacceptance.aging.founder",
+            proof: "Track reaccepted founder-support date, review-by date, age state, release posture, and founder-review trigger.",
+            readyWhen: "Ready while founder review can defend the reaccepted support posture without an unresolved service gap.",
+            hold: "Reopen when founder posture changes, a service gap returns, or review-by passes.",
+            score: 84
+          }
+        ],
+        operatingRules: [
+          "Support Repair Reclose Renewal Refresh Reacceptance Aging Guard starts from the reviewer acceptance time recorded by the reacceptance receipt.",
+          "Support Repair Reclose Renewal Refresh Reacceptance Aging Guard ages each reaccepted support lane independently; one stale lane does not silently invalidate current sibling proof.",
+          "Every aging row binds the reacceptance receipt, proof date, review-by date, age state, accountable owner, explicit reopen condition, and sibling-state snapshot.",
+          "Expired reaccepted proof reopens only the affected support lane and routes it back to fresh-proof acceptance before confidence can return.",
+          "The reacceptance receipt remains in history after expiry; the aging guard changes current state without deleting accepted proof lineage.",
+          "Support reacceptance-aging rows must exclude contacts, identifiers, credentials, payment data, private notes, raw conversations, and account payloads."
+        ],
+        noGoLines: [
+          "No reaccepted support lane may remain trusted after its review-by date or reopen condition is reached.",
+          "No sibling lane may be reopened merely because a different reaccepted support lane ages.",
+          "No reacceptance aging guard may be treated as a support reply, refund, payment, access, recovery, account action, launch approval, or beta expansion decision.",
+          "No support renewal refresh reacceptance aging guard may contact users, issue refunds, process payments, grant access, or expose private support history."
+        ],
+        receiptFields: [
+          "support_repair_reclose_renewal_refresh_reacceptance_aging_guard_id",
+          "release_key",
+          "support_repair_reclose_renewal_refresh_reacceptance_receipt_id",
+          "support_repair_reclose_renewal_refresh_reopening_queue_id",
+          "affected_lane",
+          "proof_date",
+          "review_by",
+          "age_state",
+          "reopen_condition",
+          "aging_owner",
+          "superseded_queue_row",
+          "sibling_state_snapshot",
+          "evaluated_at",
+          "created_at"
+        ],
+        boundary: "Support Repair Reclose Renewal Refresh Reacceptance Aging Guard is a static support reacceptance-aging room only; it does not reply to users, issue refunds, process payments, grant access, fetch private support history, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -25970,25 +26073,25 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta Command Reclose Renewal Refresh Reacceptance Aging Guard is visible; the next releases should finish reacceptance aging, then route expired proof into selective reopening.",
+      rule: "Support Repair Reclose Renewal Refresh Reacceptance Aging Guard is visible; the next releases should complete selective reopening across the remaining proof families, then begin current-proof revalidation.",
       lanes: [
-        { version: "v633", label: "Support repair reclose renewal refresh reacceptance aging guard", route: "#paid-beta-support-ledger", detail: "Age each newly reaccepted support-repair lane against its own proof date, review-by date, and selective reopen condition." },
         { version: "v634", label: "Source correction reclose renewal refresh reacceptance reopening queue", route: "#correction-ledger", detail: "Route only expired source reacceptance lanes back to fresh proof while preserving current sibling state and lineage." },
         { version: "v635", label: "Payment reclose renewal refresh reacceptance reopening queue", route: "#payment-wiring", detail: "Route only expired payment reacceptance lanes back to fresh proof while preserving current sibling state and lineage." },
         { version: "v636", label: "Account reclose renewal refresh reacceptance reopening queue", route: "#account-readiness", detail: "Route only expired account reacceptance lanes back to fresh proof while preserving current sibling state and lineage." },
-        { version: "v637", label: "Beta command reclose renewal refresh reacceptance reopening queue", route: "#founder-beta-operating-room", detail: "Route only expired founder-command reacceptance lanes back to fresh proof while preserving current sibling state and lineage." }
+        { version: "v637", label: "Beta command reclose renewal refresh reacceptance reopening queue", route: "#founder-beta-operating-room", detail: "Route only expired founder-command reacceptance lanes back to fresh proof while preserving current sibling state and lineage." },
+        { version: "v638", label: "Support repair reclose renewal refresh reacceptance reopening queue", route: "#paid-beta-support-ledger", detail: "Route only expired support-repair reacceptance lanes back to fresh proof while preserving current sibling state and lineage." }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Founder-command reacceptance aging proof visible",
+      verdict: "Support-repair reacceptance aging proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
-        { version: "v631", key: "20260717-v631-01", commit: "625355a", receiptId: "NN-SHARE-RECEIPT-20260717V63101", proof: "Account Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
-        { version: "v630", key: "20260717-v630-01", commit: "4bcd0c6", receiptId: "NN-SHARE-RECEIPT-20260717V63001", proof: "Payment Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks." },,
-        { version: "v629", key: "20260717-v629-01", commit: "64f41e4", receiptId: "NN-SHARE-RECEIPT-20260717V62901", proof: "Source Correction Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks." },,
+        { version: "v632", key: "20260719-v632-01", commit: "47bcba4", receiptId: "NN-SHARE-RECEIPT-20260719V63201", proof: "Beta Command Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks." },
+        { version: "v631", key: "20260717-v631-01", commit: "625355a", receiptId: "NN-SHARE-RECEIPT-20260717V63101", proof: "Account Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },,
+        { version: "v630", key: "20260717-v630-01", commit: "4bcd0c6", receiptId: "NN-SHARE-RECEIPT-20260717V63001", proof: "Payment Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks." },,,
+        { version: "v629", key: "20260717-v629-01", commit: "64f41e4", receiptId: "NN-SHARE-RECEIPT-20260717V62901", proof: "Source Correction Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks." },,,
         { version: "v628", key: "20260717-v628-01", commit: "afdac5a", receiptId: "NN-SHARE-RECEIPT-20260717V62801", proof: "Support Repair Reclose Renewal Refresh Reacceptance Receipt added and verified by syntax, static, security, diff hygiene, and marker checks." },,
-        { version: "v627", key: "20260717-v627-01", commit: "c1cfafe", receiptId: "NN-SHARE-RECEIPT-20260717V62701", proof: "Beta Command Reclose Renewal Refresh Reacceptance Receipt added and verified by syntax, static, security, diff hygiene, and marker checks." },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
       retentionReview: { label: "Proof archive retention", verdict: "Keep five, retire one", receiptId: ["NN", "ARCHIVE", "RETENTION", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(), cadence: "Review on every release before the share receipt is copied.", owner: "Founder release desk", boundary: "Store release key, commit, receipt ID, proof note, and risk boundary only; do not store private user data, screenshots with identifiers, credentials, PAN, folio, CAS, bank, contact, or payment data." },
@@ -26000,14 +26103,14 @@ function buildTrackerConfig() {
       ]
     },
     outcomeTrail: [
-      { label: "01 Built", value: "v632", detail: "Beta Command Reclose Renewal Refresh Reacceptance Aging Guard is wired with a matching release label, data key, stamp, docs, changelog, archive, planner, and batch-proof room." },
-      { label: "02 Checked", value: "Static pass", detail: "v632 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "01 Built", value: "v633", detail: "Support Repair Reclose Renewal Refresh Reacceptance Aging Guard is wired with a matching release label, data key, stamp, docs, changelog, archive, planner, and batch-proof room." },
+      { label: "02 Checked", value: "Static pass", detail: "v633 passed syntax, static, security, diff hygiene, and marker checks." },
       { label: "03 Viewed", value: "Batch visual pending", detail: "Desktop and mobile proof-room QA is scheduled with the v636 batch closeout." },
-      { label: "04 Share", value: "Push pending", detail: "The v632 product commit is ready for the v632-v636 batch push after final visual verification." }
+      { label: "04 Share", value: "Push pending", detail: "The v633 product commit is ready for the v632-v636 batch push after final visual verification." }
     ],
     memory: [
-      { label: "Product commit", value: "v632 command reacceptance aging", detail: "Six newly reaccepted founder-command lanes age independently and route only stale proof toward selective reopening without executing a founder command." },
-      { label: "Release checks", value: "Local checks passed", detail: "v632 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "Product commit", value: "v633 support reacceptance aging", detail: "Six newly reaccepted support-repair lanes age independently and route only stale proof toward selective reopening without sending a reply or executing a refund." },
+      { label: "Release checks", value: "Local checks passed", detail: "v633 passed syntax, static, security, diff hygiene, and marker checks." },
       { label: "Share outcome", value: "Batch push pending", detail: "The v632-v636 batch will be pushed after the final desktop/mobile proof-room review." }
     ],
     actions: [

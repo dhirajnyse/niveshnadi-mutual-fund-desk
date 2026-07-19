@@ -5,8 +5,8 @@
 - Version: `0.651.0`
 - Data version: `20260719-v651-01`
 - Changes made: Added six selective account-custody revalidation reopening lanes that preserve prior age state, reopen trigger, named fresh-proof requirement, queue owner, aging-guard and revalidation-receipt lineage, healthy sibling state, and the custody boundary, with release markers and planner rolled forward to v651.
-- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v651 marker scan; Git diff hygiene check.
+- Files changed: `app.js`, `styles.css`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v651 marker scan; Git diff hygiene check; v647-v651 in-app browser QA at 1440x900 and 390x844 covering five proof rooms, seven cards per room, stable anchors, card/text and page overflow, sticky-header/rail clearance, left/right rail layouts, mobile rail collapse, compact floating-dock clearance, version badge, and browser console.
 - Known risks: Account Reclose Renewal Refresh Revalidation Reopening Queue is a static custody revalidation queue only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, widen custody, or approve account launch.
 
 ## NiveshNadi Phase 1 v650 Payment Reclose Renewal Refresh Revalidation Reopening Queue
@@ -15,7 +15,7 @@
 - Data version: `20260719-v650-01`
 - Changes made: Added six selective payment revalidation reopening lanes that preserve prior age state, reopen trigger, named fresh-proof requirement, queue owner, aging-guard and revalidation-receipt lineage, healthy sibling state, and the no-secret boundary, with release markers and planner rolled forward to v650.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v650 marker scan; Git diff hygiene check.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v650 marker scan; Git diff hygiene check; v647-v651 in-app browser QA at 1440x900 and 390x844 covering five proof rooms, seven cards per room, stable anchors, card/text and page overflow, sticky-header/rail clearance, left/right rail layouts, mobile rail collapse, compact floating-dock clearance, version badge, and browser console.
 - Known risks: Payment Reclose Renewal Refresh Revalidation Reopening Queue is a static payment revalidation queue only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch.
 
 ## NiveshNadi Phase 1 v649 Source Correction Reclose Renewal Refresh Revalidation Reopening Queue
@@ -24,7 +24,7 @@
 - Data version: `20260719-v649-01`
 - Changes made: Added six selective source-correction revalidation reopening lanes that preserve prior age state, reopen trigger, named fresh-proof requirement, queue owner, aging-guard and revalidation-receipt lineage, and healthy sibling state, with release markers and planner rolled forward to v649.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v649 marker scan; Git diff hygiene check.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v649 marker scan; Git diff hygiene check; v647-v651 in-app browser QA at 1440x900 and 390x844 covering five proof rooms, seven cards per room, stable anchors, card/text and page overflow, sticky-header/rail clearance, left/right rail layouts, mobile rail collapse, compact floating-dock clearance, version badge, and browser console.
 - Known risks: Source Correction Reclose Renewal Refresh Revalidation Reopening Queue is a static correction revalidation queue only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
 
 ## NiveshNadi Phase 1 v648 Support Repair Reclose Renewal Refresh Revalidation Aging Guard
@@ -33,7 +33,7 @@
 - Data version: `20260719-v648-01`
 - Changes made: Added six support-repair revalidation aging lanes with independent fresh-proof dates, review windows, age states, owners, selective reopen conditions, receipt lineage, sibling-state preservation, and private-support boundaries, with release markers and planner rolled forward to v648.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v648 marker scan; Git diff hygiene check.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v648 marker scan; Git diff hygiene check; v647-v651 in-app browser QA at 1440x900 and 390x844 covering five proof rooms, seven cards per room, stable anchors, card/text and page overflow, sticky-header/rail clearance, left/right rail layouts, mobile rail collapse, compact floating-dock clearance, version badge, and browser console.
 - Known risks: Support Repair Reclose Renewal Refresh Revalidation Aging Guard is a static support-aging room only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
 
 ## NiveshNadi Phase 1 v647 Beta Command Reclose Renewal Refresh Revalidation Aging Guard
@@ -42,7 +42,7 @@
 - Data version: `20260719-v647-01`
 - Changes made: Added six beta-command revalidation aging lanes with independent fresh-proof dates, review windows, age states, owners, selective reopen conditions, receipt lineage, sibling-state preservation, and founder-command boundaries, with release markers and planner rolled forward to v647.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v647 marker scan; Git diff hygiene check.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v647 marker scan; Git diff hygiene check; v647-v651 in-app browser QA at 1440x900 and 390x844 covering five proof rooms, seven cards per room, stable anchors, card/text and page overflow, sticky-header/rail clearance, left/right rail layouts, mobile rail collapse, compact floating-dock clearance, version badge, and browser console.
 - Known risks: Beta Command Reclose Renewal Refresh Revalidation Aging Guard is a static founder-command aging room only; it does not send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion.
 
 ## NiveshNadi Phase 1 v646 Account Reclose Renewal Refresh Revalidation Aging Guard

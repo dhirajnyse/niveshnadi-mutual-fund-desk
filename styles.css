@@ -42534,16 +42534,17 @@ body.simple-mode .quiet-fund-shelf {
 
 .floating-dock {
   position: fixed;
-  right: 18px;
-  bottom: max(18px, calc(env(safe-area-inset-bottom, 0px) + 18px));
+  right: 2px;
+  bottom: max(16px, calc(env(safe-area-inset-bottom, 0px) + 16px));
   z-index: 91;
   display: grid;
-  gap: 10px;
+  gap: 8px;
   justify-items: end;
 }
 
 body.desk-rail-right .floating-dock {
-  right: calc(var(--desk-rail-width) + 18px);
+  right: auto;
+  left: 2px;
 }
 
 .floating-search {
@@ -42552,8 +42553,8 @@ body.desk-rail-right .floating-dock {
 
 .floating-action-button,
 .scroll-top-button {
-  width: 52px;
-  height: 52px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   border: 1px solid rgba(15, 124, 107, 0.26);
@@ -46335,6 +46336,7 @@ body.simple-mode .serenity-path .simplicity-path-actions {
   }
 
   body.desk-rail-right .floating-dock {
+    left: auto;
     right: 0;
   }
 

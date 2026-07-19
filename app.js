@@ -27942,13 +27942,13 @@ function buildTrackerConfig() {
     },
     outcomeTrail: [
       { label: "01 Built", value: "v651", detail: "Account Reclose Renewal Refresh Revalidation Reopening Queue is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
-      { label: "02 Checked", value: "Static pass", detail: "v651 passed syntax, static, security, diff hygiene, and marker checks." },
-      { label: "03 Viewed", value: "Batch visual pending", detail: "Desktop and mobile proof-room QA is now running across the v647-v651 release rooms." },
+      { label: "02 Checked", value: "Static + visual pass", detail: "v651 passed syntax, static, security, diff hygiene, marker, and in-app browser checks." },
+      { label: "03 Viewed", value: "Responsive pass", detail: "v647-v651 proof rooms passed desktop and mobile layout, deep-link, overflow, rail, dock, badge, and console review." },
       { label: "04 Share", value: "Push pending", detail: "The v651 product commit is ready for the v647-v651 batch push after final visual verification." }
     ],
     memory: [
       { label: "Product commit", value: "v651 account revalidation reopening queue", detail: "Expired account-custody proof now routes only the stale lane back to named fresh proof while preserving the revalidation receipt, healthy siblings, and custody boundary." },
-      { label: "Release checks", value: "Local checks passed", detail: "v651 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "Release checks", value: "Local + visual passed", detail: "v651 passed syntax, static, security, diff hygiene, marker, and responsive in-app browser checks." },
       { label: "Share outcome", value: "Batch push pending", detail: "The v647-v651 batch will be pushed after the final desktop/mobile proof-room review." }
     ],
     actions: [

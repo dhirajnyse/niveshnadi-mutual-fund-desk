@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V652 Beta Command Reclose Renewal Refresh Revalidation Reopening Queue
+
+V652 adds Beta Command Reclose Renewal Refresh Revalidation Reopening Queue to the Build Tracker Release Doctor. It routes only an expired revalidated replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, or founder-review lane back to named fresh proof while preserving its revalidation receipt, healthy sibling state, and founder-command boundary.
+
+- Release label: `NiveshNadi Phase 1 v652 Beta Command Reclose Renewal Refresh Revalidation Reopening Queue`
+- Data/version key: `20260719-v652-01`
+- Product surface: Build Tracker > Release Doctor > Beta command reclose renewal refresh revalidation reopening queue
+- Risk boundary: Static founder-command revalidation queue only; it does not send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual, push, and live verification remain.
+
 ## V651 Account Reclose Renewal Refresh Revalidation Reopening Queue
 
 V651 adds Account Reclose Renewal Refresh Revalidation Reopening Queue to the Build Tracker Release Doctor. It routes only an expired revalidated delete/export, redaction, support-safe, object-family, founder-custody, or trigger-review lane back to named fresh proof while preserving its revalidation receipt, healthy sibling state, and custody boundary.

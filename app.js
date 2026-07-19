@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260719-v651-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v651 Account Reclose Renewal Refresh Revalidation Reopening Queue";
+const DATA_VERSION = "20260719-v652-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v652 Beta Command Reclose Renewal Refresh Revalidation Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -27739,6 +27739,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Account Reclose Renewal Refresh Revalidation Reopening Queue is a static custody revalidation queue only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, widen custody, or approve account launch."
+      },
+      {
+        key: "betaCommandRecloseRenewalRefreshRevalidationReopeningQueue",
+        label: "Beta command reclose renewal refresh revalidation reopening queue",
+        verdict: "Expired revalidated beta-command proof reopens selectively",
+        receiptId: ["NN", "BETA", "COMMAND", "RECLOSE", "RENEWAL", "REFRESH", "REVALIDATION", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-beta-command-reclose-renewal-refresh-revalidation-reopening-queue",
+        copyLabel: "Copy beta-command revalidation reopening queue",
+        score: 81,
+        rule: "A revalidated beta-command lane may reopen only when its review-by date or explicit reopen condition is reached; every queue row preserves its revalidation receipt, healthy siblings, named fresh proof, and founder-command boundary.",
+        lanes: [
+          {
+            label: "Replacement revalidation reopen",
+            owner: "Founder command desk",
+            method: "REOPEN_REVALIDATED_BETA_REPLACEMENT",
+            route: "beta.command.reclose.renewal.refresh.revalidation.reopening.replacement",
+            proof: "Record prior age state, replacement trigger, required command-proof artifact, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired replacement lane is queued with a current command-proof artifact and review decision required.",
+            hold: "Hold when trigger, fresh command proof, receipt, owner, or sibling snapshot is missing.",
+            score: 82
+          },
+          {
+            label: "Conflict-cleanup revalidation reopen",
+            owner: "Trust review desk",
+            method: "REOPEN_REVALIDATED_BETA_CONFLICT",
+            route: "beta.command.reclose.renewal.refresh.revalidation.reopening.conflict",
+            proof: "Record prior age state, conflict trigger, required cleanup and independence proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired conflict lane is queued with fresh conflict, independence, and reviewer proof required.",
+            hold: "Hold when conflict trigger, independence proof, receipt, reviewer owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Release-safe-memory revalidation reopen",
+            owner: "Release operations",
+            method: "REOPEN_REVALIDATED_BETA_MEMORY",
+            route: "beta.command.reclose.renewal.refresh.revalidation.reopening.memory",
+            proof: "Record prior age state, memory-drift trigger, required release-safe summary and exclusion proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired memory lane is queued with a current release-safe summary and exclusion check required.",
+            hold: "Hold when drift trigger, safe-memory proof, exclusion check, receipt, owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Expiry-decision revalidation reopen",
+            owner: "Beta operations",
+            method: "REOPEN_REVALIDATED_BETA_EXPIRY",
+            route: "beta.command.reclose.renewal.refresh.revalidation.reopening.expiry",
+            proof: "Record prior age state, expiry trigger, required hold-or-retire decision proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired decision lane is queued with a current hold, renew, or retire decision required.",
+            hold: "Hold when expiry trigger, decision requirement, receipt, owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Owner-review revalidation reopen",
+            owner: "Product operations",
+            method: "REOPEN_REVALIDATED_BETA_OWNER",
+            route: "beta.command.reclose.renewal.refresh.revalidation.reopening.owner",
+            proof: "Record prior age state, owner-change trigger, required acknowledgement and conflict proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired owner lane is queued with current accountability and conflict proof required.",
+            hold: "Hold when owner trigger, acknowledgement, conflict check, receipt, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Founder-review revalidation reopen",
+            owner: "Founder release desk",
+            method: "REOPEN_REVALIDATED_BETA_FOUNDER",
+            route: "beta.command.reclose.renewal.refresh.revalidation.reopening.founder",
+            proof: "Record prior age state, founder trigger, required release-hold and residue proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired founder lane is queued with a fresh no-go or release decision required.",
+            hold: "Hold when founder trigger, decision requirement, residue boundary, receipt, owner, or sibling snapshot is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Beta Command Reclose Renewal Refresh Revalidation Reopening Queue opens only the revalidated lane whose age state or reopen condition requires fresh proof.",
+          "Every queue row binds the revalidation aging guard, revalidation receipt, affected lane, prior age state, trigger, fresh-proof requirement, queue owner, and sibling-state snapshot.",
+          "Current sibling beta-command proof remains revalidated unless its own review-by date or reopen condition is reached.",
+          "A reopened beta-command revalidation returns to current status only after fresh review; queue entry alone never restores confidence or command authority.",
+          "Beta-command revalidation-reopening rows must exclude user identity, contact data, credentials, payment or account payloads, private support history, and free-form private notes."
+        ],
+        noGoLines: [
+          "No revalidated beta-command lane may reopen without a recorded age state or explicit reopen trigger.",
+          "No sibling lane may be reopened merely because one revalidated beta-command lane enters the queue.",
+          "No queue row may be treated as a command, invite, release-state change, payment action, or beta-expansion approval.",
+          "No beta-command revalidation reopening queue may send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "beta_command_reclose_renewal_refresh_revalidation_reopening_queue_id",
+          "release_key",
+          "beta_command_reclose_renewal_refresh_revalidation_aging_guard_id",
+          "beta_command_reclose_renewal_refresh_revalidation_receipt_id",
+          "affected_lane",
+          "prior_age_state",
+          "reopen_trigger",
+          "fresh_proof_requirement",
+          "queue_owner",
+          "superseded_revalidation_queue_row",
+          "sibling_state_snapshot",
+          "opened_at",
+          "created_at"
+        ],
+        boundary: "Beta Command Reclose Renewal Refresh Revalidation Reopening Queue is a static founder-command revalidation queue only; it does not send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -27911,18 +28012,18 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "The v647-v651 revalidation-aging and selective-reopening batch is complete; next close beta-command and support queues, then issue source, payment, and account renewal receipts.",
+      rule: "V652 closes the beta-command selective-reopening gap; next close support, source, payment, and account revalidation work before renewing beta-command proof.",
       lanes: [
-        { version: "v652", label: "Beta command reclose renewal refresh revalidation reopening queue", route: "#founder-beta-operating-room", detail: "Route only the expired revalidated beta-command lane back to fresh proof without executing a command or changing healthy siblings." },
         { version: "v653", label: "Support repair reclose renewal refresh revalidation reopening queue", route: "#paid-beta-support-ledger", detail: "Route only the expired revalidated support lane back to fresh proof while preserving its receipt, healthy siblings, and private-support boundary." },
         { version: "v654", label: "Source correction reclose renewal refresh revalidation renewal receipt", route: "#correction-ledger", detail: "Close one revalidated source reopening row only after fresh correction proof, reviewer acceptance, and a new review window are recorded." },
         { version: "v655", label: "Payment reclose renewal refresh revalidation renewal receipt", route: "#payment-wiring", detail: "Close one revalidated payment reopening row only after fresh proof, reviewer acceptance, a new review window, and no-secret checks are recorded." },
-        { version: "v656", label: "Account reclose renewal refresh revalidation renewal receipt", route: "#account-readiness", detail: "Close one revalidated account reopening row only after fresh custody proof, reviewer acceptance, a new review window, and privacy checks are recorded." }
+        { version: "v656", label: "Account reclose renewal refresh revalidation renewal receipt", route: "#account-readiness", detail: "Close one revalidated account reopening row only after fresh custody proof, reviewer acceptance, a new review window, and privacy checks are recorded." },
+        { version: "v657", label: "Beta command reclose renewal refresh revalidation renewal receipt", route: "#founder-beta-operating-room", detail: "Close one revalidated beta-command reopening row only after fresh founder-command proof, reviewer acceptance, and a new review window are recorded." }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Beta-command revalidation aging proof visible",
+      verdict: "Beta-command revalidation reopening proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         { version: "v651", key: "20260719-v651-01", commit: "7306980", receiptId: "NN-SHARE-RECEIPT-20260719V65101", proof: "Account Reclose Renewal Refresh Revalidation Reopening Queue added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
@@ -27941,15 +28042,15 @@ function buildTrackerConfig() {
       ]
     },
     outcomeTrail: [
-      { label: "01 Built", value: "v651", detail: "Account Reclose Renewal Refresh Revalidation Reopening Queue is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
-      { label: "02 Checked", value: "Static + visual pass", detail: "v651 passed syntax, static, security, diff hygiene, marker, and in-app browser checks." },
-      { label: "03 Viewed", value: "Responsive pass", detail: "v647-v651 proof rooms passed desktop and mobile layout, deep-link, overflow, rail, dock, badge, and console review." },
-      { label: "04 Share", value: "Live verified", detail: "The v647-v651 batch is pushed and verified on GitHub Pages with the v651 release stamp, assets, proof rooms, responsive geometry, and quiet console." }
+      { label: "01 Built", value: "v652", detail: "Beta Command Reclose Renewal Refresh Revalidation Reopening Queue is wired with a matching release label, data key, stamp, docs, changelog, planner, and proof room." },
+      { label: "02 Checked", value: "Static pass", detail: "V652 is gated by syntax, static, security, diff hygiene, and marker checks." },
+      { label: "03 Viewed", value: "Batch visual pending", detail: "The v652-v656 proof rooms will receive one shared desktop and mobile responsive review after v656." },
+      { label: "04 Share", value: "Batch push pending", detail: "V652 remains local until the five-release batch passes responsive verification." }
     ],
     memory: [
-      { label: "Product commit", value: "v651 account revalidation reopening queue", detail: "Expired account-custody proof now routes only the stale lane back to named fresh proof while preserving the revalidation receipt, healthy siblings, and custody boundary." },
-      { label: "Release checks", value: "Local + visual passed", detail: "v651 passed syntax, static, security, diff hygiene, marker, and responsive in-app browser checks." },
-      { label: "Share outcome", value: "Live verified", detail: "The v647-v651 batch is published and verified with current release assets, five proof rooms, responsive clearance, stable deep links, and no browser-console warnings or errors." }
+      { label: "Product commit", value: "v652 beta-command revalidation reopening queue", detail: "Expired founder-command proof now routes only the stale lane back to named fresh proof while preserving its receipt, healthy siblings, and no-command boundary." },
+      { label: "Release checks", value: "Local checks passed", detail: "V652 carries syntax, static, security, diff hygiene, and marker gates before commit." },
+      { label: "Share outcome", value: "Batch verification pending", detail: "Push and live verification wait for the complete v652-v656 responsive batch review." }
     ],
     actions: [
       {

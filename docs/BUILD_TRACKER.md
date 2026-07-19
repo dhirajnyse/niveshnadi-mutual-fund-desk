@@ -8,7 +8,7 @@ V661 adds Account Reclose Renewal Refresh Revalidation Renewal Aging Guard to th
 - Data/version key: `20260719-v661-01`
 - Product surface: Build Tracker > Release Doctor > account reclose renewal refresh revalidation renewal aging guard
 - Risk boundary: Account Reclose Renewal Refresh Revalidation Renewal Aging Guard is a static custody aging room only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, widen custody, or approve account launch.
-- Verification status: Syntax, static/security, marker, diff hygiene, and shared v657-v661 desktop/mobile responsive QA passed; push and live GitHub Pages verification remain pending.
+- Verification status: Syntax, static/security, marker, diff hygiene, shared v657-v661 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V660 Payment Reclose Renewal Refresh Revalidation Renewal Aging Guard
 
@@ -18,7 +18,7 @@ V660 adds Payment Reclose Renewal Refresh Revalidation Renewal Aging Guard to th
 - Data/version key: `20260719-v660-01`
 - Product surface: Build Tracker > Release Doctor > payment reclose renewal refresh revalidation renewal aging guard
 - Risk boundary: Payment Reclose Renewal Refresh Revalidation Renewal Aging Guard is a static payment aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch.
-- Verification status: Syntax, static/security, marker, diff hygiene, and shared v657-v661 desktop/mobile responsive QA passed; push and live GitHub Pages verification remain pending.
+- Verification status: Syntax, static/security, marker, diff hygiene, shared v657-v661 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V659 Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard
 
@@ -28,7 +28,7 @@ V659 adds Source Correction Reclose Renewal Refresh Revalidation Renewal Aging G
 - Data/version key: `20260719-v659-01`
 - Product surface: Build Tracker > Release Doctor > source correction reclose renewal refresh revalidation renewal aging guard
 - Risk boundary: Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard is a static correction aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
-- Verification status: Syntax, static/security, marker, diff hygiene, and shared v657-v661 desktop/mobile responsive QA passed; push and live GitHub Pages verification remain pending.
+- Verification status: Syntax, static/security, marker, diff hygiene, shared v657-v661 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V658 Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt
 
@@ -38,7 +38,7 @@ V658 adds Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt to
 - Data/version key: `20260719-v658-01`
 - Product surface: Build Tracker > Release Doctor > Support repair reclose renewal refresh revalidation renewal receipt
 - Risk boundary: Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt is a static support workflow receipt only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
-- Verification status: Syntax, static/security, marker, diff hygiene, and shared v657-v661 desktop/mobile responsive QA passed; push and live GitHub Pages verification remain pending.
+- Verification status: Syntax, static/security, marker, diff hygiene, shared v657-v661 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V657 Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt
 
@@ -48,7 +48,7 @@ V657 adds Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt to t
 - Data/version key: `20260719-v657-01`
 - Product surface: Build Tracker > Release Doctor > Beta command reclose renewal refresh revalidation renewal receipt
 - Risk boundary: Beta Command Reclose Renewal Refresh Revalidation Renewal Receipt is a static founder-command workflow receipt only; it does not send commands or invites, change release state, process payments, fetch private support history, contact users, or approve beta expansion.
-- Verification status: Syntax, static/security, marker, diff hygiene, and shared v657-v661 desktop/mobile responsive QA passed; push and live GitHub Pages verification remain pending.
+- Verification status: Syntax, static/security, marker, diff hygiene, shared v657-v661 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V656 Account Reclose Renewal Refresh Revalidation Renewal Receipt
 

@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v638 Support Repair Reclose Renewal Refresh Reacceptance Reopening Queue
+
+- Version: `0.638.0`
+- Data version: `20260719-v638-01`
+- Changes made: Added selective support-repair reacceptance reopening rows with prior-age-state, reopen-trigger, fresh-proof requirement, queue-owner, superseded-row, sibling-state, aging-guard, and reacceptance-receipt bindings, private-support-safe no-go boundaries, and release markers and planner rolled forward to v638.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v638 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Reclose Renewal Refresh Reacceptance Reopening Queue is a static support reacceptance queue only; it does not reply to users, issue refunds, process payments, grant access, fetch private support history, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v637 Beta Command Reclose Renewal Refresh Reacceptance Reopening Queue
 
 - Version: `0.637.0`

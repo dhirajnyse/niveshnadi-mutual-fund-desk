@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V638 Support Repair Reclose Renewal Refresh Reacceptance Reopening Queue
+
+V638 adds Support Repair Reclose Renewal Refresh Reacceptance Reopening Queue to the Build Tracker Release Doctor. It converts expired support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support reacceptance clocks into explicit fresh-proof queue rows while preserving healthy sibling proof, accepted lineage, and private-support boundaries.
+
+- Release label: `NiveshNadi Phase 1 v638 Support Repair Reclose Renewal Refresh Reacceptance Reopening Queue`
+- Data/version key: `20260719-v638-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose renewal refresh reacceptance reopening queue
+- Risk boundary: Static support reacceptance queue only; it does not reply to users, issue refunds, process payments, grant access, fetch private support history, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v641.
+
 ## V637 Beta Command Reclose Renewal Refresh Reacceptance Reopening Queue
 
 V637 adds Beta Command Reclose Renewal Refresh Reacceptance Reopening Queue to the Build Tracker Release Doctor. It converts expired replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review reacceptance clocks into explicit fresh-proof queue rows while preserving healthy sibling proof, the accepted receipt, and the superseded refresh queue.

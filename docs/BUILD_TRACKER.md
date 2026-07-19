@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V634 Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue
+
+V634 adds Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue to the Build Tracker Release Doctor. It converts expired replacement, notice, cache, support, reviewer, and founder reacceptance clocks into explicit fresh-proof queue rows while preserving healthy sibling proof, the accepted receipt, and the superseded refresh queue.
+
+- Release label: `NiveshNadi Phase 1 v634 Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue`
+- Data/version key: `20260719-v634-01`
+- Product surface: Build Tracker > Release Doctor > Source correction reclose renewal refresh reacceptance reopening queue
+- Risk boundary: Static correction reacceptance queue only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v636.
+
 ## V633 Support Repair Reclose Renewal Refresh Reacceptance Aging Guard
 
 V633 adds Support Repair Reclose Renewal Refresh Reacceptance Aging Guard to the Build Tracker Release Doctor. It starts an independent post-reacceptance clock for each support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support lane, then isolates stale support proof without disturbing healthy sibling state or receipt lineage.

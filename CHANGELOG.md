@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v634 Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue
+
+- Version: `0.634.0`
+- Data version: `20260719-v634-01`
+- Changes made: Added selective source-correction reacceptance reopening rows with prior-age-state, reopen-trigger, fresh-proof requirement, queue-owner, superseded-row, sibling-state, aging-guard, and reacceptance-receipt bindings, source-safe no-go boundaries, release archive and planner roll-forward, and release markers rolled forward to v634.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v634 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue is a static correction reacceptance queue only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v633 Support Repair Reclose Renewal Refresh Reacceptance Aging Guard
 
 - Version: `0.633.0`

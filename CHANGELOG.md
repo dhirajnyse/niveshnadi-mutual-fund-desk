@@ -6,7 +6,7 @@
 - Data version: `20260719-v636-01`
 - Changes made: Added selective account reacceptance reopening rows with prior-age-state, reopen-trigger, fresh-proof requirement, queue-owner, superseded-row, sibling-state, aging-guard, and reacceptance-receipt bindings, custody-safe no-go boundaries, release archive and planner roll-forward, and release markers rolled forward to v636.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v636 marker scan; Git diff hygiene check; in-app browser QA at 1440x900 and 390x844 covering all five batch proof rooms, seven cards per room, stable deep links, card/text and page overflow, sticky-header/rail clearance, mobile rail collapse, version badge, and browser console.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v636 marker scan; Git diff hygiene check; in-app browser QA at 1440x900 and 390x844 covering all five batch proof rooms, seven cards per room, stable deep links, card/text and page overflow, sticky-header/rail clearance, mobile rail collapse, version badge, and browser console; Git push; live release stamp, HTML title and asset cache keys, five room markers and stable anchors, account copy marker, v637-v641 planner, responsive layout, and browser-console verification.
 - Known risks: Account Reclose Renewal Refresh Reacceptance Reopening Queue is a static account reacceptance queue only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, or approve account custody widening.
 
 ## NiveshNadi Phase 1 v635 Payment Reclose Renewal Refresh Reacceptance Reopening Queue
@@ -15,7 +15,7 @@
 - Data version: `20260719-v635-01`
 - Changes made: Added selective payment reacceptance reopening rows with prior-age-state, reopen-trigger, fresh-proof requirement, queue-owner, superseded-row, sibling-state, aging-guard, and reacceptance-receipt bindings, transaction-safe no-go boundaries, release archive and planner roll-forward, and release markers rolled forward to v635.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v635 marker scan; Git diff hygiene check.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v635 marker scan; Git diff hygiene check; v632-v636 batch visual QA at 1440x900 and 390x844; Git push; live v636 stamp, payment room marker and stable anchor, asset cache keys, responsive layout, overflow, rail, and browser-console verification.
 - Known risks: Payment Reclose Renewal Refresh Reacceptance Reopening Queue is a static payment reacceptance queue only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, or approve payment launch.
 
 ## NiveshNadi Phase 1 v634 Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue
@@ -24,7 +24,7 @@
 - Data version: `20260719-v634-01`
 - Changes made: Added selective source-correction reacceptance reopening rows with prior-age-state, reopen-trigger, fresh-proof requirement, queue-owner, superseded-row, sibling-state, aging-guard, and reacceptance-receipt bindings, source-safe no-go boundaries, release archive and planner roll-forward, and release markers rolled forward to v634.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v634 marker scan; Git diff hygiene check.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v634 marker scan; Git diff hygiene check; v632-v636 batch visual QA at 1440x900 and 390x844; Git push; live v636 stamp, source room marker and stable anchor, asset cache keys, responsive layout, overflow, rail, and browser-console verification.
 - Known risks: Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue is a static correction reacceptance queue only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
 
 ## NiveshNadi Phase 1 v633 Support Repair Reclose Renewal Refresh Reacceptance Aging Guard
@@ -33,7 +33,7 @@
 - Data version: `20260719-v633-01`
 - Changes made: Added independent support-repair post-reacceptance clocks, accepted-proof-date, review-by, age-state, owner, selective-reopen, superseded-row, sibling-state, and reacceptance-receipt bindings, support-safe no-go boundaries, release archive and planner roll-forward, and release markers rolled forward to v633.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v633 marker scan; Git diff hygiene check.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v633 marker scan; Git diff hygiene check; v632-v636 batch visual QA at 1440x900 and 390x844; Git push; live v636 stamp, support room marker and stable anchor, asset cache keys, responsive layout, overflow, rail, and browser-console verification.
 - Known risks: Support Repair Reclose Renewal Refresh Reacceptance Aging Guard is a static support aging room only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, expose support conversations, widen support access, or approve launch.
 
 ## NiveshNadi Phase 1 v632 Beta Command Reclose Renewal Refresh Reacceptance Aging Guard
@@ -42,7 +42,7 @@
 - Data version: `20260719-v632-01`
 - Changes made: Added independent founder-command post-reacceptance clocks, accepted-proof-date, review-by, age-state, owner, selective-reopen, superseded-row, sibling-state, and reacceptance-receipt bindings, founder-command-safe no-go boundaries, release archive and planner roll-forward, and release markers rolled forward to v632.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v632 marker scan; Git diff hygiene check.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v632 marker scan; Git diff hygiene check; v632-v636 batch visual QA at 1440x900 and 390x844; Git push; live v636 stamp, beta-command room marker and stable anchor, asset cache keys, responsive layout, overflow, rail, and browser-console verification.
 - Known risks: Beta Command Reclose Renewal Refresh Reacceptance Aging Guard is a static founder-command aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
 
 ## NiveshNadi Phase 1 v631 Account Reclose Renewal Refresh Reacceptance Aging Guard

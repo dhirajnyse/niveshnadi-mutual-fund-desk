@@ -26390,11 +26390,11 @@ function buildTrackerConfig() {
       verdict: "Account reacceptance reopening proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
-        { version: "v635", key: "20260719-v635-01", commit: "1c38915", receiptId: "NN-SHARE-RECEIPT-20260719V63501", proof: "Payment Reclose Renewal Refresh Reacceptance Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks." },
-        { version: "v634", key: "20260719-v634-01", commit: "4f74449", receiptId: "NN-SHARE-RECEIPT-20260719V63401", proof: "Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue added and verified by syntax, static, security, diff hygiene, and marker checks." },,
-        { version: "v633", key: "20260719-v633-01", commit: "de75739", receiptId: "NN-SHARE-RECEIPT-20260719V63301", proof: "Support Repair Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks." },,,
-        { version: "v632", key: "20260719-v632-01", commit: "47bcba4", receiptId: "NN-SHARE-RECEIPT-20260719V63201", proof: "Beta Command Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, and marker checks." },,,,
-        { version: "v631", key: "20260717-v631-01", commit: "625355a", receiptId: "NN-SHARE-RECEIPT-20260717V63101", proof: "Account Reclose Renewal Refresh Reacceptance Aging Guard added and verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },,,,
+        { version: "v636", key: "20260719-v636-01", commit: "534f49b", receiptId: "NN-SHARE-RECEIPT-20260719V63601", proof: "Account Reclose Renewal Refresh Reacceptance Reopening Queue added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
+        { version: "v635", key: "20260719-v635-01", commit: "1c38915", receiptId: "NN-SHARE-RECEIPT-20260719V63501", proof: "Payment Reclose Renewal Refresh Reacceptance Reopening Queue added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
+        { version: "v634", key: "20260719-v634-01", commit: "4f74449", receiptId: "NN-SHARE-RECEIPT-20260719V63401", proof: "Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
+        { version: "v633", key: "20260719-v633-01", commit: "de75739", receiptId: "NN-SHARE-RECEIPT-20260719V63301", proof: "Support Repair Reclose Renewal Refresh Reacceptance Aging Guard added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
+        { version: "v632", key: "20260719-v632-01", commit: "47bcba4", receiptId: "NN-SHARE-RECEIPT-20260719V63201", proof: "Beta Command Reclose Renewal Refresh Reacceptance Aging Guard added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
       ],
       retention: "Archive is release proof only; it does not certify live data, accounts, payments, legal, or security launch readiness.",
       retentionReview: { label: "Proof archive retention", verdict: "Keep five, retire one", receiptId: ["NN", "ARCHIVE", "RETENTION", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(), cadence: "Review on every release before the share receipt is copied.", owner: "Founder release desk", boundary: "Store release key, commit, receipt ID, proof note, and risk boundary only; do not store private user data, screenshots with identifiers, credentials, PAN, folio, CAS, bank, contact, or payment data." },
@@ -26409,12 +26409,12 @@ function buildTrackerConfig() {
       { label: "01 Built", value: "v636", detail: "Account Reclose Renewal Refresh Reacceptance Reopening Queue is wired with a matching release label, data key, stamp, docs, changelog, archive, planner, and batch-proof room." },
       { label: "02 Checked", value: "Static + visual pass", detail: "v636 passed syntax, static, security, diff hygiene, marker, desktop, and mobile checks." },
       { label: "03 Viewed", value: "Responsive pass", detail: "Desktop 1440x900 and mobile 390x844 QA passed across all five batch proof rooms with seven cards per room, stable deep links, clear header and rail spacing, mobile rail collapse, no overflow, and a quiet console." },
-      { label: "04 Share", value: "Live verification pending", detail: "The v632-v636 batch is ready to push; GitHub Pages and release-stamp verification remain pending." }
+      { label: "04 Share", value: "Live verified", detail: "The v632-v636 batch is on main, and GitHub Pages serves the v636 stamp, keyed assets, five proof rooms, stable anchors, account copy marker, and v637-v641 planner with responsive and quiet-console checks passed." }
     ],
     memory: [
       { label: "Product commit", value: "v636 account reacceptance queue", detail: "Expired account-custody reacceptance proof enters a selective fresh-proof queue while current sibling evidence and accepted lineage remain intact." },
       { label: "Release checks", value: "Local + visual passed", detail: "v636 passed syntax, static, security, diff hygiene, marker, desktop, mobile, overflow, deep-link, rail-clearance, and console checks." },
-      { label: "Share outcome", value: "Batch push pending", detail: "The v632-v636 batch passed local responsive QA and is ready for push and live verification." }
+      { label: "Share outcome", value: "Live verified", detail: "The v632-v636 batch is pushed and the public v636 build passed stamp, marker, asset-key, deep-link, desktop, mobile, overflow, rail, and console verification." }
     ],
     actions: [
       {

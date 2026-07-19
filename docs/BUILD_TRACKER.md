@@ -8,7 +8,7 @@ V636 adds Account Reclose Renewal Refresh Reacceptance Reopening Queue to the Bu
 - Data/version key: `20260719-v636-01`
 - Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh reacceptance reopening queue
 - Risk boundary: Static account reacceptance queue only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, or approve account custody widening.
-- Verification status: Syntax, static/security, marker, diff hygiene, and in-app desktop/mobile visual checks passed across all five batch proof rooms; push and live GitHub Pages verification remain pending.
+- Verification status: Syntax, static/security, marker, diff hygiene, desktop/mobile visual, push, live stamp, asset-key, marker, stable-anchor, responsive-layout, overflow, rail, planner, and browser-console checks passed for the v632-v636 batch.
 
 ## V635 Payment Reclose Renewal Refresh Reacceptance Reopening Queue
 
@@ -18,7 +18,7 @@ V635 adds Payment Reclose Renewal Refresh Reacceptance Reopening Queue to the Bu
 - Data/version key: `20260719-v635-01`
 - Product surface: Build Tracker > Release Doctor > Payment reclose renewal refresh reacceptance reopening queue
 - Risk boundary: Static payment reacceptance queue only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, or approve payment launch.
-- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v636.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; the payment room also passed the v636 batch desktop/mobile, push, and live verification.
 
 ## V634 Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue
 
@@ -28,7 +28,7 @@ V634 adds Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue
 - Data/version key: `20260719-v634-01`
 - Product surface: Build Tracker > Release Doctor > Source correction reclose renewal refresh reacceptance reopening queue
 - Risk boundary: Static correction reacceptance queue only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
-- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v636.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; the source room also passed the v636 batch desktop/mobile, push, and live verification.
 
 ## V633 Support Repair Reclose Renewal Refresh Reacceptance Aging Guard
 
@@ -38,7 +38,7 @@ V633 adds Support Repair Reclose Renewal Refresh Reacceptance Aging Guard to the
 - Data/version key: `20260719-v633-01`
 - Product surface: Build Tracker > Release Doctor > Support repair reclose renewal refresh reacceptance aging guard
 - Risk boundary: Static support aging room only; it does not send replies, issue refunds, process payments, fetch live data, contact users, store private notes, expose support conversations, widen support access, or approve launch.
-- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v636.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; the support room also passed the v636 batch desktop/mobile, push, and live verification.
 
 ## V632 Beta Command Reclose Renewal Refresh Reacceptance Aging Guard
 
@@ -48,7 +48,7 @@ V632 adds Beta Command Reclose Renewal Refresh Reacceptance Aging Guard to the B
 - Data/version key: `20260719-v632-01`
 - Product surface: Build Tracker > Release Doctor > Beta command reclose renewal refresh reacceptance aging guard
 - Risk boundary: Static founder-command aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
-- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v636.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; the beta-command room also passed the v636 batch desktop/mobile, push, and live verification.
 
 ## V631 Account Reclose Renewal Refresh Reacceptance Aging Guard
 

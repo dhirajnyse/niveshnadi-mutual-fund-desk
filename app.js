@@ -28457,13 +28457,13 @@ function buildTrackerConfig() {
     outcomeTrail: [
       { label: "01 Built", value: "v656", detail: "Account Reclose Renewal Refresh Revalidation Renewal Receipt is wired with a matching release label, data key, stamp, docs, changelog, planner, and proof room." },
       { label: "02 Checked", value: "Static pass", detail: "V656 is gated by syntax, static, security, diff hygiene, and marker checks." },
-      { label: "03 Viewed", value: "Batch visual pending", detail: "The v652-v656 proof rooms will receive one shared desktop and mobile responsive review after local checks." },
-      { label: "04 Share", value: "Batch push pending", detail: "V656 remains local until the five-release batch passes responsive verification." }
+      { label: "03 Viewed", value: "Responsive pass", detail: "The v652-v656 proof rooms passed shared 1440x900 and 390x844 responsive review with seven cards per room, left/right rail checks, mobile rail collapse, clean overflow, and an empty browser console." },
+      { label: "04 Share", value: "Batch push pending", detail: "V656 is visually verified; push and live GitHub Pages verification remain." }
     ],
     memory: [
       { label: "Product commit", value: "v656 account revalidation renewal receipt", detail: "One reopened account lane now renews only after fresh proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and privacy-safe checks." },
-      { label: "Release checks", value: "Local checks passed", detail: "V656 carries syntax, static, security, diff hygiene, and marker gates before commit." },
-      { label: "Share outcome", value: "Batch verification pending", detail: "Push and live verification wait for the complete v652-v656 responsive batch review." }
+      { label: "Release checks", value: "Local + visual passed", detail: "V656 carries syntax, static, security, diff hygiene, marker, desktop, mobile, rail, overflow, and browser-console gates before push." },
+      { label: "Share outcome", value: "Batch push pending", detail: "The complete v652-v656 responsive batch passed locally; push and live verification remain." }
     ],
     actions: [
       {

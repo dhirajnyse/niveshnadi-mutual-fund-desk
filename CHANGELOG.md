@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v648 Support Repair Reclose Renewal Refresh Revalidation Aging Guard
+
+- Version: `0.648.0`
+- Data version: `20260719-v648-01`
+- Changes made: Added six support-repair revalidation aging lanes with independent fresh-proof dates, review windows, age states, owners, selective reopen conditions, receipt lineage, sibling-state preservation, and private-support boundaries, with release markers and planner rolled forward to v648.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v648 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Reclose Renewal Refresh Revalidation Aging Guard is a static support-aging room only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v647 Beta Command Reclose Renewal Refresh Revalidation Aging Guard
 
 - Version: `0.647.0`

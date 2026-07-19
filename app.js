@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260719-v647-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v647 Beta Command Reclose Renewal Refresh Revalidation Aging Guard";
+const DATA_VERSION = "20260719-v648-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v648 Support Repair Reclose Renewal Refresh Revalidation Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -27333,6 +27333,109 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Reclose Renewal Refresh Revalidation Aging Guard is a static founder-command aging room only; it does not send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion."
+      },
+      {
+        key: "supportRepairRecloseRenewalRefreshRevalidationAgingGuard",
+        label: "Support repair reclose renewal refresh revalidation aging guard",
+        verdict: "Revalidated support proof has an independent expiry clock",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "RECLOSE", "RENEWAL", "REFRESH", "REVALIDATION", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-reclose-renewal-refresh-revalidation-aging-guard",
+        copyLabel: "Copy support revalidation aging guard",
+        score: 84,
+        rule: "Every revalidated support-repair lane must expose its fresh proof date, review-by date, age state, owner, and selective reopen condition without exposing private conversations or widening reply or refund authority.",
+        lanes: [
+          {
+            label: "Support-copy revalidation aging",
+            owner: "Support content desk",
+            method: "AGE_REVALIDATED_SUPPORT_COPY",
+            route: "support.repair.reclose.renewal.refresh.revalidation.aging.copy",
+            proof: "Track revalidated support wording date, scenario coverage, review window, age state, receipt lineage, and wording-change reopen condition.",
+            readyWhen: "Ready while support-safe wording covers the current scenario family and remains inside its review window.",
+            hold: "Reopen only this lane when wording or scenario coverage changes, acceptance fails, or review-by passes.",
+            score: 85
+          },
+          {
+            label: "Owner-review revalidation aging",
+            owner: "Support operations",
+            method: "AGE_REVALIDATED_SUPPORT_OWNER_REVIEW",
+            route: "support.repair.reclose.renewal.refresh.revalidation.aging.owner",
+            proof: "Track revalidated owner accountability date, capacity boundary, conflict posture, age state, receipt lineage, and ownership-change reopen condition.",
+            readyWhen: "Ready while the named owner, current capacity, conflict check, and independent review remain current.",
+            hold: "Reopen only this lane when owner or capacity changes, a conflict returns, reviewer independence fails, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Regression-proof revalidation aging",
+            owner: "Support quality desk",
+            method: "AGE_REVALIDATED_SUPPORT_REGRESSION_PROOF",
+            route: "support.repair.reclose.renewal.refresh.revalidation.aging.regression",
+            proof: "Track revalidated regression scenarios, accepted outcomes, failure boundary, age state, receipt lineage, and behavior-change reopen condition.",
+            readyWhen: "Ready while the support repair passes current regression scenarios and accepted failure boundaries.",
+            hold: "Reopen only this lane when scenarios or outcomes change, a regression returns, the failure boundary moves, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Escalation-route revalidation aging",
+            owner: "Escalation desk",
+            method: "AGE_REVALIDATED_SUPPORT_ESCALATION_ROUTE",
+            route: "support.repair.reclose.renewal.refresh.revalidation.aging.escalation",
+            proof: "Track revalidated escalation owner, response boundary, handoff state, age state, receipt lineage, and route-change reopen condition.",
+            readyWhen: "Ready while the escalation route, owner, response boundary, handoff receipt, and review window remain current.",
+            hold: "Reopen only this lane when owner or response boundary changes, handoff proof fails, the route drifts, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Refund-wording revalidation aging",
+            owner: "Refund boundary desk",
+            method: "AGE_REVALIDATED_SUPPORT_REFUND_WORDING",
+            route: "support.repair.reclose.renewal.refresh.revalidation.aging.refund",
+            proof: "Track revalidated refund wording, current policy boundary, no-promise check, age state, receipt lineage, and policy-change reopen condition.",
+            readyWhen: "Ready while support wording matches current refund policy without promising or executing a refund.",
+            hold: "Reopen only this lane when wording or policy changes, the no-promise boundary fails, acceptance diverges, or review-by passes.",
+            score: 84
+          },
+          {
+            label: "Founder-support revalidation aging",
+            owner: "Founder support desk",
+            method: "AGE_REVALIDATED_SUPPORT_FOUNDER",
+            route: "support.repair.reclose.renewal.refresh.revalidation.aging.founder",
+            proof: "Track revalidated support posture, residue state, founder decision, age state, receipt lineage, and scope-change reopen condition.",
+            readyWhen: "Ready while founder review can defend the current support boundary with no unresolved residue.",
+            hold: "Reopen only this lane when support posture changes, residue returns, founder decision diverges, accepted scope moves, or review-by passes.",
+            score: 85
+          }
+        ],
+        operatingRules: [
+          "Support Repair Reclose Renewal Refresh Revalidation Aging Guard starts from the revalidated-at time and review window recorded by the support revalidation receipt.",
+          "Each support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support lane ages independently.",
+          "An expired support lane routes to selective reopening without changing healthy sibling proof or deleting the revalidation receipt.",
+          "Every aging row binds the revalidation receipt, prior reopening row, age state, owner, reopen condition, and sibling-state snapshot.",
+          "Support aging records must exclude private conversations, contact data, identifiers, credentials, account or payment payloads, and free-form private notes."
+        ],
+        noGoLines: [
+          "No revalidated support-repair lane may remain current after its review-by date or selective reopen condition is triggered.",
+          "No expired support lane may reopen or overwrite a healthy sibling lane.",
+          "No aging guard may be treated as reply approval, refund execution, payment approval, account action, or launch approval.",
+          "No support revalidation aging guard may send replies, issue refunds, process payments, fetch private support history, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "support_repair_reclose_renewal_refresh_revalidation_aging_guard_id",
+          "release_key",
+          "support_repair_reclose_renewal_refresh_revalidation_receipt_id",
+          "support_repair_reclose_renewal_refresh_reacceptance_reopening_queue_id",
+          "affected_lane",
+          "fresh_proof_date",
+          "review_window_start",
+          "review_by",
+          "age_state",
+          "aging_owner",
+          "reopen_condition",
+          "revalidation_receipt_state",
+          "sibling_state_snapshot",
+          "evaluated_at",
+          "created_at"
+        ],
+        boundary: "Support Repair Reclose Renewal Refresh Revalidation Aging Guard is a static support-aging room only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -27505,13 +27608,13 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta-command revalidation aging is visible; finish support aging, then route expired source, payment, account, and beta-command proof into selective reopening queues.",
+      rule: "Support revalidation aging is visible; route expired source, payment, account, beta-command, and support proof into selective reopening queues.",
       lanes: [
-        { version: "v648", label: "Support repair reclose renewal refresh revalidation aging guard", route: "#paid-beta-support-ledger", detail: "Age each revalidated support-repair lane from its fresh review window and reopen only the lane that becomes stale." },
         { version: "v649", label: "Source correction reclose renewal refresh revalidation reopening queue", route: "#correction-ledger", detail: "Route only the expired revalidated source lane back to fresh proof while preserving its receipt and healthy siblings." },
         { version: "v650", label: "Payment reclose renewal refresh revalidation reopening queue", route: "#payment-wiring", detail: "Route only the expired revalidated payment lane back to fresh proof while preserving its receipt, siblings, and no-secret boundary." },
         { version: "v651", label: "Account reclose renewal refresh revalidation reopening queue", route: "#account-readiness", detail: "Route only the expired revalidated account lane back to fresh proof while preserving its receipt, siblings, and custody boundary." },
-        { version: "v652", label: "Beta command reclose renewal refresh revalidation reopening queue", route: "#founder-beta-operating-room", detail: "Route only the expired revalidated beta-command lane back to fresh proof without executing a command or changing healthy siblings." }
+        { version: "v652", label: "Beta command reclose renewal refresh revalidation reopening queue", route: "#founder-beta-operating-room", detail: "Route only the expired revalidated beta-command lane back to fresh proof without executing a command or changing healthy siblings." },
+        { version: "v653", label: "Support repair reclose renewal refresh revalidation reopening queue", route: "#paid-beta-support-ledger", detail: "Route only the expired revalidated support lane back to fresh proof while preserving its receipt, healthy siblings, and private-support boundary." }
       ]
     },
     releaseProofArchive: {
@@ -27535,14 +27638,14 @@ function buildTrackerConfig() {
       ]
     },
     outcomeTrail: [
-      { label: "01 Built", value: "v647", detail: "Beta Command Reclose Renewal Refresh Revalidation Aging Guard is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
-      { label: "02 Checked", value: "Static pass", detail: "v647 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "01 Built", value: "v648", detail: "Support Repair Reclose Renewal Refresh Revalidation Aging Guard is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
+      { label: "02 Checked", value: "Static pass", detail: "v648 passed syntax, static, security, diff hygiene, and marker checks." },
       { label: "03 Viewed", value: "Batch visual pending", detail: "Desktop and mobile proof-room QA is scheduled with the v651 batch closeout." },
-      { label: "04 Share", value: "Push pending", detail: "The v647 product commit is ready for the v647-v651 batch push after final visual verification." }
+      { label: "04 Share", value: "Push pending", detail: "The v648 product commit is ready for the v647-v651 batch push after final visual verification." }
     ],
     memory: [
-      { label: "Product commit", value: "v647 beta-command revalidation aging guard", detail: "Every revalidated founder-command lane now carries an independent fresh-proof clock, command boundary, and selective reopen condition." },
-      { label: "Release checks", value: "Local checks passed", detail: "v647 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "Product commit", value: "v648 support revalidation aging guard", detail: "Every revalidated support-repair lane now carries an independent fresh-proof clock, owner, private-support boundary, and selective reopen condition." },
+      { label: "Release checks", value: "Local checks passed", detail: "v648 passed syntax, static, security, diff hygiene, and marker checks." },
       { label: "Share outcome", value: "Batch push pending", detail: "The v647-v651 batch will be pushed after the final desktop/mobile proof-room review." }
     ],
     actions: [

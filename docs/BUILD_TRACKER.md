@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V648 Support Repair Reclose Renewal Refresh Revalidation Aging Guard
+
+V648 adds Support Repair Reclose Renewal Refresh Revalidation Aging Guard to the Build Tracker Release Doctor. It gives each revalidated support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support lane an independent fresh-proof clock and routes only the stale lane back to proof while preserving its receipt, healthy siblings, and private-support boundary.
+
+- Release label: `NiveshNadi Phase 1 v648 Support Repair Reclose Renewal Refresh Revalidation Aging Guard`
+- Data/version key: `20260719-v648-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose renewal refresh revalidation aging guard
+- Risk boundary: Static support-aging room only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v651.
+
 ## V647 Beta Command Reclose Renewal Refresh Revalidation Aging Guard
 
 V647 adds Beta Command Reclose Renewal Refresh Revalidation Aging Guard to the Build Tracker Release Doctor. It gives each revalidated replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review lane an independent fresh-proof clock and routes only the stale lane back to proof while preserving its receipt, healthy siblings, and founder-command boundary.

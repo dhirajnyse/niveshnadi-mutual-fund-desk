@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260719-v649-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v649 Source Correction Reclose Renewal Refresh Revalidation Reopening Queue";
+const DATA_VERSION = "20260719-v650-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v650 Payment Reclose Renewal Refresh Revalidation Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -27537,6 +27537,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Source Correction Reclose Renewal Refresh Revalidation Reopening Queue is a static correction revalidation queue only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
+      },
+      {
+        key: "paymentRecloseRenewalRefreshRevalidationReopeningQueue",
+        label: "Payment reclose renewal refresh revalidation reopening queue",
+        verdict: "Expired revalidated payment proof reopens selectively",
+        receiptId: ["NN", "PAYMENT", "RECLOSE", "RENEWAL", "REFRESH", "REVALIDATION", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-payment-reclose-renewal-refresh-revalidation-reopening-queue",
+        copyLabel: "Copy payment revalidation reopening queue",
+        score: 81,
+        rule: "A revalidated payment lane may reopen only when its review-by date or explicit reopen condition is reached; every queue row preserves its revalidation receipt, unaffected sibling state, named fresh proof, and no-secret boundary.",
+        lanes: [
+          {
+            label: "Entitlement revalidation reopen",
+            owner: "Entitlement desk",
+            method: "REOPEN_REVALIDATED_ENTITLEMENT",
+            route: "payment.reclose.renewal.refresh.revalidation.reopening.entitlement",
+            proof: "Record prior age state, entitlement trigger, required state and plan-boundary proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired entitlement lane is queued with fresh state, plan boundary, and access-transition proof required.",
+            hold: "Hold when trigger, fresh entitlement proof, receipt, queue owner, or sibling snapshot is missing.",
+            score: 82
+          },
+          {
+            label: "Refund-wording revalidation reopen",
+            owner: "Billing boundary desk",
+            method: "REOPEN_REVALIDATED_REFUND_WORDING",
+            route: "payment.reclose.renewal.refresh.revalidation.reopening.refund",
+            proof: "Record prior age state, wording trigger, required policy and eligibility proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired refund-wording lane is queued with current wording, exclusions, policy boundary, and support route required.",
+            hold: "Hold when wording trigger, policy proof, support route, receipt, owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Rollback revalidation reopen",
+            owner: "Payment reliability desk",
+            method: "REOPEN_REVALIDATED_ROLLBACK",
+            route: "payment.reclose.renewal.refresh.revalidation.reopening.rollback",
+            proof: "Record prior age state, replay trigger, required rollback scenario and failure-path proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired rollback lane is queued with a fresh replay receipt and affected transition required.",
+            hold: "Hold when replay trigger, rollback requirement, failure path, receipt, owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Support-copy revalidation reopen",
+            owner: "Payment support desk",
+            method: "REOPEN_REVALIDATED_SUPPORT_COPY",
+            route: "payment.reclose.renewal.refresh.revalidation.reopening.support",
+            proof: "Record prior age state, support trigger, required current copy and escalation proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired support-copy lane is queued with current payment boundary and escalation proof required.",
+            hold: "Hold when copy trigger, escalation route, policy reference, receipt, owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Owner-review revalidation reopen",
+            owner: "Finance operations",
+            method: "REOPEN_REVALIDATED_OWNER_REVIEW",
+            route: "payment.reclose.renewal.refresh.revalidation.reopening.owner",
+            proof: "Record prior age state, owner trigger, required acknowledgement and scope proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired owner-review lane is queued with a fresh accountable-owner review required.",
+            hold: "Hold when owner trigger, acknowledgement requirement, scope, receipt, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Founder-finance revalidation reopen",
+            owner: "Founder finance desk",
+            method: "REOPEN_REVALIDATED_FOUNDER_FINANCE",
+            route: "payment.reclose.renewal.refresh.revalidation.reopening.founder",
+            proof: "Record prior age state, founder trigger, required release-hold and zero-residue proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired founder-finance lane is queued with a fresh payment review and release decision required.",
+            hold: "Hold when founder trigger, decision requirement, residue boundary, receipt, owner, or sibling snapshot is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Payment Reclose Renewal Refresh Revalidation Reopening Queue opens only the revalidated lane whose age state or reopen condition requires fresh proof.",
+          "Every queue row binds the revalidation aging guard, revalidation receipt, affected lane, prior age state, trigger, fresh-proof requirement, queue owner, and sibling-state snapshot.",
+          "Current sibling payment proof remains revalidated unless its own review-by date or reopen condition is reached.",
+          "A reopened payment revalidation returns to current status only after fresh review; queue entry alone never restores confidence or access.",
+          "Payment revalidation-reopening rows must exclude card data, bank details, UPI handles, payment tokens, gateway secrets, credentials, contacts, account payloads, and raw gateway or support data."
+        ],
+        noGoLines: [
+          "No revalidated payment lane may reopen without a recorded age state or explicit reopen trigger.",
+          "No sibling lane may be reopened merely because one revalidated payment lane enters the queue.",
+          "No queue row may be treated as payment processing, refund approval, entitlement approval, access grant, settlement proof, or launch approval.",
+          "No payment revalidation reopening queue may process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, or approve payment launch."
+        ],
+        receiptFields: [
+          "payment_reclose_renewal_refresh_revalidation_reopening_queue_id",
+          "release_key",
+          "payment_reclose_renewal_refresh_revalidation_aging_guard_id",
+          "payment_reclose_renewal_refresh_revalidation_receipt_id",
+          "affected_lane",
+          "prior_age_state",
+          "reopen_trigger",
+          "fresh_proof_requirement",
+          "queue_owner",
+          "superseded_revalidation_queue_row",
+          "sibling_state_snapshot",
+          "opened_at",
+          "created_at"
+        ],
+        boundary: "Payment Reclose Renewal Refresh Revalidation Reopening Queue is a static payment revalidation queue only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch."
       }
     ],
     executiveCalmCompression: {
@@ -27709,13 +27810,13 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source revalidation reopening is visible; finish payment and account queues, then add beta-command and support queues before the next renewal-receipt cycle.",
+      rule: "Payment revalidation reopening is visible; finish the account queue, then add beta-command and support queues before source and payment renewal receipts.",
       lanes: [
-        { version: "v650", label: "Payment reclose renewal refresh revalidation reopening queue", route: "#payment-wiring", detail: "Route only the expired revalidated payment lane back to fresh proof while preserving its receipt, siblings, and no-secret boundary." },
         { version: "v651", label: "Account reclose renewal refresh revalidation reopening queue", route: "#account-readiness", detail: "Route only the expired revalidated account lane back to fresh proof while preserving its receipt, siblings, and custody boundary." },
         { version: "v652", label: "Beta command reclose renewal refresh revalidation reopening queue", route: "#founder-beta-operating-room", detail: "Route only the expired revalidated beta-command lane back to fresh proof without executing a command or changing healthy siblings." },
         { version: "v653", label: "Support repair reclose renewal refresh revalidation reopening queue", route: "#paid-beta-support-ledger", detail: "Route only the expired revalidated support lane back to fresh proof while preserving its receipt, healthy siblings, and private-support boundary." },
-        { version: "v654", label: "Source correction reclose renewal refresh revalidation renewal receipt", route: "#correction-ledger", detail: "Close one revalidated source reopening row only after fresh correction proof, reviewer acceptance, and a new review window are recorded." }
+        { version: "v654", label: "Source correction reclose renewal refresh revalidation renewal receipt", route: "#correction-ledger", detail: "Close one revalidated source reopening row only after fresh correction proof, reviewer acceptance, and a new review window are recorded." },
+        { version: "v655", label: "Payment reclose renewal refresh revalidation renewal receipt", route: "#payment-wiring", detail: "Close one revalidated payment reopening row only after fresh proof, reviewer acceptance, a new review window, and no-secret checks are recorded." }
       ]
     },
     releaseProofArchive: {
@@ -27739,14 +27840,14 @@ function buildTrackerConfig() {
       ]
     },
     outcomeTrail: [
-      { label: "01 Built", value: "v649", detail: "Source Correction Reclose Renewal Refresh Revalidation Reopening Queue is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
-      { label: "02 Checked", value: "Static pass", detail: "v649 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "01 Built", value: "v650", detail: "Payment Reclose Renewal Refresh Revalidation Reopening Queue is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
+      { label: "02 Checked", value: "Static pass", detail: "v650 passed syntax, static, security, diff hygiene, and marker checks." },
       { label: "03 Viewed", value: "Batch visual pending", detail: "Desktop and mobile proof-room QA is scheduled with the v651 batch closeout." },
-      { label: "04 Share", value: "Push pending", detail: "The v649 product commit is ready for the v647-v651 batch push after final visual verification." }
+      { label: "04 Share", value: "Push pending", detail: "The v650 product commit is ready for the v647-v651 batch push after final visual verification." }
     ],
     memory: [
-      { label: "Product commit", value: "v649 source revalidation reopening queue", detail: "Expired source-correction proof now routes only the stale lane back to named fresh proof while preserving the revalidation receipt and healthy siblings." },
-      { label: "Release checks", value: "Local checks passed", detail: "v649 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "Product commit", value: "v650 payment revalidation reopening queue", detail: "Expired payment proof now routes only the stale lane back to named fresh proof while preserving the revalidation receipt, healthy siblings, and no-secret boundary." },
+      { label: "Release checks", value: "Local checks passed", detail: "v650 passed syntax, static, security, diff hygiene, and marker checks." },
       { label: "Share outcome", value: "Batch push pending", detail: "The v647-v651 batch will be pushed after the final desktop/mobile proof-room review." }
     ],
     actions: [

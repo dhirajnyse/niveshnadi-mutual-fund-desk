@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v650 Payment Reclose Renewal Refresh Revalidation Reopening Queue
+
+- Version: `0.650.0`
+- Data version: `20260719-v650-01`
+- Changes made: Added six selective payment revalidation reopening lanes that preserve prior age state, reopen trigger, named fresh-proof requirement, queue owner, aging-guard and revalidation-receipt lineage, healthy sibling state, and the no-secret boundary, with release markers and planner rolled forward to v650.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v650 marker scan; Git diff hygiene check.
+- Known risks: Payment Reclose Renewal Refresh Revalidation Reopening Queue is a static payment revalidation queue only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch.
+
 ## NiveshNadi Phase 1 v649 Source Correction Reclose Renewal Refresh Revalidation Reopening Queue
 
 - Version: `0.649.0`

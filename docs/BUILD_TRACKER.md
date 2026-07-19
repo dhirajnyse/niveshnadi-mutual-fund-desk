@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V650 Payment Reclose Renewal Refresh Revalidation Reopening Queue
+
+V650 adds Payment Reclose Renewal Refresh Revalidation Reopening Queue to the Build Tracker Release Doctor. It routes only an expired revalidated entitlement, refund-wording, rollback, support-copy, owner-review, or founder-finance lane back to named fresh proof while preserving its revalidation receipt, healthy sibling state, and no-secret boundary.
+
+- Release label: `NiveshNadi Phase 1 v650 Payment Reclose Renewal Refresh Revalidation Reopening Queue`
+- Data/version key: `20260719-v650-01`
+- Product surface: Build Tracker > Release Doctor > Payment reclose renewal refresh revalidation reopening queue
+- Risk boundary: Static payment revalidation queue only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v651.
+
 ## V649 Source Correction Reclose Renewal Refresh Revalidation Reopening Queue
 
 V649 adds Source Correction Reclose Renewal Refresh Revalidation Reopening Queue to the Build Tracker Release Doctor. It routes only an expired revalidated replacement, notice, cache, support, reviewer, or founder lane back to named fresh proof while preserving its revalidation receipt, aging lineage, and healthy sibling state.

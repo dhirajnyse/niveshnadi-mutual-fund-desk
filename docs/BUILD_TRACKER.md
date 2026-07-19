@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V653 Support Repair Reclose Renewal Refresh Revalidation Reopening Queue
+
+V653 adds Support Repair Reclose Renewal Refresh Revalidation Reopening Queue to the Build Tracker Release Doctor. It routes only an expired revalidated support-copy, owner-review, regression-proof, escalation-route, refund-wording, or founder-support lane back to named fresh proof while preserving its revalidation receipt, healthy sibling state, and private-support boundary.
+
+- Release label: `NiveshNadi Phase 1 v653 Support Repair Reclose Renewal Refresh Revalidation Reopening Queue`
+- Data/version key: `20260719-v653-01`
+- Product surface: Build Tracker > Release Doctor > Support repair reclose renewal refresh revalidation reopening queue
+- Risk boundary: Static support revalidation queue only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual, push, and live verification remain.
+
 ## V652 Beta Command Reclose Renewal Refresh Revalidation Reopening Queue
 
 V652 adds Beta Command Reclose Renewal Refresh Revalidation Reopening Queue to the Build Tracker Release Doctor. It routes only an expired revalidated replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, or founder-review lane back to named fresh proof while preserving its revalidation receipt, healthy sibling state, and founder-command boundary.

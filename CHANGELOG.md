@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v653 Support Repair Reclose Renewal Refresh Revalidation Reopening Queue
+
+- Version: `0.653.0`
+- Data version: `20260719-v653-01`
+- Changes made: Added six selective support-repair revalidation reopening lanes that preserve prior age state, reopen trigger, named fresh-proof requirement, queue owner, aging-guard and revalidation-receipt lineage, healthy sibling state, and the private-support boundary, with release markers and planner rolled forward to v653.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v653 marker scan; Git diff hygiene check.
+- Known risks: Support Repair Reclose Renewal Refresh Revalidation Reopening Queue is a static support revalidation queue only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v652 Beta Command Reclose Renewal Refresh Revalidation Reopening Queue
 
 - Version: `0.652.0`

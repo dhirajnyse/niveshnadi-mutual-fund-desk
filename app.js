@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260719-v652-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v652 Beta Command Reclose Renewal Refresh Revalidation Reopening Queue";
+const DATA_VERSION = "20260719-v653-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v653 Support Repair Reclose Renewal Refresh Revalidation Reopening Queue";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -27840,6 +27840,107 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Beta Command Reclose Renewal Refresh Revalidation Reopening Queue is a static founder-command revalidation queue only; it does not send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion."
+      },
+      {
+        key: "supportRepairRecloseRenewalRefreshRevalidationReopeningQueue",
+        label: "Support repair reclose renewal refresh revalidation reopening queue",
+        verdict: "Expired revalidated support proof reopens selectively",
+        receiptId: ["NN", "SUPPORT", "REPAIR", "RECLOSE", "RENEWAL", "REFRESH", "REVALIDATION", "REOPENING", "QUEUE", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-support-repair-reclose-renewal-refresh-revalidation-reopening-queue",
+        copyLabel: "Copy support revalidation reopening queue",
+        score: 81,
+        rule: "A revalidated support-repair lane may reopen only when its review-by date or explicit reopen condition is reached; every queue row preserves its revalidation receipt, healthy siblings, named fresh proof, and private-support boundary.",
+        lanes: [
+          {
+            label: "Support-copy revalidation reopen",
+            owner: "Support design desk",
+            method: "REOPEN_REVALIDATED_SUPPORT_COPY",
+            route: "support.repair.reclose.renewal.refresh.revalidation.reopening.copy",
+            proof: "Record prior age state, copy-drift trigger, required behavior and wording proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired copy lane is queued with current product-behavior and support wording proof required.",
+            hold: "Hold when drift trigger, fresh wording proof, receipt, owner, or sibling snapshot is missing.",
+            score: 82
+          },
+          {
+            label: "Owner-review revalidation reopen",
+            owner: "Support operations",
+            method: "REOPEN_REVALIDATED_SUPPORT_OWNER",
+            route: "support.repair.reclose.renewal.refresh.revalidation.reopening.owner",
+            proof: "Record prior age state, ownership trigger, required acknowledgement and handoff proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired owner lane is queued with current accountability, acknowledgement, and handoff proof required.",
+            hold: "Hold when owner trigger, acknowledgement, handoff proof, receipt, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Regression-proof revalidation reopen",
+            owner: "Support QA",
+            method: "REOPEN_REVALIDATED_SUPPORT_REGRESSION",
+            route: "support.repair.reclose.renewal.refresh.revalidation.reopening.regression",
+            proof: "Record prior age state, regression trigger, required reproduction and resolved-path proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired regression lane is queued with current reproduction, expected-result, and resolved-path proof required.",
+            hold: "Hold when regression trigger, reproduction proof, expected result, receipt, owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Escalation-route revalidation reopen",
+            owner: "Support captain",
+            method: "REOPEN_REVALIDATED_SUPPORT_ESCALATION",
+            route: "support.repair.reclose.renewal.refresh.revalidation.reopening.escalation",
+            proof: "Record prior age state, route-change trigger, required owner and response-boundary proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired escalation lane is queued with current route, owner, and response-boundary proof required.",
+            hold: "Hold when route trigger, accountable owner, response boundary, receipt, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Refund-wording revalidation reopen",
+            owner: "Billing boundary desk",
+            method: "REOPEN_REVALIDATED_SUPPORT_REFUND_WORDING",
+            route: "support.repair.reclose.renewal.refresh.revalidation.reopening.refund",
+            proof: "Record prior age state, policy trigger, required eligibility and escalation wording proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired refund-wording lane is queued with current policy, exclusions, and escalation proof required.",
+            hold: "Hold when policy trigger, eligibility wording, exclusion proof, receipt, owner, or sibling snapshot is missing.",
+            score: 81
+          },
+          {
+            label: "Founder-support revalidation reopen",
+            owner: "Founder support desk",
+            method: "REOPEN_REVALIDATED_SUPPORT_FOUNDER",
+            route: "support.repair.reclose.renewal.refresh.revalidation.reopening.founder",
+            proof: "Record prior age state, founder trigger, required support-boundary and residue proof, revalidation receipt, queue owner, and sibling-state snapshot.",
+            readyWhen: "Ready when only the expired founder-support lane is queued with a fresh hold, repair, or expansion decision required.",
+            hold: "Hold when founder trigger, decision requirement, residue boundary, receipt, owner, or sibling snapshot is missing.",
+            score: 82
+          }
+        ],
+        operatingRules: [
+          "Support Repair Reclose Renewal Refresh Revalidation Reopening Queue opens only the revalidated lane whose age state or reopen condition requires fresh proof.",
+          "Every queue row binds the revalidation aging guard, revalidation receipt, affected lane, prior age state, trigger, fresh-proof requirement, queue owner, and sibling-state snapshot.",
+          "Current sibling support proof remains revalidated unless its own review-by date or reopen condition is reached.",
+          "A reopened support revalidation returns to current status only after fresh review; queue entry alone never restores confidence or reply authority.",
+          "Support revalidation-reopening rows must exclude private conversations, contact details, identifiers, credentials, account or payment payloads, and free-form private notes."
+        ],
+        noGoLines: [
+          "No revalidated support-repair lane may reopen without a recorded age state or explicit reopen trigger.",
+          "No sibling lane may be reopened merely because one revalidated support lane enters the queue.",
+          "No queue row may be treated as reply approval, refund execution, payment approval, account action, or beta-expansion approval.",
+          "No support revalidation reopening queue may send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion."
+        ],
+        receiptFields: [
+          "support_repair_reclose_renewal_refresh_revalidation_reopening_queue_id",
+          "release_key",
+          "support_repair_reclose_renewal_refresh_revalidation_aging_guard_id",
+          "support_repair_reclose_renewal_refresh_revalidation_receipt_id",
+          "affected_lane",
+          "prior_age_state",
+          "reopen_trigger",
+          "fresh_proof_requirement",
+          "queue_owner",
+          "superseded_revalidation_queue_row",
+          "sibling_state_snapshot",
+          "opened_at",
+          "created_at"
+        ],
+        boundary: "Support Repair Reclose Renewal Refresh Revalidation Reopening Queue is a static support revalidation queue only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion."
       }
     ],
     executiveCalmCompression: {
@@ -28012,18 +28113,18 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "V652 closes the beta-command selective-reopening gap; next close support, source, payment, and account revalidation work before renewing beta-command proof.",
+      rule: "The beta-command and support revalidation queues are complete; next renew source, payment, account, beta-command, and support proof one lane at a time.",
       lanes: [
-        { version: "v653", label: "Support repair reclose renewal refresh revalidation reopening queue", route: "#paid-beta-support-ledger", detail: "Route only the expired revalidated support lane back to fresh proof while preserving its receipt, healthy siblings, and private-support boundary." },
         { version: "v654", label: "Source correction reclose renewal refresh revalidation renewal receipt", route: "#correction-ledger", detail: "Close one revalidated source reopening row only after fresh correction proof, reviewer acceptance, and a new review window are recorded." },
         { version: "v655", label: "Payment reclose renewal refresh revalidation renewal receipt", route: "#payment-wiring", detail: "Close one revalidated payment reopening row only after fresh proof, reviewer acceptance, a new review window, and no-secret checks are recorded." },
         { version: "v656", label: "Account reclose renewal refresh revalidation renewal receipt", route: "#account-readiness", detail: "Close one revalidated account reopening row only after fresh custody proof, reviewer acceptance, a new review window, and privacy checks are recorded." },
-        { version: "v657", label: "Beta command reclose renewal refresh revalidation renewal receipt", route: "#founder-beta-operating-room", detail: "Close one revalidated beta-command reopening row only after fresh founder-command proof, reviewer acceptance, and a new review window are recorded." }
+        { version: "v657", label: "Beta command reclose renewal refresh revalidation renewal receipt", route: "#founder-beta-operating-room", detail: "Close one revalidated beta-command reopening row only after fresh founder-command proof, reviewer acceptance, and a new review window are recorded." },
+        { version: "v658", label: "Support repair reclose renewal refresh revalidation renewal receipt", route: "#paid-beta-support-ledger", detail: "Close one revalidated support reopening row only after fresh support proof, reviewer acceptance, a new review window, and private-data exclusions are recorded." }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Beta-command revalidation reopening proof visible",
+      verdict: "Support revalidation reopening proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         { version: "v651", key: "20260719-v651-01", commit: "7306980", receiptId: "NN-SHARE-RECEIPT-20260719V65101", proof: "Account Reclose Renewal Refresh Revalidation Reopening Queue added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
@@ -28042,14 +28143,14 @@ function buildTrackerConfig() {
       ]
     },
     outcomeTrail: [
-      { label: "01 Built", value: "v652", detail: "Beta Command Reclose Renewal Refresh Revalidation Reopening Queue is wired with a matching release label, data key, stamp, docs, changelog, planner, and proof room." },
-      { label: "02 Checked", value: "Static pass", detail: "V652 is gated by syntax, static, security, diff hygiene, and marker checks." },
+      { label: "01 Built", value: "v653", detail: "Support Repair Reclose Renewal Refresh Revalidation Reopening Queue is wired with a matching release label, data key, stamp, docs, changelog, planner, and proof room." },
+      { label: "02 Checked", value: "Static pass", detail: "V653 is gated by syntax, static, security, diff hygiene, and marker checks." },
       { label: "03 Viewed", value: "Batch visual pending", detail: "The v652-v656 proof rooms will receive one shared desktop and mobile responsive review after v656." },
-      { label: "04 Share", value: "Batch push pending", detail: "V652 remains local until the five-release batch passes responsive verification." }
+      { label: "04 Share", value: "Batch push pending", detail: "V653 remains local until the five-release batch passes responsive verification." }
     ],
     memory: [
-      { label: "Product commit", value: "v652 beta-command revalidation reopening queue", detail: "Expired founder-command proof now routes only the stale lane back to named fresh proof while preserving its receipt, healthy siblings, and no-command boundary." },
-      { label: "Release checks", value: "Local checks passed", detail: "V652 carries syntax, static, security, diff hygiene, and marker gates before commit." },
+      { label: "Product commit", value: "v653 support revalidation reopening queue", detail: "Expired support proof now routes only the stale lane back to named fresh proof while preserving its receipt, healthy siblings, and private-support boundary." },
+      { label: "Release checks", value: "Local checks passed", detail: "V653 carries syntax, static, security, diff hygiene, and marker gates before commit." },
       { label: "Share outcome", value: "Batch verification pending", detail: "Push and live verification wait for the complete v652-v656 responsive batch review." }
     ],
     actions: [

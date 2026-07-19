@@ -26918,14 +26918,14 @@ function buildTrackerConfig() {
     },
     outcomeTrail: [
       { label: "01 Built", value: "v641", detail: "Account Reclose Renewal Refresh Revalidation Receipt is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
-      { label: "02 Checked", value: "Static pass", detail: "v641 passed syntax, static, security, diff hygiene, and marker checks." },
-      { label: "03 Viewed", value: "Batch visual pending", detail: "Desktop and mobile proof-room QA is scheduled with the v641 batch closeout." },
+      { label: "02 Checked", value: "Static + visual pass", detail: "v641 passed syntax, static, security, diff hygiene, marker, desktop, and mobile checks." },
+      { label: "03 Viewed", value: "Responsive pass", detail: "All five proof rooms passed 1440x900 and 390x844 QA with stable anchors, seven cards, no overflow, clean rail clearance, and a quiet console." },
       { label: "04 Share", value: "Push pending", detail: "The v641 product commit is ready for the v637-v641 batch push after final visual verification." }
     ],
     memory: [
       { label: "Product commit", value: "v641 account revalidation receipt", detail: "One reopened account-custody lane returns to current status only after fresh proof, reviewer acceptance, and a new review window are receipted." },
-      { label: "Release checks", value: "Local checks passed", detail: "v641 passed syntax, static, security, diff hygiene, and marker checks." },
-      { label: "Share outcome", value: "Batch push pending", detail: "The v637-v641 batch will be pushed after the final desktop/mobile proof-room review." }
+      { label: "Release checks", value: "Local + visual passed", detail: "v641 passed syntax, static, security, diff hygiene, marker, desktop, mobile, deep-link, overflow, rail-clearance, and console checks." },
+      { label: "Share outcome", value: "Batch push pending", detail: "The v637-v641 batch is locally verified and ready for push and live Pages verification." }
     ],
     actions: [
       {

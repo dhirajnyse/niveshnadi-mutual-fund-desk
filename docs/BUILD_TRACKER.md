@@ -8,7 +8,7 @@ V656 adds Account Reclose Renewal Refresh Revalidation Renewal Receipt to the Bu
 - Data/version key: `20260719-v656-01`
 - Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh revalidation renewal receipt
 - Risk boundary: Static custody workflow receipt only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, widen custody, or approve account launch.
-- Verification status: Syntax, static/security, marker, diff hygiene, and v652-v656 desktop/mobile responsive QA passed; push and live verification remain.
+- Verification status: Syntax, static/security, marker, diff hygiene, v652-v656 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V655 Payment Reclose Renewal Refresh Revalidation Renewal Receipt
 
@@ -18,7 +18,7 @@ V655 adds Payment Reclose Renewal Refresh Revalidation Renewal Receipt to the Bu
 - Data/version key: `20260719-v655-01`
 - Product surface: Build Tracker > Release Doctor > Payment reclose renewal refresh revalidation renewal receipt
 - Risk boundary: Static payment workflow receipt only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch.
-- Verification status: Syntax, static/security, marker, diff hygiene, and v652-v656 desktop/mobile responsive QA passed; push and live verification remain.
+- Verification status: Syntax, static/security, marker, diff hygiene, v652-v656 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V654 Source Correction Reclose Renewal Refresh Revalidation Renewal Receipt
 
@@ -28,7 +28,7 @@ V654 adds Source Correction Reclose Renewal Refresh Revalidation Renewal Receipt
 - Data/version key: `20260719-v654-01`
 - Product surface: Build Tracker > Release Doctor > Source correction reclose renewal refresh revalidation renewal receipt
 - Risk boundary: Static source workflow receipt only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
-- Verification status: Syntax, static/security, marker, diff hygiene, and v652-v656 desktop/mobile responsive QA passed; push and live verification remain.
+- Verification status: Syntax, static/security, marker, diff hygiene, v652-v656 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V653 Support Repair Reclose Renewal Refresh Revalidation Reopening Queue
 
@@ -38,7 +38,7 @@ V653 adds Support Repair Reclose Renewal Refresh Revalidation Reopening Queue to
 - Data/version key: `20260719-v653-01`
 - Product surface: Build Tracker > Release Doctor > Support repair reclose renewal refresh revalidation reopening queue
 - Risk boundary: Static support revalidation queue only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
-- Verification status: Syntax, static/security, marker, diff hygiene, and v652-v656 desktop/mobile responsive QA passed; push and live verification remain.
+- Verification status: Syntax, static/security, marker, diff hygiene, v652-v656 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V652 Beta Command Reclose Renewal Refresh Revalidation Reopening Queue
 
@@ -48,7 +48,7 @@ V652 adds Beta Command Reclose Renewal Refresh Revalidation Reopening Queue to t
 - Data/version key: `20260719-v652-01`
 - Product surface: Build Tracker > Release Doctor > Beta command reclose renewal refresh revalidation reopening queue
 - Risk boundary: Static founder-command revalidation queue only; it does not send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion.
-- Verification status: Syntax, static/security, marker, diff hygiene, and v652-v656 desktop/mobile responsive QA passed; push and live verification remain.
+- Verification status: Syntax, static/security, marker, diff hygiene, v652-v656 desktop/mobile responsive QA, Git push, and live GitHub Pages verification passed.
 
 ## V651 Account Reclose Renewal Refresh Revalidation Reopening Queue
 

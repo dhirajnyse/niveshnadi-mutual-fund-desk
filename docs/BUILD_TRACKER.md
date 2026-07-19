@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V659 Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard
+
+V659 adds Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard to the Build Tracker Release Doctor. Added six independent source-correction renewal-aging lanes that retain immutable renewal lineage and reopen only stale or drifted proof while preserving healthy siblings and privacy-safe boundaries.
+
+- Release label: `NiveshNadi Phase 1 v659 Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard`
+- Data/version key: `20260719-v659-01`
+- Product surface: Build Tracker > Release Doctor > source correction reclose renewal refresh revalidation renewal aging guard
+- Risk boundary: Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard is a static correction aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+- Verification status: Syntax, static/security, marker, and diff hygiene passed; shared v657-v661 responsive QA, push, and live GitHub Pages verification remain pending.
+
 ## V658 Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt
 
 V658 adds Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt to the Build Tracker Release Doctor. Added six support revalidation renewal lanes that close exactly one active reopening row only after named fresh support proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and private-support exclusions are recorded.

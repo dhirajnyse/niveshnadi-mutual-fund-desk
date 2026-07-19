@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260719-v658-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v658 Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt";
+const DATA_VERSION = "20260719-v659-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v659 Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -28461,6 +28461,109 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt is a static support workflow receipt only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion."
+      },
+      {
+        key: "sourceCorrectionRecloseRenewalRefreshRevalidationRenewalAgingGuard",
+        label: "source correction reclose renewal refresh revalidation renewal aging guard",
+        verdict: "Renewed source correction proof has an independent expiry clock",
+        receiptId: ["NN", "SOURCE", "CORRECTION", "RECLOSE", "RENEWAL", "REFRESH", "REVALIDATION", "RENEWAL", "AGING", "GUARD", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-source-correction-reclose-renewal-refresh-revalidation-renewal-aging-guard",
+        copyLabel: "Copy source correction renewal aging guard",
+        score: 85,
+        rule: "Every renewed source correction lane must expose its renewed proof date, review-by date, age state, owner, and selective reopen condition so accepted renewal proof cannot outlive current evidence.",
+        lanes: [
+          {
+            label: "Replacement renewal aging",
+            owner: "Source correction desk",
+            method: "AGE_RENEWED_REPLACEMENT",
+            route: "source.correction.reclose.renewal.refresh.revalidation.renewal.aging.replacement",
+            proof: "Track the renewed replacement proof date, review window, age state, renewal-receipt lineage, accountable owner, sibling snapshot, and selective reopen condition.",
+            readyWhen: "Ready while the renewed replacement proof, accepted scope, and review window remain current.",
+            hold: "Reopen only this lane when review-by passes, its named drift trigger fires, or the renewed proof no longer matches accepted scope.",
+            score: 86
+          },
+          {
+            label: "Notice renewal aging",
+            owner: "Public correction desk",
+            method: "AGE_RENEWED_NOTICE",
+            route: "source.correction.reclose.renewal.refresh.revalidation.renewal.aging.notice",
+            proof: "Track the renewed notice proof date, review window, age state, renewal-receipt lineage, accountable owner, sibling snapshot, and selective reopen condition.",
+            readyWhen: "Ready while the renewed notice proof, accepted scope, and review window remain current.",
+            hold: "Reopen only this lane when review-by passes, its named drift trigger fires, or the renewed proof no longer matches accepted scope.",
+            score: 85
+          },
+          {
+            label: "Cache renewal aging",
+            owner: "Release operations",
+            method: "AGE_RENEWED_CACHE",
+            route: "source.correction.reclose.renewal.refresh.revalidation.renewal.aging.cache",
+            proof: "Track the renewed cache proof date, review window, age state, renewal-receipt lineage, accountable owner, sibling snapshot, and selective reopen condition.",
+            readyWhen: "Ready while the renewed cache proof, accepted scope, and review window remain current.",
+            hold: "Reopen only this lane when review-by passes, its named drift trigger fires, or the renewed proof no longer matches accepted scope.",
+            score: 85
+          },
+          {
+            label: "Support renewal aging",
+            owner: "Support captain",
+            method: "AGE_RENEWED_SUPPORT",
+            route: "source.correction.reclose.renewal.refresh.revalidation.renewal.aging.support",
+            proof: "Track the renewed support proof date, review window, age state, renewal-receipt lineage, accountable owner, sibling snapshot, and selective reopen condition.",
+            readyWhen: "Ready while the renewed support proof, accepted scope, and review window remain current.",
+            hold: "Reopen only this lane when review-by passes, its named drift trigger fires, or the renewed proof no longer matches accepted scope.",
+            score: 85
+          },
+          {
+            label: "Reviewer renewal aging",
+            owner: "Trust review desk",
+            method: "AGE_RENEWED_REVIEWER",
+            route: "source.correction.reclose.renewal.refresh.revalidation.renewal.aging.reviewer",
+            proof: "Track the renewed reviewer proof date, review window, age state, renewal-receipt lineage, accountable owner, sibling snapshot, and selective reopen condition.",
+            readyWhen: "Ready while the renewed reviewer proof, accepted scope, and review window remain current.",
+            hold: "Reopen only this lane when review-by passes, its named drift trigger fires, or the renewed proof no longer matches accepted scope.",
+            score: 85
+          },
+          {
+            label: "Founder renewal aging",
+            owner: "Founder desk",
+            method: "AGE_RENEWED_FOUNDER",
+            route: "source.correction.reclose.renewal.refresh.revalidation.renewal.aging.founder",
+            proof: "Track the renewed founder proof date, review window, age state, renewal-receipt lineage, accountable owner, sibling snapshot, and selective reopen condition.",
+            readyWhen: "Ready while the renewed founder proof, accepted scope, and review window remain current.",
+            hold: "Reopen only this lane when review-by passes, its named drift trigger fires, or the renewed proof no longer matches accepted scope.",
+            score: 86
+          }
+        ],
+        operatingRules: [
+          "Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard starts from the renewed-at time and review window recorded by the renewal receipt.",
+          "Each replacement, notice, cache, support, reviewer, founder lane ages independently against its own renewed proof date and review-by date.",
+          "An expired lane routes to selective reopening without changing healthy sibling proof or deleting the renewal receipt.",
+          "Every renewal-aging row binds the renewal receipt, superseded revalidation reopening row, age state, owner, reopen condition, and sibling-state snapshot.",
+          "Source Correction renewal-aging records must exclude private notes, credentials, identifiers, contact details, account or payment payloads, and raw support conversations."
+        ],
+        noGoLines: [
+          "No renewed source correction lane may remain current after its review-by date or selective reopen condition is triggered.",
+          "No expired renewed lane may reopen or overwrite a healthy sibling lane.",
+          "No renewal aging guard may be treated as source correction execution, live verification, launch approval, or scope expansion.",
+          "No source correction renewal aging guard may fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
+        ],
+        receiptFields: [
+          "source_correction_reclose_renewal_refresh_revalidation_renewal_aging_guard_id",
+          "release_key",
+          "source_correction_reclose_renewal_refresh_revalidation_renewal_receipt_id",
+          "source_correction_reclose_renewal_refresh_revalidation_reopening_queue_id",
+          "affected_lane",
+          "renewed_proof_date",
+          "review_window_start",
+          "review_by",
+          "age_state",
+          "aging_owner",
+          "reopen_condition",
+          "renewal_receipt_state",
+          "sibling_state_snapshot",
+          "evaluated_at",
+          "created_at"
+        ],
+        boundary: "Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard is a static correction aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims."
       }
     ],
     executiveCalmCompression: {
@@ -28633,14 +28736,8 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Beta-command and support renewal receipts are complete; next add source, payment, account, beta-command, and support renewal aging guards.",
+      rule: "Source renewal aging is complete; next add payment, account, beta-command, and support renewal aging guards, then the source renewal reopening queue.",
       lanes: [
-        {
-          version: "v659",
-          label: "Source correction reclose renewal refresh revalidation renewal aging guard",
-          route: "#correction-ledger",
-          detail: "Age each renewed source-correction lane independently and reopen only proof that passes review-by or triggers drift."
-        },
         {
           version: "v660",
           label: "Payment reclose renewal refresh revalidation renewal aging guard",
@@ -28664,12 +28761,18 @@ function buildTrackerConfig() {
           label: "Support repair reclose renewal refresh revalidation renewal aging guard",
           route: "#paid-beta-support-ledger",
           detail: "Age each renewed support lane independently while preserving private-support exclusions."
+        },
+        {
+          version: "v664",
+          label: "Source correction reclose renewal refresh revalidation renewal reopening queue",
+          route: "#correction-ledger",
+          detail: "Route only an expired renewed source lane back to named fresh proof while preserving renewal history and healthy siblings."
         }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Support revalidation renewal proof built locally",
+      verdict: "Source renewal aging proof built locally",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         { version: "v656", key: "20260719-v656-01", commit: "deaafda", receiptId: "NN-SHARE-RECEIPT-20260719V65601", proof: "Account Reclose Renewal Refresh Revalidation Renewal Receipt added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
@@ -28690,18 +28793,18 @@ function buildTrackerConfig() {
     outcomeTrail: [
       {
         label: "01 Built",
-        value: "v658",
-        detail: "Support Repair Reclose Renewal Refresh Revalidation Renewal Receipt is wired with a matching release label, data key, stamp, docs, changelog, planner, and proof room."
+        value: "v659",
+        detail: "Source Correction Reclose Renewal Refresh Revalidation Renewal Aging Guard is wired with a matching release label, data key, stamp, docs, changelog, planner, and proof room."
       },
       {
         label: "02 Checked",
         value: "Static pass",
-        detail: "V658 is gated by syntax, static, security, diff hygiene, and marker checks."
+        detail: "V659 is gated by syntax, static, security, diff hygiene, and marker checks."
       },
       {
         label: "03 Viewed",
         value: "Batch visual pending",
-        detail: "Shared v658-v661 desktop and mobile responsive verification runs after all five product releases are locally complete."
+        detail: "Shared v659-v661 desktop and mobile responsive verification runs after all five product releases are locally complete."
       },
       {
         label: "04 Share",
@@ -28712,18 +28815,18 @@ function buildTrackerConfig() {
     memory: [
       {
         label: "Product commit",
-        value: "v658 support repair reclose renewal refresh revalidation renewal receipt",
-        detail: "One reopened support lane now renews only after fresh support proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and private-support exclusions."
+        value: "v659 source correction reclose renewal refresh revalidation renewal aging guard",
+        detail: "Renewed source proof now ages by lane; only stale or drifted correction proof reopens while renewal history and healthy sibling state remain intact."
       },
       {
         label: "Release checks",
         value: "Local checks passed",
-        detail: "V658 carries syntax, static, security, diff hygiene, and marker gates before shared visual verification."
+        detail: "V659 carries syntax, static, security, diff hygiene, and marker gates before shared visual verification."
       },
       {
         label: "Share outcome",
         value: "Batch verification pending",
-        detail: "Responsive, push, live stamp, archive, planner, copy-marker, overflow, and browser-console checks remain queued for the complete v658-v661 batch."
+        detail: "Responsive, push, live stamp, archive, planner, copy-marker, overflow, and browser-console checks remain queued for the complete v659-v661 batch."
       }
     ],
     actions: [

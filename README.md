@@ -2,12 +2,13 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v636 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v637 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
+- Beta Command Reclose Renewal Refresh Reacceptance Reopening Queue in the Build Tracker Release Doctor routes only expired replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review reacceptance lanes back to fresh proof while preserving healthy sibling state and accepted lineage.
 - Account Reclose Renewal Refresh Reacceptance Reopening Queue in the Build Tracker Release Doctor routes only expired delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review reacceptance lanes back to fresh proof while preserving healthy sibling state and accepted lineage.
 - Payment Reclose Renewal Refresh Reacceptance Reopening Queue in the Build Tracker Release Doctor routes only expired entitlement, refund-wording, rollback, support-copy, owner-review, and founder-finance reacceptance lanes back to fresh proof while preserving healthy sibling state and accepted lineage.
 - Source Correction Reclose Renewal Refresh Reacceptance Reopening Queue in the Build Tracker Release Doctor routes only expired replacement, notice, cache, support, reviewer, and founder reacceptance lanes back to fresh proof while preserving healthy sibling state and accepted lineage.
@@ -498,4 +499,3 @@ git push -u origin main
 13. Add payment, account, and entitlement logic after deciding GST, refund, and launch-offer policy.
 14. Add CI security gates for static checks, security audit, secret scanning, and dependency audit.
 15. Add distributor Phase 2 workspace only after compliance and security review.
-

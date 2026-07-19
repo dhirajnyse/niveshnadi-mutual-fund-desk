@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V637 Beta Command Reclose Renewal Refresh Reacceptance Reopening Queue
+
+V637 adds Beta Command Reclose Renewal Refresh Reacceptance Reopening Queue to the Build Tracker Release Doctor. It converts expired replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review reacceptance clocks into explicit fresh-proof queue rows while preserving healthy sibling proof, the accepted receipt, and the superseded refresh queue.
+
+- Release label: `NiveshNadi Phase 1 v637 Beta Command Reclose Renewal Refresh Reacceptance Reopening Queue`
+- Data/version key: `20260719-v637-01`
+- Product surface: Build Tracker > Release Doctor > Beta command reclose renewal refresh reacceptance reopening queue
+- Risk boundary: Static founder-command reacceptance queue only; it does not send invites, process payments, grant access, fetch live data, recover accounts, reply to users, collect contact data, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v641.
+
 ## V636 Account Reclose Renewal Refresh Reacceptance Reopening Queue
 
 V636 adds Account Reclose Renewal Refresh Reacceptance Reopening Queue to the Build Tracker Release Doctor. It converts expired delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review reacceptance clocks into explicit fresh-proof queue rows while preserving healthy sibling proof, the accepted receipt, and the superseded refresh queue.

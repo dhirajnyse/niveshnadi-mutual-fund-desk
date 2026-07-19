@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v637 Beta Command Reclose Renewal Refresh Reacceptance Reopening Queue
+
+- Version: `0.637.0`
+- Data version: `20260719-v637-01`
+- Changes made: Added selective founder-command reacceptance reopening rows with prior-age-state, reopen-trigger, fresh-proof requirement, queue-owner, superseded-row, sibling-state, aging-guard, and reacceptance-receipt bindings, founder-command-safe no-go boundaries, and release markers and planner rolled forward to v637.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v637 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Reclose Renewal Refresh Reacceptance Reopening Queue is a static founder-command reacceptance queue only; it does not send invites, process payments, grant access, fetch live data, recover accounts, reply to users, collect contact data, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v636 Account Reclose Renewal Refresh Reacceptance Reopening Queue
 
 - Version: `0.636.0`

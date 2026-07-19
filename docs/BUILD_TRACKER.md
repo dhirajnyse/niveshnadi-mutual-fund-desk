@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V656 Account Reclose Renewal Refresh Revalidation Renewal Receipt
+
+V656 adds Account Reclose Renewal Refresh Revalidation Renewal Receipt to the Build Tracker Release Doctor. It closes exactly one active account revalidation reopening row only after current custody proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and privacy-safe checks are recorded.
+
+- Release label: `NiveshNadi Phase 1 v656 Account Reclose Renewal Refresh Revalidation Renewal Receipt`
+- Data/version key: `20260719-v656-01`
+- Product surface: Build Tracker > Release Doctor > Account reclose renewal refresh revalidation renewal receipt
+- Risk boundary: Static custody workflow receipt only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, widen custody, or approve account launch.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual, push, and live verification remain.
+
 ## V655 Payment Reclose Renewal Refresh Revalidation Renewal Receipt
 
 V655 adds Payment Reclose Renewal Refresh Revalidation Renewal Receipt to the Build Tracker Release Doctor. It closes exactly one active payment revalidation reopening row only after current proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and no-secret checks are recorded.

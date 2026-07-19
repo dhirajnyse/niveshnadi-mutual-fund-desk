@@ -1,5 +1,5 @@
-const DATA_VERSION = "20260719-v655-01";
-const RELEASE_LABEL = "NiveshNadi Phase 1 v655 Payment Reclose Renewal Refresh Revalidation Renewal Receipt";
+const DATA_VERSION = "20260719-v656-01";
+const RELEASE_LABEL = "NiveshNadi Phase 1 v656 Account Reclose Renewal Refresh Revalidation Renewal Receipt";
 const AUTOPILOT_ROUTE_MEMORY_KEY = "niveshnadi-autopilot-route-memory";
 const NAV_SIDE_KEY = "niveshnadi-nav-side";
 const NAV_DENSITY_KEY = "niveshnadi-nav-density";
@@ -28149,6 +28149,110 @@ function buildTrackerConfig() {
           "created_at"
         ],
         boundary: "Payment Reclose Renewal Refresh Revalidation Renewal Receipt is a static payment workflow receipt only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch."
+      },
+      {
+        key: "accountRecloseRenewalRefreshRevalidationRenewalReceipt",
+        label: "Account reclose renewal refresh revalidation renewal receipt",
+        verdict: "Fresh custody proof renews one revalidated reopening row",
+        receiptId: ["NN", "ACCOUNT", "RECLOSE", "RENEWAL", "REFRESH", "REVALIDATION", "RENEWAL", "RECEIPT", DATA_VERSION.replace(/-/g, "")].join("-").toUpperCase(),
+        copyAttr: "data-copy-account-reclose-renewal-refresh-revalidation-renewal-receipt",
+        copyLabel: "Copy account revalidation renewal receipt",
+        score: 85,
+        rule: "One account revalidation reopening row closes only after its named fresh custody proof, reviewer acceptance, accepted scope, new review window, superseded queue row, healthy sibling state, and privacy-safe checks are recorded in an immutable renewal receipt.",
+        lanes: [
+          {
+            label: "Delete/export proof renewal",
+            owner: "Account rights desk",
+            method: "RENEW_REVALIDATED_DELETE_EXPORT",
+            route: "account.reclose.renewal.refresh.revalidation.renewal.receipt.delete-export",
+            proof: "Bind the active reopening row to current delete and export behavior, completion evidence, reviewer decision, accepted scope, and a new review-by date.",
+            readyWhen: "Ready when current delete and export behavior is independently accepted and the superseded queue row and new review window are receipted.",
+            hold: "Hold when behavior proof, completion evidence, reviewer acceptance, accepted scope, queue lineage, or review-by date is missing.",
+            score: 86
+          },
+          {
+            label: "Redaction proof renewal",
+            owner: "Privacy operations",
+            method: "RENEW_REVALIDATED_REDACTION",
+            route: "account.reclose.renewal.refresh.revalidation.renewal.receipt.redaction",
+            proof: "Bind the active reopening row to current redaction behavior, excluded fields, reviewer decision, accepted scope, sibling snapshot, and a new review-by date.",
+            readyWhen: "Ready when renewed redaction proof excludes private identifiers and the accepted scope has a fresh review window.",
+            hold: "Hold when redaction proof, exclusions, reviewer decision, accepted scope, queue lineage, sibling snapshot, or review-by date is missing.",
+            score: 85
+          },
+          {
+            label: "Support-safe renewal",
+            owner: "Account support desk",
+            method: "RENEW_REVALIDATED_SUPPORT_SAFE",
+            route: "account.reclose.renewal.refresh.revalidation.renewal.receipt.support-safe",
+            proof: "Bind the active reopening row to current support-safe wording, escalation route, disclosure boundary, reviewer decision, accepted scope, and a new review-by date.",
+            readyWhen: "Ready when support wording matches current account behavior and exposes a safe accepted escalation path without private history.",
+            hold: "Hold when wording, escalation route, disclosure boundary, reviewer acceptance, queue lineage, or review-by date is missing.",
+            score: 85
+          },
+          {
+            label: "Object-family renewal",
+            owner: "Custody architecture",
+            method: "RENEW_REVALIDATED_OBJECT_FAMILY",
+            route: "account.reclose.renewal.refresh.revalidation.renewal.receipt.object-family",
+            proof: "Bind the active reopening row to the current covered object family, custody boundary, delete/export behavior, reviewer decision, accepted scope, and new review-by date.",
+            readyWhen: "Ready when every renewed object family is named, covered by current custody proof, and assigned a fresh accepted review window.",
+            hold: "Hold when object family, custody boundary, behavior proof, reviewer decision, queue lineage, or review-by date is missing.",
+            score: 85
+          },
+          {
+            label: "Founder-custody renewal",
+            owner: "Founder custody desk",
+            method: "RENEW_REVALIDATED_FOUNDER_CUSTODY",
+            route: "account.reclose.renewal.refresh.revalidation.renewal.receipt.founder-custody",
+            proof: "Bind the active reopening row to current custody posture, launch hold, privacy exclusions, founder decision, sibling snapshot, and a new review-by date.",
+            readyWhen: "Ready when founder review accepts the renewed custody boundary, preserves healthy siblings, and records the next review window.",
+            hold: "Hold when custody proof, privacy exclusions, founder decision, launch posture, queue lineage, sibling snapshot, or review-by date is missing.",
+            score: 86
+          },
+          {
+            label: "Trigger-review renewal",
+            owner: "Account review desk",
+            method: "RENEW_REVALIDATED_TRIGGER_REVIEW",
+            route: "account.reclose.renewal.refresh.revalidation.renewal.receipt.trigger-review",
+            proof: "Bind the active reopening row to current review triggers, trigger owner, response boundary, reviewer decision, accepted scope, and a new review-by date.",
+            readyWhen: "Ready when every renewed trigger names an accountable owner, accepted response boundary, and fresh review window.",
+            hold: "Hold when trigger, owner, response boundary, reviewer decision, queue lineage, or review-by date is missing.",
+            score: 85
+          }
+        ],
+        operatingRules: [
+          "Account Reclose Renewal Refresh Revalidation Renewal Receipt consumes exactly one active account revalidation reopening row after its named fresh-proof requirement is satisfied.",
+          "Every renewal receipt binds the revalidation receipt, aging guard, reopening queue row, fresh proof, reviewer role and decision, accepted scope, new review window, and sibling-state snapshot.",
+          "The renewed account review window begins at renewal time; prior revalidation, aging, and reopening rows remain immutable history.",
+          "Healthy sibling account lanes retain their current state and review windows when one reopened lane is renewed.",
+          "Account renewal receipts must exclude PAN, folio, CAS, bank, contact, credentials, identifiers, private notes, support conversations, and recovery secrets."
+        ],
+        noGoLines: [
+          "No reopened account lane may be renewed without current proof, explicit reviewer acceptance, accepted scope, a new review-by date, and privacy-safe checks.",
+          "No account revalidation reopening row may disappear when renewed; the receipt must name the superseded row and preserve lineage.",
+          "No renewal receipt may be treated as authentication, data export or deletion, account recovery, custody expansion, or launch approval.",
+          "No account revalidation renewal receipt may authenticate users, export or delete data, run jobs, recover accounts, collect identifiers, contact users, widen custody, or approve account launch."
+        ],
+        receiptFields: [
+          "account_reclose_renewal_refresh_revalidation_renewal_receipt_id",
+          "release_key",
+          "account_reclose_renewal_refresh_revalidation_reopening_queue_id",
+          "account_reclose_renewal_refresh_revalidation_aging_guard_id",
+          "account_reclose_renewal_refresh_revalidation_receipt_id",
+          "affected_lane",
+          "renewed_proof_reference",
+          "reviewer_role",
+          "reviewer_decision",
+          "accepted_scope",
+          "review_window_start",
+          "review_by",
+          "superseded_revalidation_reopening_queue_row",
+          "sibling_state_snapshot",
+          "renewed_at",
+          "created_at"
+        ],
+        boundary: "Account Reclose Renewal Refresh Revalidation Renewal Receipt is a static custody workflow receipt only; it does not authenticate users, export or delete data, schedule or run jobs, recover accounts, collect identifiers, contact users, widen custody, or approve account launch."
       }
     ],
     executiveCalmCompression: {
@@ -28321,18 +28425,18 @@ function buildTrackerConfig() {
     nextBatchPlan: {
       label: "Next batch planner",
       verdict: "Next batch ready",
-      rule: "Source and payment revalidation renewal receipts are complete; next renew account, beta-command, and support proof, then add source and payment renewal aging guards.",
+      rule: "Source, payment, and account revalidation renewal receipts are complete; next renew beta-command and support proof, then add source, payment, and account renewal aging guards.",
       lanes: [
-        { version: "v656", label: "Account reclose renewal refresh revalidation renewal receipt", route: "#account-readiness", detail: "Close one revalidated account reopening row only after fresh custody proof, reviewer acceptance, a new review window, and privacy checks are recorded." },
         { version: "v657", label: "Beta command reclose renewal refresh revalidation renewal receipt", route: "#founder-beta-operating-room", detail: "Close one revalidated beta-command reopening row only after fresh founder-command proof, reviewer acceptance, and a new review window are recorded." },
         { version: "v658", label: "Support repair reclose renewal refresh revalidation renewal receipt", route: "#paid-beta-support-ledger", detail: "Close one revalidated support reopening row only after fresh support proof, reviewer acceptance, a new review window, and private-data exclusions are recorded." },
         { version: "v659", label: "Source correction reclose renewal refresh revalidation renewal aging guard", route: "#correction-ledger", detail: "Age each renewed source-correction lane independently and reopen only the proof that passes review-by or triggers drift." },
-        { version: "v660", label: "Payment reclose renewal refresh revalidation renewal aging guard", route: "#payment-wiring", detail: "Age each renewed payment lane independently and reopen only stale proof while preserving healthy siblings and no-secret boundaries." }
+        { version: "v660", label: "Payment reclose renewal refresh revalidation renewal aging guard", route: "#payment-wiring", detail: "Age each renewed payment lane independently and reopen only stale proof while preserving healthy siblings and no-secret boundaries." },
+        { version: "v661", label: "Account reclose renewal refresh revalidation renewal aging guard", route: "#account-readiness", detail: "Age each renewed account lane independently and reopen only stale custody proof while preserving healthy siblings and privacy boundaries." }
       ]
     },
     releaseProofArchive: {
       label: "Release proof archive",
-      verdict: "Payment revalidation renewal proof visible",
+      verdict: "Account revalidation renewal proof visible",
       rule: "Keep the last five verified release receipts plus the current retention rule before sharing a new build.",
       receipts: [
         { version: "v651", key: "20260719-v651-01", commit: "7306980", receiptId: "NN-SHARE-RECEIPT-20260719V65101", proof: "Account Reclose Renewal Refresh Revalidation Reopening Queue added and batch-verified by syntax, static, security, diff hygiene, marker, desktop, mobile, push, and live checks." },
@@ -28351,14 +28455,14 @@ function buildTrackerConfig() {
       ]
     },
     outcomeTrail: [
-      { label: "01 Built", value: "v655", detail: "Payment Reclose Renewal Refresh Revalidation Renewal Receipt is wired with a matching release label, data key, stamp, docs, changelog, planner, and proof room." },
-      { label: "02 Checked", value: "Static pass", detail: "V655 is gated by syntax, static, security, diff hygiene, and marker checks." },
-      { label: "03 Viewed", value: "Batch visual pending", detail: "The v652-v656 proof rooms will receive one shared desktop and mobile responsive review after v656." },
-      { label: "04 Share", value: "Batch push pending", detail: "V655 remains local until the five-release batch passes responsive verification." }
+      { label: "01 Built", value: "v656", detail: "Account Reclose Renewal Refresh Revalidation Renewal Receipt is wired with a matching release label, data key, stamp, docs, changelog, planner, and proof room." },
+      { label: "02 Checked", value: "Static pass", detail: "V656 is gated by syntax, static, security, diff hygiene, and marker checks." },
+      { label: "03 Viewed", value: "Batch visual pending", detail: "The v652-v656 proof rooms will receive one shared desktop and mobile responsive review after local checks." },
+      { label: "04 Share", value: "Batch push pending", detail: "V656 remains local until the five-release batch passes responsive verification." }
     ],
     memory: [
-      { label: "Product commit", value: "v655 payment revalidation renewal receipt", detail: "One reopened payment lane now renews only after fresh proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and no-secret checks." },
-      { label: "Release checks", value: "Local checks passed", detail: "V655 carries syntax, static, security, diff hygiene, and marker gates before commit." },
+      { label: "Product commit", value: "v656 account revalidation renewal receipt", detail: "One reopened account lane now renews only after fresh proof, reviewer acceptance, accepted scope, a new review window, immutable queue lineage, healthy sibling preservation, and privacy-safe checks." },
+      { label: "Release checks", value: "Local checks passed", detail: "V656 carries syntax, static, security, diff hygiene, and marker gates before commit." },
       { label: "Share outcome", value: "Batch verification pending", detail: "Push and live verification wait for the complete v652-v656 responsive batch review." }
     ],
     actions: [

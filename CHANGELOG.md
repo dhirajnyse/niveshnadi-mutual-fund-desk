@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v642 Beta Command Reclose Renewal Refresh Revalidation Receipt
+
+- Version: `0.642.0`
+- Data version: `20260719-v642-01`
+- Changes made: Added six beta-command revalidation receipt lanes binding the active reopening row to fresh proof, reviewer role and decision, accepted scope, a new review window, superseded-row lineage, unchanged sibling state, and founder-command boundaries, with release markers and planner rolled forward to v642.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v642 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Reclose Renewal Refresh Revalidation Receipt is a static founder workflow receipt only; it does not send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v641 Account Reclose Renewal Refresh Revalidation Receipt
 
 - Version: `0.641.0`

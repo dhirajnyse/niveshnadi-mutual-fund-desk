@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V649 Source Correction Reclose Renewal Refresh Revalidation Reopening Queue
+
+V649 adds Source Correction Reclose Renewal Refresh Revalidation Reopening Queue to the Build Tracker Release Doctor. It routes only an expired revalidated replacement, notice, cache, support, reviewer, or founder lane back to named fresh proof while preserving its revalidation receipt, aging lineage, and healthy sibling state.
+
+- Release label: `NiveshNadi Phase 1 v649 Source Correction Reclose Renewal Refresh Revalidation Reopening Queue`
+- Data/version key: `20260719-v649-01`
+- Product surface: Build Tracker > Release Doctor > Source correction reclose renewal refresh revalidation reopening queue
+- Risk boundary: Static correction revalidation queue only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v651.
+
 ## V648 Support Repair Reclose Renewal Refresh Revalidation Aging Guard
 
 V648 adds Support Repair Reclose Renewal Refresh Revalidation Aging Guard to the Build Tracker Release Doctor. It gives each revalidated support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support lane an independent fresh-proof clock and routes only the stale lane back to proof while preserving its receipt, healthy siblings, and private-support boundary.

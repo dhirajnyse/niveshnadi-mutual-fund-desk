@@ -2,12 +2,13 @@
 
 NiveshNadi is an India-focused mutual fund research desk for retail investors who want to understand a fund before starting, changing, or stopping SIP, STP, or portfolio allocations.
 
-This Phase 1 v648 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
+This Phase 1 v649 prototype is a compact static web app with no build step. Open `index.html` directly or publish the repository through GitHub Pages.
 
 For local browser testing, run `npm run preview -- 53205` and open `http://127.0.0.1:53205/`.
 
 ## What is included
 
+- Source Correction Reclose Renewal Refresh Revalidation Reopening Queue in the Build Tracker Release Doctor routes only an expired revalidated replacement, notice, cache, support, reviewer, or founder lane back to named fresh proof while preserving its revalidation receipt and healthy sibling state.
 - Support Repair Reclose Renewal Refresh Revalidation Aging Guard in the Build Tracker Release Doctor gives each revalidated support-copy, owner-review, regression-proof, escalation-route, refund-wording, and founder-support lane its own fresh-proof date, review-by date, age state, owner, and selective reopen condition while preserving its receipt, healthy siblings, and private-support boundary.
 - Beta Command Reclose Renewal Refresh Revalidation Aging Guard in the Build Tracker Release Doctor gives each revalidated replacement, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review lane its own fresh-proof date, review-by date, age state, owner, and selective reopen condition while preserving the receipt, healthy siblings, and founder-command boundary.
 - Account Reclose Renewal Refresh Revalidation Aging Guard in the Build Tracker Release Doctor gives each revalidated delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review lane its own fresh-proof date, review-by date, age state, owner, and selective reopen condition while preserving the receipt, healthy siblings, and custody boundary.

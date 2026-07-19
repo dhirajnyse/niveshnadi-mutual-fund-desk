@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v649 Source Correction Reclose Renewal Refresh Revalidation Reopening Queue
+
+- Version: `0.649.0`
+- Data version: `20260719-v649-01`
+- Changes made: Added six selective source-correction revalidation reopening lanes that preserve prior age state, reopen trigger, named fresh-proof requirement, queue owner, aging-guard and revalidation-receipt lineage, and healthy sibling state, with release markers and planner rolled forward to v649.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v649 marker scan; Git diff hygiene check.
+- Known risks: Source Correction Reclose Renewal Refresh Revalidation Reopening Queue is a static correction revalidation queue only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
+
 ## NiveshNadi Phase 1 v648 Support Repair Reclose Renewal Refresh Revalidation Aging Guard
 
 - Version: `0.648.0`

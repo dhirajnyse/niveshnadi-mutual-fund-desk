@@ -1,5 +1,15 @@
 # Nadi Build Tracker
 
+## V632 Beta Command Reclose Renewal Refresh Reacceptance Aging Guard
+
+V632 adds Beta Command Reclose Renewal Refresh Reacceptance Aging Guard to the Build Tracker Release Doctor. It starts an independent post-reacceptance clock for each replacement-proof, conflict-cleanup, release-safe-memory, expiry-decision, owner-review, and founder-review lane, then isolates stale command proof without disturbing healthy sibling state or receipt lineage.
+
+- Release label: `NiveshNadi Phase 1 v632 Beta Command Reclose Renewal Refresh Reacceptance Aging Guard`
+- Data/version key: `20260719-v632-01`
+- Product surface: Build Tracker > Release Doctor > Beta command reclose renewal refresh reacceptance aging guard
+- Risk boundary: Static founder-command aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+- Verification status: Syntax, static/security, marker, and diff hygiene checks passed; batch visual and live verification remain scheduled for v636.
+
 ## V631 Account Reclose Renewal Refresh Reacceptance Aging Guard
 
 V631 adds Account Reclose Renewal Refresh Reacceptance Aging Guard to the Build Tracker Release Doctor. It starts a fresh independent clock for each reaccepted delete/export, redaction, support-safe, object-family, founder-custody, and trigger-review lane, then routes only expired proof toward selective reopening while preserving healthy sibling state and receipt lineage. Generated proof rooms now also expose stable deep-link anchors for direct review.

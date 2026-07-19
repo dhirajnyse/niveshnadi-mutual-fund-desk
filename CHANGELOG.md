@@ -1,5 +1,14 @@
 # NiveshNadi Changelog
 
+## NiveshNadi Phase 1 v632 Beta Command Reclose Renewal Refresh Reacceptance Aging Guard
+
+- Version: `0.632.0`
+- Data version: `20260719-v632-01`
+- Changes made: Added independent founder-command post-reacceptance clocks, accepted-proof-date, review-by, age-state, owner, selective-reopen, superseded-row, sibling-state, and reacceptance-receipt bindings, founder-command-safe no-go boundaries, release archive and planner roll-forward, and release markers rolled forward to v632.
+- Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v632 marker scan; Git diff hygiene check.
+- Known risks: Beta Command Reclose Renewal Refresh Reacceptance Aging Guard is a static founder-command aging room only; it does not invite users, process payments, grant access, fetch live data, recover accounts, send support replies, contact users, or approve beta expansion.
+
 ## NiveshNadi Phase 1 v631 Account Reclose Renewal Refresh Reacceptance Aging Guard
 
 - Version: `0.631.0`

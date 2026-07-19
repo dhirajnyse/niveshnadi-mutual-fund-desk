@@ -44901,14 +44901,14 @@ body.desk-rail-right .floating-dock {
   }
 
   .floating-dock {
-    right: 12px;
+    right: 0;
     bottom: max(12px, calc(env(safe-area-inset-bottom, 0px) + 12px));
     gap: 8px;
   }
 
   .floating-action-button,
   .scroll-top-button {
-    width: 44px;
+    width: 36px;
     height: 44px;
   }
 
@@ -46335,7 +46335,7 @@ body.simple-mode .serenity-path .simplicity-path-actions {
   }
 
   body.desk-rail-right .floating-dock {
-    right: max(12px, calc(env(safe-area-inset-bottom, 0px) + 12px));
+    right: 0;
   }
 
   .app-header {

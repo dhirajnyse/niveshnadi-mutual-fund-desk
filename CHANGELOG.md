@@ -6,7 +6,7 @@
 - Data version: `20260719-v646-01`
 - Changes made: Added six account revalidation aging lanes with independent fresh-proof dates, review windows, age states, owners, selective reopen conditions, receipt lineage, sibling-state preservation, and custody-safe boundaries, with release markers and planner rolled forward to v646.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v646 marker scan; Git diff hygiene check.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v646 marker scan; Git diff hygiene check; v642-v646 in-app browser QA at 1440x900 and 390x844 covering all five proof rooms, seven cards per room, stable deep links, card/text and page overflow, sticky-header/rail clearance, mobile rail collapse, floating-action clearance, version badge, and browser console.
 - Known risks: Account Reclose Renewal Refresh Revalidation Aging Guard is a static custody aging room only; it does not authenticate users, delete or export records, run background jobs, recover accounts, collect identifiers or contact data, widen custody scope, or approve account launch.
 
 ## NiveshNadi Phase 1 v645 Payment Reclose Renewal Refresh Revalidation Aging Guard
@@ -15,7 +15,7 @@
 - Data version: `20260719-v645-01`
 - Changes made: Added six payment revalidation aging lanes with independent fresh-proof dates, review windows, age states, owners, selective reopen conditions, receipt lineage, sibling-state preservation, and no-secret boundaries, with release markers and planner rolled forward to v645.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v645 marker scan; Git diff hygiene check.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v645 marker scan; Git diff hygiene check; v642-v646 in-app browser QA at 1440x900 and 390x844 covering all five proof rooms, seven cards per room, stable deep links, card/text and page overflow, sticky-header/rail clearance, mobile rail collapse, floating-action clearance, version badge, and browser console.
 - Known risks: Payment Reclose Renewal Refresh Revalidation Aging Guard is a static payment aging room only; it does not process payments, issue refunds, grant access, fetch gateway logs, contact users, reconcile production ledgers, store payment secrets, or approve payment launch.
 
 ## NiveshNadi Phase 1 v644 Source Correction Reclose Renewal Refresh Revalidation Aging Guard
@@ -24,7 +24,7 @@
 - Data version: `20260719-v644-01`
 - Changes made: Added six source-correction revalidation aging lanes with independent fresh-proof dates, review windows, age states, owners, selective reopen conditions, receipt lineage, and sibling-state preservation, with release markers and planner rolled forward to v644.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v644 marker scan; Git diff hygiene check.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v644 marker scan; Git diff hygiene check; v642-v646 in-app browser QA at 1440x900 and 390x844 covering all five proof rooms, seven cards per room, stable deep links, card/text and page overflow, sticky-header/rail clearance, mobile rail collapse, floating-action clearance, version badge, and browser console.
 - Known risks: Source Correction Reclose Renewal Refresh Revalidation Aging Guard is a static correction aging room only; it does not fetch live data, verify facts, publish notices, send replies, change source records, contact users, or approve public claims.
 
 ## NiveshNadi Phase 1 v643 Support Repair Reclose Renewal Refresh Revalidation Receipt
@@ -33,7 +33,7 @@
 - Data version: `20260719-v643-01`
 - Changes made: Added six support-repair revalidation receipt lanes binding the active reopening row to fresh proof, reviewer role and decision, accepted scope, a new review window, superseded-row lineage, unchanged sibling state, and private-support boundaries, with release markers and planner rolled forward to v643.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v643 marker scan; Git diff hygiene check.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v643 marker scan; Git diff hygiene check; v642-v646 in-app browser QA at 1440x900 and 390x844 covering all five proof rooms, seven cards per room, stable deep links, card/text and page overflow, sticky-header/rail clearance, mobile rail collapse, floating-action clearance, version badge, and browser console.
 - Known risks: Support Repair Reclose Renewal Refresh Revalidation Receipt is a static support workflow receipt only; it does not send replies, issue refunds, process payments, fetch private support history, expose conversations, contact users, or approve beta expansion.
 
 ## NiveshNadi Phase 1 v642 Beta Command Reclose Renewal Refresh Revalidation Receipt
@@ -42,7 +42,7 @@
 - Data version: `20260719-v642-01`
 - Changes made: Added six beta-command revalidation receipt lanes binding the active reopening row to fresh proof, reviewer role and decision, accepted scope, a new review window, superseded-row lineage, unchanged sibling state, and founder-command boundaries, with release markers and planner rolled forward to v642.
 - Files changed: `app.js`, `index.html`, `README.md`, `docs/BUILD_TRACKER.md`, `CHANGELOG.md`, `package.json`, `release-stamp.txt`, `scripts/static-check.mjs`.
-- Checks run: `node --check .\app.js`; `npm.cmd run check`; v642 marker scan; Git diff hygiene check.
+- Checks run: `node --check .\app.js`; `npm.cmd run check`; v642 marker scan; Git diff hygiene check; v642-v646 in-app browser QA at 1440x900 and 390x844 covering all five proof rooms, seven cards per room, stable deep links, card/text and page overflow, sticky-header/rail clearance, mobile rail collapse, floating-action clearance, version badge, and browser console.
 - Known risks: Beta Command Reclose Renewal Refresh Revalidation Receipt is a static founder workflow receipt only; it does not send commands, invite users, change release state, process payments, fetch private support history, contact users, or approve beta expansion.
 
 ## NiveshNadi Phase 1 v641 Account Reclose Renewal Refresh Revalidation Receipt

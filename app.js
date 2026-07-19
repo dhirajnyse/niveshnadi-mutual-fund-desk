@@ -27433,13 +27433,13 @@ function buildTrackerConfig() {
     },
     outcomeTrail: [
       { label: "01 Built", value: "v646", detail: "Account Reclose Renewal Refresh Revalidation Aging Guard is wired with a matching release label, data key, stamp, docs, changelog, planner, and batch-proof room." },
-      { label: "02 Checked", value: "Static pass", detail: "v646 passed syntax, static, security, diff hygiene, and marker checks." },
-      { label: "03 Viewed", value: "Batch visual pending", detail: "Desktop and mobile proof-room QA is scheduled with the v646 batch closeout." },
-      { label: "04 Share", value: "Push pending", detail: "The v646 product commit is ready for the v642-v646 batch push after final visual verification." }
+      { label: "02 Checked", value: "Static + visual pass", detail: "v646 passed syntax, static, security, diff hygiene, marker, and responsive proof-room checks." },
+      { label: "03 Viewed", value: "Responsive pass", detail: "The five v642-v646 proof rooms passed desktop and mobile deep-link, overflow, rail-clearance, and console review." },
+      { label: "04 Share", value: "Push pending", detail: "The v642-v646 batch is ready to push after its local responsive release receipt." }
     ],
     memory: [
       { label: "Product commit", value: "v646 account revalidation aging guard", detail: "Every revalidated account-custody lane now carries an independent fresh-proof clock, custody boundary, and selective reopen condition." },
-      { label: "Release checks", value: "Local checks passed", detail: "v646 passed syntax, static, security, diff hygiene, and marker checks." },
+      { label: "Release checks", value: "Local + visual passed", detail: "v646 passed local gates plus 1440x900 and 390x844 proof-room QA." },
       { label: "Share outcome", value: "Batch push pending", detail: "The v642-v646 batch will be pushed after the final desktop/mobile proof-room review." }
     ],
     actions: [
